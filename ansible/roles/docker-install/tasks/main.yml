@@ -1,40 +1,10 @@
 ---
-- name: 'install docker dependencies'
-  apt:
-    name: '{{ item }}'
-    state: 'present'
-  with_items:
-    - 'apt-transport-https'
-    - 'ca-certificates'
+- name: Check if Docker is already installed
+  command: systemctl status docker
+  register: docker_check
+  ignore_errors: yes
 
-- name: 'add docker repo apt key'
-  apt_key:
-    url: 'https://download.docker.com/linux/ubuntu/gpg'
-    id: '9DC858229FC7DD38854AE2D88D81803C0EBFCD88'
-    state: 'present'
-  register: 'add_repository_key'
-  ignore_errors: true
-
-- name: 'add Docker repository'
-  apt_repository:
-    repo: '{{ docker_apt_repository }}'
-    state: 'present'
-    update_cache: 'yes'
-
-- name: 'install docker'
-  apt:
-    name: '{{ docker_version }}'
-    state: 'present'
-
-- name: 'enable docker systemd service'
-  service:
-    name: 'docker'
-    state: 'started'
-    enabled: 'yes'
-
-- name: 'add users to docker group'
-  user:
-    name: '{{ item }}'
-    groups: 'docker'
-    append: 'yes'
-  with_items: "{{ lookup('env','USER') }}"
+- name: Install Docker if its missing
+  include: install.yml
+  when: docker_check.stderr.find('service could not be found') != -1
+  became: true
