@@ -3,8 +3,10 @@
 - name: Install Docker container
   connection: localhost
   hosts: localhost
+  vars:
+    test: 'fotios'
   tasks:
 
     - name: Sample task
       debug:
-        msg: "Hello"
+        msg: {{ test }}
