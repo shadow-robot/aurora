@@ -3,6 +3,7 @@
 - name: Install Docker container
   connection: localhost
   hosts: localhost
+  sudo: yes
   vars:
     test: 'fotios'
   
