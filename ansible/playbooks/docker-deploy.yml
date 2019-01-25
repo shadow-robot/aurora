@@ -5,5 +5,8 @@
   hosts: localhost
   vars:
     test: 'fotios'
-  debug:
-    msg: "{{ test }}"
+  tasks:
+
+    - name: Sample task
+      debug:
+        msg: "{{ test }}"
