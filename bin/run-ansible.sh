@@ -39,6 +39,7 @@ echo ""
 echo "playbook     = ${playbook}"
 echo "debug-branch = ${aurora_tools_branch}"
 
+export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 
 echo ""
 echo " ---------------------------------"
