@@ -72,7 +72,7 @@ echo ""
 
 pushd $aurora_home
 
-pip install --user -r ansible/data/requirements.txt
+# pip install --user -r ansible/data/requirements.txt
 ~/.local/bin/ansible-playbook -vvv --ask-become-pass -i ansible/inventory/local "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
 
 popd
