@@ -14,12 +14,12 @@ fi
 playbook=$1
 shift
 
-build_tools_home=/tmp/sr-build-tools
-build_tools_branch=master
+aurora_home=/tmp/aurora
+aurora_tools_branch=master
 
 if [[ $# > 2 ]]; then
     if [[ "$1" = "--debug-branch" ]]; then
-        build_tools_branch=$2
+        aurora_tools_branch=$2
         shift 2
     fi
 fi
@@ -37,7 +37,7 @@ echo ""
 echo "example: ./${script_name} docker-deploy image=shadowrobot/dexterous-hand"
 echo ""
 echo "playbook     = ${playbook}"
-echo "debug-branch = ${build_tools_branch}"
+echo "debug-branch = ${aurora_tools_branch}"
 
 
 echo ""
@@ -60,9 +60,9 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
 done
 
 sudo apt-get install -y python-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
-rm -rf $build_tools_home
+rm -rf $aurora_home
 
-git clone --depth 1 -b $build_tools_branch https://github.com/shadow-robot/sr-build-tools.git $build_tools_home
+git clone --depth 1 -b $aurora_tools_branch https://github.com/shadow-robot/aurora.git $aurora_home
 
 echo ""
 echo " -------------------"
@@ -70,9 +70,9 @@ echo " | Running Ansible |"
 echo " -------------------"
 echo ""
 
-pushd $build_tools_home/aurora
+pushd $aurora_home
 
-pip install --user -r requirements.txt
+pip install --user -r ./data/requirements.txt
 ~/.local/bin/ansible-playbook -vvv --ask-become-pass -i ./inventory/local "./playbooks/${playbook}.yml" --extra-vars "$*"
 
 popd
