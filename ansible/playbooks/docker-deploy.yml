@@ -5,8 +5,7 @@
   hosts: localhost
   vars:
     test: 'fotios'
-  tasks:
+  
 
-    - name: Sample task
-      debug:
-        msg: "{{ test }}"
+  roles:
+    - docker-install
