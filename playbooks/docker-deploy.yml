@@ -1,0 +1,10 @@
+---
+
+- name: Install Docker container
+  connection: localhost
+  hosts: localhost
+  tasks:
+
+    - name: Sample task
+      debug:
+        msg: "Hello"
