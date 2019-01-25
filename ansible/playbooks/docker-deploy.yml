@@ -6,4 +6,4 @@
   vars:
     test: 'fotios'
   debug:
-    msg: {{ test }}
+    msg: "{{ test }}"
