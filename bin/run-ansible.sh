@@ -32,7 +32,13 @@ echo "|                                                               |"
 echo "================================================================="
 echo ""
 echo "possible options: "
-echo "  * --debug-branch branch of aurora to use. It is needed for scrip debugging (master by default)"
+echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
+echo "  * image               Name of the Docker hub image to pull"
+echo "  * user                Docker hub user name"
+echo "  * password            Docker hub password"
+echo "  * reinstall           Flag to know if the docker container should be fully reinstalled (false by default)"
+echo "  * name                Name of the docker container"
+echo "  * ethercatinterface   Ethercat interface of the hand"
 echo ""
 echo "example: ./${script_name} docker-deploy image=shadowrobot/dexterous-hand"
 echo ""
@@ -60,7 +66,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     sleep 1
 done
 
-sudo apt-get install -y python-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
+sudo apt-get install -y python-pip3 git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
 rm -rf $aurora_home
 
 git clone --depth 1 -b $aurora_tools_branch https://github.com/shadow-robot/aurora.git $aurora_home

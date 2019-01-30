@@ -4,7 +4,15 @@
   connection: localhost
   hosts: localhost
   vars:
-    test: 'fotios'
+    nvidia_docker: '0'
+    image: 'shadowrobot/dexterous-hand:kinetic-release'
+    user: ''
+    password: ''
+    reinstall: 'false'
+    name: ''
+
   
   roles:
     - docker-install
+    - docker-nvidia
+    - docker-build

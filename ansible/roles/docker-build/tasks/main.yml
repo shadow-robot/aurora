@@ -1,0 +1,14 @@
+---
+- name: Log into DockerHub
+  docker_login:
+    username: {{ user }}
+    password: {{ password }}
+  when: image.startswith('shadowrobot/flexible')
+
+- name: Pulling the image
+  docker_image:
+    name: {{ image }}
+
+- name: Reinstalling container
+  include: reinstall.yml
+  when: reinstall == "true"

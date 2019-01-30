@@ -1,0 +1,11 @@
+---
+- name: Stoping the container
+  docker_container:
+    name: {{ name }}
+    state: stopped
+
+- name: Removing old container
+  docker_container:
+    name: {{ name }}
+    state: absent
+
