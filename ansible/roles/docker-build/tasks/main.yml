@@ -9,12 +9,6 @@
   docker_image:
     name: {{ image }}
 
-- name: Installing terminator
-  become: yes
-  apt:
-    name: terminator
-    state: present
-
 - name: Reinstalling container
   include: reinstall.yml
   when: reinstall == "true"
