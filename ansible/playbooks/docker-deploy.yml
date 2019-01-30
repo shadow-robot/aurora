@@ -10,7 +10,7 @@
     password: ''
     reinstall: 'false'
     name: ''
-
+    launchhand: 'true'
   
   roles:
     - docker-install

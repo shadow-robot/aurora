@@ -1,11 +1,18 @@
 ---
-- name: Stoping the container
+- name: Creating the container
+  tasks:
+    - shell: id -u
+      register: id
+    
   docker_container:
     name: {{ name }}
-    state: stopped
-
-- name: Removing old container
-  docker_container:
-    name: {{ name }}
-    state: absent
-
+    image: {{ image }}
+    env:
+        verbose: "true"
+        interface: {{ ethercatinterface }}
+        QT_X11_NO_MITSHM: 1
+        LOCAL_USER_ID: id.stdout
+    network_mode: "host"
+    privileged: yes
+    interactive: yes
+    volumes: "/tmp/.X11-unix:/tmp/.X11-unix"[rw]
