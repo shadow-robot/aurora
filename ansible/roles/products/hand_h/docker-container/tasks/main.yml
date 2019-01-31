@@ -5,9 +5,6 @@
 
 - block:
     - name: Container exists
-      debug:
-      msg: "Container Already exists"
-
     - meta: end_play
   when: status.stdout == "Exited" or status.stdout == "Up"
 
