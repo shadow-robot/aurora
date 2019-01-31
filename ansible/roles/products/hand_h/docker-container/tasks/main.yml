@@ -3,8 +3,12 @@
   shell: docker ps -a -f name={{ name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
   register: status
 
-- name: Container exists
-  meta: end_play
+- block:
+    - name: Container exists
+      debug:
+      msg: "Container Already exists"
+
+    - meta: end_play
   when: status.stdout == "Exited" or status.stdout == "Up"
 
 - name: Log into DockerHub
