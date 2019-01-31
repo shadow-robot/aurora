@@ -1,7 +1,7 @@
 ---
 dependencies:
   - role: docker/destroy-container
-    name: {{ name }}
+    name: name
     when: reinstall == "true"
   - role: products/hand_h/docker-container
-    name: {{ name }}
+    name: name
