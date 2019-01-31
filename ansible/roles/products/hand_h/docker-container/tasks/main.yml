@@ -1,4 +1,8 @@
 ---
+- name: Checking if container already exists
+  shell: docker ps -a -f name={{ name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
+  register: status
+
 - name: Log into DockerHub
   docker_login:
     username: user
@@ -8,9 +12,7 @@
   docker_image:
     name: shadowrobot/flexible-hand:{{ image }}
 
-- name: Checking if container already exists
-  shell: docker ps -a -f name={{ name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
-  register: status
+
 
 - name: Container exists
   meta: end_play
