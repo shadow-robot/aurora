@@ -34,5 +34,5 @@
     append: 'yes'
 
 - name: 'Exiting installation'
-    msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
-    meta: end_play
+  msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
+  meta: end_play

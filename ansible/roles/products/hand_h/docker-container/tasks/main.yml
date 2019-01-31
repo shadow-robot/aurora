@@ -1,0 +1,15 @@
+---
+- name: Log into DockerHub
+  docker_login:
+    username: {{ user }}
+    password: {{ password }}
+
+- name: Pulling the image
+  docker_image:
+    name: shadowrobot/flexible-hand:{{ image }}
+
+- name: Checking if container already exists
+  shell: docker ps -a -f name={{ name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
+  register: status
+  msg: "Container with specified name already exists. Exiting {{status}}.stdout"
+  meta: end_play

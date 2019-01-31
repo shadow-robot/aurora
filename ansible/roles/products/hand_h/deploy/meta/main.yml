@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: docker/destroy-container
+    name: {{ name }}
+    when: reinstall == "true"
+  - role: docker/docker-container
+    name: {{ name }}

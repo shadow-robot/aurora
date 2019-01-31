@@ -1,0 +1,18 @@
+---
+
+- name: Install Docker container
+  connection: localhost
+  hosts: localhost
+  vars:
+    nvidia_docker: '0'
+    image: 'shadowrobot/dexterous-hand:kinetic-release'
+    user: ''
+    password: ''
+    reinstall: 'false'
+    name: ''
+    launchhand: 'true'
+  
+  roles:
+    - docker-install
+    - docker-nvidia
+    - docker-build
