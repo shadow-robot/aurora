@@ -21,6 +21,5 @@
     
   tasks:
     - name: No product is defined
-      msg: "No product is defined. exiting playbook"
       when: product != 'hand_e' and product != 'hand_h'
       meta: end_play
