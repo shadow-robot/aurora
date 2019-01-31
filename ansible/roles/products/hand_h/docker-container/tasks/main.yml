@@ -11,5 +11,7 @@
 - name: Checking if container already exists
   shell: docker ps -a -f name={{ name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
   register: status
+
+- name: Container exists
   msg: "Container with specified name already exists. Exiting {{status}}.stdout"
-  meta: end_play
+  
