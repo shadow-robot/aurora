@@ -1,8 +1,8 @@
 ---
 - name: Log into DockerHub
   docker_login:
-    username: "{{ user }}"
-    password: "{{ password }}"
+    username: user
+    password: password
 
 - name: Pulling the image
   docker_image:
@@ -13,5 +13,5 @@
   register: status
 
 - name: Container exists
-  msg: "Container with specified name already exists. Exiting {{status}}.stdout"
+  msg: "Container with specified name already exists. Exiting {{ status }}.stdout"
   meta: end_play
