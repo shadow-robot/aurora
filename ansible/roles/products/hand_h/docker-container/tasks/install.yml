@@ -15,5 +15,5 @@
     network_mode: "host"
     privileged: yes
     interactive: yes
-    volumes: "/tmp/.X11-unix:/tmp/.X11-unix"[rw]
+    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
     command: "terminator -x bash -c 'pkill -f \'^\'shadow_launcher_app_xterm && /usr/local/bin/setup_modular_grasper.sh && bash || bash"
