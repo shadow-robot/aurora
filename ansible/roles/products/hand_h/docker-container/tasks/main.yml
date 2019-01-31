@@ -12,5 +12,5 @@
   shell: docker ps -a -f name={{ name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
   register: status
 
-- debug: Container exists
-  msg: "Container with specified name already exists. Exiting {{ status }}.stdout"
+- name: Container exists
+  meta: end_play
