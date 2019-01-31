@@ -14,4 +14,3 @@
 
 - debug: Container exists
   msg: "Container with specified name already exists. Exiting {{ status }}.stdout"
-  meta: end_play
