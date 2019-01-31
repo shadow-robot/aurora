@@ -3,6 +3,10 @@
   shell: docker ps -a -f name={{ name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
   register: status
 
+- name: Container exists
+  meta: end_play
+  when: status.stdout == "Exited" or status.stdout == "Up"
+
 - name: Log into DockerHub
   docker_login:
     username: user
@@ -11,8 +15,3 @@
 - name: Pulling the image
   docker_image:
     name: shadowrobot/flexible-hand:{{ image }}
-
-
-
-- name: Container exists
-  meta: end_play
