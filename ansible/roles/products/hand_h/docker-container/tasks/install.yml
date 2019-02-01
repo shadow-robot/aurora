@@ -1,15 +1,15 @@
 ---
+- name: Getting UID
+  shell: id -u
+  register: id
+
 - name: Creating the container
-  tasks:
-    - shell: id -u
-      register: id
-    
   docker_container:
-    name: {{ name }}
-    image: {{ image }}
+    name: "{{ container_name }}"
+    image: "shadowrobot/flexible-hand:{{tag}}"
     env:
         verbose: "true"
-        interface: {{ ethercatinterface }}
+        interface: "{{ ethercatinterface }}"
         QT_X11_NO_MITSHM: 1
         LOCAL_USER_ID: id.stdout
     network_mode: "host"

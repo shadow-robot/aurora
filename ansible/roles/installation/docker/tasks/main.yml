@@ -4,7 +4,6 @@
   register: docker_check
   ignore_errors: yes
 
-- name: Install Docker if it is missing
-  include: install.yml
+- import_tasks: install.yml
   when: docker_check.stderr.find('service could not be found') != -1
-  became: true
+  become: true
