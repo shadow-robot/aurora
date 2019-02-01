@@ -1,0 +1,10 @@
+---
+- name: Install nvidia-docker v1
+  include: install_nvidia_v1.yml
+  when: nvidia_docker_version.startswith('1')
+  became: true
+
+- name: Install nvidia-docker v2
+  include: install_nvidia_v2.yml
+  when: nvidia_docker_version.startswith('2')
+  became: true
