@@ -60,7 +60,7 @@ while (sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1) || (sudo fuser /var/l
     echo "Waiting for apt-get update file lock..."
     sleep 1
 done
-#sudo apt-get update
+sudo apt-get update
 
 # Wait for apt-get install lock file to be released
 while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
@@ -68,7 +68,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     sleep 1
 done
 
-#sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
+sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
 rm -rf $aurora_home
 
 git clone --depth 1 -b $aurora_tools_branch https://github.com/shadow-robot/aurora.git $aurora_home
@@ -81,7 +81,7 @@ echo ""
 
 pushd $aurora_home
 
-#pip3 install --user -r ansible/data/requirements.txt
+pip3 install --user -r ansible/data/requirements.txt
 ~/.local/bin/ansible-playbook -vvv --ask-become-pass -i ansible/inventory/local "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
 
 popd
