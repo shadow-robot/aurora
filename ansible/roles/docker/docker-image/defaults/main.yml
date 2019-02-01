@@ -1,5 +1,4 @@
 ---
 container_name: "shadow_container"
-tag: "kinetic-release"
 image: "build-tools"
-ethercatinterface: "eth0"
+tag: "kinetic-release"

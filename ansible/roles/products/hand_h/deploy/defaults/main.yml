@@ -1,0 +1,5 @@
+---
+container_name: "shadow_flexible_hand"
+tag: "kinetic-release"
+image: "flexible-hand"
+ethercatinterface: "eth0"

@@ -5,12 +5,11 @@
   vars:
     nvidia_docker: '0'
     tag: 'kinetic-release'
-    user: ''
-    password: ''
     reinstall: 'false'
-    container_name: ''
-    launchhand: 'true'
+    container_name: 'shadow_container'
+    launchhand: 'false'
     product: ''
+    ethercatinterface: "eth0"
   
   tasks:
     - name: No product is defined
@@ -18,7 +17,7 @@
       meta: end_play
 
   roles:
-    #- { role: installation/docker }
-    #- { role: installation/docker-nvidia, when: nvidia_docker != '0'}
-    #- { role: products/hand_h/deploy, when: product == 'hand_h' }
+    - { role: installation/docker }
+    - { role: installation/docker-nvidia, when: nvidia_docker != '0'}
+    - { role: products/hand_h/deploy, when: product == 'hand_h' }
     - { role: products/hand_e/deploy, when: product == 'hand_e' }
