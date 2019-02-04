@@ -1,6 +1,6 @@
 ---
 - name: Checking if container already exists
-  shell: docker ps -a -f name={{ container_name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
+  shell: "docker ps -a -f name='{{ container_name }}' --format {%raw%}'table {{.Status}}'{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'"
   register: status
 
 - block:
@@ -18,4 +18,4 @@
 
 - name: Pulling the image
   docker_image:
-    name: "shadowrobot/{{image}}:{{tag}}"
+    name: "{{image}}:{{tag}}"

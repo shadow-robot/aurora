@@ -1,5 +1,7 @@
 ---
-container_name: "shadow_flexible_hand"
+container_name: "shadow_flexible_container"
 tag: "kinetic-release"
-image: "flexible-hand"
+user: "user"
+password: "password"
 ethercatinterface: "eth0"
+image: "shadowrobot/flexible-hand"

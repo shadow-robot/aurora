@@ -1,5 +1,5 @@
 ---
 container_name: "shadow_dexterous_hand"
 tag: "kinetic-release"
-image: "dexterous-hand"
+image: "shadowrobot/dexterous-hand"
 ethercatinterface: "eth0"

@@ -4,13 +4,14 @@
   hosts: localhost
   vars:
     nvidia_docker: '0'
-    tag: 'kinetic-release'
     reinstall: 'false'
-    container_name: 'shadow_container'
     launchhand: 'false'
     product: ''
     ethercatinterface: "eth0"
-  
+    container_name: ""
+    tag: ""
+    image: ""
+
   tasks:
     - name: No product is defined
       when: product != 'hand_e' and product != 'hand_h'

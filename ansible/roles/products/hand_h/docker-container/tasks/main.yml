@@ -6,7 +6,7 @@
 - name: Creating the container
   docker_container:
     name: "{{ container_name }}"
-    image: "shadowrobot/{{image}}:{{tag}}"
+    image: "{{image}}:{{tag}}"
     env:
         verbose: "true"
         interface: "{{ ethercatinterface }}"
