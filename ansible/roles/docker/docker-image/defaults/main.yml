@@ -1,4 +1,4 @@
 ---
 container_name: "shadow_container"
-image: "build-tools"
+image: "dexterous-hand"
 tag: "kinetic-release"

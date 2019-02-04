@@ -1,8 +1,8 @@
 ---
 - import_tasks: install_nvidia_v1.yml
   when: nvidia_docker_version.startswith('1')
-  became: true
+  become: true
 
 - import_tasks: install_nvidia_v2.yml
   when: nvidia_docker_version.startswith('2')
-  became: true
+  become: true

@@ -18,6 +18,6 @@
 
   roles:
     - { role: installation/docker }
-    - { role: installation/docker-nvidia, when: nvidia_docker != '0'}
+    - { role: installation/nvidia-docker, when: nvidia_docker != '0'}
     - { role: products/hand_h/deploy, when: product == 'hand_h' }
     - { role: products/hand_e/deploy, when: product == 'hand_e' }
