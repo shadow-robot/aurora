@@ -8,9 +8,7 @@
     launchhand: 'false'
     product: ''
     ethercatinterface: "eth0"
-    container_name: ""
-    tag: ""
-    image: ""
+
 
   tasks:
     - name: No product is defined

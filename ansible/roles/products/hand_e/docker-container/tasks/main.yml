@@ -15,12 +15,6 @@
         DISPLAY: :0
     network_mode: "host"
     privileged: yes
-    AttachStdin: false,
-    AttachStdout: false,
-    AttachStderr: false,
-    Tty: false,
-    OpenStdin: true,
-    StdinOnce: false,
 
     interactive: yes
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
