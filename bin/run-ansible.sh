@@ -6,7 +6,7 @@ set -e # fail on errors
 script_name=`basename "$0"`
 command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>]"
 command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
-if [[ $# == 1 ]]; then
+if [[ $# < 2 ]]; then
     echo $command_usage_message
     exit 1
 fi
@@ -33,14 +33,6 @@ echo "================================================================="
 echo ""
 echo "possible options: "
 echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
-echo "  * tag           Name of the Docker hub image to pull (default: kinetic-release)"
-echo "  * user                Docker hub user name"
-echo "  * password            Docker hub password"
-echo "  * reinstall           Flag to know if the docker container should be fully reinstalled (false by default)"
-echo "  * name                Name of the docker container"
-echo "  * ethercatinterface   Ethercat interface of the hand"
-echo "  * launchhand          Specify if hand driver should start when double clicking desktop icon (default: true)"
-echo "  * product             Specify the product name, hand_e or hand_h"
 echo ""
 echo "example: ./${script_name} docker-deploy image=shadowrobot/dexterous-hand"
 echo ""
