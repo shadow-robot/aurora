@@ -17,7 +17,7 @@ shift
 aurora_home=/tmp/aurora
 aurora_tools_branch=master
 
-if [[ $# > 2 ]]; then
+if [[ $# >= 2 ]]; then
     if [[ "$1" = "--debug-branch" ]]; then
         aurora_tools_branch=$2
         shift 2
@@ -34,7 +34,7 @@ echo ""
 echo "possible options: "
 echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
 echo ""
-echo "example: ./${script_name} docker-deploy image=shadowrobot/dexterous-hand"
+echo "example: ./${script_name} docker-deploy product=hand_e"
 echo ""
 echo "playbook     = ${playbook}"
 echo "debug-branch = ${aurora_tools_branch}"
