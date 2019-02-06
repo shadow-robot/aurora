@@ -1,5 +1,6 @@
 ---
-- template: src=create_desktop_icon_task_template.j2 dest=/tmp/create_desktop_icon_task.yaml
+- name: Create Shadow_Hand_Launcher desktop icon
+  include: create_desktop_icon.yml
   vars:
     desktop_shortcut_name: Shadow_Hand_Launcher
     comment: "This is application launches the hand"
