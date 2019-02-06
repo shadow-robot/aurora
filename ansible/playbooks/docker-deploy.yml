@@ -2,6 +2,8 @@
 - name: Install Docker container
   connection: localhost
   hosts: localhost
+  vars_files:
+    - /vars/docker-deploy_vars.yml
 
   tasks:
     - name: No product is defined
