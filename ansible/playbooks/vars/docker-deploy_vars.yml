@@ -1,0 +1,6 @@
+---
+nvidia_docker: false
+reinstall: false
+launchhand: false
+product: ''
+ethercatinterface: "eth0"
