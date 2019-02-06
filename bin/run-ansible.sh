@@ -17,7 +17,7 @@ shift
 aurora_home=/tmp/aurora
 aurora_tools_branch=master
 
-if [[ $# >= 2 ]]; then
+if [[ $# > 1 ]]; then
     if [[ "$1" = "--debug-branch" ]]; then
         aurora_tools_branch=$2
         shift 2
