@@ -7,7 +7,7 @@
 - name: Create Shadow_Hand_Launcher executable launch script
   template: src=start_docker_container.js dest="/home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher/shadow_launcher_exec.sh"
   vars:
-    container_name : {{ container_name }}
+    container_name : "{{ container_name }}"
 
 - name: Create Shadow_Hand_Launcher desktop icon
   template: src=create_desktop_icon.j2 dest="/home/{{ lookup('env','USER') }}/Desktop/Shadow_Hand_Launcher.desktop"
