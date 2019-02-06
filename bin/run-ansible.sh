@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e # fail on errors
-# set -x # echo commands run
+set -x # echo commands run
 
 script_name=`basename "$0"`
 command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>]"
