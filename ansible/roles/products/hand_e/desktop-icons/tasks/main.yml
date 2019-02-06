@@ -7,4 +7,14 @@
     window_title: Shadow_Hand_Launcher
     app_folder: /home/${USER}/.shadow_launcher_app
     shell_script_file_name: shadow_launcher_exec.sh
-    icon_file_name: files/hand_E.png
+    icon_file_name: hand_E.png
+    
+- name: Download Shadow_Hand_Launcher desktop icon
+  include: download_file.yml
+  vars:
+    filename: hand_E.png
+    repo: sr-build-tools
+    branch: master
+    git_path: docker/hand_E.png
+    folder: /home/${USER}/.shadow_launcher_app/Shadow_Hand_Launcher
+    mode: '664'
