@@ -1,6 +1,5 @@
 ---
-- name: Creating launch desktop file
-  template: create_desktop_icon_task_template.j2
+- template: create_desktop_icon_task_template.j2
   vars:
     desktop_shortcut_name: Shadow_Hand_Launcher
     comment: "This is application launches the hand"
