@@ -9,13 +9,13 @@
     folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher
     mode: '664'
     
-- name: Download Shadow_Hand_Launcher launch script
+- name: Download Shadow_Hand_Launcher Ansible launch script
   include: download_file.yml
   vars:
-    filename: launch.sh
-    repo: sr-build-tools
-    branch: master
-    git_path: docker/launch.sh
+    filename: run-ansible.sh
+    repo: aurora
+    branch: F#SRC-2603_add_ansible_bootstrap
+    git_path: bin/run-ansible.sh
     folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher
     mode: '755'
 
@@ -26,5 +26,5 @@
     comment: "This is application launches the hand"
     window_title: Shadow_Hand_Launcher
     app_folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app
-    shell_script_file_name: shadow_launcher_exec.sh
+    shell_script_file_name: run-ansible.sh
     icon_file_name: hand_E.png
