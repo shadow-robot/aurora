@@ -1,13 +1,10 @@
 ---
 - name: Creating launch desktop file
-  copy:
-    content: "[Desktop Entry]
-    Version=1.0
-    Name=${DESKTOP_SHORTCUT_NAME}
-    Comment=This is application launches the hand
-    Exec=/home/${USER}/.shadow_launcher_app/${DESKTOP_SHORTCUT_NAME}/shadow_launcher_exec.sh
-    Icon=/home/${USER}/.shadow_launcher_app/${DESKTOP_SHORTCUT_NAME}/${HAND_ICON}
-    Terminal=false
-    Type=Application
-    Categories=Utility;Application;"
-    dest: /home/$USER/Desktop/${DESKTOP_SHORTCUT_NAME}.desktop
+  template: create_desktop_icon_task_template.j2
+  vars:
+    desktop_shortcut_name: Shadow_Hand_Launcher
+    comment: "This is application launches the hand"
+    window_title: Shadow_Hand_Launcher
+    app_folder: /home/${USER}/.shadow_launcher_app
+    shell_script_file_name: shadow_launcher_exec.sh
+    icon_file_name: files/hand_E.png
