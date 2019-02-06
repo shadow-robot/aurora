@@ -1,14 +1,4 @@
 ---
-- name: Create Shadow_Hand_Launcher desktop icon
-  include: create_desktop_icon.yml
-  vars:
-    desktop_shortcut_name: Shadow_Hand_Launcher
-    comment: "This is application launches the hand"
-    window_title: Shadow_Hand_Launcher
-    app_folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app
-    shell_script_file_name: shadow_launcher_exec.sh
-    icon_file_name: hand_E.png
-    
 - name: Download Shadow_Hand_Launcher desktop icon
   include: download_file.yml
   vars:
@@ -18,3 +8,23 @@
     git_path: docker/hand_E.png
     folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher
     mode: '664'
+    
+- name: Download Shadow_Hand_Launcher launch script
+  include: download_file.yml
+  vars:
+    filename: launch.sh
+    repo: sr-build-tools
+    branch: master
+    git_path: docker/launch.sh
+    folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher
+    mode: '755'
+
+- name: Create Shadow_Hand_Launcher desktop icon
+  include: create_desktop_icon.yml
+  vars:
+    desktop_shortcut_name: Shadow_Hand_Launcher
+    comment: "This is application launches the hand"
+    window_title: Shadow_Hand_Launcher
+    app_folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app
+    shell_script_file_name: shadow_launcher_exec.sh
+    icon_file_name: hand_E.png
