@@ -14,7 +14,7 @@
   vars:
     filename: run-ansible.sh
     repo: aurora
-    branch: F#SRC-2603_add_ansible_bootstrap
+    branch: F%23SRC-2603_add_ansible_bootstrap
     git_path: bin/run-ansible.sh
     folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher
     mode: '755'
