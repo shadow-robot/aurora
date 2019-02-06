@@ -1,8 +1,8 @@
-#Aurora project
+# Aurora project #
 
 The main purpose of this subsystem is to unify one-liners approaches based on Ansible best practices.
 
-# How to run #
+## How to run ##
 
 Open a terminal with Ctrl+Alt+T and run, for example:
 
