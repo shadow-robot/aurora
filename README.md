@@ -23,7 +23,7 @@ bash <(curl -Ls bit.ly/run-ansible-sh) docker-deploy option1=value1 option2=valu
 ```
 
 Possible options for the docker-deploy are:
-
+"
 * product                   Name of the product (hand_e or hand_h)
 * image                     Name of the Docker hub image to pull
 * reinstall                 Flag to know if the docker container should be fully reinstalled (default: false)
@@ -37,7 +37,7 @@ Possible options for the docker-deploy are:
 * launchhand                Specify if hand driver should start when double clicking desktop icon (default: true)
 * customerkey               Flag to prompt for customer key for uploading files to AWS (can be skipped or be set to true)
 * cyberglove                Specify the branch of sr_cyberglove_config for cyberglove configuration (default: false)
-* demo_icons                Generates desktop icons to run demos (default: false)
+* demo_icons                Generates desktop icons to run demos (default: false)"
 
 Also, for debugging, you can add the following immediately after docker-deploy:
 
