@@ -23,7 +23,7 @@ bash <(curl -Ls bit.ly/run-ansible-sh) docker-deploy option1=value1 option2=valu
 ```
 
 Possible options for the docker-deploy are:
-"
+<pre>
 * product                   Name of the product (hand_e or hand_h)
 * image                     Name of the Docker hub image to pull
 * reinstall                 Flag to know if the docker container should be fully reinstalled (default: false)
@@ -37,11 +37,12 @@ Possible options for the docker-deploy are:
 * launchhand                Specify if hand driver should start when double clicking desktop icon (default: true)
 * customerkey               Flag to prompt for customer key for uploading files to AWS (can be skipped or be set to true)
 * cyberglove                Specify the branch of sr_cyberglove_config for cyberglove configuration (default: false)
-* demo_icons                Generates desktop icons to run demos (default: false)"
+* demo_icons                Generates desktop icons to run demos (default: false)
+</pre>
 
-Also, for debugging, you can add the following immediately after docker-deploy:
+Also, for debugging (not using the master branch), you can add the following immediately after docker-deploy:
 
-* --debug-branch name_of_the_debug_branch_of_aurora_repo (e.g. --debug-branch F#SRC-2603_add_ansible_bootstrap)
+* --debug-branch name_of_aurora_repo_branch (e.g. --debug-branch F#SRC-2603_add_ansible_bootstrap)
 
 To begin with, the docker-deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. If the required image is private, 
 then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then, the specified docker image is pulled and a docker 
