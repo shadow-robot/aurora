@@ -1,6 +1,6 @@
 ---
 - name: Download {{ filename }}
   get_url:
-    url: "https://raw.githubusercontent.com/shadow-robot/{{ repo }}/{{ branch }}/{{ git_path }}"
+    url: "https://raw.githubusercontent.com/shadow-robot/{{ repo }}/{{ branch | replace('#','%23')}}/{{ git_path }}"
     dest: "{{ folder }}/{{ filename }}"
     mode: "{{ mode }}"
