@@ -2,13 +2,6 @@
 - name: Install Docker container
   connection: localhost
   hosts: localhost
-  vars:
-    nvidia_docker: '0'
-    reinstall: 'false'
-    launchhand: 'false'
-    product: ''
-    ethercatinterface: "eth0"
-
 
   tasks:
     - name: No product is defined
@@ -17,6 +10,6 @@
 
   roles:
     - { role: installation/docker }
-    - { role: installation/nvidia-docker, when: nvidia_docker != '0'}
+    - { role: installation/nvidia-docker, when: nvidia_docker != false}
     - { role: products/hand_h/deploy, when: product == 'hand_h' }
     - { role: products/hand_e/deploy, when: product == 'hand_e' }
