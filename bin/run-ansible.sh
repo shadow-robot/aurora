@@ -3,7 +3,7 @@
 set -e # fail on errors
 set -x # echo commands run
 
-script_name=`basename "$0"`
+script_name=run-ansible.sh
 command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>]"
 command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
 if [[ $# < 2 ]]; then
@@ -34,7 +34,7 @@ echo ""
 echo "possible options: "
 echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
 echo ""
-echo "example: ./${script_name} docker-deploy product=hand_e"
+echo "example: ./${script_name} docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap product=hand_e"
 echo ""
 echo "playbook     = ${playbook}"
 echo "debug-branch = ${aurora_tools_branch}"
