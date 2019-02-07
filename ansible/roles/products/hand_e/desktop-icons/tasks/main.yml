@@ -2,19 +2,20 @@
 - name: Copy Shadow_Hand_Launcher desktop icon
   copy: 
     src: files/hand_E.png
-    dest: /home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher/hand_E.png
+    dest: "{{ user_folder }}/{{ shadow_hand_launcher_folder }}/hand_E.png"
+    mode: '664'
     
 - name: Create Shadow_Hand_Launcher executable launch script
-  template: src=start_docker_container.js dest="/home/{{ lookup('env','USER') }}/.shadow_launcher_app/Shadow_Hand_Launcher/shadow_launcher_exec.sh"
-  vars:
-    container_name : "{{ container_name }}"
+  template: src=scripts/start_docker_container.j2 dest="{{ user_folder }}/{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
+  mode: '755'
 
 - name: Create Shadow_Hand_Launcher desktop icon
-  template: src=create_desktop_icon.j2 dest="/home/{{ lookup('env','USER') }}/Desktop/Shadow_Hand_Launcher.desktop"
+  template: src=desktop_labels/create_desktop_icon.j2 dest="{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
+  mode: '755'
   vars:
     desktop_shortcut_name: Shadow_Hand_Launcher
     comment: "This is application launches the hand"
     window_title: Shadow_Hand_Launcher
-    app_folder: /home/{{ lookup('env','USER') }}/.shadow_launcher_app
+    folder: "{{ user_folder }}/{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: shadow_launcher_exec.sh
     icon_file_name: hand_E.png

@@ -1,1 +1,4 @@
 ---
+user_folder: "/home/{{ lookup('env','USER') }}"
+shadow_hand_launcher_folder: ".shadow_launcher_app/Shadow_Hand_Launcher"
+container_name : "shadow_container"
