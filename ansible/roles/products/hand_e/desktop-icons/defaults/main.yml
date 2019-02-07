@@ -1,4 +1,5 @@
 ---
 user_folder: "/home/{{ lookup('env','USER') }}"
-shadow_hand_launcher_folder: ".shadow_launcher_app/Shadow_Hand_Launcher"
-container_name : "shadow_container"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/Shadow_Hand_Launcher"
+save_latest_ros_logs_folder: "{{ user_folder }}/.shadow_save_log_app/save_latest_ros_logs"
+container_name : "shadow_dexterous_hand"

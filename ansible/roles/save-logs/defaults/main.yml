@@ -1,1 +1,4 @@
 ---
+user_folder: "/home/{{ lookup('env','USER') }}"
+save_latest_ros_logs_folder: "{{ user_folder }}/.shadow_save_log_app/save_latest_ros_logs"
+customerkey: false
