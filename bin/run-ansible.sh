@@ -61,7 +61,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
 done
 
 sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
-rm -rf $aurora_home
+sudo rm -rf $aurora_home
 
 git clone --depth 1 -b $aurora_tools_branch https://github.com/shadow-robot/aurora.git $aurora_home
 
