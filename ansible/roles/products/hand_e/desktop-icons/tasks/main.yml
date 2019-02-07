@@ -7,11 +7,11 @@
     
 - name: Create Shadow_Hand_Launcher executable launch script
   template: src=scripts/start_docker_container.j2 dest="{{ user_folder }}/{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
-  mode: '755'
+    mode: '755'
 
 - name: Create Shadow_Hand_Launcher desktop icon
   template: src=desktop_labels/create_desktop_icon.j2 dest="{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
-  mode: '755'
+    mode: '755'
   vars:
     desktop_shortcut_name: Shadow_Hand_Launcher
     comment: "This is application launches the hand"
