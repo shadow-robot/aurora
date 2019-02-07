@@ -11,7 +11,7 @@
     env:
         verbose: "true"
         interface: "{{ ethercatinterface }}"
-        QT_X11_NO_MITSHM: 1
+        QT_X11_NO_MITSHM: "1"
         LOCAL_USER_ID: "{{ id.stdout }}"
         DISPLAY: :0
     network_mode: "host"
