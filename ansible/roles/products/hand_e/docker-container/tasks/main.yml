@@ -7,6 +7,7 @@
   docker_container:
     name: "{{ container_name }}"
     image: "{{image}}:{{tag}}"
+    state: stopped
     env:
         verbose: "true"
         interface: "{{ ethercatinterface }}"
