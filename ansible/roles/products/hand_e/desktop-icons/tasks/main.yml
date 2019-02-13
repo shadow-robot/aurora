@@ -1,14 +1,14 @@
 ---
+- name: Ensures that shadow_hand_launcher directory exists
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
 - name: Copy Shadow_Hand_Launcher desktop icon
   copy: 
     src: files/hand_e.png
     dest: "{{ shadow_hand_launcher_folder }}/hand_e.png"
     mode: '664'
-
-- name: Ensures that shadow_hand_launcher directory exists
-  file:
-    path: "{{ shadow_hand_launcher_folder }}"
-    state: directory
 
 - name: Create Shadow_Hand_Launcher executable launch script
   template:
