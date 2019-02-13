@@ -4,3 +4,4 @@ reinstall: false
 launchhand: false
 product: ''
 ethercatinterface: "eth0"
+use_aws: false

@@ -6,6 +6,11 @@
     - vars/docker-deploy.yml
 
   tasks:
+    - name: check if customerkey is provided
+      when: customerkey is defined
+      set_fact:
+        use_aws: true
+
     - name: No product is defined
       when: product != 'hand_e' and product != 'hand_h'
       meta: end_play
