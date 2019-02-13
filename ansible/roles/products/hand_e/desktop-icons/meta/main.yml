@@ -1,3 +1,4 @@
 ---
 dependencies:
-  - { role: common/desktop-icons, container_name: shadow_dexterous_hand, icon_file_name: hand_E.png }
+  - { role: common/launch-hand-icon, container_name: shadow_dexterous_hand, icon_file_name: hand_E.png }
+  - { role: common/save-logs-icon, icon_file_name: log_icon.png }

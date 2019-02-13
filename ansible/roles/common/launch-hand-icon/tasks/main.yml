@@ -12,7 +12,7 @@
 
 - name: Create Shadow_Hand_Launcher desktop icon
   template:
-    src: templates/desktop_labels/desktop_icon.j2
+    src: ../templates/desktop_labels/desktop_icon.j2
     dest: "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
     mode: '755'
   vars:

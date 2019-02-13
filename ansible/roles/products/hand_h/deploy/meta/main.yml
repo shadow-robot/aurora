@@ -6,4 +6,3 @@ dependencies:
   - { role: products/hand_h/desktop-icons }
   - { role: products/common/optoforce, when: optoforce }
   - { role: aws, when: aws }
-  - { role: save-logs }

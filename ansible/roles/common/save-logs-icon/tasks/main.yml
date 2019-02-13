@@ -1,4 +1,9 @@
 ---
+- name: Ensures that save_latest_ros_logs_folder exists
+  file:
+    path: "{{ save_latest_ros_logs_folder }}"
+    state: directory
+
 - name: Copy ROS Logs Saver desktop icon
   copy: 
     src: files/log_icon.png
@@ -20,9 +25,9 @@
     mode: '755'
 
 - name: Create ROS Logs Saver desktop icon
-  when: "not {{ customerkey  }}"
+  when: not customerkey
   template:
-    src: templates/desktop_labels/desktop_icon.j2
+    src: ../templates/desktop_labels/desktop_icon.j2
     dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop"
     mode: '755'
   vars:
@@ -31,12 +36,12 @@
     window_title: shadow_save_log_app_xterm
     folder: "{{ save_latest_ros_logs_folder }}"
     shell_script_file_name: shadow_save_log_exec.sh
-    icon_file_name: log_icon.png
+    icon_file_name: "{{ icon_file_name }}"
 
 - name: Create ROS Logs Saver and Uploader desktop icon
-  when: "{{ customerkey  }}"
+  when: customerkey
   template:
-    src: templates/desktop_labels/desktop_icon.j2
+    src: ../templates/desktop_labels/desktop_icon.j2
     dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
     mode: '755'
   vars:
