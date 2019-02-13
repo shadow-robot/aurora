@@ -20,3 +20,4 @@
     - { role: installation/nvidia-docker, when: nvidia_docker != false}
     - { role: products/hand_h/deploy, when: product == 'hand_h' }
     - { role: products/hand_e/deploy, when: product == 'hand_e' }
+    - { role: aws, when: use_aws }
