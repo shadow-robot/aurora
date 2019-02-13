@@ -1,10 +1,4 @@
 ---
-- name: Copy Shadow_Hand_Launcher desktop icon
-  copy: 
-    src: files/hand_E.png
-    dest: "{{ shadow_hand_launcher_folder }}/hand_E.png"
-    mode: '664'
-    
 - name: Create Shadow_Hand_Launcher executable launch script
   template:
     src: templates/scripts/start_docker_container.j2
@@ -22,4 +16,4 @@
     window_title: shadow_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: shadow_launcher_exec.sh
-    icon_file_name: hand_E.png
+    icon_file_name: "{{ icon_file_name }}"

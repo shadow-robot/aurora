@@ -1,3 +1,6 @@
 ---
-- name: Install Shadow Hand Launcher
-  import_tasks: install_shadow_hand_launcher.yml
+- name: Copy Shadow_Hand_Launcher desktop icon
+  copy: 
+    src: files/hand_E.png
+    dest: "{{ shadow_hand_launcher_folder }}/hand_E.png"
+    mode: '664'

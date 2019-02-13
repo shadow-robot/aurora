@@ -1,0 +1,3 @@
+---
+dependencies:
+  - { role: common/desktop-icons, icon_file_name: log_icon.png }

@@ -1,0 +1,3 @@
+---
+dependencies:
+  - { role: common/desktop-icons, container_name: shadow_dexterous_hand, icon_file_name: hand_E.png }
