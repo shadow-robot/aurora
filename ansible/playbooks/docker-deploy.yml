@@ -4,8 +4,7 @@
   hosts: localhost
   vars_files:
     - vars/docker-deploy.yml
-
-  tasks:
+  pre_tasks:
     - name: check if customerkey is provided
       when: customerkey is defined
       set_fact:
