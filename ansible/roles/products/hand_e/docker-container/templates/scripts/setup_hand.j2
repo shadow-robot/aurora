@@ -1,0 +1,10 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+source /home/user/projects/shadow_robot/base/devel/setup.bash
+roscd sr_ethercat_hand_config
+git fetch
+git checkout {{ configbranch }}
+sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercatinterface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
+if {{ launchhand }}; then
+    roslaunch sr_ethercat_hand_config sr_rhand.launch 2> >(tee -a ~/.ros/log/stderr.log >&2)
+fi
