@@ -19,7 +19,7 @@ In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-ansible-sh) docker-deploy option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) docker-deploy option1=value1 option2=value2 option3=value3
 ```
 
 Possible options for the docker-deploy are:
@@ -52,5 +52,5 @@ the hand.
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-ansible-sh) docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap product=hand_e ethercat_interface=enp0s25
+bash <(curl -Ls bit.ly/run-aurora) docker-deploy product=hand_e ethercat_interface=enp0s25
 ```
