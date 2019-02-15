@@ -1,7 +1,7 @@
 ---
 nvidia_docker: false
 reinstall: false
-launchhand: false
+launch_hand: false
 product: ''
-ethercatinterface: "eth0"
+ethercat_interface: "eth0"
 use_aws: false

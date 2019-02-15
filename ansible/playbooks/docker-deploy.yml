@@ -5,8 +5,8 @@
   vars_files:
     - vars/docker-deploy.yml
   pre_tasks:
-    - name: check if customerkey is provided
-      when: customerkey is defined
+    - name: check if customer_key is provided
+      when: customer_key is defined
       set_fact:
         use_aws: true
 
@@ -16,7 +16,7 @@
 
   roles:
     - { role: installation/docker }
-    - { role: installation/nvidia-docker, when: nvidia_docker != false}
+    - { role: installation/nvidia_docker, when: nvidia_docker != false }
     - { role: products/hand_h/deploy, when: product == 'hand_h' }
     - { role: products/hand_e/deploy, when: product == 'hand_e' }
     - { role: aws, when: use_aws }

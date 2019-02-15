@@ -1,10 +1,10 @@
 ---
 - name: Check if Docker is already installed
-  command: systemctl status docker
+  stat: 'path=/etc/init.d/docker'
   register: docker_check
   ignore_errors: yes
 
 - name: Install Docker
   import_tasks: install.yml
-  when: docker_check.stderr.find('service could not be found') != -1
+  when: not docker_check.stat.exists
   become: true

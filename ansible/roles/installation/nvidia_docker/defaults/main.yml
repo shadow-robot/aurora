@@ -1,0 +1,3 @@
+---
+nvidia_docker_version: 1.0.1
+nvidia_docker_deb_url: https://github.com/nvidia/nvidia_docker_version/releases/download/v{{ nvidia_docker_version }}/nvidia_docker_version_{{ nvidia_docker_version | regex_replace('-', '.') }}-1_amd64.deb

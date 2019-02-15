@@ -4,7 +4,7 @@ The main purpose of this subsystem is to unify one-liners approaches based on An
 
 ## Before running the docker-deploy playbook ##
 
-Before setting up the docker container, ethercatinterface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
+Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
 ```shell
 sudo dmesg
 ```
@@ -12,7 +12,7 @@ command in the console. At the bottom, there will be information similar to the 
 ```shell
 [490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
 ```
-In the above example, ‘enp0s25’ is the ethercatinterface that is needed. 
+In the above example, ‘enp0s25’ is the ethercat_interface that is needed. 
 
 ## How to run docker-deploy playbook ##
 
@@ -28,15 +28,15 @@ Possible options for the docker-deploy are:
 * image                     Name of the Docker hub image to pull
 * reinstall                 Flag to know if the docker container should be fully reinstalled (default: false)
 * name                      Name of the docker container
-* ethercatinterface         Ethercat interface of the hand
-* nvidia-docker             Enable nvidia-docker (default: false)
-* desktopicon               Generates a desktop icon to launch the hand (default: true)
-* configbranch              Specify the branch for the specific hand (Only for dexterous hand)
-* shortcutname              Specify the name for the desktop icon (default: Shadow_Hand_Launcher)
+* ethercat_interface        Ethercat interface of the hand
+* nvidia_docker             Enable nvidia docker (default: false)
+* desktop_icon              Generates a desktop icon to launch the hand (default: true)
+* config_branch             Specify the branch for the specific hand (Only for dexterous hand)
+* shortcut_name             Specify the name for the desktop icon (default: Shadow_Hand_Launcher)
 * optoforce                 Specify if optoforce sensors are going to be used with a branch name (default: false)
-* launchhand                Specify if hand driver should start when double clicking desktop icon (default: true)
-* customerkey               Flag to prompt for customer key for uploading files to AWS (can be skipped or be set to true)
-* cyberglove                Specify the branch of sr_cyberglove_config for cyberglove configuration (default: false)
+* launch_hand               Specify if hand driver should start when double clicking desktop icon (default: true)
+* customer_key              Flag to prompt for customer key for uploading files to AWS (can be skipped or be set to true)
+* cyberglove               Specify the branch of sr_cyberglove_config for cyberglove configuration (default: false)
 * demo_icons                Generates desktop icons to run demos (default: false)
 </pre>
 
@@ -52,5 +52,5 @@ the hand.
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-ansible-sh) docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap product=hand_e ethercatinterface=enp0s25
+bash <(curl -Ls bit.ly/run-ansible-sh) docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap product=hand_e ethercat_interface=enp0s25
 ```

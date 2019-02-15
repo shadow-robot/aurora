@@ -1,5 +1,5 @@
 ---
-- name: Stoping the container
+- name: Stopping the container
   docker_container:
     name: container_name
     state: stopped

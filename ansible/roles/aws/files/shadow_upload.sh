@@ -2,7 +2,7 @@
 
 # set -o xtrace
 
-#this zips the contents of the given folder and uploads it to AWS, using the customerkey installed by oneliner inside the docker container
+#this zips the contents of the given folder and uploads it to AWS, using the customer_key installed by oneliner inside the docker container
 function fail {
   echo $1 >&2
   exit 1
@@ -35,12 +35,12 @@ if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]];then
 fi
 
 CREDENTIALS_URL=https://5vv2z6j3a7.execute-api.eu-west-2.amazonaws.com/prod
-CUSTOMERKEY=$1
+customer_key=$1
 INPUTFOLDERPATH=$2
 TIMESTAMP=$3
 CUSTOMERNAME="Unknown customer"
 
-if [[ -z "$CUSTOMERKEY" ]] || [[ -z "$INPUTFOLDERPATH" ]] || [[ -z "$TIMESTAMP" ]]; then
+if [[ -z "$customer_key" ]] || [[ -z "$INPUTFOLDERPATH" ]] || [[ -z "$TIMESTAMP" ]]; then
   print_usage
   exit 1;
 fi
@@ -50,7 +50,7 @@ if [[ -z "$MY_CURL" ]]; then
   exit 1;
 fi
 
-response=`$MY_CURL --silent -H "x-api-key: $CUSTOMERKEY" $CREDENTIALS_URL`
+response=`$MY_CURL --silent -H "x-api-key: $customer_key" $CREDENTIALS_URL`
 if [[ $response = *"forbidden"* ]];then
   echo "Access is forbidden. Check the correctness of the customer key or contact Shadow Robot Company support."
   print_usage
@@ -58,7 +58,7 @@ if [[ $response = *"forbidden"* ]];then
 fi
 if [[ $response != *"SESSION_TOKEN"* ]];then
   echo "Unable to get temporary credentials. Read the following message to figure out the root cause or contact Shadow Robot Company support."
-  retry $MY_CURL -verbose -H "x-api-key: $CUSTOMERKEY" $CREDENTIALS_URL
+  retry $MY_CURL -verbose -H "x-api-key: $customer_key" $CREDENTIALS_URL
   print_usage
   return 1;
 fi

@@ -2,4 +2,4 @@
 container_name: "shadow_dexterous_hand"
 tag: "kinetic-release"
 image: "shadowrobot/dexterous-hand"
-ethercatinterface: "eth0"
+ethercat_interface: "eth0"
