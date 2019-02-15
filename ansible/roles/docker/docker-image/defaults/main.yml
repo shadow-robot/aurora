@@ -1,0 +1,4 @@
+---
+container_name: "shadow_container"
+image: "shadowrobot/build-tools"
+tag: "xenial-kinetic"

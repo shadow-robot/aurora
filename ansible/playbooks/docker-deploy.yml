@@ -1,0 +1,22 @@
+---
+- name: Install Docker container
+  connection: localhost
+  hosts: localhost
+  vars_files:
+    - vars/docker-deploy.yml
+  pre_tasks:
+    - name: check if customer_key is provided
+      when: customer_key is defined
+      set_fact:
+        use_aws: true
+
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
+  roles:
+    - { role: installation/docker }
+    - { role: installation/nvidia_docker, when: nvidia_docker != false }
+    - { role: products/hand_h/deploy, when: product == 'hand_h' }
+    - { role: products/hand_e/deploy, when: product == 'hand_e' }
+    - { role: aws, when: use_aws }

@@ -1,0 +1,10 @@
+---
+- name: Docker login
+  docker_login:
+    username: "{{ username }}"
+    password: "{{ password }}"
+  when: username is defined and password is defined
+
+- name: Pulling the image
+  docker_image:
+    name: "{{image}}:{{tag}}"
