@@ -1,4 +1,4 @@
 ---
-container_name: "shadow_container"
-image: "shadowrobot/build-tools"
-tag: "xenial-kinetic"
+container_name: "dexterous_hand_real_hw"
+image: "shadowrobot/dexterous-hand"
+tag: "kinetic-release
