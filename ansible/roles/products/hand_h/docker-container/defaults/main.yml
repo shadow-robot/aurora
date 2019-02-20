@@ -1,5 +1,5 @@
 ---
-container_name: "shadow_flexible_container"
+container_name: "flexible_hand_real_hw"
 tag: "kinetic-release"
 user: "user"
 password: "password"

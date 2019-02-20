@@ -36,7 +36,7 @@ Possible options for the docker-deploy are:
 * optoforce                 Specify if optoforce sensors are going to be used with a branch name (default: false)
 * launch_hand               Specify if hand driver should start when double clicking desktop icon (default: true)
 * customer_key              Flag to prompt for customer key for uploading files to AWS (can be skipped or be set to true)
-* cyberglove               Specify the branch of sr_cyberglove_config for cyberglove configuration (default: false)
+* cyberglove                Specify the branch of sr_cyberglove_config for cyberglove configuration (default: false)
 * demo_icons                Generates desktop icons to run demos (default: false)
 </pre>
 
