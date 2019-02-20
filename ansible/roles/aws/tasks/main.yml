@@ -8,10 +8,10 @@
   shell: "docker cp {{ role_path }}/files/shadow_upload.sh {{ container_name }}:/usr/local/bin/shadow_upload.sh"
 
 - name: Copy customer.key to the docker container
-  shell: "echo {{ customer_key }} > {{ role_path }}/files/customer.key; docker cp {{ role_path }}/files/customer.key {{ container_name }}:/usr/local/bin/customer.key"
+  shell: "echo {{ customer_key }} > /tmp/customer.key; docker cp /tmp/customer.key {{ container_name }}:/usr/local/bin/customer.key"
 
 - name: Removing customer.key from local
   file:
-    path: "{{ role_path }}/files/customer.key"
+    path: "/tmp/customer.key"
     state: absent
   

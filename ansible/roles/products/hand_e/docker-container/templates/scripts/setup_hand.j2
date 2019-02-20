@@ -4,6 +4,7 @@ source /home/user/projects/shadow_robot/base/devel/setup.bash
 roscd sr_ethercat_hand_config
 git fetch
 git checkout {{ config_branch }}
+# TODO: FIX so that cyberglove is not mentioned here in docker-container role, and cyberglove setup is handled in cyberglove role
 if {{ use_cyberglove | lower }}; then
     if [ -d "/home/user/projects/shadow_robot/base/src/sr_config/sr_cyberglove_config" ]; then
         rm -r /home/user/projects/shadow_robot/base/src/sr_config/sr_cyberglove_config
