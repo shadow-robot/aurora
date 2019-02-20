@@ -5,7 +5,7 @@
   vars_files:
     - vars/docker-deploy.yml
   pre_tasks:
-    - name: check if customer_key is set to true
+    - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key != false
       set_fact:
         use_aws: true
