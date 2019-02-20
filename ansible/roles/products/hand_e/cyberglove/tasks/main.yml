@@ -1,0 +1,31 @@
+---
+- name: Ensures that shadow_hand_launcher directory exists
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
+- name: Copy Cyberglove desktop icon
+  copy: 
+    src: files/cyberglove.png
+    dest: "{{ shadow_hand_launcher_folder }}/cyberglove.png"
+    mode: '664'
+
+- name: Create Cyberglove executable launch script
+  template:
+    src: templates/scripts/launch_cyberglove.j2
+    dest: "{{ shadow_hand_launcher_folder }}/launch_cyberglove.sh"
+    mode: '755'
+
+- name: Create Cyberglove desktop icon
+  template:
+    src: ../desktop-icons/templates/desktop_labels/desktop_icon.j2
+    # TODO: FIX so that this doesn't use a file from different role, don't break encapsulation
+    dest: "{{ user_folder }}/Desktop/Launch_Cyberglove.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Launch Cyberglove
+    comment: "This is application launches the Cyberglove"
+    window_title: launch_cyberglove_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: launch_cyberglove.sh
+    icon_file_name: cyberglove.png
