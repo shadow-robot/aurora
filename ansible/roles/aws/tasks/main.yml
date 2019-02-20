@@ -1,7 +1,7 @@
 ---
 - name: Install AWS CLI
   pip:
-    requirements: "{{ role_path }}/data/requirements.txt"
+    requirements: "{{ role_path }}/files/requirements.txt"
   become: true
 
 - name: Copy shadow_upload.sh to the docker container
