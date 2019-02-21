@@ -1,0 +1,9 @@
+---
+- debug:
+    msg: "Container already running! This window will be closed shortly... "
+
+- pause:
+    seconds: 5
+
+- name: Exiting when container already running
+  meta: end_play

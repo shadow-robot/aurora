@@ -7,4 +7,4 @@
 
 - name: Pulling the image
   docker_image:
-    name: "{{image}}:{{tag}}"
+    name: "{{image}}"

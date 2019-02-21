@@ -1,7 +1,6 @@
 ---
 container_name: "flexible_hand_real_hw"
-tag: "kinetic-release"
 user: "user"
 password: "password"
 ethercat_interface: "eth0"
-image: "shadowrobot/flexible-hand"
+image: "shadowrobot/flexible-hand:kinetic-release"

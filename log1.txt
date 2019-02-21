@@ -1,0 +1,2083 @@
+ansible-playbook 2.7.6
+  config file = None
+  configured module search path = ['/home/toivo/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /home/toivo/.local/lib/python3.7/site-packages/ansible
+  executable location = /home/toivo/.local/bin/ansible-playbook
+  python version = 3.7.0 (default, Aug 20 2018, 17:34:08) [GCC 5.4.0 20160609]
+No config file found; using defaults
+/tmp/aurora/ansible/inventory/local did not meet host_list requirements, check plugin documentation if this is unexpected
+/tmp/aurora/ansible/inventory/local did not meet script requirements, check plugin documentation if this is unexpected
+Parsed /tmp/aurora/ansible/inventory/local inventory source with ini plugin
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/installation/nvidia_docker/tasks/install_nvidia_v1.yml
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/no_reinstall.yml
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/exit.yml
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/start_container.yml
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml
+Read vars_file 'vars/docker-deploy.yml'
+statically imported: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml
+
+PLAYBOOK: docker-deploy.yml *******************************************************************************************************************************************************************************************************************
+1 plays in ansible/playbooks/docker-deploy.yml
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+Read vars_file 'vars/docker-deploy.yml'
+
+PLAY [Install Docker container] ***************************************************************************************************************************************************************************************************************
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [Gathering Facts] ************************************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/playbooks/docker-deploy.yml:2
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759618.9324532-217799321526408 `" && echo ansible-tmp-1550759618.9324532-217799321526408="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759618.9324532-217799321526408 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/system/setup.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp_6hpx7cp TO /home/toivo/.ansible/tmp/ansible-tmp-1550759618.9324532-217799321526408/AnsiballZ_setup.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759618.9324532-217799321526408/ /home/toivo/.ansible/tmp/ansible-tmp-1550759618.9324532-217799321526408/AnsiballZ_setup.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759618.9324532-217799321526408/AnsiballZ_setup.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759618.9324532-217799321526408/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1]
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [check if customer_key is provided and not false] ****************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/playbooks/docker-deploy.yml:8
+ok: [127.0.0.1] => {
+    "ansible_facts": {
+        "use_aws": true
+    },
+    "changed": false
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [check if cyberglove branch is provided] *************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/playbooks/docker-deploy.yml:13
+ok: [127.0.0.1] => {
+    "ansible_facts": {
+        "use_cyberglove": true
+    },
+    "changed": false
+}
+Read vars_file 'vars/docker-deploy.yml'
+META: 
+META: ran handlers
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : Check if Docker is already installed] *****************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/main.yml:2
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759619.6335363-44035826541816 `" && echo ansible-tmp-1550759619.6335363-44035826541816="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759619.6335363-44035826541816 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp6r3mnpv4 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759619.6335363-44035826541816/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759619.6335363-44035826541816/ /home/toivo/.ansible/tmp/ansible-tmp-1550759619.6335363-44035826541816/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759619.6335363-44035826541816/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759619.6335363-44035826541816/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "invocation": {
+        "module_args": {
+            "checksum_algorithm": "sha1",
+            "follow": false,
+            "get_attributes": true,
+            "get_checksum": true,
+            "get_md5": null,
+            "get_mime": true,
+            "path": "/etc/init.d/docker"
+        }
+    },
+    "stat": {
+        "atime": 1550749488.6017945,
+        "attr_flags": "e",
+        "attributes": [
+            "extents"
+        ],
+        "block_size": 4096,
+        "blocks": 8,
+        "charset": "us-ascii",
+        "checksum": "4fdea60f5a6cedb6af936762b869ce7f05948c9d",
+        "ctime": 1550488615.542473,
+        "dev": 64769,
+        "device_type": 0,
+        "executable": true,
+        "exists": true,
+        "gid": 0,
+        "gr_name": "root",
+        "inode": 10223811,
+        "isblk": false,
+        "ischr": false,
+        "isdir": false,
+        "isfifo": false,
+        "isgid": false,
+        "islnk": false,
+        "isreg": true,
+        "issock": false,
+        "isuid": false,
+        "mimetype": "text/x-shellscript",
+        "mode": "0755",
+        "mtime": 1549770015.0,
+        "nlink": 1,
+        "path": "/etc/init.d/docker",
+        "pw_name": "root",
+        "readable": true,
+        "rgrp": true,
+        "roth": true,
+        "rusr": true,
+        "size": 3843,
+        "uid": 0,
+        "version": "87760396",
+        "wgrp": false,
+        "woth": false,
+        "writeable": false,
+        "wusr": true,
+        "xgrp": true,
+        "xoth": true,
+        "xusr": true
+    }
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : Install Docker dependencies] **************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : Add Docker repo apt key] ******************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml:7
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : Add Docker repository] ********************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml:13
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : Install Docker] ***************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml:19
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : Enable Docker systemd service] ************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml:24
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : Add users to docker group] ****************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml:30
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/docker : debug] ************************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/docker/tasks/install.yml:36
+skipping: [127.0.0.1] => {}
+Read vars_file 'vars/docker-deploy.yml'
+META: 
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/nvidia_docker : Installing nvidia-modprobe] ********************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/nvidia_docker/tasks/install_nvidia_v1.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [installation/nvidia_docker : Installing nvidia-docker] **********************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/installation/nvidia_docker/tasks/install_nvidia_v1.yml:8
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/destroy-container : Stopping the container] **************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/destroy-container/tasks/main.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/destroy-container : Removing old container] **************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/destroy-container/tasks/main.yml:7
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/docker-image : Docker login] *****************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/docker-image/tasks/main.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/docker-image : Pulling the image] ************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/docker-image/tasks/main.yml:8
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_h/docker-container : Getting UID] *****************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_h/docker-container/tasks/main.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_h/docker-container : Creating the container] ******************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_h/docker-container/tasks/main.yml:6
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [aws : Install AWS CLI] ******************************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/aws/tasks/main.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [aws : Copy shadow_upload.sh to the docker container] ************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/aws/tasks/main.yml:7
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [aws : Copy customer.key to the docker container] ****************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/aws/tasks/main.yml:10
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [aws : Removing customer.key from local] *************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/aws/tasks/main.yml:13
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/destroy-container : Stopping the container] **************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/destroy-container/tasks/main.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/destroy-container : Removing old container] **************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/destroy-container/tasks/main.yml:7
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/docker-image : Docker login] *****************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/docker-image/tasks/main.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [docker/docker-image : Pulling the image] ************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/docker/docker-image/tasks/main.yml:8
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759620.4519196-96380489794552 `" && echo ansible-tmp-1550759620.4519196-96380489794552="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759620.4519196-96380489794552 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/cloud/docker/docker_image.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmptqep4hys TO /home/toivo/.ansible/tmp/ansible-tmp-1550759620.4519196-96380489794552/AnsiballZ_docker_image.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759620.4519196-96380489794552/ /home/toivo/.ansible/tmp/ansible-tmp-1550759620.4519196-96380489794552/AnsiballZ_docker_image.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759620.4519196-96380489794552/AnsiballZ_docker_image.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759620.4519196-96380489794552/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "actions": [],
+    "changed": false,
+    "image": {},
+    "invocation": {
+        "module_args": {
+            "api_version": "auto",
+            "archive_path": null,
+            "buildargs": null,
+            "cacert_path": null,
+            "cert_path": null,
+            "container_limits": null,
+            "debug": false,
+            "docker_host": "unix://var/run/docker.sock",
+            "dockerfile": null,
+            "force": false,
+            "http_timeout": null,
+            "key_path": null,
+            "load_path": null,
+            "name": "shadowrobot/dexterous-hand:kinetic-release",
+            "nocache": false,
+            "path": null,
+            "pull": true,
+            "push": false,
+            "repository": null,
+            "rm": true,
+            "ssl_version": null,
+            "state": "present",
+            "tag": "latest",
+            "timeout": 60,
+            "tls": false,
+            "tls_hostname": "localhost",
+            "tls_verify": false,
+            "use_tls": "no"
+        }
+    }
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Getting UID] *****************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/main.yml:2
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759620.7779653-180813204173996 `" && echo ansible-tmp-1550759620.7779653-180813204173996="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759620.7779653-180813204173996 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/commands/command.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp5wtvwlcv TO /home/toivo/.ansible/tmp/ansible-tmp-1550759620.7779653-180813204173996/AnsiballZ_command.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759620.7779653-180813204173996/ /home/toivo/.ansible/tmp/ansible-tmp-1550759620.7779653-180813204173996/AnsiballZ_command.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759620.7779653-180813204173996/AnsiballZ_command.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759620.7779653-180813204173996/ > /dev/null 2>&1 && sleep 0'
+changed: [127.0.0.1] => {
+    "changed": true,
+    "cmd": "id -u",
+    "delta": "0:00:00.002178",
+    "end": "2019-02-21 14:33:40.919925",
+    "invocation": {
+        "module_args": {
+            "_raw_params": "id -u",
+            "_uses_shell": true,
+            "argv": null,
+            "chdir": null,
+            "creates": null,
+            "executable": null,
+            "removes": null,
+            "stdin": null,
+            "warn": true
+        }
+    },
+    "rc": 0,
+    "start": "2019-02-21 14:33:40.917747",
+    "stderr": "",
+    "stderr_lines": [],
+    "stdout": "1000",
+    "stdout_lines": [
+        "1000"
+    ]
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Creating hand setup script] **************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Creating the container] ******************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml:8
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Copying hand setup script into docker container] *****************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml:27
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Checking if container exists] ************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/no_reinstall.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Checking if container already running] ***************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/no_reinstall.yml:6
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : debug] ***********************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/exit.yml:2
+skipping: [127.0.0.1] => {}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : pause] ***********************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/exit.yml:5
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+META: 
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : debug] ***********************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/start_container.yml:2
+skipping: [127.0.0.1] => {}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : debug] ***********************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/start_container.yml:5
+skipping: [127.0.0.1] => {}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Start container if container not running] ************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/start_container.yml:8
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Creating hand setup script] **************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml:2
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Creating the container] ******************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml:8
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/docker-container : Copying hand setup script into docker container] *****************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/docker-container/tasks/reinstall.yml:27
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Ensures that shadow_hand_launcher directory exists] *****************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:2
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.364268-180477839034886 `" && echo ansible-tmp-1550759621.364268-180477839034886="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.364268-180477839034886 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp4uo9vgtx TO /home/toivo/.ansible/tmp/ansible-tmp-1550759621.364268-180477839034886/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759621.364268-180477839034886/ /home/toivo/.ansible/tmp/ansible-tmp-1550759621.364268-180477839034886/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759621.364268-180477839034886/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759621.364268-180477839034886/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": null,
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": null,
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "directory",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0775",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher",
+    "size": 4096,
+    "state": "directory",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Copy Shadow_Hand_Launcher desktop icon] *****************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:7
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839 `" && echo ansible-tmp-1550759621.5906222-201409605221839="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp5kjyomg2 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/ /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp7n8brr4n TO /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/ /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759621.5906222-201409605221839/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "9dca56d5d381609da8a8f60e433657b7f4ea77c4",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/hand_e.png",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/hand_e.png"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/hand_e.png"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "hand_e.png",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/hand_e.png",
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": "664",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/hand_e.png",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0664",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/hand_e.png",
+    "size": 323827,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Shadow_Hand_Launcher executable launch script] ***************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:13
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082 `" && echo ansible-tmp-1550759621.7859445-80841677253082="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpselk23mg TO /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/ /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp_bwco_gs TO /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/ /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759621.7859445-80841677253082/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "e7468192c3d69deeff63f59d245043cf7e7dd7ae",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/shadow_launcher_exec.sh",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/shadow_launcher_exec.sh"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/shadow_launcher_exec.sh"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "start_docker_container.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/shadow_launcher_exec.sh",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/shadow_launcher_exec.sh",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/shadow_launcher_exec.sh",
+    "size": 273,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Shadow_Hand_Launcher desktop icon] ***************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:19
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007 `" && echo ansible-tmp-1550759621.98593-12417615236007="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpbq437r1y TO /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/ /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp_5194saq TO /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/ /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759621.98593-12417615236007/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "a7694bb755ae1a719b7e5952d6bb6e205e66dd9b",
+    "dest": "/home/toivo/Desktop/Shadow_Hand_Launcher.desktop",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/Desktop/Shadow_Hand_Launcher.desktop"
+        },
+        "before": {
+            "path": "/home/toivo/Desktop/Shadow_Hand_Launcher.desktop"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "desktop_icon.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/Desktop/Shadow_Hand_Launcher.desktop",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/Desktop/Shadow_Hand_Launcher.desktop",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/Desktop/Shadow_Hand_Launcher.desktop",
+    "size": 409,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Ensures that save_latest_ros_logs_folder exists] ********************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:32
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.1894417-30784341621637 `" && echo ansible-tmp-1550759622.1894417-30784341621637="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.1894417-30784341621637 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpgzfg6wui TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.1894417-30784341621637/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.1894417-30784341621637/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.1894417-30784341621637/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.1894417-30784341621637/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759622.1894417-30784341621637/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": null,
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": null,
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "directory",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0775",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs",
+    "size": 4096,
+    "state": "directory",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Copy ROS Logs Saver desktop icon] ***********************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:37
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763 `" && echo ansible-tmp-1550759622.3106112-210740531028763="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpj56a5yd8 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp39nmtxql TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759622.3106112-210740531028763/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "0e9e6df4a54068b1495db76c6ab9939bd3000802",
+    "dest": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/log_icon.png",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/log_icon.png"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/log_icon.png"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "log_icon.png",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/log_icon.png",
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": "664",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/log_icon.png",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0664",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/log_icon.png",
+    "size": 21428,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Copy ROS Logs Saver main script] ************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:43
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631 `" && echo ansible-tmp-1550759622.5070093-206799183408631="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmphavv7sn3 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmphaj9bz35 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759622.5070093-206799183408631/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "e7c54a22adb292ffc8414899d6fc29d466890180",
+    "dest": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/save_latest_ros_logs.sh",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/save_latest_ros_logs.sh"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/save_latest_ros_logs.sh"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "save_latest_ros_logs.sh",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/save_latest_ros_logs.sh",
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/save_latest_ros_logs.sh",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_save_log_app/save_latest_ros_logs/save_latest_ros_logs.sh",
+    "size": 11596,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create ROS Logs Saver desktop icon] *********************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:49
+skipping: [127.0.0.1] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create ROS Logs Saver and Uploader desktop icon] ********************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/main.yml:63
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892 `" && echo ansible-tmp-1550759622.7306921-153936628276892="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpbeg7rr70 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmptzqtkmjf TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759622.7306921-153936628276892/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "0283b0ad4f3766db58ce7f1d099a1dd98a5aa3f3",
+    "dest": "/home/toivo/Desktop/ROS_Logs_Saver_And_Uploader.desktop",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
+        },
+        "before": {
+            "path": "/home/toivo/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "desktop_icon.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/Desktop/ROS_Logs_Saver_And_Uploader.desktop",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/Desktop/ROS_Logs_Saver_And_Uploader.desktop",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/Desktop/ROS_Logs_Saver_And_Uploader.desktop",
+    "size": 473,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Copy Close Hand desktop icon] ***************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:2
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193 `" && echo ansible-tmp-1550759622.932515-35744021339193="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp1az4etkp TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp4w9g8h_u TO /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/ /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759622.932515-35744021339193/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "4db418a04d3c49931affeb3801956e94c44132cc",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand_icon.png",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand_icon.png"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand_icon.png"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "close_hand_icon.png",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand_icon.png",
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": "664",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand_icon.png",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0664",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand_icon.png",
+    "size": 63504,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Close Hand executable launch script] *************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:8
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747 `" && echo ansible-tmp-1550759623.1243248-54440210446747="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp8yg9_8dd TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpp3zgt__n TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759623.1243248-54440210446747/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "d89520271b7aaec5c54b3b79c72282555b549ea3",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand.sh",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand.sh"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand.sh"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "rosrun_script.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand.sh",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand.sh",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/close_hand.sh",
+    "size": 238,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Close Hand desktop icon] *************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:16
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246 `" && echo ansible-tmp-1550759623.3252344-106606966640246="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp8640nxjt TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpfslc6h3l TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759623.3252344-106606966640246/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "92793e0352ff893aa4b751bed172941dfa2c2bca",
+    "dest": "/home/toivo/Desktop/Close_Hand.desktop",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/Desktop/Close_Hand.desktop"
+        },
+        "before": {
+            "path": "/home/toivo/Desktop/Close_Hand.desktop"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "desktop_icon.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/Desktop/Close_Hand.desktop",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/Desktop/Close_Hand.desktop",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/Desktop/Close_Hand.desktop",
+    "size": 387,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Copy Open Hand desktop icon] ****************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:29
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366 `" && echo ansible-tmp-1550759623.5277002-275509956585366="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpzxrll6ev TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp1zc95vtk TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759623.5277002-275509956585366/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "63e7a2d90cc00c1f685bcc4cd9d7c9fbb6d215b7",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand_icon.png",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand_icon.png"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand_icon.png"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "open_hand_icon.png",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand_icon.png",
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": "664",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand_icon.png",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0664",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand_icon.png",
+    "size": 41003,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Open Hand executable launch script] **************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:35
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280 `" && echo ansible-tmp-1550759623.719558-106730547927280="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp8yt05309 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpciv_w_vj TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759623.719558-106730547927280/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "2b4c58000e9129c677f1046b8f36688866bae791",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand.sh",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand.sh"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand.sh"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "rosrun_script.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand.sh",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand.sh",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/open_hand.sh",
+    "size": 238,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Open Hand desktop icon] **************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:43
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795 `" && echo ansible-tmp-1550759623.9270325-255269275685795="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp3nqpc9dw TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpshlnawly TO /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/ /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759623.9270325-255269275685795/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "35814d14341fc96917a097bd2160bc09724878cb",
+    "dest": "/home/toivo/Desktop/Open_Hand.desktop",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/Desktop/Open_Hand.desktop"
+        },
+        "before": {
+            "path": "/home/toivo/Desktop/Open_Hand.desktop"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "desktop_icon.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/Desktop/Open_Hand.desktop",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/Desktop/Open_Hand.desktop",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/Desktop/Open_Hand.desktop",
+    "size": 357,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Copy Standard Demo desktop icon] ************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:56
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059 `" && echo ansible-tmp-1550759624.124819-98080901227059="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpy_spizca TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpfyen1dvp TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759624.124819-98080901227059/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "18bf9ba9f5448127db5e30944c687b759484b7f3",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand_icon.png",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand_icon.png"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand_icon.png"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "demo_hand_icon.png",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand_icon.png",
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": "664",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand_icon.png",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0664",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand_icon.png",
+    "size": 79385,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Standard Demo executable launch script] **********************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:62
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021 `" && echo ansible-tmp-1550759624.3168776-218169595618021="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpw6iil0qt TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpwldrm2ja TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759624.3168776-218169595618021/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "2d8821d1588a08ffcab6d46629e620538a39e3e7",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand.sh",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand.sh"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand.sh"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "rosrun_script.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand.sh",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand.sh",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/demo_hand.sh",
+    "size": 237,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/desktop-icons : Create Standard Demo desktop icon] **********************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/desktop-icons/tasks/demo_icons.yml:70
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581 `" && echo ansible-tmp-1550759624.5228143-114067689613581="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp_9c79hwp TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp_xd57gdt TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759624.5228143-114067689613581/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "97419f2a476acc309321576f11185dbd1e00b4f1",
+    "dest": "/home/toivo/Desktop/Demo_Hand.desktop",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/Desktop/Demo_Hand.desktop"
+        },
+        "before": {
+            "path": "/home/toivo/Desktop/Demo_Hand.desktop"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "desktop_icon.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/Desktop/Demo_Hand.desktop",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/Desktop/Demo_Hand.desktop",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/Desktop/Demo_Hand.desktop",
+    "size": 378,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/cyberglove : Ensures that shadow_hand_launcher directory exists] ********************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/cyberglove/tasks/main.yml:2
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.7283099-250189190369026 `" && echo ansible-tmp-1550759624.7283099-250189190369026="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.7283099-250189190369026 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpd77pw6i2 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.7283099-250189190369026/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.7283099-250189190369026/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.7283099-250189190369026/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.7283099-250189190369026/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759624.7283099-250189190369026/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": null,
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": null,
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "directory",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0775",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher",
+    "size": 4096,
+    "state": "directory",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/cyberglove : Copy Cyberglove desktop icon] ******************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/cyberglove/tasks/main.yml:7
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267 `" && echo ansible-tmp-1550759624.8503413-273250190113267="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpjnvudd34 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp8tty86ew TO /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/ /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759624.8503413-273250190113267/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "9bc7d38a37311e884618e2ebf577eaace3b174b7",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/cyberglove.png",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/cyberglove.png"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/cyberglove.png"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "cyberglove.png",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/cyberglove.png",
+            "directory_mode": null,
+            "follow": true,
+            "force": false,
+            "group": null,
+            "mode": "664",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/cyberglove.png",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0664",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/cyberglove.png",
+    "size": 103707,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/cyberglove : Create Cyberglove executable launch script] ****************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/cyberglove/tasks/main.yml:13
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688 `" && echo ansible-tmp-1550759625.0418224-132721953783688="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpqmuyhlyf TO /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/ /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp6mb4k740 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/ /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759625.0418224-132721953783688/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "413dffc354eaffe8bd60a3f35014d584532f2246",
+    "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/launch_cyberglove.sh",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/launch_cyberglove.sh"
+        },
+        "before": {
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/launch_cyberglove.sh"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "launch_cyberglove.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/launch_cyberglove.sh",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/launch_cyberglove.sh",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/.shadow_launcher_app/shadow_hand_launcher/launch_cyberglove.sh",
+    "size": 245,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [products/hand_e/cyberglove : Create Cyberglove desktop icon] ****************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/products/hand_e/cyberglove/tasks/main.yml:19
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703 `" && echo ansible-tmp-1550759625.2360103-219913925496703="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/stat.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmptix617oa TO /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/AnsiballZ_stat.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/ /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/AnsiballZ_stat.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/AnsiballZ_stat.py && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/files/file.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmpbmc_4nra TO /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/AnsiballZ_file.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/ /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/AnsiballZ_file.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759625.2360103-219913925496703/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "checksum": "1e27c3b407d3049f5195849b31c7ab084c9ffe64",
+    "dest": "/home/toivo/Desktop/Launch_Cyberglove.desktop",
+    "diff": {
+        "after": {
+            "path": "/home/toivo/Desktop/Launch_Cyberglove.desktop"
+        },
+        "before": {
+            "path": "/home/toivo/Desktop/Launch_Cyberglove.desktop"
+        }
+    },
+    "gid": 1000,
+    "group": "toivo",
+    "invocation": {
+        "module_args": {
+            "_diff_peek": null,
+            "_original_basename": "desktop_icon.j2",
+            "access_time": null,
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "attributes": null,
+            "backup": null,
+            "content": null,
+            "delimiter": null,
+            "dest": "/home/toivo/Desktop/Launch_Cyberglove.desktop",
+            "directory_mode": null,
+            "follow": false,
+            "force": false,
+            "group": null,
+            "mode": "755",
+            "modification_time": null,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "owner": null,
+            "path": "/home/toivo/Desktop/Launch_Cyberglove.desktop",
+            "recurse": false,
+            "regexp": null,
+            "remote_src": null,
+            "selevel": null,
+            "serole": null,
+            "setype": null,
+            "seuser": null,
+            "src": null,
+            "state": "file",
+            "unsafe_writes": null
+        }
+    },
+    "mode": "0755",
+    "owner": "toivo",
+    "path": "/home/toivo/Desktop/Launch_Cyberglove.desktop",
+    "size": 409,
+    "state": "file",
+    "uid": 1000
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [aws : Install AWS CLI] ******************************************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/aws/tasks/main.yml:2
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759625.4334776-90188982852455 `" && echo ansible-tmp-1550759625.4334776-90188982852455="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759625.4334776-90188982852455 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/packaging/language/pip.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmplo2f_nc6 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759625.4334776-90188982852455/AnsiballZ_pip.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759625.4334776-90188982852455/ /home/toivo/.ansible/tmp/ansible-tmp-1550759625.4334776-90188982852455/AnsiballZ_pip.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'sudo -H -S  -p "[sudo via ansible, key=jbelzhtnipqirfdktmaszjqruikwvieu] password: " -u root /bin/sh -c '"'"'echo BECOME-SUCCESS-jbelzhtnipqirfdktmaszjqruikwvieu; /usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759625.4334776-90188982852455/AnsiballZ_pip.py'"'"' && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759625.4334776-90188982852455/ > /dev/null 2>&1 && sleep 0'
+ok: [127.0.0.1] => {
+    "changed": false,
+    "cmd": [
+        "/usr/local/bin/pip2",
+        "install",
+        "-r",
+        "/tmp/aurora/ansible/roles/aws/files/requirements.txt"
+    ],
+    "invocation": {
+        "module_args": {
+            "chdir": null,
+            "editable": false,
+            "executable": null,
+            "extra_args": null,
+            "name": null,
+            "requirements": "/tmp/aurora/ansible/roles/aws/files/requirements.txt",
+            "state": "present",
+            "umask": null,
+            "use_mirrors": true,
+            "version": null,
+            "virtualenv": null,
+            "virtualenv_command": "virtualenv",
+            "virtualenv_python": null,
+            "virtualenv_site_packages": false
+        }
+    },
+    "name": null,
+    "requirements": "/tmp/aurora/ansible/roles/aws/files/requirements.txt",
+    "state": "present",
+    "stderr": "You are using pip version 18.1, however version 19.0.2 is available.\nYou should consider upgrading via the 'pip install --upgrade pip' command.\n",
+    "stderr_lines": [
+        "You are using pip version 18.1, however version 19.0.2 is available.",
+        "You should consider upgrading via the 'pip install --upgrade pip' command."
+    ],
+    "stdout": "Requirement already satisfied: docutils==0.12 in /usr/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 1)) (0.12)\nRequirement already satisfied: botocore==1.12.96 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 2)) (1.12.96)\nRequirement already satisfied: s3transfer==0.2.0 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 3)) (0.2.0)\nRequirement already satisfied: jmespath==0.9.3 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 4)) (0.9.3)\nRequirement already satisfied: colorama==0.3.9 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 5)) (0.3.9)\nRequirement already satisfied: rsa==3.4.2 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 6)) (3.4.2)\nRequirement already satisfied: awscli==1.16.106 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 7)) (1.16.106)\nRequirement already satisfied: urllib3<1.25,>=1.20; python_version == \"2.7\" in /usr/local/lib/python2.7/dist-packages (from botocore==1.12.96->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 2)) (1.24.1)\nRequirement already satisfied: python-dateutil<3.0.0,>=2.1; python_version >= \"2.7\" in /usr/lib/python2.7/dist-packages (from botocore==1.12.96->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 2)) (2.4.2)\nRequirement already satisfied: futures<4.0.0,>=2.2.0; python_version == \"2.6\" or python_version == \"2.7\" in /usr/local/lib/python2.7/dist-packages (from s3transfer==0.2.0->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 3)) (3.2.0)\nRequirement already satisfied: pyasn1>=0.1.3 in /usr/lib/python2.7/dist-packages (from rsa==3.4.2->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 6)) (0.1.9)\nRequirement already satisfied: PyYAML<=3.13,>=3.10 in /usr/lib/python2.7/dist-packages (from awscli==1.16.106->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 7)) (3.11)\n",
+    "stdout_lines": [
+        "Requirement already satisfied: docutils==0.12 in /usr/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 1)) (0.12)",
+        "Requirement already satisfied: botocore==1.12.96 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 2)) (1.12.96)",
+        "Requirement already satisfied: s3transfer==0.2.0 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 3)) (0.2.0)",
+        "Requirement already satisfied: jmespath==0.9.3 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 4)) (0.9.3)",
+        "Requirement already satisfied: colorama==0.3.9 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 5)) (0.3.9)",
+        "Requirement already satisfied: rsa==3.4.2 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 6)) (3.4.2)",
+        "Requirement already satisfied: awscli==1.16.106 in /usr/local/lib/python2.7/dist-packages (from -r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 7)) (1.16.106)",
+        "Requirement already satisfied: urllib3<1.25,>=1.20; python_version == \"2.7\" in /usr/local/lib/python2.7/dist-packages (from botocore==1.12.96->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 2)) (1.24.1)",
+        "Requirement already satisfied: python-dateutil<3.0.0,>=2.1; python_version >= \"2.7\" in /usr/lib/python2.7/dist-packages (from botocore==1.12.96->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 2)) (2.4.2)",
+        "Requirement already satisfied: futures<4.0.0,>=2.2.0; python_version == \"2.6\" or python_version == \"2.7\" in /usr/local/lib/python2.7/dist-packages (from s3transfer==0.2.0->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 3)) (3.2.0)",
+        "Requirement already satisfied: pyasn1>=0.1.3 in /usr/lib/python2.7/dist-packages (from rsa==3.4.2->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 6)) (0.1.9)",
+        "Requirement already satisfied: PyYAML<=3.13,>=3.10 in /usr/lib/python2.7/dist-packages (from awscli==1.16.106->-r /tmp/aurora/ansible/roles/aws/files/requirements.txt (line 7)) (3.11)"
+    ],
+    "version": null,
+    "virtualenv": null
+}
+Read vars_file 'vars/docker-deploy.yml'
+
+TASK [aws : Copy shadow_upload.sh to the docker container] ************************************************************************************************************************************************************************************
+task path: /tmp/aurora/ansible/roles/aws/tasks/main.yml:7
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: toivo
+<127.0.0.1> EXEC /bin/sh -c 'echo ~toivo && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759627.4136593-23415852175724 `" && echo ansible-tmp-1550759627.4136593-23415852175724="` echo /home/toivo/.ansible/tmp/ansible-tmp-1550759627.4136593-23415852175724 `" ) && sleep 0'
+Using module file /home/toivo/.local/lib/python3.7/site-packages/ansible/modules/commands/command.py
+<127.0.0.1> PUT /home/toivo/.ansible/tmp/ansible-local-15902z2l65ct/tmp6pu6kxn5 TO /home/toivo/.ansible/tmp/ansible-tmp-1550759627.4136593-23415852175724/AnsiballZ_command.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /home/toivo/.ansible/tmp/ansible-tmp-1550759627.4136593-23415852175724/ /home/toivo/.ansible/tmp/ansible-tmp-1550759627.4136593-23415852175724/AnsiballZ_command.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/usr/bin/python /home/toivo/.ansible/tmp/ansible-tmp-1550759627.4136593-23415852175724/AnsiballZ_command.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /home/toivo/.ansible/tmp/ansible-tmp-1550759627.4136593-23415852175724/ > /dev/null 2>&1 && sleep 0'
+fatal: [127.0.0.1]: FAILED! => {
+    "changed": true,
+    "cmd": "docker cp /tmp/aurora/ansible/roles/aws/files/shadow_upload.sh dexterous_hand_real_hw:/usr/local/bin/shadow_upload.sh",
+    "delta": "0:00:00.030971",
+    "end": "2019-02-21 14:33:47.513630",
+    "invocation": {
+        "module_args": {
+            "_raw_params": "docker cp /tmp/aurora/ansible/roles/aws/files/shadow_upload.sh dexterous_hand_real_hw:/usr/local/bin/shadow_upload.sh",
+            "_uses_shell": true,
+            "argv": null,
+            "chdir": null,
+            "creates": null,
+            "executable": null,
+            "removes": null,
+            "stdin": null,
+            "warn": true
+        }
+    },
+    "msg": "non-zero return code",
+    "rc": 1,
+    "start": "2019-02-21 14:33:47.482659",
+    "stderr": "Error: No such container:path: dexterous_hand_real_hw:/usr/local/bin",
+    "stderr_lines": [
+        "Error: No such container:path: dexterous_hand_real_hw:/usr/local/bin"
+    ],
+    "stdout": "",
+    "stdout_lines": []
+}
+	to retry, use: --limit @/tmp/aurora/ansible/playbooks/docker-deploy.retry
+
+PLAY RECAP ************************************************************************************************************************************************************************************************************************************
+127.0.0.1                  : ok=28   changed=1    unreachable=0    failed=1   
+

@@ -25,9 +25,9 @@ bash <(curl -Ls bit.ly/run-aurora) docker-deploy option1=value1 option2=value2 o
 Possible options for the docker-deploy are:
 <pre>
 * product                   Name of the product (hand_e or hand_h)
-* image                     Name of the Docker hub image to pull
+* image                     Name:tag of the exact Docker hub image to pull
 * reinstall                 Flag to know if the docker container should be fully reinstalled (default: false)
-* name                      Name of the docker container
+* container_name            Name of the docker container
 * ethercat_interface        Ethercat interface of the hand
 * nvidia_docker             Enable nvidia docker (default: false)
 * desktop_icon              Generates a desktop icon to launch the hand (default: true)
