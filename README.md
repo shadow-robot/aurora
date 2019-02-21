@@ -1,6 +1,6 @@
 # Aurora project #
 
-The main purpose of this subsystem is to unify one-liners approaches based on Ansible best practices. This one-liner is able to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand
+The main purpose of this subsystem is to unify one-liners approaches based on Ansible best practices. This one-liner is able to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
 ## Before running the docker-deploy playbook ##
 
