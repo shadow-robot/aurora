@@ -1,0 +1,81 @@
+---
+- name: Copy Close Hand desktop icon
+  copy: 
+    src: files/close_hand_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/close_hand_icon.png"
+    mode: '664'
+
+- name: Create Close Hand executable launch script
+  template:
+    src: templates/scripts/rosrun_script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/close_hand.sh"
+    mode: '755'
+  vars:
+    script_name: demo_rs.py
+
+- name: Create Close Hand desktop icon
+  template:
+    src: templates/desktop_labels/desktop_icon.j2
+    dest: "{{ user_folder }}/Desktop/Close_Hand.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Close Hand
+    comment: "This runs closes the hand for transportation"
+    window_title: close_hand_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: close_hand.sh
+    icon_file_name: close_hand_icon.png
+
+- name: Copy Open Hand desktop icon
+  copy: 
+    src: files/open_hand_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/open_hand_icon.png"
+    mode: '664'
+
+- name: Create Open Hand executable launch script
+  template:
+    src: templates/scripts/rosrun_script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/open_hand.sh"
+    mode: '755'
+  vars:
+    script_name: demo_ro.py
+
+- name: Create Open Hand desktop icon
+  template:
+    src: templates/desktop_labels/desktop_icon.j2
+    dest: "{{ user_folder }}/Desktop/Open_Hand.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Open Hand
+    comment: "This opens the hand"
+    window_title: open_hand_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: open_hand.sh
+    icon_file_name: open_hand_icon.png
+
+- name: Copy Standard Demo desktop icon
+  copy: 
+    src: files/demo_hand_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/demo_hand_icon.png"
+    mode: '664'
+
+- name: Create Standard Demo executable launch script
+  template:
+    src: templates/scripts/rosrun_script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/demo_hand.sh"
+    mode: '755'
+  vars:
+    script_name: demo_r.py
+
+- name: Create Standard Demo desktop icon
+  template:
+    src: templates/desktop_labels/desktop_icon.j2
+    dest: "{{ user_folder }}/Desktop/Demo_Hand.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Demo Hand
+    comment: "This runs the standard demo for the hand"
+    window_title: demo_hand_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: demo_hand.sh
+    icon_file_name: demo_hand_icon.png

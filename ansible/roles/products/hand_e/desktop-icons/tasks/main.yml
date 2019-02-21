@@ -73,3 +73,7 @@
     folder: "{{ save_latest_ros_logs_folder }}"
     shell_script_file_name: save_latest_ros_logs.sh
     icon_file_name: log_icon.png
+
+- name: Create demo icons
+  import_tasks: demo_icons.yml
+  when: demo_icons
