@@ -76,4 +76,4 @@
 
 - name: Create demo icons
   import_tasks: demo_icons.yml
-  when: demo_icons
+  when: demo_icons == "true"

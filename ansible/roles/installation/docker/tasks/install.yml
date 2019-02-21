@@ -33,7 +33,8 @@
     groups: 'docker'
     append: 'yes'
 
-- debug:
+- name: Docker installation finished
+  debug:
     msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
 
 - name: Exiting installation

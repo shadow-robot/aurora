@@ -5,6 +5,10 @@
   vars_files:
     - vars/docker-deploy.yml
   pre_tasks:
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key != false
       set_fact:
@@ -15,9 +19,13 @@
       set_fact:
         use_cyberglove: true
 
-    - name: No product is defined
-      when: product != 'hand_e' and product != 'hand_h'
-      meta: end_play
+    - name: set reinstall flag as boolean
+      set_fact:
+          reinstall: "{{ reinstall | bool }}"
+  
+    - name: set demo_icons as boolean
+      set_fact:
+          demo_icons: "{{ demo_icons | bool }}"
 
   roles:
     - { role: installation/docker }
