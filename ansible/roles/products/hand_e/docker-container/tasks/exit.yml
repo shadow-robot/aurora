@@ -1,8 +1,10 @@
 ---
-- debug:
+- name: Notifying user that the container is already running
+  debug:
     msg: "Container already running! This window will be closed shortly... "
 
-- pause:
+- name: Pausing for 5 seconds
+  pause:
     seconds: 5
 
 - name: Exiting when container already running

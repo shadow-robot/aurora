@@ -3,29 +3,10 @@
   shell: id -u
   register: id
 
-- name: Checking if container exists
-  shell: "docker ps -aq -f name=^/{{ container_name }}$"
-  register: docker_id
-
-- name: Set container_exists to true
-  when: docker_id.stdout != ""
-  set_fact:
-    container_exists: true
-
-- name: Checking if container already running
-  when: container_exists
-  shell: "docker inspect -f '{{ '{{' }}.State.Running}}' {{ container_name }}"
-  register: container_running
-
-- name: Set container_running to true
-  when: container_exists
-  set_fact:
-    container_running: "{{ container_running.stdout | bool }}"
-
 - name: Reinstall docker container
   when: reinstall|bool
   import_tasks: reinstall.yml
 
 - name: Don't reinstall docker container
   when: not reinstall|bool
-  import_tasks: no_reinstall.yml
+  import_tasks: check_container_state.yml

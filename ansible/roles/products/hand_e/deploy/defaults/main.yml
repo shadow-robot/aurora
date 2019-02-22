@@ -1,4 +1,5 @@
 ---
 container_name: "dexterous_hand_real_hw"
-image: "shadowrobot/dexterous-hand:kinetic-release"
+image: "shadowrobot/dexterous-hand"
+tag: "kinetic-release"
 ethercat_interface: "eth0"

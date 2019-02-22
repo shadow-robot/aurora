@@ -25,7 +25,7 @@ bash <(curl -Ls bit.ly/run-aurora) docker-deploy option1=value1 option2=value2 o
 Possible options for the docker-deploy are:
 <pre>
 * product                   Name of the product (hand_e or hand_h)
-* image                     Name:tag of the exact Docker hub image to pull
+* tag                       Tag of the exact Docker hub image to pull (default: kinetic-devel)
 * reinstall                 Flag to know if the docker container should be fully reinstalled (default: false)
 * container_name            Name of the docker container
 * ethercat_interface        Ethercat interface of the hand

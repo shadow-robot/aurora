@@ -6,7 +6,7 @@
 - name: Creating the container
   docker_container:
     name: "{{ container_name }}"
-    image: "{{image}}"
+    image: "{{ full_image_name }}"
     env:
         verbose: "true"
         interface: "{{ ethercat_interface }}"

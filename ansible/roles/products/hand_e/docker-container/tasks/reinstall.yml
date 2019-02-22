@@ -8,7 +8,7 @@
 - name: Creating the container
   docker_container:
     name: "{{ container_name }}"
-    image: "{{image}}"
+    image: "{{ full_image_name }}"
     state: present
     recreate: yes
     pull: yes
