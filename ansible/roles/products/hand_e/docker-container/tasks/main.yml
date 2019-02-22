@@ -23,9 +23,9 @@
     container_running: "{{ container_running.stdout | bool }}"
 
 - name: Reinstall docker container
-  when: reinstall=="true"
+  when: reinstall|bool
   import_tasks: reinstall.yml
 
 - name: Don't reinstall docker container
-  when: reinstall=="false"
+  when: not reinstall|bool
   import_tasks: no_reinstall.yml

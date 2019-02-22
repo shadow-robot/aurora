@@ -19,14 +19,6 @@
       set_fact:
         use_cyberglove: true
 
-    - name: set reinstall flag as boolean
-      set_fact:
-          reinstall: "{{ reinstall | bool }}"
-  
-    - name: set demo_icons as boolean
-      set_fact:
-          demo_icons: "{{ demo_icons | bool }}"
-
   roles:
     - { role: installation/docker }
     - { role: installation/nvidia_docker, when: nvidia_docker != false }
