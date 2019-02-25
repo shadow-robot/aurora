@@ -5,6 +5,10 @@
     password: "{{ password }}"
   when: username is defined and password is defined
 
+- name: Set docker full image name
+  set_fact:
+    full_image_name: "{{ image }}:{{ tag }}"
+
 - name: Pulling the image
   docker_image:
-    name: "{{image}}:{{tag}}"
+    name: "{{ full_image_name }}"

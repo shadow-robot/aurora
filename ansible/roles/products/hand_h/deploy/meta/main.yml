@@ -1,6 +1,5 @@
 ---
 dependencies:
-  - { role: docker/destroy-container, when: reinstall }
   - { role: docker/docker-image }
   - { role: products/hand_h/docker-container }
   - { role: products/hand_h/desktop-icons }

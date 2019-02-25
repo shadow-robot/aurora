@@ -5,6 +5,10 @@
   vars_files:
     - vars/docker-deploy.yml
   pre_tasks:
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key != false
       set_fact:
@@ -14,10 +18,6 @@
       when: cyberglove is defined
       set_fact:
         use_cyberglove: true
-
-    - name: No product is defined
-      when: product != 'hand_e' and product != 'hand_h'
-      meta: end_play
 
   roles:
     - { role: installation/docker }
