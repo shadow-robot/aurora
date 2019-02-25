@@ -1,0 +1,21 @@
+version: 0.2
+
+env:
+  variables:
+     debug_branch: "F#SRC-2584_add_unit_tests"
+     test_directory: "/home/user/.shadow_unit_tests"
+  parameter-store:
+     GITHUB_LOGIN : GITHUB_LOGIN
+     GITHUB_PASSWORD : GITHUB_PASSWORD
+phases:
+  build:
+    commands:
+      - chown -R $MY_USERNAME:$MY_USERNAME $CODEBUILD_SRC_DIR
+      - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$debug_branch/bin/run-ansible.sh"
+      - wget -O /tmp/oneliner "$( echo "$remote_shell_script" | sed 's/#/%23/g' )"
+      - chmod 755 /tmp/oneliner
+      - gosu $MY_USERNAME /tmp/oneliner unit_tests --debug-branch $debug_branch
+artifacts:
+  files:
+    - '$test_directory/**/*'
+  name: $(date -d @${CODEBUILD_START_TIME::10} +%d-%b-%Y_%H-%M-%S)-aurora_unit_tests

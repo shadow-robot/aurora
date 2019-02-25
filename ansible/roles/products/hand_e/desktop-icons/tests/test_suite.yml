@@ -4,4 +4,7 @@
   hosts: localhost
   
   roles:
-    - { role: products/hand_e/desktop-icons }
+    - { role: products/hand_e/desktop-icons, vars: { use_aws: true } }
+    - { role: products/hand_e/desktop-icons, vars: { use_aws: false } }
+    - { role: products/hand_e/desktop-icons, vars: { demo_icons: true } }
+    - { role: products/hand_e/desktop-icons, vars: { demo_icons: false } }
