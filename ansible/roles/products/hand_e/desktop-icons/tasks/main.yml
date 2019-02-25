@@ -77,3 +77,7 @@
 - name: Create demo icons
   import_tasks: demo_icons.yml
   when: demo_icons
+
+- name: Run unit tests
+  import_tasks: tests/main.yml
+  when: unit_tests | bool
