@@ -1,0 +1,7 @@
+---
+- name: Unit tests for desktop_icons role
+  connection: localhost
+  hosts: localhost
+  
+  roles:
+    - { role: products/hand_e/desktop-icons }
