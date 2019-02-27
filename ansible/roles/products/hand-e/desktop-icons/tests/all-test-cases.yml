@@ -1,0 +1,20 @@
+---
+- name: Test case with use_aws = true
+  import_playbook: test-case.yml
+  vars:
+    use_aws: true
+
+- name: Test case with use_aws = false
+  import_playbook: test-case.yml
+  vars:
+    use_aws: false
+
+- name: Test case with demo_icons = true
+  import_playbook: test-case.yml
+  vars:
+    demo_icons: true
+    
+- name: Test case with demo_icons = false
+  import_playbook: test-case.yml
+  vars:
+    demo_icons: false

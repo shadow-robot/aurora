@@ -1,4 +1,0 @@
----
-- import_tasks: install_nvidia_v1.yml
-  when: nvidia_docker.startswith('1')
-  become: true

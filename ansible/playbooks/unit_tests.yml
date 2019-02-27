@@ -1,5 +1,0 @@
----
-- name: Unit tests
-  vars:
-    unit_tests: true
-  import_playbook: ../roles/products/hand_e/desktop-icons/tests/test_suite.yml

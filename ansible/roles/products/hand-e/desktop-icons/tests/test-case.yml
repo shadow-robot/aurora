@@ -1,0 +1,11 @@
+---
+- name: Test case playbook for desktop_icons role
+  connection: localhost
+  hosts: localhost
+  pre_tasks:
+    - name: Setup environment for test case
+      include: setup.yml
+
+  roles:
+    - { role: products/hand-e/desktop-icons }
+

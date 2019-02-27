@@ -1,7 +1,0 @@
----
-dependencies:
-  - { role: docker/docker-image }
-  - { role: products/hand_e/docker-container }
-  - { role: products/hand_e/desktop-icons }
-  - { role: products/hand_e/cyberglove, when: use_cyberglove }
-  - { role: aws, when: use_aws }

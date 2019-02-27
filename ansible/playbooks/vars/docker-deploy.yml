@@ -6,3 +6,4 @@ product: ''
 ethercat_interface: "eth0"
 use_aws: false
 customer_key: false
+unit_tests: false

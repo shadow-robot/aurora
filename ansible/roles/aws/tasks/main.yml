@@ -4,8 +4,8 @@
     requirements: "{{ role_path }}/files/requirements.txt"
   become: true
 
-- name: Copy shadow_upload.sh to the docker container
-  shell: "docker cp {{ role_path }}/files/shadow_upload.sh {{ container_name }}:/usr/local/bin/shadow_upload.sh"
+- name: Copy shadow-upload.sh to the docker container
+  shell: "docker cp {{ role_path }}/files/shadow-upload.sh {{ container_name }}:/usr/local/bin/shadow-upload.sh"
 
 - name: Copy customer.key to the docker container
   shell: "echo {{ customer_key }} > /tmp/customer.key; docker cp /tmp/customer.key {{ container_name }}:/usr/local/bin/customer.key"
