@@ -9,11 +9,12 @@ phases:
   install:
     commands:
       - apt-get update
-      - apt-get install -y sudo wget gosu
+      - apt-get install -y sudo wget gosu openssl
   pre_build:
     commands:
       - USER=$user
       - adduser --disabled-password --gecos "" $user
+      - usermod --password $(echo testpassword | openssl passwd -1 -stdin) $user
       - mkdir -p "/home/$user/Desktop"
   build:
     commands:
