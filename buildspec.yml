@@ -14,9 +14,9 @@ phases:
       - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$debug_branch/bin/run-ansible.sh"
       - wget -O /tmp/oneliner "$( echo "$remote_shell_script" | sed 's/#/%23/g' )"
       - chmod 755 /tmp/oneliner
-      - gosu $MY_USERNAME /tmp/oneliner unit-tests --debug-branch $debug_branch
+      - gosu $MY_USERNAME /tmp/oneliner run-unit-tests --debug-branch $debug_branch
       - mkdir -p $test_directory && touch $test_directory/.placeholder
 artifacts:
   files:
     - '$test_directory/**/*'
-  name: $(date -d @${CODEBUILD_START_TIME::10} +%d-%b-%Y_%H-%M-%S)-aurora_unit_tests
+  name: $(date -d @${CODEBUILD_START_TIME::10} +%d-%b-%Y_%H-%M-%S)-aurora-unit-tests

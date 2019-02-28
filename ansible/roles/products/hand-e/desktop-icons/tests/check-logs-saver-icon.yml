@@ -1,0 +1,10 @@
+---
+- stat:
+    path: "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop"
+  register: p
+
+- name: Checking if ROS_Logs_Saver.desktop exists
+  assert:
+    that:
+     - p.stat.exists and p.stat.isreg
+  when: not use_aws

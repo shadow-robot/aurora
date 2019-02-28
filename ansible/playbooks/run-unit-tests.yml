@@ -1,0 +1,3 @@
+---
+- name: Import desktop-icons test-suite
+  import_playbook: ../roles/products/hand-e/desktop-icons/tests/test-suite.yml

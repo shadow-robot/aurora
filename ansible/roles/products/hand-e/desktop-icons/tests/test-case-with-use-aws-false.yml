@@ -1,0 +1,31 @@
+---
+- name: Test case for desktop_icons when use_aws is false
+  connection: localhost
+  hosts: localhost
+  vars:
+    use_aws: false
+  pre_tasks:
+    - name: Setup environment for test case
+      include: setup.yml
+
+  roles:
+    - { role: products/hand-e/desktop-icons }
+
+  tasks:
+    - name: Check if Shadow Hand Launcher icon exists
+      include: check-hand-launcher-icon.yml
+
+    - name: Check if ROS Logs Saver icon exists
+      include: check-logs-saver-icon.yml
+
+    - name: Check if ROS Logs Uploader icon exists
+      include: check-logs-uploader-icon.yml
+    
+    - name: Check if Open Hand icon exists
+      include: check-close-hand-icon.yml
+
+    - name: Check if Close Hand icon exists
+      include: check-open-hand-icon.yml
+
+    - name: Check if Demo Hand icon exists
+      include: check-hand-demo-icon.yml

@@ -1,5 +1,0 @@
----
-- name: Import test case playbooks
-  vars:
-    unit_tests: true
-  import_playbook: ../roles/products/hand-e/desktop-icons/tests/all-test-cases.yml
