@@ -2,20 +2,29 @@ version: 0.2
 
 env:
   variables:
-     debug_branch: "F#SRC-2584_add_unit_tests"
+     branch: "master"
      test_directory: "/home/user/.shadow_unit_tests"
+     user: "user"
   parameter-store:
      GITHUB_LOGIN : GITHUB_LOGIN
      GITHUB_PASSWORD : GITHUB_PASSWORD
 phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y sudo wget gosu
+  pre_build:
+    commands:
+      - USER=$user
+      - adduser --disabled-password --gecos "" $user
+      - mkdir -p "/home/$user/Desktop"
   build:
     commands:
-      - USER=$MY_USERNAME
-      - chown -R $MY_USERNAME:$MY_USERNAME $CODEBUILD_SRC_DIR
-      - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$debug_branch/bin/run-ansible.sh"
+      - chown -R $USER:$USER $CODEBUILD_SRC_DIR
+      - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$branch/bin/run-ansible.sh"
       - wget -O /tmp/oneliner "$( echo "$remote_shell_script" | sed 's/#/%23/g' )"
       - chmod 755 /tmp/oneliner
-      - gosu $MY_USERNAME /tmp/oneliner run-unit-tests --debug-branch $debug_branch
+      - gosu $USER /tmp/oneliner run-unit-tests --debug-branch $branch
       - mkdir -p $test_directory && touch $test_directory/.placeholder
 artifacts:
   files:
