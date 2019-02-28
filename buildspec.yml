@@ -7,7 +7,7 @@ env:
 phases:
   pre_build:
     commands:
-      - branch=$(git branch -a --contains $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -d$'\n' -f2 | tr -d' ')
+      - branch=$(git branch -a --contains $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -d$'\n' -f2 | tr -d ' ')
       - USER=$user
       - mkdir -p "/home/$user/Desktop"
   build:
