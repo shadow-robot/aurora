@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-     branch: "master"
+     branch: "F#SRC-2584_add_unit_tests/"
      test_directory: "/home/user/.shadow_unit_tests"
      user: "user"
 phases:
