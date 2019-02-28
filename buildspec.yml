@@ -7,9 +7,9 @@ env:
 phases:
   pre_build:
     commands:
-      - branch=$(git branch | grep \* | cut -d ' ' -f7)
-      - branch1=$(git rev-parse --abbrev-ref HEAD)
-      - branchf=$(git branch | grep \*)
+      - branch=$(git branch | grep \* | cut -d ' ' -f8)
+      - branch1=$(git symbolic-ref -q --short HEAD)
+      - branchf=$(git branch)
       - echo $branch
       - echo $branch1
       - echo $branchf
