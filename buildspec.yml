@@ -16,7 +16,7 @@ phases:
   build:
     commands:
       - chown -R $USER:$USER $CODEBUILD_SRC_DIR
-      - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$branch/bin/run-ansible.sh"
+      - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$branchf/bin/run-ansible.sh"
       - wget -O /tmp/oneliner "$( echo "$remote_shell_script" | sed 's/#/%23/g' )"
       - chmod 755 /tmp/oneliner
       - gosu $USER /tmp/oneliner run-unit-tests --debug-branch $branch
