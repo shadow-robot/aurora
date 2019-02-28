@@ -9,6 +9,7 @@ phases:
     commands:
       - cd $CODEBUILD_SRC_DIR
       - branch=$(git branch)
+      - echo $branch
       - USER=$user
       - mkdir -p "/home/$user/Desktop"
   build:
