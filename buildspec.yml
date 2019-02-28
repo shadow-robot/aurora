@@ -7,7 +7,12 @@ env:
 phases:
   pre_build:
     commands:
-      - branch=$(git branch | grep \* | cut -d ' ' -f6)
+      - branch=$(git branch | grep \* | cut -d ' ' -f7)
+      - branch1=$(git rev-parse --abbrev-ref HEAD)
+      - branchf=$(git branch | grep \*)
+      - echo $branch
+      - echo $branch1
+      - echo $branchf
       - USER=$user
       - mkdir -p "/home/$user/Desktop"
   build:
