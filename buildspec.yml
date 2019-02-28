@@ -5,9 +5,6 @@ env:
      branch: "master"
      test_directory: "/home/user/.shadow_unit_tests"
      user: "user"
-  parameter-store:
-     GITHUB_LOGIN : GITHUB_LOGIN
-     GITHUB_PASSWORD : GITHUB_PASSWORD
 phases:
   pre_build:
     commands:
