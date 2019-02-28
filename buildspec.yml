@@ -9,14 +9,9 @@ env:
      GITHUB_LOGIN : GITHUB_LOGIN
      GITHUB_PASSWORD : GITHUB_PASSWORD
 phases:
-  install:
-    commands:
-      - apt-get update
-      - apt-get install -y sudo wget gosu
   pre_build:
     commands:
       - USER=$user
-      - adduser --disabled-password --gecos "" $user
       - mkdir -p "/home/$user/Desktop"
   build:
     commands:
