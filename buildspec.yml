@@ -10,7 +10,7 @@ env:
 phases:
   build:
     commands:
-      - USER = $MY_USERNAME
+      - USER=$MY_USERNAME
       - chown -R $MY_USERNAME:$MY_USERNAME $CODEBUILD_SRC_DIR
       - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$debug_branch/bin/run-ansible.sh"
       - wget -O /tmp/oneliner "$( echo "$remote_shell_script" | sed 's/#/%23/g' )"
