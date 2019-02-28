@@ -10,7 +10,7 @@ phases:
       - branch=$(git branch -a --contains $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -d$'\n' -f2 | tr -d ' ')
       - USER=$user
       - mkdir -p "/home/$user/Desktop"
-      - chmod 775 "/home/$user/Desktop"
+      - chmod 755 "/home/$user/Desktop"
   build:
     commands:
       - chown -R $USER:$USER $CODEBUILD_SRC_DIR
