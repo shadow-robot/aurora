@@ -11,6 +11,7 @@ phases:
       - USER=$user
       - mkdir -p "/home/$user/Desktop"
       - chmod 755 "/home/$user/Desktop"
+      - chown -R $USER:$USER "/home/$user/Desktop"
   build:
     commands:
       - chown -R $USER:$USER $CODEBUILD_SRC_DIR
