@@ -7,7 +7,7 @@ env:
 phases:
   pre_build:
     commands:
-      - branch=$(git branch | grep \* | cut -d ' ' -f3)
+      - branch=$(git branch | grep \* | cut -d ' ' -f4)
       - USER=$user
       - mkdir -p "/home/$user/Desktop"
   build:
