@@ -7,8 +7,8 @@ env:
 phases:
   pre_build:
     commands:
+      - cd $CODEBUILD_SRC_DIR
       - branch=$(git branch | grep \* | cut -d ' ' -f2)
-      - echo $branch
       - USER=$user
       - mkdir -p "/home/$user/Desktop"
   build:
