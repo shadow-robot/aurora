@@ -9,12 +9,13 @@ phases:
   install:
     commands:
       - apt-get update
-      - apt-get install -y sudo wget gosu openssl
+      - apt-get install -y sudo wget gosu openssl openssh
   pre_build:
     commands:
       - USER=$user
       - adduser --disabled-password --gecos "" $user
       - usermod --password $(echo testpassword | openssl passwd -1 -stdin) $user
+      - export SUDO_ASKPASS=/usr/libexec/openssh/ssh-askpass
       - mkdir -p "/home/$user/Desktop"
   build:
     commands:
