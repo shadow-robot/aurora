@@ -1,0 +1,16 @@
+---
+- name: Test case for desktop_icons when use_aws is false
+  connection: localhost
+  hosts: localhost
+  vars:
+    use_aws: false
+  pre_tasks:
+    - name: Setup environment for test case
+      include: setup.yml
+
+  roles:
+    - { role: products/hand-e/desktop-icons }
+
+  tasks:
+    - name: Check desktop icons
+      include: check-desktop-icons.yml

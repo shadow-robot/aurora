@@ -10,18 +10,18 @@
       meta: end_play
 
     - name: check if customer_key is provided and not false
-      when: customer_key is defined and customer_key != false
+      when: customer_key is defined and customer_key|bool
       set_fact:
         use_aws: true
       
     - name: check if cyberglove branch is provided
-      when: cyberglove is defined
+      when: cyberglove is defined and cyberglove|bool
       set_fact:
         use_cyberglove: true
 
   roles:
     - { role: installation/docker }
-    - { role: installation/nvidia_docker, when: nvidia_docker != false }
-    - { role: products/hand_h/deploy, when: product == 'hand_h' }
-    - { role: products/hand_e/deploy, when: product == 'hand_e' }
+    - { role: installation/nvidia-docker, when: nvidia_docker|bool }
+    - { role: products/hand-h/deploy, when: product == 'hand_h' }
+    - { role: products/hand-e/deploy, when: product == 'hand_e' }
     - { role: aws, when: use_aws }
