@@ -24,8 +24,7 @@
 
 - name: Create Cyberglove desktop icon
   template:
-    src: ../desktop-icons/templates/desktop-labels/desktop-icon.j2
-    # TODO: FIX so that this doesn't use a file from different role, don't break encapsulation
+    src: ../shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Launch_Cyberglove.desktop"
     mode: '755'
   vars:

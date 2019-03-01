@@ -15,7 +15,7 @@
 
 - name: Create Close Hand desktop icon
   template:
-    src: templates/desktop-labels/desktop-icon.j2
+    src: ../shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Close_Hand.desktop"
     mode: '755'
   vars:
@@ -42,7 +42,7 @@
 
 - name: Create Open Hand desktop icon
   template:
-    src: templates/desktop-labels/desktop-icon.j2
+    src: ../shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Open_Hand.desktop"
     mode: '755'
   vars:
@@ -69,7 +69,7 @@
 
 - name: Create Standard Demo desktop icon
   template:
-    src: templates/desktop-labels/desktop-icon.j2
+    src: ../shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Demo_Hand.desktop"
     mode: '755'
   vars:
