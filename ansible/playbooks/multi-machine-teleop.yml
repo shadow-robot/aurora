@@ -1,0 +1,65 @@
+---
+- name: Install Local Teleop software on this laptop
+  hosts: localhost
+  connection: localhost
+  vars_files:
+    - vars/docker-deploy.yml
+  pre_tasks:
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
+    - name: check if customer_key is provided and not false
+      when: customer_key is defined and customer_key|bool
+      set_fact:
+        use_aws: true
+      
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove|bool
+      set_fact:
+        use_cyberglove: true
+
+  roles:
+    - { role: installation/docker }
+    - { role: installation/nvidia-docker, when: nvidia_docker|bool }
+    - { role: products/hand-h/deploy, when: product == 'hand_h' }
+    - { role: products/hand-e/deploy, when: product == 'hand_e' }
+    - { role: aws, when: use_aws }
+
+- name: Install Local Teleop software on a separate control machine 
+  hosts: control-machine
+  remote_user: "shadowop"
+  connection: control-machine
+  vars_files:
+    - vars/multi-machine-teleop.yml
+  pre_tasks:
+    - name: Add IP address of all hosts to all hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{ hostvars[item].ansible_host }} {{item}}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
+    - name: check if customer_key is provided and not false
+      when: customer_key is defined and customer_key|bool
+      set_fact:
+        use_aws: true
+      
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove|bool
+      set_fact:
+        use_cyberglove: true
+
+  roles:
+    - { role: installation/docker }
+    - { role: installation/nvidia-docker, when: nvidia_docker|bool }
+    - { role: products/hand-h/deploy, when: product == 'hand_h' }
+    - { role: products/hand-e/deploy, when: product == 'hand_e' }
+    - { role: aws, when: use_aws }
+

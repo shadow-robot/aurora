@@ -1,0 +1,10 @@
+---
+control_machine_ip: 10.5.10.7
+install_type: docker
+ethercat_interface: "eth0"
+use_aws: true
+customer_key: false
+nvidia_docker: false
+reinstall: false
+launch_hand: false
+product: 'hand_e'
