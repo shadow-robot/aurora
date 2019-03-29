@@ -1,0 +1,12 @@
+---
+- name: Test case when use_aws is true
+  import_playbook: test-case-with-use-aws-true.yml
+
+- name: Test case when use_aws is false
+  import_playbook: test-case-with-use-aws-false.yml
+
+- name: Test case when demo_icons is true
+  import_playbook: test-case-with-demo-icons-true.yml
+    
+- name: Test case when demo_icons is false
+  import_playbook: test-case-with-demo-icons-false.yml

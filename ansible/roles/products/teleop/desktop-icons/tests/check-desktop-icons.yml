@@ -1,0 +1,65 @@
+---
+- name: Checking if Shadow_Hand_Launcher.desktop exists
+  stat:
+    path: "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
+  register: p
+
+- name: Asserting Shadow_Hand_Launcher.desktop exists
+  assert:
+    that:
+     - p.stat.exists and p.stat.isreg
+
+- name: Checking if ROS_Logs_Saver.desktop exists
+  stat:
+    path: "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop"
+  register: p
+
+- name: Asserting ROS_Logs_Saver.desktop exists
+  assert:
+    that:
+     - p.stat.exists and p.stat.isreg
+  when: not use_aws
+
+- name: Checking if ROS_Logs_Saver_And_Uploader.desktop exists
+  stat:
+    path: "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
+  register: p
+
+- name: Asserting ROS_Logs_Saver_And_Uploader.desktop exists
+  assert:
+    that:
+     - p.stat.exists and p.stat.isreg
+  when: use_aws
+
+- name: Checking if Demo_Hand.desktop exists
+  stat:
+    path: "{{ user_folder }}/Desktop/Demo_Hand.desktop"
+  register: p
+
+- name: Asserting Demo_Hand.desktop exists
+  assert:
+    that:
+     - p.stat.exists and p.stat.isreg
+  when: demo_icons
+
+- name: Checking if Open_Hand.desktop exists
+  stat:
+    path: "{{ user_folder }}/Desktop/Open_Hand.desktop"
+  register: p
+
+- name: Asserting Open_Hand.desktop exists
+  assert:
+    that:
+     - p.stat.exists and p.stat.isreg
+  when: demo_icons
+
+- name: Checking if Close_Hand.desktop exists
+  stat:
+    path: "{{ user_folder }}/Desktop/Close_Hand.desktop"
+  register: p
+
+- name: Asserting Close_Hand.desktop exists
+  assert:
+    that:
+     - p.stat.exists and p.stat.isreg
+  when: demo_icons
