@@ -75,7 +75,6 @@ echo ""
 pushd $aurora_home
 
 pip3 install --user -r ansible/data/requirements.txt
-echo "stast:${playbook}end" 
 if [[ "${playbook}" = "teleop-deploy" ]]; then
     export ANSIBLE_HOST_KEY_CHECKING=False
     ~/.local/bin/ansible-playbook -v --ask-pass --ask-become-pass -i ansible/inventory/hosts "ansible/playbooks/teleop/teleop-deploy.yml" --extra-vars "$*"
