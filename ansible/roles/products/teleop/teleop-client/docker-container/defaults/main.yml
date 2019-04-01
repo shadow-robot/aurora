@@ -1,0 +1,15 @@
+---
+container_name: "teleop-client"
+image: "shadowrobot/dexterous-hand"
+tag: "kinetic-release"
+full_image_name: "shadowrobot/dexterous-hand:kinetic-release"
+ethercat_interface: "eth0"
+launch_hand: true
+config_branch: demohand_A
+use_cyberglove: false
+user_folder: "/home/{{ lookup('env','USER') }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+cyberglove: "A-dg"
+reinstall: false
+container_exists: false
+container_running: false

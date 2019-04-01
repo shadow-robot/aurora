@@ -1,9 +1,9 @@
----
-- name: Install Local Teleop software on this laptop
+
+- name: Install Teleop software on a this control machine 
   hosts: localhost
   connection: localhost
   vars_files:
-    - vars/docker-deploy.yml
+    - vars/teleop-deploy.yml
   pre_tasks:
     - name: Product is not teleop, ending play
       when: product != 'teleop'
@@ -21,6 +21,6 @@
 
   roles:
     - { role: installation/docker }
-    - { role: installation/nvidia-docker, when: nvidia_docker|bool }
-    - { role: products/teleop, when: product == 'teleop' }
+    - { role: installation/nvidia-docker, when: nvidia_docker|bool }    
+    - { role: products/teleop/teleop-server/deploy }
     - { role: aws, when: use_aws }
