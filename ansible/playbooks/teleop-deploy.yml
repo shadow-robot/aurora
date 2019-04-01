@@ -3,7 +3,7 @@
   connection: localhost
   hosts: localhost
   vars_files:
-    - vars/teleop/teleop-deploy.yml
+    - vars/teleop-deploy.yml
   pre_tasks:
     - name: No teleop client IP is defined (e.g. client=10.5.10.7)
       when: client == ''
@@ -14,15 +14,15 @@
       meta: end_play
 
 - name: Install Teleop software on this teleop server machine
-  import_playbook: teleop/teleop-server.yml
+  import_playbook: teleop-server.yml
 
 - name: Install Teleop software for Ubuntu on teleop client laptop
   when: client_os == 'ubuntu'
-  import_playbook: teleop/teleop-client-ubuntu.yml
+  import_playbook: teleop-client-ubuntu.yml
 
 - name: Install Teleop software for Windows on teleop client laptop
   when: client_os == 'windows'
-  import_playbook: teleop/teleop-client-windows.yml
+  import_playbook: teleop-client-windows.yml
   
   
 
