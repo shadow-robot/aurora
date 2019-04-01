@@ -32,6 +32,16 @@
     name: "{{ lookup('env','USER') }}"
     groups: 'docker'
     append: 'yes'
+    
+- name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
+  apt:
+    name: 'python3-pip'
+    state: 'present'
+
+- name: Install Docker pip module
+  pip:
+    name: docker
+    state: present
 
 - name: Docker installation finished
   debug:
