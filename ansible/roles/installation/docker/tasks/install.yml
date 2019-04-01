@@ -33,6 +33,11 @@
     groups: 'docker'
     append: 'yes'
 
+- name: Install Pip setup tools
+  apt:
+    name: 'python-pip'
+    state: 'present'
+
 - name: Install Docker pip module
   pip:
     name: docker
