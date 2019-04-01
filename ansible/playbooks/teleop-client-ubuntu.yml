@@ -1,7 +1,8 @@
 ---
 - name: Install Teleop software on Ubuntu teleop client laptop
   hosts: teleopclient
-  remote_user: "shadowop"
+  remote_user: shadowop
+  become: yes
   connection: teleopclient
   vars_files:
     - vars/teleop-deploy.yml
