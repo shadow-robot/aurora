@@ -33,6 +33,11 @@
     groups: 'docker'
     append: 'yes'
 
+- name: Install Docker pip module
+  pip:
+    name: docker
+    state: present
+
 - name: Docker installation finished
   debug:
     msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
