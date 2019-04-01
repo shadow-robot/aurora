@@ -19,10 +19,6 @@
 - name: Install Teleop software for Ubuntu on teleop client laptop
   when: client_os == 'ubuntu'
   import_playbook: teleop-client-ubuntu.yml
-
-- name: Install Teleop software for Windows on teleop client laptop
-  when: client_os == 'windows'
-  import_playbook: teleop-client-windows.yml
   
   
 
