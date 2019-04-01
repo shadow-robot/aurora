@@ -32,6 +32,16 @@
     name: "{{ lookup('env','USER') }}"
     groups: 'docker'
     append: 'yes'
+    
+- name: Install python-pip
+  apt:
+    name: 'python-pip'
+    state: 'present'
+
+- name: Install Docker pip module
+  pip:
+    name: docker
+    state: present
 
 - name: Docker installation finished
   debug:
