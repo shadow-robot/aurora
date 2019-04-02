@@ -1,5 +1,6 @@
 ---
 control_machine: ''
+windows_machine: ''
 ethercat_interface: "eth0"
 use_aws: true
 customer_key: false
