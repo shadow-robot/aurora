@@ -56,8 +56,8 @@
 - name: Waiting for remote host to come back after reboot
   when: allow_auto_reboot
   wait_for_connection:
-    delay: 10
-    timeout: 300
+    delay: '10'
+    timeout: '300'
 
 - name: Finishing Docker installation
   meta: end_play
