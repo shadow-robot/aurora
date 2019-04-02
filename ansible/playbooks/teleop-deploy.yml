@@ -6,6 +6,9 @@
   vars_files:
     - vars/teleop-deploy.yml
   pre_tasks:
+    - name: Disable Ansible Host SSH Key Checking to enable easy SSH
+      shell: export ANSIBLE_HOST_KEY_CHECKING=False
+
     - name: No control_machine IP is defined (e.g. control_machine=10.5.10.7)
       when: control_machine == ''
       meta: end_play
