@@ -1,5 +1,5 @@
 ---
-container_name: "teleop-control-machine"
+container_name: "control-machine"
 image: "shadowrobot/dexterous-hand"
 tag: "kinetic-release"
 ethercat_interface: "eth0"

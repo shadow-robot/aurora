@@ -1,7 +1,7 @@
 
-- name: Install Teleop software on a this control machine 
-  hosts: control_machine
-  connection: control_machine
+- name: Install Teleop software on Windows Machine
+  hosts: windows_machine
+  connection: windows_machine
   remote_user: shadowop
   vars_files:
     - vars/teleop-deploy.yml
@@ -10,21 +10,10 @@
       when: product != 'teleop'
       meta: end_play
 
-    - name: check if customer_key is provided and not false
-      when: customer_key is defined and customer_key|bool
-      set_fact:
-        use_aws: true
-      
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove|bool
-      set_fact:
-        use_cyberglove: true
-
     - name: set the value for user
       set_fact:
         user: shadowop
 
   roles:
     - { role: installation/docker }
-    - { role: products/teleop/control_machine/deploy }
-    - { role: aws, when: use_aws }
+    - { role: products/teleop/windows-machine/deploy }

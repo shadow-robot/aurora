@@ -22,5 +22,5 @@
   roles:
     - { role: installation/docker }
     - { role: installation/nvidia-docker, when: nvidia_docker|bool }
-    - { role: products/teleop/teleop-server/deploy, when: product == 'teleop' }
+    - { role: products/teleop/teleop-server/deploy }
     - { role: aws, when: use_aws }

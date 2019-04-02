@@ -1,6 +1,5 @@
 ---
 dependencies:
   - { role: docker/docker-image }
-  - { role: products/teleop/control-machine/docker-container }
-  - { role: products/hand-e/cyberglove, when: use_cyberglove }
+  - { role: products/hand-e/docker-container }
   - { role: aws, when: use_aws }
