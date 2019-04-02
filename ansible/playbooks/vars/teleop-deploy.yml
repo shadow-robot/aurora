@@ -1,6 +1,5 @@
 ---
-client: '10.5.10.7'
-client_os: 'ubuntu'
+control_machine: ''
 ethercat_interface: "eth0"
 use_aws: true
 customer_key: false

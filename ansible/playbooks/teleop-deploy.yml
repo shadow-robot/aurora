@@ -5,22 +5,35 @@
   vars_files:
     - vars/teleop-deploy.yml
   pre_tasks:
-    - name: No teleop client IP is defined (e.g. client=10.5.10.7)
-      when: client == ''
+    - name: No control_machine IP is defined (e.g. control_machine=10.5.10.7)
+      when: control_machine == ''
       meta: end_play
 
-    - name: Teleop client operating system is not windows or ubuntu (e.g. client_os=ubuntu)
-      when: client_os != 'windows' and client_os != 'ubuntu'
+    - name: No windows_machine IP is defined (e.g. windows_machine=10.5.10.8)
+      when: windows_machine == '' and use_windows
       meta: end_play
+
+    - name: Add control_machine IP to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: '{{ control_machine }} control_machine'
+        insertbefore: EOF
+
+    - name: Add windows_machine IP to /etc/hosts
+      when: use_windows
+      lineinfile:
+        path: /etc/hosts
+        line: '{{ windows_machine }} windows_machine'
+        insertbefore: EOF
 
 - name: Install Teleop software on this teleop server machine
   import_playbook: teleop-server.yml
 
-- name: Install Teleop software for Ubuntu on teleop client laptop
-  when: client_os == 'ubuntu'
-  import_playbook: teleop-client-ubuntu.yml
+- name: Install Teleop software on teleop control machine
+  import_playbook: control-machine.yml
+
+- name: Install Teleop software on teleop windows machine machine
+  when: use_windows
+  import_playbook: control-machine.yml
   
   
-
-
-

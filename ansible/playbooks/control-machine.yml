@@ -1,9 +1,8 @@
----
-- name: Install Teleop software on Ubuntu teleop client laptop
-  hosts: teleopclient
+
+- name: Install Teleop software on a this control machine 
+  hosts: control_machine
+  connection: control_machine
   remote_user: shadowop
-  become: yes
-  connection: teleopclient
   vars_files:
     - vars/teleop-deploy.yml
   pre_tasks:
@@ -27,6 +26,5 @@
 
   roles:
     - { role: installation/docker }
-    - { role: installation/nvidia-docker, when: nvidia_docker|bool }
-    - { role: products/teleop/teleop-client/deploy, when: product == 'teleop' }
+    - { role: products/teleop/control_machine/deploy }
     - { role: aws, when: use_aws }
