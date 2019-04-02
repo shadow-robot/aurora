@@ -1,7 +1,7 @@
 
 - name: Install Teleop software on Windows Machine
-  hosts: windows_machine
-  connection: windows_machine
+  hosts: windows_machine_group
+  connection: windows_machine_group
   remote_user: shadowop
   vars_files:
     - vars/teleop-deploy.yml
