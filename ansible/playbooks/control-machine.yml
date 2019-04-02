@@ -2,7 +2,7 @@
 - name: Install Teleop software on control machine 
   hosts: control_machine
   connection: control_machine
-  remote_user: shadowop
+  remote_user: "user"
   vars_files:
     - vars/teleop-deploy.yml
   pre_tasks:
@@ -22,7 +22,7 @@
 
     - name: set the value for user
       set_fact:
-        user: shadowop
+        user: "user"
 
     - name: Add teleop-server IP to /etc/hosts
       lineinfile:
