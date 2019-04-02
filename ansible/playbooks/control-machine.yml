@@ -32,6 +32,4 @@
         insertbefore: EOF
 
   roles:
-    - { role: installation/docker }
     - { role: products/teleop/control-machine/deploy }
-    - { role: aws, when: use_aws }

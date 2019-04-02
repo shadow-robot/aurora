@@ -1,5 +1,7 @@
 ---
 dependencies:
+  - { role: installation/docker }
+  - { role: installation/nvidia-docker, when: nvidia_docker|bool }
   - { role: docker/docker-image }
   - { role: products/hand-e/docker-container }
   - { role: products/hand-e/desktop-icons }
