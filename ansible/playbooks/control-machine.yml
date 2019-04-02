@@ -1,5 +1,5 @@
 
-- name: Install Teleop software on a this control machine 
+- name: Install Teleop software on control machine 
   hosts: control_machine
   connection: control_machine
   remote_user: shadowop
@@ -23,6 +23,12 @@
     - name: set the value for user
       set_fact:
         user: shadowop
+
+    - name: Add teleop-server IP to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: '{{ ansible_default_ipv4.address }} teleop-server'
+        insertbefore: EOF
 
   roles:
     - { role: installation/docker }
