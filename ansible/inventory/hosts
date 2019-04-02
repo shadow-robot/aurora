@@ -2,7 +2,7 @@
 127.0.0.1 ansible_connection=local
 
 [control_machine_group]
-control_machine ansible_connection=ssh ansible_ssh_user=shadowop ansible_user=user ansible_become=true
+control_machine ansible_connection=ssh ansible_ssh_user=shadowop ansible_user=user ansible_become=true ANSIBLE_HOST_KEY_CHECKING=false
 
 [windows_machine_group]
-windows_machine ansible_connection=ssh ansible_ssh_user=shadowop ansible_user=shadowop ansible_become=true
+windows_machine ansible_connection=ssh ansible_ssh_user=shadowop ansible_user=shadowop ansible_become=true ANSIBLE_HOST_KEY_CHECKING=false

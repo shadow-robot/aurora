@@ -3,6 +3,7 @@
   hosts: control_machine_group
   connection: control_machine_group
   remote_user: "user"
+  become: true
   vars_files:
     - vars/teleop-deploy.yml
   pre_tasks:

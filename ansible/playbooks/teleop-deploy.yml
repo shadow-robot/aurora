@@ -2,6 +2,7 @@
 - name: Prepare teleop-deploy playbook
   connection: localhost
   hosts: localhost
+  become: true
   vars_files:
     - vars/teleop-deploy.yml
   pre_tasks:
