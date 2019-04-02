@@ -2,7 +2,7 @@
 - name: Install Teleop software on control machine 
   hosts: control_machine_group
   connection: control_machine_group
-  remote_user: "user"
+  remote_user: user
   become: true
   vars_files:
     - vars/teleop-deploy.yml
