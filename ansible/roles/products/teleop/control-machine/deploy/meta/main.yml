@@ -1,6 +1,7 @@
 ---
 dependencies:
-  - { role: installation/docker }
+  - role: installation/docker
+    allow_auto_reboot : true
   - { role: docker/docker-image }
   - { role: products/hand-e/docker-container }
   - { role: aws, when: use_aws }

@@ -60,4 +60,5 @@
     timeout: '300'
 
 - name: Finishing Docker installation
+  when: not allow_auto_reboot
   meta: end_play
