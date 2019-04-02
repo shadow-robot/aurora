@@ -29,7 +29,7 @@
 
 - name: Add users to docker group
   user:
-    name: "{{ lookup('env','USER') }}"
+    name: "{{ user }}"
     groups: 'docker'
     append: 'yes'
     

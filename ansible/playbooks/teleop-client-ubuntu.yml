@@ -21,6 +21,10 @@
       set_fact:
         use_cyberglove: true
 
+    - name: set the value for user
+      set_fact:
+        user: "{{ remote_user }}"
+
   roles:
     - { role: installation/docker }
     - { role: installation/nvidia-docker, when: nvidia_docker|bool }
