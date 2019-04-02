@@ -23,7 +23,7 @@
 
     - name: set the value for user
       set_fact:
-        user: "{{ remote_user }}"
+        user: shadowop
 
   roles:
     - { role: installation/docker }
