@@ -1,4 +1,9 @@
 ---
+- name: Create the shadow_hand_launcher_folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
 - name: Creating hand setup script
   template:
     src: templates/scripts/setup-hand.j2

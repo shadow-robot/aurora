@@ -1,8 +1,29 @@
 ---
+- name: Make sure the role_path exists locally
+  file:
+    path: "{{ role_path }}/files/"
+    state: directory
+
+- name: Make sure AWS requirements.txt exists locally
+  copy:
+    src: files/requirements.txt
+    dest: "{{ role_path }}/files/requirements.txt"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+
 - name: Install AWS CLI
   pip:
     requirements: "{{ role_path }}/files/requirements.txt"
   become: true
+
+- name: Make sure shadow-upload.sh exists locally
+  copy:
+    src: files/shadow-upload.sh
+    dest: "{{ role_path }}/files/shadow-upload.sh"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
 
 - name: Copy shadow-upload.sh to the docker container
   shell: "docker cp {{ role_path }}/files/shadow-upload.sh {{ container_name }}:/usr/local/bin/shadow-upload.sh"
