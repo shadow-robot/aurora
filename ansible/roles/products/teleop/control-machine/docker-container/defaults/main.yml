@@ -1,10 +1,10 @@
 ---
-container_name: "teleop-client"
+container_name: "teleop-control-machine"
 image: "shadowrobot/dexterous-hand"
 tag: "kinetic-release"
 full_image_name: "shadowrobot/dexterous-hand:kinetic-release"
 ethercat_interface: "eth0"
-launch_hand: true
+launch_hand: false
 config_branch: demohand_A
 use_cyberglove: false
 user: "{{ lookup('env','USER') }}"

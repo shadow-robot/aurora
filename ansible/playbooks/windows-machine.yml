@@ -26,5 +26,5 @@
 
   roles:
     - { role: installation/docker }
-    - { role: products/teleop/control-machine/deploy }
+    - { role: products/teleop/control_machine/deploy }
     - { role: aws, when: use_aws }

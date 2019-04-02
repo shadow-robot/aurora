@@ -34,6 +34,6 @@
 
 - name: Install Teleop software on teleop windows machine machine
   when: use_windows
-  import_playbook: control-machine.yml
+  import_playbook: windows-machine.yml
   
   

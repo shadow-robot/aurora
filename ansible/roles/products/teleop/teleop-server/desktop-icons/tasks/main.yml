@@ -1,0 +1,36 @@
+---
+- name: Ensures that Desktop folder exists
+  file:
+    path: "{{ user_folder }}/Desktop"
+    mode: '755'
+    state: directory
+
+- name: Ensures that shadow_hand_launcher directory exists
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
+- name: Copy Teleop desktop icon
+  copy: 
+    src: files/teleop_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/teleop_icon.png"
+    mode: '664'
+
+- name: Create Teleop executable launch script
+  template:
+    src: templates/scripts/start-docker-container.j2
+    dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
+    mode: '755'
+
+- name: Create Teleop desktop icon
+  template:
+    src: ../shortcut-template/templates/desktop-icon.j2
+    dest: "{{ user_folder }}/Desktop/Teleop_Launcher.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Teleop_Launcher
+    comment: "This is application launches the teleop"
+    window_title: teleop_launcher_app_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: teleop_exec.sh
+    icon_file_name: teleop_icon.png

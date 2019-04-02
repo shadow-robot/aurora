@@ -1,6 +1,8 @@
 ---
 dependencies:
   - { role: docker/docker-image }
-  - { role: products/teleop/teleop-server/docker-container }
+  - { role: products/teleop/teleop-client/docker-container }
+  - { role: products/hand-e/desktop-icons }
+  - { role: products/teleop/teleop-server/desktop-icons }
   - { role: products/hand-e/cyberglove, when: use_cyberglove }
   - { role: aws, when: use_aws }

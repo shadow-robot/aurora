@@ -1,7 +1,7 @@
 ---
 - name: Creating the shadow_hand_launch_folder
   file: path="{{ shadow_hand_launcher_folder }}" state=directory mode=0755
-  
+
 - name: Creating hand setup script
   template:
     src: templates/scripts/setup-hand.j2
