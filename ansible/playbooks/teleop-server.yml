@@ -4,8 +4,6 @@
   connection: localhost
   vars_files:
     - vars/teleop-deploy.yml
-  environment:
-    ANSIBLE_HOST_KEY_CHECKING: False
   pre_tasks:
     - name: Product is not teleop, ending play
       when: product != 'teleop'

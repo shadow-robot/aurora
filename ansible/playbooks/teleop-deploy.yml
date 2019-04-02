@@ -5,8 +5,6 @@
   become: true
   vars_files:
     - vars/teleop-deploy.yml
-  environment:
-    ANSIBLE_HOST_KEY_CHECKING: False
   pre_tasks:
     - name: No control_machine IP is defined (e.g. control_machine=10.5.10.7)
       when: control_machine == ''
