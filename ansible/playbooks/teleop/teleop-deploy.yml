@@ -1,4 +1,10 @@
 ---
+- name: Check which hosts are available for teleop system Install
+  hosts: all
+  gather_facts: false
+  tasks:
+    - ping:
+    
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: teleop_servers
   connection: teleop_servers
