@@ -105,3 +105,4 @@ venv.bak/
 
 # Ansible
 /ansible/playbooks/*.retry
+/ansible/playbooks/teleop/*.retry
