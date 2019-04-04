@@ -1,12 +1,7 @@
 ---
-control_machine: ''
-windows_machine: ''
 ethercat_interface: "eth0"
 use_aws: true
 customer_key: false
 nvidia_docker: false
 reinstall: false
 launch_hand: false
-product: 'teleop'
-use_windows: false
-openvpn_server: false

@@ -6,13 +6,6 @@
   vars_files:
     - vars/teleop-deploy.yml
   pre_tasks:
-    - name: No control_machine IP is defined (e.g. control_machine=10.5.10.7)
-      when: control_machine == ''
-      meta: end_play
-
-    - name: No windows_machine IP is defined (e.g. windows_machine=10.5.10.8)
-      when: windows_machine == '' and use_windows
-      meta: end_play
 
     - name: Add control_machine IP to /etc/hosts
       lineinfile:
@@ -38,3 +31,19 @@
   import_playbook: windows-machine.yml
   
   
+
+  teleop_server: false
+teleop_client: false
+control_machine: false
+windows_machine: false
+staging: false
+production: false
+ethercat_interface: "eth0"
+use_aws: true
+customer_key: false
+nvidia_docker: false
+reinstall: false
+launch_hand: false
+product: 'teleop'
+use_windows: false
+openvpn_server: false
