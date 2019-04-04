@@ -1,0 +1,25 @@
+---
+- name: Install Teleop software on this teleop server machine
+  hosts: teleop_servers
+  connection: teleop_servers
+  become: true
+  import_playbook: teleop-server.yml
+
+- name: Install Teleop software on teleop control machine
+  hosts: control_machines
+  connection: control_machines
+  become: true
+  import_playbook: control-machine.yml
+
+- name: Install Teleop software on Windows machine
+  hosts: windows_machines
+  connection: windows_machines
+  become: true
+  import_playbook: windows-machine.yml
+
+- name: Install Teleop software on teleop client machine
+  hosts: teleop_clients
+  connection: teleop_clients
+  become: true
+  import_playbook: teleop-client.yml
+  
