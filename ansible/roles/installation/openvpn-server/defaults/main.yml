@@ -2,3 +2,4 @@
 openvpn_apt_repository: 'deb [arch=amd64] http://build.openvpn.net/debian/openvpn/release/2.4/ {{ ansible_distribution_release }} stable'
 user: "{{ lookup('env','USER') }}"
 user_folder: "/home/{{ user }}"
+client_name: "teleop-client"
