@@ -98,7 +98,7 @@ pushd $aurora_home
 
 pip3 install --user -r ansible/data/requirements.txt
 if [[ "${playbook}" = "teleop-deploy" ]]; then
-    ~/.local/bin/ansible-playbook -v --ask-pass --ask-become-pass -i "ansible/inventory/teleop/${aurora_inventory}" "ansible/playbooks/teleop/${playbook}.yml" --extra-vars "$*"
+    ~/.local/bin/ansible-playbook -v --ask-pass --ask-become-pass -i "ansible/inventory/teleop/${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
 else
     echo "normal"
     ~/.local/bin/ansible-playbook -v --ask-become-pass -i "ansible/inventory/${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"

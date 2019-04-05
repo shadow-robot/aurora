@@ -6,11 +6,10 @@
     - ping:
     
 - name: Install Teleop software on Ubuntu teleop server laptop
-  hosts: teleop_servers
-  connection: teleop_servers
-  become: true
+  hosts: servers
+  connection: servers
   vars_files:
-    - vars/teleop-server.yml
+    - vars/teleop/server.yml
   pre_tasks:      
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -18,6 +17,7 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
+      become: true
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -26,14 +26,13 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
   roles:
-    - { role: products/teleop/teleop-server/deploy }
+    - { role: products/teleop/server/deploy }
 
 - name: Install Teleop software on control machine 
   hosts: control_machines
   connection: control_machines
-  become: true
   vars_files:
-    - vars/control-machine.yml
+    - vars/teleop/control-machine.yml
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -41,6 +40,7 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
+      become: true
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -55,9 +55,10 @@
   hosts: windows_machines
   connection: windows_machines
   vars_files:
-    - vars/windows-machine.yml
+    - vars/teleop/windows-machine.yml
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
+      become: true
       lineinfile:
         dest: c:\Windows\System32\Drivers\etc\hosts
         regexp: '.*{{ item }}$'
@@ -69,11 +70,10 @@
     - { role: products/teleop/windows-machine/deploy }
 
 - name: Install Teleop software on Ubuntu teleop client laptop
-  hosts: teleop_clients
-  connection: teleop_clients
-  become: true
+  hosts: clients
+  connection: clients
   vars_files:
-    - vars/teleop-client.yml
+    - vars/teleop/teleop-client.yml
   pre_tasks:      
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -81,6 +81,7 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
+      become: true
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -89,4 +90,4 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
   roles:
-    - { role: products/teleop/teleop-client/deploy }
+    - { role: products/teleop/client/deploy }
