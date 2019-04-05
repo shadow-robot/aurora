@@ -1,1 +1,11 @@
 ---
+- name: Create keypair for ssh
+  openssh_keypair:
+    path: "{{ user_folder }}/.ssh/id_ssh_rsa"
+    type: rsa
+    size: 2028
+
+- name: Copying ssh key to Control-machine
+  command: sshpass -p {{ nuc_password }} ssh-copy-id user@{{ nuc_ip }}
+
+
