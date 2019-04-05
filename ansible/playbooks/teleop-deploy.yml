@@ -73,7 +73,7 @@
   hosts: clients
   connection: clients
   vars_files:
-    - vars/teleop/teleop-client.yml
+    - vars/teleop/client.yml
   pre_tasks:      
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
