@@ -5,3 +5,4 @@ customer_key: false
 nvidia_docker: false
 reinstall: false
 launch_hand: false
+laptop_address: "10.6.10.3"

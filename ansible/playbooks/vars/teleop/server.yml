@@ -5,3 +5,6 @@ customer_key: false
 nvidia_docker: false
 reinstall: false
 launch_hand: false
+sr_branch_name: "demohand_A"
+nuc_address: "10.6.10.3"
+nuc_name: "user"
