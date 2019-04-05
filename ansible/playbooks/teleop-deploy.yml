@@ -21,7 +21,7 @@
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item].ansible_host }} {{item}}"
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
@@ -44,7 +44,7 @@
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item].ansible_host }} {{item}}"
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
@@ -62,7 +62,7 @@
       lineinfile:
         dest: c:\Windows\System32\Drivers\etc\hosts
         regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item].ansible_host }} {{item}}"
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
@@ -85,7 +85,7 @@
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
-        line: "{{ hostvars[item].ansible_host }} {{item}}"
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
