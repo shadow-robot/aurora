@@ -1,0 +1,5 @@
+---
+container_name: "teleop-client"
+image: "shadowrobot/dexterous-hand"
+tag: "kinetic-release"
+ethercat_interface: "eth0"

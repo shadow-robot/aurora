@@ -29,7 +29,7 @@
 
 - name: Add users to docker group
   user:
-    name: "{{ lookup('env','USER') }}"
+    name: "{{ user }}"
     groups: 'docker'
     append: 'yes'
     
@@ -47,5 +47,18 @@
   debug:
     msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
 
-- name: Exiting installation
+- name: Rebooting computer to finish Docker installation
+  when: allow_auto_reboot
+  async: 1
+  poll: 0
+  shell: sleep 5 && reboot
+
+- name: Waiting for remote host to come back after reboot
+  when: allow_auto_reboot
+  wait_for_connection:
+    delay: '10'
+    timeout: '300'
+
+- name: Finishing Docker installation
+  when: not allow_auto_reboot
   meta: end_play

@@ -1,0 +1,6 @@
+---
+container_name: "control-machine"
+image: "shadowrobot/dexterous-hand"
+tag: "kinetic-release"
+ethercat_interface: "eth0"
+allow_auto_reboot : true
