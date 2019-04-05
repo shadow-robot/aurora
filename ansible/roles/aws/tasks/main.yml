@@ -1,37 +1,42 @@
 ---
-- name: Make sure the role_path exists locally
-  file:
-    path: "{{ role_path }}/files/"
-    state: directory
-
 - name: Make sure AWS requirements.txt exists locally
   copy:
     src: files/requirements.txt
-    dest: "{{ role_path }}/files/requirements.txt"
+    dest: "/tmp/aws-cli-requirements.txt"
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: 0644
 
 - name: Install AWS CLI
   pip:
-    requirements: "{{ role_path }}/files/requirements.txt"
+    requirements: "/tmp/aws-cli-requirements.txt"
   become: true
 
 - name: Make sure shadow-upload.sh exists locally
   copy:
     src: files/shadow-upload.sh
-    dest: "{{ role_path }}/files/shadow-upload.sh"
+    dest: "/tmp/shadow-upload.sh"
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: 0644
 
 - name: Copy shadow-upload.sh to the docker container
-  shell: "docker cp {{ role_path }}/files/shadow-upload.sh {{ container_name }}:/usr/local/bin/shadow-upload.sh"
+  shell: "docker cp /tmp/shadow-upload.sh {{ container_name }}:/usr/local/bin/shadow-upload.sh"
 
 - name: Copy customer.key to the docker container
   shell: "echo {{ customer_key }} > /tmp/customer.key; docker cp /tmp/customer.key {{ container_name }}:/usr/local/bin/customer.key"
 
 - name: Removing customer.key from local
+  file:
+    path: "/tmp/aws-cli-requirements.txt"
+    state: absent
+
+- name: Removing aws-cli-requirements.txt local
+  file:
+    path: "/tmp/shadow-upload.sh"
+    state: absent
+
+- name: Removingshadow-upload.sh from local
   file:
     path: "/tmp/customer.key"
     state: absent
