@@ -1,7 +1,7 @@
 ---
 - name: Install Docker container
-  connection: localhost
-  hosts: localhost
+  # connection: localhost
+  hosts: instance
   vars_files:
     - vars/docker-deploy.yml
   pre_tasks:

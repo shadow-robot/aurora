@@ -1,8 +1,11 @@
 ---
-- name: Converge
-  hosts: all
+# - name: Converge
+#  hosts: all
+#
+#  tasks:
+#  - name: Test role
+#    debug:
+#      msg: "Hello"
 
-  tasks:
-  - name: Test role
-    debug:
-      msg: "Hello"
+- name: Docker deploy playbook
+  import_playbook: ../../docker-deploy.yml product='new product'
