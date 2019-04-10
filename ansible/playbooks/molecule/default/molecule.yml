@@ -10,6 +10,9 @@ platforms:
     image: centos:7
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      roles_path: ../../../roles
   lint:
     name: ansible-lint
 verifier:
