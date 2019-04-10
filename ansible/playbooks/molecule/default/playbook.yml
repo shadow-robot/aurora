@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+
+  tasks:
+  - name: Test role
+    debug:
+      msg: "Hello"
