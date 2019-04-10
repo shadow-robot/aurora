@@ -12,10 +12,21 @@ RUN set -x && \
     echo "Installing wget" && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
     \
+    echo "Installing unarchiver" && \
+    apt-get install -y xz-utils && \
+    \
     echo "Installing Python 3.7 for Ubuntu Xenial from source code" && \
+    apt-get install -y \
+        build-essential \
+        libssl-dev \
+        libffi-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        zlib1g-dev && \
     mkdir -p /tmp/python && \
-    wget -c https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz && \
-    tar xf Python-3.7.0.tar.xz && \
+    cd /tmp/python && \
+    wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz && \
+    tar xf ./Python-3.7.0.tar.xz && \
     cd /tmp/python/Python-3.7.0 && \
     ./configure && \
     make && \
@@ -27,7 +38,7 @@ RUN set -x && \
     python3.7 ./get-pip.py && \
     \
     echo "Install Docker" && \
-    apt-get install \
+    apt-get install -y \
         apt-transport-https \
         ca-certificates \
         curl \
@@ -37,7 +48,7 @@ RUN set -x && \
     apt-key fingerprint 0EBFCD88 && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" && \
     apt-get update && \
-    apt-get install docker-ce docker-ce-cli containerd.io && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io && \
     \
     echo "Clonning Aurora" && \
     cd /tmp && \
