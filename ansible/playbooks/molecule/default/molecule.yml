@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: localhost
+  - name: instance
     image: ubuntu:xenial-20190222
 provisioner:
   name: ansible
