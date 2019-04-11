@@ -8,13 +8,12 @@ lint:
 platforms:
   - name: instance
     image: ubuntu:xenial-20190222
+    groups:
+      - localhost
 provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../roles
-  inventory:
-    links:
-      group_vars: group_vars/
   lint:
     name: ansible-lint
 verifier:
