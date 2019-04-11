@@ -9,7 +9,7 @@ platforms:
   - name: instance
     image: ubuntu:xenial-20190222
     groups:
-      - localhost
+      - docker-deploy
 provisioner:
   name: ansible
   env:

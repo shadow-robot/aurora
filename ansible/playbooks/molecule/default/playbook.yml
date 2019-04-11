@@ -1,5 +1,4 @@
 ---
 - name: Docker deploy playbook
-  import_playbook: >
-    ../../docker-deploy.yml
-      product='new product'
+  import_playbook: ../../docker-deploy.yml
+    product='new product'

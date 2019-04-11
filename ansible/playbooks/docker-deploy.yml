@@ -1,8 +1,6 @@
 ---
 - name: Install Docker container
-  hosts: all
-  vars_files:
-    - vars/docker-deploy.yml
+  hosts: docker-deploy
   pre_tasks:
 
     - name: Debug message

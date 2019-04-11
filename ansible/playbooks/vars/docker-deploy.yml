@@ -1,8 +1,0 @@
----
-nvidia_docker: false
-reinstall: false
-launch_hand: false
-product: ''
-ethercat_interface: "eth0"
-use_aws: false
-customer_key: false
