@@ -1,0 +1,93 @@
+---
+- name: Check which hosts are available for teleop system Install
+  hosts: all
+  gather_facts: false
+  tasks:
+    - ping:
+    
+- name: Install Teleop software on Ubuntu teleop server laptop
+  hosts: servers
+  connection: servers
+  vars_files:
+    - vars/teleop/server.yml
+  pre_tasks:      
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove|bool
+      set_fact:
+        use_cyberglove: true
+
+    - name: Add IP address of all hosts to all hosts
+      become: true
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+  roles:
+    - { role: products/teleop/server/deploy }
+
+- name: Install Teleop software on control machine 
+  hosts: control_machines
+  connection: control_machines
+  vars_files:
+    - vars/teleop/control-machine.yml
+  pre_tasks:
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove|bool
+      set_fact:
+        use_cyberglove: true
+
+    - name: Add IP address of all hosts to all hosts
+      become: true
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+  roles:
+    - { role: products/teleop/control-machine/deploy }
+
+- name: Install Teleop software on Windows Machine
+  hosts: windows_machines
+  connection: windows_machines
+  vars_files:
+    - vars/teleop/windows-machine.yml
+  pre_tasks:
+    - name: Add IP address of all hosts to all hosts
+      become: true
+      lineinfile:
+        dest: c:\Windows\System32\Drivers\etc\hosts
+        regexp: '.*{{ item }}$'
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+  roles:
+    - { role: products/teleop/windows-machine/deploy }
+
+- name: Install Teleop software on Ubuntu teleop client laptop
+  hosts: clients
+  connection: clients
+  vars_files:
+    - vars/teleop/client.yml
+  pre_tasks:      
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove|bool
+      set_fact:
+        use_cyberglove: true
+
+    - name: Add IP address of all hosts to all hosts
+      become: true
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '.*{{ item }}$'
+        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+  roles:
+    - { role: products/teleop/client/deploy }
