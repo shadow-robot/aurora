@@ -1,5 +1,9 @@
 FROM shadowrobot/aurora-molecule:xenial
 
+MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
+
+LABEL Description="This image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
+
 RUN set -x && \
     apt-get update && \
     \
