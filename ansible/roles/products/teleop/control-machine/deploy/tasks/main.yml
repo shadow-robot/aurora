@@ -19,4 +19,5 @@
     interactive: yes
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
     command: "/bin/bash"
-    with_items: "{{ groups['servers'] }}"
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups['servers'] }}"
