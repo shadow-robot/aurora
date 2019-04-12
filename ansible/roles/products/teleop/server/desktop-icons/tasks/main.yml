@@ -36,3 +36,22 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: teleop_exec.sh
     icon_file_name: teleop_icon.png
+
+- name: Create Shadow_Hand_TeleOp_Launcher executable launch script
+  template:
+    src: ../../../hand-e/shortcut-template/templates/scripts/start-docker-container.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
+    mode: '755'
+
+- name: Create Shadow_Hand_Launcher desktop icon
+  template:
+    src: ../../../hand-e/shortcut-template/templates/desktop-icon.j2
+    dest: "{{ user_folder }}/Desktop/Shadow_Hand_TeleOp_Launcher.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Shadow_Hand_TeleOp_Launcher
+    comment: "This is application launches the GUI of the hand"
+    window_title: shadow_launcher_app_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: shadow_launcher_exec.sh
+    icon_file_name: teleop_icon.png
