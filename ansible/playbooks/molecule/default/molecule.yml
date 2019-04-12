@@ -10,10 +10,15 @@ platforms:
     image: ubuntu:xenial-20190222
     groups:
       - docker-deploy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
 provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../roles
+  inventory:
+    links:
+      group_vars: ../../../inventory/local/group_vars
   lint:
     name: ansible-lint
 verifier:
