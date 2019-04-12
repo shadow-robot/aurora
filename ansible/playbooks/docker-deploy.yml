@@ -1,20 +1,9 @@
 ---
 
-# TODO: Move to common playbook for all playbooks
-
 - name: Install Python 3
-  hosts: all
-  become: yes
-  gather_facts: no
-  pre_tasks:
+  import_playbook: ./install-python3.yml
 
-    - name: Update repos
-      raw: 'apt update'
-
-    - name: Install Python3
-      raw: 'apt-get -y install python3'
-
-- name: Install Docker container
+- name: Install product Docker container and icons
   hosts: docker-deploy
   pre_tasks:
 

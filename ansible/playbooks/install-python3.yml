@@ -1,0 +1,22 @@
+---
+# TODO: Add code for Windows and check if Python already exists to avoid double execution
+
+- name: Install Python 3
+  hosts: all
+  become: yes
+  gather_facts: no
+  pre_tasks:
+
+    - name: Update repos
+      raw: 'apt update'
+
+    - name: Install Python3
+      raw: 'apt-get -y install python3'
+
+- name: Set Python 3 variable
+  hosts: all
+  pre_tasks:
+
+    - name: Set Python 3 interpreter
+      set_fact:
+        ansible_python_interpreter: "/usr/bin/python3"
