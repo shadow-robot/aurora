@@ -4,7 +4,7 @@
   register: docker_id
 
 - name: Set container_exists to true
-  when: docker_id.stdout != ""
+  when: docker_id.stdout | length > 0
   set_fact:
     container_exists: true
 
@@ -17,7 +17,7 @@
   when: container_exists
   set_fact:
     container_running: "{{ container_running.stdout | bool }}"
-    
+
 - name: Exit if container already running
   import_tasks: exit.yml
   when: container_running
