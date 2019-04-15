@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e # fail on errors
-#set -x # echo commands run
+set -x # echo commands run
 
 script_name=$(basename $BASH_SOURCE)
 
@@ -97,12 +97,16 @@ echo ""
 pushd $aurora_home
 
 pip3 install --user -r ansible/data/ansible/requirements.txt
+ansible_flags="-v --ask-become-pass "
 if [[ "${playbook}" = "teleop-deploy" ]]; then
-    ~/.local/bin/ansible-playbook -v --ask-pass --ask-become-pass -i "ansible/inventory/teleop/${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
+    ansible_flags="${ansible_flags} --ask-pass "
+    aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
 else
-    echo "normal"
-    ~/.local/bin/ansible-playbook -v --ask-become-pass -i "ansible/inventory/${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
+#    ansible_flags="${ansible_flags} --limit ${playbook} " # Consider for using in case of duplication
+    aurora_inventory="ansible/inventory/${aurora_inventory}"
 fi
+
+~/.local/bin/ansible-playbook $ansible_flags -i $aurora_inventory "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
 
 popd
 
