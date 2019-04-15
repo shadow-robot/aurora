@@ -1,4 +1,0 @@
----
-- name: Teleop-deploy playbook
-  import_playbook: ../../teleop-deploy.yml
-    ethercat_interface="enp0s25"
