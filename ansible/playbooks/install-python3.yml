@@ -10,6 +10,7 @@
 
 - name: Set Python 3 variable
   hosts: all
+  gather_facts: no
   pre_tasks:
 
     - name: Set Python 3 interpreter
