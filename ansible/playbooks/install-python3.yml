@@ -12,7 +12,7 @@
       ignore_errors: yes
 
     - name: Install Python 3 in case if it is not installed
-      raw: 'test -e /usr/bin/python3 || (apt -y update && apt install -y python3)'
+      raw: 'apt -y update && apt install -y python3'
       when: output.rc == 1
 
 - name: Set Python 3 variable
