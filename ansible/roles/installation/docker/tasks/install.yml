@@ -1,8 +1,14 @@
 ---
+
 - name: Install Docker dependencies
   apt:
-    name: ['apt-transport-https', 'ca-certificates']
+    name: "{{ packages }}"
     state: 'present'
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
 
 - name: Add Docker repo apt key
   apt_key:
@@ -18,8 +24,13 @@
 
 - name: Install Docker
   apt:
-    name: docker-ce
+    name: "{{ packages }}"
     state: 'present'
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
 
 - name: Enable Docker systemd service
   service:

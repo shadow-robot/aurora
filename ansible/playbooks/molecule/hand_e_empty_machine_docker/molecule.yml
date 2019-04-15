@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
+  - name: hand_e_empty_machine_docker
     image: ubuntu:xenial-20190222
     groups:
       - docker-deploy
