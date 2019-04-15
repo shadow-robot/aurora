@@ -6,10 +6,14 @@
   gather_facts: no
   pre_tasks:
 
+    - name: Check if python3 is installed
+      raw: 'test -e /usr/bin/python3'
+      register: output
+      ignore_errors: yes
+
     - name: Install Python 3 in case if it is not installed
       raw: 'test -e /usr/bin/python3 || (apt -y update && apt install -y python3)'
-      register: output
-      changed_when: output.stdout | length > 0
+      when: output.rc == 1
 
 - name: Set Python 3 variable
   hosts: all
