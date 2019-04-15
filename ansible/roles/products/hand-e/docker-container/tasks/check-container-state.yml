@@ -10,7 +10,7 @@
 
 - name: Checking if container already running
   when: container_exists
-  shell: "docker inspect -f '{{ '{{' }}.State.Running}}' {{ container_name }}"
+  shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
   register: container_running
 
 - name: Set container_running to true
