@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 set -e # fail on errors
-#set -x # echo commands run
+set -x # echo commands run
 
-script_name=run-ansible.sh
-command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
-command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
+script_name=$(basename $BASH_SOURCE)
 
 if [[ $# < 2 ]]; then
+    command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
+    command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
     echo $command_usage_message
     exit 1
 fi
