@@ -6,8 +6,7 @@ LABEL Description="This image contains Ansible and Molecule" Vendor="Shadow Robo
 
 ENV DEBIAN_FRONTEND noninteractive
 
-#ENV aurora_branch="master"
-ENV aurora_branch="F#SRC-3066_adding_molecule"
+ENV aurora_branch="master"
 
 RUN set -x && \
     apt-get update && \
