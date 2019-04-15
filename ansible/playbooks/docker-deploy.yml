@@ -1,10 +1,12 @@
 ---
-- name: Install Docker container
-  connection: localhost
-  hosts: localhost
-  vars_files:
-    - vars/docker-deploy.yml
+
+- name: Install Python 3
+  import_playbook: ./install-python3.yml
+
+- name: Install product Docker container and icons
+  hosts: docker-deploy
   pre_tasks:
+
     - name: No product is defined
       when: product != 'hand_e' and product != 'hand_h'
       meta: end_play
@@ -13,15 +15,15 @@
       when: customer_key is defined and customer_key|bool
       set_fact:
         use_aws: true
-      
+
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
       set_fact:
         use_cyberglove: true
 
   roles:
-    - { role: installation/docker }
-    - { role: installation/nvidia-docker, when: nvidia_docker|bool }
-    - { role: products/hand-h/deploy, when: product == 'hand_h' }
-    - { role: products/hand-e/deploy, when: product == 'hand_e' }
-    - { role: aws, when: use_aws }
+    - {role: installation/docker}
+    - {role: installation/nvidia-docker, when: nvidia_docker|bool}
+    - {role: products/hand-h/deploy, when: product == 'hand_h'}
+    - {role: products/hand-e/deploy, when: product == 'hand_e'}
+    - {role: aws, when: use_aws}

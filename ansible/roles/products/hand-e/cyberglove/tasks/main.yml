@@ -4,14 +4,14 @@
     path: "{{ user_folder }}/Desktop"
     mode: '755'
     state: directory
-    
+
 - name: Ensures that shadow_hand_launcher directory exists
   file:
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
 - name: Copy Cyberglove desktop icon
-  copy: 
+  copy:
     src: files/cyberglove.png
     dest: "{{ shadow_hand_launcher_folder }}/cyberglove.png"
     mode: '664'

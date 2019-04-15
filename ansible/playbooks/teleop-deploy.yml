@@ -4,13 +4,13 @@
   gather_facts: false
   tasks:
     - ping:
-    
+
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: servers
   connection: servers
   vars_files:
     - vars/teleop/server.yml
-  pre_tasks:      
+  pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
       set_fact:
@@ -28,7 +28,7 @@
   roles:
     - { role: products/teleop/server/deploy }
 
-- name: Install Teleop software on control machine 
+- name: Install Teleop software on control machine
   hosts: control_machines
   connection: control_machines
   vars_files:
@@ -74,7 +74,7 @@
   connection: clients
   vars_files:
     - vars/teleop/client.yml
-  pre_tasks:      
+  pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
       set_fact:

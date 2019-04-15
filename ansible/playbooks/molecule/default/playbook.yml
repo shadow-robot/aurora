@@ -1,0 +1,5 @@
+---
+- name: Docker deploy playbook for non existing product
+  import_playbook: ../../docker-deploy.yml
+    product="non_existing_product"
+    ethercat_interface="enp0s25"
