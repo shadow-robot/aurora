@@ -40,4 +40,3 @@
   file:
     path: "/tmp/customer.key"
     state: absent
-  

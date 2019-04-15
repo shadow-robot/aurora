@@ -11,7 +11,7 @@
     state: directory
 
 - name: Copy Shadow_Hand_Launcher desktop icon
-  copy: 
+  copy:
     src: files/hand-e.png
     dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
     mode: '664'
@@ -41,13 +41,13 @@
     state: directory
 
 - name: Copy ROS Logs Saver desktop icon
-  copy: 
+  copy:
     src: files/log-icon.png
     dest: "{{ save_latest_ros_logs_folder }}/log-icon.png"
     mode: '664'
 
 - name: Copy ROS Logs Saver main script
-  copy: 
+  copy:
     src: files/save-latest-ros-logs.sh
     dest: "{{ save_latest_ros_logs_folder }}/save-latest-ros-logs.sh"
     mode: '755'
