@@ -1,6 +1,6 @@
 ---
 - name: Copy Close Hand desktop icon
-  copy: 
+  copy:
     src: files/close-hand-icon.png
     dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon.png"
     mode: '664'
@@ -27,7 +27,7 @@
     icon_file_name: close-hand-icon.png
 
 - name: Copy Open Hand desktop icon
-  copy: 
+  copy:
     src: files/open-hand-icon.png
     dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon.png"
     mode: '664'
@@ -54,7 +54,7 @@
     icon_file_name: open-hand-icon.png
 
 - name: Copy Standard Demo desktop icon
-  copy: 
+  copy:
     src: files/demo-hand-icon.png
     dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon.png"
     mode: '664'
