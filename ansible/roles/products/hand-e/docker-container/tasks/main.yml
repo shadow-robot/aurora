@@ -3,6 +3,7 @@
   shell: id -u
   register: id
   when: id is not defined
+  changed_when: id is not defined
 
 - name: Reinstall docker container
   when: reinstall|bool
