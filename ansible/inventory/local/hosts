@@ -1,5 +1,5 @@
 [docker-deploy]
-127.0.0.1  ansible_connection=local
+docker-deploy-local ansible_host=127.0.0.1 ansible_connection=local
 
 [install-software]
-127.0.0.1  ansible_connection=local
+install-software-local ansible_host=127.0.0.1 ansible_connection=local
