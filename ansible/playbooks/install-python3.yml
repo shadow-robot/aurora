@@ -8,12 +8,13 @@
 
     - name: Check if python3 is installed
       raw: 'test -e /usr/bin/python3'
-      register: output
+      register: python3_check
+      changed_when: python3_check is not defined
       ignore_errors: yes
 
     - name: Install Python 3 in case if it is not installed
       raw: 'apt -y update && apt install -y python3'
-      when: output.rc == 1
+      when: python3_check.rc == 1
 
 - name: Set Python 3 variable
   hosts: all
