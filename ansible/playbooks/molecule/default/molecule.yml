@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: default_docker
-    image: ubuntu:xenial-20190222
+    image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
       - docker-deploy
     volumes:
