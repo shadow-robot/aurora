@@ -12,6 +12,8 @@
 
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
+  environment:
+    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python3.7/site-packages"
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -32,6 +34,8 @@
 
 - name: Install Teleop software on control machine
   hosts: control_machine
+  environment:
+    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python3.7/site-packages"
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -67,6 +71,8 @@
 
 - name: Install Teleop software on Ubuntu teleop client laptop
   hosts: client
+  environment:
+    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python3.7/site-packages"
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
