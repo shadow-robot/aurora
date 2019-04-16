@@ -1,14 +1,14 @@
 ---
 
 - name: Install Python 3
-  hosts: all
   import_playbook: ./install-python3.yml
 
 - name: Check which hosts are available for teleop system Install
   hosts: all
   gather_facts: false
   tasks:
-    - ping:
+    - name: ping all the machines
+      ping:
 
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
@@ -23,7 +23,7 @@
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
-        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
@@ -43,7 +43,7 @@
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
-        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
@@ -58,7 +58,7 @@
       lineinfile:
         dest: c:\Windows\System32\Drivers\etc\hosts
         regexp: '.*{{ item }}$'
-        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
@@ -78,7 +78,7 @@
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
-        line: "{{item}} {{ hostvars[item].ansible_host }}"
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
