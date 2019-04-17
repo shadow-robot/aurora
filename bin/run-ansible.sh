@@ -6,8 +6,8 @@ set -x # echo commands run
 script_name=$(basename $BASH_SOURCE)
 
 if [[ $# < 2 ]]; then
-    command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
-    command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
+    command_usage_message="Command usage: ./$script_name <playbook name> [--debug-branch <name>] [--inventory <name>]"
+    command_usage_message="$command_usage_message [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
     echo $command_usage_message
     exit 1
 fi
@@ -22,24 +22,24 @@ key="$1"
 case $key in
     --debug-branch)
     aurora_tools_branch="$2"
-    shift
+    shift 2
     ;;
     --inventory)
     aurora_inventory="$2"
-    shift
+    shift 2
     ;;
     *)
+    break
     ;;
 esac
-shift
 done
 
-if [ -z "${aurora_tools_branch}" ];
+if [[ -z $aurora_tools_branch ]];
 then
     aurora_tools_branch=master
 fi
 
-if [ -z "${aurora_inventory}" ];
+if [[ -z $aurora_inventory ]];
 then
     aurora_inventory=local
 fi
