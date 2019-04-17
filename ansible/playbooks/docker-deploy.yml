@@ -7,6 +7,10 @@
   hosts: docker-deploy
   pre_tasks:
 
+    - name: Checking supplied variables
+      debug:
+        msg: "product => {{ product }} has ethercat_interface => {{ ethercat_interface }}"
+
     - name: No product is defined
       when: product != 'hand_e' and product != 'hand_h'
       meta: end_play
