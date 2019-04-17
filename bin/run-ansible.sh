@@ -6,9 +6,9 @@ set -x # echo commands run
 script_name=$(basename $BASH_SOURCE)
 
 if [[ $# < 2 ]]; then
-    command_usage_message="Command usage: ./$script_name <playbook name> [--debug-branch <name>] [--inventory <name>]"
-    command_usage_message="$command_usage_message [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
-    echo $command_usage_message
+    command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
+    command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
+    echo "${command_usage_message}"
     exit 1
 fi
 
@@ -19,7 +19,7 @@ shift
 while [[ $# > 1 ]]
 do
 key="$1"
-case $key in
+case ${key} in
     --debug-branch)
     aurora_tools_branch="$2"
     shift 2
@@ -34,12 +34,12 @@ case $key in
 esac
 done
 
-if [[ -z $aurora_tools_branch ]];
+if [[ -z ${aurora_tools_branch} ]];
 then
     aurora_tools_branch=master
 fi
 
-if [[ -z $aurora_inventory ]];
+if [[ -z ${aurora_inventory} ]];
 then
     aurora_inventory=local
 fi
@@ -84,9 +84,9 @@ done
 
 sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
 sudo chown $USER:$USER $aurora_home || true
-sudo rm -rf $aurora_home
+sudo rm -rf ${aurora_home}
 
-git clone --depth 1 -b $aurora_tools_branch https://github.com/shadow-robot/aurora.git $aurora_home
+git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git $aurora_home
 
 echo ""
 echo " -------------------"
@@ -106,7 +106,7 @@ else
     aurora_inventory="ansible/inventory/${aurora_inventory}"
 fi
 
-~/.local/bin/ansible-playbook $ansible_flags -i $aurora_inventory "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
+~/.local/bin/ansible-playbook ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
 
 popd
 
