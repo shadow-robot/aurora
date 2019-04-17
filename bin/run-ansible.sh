@@ -41,7 +41,7 @@ fi
 
 if [[ -z ${aurora_inventory} ]];
 then
-    aurora_inventory=local
+    aurora_inventory="local/${playbook}"
 fi
 
 
@@ -102,7 +102,6 @@ if [[ "${playbook}" = "teleop-deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-pass "
     aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
 else
-#    ansible_flags="${ansible_flags} --limit ${playbook} " # Consider for using in case of duplication
     aurora_inventory="ansible/inventory/${aurora_inventory}"
 fi
 
