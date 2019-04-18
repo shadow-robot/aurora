@@ -1,5 +1,4 @@
 ---
-
 - name: Creating the container
   docker_container:
     name: "{{ container_name }}"
