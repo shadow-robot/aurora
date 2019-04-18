@@ -12,7 +12,7 @@
       QT_X11_NO_MITSHM: "1"
       LOCAL_USER_ID: "{{ id.stdout }}"
       DISPLAY: :0
-      ROS_MASTER_URI: "http://'{{ groups['control-machine'].ansible_host }}':11311"
+      ROS_MASTER_URI: "http://'{{ groups['control-machine']['ansible_default_ipv4']['address'] }}':11311"
     network_mode: "host"
     privileged: yes
     interactive: yes
