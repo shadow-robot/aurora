@@ -6,7 +6,10 @@ LABEL Description="This image contains Ansible and Molecule" Vendor="Shadow Robo
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV aurora_branch="master"
+ENV PYTHONPATH "/usr/local/lib/python3.7/site-packages"
+
+ENV aurora_branch "master"
+
 
 RUN set -x && \
     apt-get update && \
