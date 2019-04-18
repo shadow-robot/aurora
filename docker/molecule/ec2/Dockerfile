@@ -2,7 +2,7 @@ FROM shadowrobot/aurora-molecule:xenial
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
-LABEL Description="This image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="This image contains Ansible, Molecule and EC2 driver" Vendor="Shadow Robot" Version="1.0"
 
 ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
 
@@ -17,7 +17,7 @@ RUN set -x && \
     cd /tmp/aurora/ && \
     export ANSIBLE_ROLES_PATH="/tmp/aurora/ansible/roles" && \
     ansible-playbook -vvv --ask-become-pass -i ansible/inventory/local/install-software \
-        ansible/playbooks/install-software.yml --extra-vars 'software=[docker]' && \
+        ansible/playbooks/install-software.yml --extra-vars 'software=[aws-cli]' && \
     \
     echo "Clean up" && \
     apt-get clean && \
