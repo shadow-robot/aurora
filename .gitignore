@@ -105,3 +105,12 @@ venv.bak/
 
 # Ansible
 /ansible/playbooks/*.retry
+
+# PyCharm IDE
+.idea
+
+# QtCreator files
+CMakeLists.txt.user
+
+# VS Code configuration
+.vscode

@@ -2,22 +2,23 @@
 - name: Checking if container exists
   shell: "docker ps -aq -f name=^/{{ container_name }}$"
   register: docker_id
+  when: docker_id is not defined
 
 - name: Set container_exists to true
-  when: docker_id.stdout != ""
+  when: docker_id.stdout | length > 0
   set_fact:
     container_exists: true
 
 - name: Checking if container already running
   when: container_exists
-  shell: "docker inspect -f '{{ '{{' }}.State.Running}}' {{ container_name }}"
+  shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
   register: container_running
 
 - name: Set container_running to true
   when: container_exists
   set_fact:
     container_running: "{{ container_running.stdout | bool }}"
-    
+
 - name: Exit if container already running
   import_tasks: exit.yml
   when: container_running

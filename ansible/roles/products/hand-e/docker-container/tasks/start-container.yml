@@ -1,7 +1,7 @@
 ---
 - name: Notifying user that the container already exists
   debug:
-    msg: 
+    msg:
       - "Container with specified name already exists."
       - "Please wait for docker container to start in a new terminal as this might take a while... "
 

@@ -1,16 +1,18 @@
 ---
+
+- name: Install Python 3
+  hosts: all
+  import_playbook: ./install-python3.yml
+
 - name: Check which hosts are available for teleop system Install
   hosts: all
   gather_facts: false
   tasks:
     - ping:
-    
+
 - name: Install Teleop software on Ubuntu teleop server laptop
-  hosts: servers
-  connection: servers
-  vars_files:
-    - vars/teleop/server.yml
-  pre_tasks:      
+  hosts: server
+  pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
       set_fact:
@@ -28,11 +30,8 @@
   roles:
     - { role: products/teleop/server/deploy }
 
-- name: Install Teleop software on control machine 
-  hosts: control_machines
-  connection: control_machines
-  vars_files:
-    - vars/teleop/control-machine.yml
+- name: Install Teleop software on control machine
+  hosts: control_machine
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -52,10 +51,7 @@
     - { role: products/teleop/control-machine/deploy }
 
 - name: Install Teleop software on Windows Machine
-  hosts: windows_machines
-  connection: windows_machines
-  vars_files:
-    - vars/teleop/windows-machine.yml
+  hosts: windows_machine
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
       become: true
@@ -70,11 +66,8 @@
     - { role: products/teleop/windows-machine/deploy }
 
 - name: Install Teleop software on Ubuntu teleop client laptop
-  hosts: clients
-  connection: clients
-  vars_files:
-    - vars/teleop/client.yml
-  pre_tasks:      
+  hosts: client
+  pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
       set_fact:
