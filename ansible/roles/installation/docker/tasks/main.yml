@@ -1,4 +1,14 @@
 ---
+- name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
+  apt:
+    name: 'python3-pip'
+    state: 'present'
+
+- name: Install Docker pip module
+  pip:
+    name: docker
+    state: present
+
 - name: Check if Docker is already installed
   stat: 'path=/etc/init.d/docker'
   register: docker_check
