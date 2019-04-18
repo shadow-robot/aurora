@@ -15,5 +15,3 @@
   with_items:
     - id_rsa
     - id_rsa.pub
-
-

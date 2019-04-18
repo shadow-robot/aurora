@@ -36,8 +36,7 @@
     path: "/tmp/shadow-upload.sh"
     state: absent
 
-- name: Removingshadow-upload.sh from local
+- name: Removing shadow-upload.sh from local
   file:
     path: "/tmp/customer.key"
     state: absent
-  

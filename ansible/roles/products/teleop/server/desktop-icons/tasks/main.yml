@@ -22,7 +22,8 @@
     dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
     mode: '755'
   set_fact:
-    nuc_address: "{{ groups['control_machines'] }}"
+    nuc_address: "{{ groups['control-machine']['ansible_default_ipv4']['address'] }}"
+    nuc_username: "{{ groups['control-machine'].ansible_user }}"
 
 - name: Create Teleop desktop icon
   template:

@@ -1,0 +1,5 @@
+---
+- name: Docker deploy playbook for Hand E
+  import_playbook: ../../docker-deploy.yml
+    product="hand_e"
+    ethercat_interface="enp0s25"
