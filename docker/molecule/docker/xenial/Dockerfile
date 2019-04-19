@@ -10,11 +10,11 @@ RUN set -x && \
     \
     echo "Install Docker using playbook to avoid installing Python 3.5" && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $aurora_branch /tmp/aurora && \
-    pushd /tmp/aurora/ && \
+    cd /tmp/aurora/ && \
     export ANSIBLE_ROLES_PATH="/tmp/aurora/ansible/roles" && \
     ansible-playbook -vvv --ask-become-pass -i ansible/inventory/local/install-software \
         ansible/playbooks/install-software.yml --extra-vars 'software=[docker]' && \
-    popd && \
+    cd /root && \
     \
     echo "Clean up" && \
     apt-get clean && \
