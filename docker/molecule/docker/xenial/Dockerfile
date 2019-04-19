@@ -7,7 +7,7 @@ LABEL Description="This image contains Ansible, Molecule and Docker driver" Vend
 ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
 
 RUN set -x && \
-    apt-get update && \
+    apt update && \
     \
     echo "Install sudo and sshpass" && \
     apt install -y sudo sshpass && \
@@ -20,5 +20,5 @@ RUN set -x && \
         ansible/playbooks/install-software.yml --extra-vars 'software=[docker]' && \
     \
     echo "Clean up" && \
-    apt-get clean && \
+    apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache
