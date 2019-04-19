@@ -6,7 +6,7 @@
   gather_facts: no
   pre_tasks:
 
-    - name: Check if python3 is installed
+    - name: Check if Python 3 is installed
       raw: 'python3 --version'
       register: output
       ignore_errors: yes
@@ -20,6 +20,10 @@
   gather_facts: no
   pre_tasks:
 
+    - name: Get path to Python 3 interpreter
+      raw: 'which python3'
+      register: path_to_python
+
     - name: Set Python 3 interpreter
       set_fact:
-        ansible_python_interpreter: "/usr/bin/python3"
+        ansible_python_interpreter: "{{ path_to_python.stdout_lines | first }}"
