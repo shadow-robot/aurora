@@ -29,7 +29,7 @@ RUN set -x && \
     echo "Installing wget" && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
     \
-    echo "Clonning Aurora" && \
+    echo "Cloning Aurora" && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $aurora_branch /tmp/aurora && \
     \
     echo "Installing molecule" && \
