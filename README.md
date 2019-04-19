@@ -58,3 +58,4 @@ Example:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) docker-deploy product=hand_e ethercat_interface=enp0s25
 ```
+
