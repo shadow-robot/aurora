@@ -18,17 +18,20 @@
 
 - name: Creating PyCharm directory
   file:
-    path: {{ pycharm_home }}
+    path: "{{ pycharm_home }}"
     state: directory
   become: yes
 
 - name: Unarchive binaries from the internet
   unarchive:
     src: https://download-cf.jetbrains.com/python/pycharm-community-2018.3.5.tar.gz
-    dest: {{ pycharm_home }}
+    dest: "{{ pycharm_home }}"
     remote_src: yes
   become: yes
 
 - name: Create easy access symlink
-  file: src={{pycharm_home}}/bin/pycharm.sh dest=/usr/bin/pycharm state=link
+  file:
+    src: "{{pycharm_home}}/bin/pycharm.sh"
+    dest: /usr/bin/pycharm
+    state: link
   become: yes
