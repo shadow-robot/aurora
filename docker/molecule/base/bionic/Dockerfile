@@ -23,7 +23,7 @@ RUN set -x && \
          python-crypto \
          libssl-dev \
          libffi-dev \
-         sshpass
+         sshpass \
          sudo && \
     \
     echo "Installing wget" && \
