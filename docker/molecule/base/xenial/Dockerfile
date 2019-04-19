@@ -11,19 +11,19 @@ ENV PYTHONPATH "/usr/local/lib/python3.7/site-packages"
 ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
 
 RUN set -x && \
-    apt update && \
+    apt-get update && \
     \
     echo "Installing git" && \
-    apt install -y git && \
+    apt-get install -y git && \
     \
     echo "Installing wget" && \
-    apt install -y --no-install-recommends ca-certificates wget && \
+    apt-get install -y --no-install-recommends ca-certificates wget && \
     \
     echo "Installing unarchiver" && \
-    apt install -y xz-utils && \
+    apt-get install -y xz-utils && \
     \
     echo "Installing Python 3.7 for Ubuntu Xenial from source code" && \
-    apt install -y \
+    apt-get install -y \
         build-essential \
         libssl-dev \
         libffi-dev \
@@ -52,5 +52,5 @@ RUN set -x && \
     pip3.7 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
     echo "Clean up" && \
-    apt clean && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache

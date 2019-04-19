@@ -7,10 +7,10 @@ LABEL Description="This image contains Ansible, Molecule and Docker driver" Vend
 ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
 
 RUN set -x && \
-    apt update && \
+    apt-get update && \
     \
     echo "Install sudo and sshpass" && \
-    apt install -y sudo sshpass && \
+    apt-get install -y sudo sshpass && \
     \
     echo "Install Docker using playbook to avoid installing Python 3.5" && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $aurora_branch /tmp/aurora && \
@@ -20,5 +20,5 @@ RUN set -x && \
         ansible/playbooks/install-software.yml --extra-vars 'software=[docker]' && \
     \
     echo "Clean up" && \
-    apt clean && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache

@@ -9,10 +9,10 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
 
 RUN set -x && \
-    apt update && \
+    apt-get update && \
     \
     echo "Installing git and Python 3" && \
-    apt install -y \
+    apt-get install -y \
          python3-pip \
          git \
          libyaml-dev \
@@ -28,5 +28,5 @@ RUN set -x && \
     pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
     echo "Clean up" && \
-    apt clean && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache
