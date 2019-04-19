@@ -6,12 +6,16 @@ LABEL Description="This Ubuntu Bionic image contains Ansible and Molecule" Vendo
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV LC_ALL C.UTF-8
+
+ENV LANG C.UTF-8
+
 ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
 
 RUN set -x && \
     apt-get update && \
     \
-    echo "Installing git and Python 3" && \
+    echo "Installing git, sudo and Python 3" && \
     apt-get install -y \
          python3-pip \
          git \
@@ -19,7 +23,11 @@ RUN set -x && \
          python-crypto \
          libssl-dev \
          libffi-dev \
-         sshpass && \
+         sshpass
+         sudo && \
+    \
+    echo "Installing wget" && \
+    apt-get install -y --no-install-recommends ca-certificates wget && \
     \
     echo "Clonning Aurora" && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $aurora_branch /tmp/aurora && \

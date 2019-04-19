@@ -7,13 +7,13 @@
   pre_tasks:
 
     - name: Check if python3 is installed
-      raw: 'test -e /usr/bin/python3'
+      raw: 'python3 --version'
       register: output
       ignore_errors: yes
 
     - name: Install Python 3 in case if it is not installed
-      raw: 'apt -y update && apt install -y python3'
-      when: output.rc == 1
+      raw: 'apt-get -y update && apt-get install -y python3'
+      when: output.rc != 0
 
 - name: Set Python 3 variable
   hosts: all

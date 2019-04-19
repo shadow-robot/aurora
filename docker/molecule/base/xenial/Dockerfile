@@ -2,7 +2,7 @@ FROM ubuntu:xenial-20190222
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
-LABEL Description="This image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="Ubuntu Xenial image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -13,8 +13,11 @@ ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
 RUN set -x && \
     apt-get update && \
     \
-    echo "Installing git" && \
-    apt-get install -y git && \
+    echo "Installing git, sudo and sshpass" && \
+    apt-get install -y \
+        git \
+        sudo \
+        sshpass && \
     \
     echo "Installing wget" && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
@@ -44,7 +47,7 @@ RUN set -x && \
     wget "https://bootstrap.pypa.io/get-pip.py" && \
     python3.7 ./get-pip.py && \
     \
-    echo "Clonning Aurora" && \
+    echo "Cloning Aurora" && \
     cd /tmp && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $aurora_branch && \
     \
