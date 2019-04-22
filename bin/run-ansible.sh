@@ -97,7 +97,7 @@ echo ""
 pushd $aurora_home
 
 pip3 install --user -r ansible/data/ansible/requirements.txt
-ansible_flags="-v --ask-become-pass "
+ansible_flags="-vvv --ask-become-pass "
 if [[ "${playbook}" = "teleop-deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-pass "
     aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
