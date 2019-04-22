@@ -1,0 +1,4 @@
+---
+new_docker_user: user
+new_docker_user_password: "{{new_docker_user}}"
+new_docker_user_home: "/home/{{ new_docker_user }}"

@@ -1,0 +1,135 @@
+---
+- name: Update package lists
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install basic dependencies
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: yes
+  vars:
+    packages:
+      - bash-completion
+      - gdb
+      - locales
+      - git
+      - subversion
+
+- name: Setting locale
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Installing gosu
+  get_url:
+    url: https://github.com/tianon/gosu/releases/download/1.11/gosu-amd64
+    dest: /usr/local/bin/gosu
+    mode: 0755
+  become: yes
+
+- name: Check if gosu was installed correctly
+  command: gosu nobody true
+
+- name: Install UI libs
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: yes
+  vars:
+    packages:
+      - xz-utils
+      - file
+      - dbus-x11
+      - pulseaudio
+      - dmz-cursor-theme
+      - fonts-dejavu
+      - fonts-liberation
+      - hicolor-icon-theme
+      - libcanberra-gtk3-0
+      - libcanberra-gtk-module
+      - libcanberra-gtk3-module
+      - libasound2
+      - libgtk2.0-0
+      - libdbus-glib-1-2
+      - libxt6
+      - libexif12
+      - libgl1-mesa-glx
+      - libgl1-mesa-dri
+
+- name: Update locale
+  command: update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX
+
+- name: Intall basic tools
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: yes
+  vars:
+    packages:
+      - terminator
+      - vim
+      - mc
+
+- name: Create UI user
+  user:
+    name: "{{ new_docker_user }}"
+    password: "{{ new_docker_user_password }}"
+    groups:
+     - sudo
+     - systemd-journal
+    state: present
+    shell: /bin/bash
+    system: no
+    createhome: yes
+  become: yes
+
+- name: Allow user to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: "^%{{ new_docker_user }}"
+    line: "%{{ new_docker_user }} ALL=(ALL) NOPASSWD: ALL"
+    validate: visudo -cf %s
+  become: yes
+
+- name: Fix for QT and X server errors
+  lineinfile:
+    path: "{{ new_docker_user_home }}/.bashrc"
+    state: present
+    regexp: '^export\sQT_X11_NO_MITSHM'
+    line: 'export QT_X11_NO_MITSHM=1'
+    insertafter: EOF
+
+- name: Insert Bash and Git completion scripts
+  blockinfile:
+    block: "{{ lookup('file', '../files/git_completion.sh') }}"
+    dest: "{{ new_docker_user_home }}/.bashrc"
+    backup: no
+    state: present
+    insertafter: EOF
+
+- name: Create Terminator configuration directory
+  file:
+    path: "{{ new_docker_user_home }}/.config/terminator/config"
+    state: directory
+    owner: "{{ new_docker_user }}"
+    group: "{{ new_docker_user }}"
+    mode: 0775
+    recurse: yes
+
+- name: Copy Terminator's configuration
+  copy:
+    src: ../files/terminator_config
+    dest: "{{ new_docker_user_home }}/.config/terminator/config"
+    owner: "{{ new_docker_user }}"
+    group: "{{ new_docker_user }}"
+    mode: 0644
+
+- name: Copy entrypoint file
+  template:
+    src: "../templates/entrypoint.sh.j2"
+    dest: "/usr/local/bin/entrypoint.sh"
+    mode: 0755
+  become: yes
