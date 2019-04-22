@@ -27,6 +27,8 @@
     src: https://download-cf.jetbrains.com/python/pycharm-community-2019.1.1.tar.gz
     dest: "{{ pycharm_home }}"
     remote_src: yes
+    extra_opts:
+      - --strip=1
   become: yes
 
 - name: Create easy access symlink
