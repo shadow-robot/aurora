@@ -2,7 +2,7 @@ FROM shadowrobot/aurora-molecule-docker:bionic
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
-LABEL Description="Ubuntu Bionic image contains Ansible, Molecule, Docker driver and Development tools with GUI" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="Ubuntu Bionic image contains Ansible, Molecule, Docker and EC2 driver and Development tools with GUI" Vendor="Shadow Robot" Version="1.0"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -24,8 +24,8 @@ RUN set -x && \
     echo "Add user to docker group" && \
     usermod -aG docker user && \
     \
-    echo "Installing IDEs" && \
-    /tmp/oneliner install-software --debug-branch $aurora_branch software=[pycharm,vscode] && \
+    echo "Installing IDEs and AWS CLI" && \
+    /tmp/oneliner install-software --debug-branch $aurora_branch software=[pycharm,vscode,aws-cli] && \
     \
     echo "Clean up" && \
     apt-get clean && \
