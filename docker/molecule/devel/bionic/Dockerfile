@@ -21,6 +21,9 @@ RUN set -x && \
     echo "Setting up UI and new Docker user" && \
     /tmp/oneliner configure-software --debug-branch $aurora_branch software=[setup-docker] && \
     \
+    echo "Add user to docker group" && \
+    usermod -aG docker user && \
+    \
     echo "Installing IDEs" && \
     /tmp/oneliner install-software --debug-branch $aurora_branch software=[pycharm,vscode] && \
     \
