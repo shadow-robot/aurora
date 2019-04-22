@@ -112,7 +112,7 @@
 
 - name: Create Terminator configuration directory
   file:
-    path: "{{ new_docker_user_home }}/.config/terminator/config"
+    path: "{{ new_docker_user_home }}/.config/terminator"
     state: directory
     owner: "{{ new_docker_user }}"
     group: "{{ new_docker_user }}"
