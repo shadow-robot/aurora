@@ -21,22 +21,27 @@
     mode: 0644
 
 - name: Copy shadow-upload.sh to the docker container
+  become: true
   shell: "docker cp /tmp/shadow-upload.sh {{ container_name }}:/usr/local/bin/shadow-upload.sh"
 
 - name: Copy customer.key to the docker container
+  become: true
   shell: "echo {{ customer_key }} > /tmp/customer.key; docker cp /tmp/customer.key {{ container_name }}:/usr/local/bin/customer.key"
 
 - name: Removing customer.key from local
+  become: true
   file:
     path: "/tmp/aws-cli-requirements.txt"
     state: absent
 
 - name: Removing aws-cli-requirements.txt local
+  become: true
   file:
     path: "/tmp/shadow-upload.sh"
     state: absent
 
 - name: Removing shadow-upload.sh from local
+  become: true
   file:
     path: "/tmp/customer.key"
     state: absent

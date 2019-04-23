@@ -19,10 +19,16 @@
     dest: "{{ shadow_hand_launcher_folder }}/teleop_icon.png"
     mode: '664'
 
+# TODO: FIX THIS: find the correct way to access nuc IP and username from inventory file
+#- name: Setting facts for NUC
+#  set_fact:
+#    nuc_address: "{{ groups['control_machine']['ansible_default_ipv4']['address'] }}"
+#    nuc_username: "{{ groups['control_machine'].ansible_user }}"
+
 - name: Setting facts for NUC
   set_fact:
-    nuc_address: "{{ groups['control_machine']['ansible_default_ipv4']['address'] }}"
-    nuc_username: "{{ groups['control_machine'].ansible_user }}"
+    nuc_address: "10.9.10.2"
+    nuc_username: "test"
 
 - name: Create Teleop executable launch script
   become: true
@@ -48,7 +54,7 @@
 - name: Create Shadow_Hand_TeleOp_Launcher executable launch script
   become: true
   template:
-    src: ../../../hand-e/shortcut-template/templates/scripts/start-docker-container.j2
+    src: ../../../hand-e/desktop-icons/templates/scripts/start-docker-container.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
     mode: '755'
 

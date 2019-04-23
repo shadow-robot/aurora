@@ -1,14 +1,22 @@
 ---
+- name: if USER is empty, set user to testuser
+  when: user| length == 0
+  set_fact:
+    user: "testuser"
+    user_folder: "/home/{{ user }}"
+
+- name: Generate /etc/ssh/ RSA host key
+  command : ssh-keygen -b 2048 -t rsa -f /home/testuser/.ssh/id_rsa -q -N ""
+
 - name: Create keypair for ssh
   authorized_key:
-    user: "{{ user }}"
-    key: "{{ lookup('file', '/home/user/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"
     state: present
 
 - name: Copying ssh key to Control-machine
   copy:
     src: "{{ user_folder }}/.ssh"
-    dest: "/home/user/.ssh/{{ item }}"
+    dest: "/home/{{ user }}/.ssh/{{ item }}"
     mode: 0600
     state: present
   with_items:
