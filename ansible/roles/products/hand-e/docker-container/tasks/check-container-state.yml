@@ -4,6 +4,7 @@
   register: docker_id
   when: docker_id is not defined
   changed_when: docker_id is not defined
+  become: yes
 
 - name: Set container_exists to true
   when: docker_id.stdout | length > 0
@@ -14,6 +15,7 @@
   when: container_exists
   shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
   register: container_running
+  become: yes
 
 - name: Set container_running to true
   when: container_exists

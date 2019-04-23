@@ -3,6 +3,7 @@
   command: pip3 --version
   register: pip_status
   ignore_errors: yes
+  changed_when: pip_status.rc != 0
 
 - name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
   apt:

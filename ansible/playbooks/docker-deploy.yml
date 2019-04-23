@@ -5,8 +5,6 @@
 
 - name: Install product Docker container and icons
   hosts: docker-deploy
-  environment:
-    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python3.7/site-packages"
   pre_tasks:
 
     - name: No product is defined

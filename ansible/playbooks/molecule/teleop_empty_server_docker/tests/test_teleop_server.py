@@ -40,8 +40,9 @@ def test_correct_docker_image(host):
 def test_sr_config_exists_in_docker(host):
     client = docker.from_env()
     container = client.containers.get('dexterous_hand_real_hw')
-    bits, stat = container.get_archive('/home/user/projects/shadow_robot/base/src/sr_config')
-    assert stat['size']>0
+    bits, stat = container.get_archive(
+        '/home/user/projects/shadow_robot/base/src/sr_config')
+    assert stat['size'] > 0
 
 
 def test_icons_in_docker(host):
