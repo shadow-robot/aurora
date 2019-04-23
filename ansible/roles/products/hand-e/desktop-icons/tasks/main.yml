@@ -1,28 +1,33 @@
 ---
 - name: Ensures that Desktop folder exists
+  become: true
   file:
     path: "{{ user_folder }}/Desktop"
     mode: '755'
     state: directory
 
 - name: Ensures that shadow_hand_launcher directory exists
+  become: true
   file:
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
 - name: Copy Shadow_Hand_Launcher desktop icon
+  become: true
   copy:
     src: files/hand-e.png
     dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
     mode: '664'
 
 - name: Create Shadow_Hand_Launcher executable launch script
+  become: true
   template:
     src: templates/scripts/start-docker-container.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
     mode: '755'
 
 - name: Create Shadow_Hand_Launcher desktop icon
+  become: true
   template:
     src: ../shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
@@ -36,23 +41,27 @@
     icon_file_name: hand-e.png
 
 - name: Ensures that save_latest_ros_logs_folder exists
+  become: true
   file:
     path: "{{ save_latest_ros_logs_folder }}"
     state: directory
 
 - name: Copy ROS Logs Saver desktop icon
+  become: true
   copy:
     src: files/log-icon.png
     dest: "{{ save_latest_ros_logs_folder }}/log-icon.png"
     mode: '664'
 
 - name: Copy ROS Logs Saver main script
+  become: true
   copy:
     src: files/save-latest-ros-logs.sh
     dest: "{{ save_latest_ros_logs_folder }}/save-latest-ros-logs.sh"
     mode: '755'
 
 - name: Create ROS Logs Saver desktop icon
+  become: true
   when: not use_aws
   template:
     src: ../shortcut-template/templates/desktop-icon.j2
@@ -67,6 +76,7 @@
     icon_file_name: log-icon.png
 
 - name: Create ROS Logs Saver and Uploader desktop icon
+  become: true
   when: use_aws
   template:
     src: ../shortcut-template/templates/desktop-icon.j2
@@ -81,5 +91,6 @@
     icon_file_name: log-icon.png
 
 - name: Create demo icons
+  become: true
   import_tasks: demo-icons.yml
   when: demo_icons

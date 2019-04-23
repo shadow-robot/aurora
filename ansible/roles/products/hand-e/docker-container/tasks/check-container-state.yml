@@ -1,8 +1,10 @@
 ---
 - name: Checking if container exists
+  become: true
   shell: "docker ps -aq -f name=^/{{ container_name }}$"
   register: docker_id
   when: docker_id is not defined
+  changed_when: docker_id is not defined
 
 - name: Set container_exists to true
   when: docker_id.stdout | length > 0

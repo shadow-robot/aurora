@@ -1,0 +1,6 @@
+---
+- name: Teleop server playbook for icons and logs
+  import_playbook: ../../teleop-deploy.yml
+    reinstall=true
+    use_openvpn=false
+    ethercat_interface="enp0s25"

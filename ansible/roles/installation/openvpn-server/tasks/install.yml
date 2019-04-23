@@ -151,7 +151,7 @@
 
 - name: Generate client certificate key
   become: yes
-  shell: source vars; ./build-key --batch {{client_name}}
+  shell: source vars; ./build-key --batch {{ client_name }}
   args:
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
@@ -161,7 +161,7 @@
   file:
     owner: "{{ user }}"
     group: "{{ user }}"
-    path: "{{ user_folder }}/openvpn-ca/{{client_name}}"
+    path: "{{ user_folder }}/openvpn-ca/{{ client_name }}"
     state: directory
     mode: 0700
 
@@ -170,11 +170,11 @@
   copy:
     remote_src: yes
     src: /usr/share/doc/openvpn/examples/sample-config-files/client.conf
-    dest: "{{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn"
+    dest: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn"
 
 - name: Set the server ip and port
   lineinfile:
-    dest: "{{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn"
+    dest: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn"
     regexp: "^{{ item.regex | regex_escape() }}"
     line: "{{ item.value }}"
   with_items:
@@ -193,24 +193,24 @@
   become: yes
   shell: "{{ item }}"
   with_items:
-    - echo -e '<ca>' >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - cat {{ user_folder }}/openvpn-ca/keys/ca.crt >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - echo -e '</ca>\n<cert>' >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - cat {{ user_folder }}/openvpn-ca/keys/{{client_name}}.crt >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - echo -e '</cert>\n<key>' >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - cat {{ user_folder }}/openvpn-ca/keys/{{client_name}}.key >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - echo -e '</key>\n<tls-auth>' >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - cat {{ user_folder }}/openvpn-ca/keys/ta.key >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - echo -e '</tls-auth>' >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
-    - echo -e 'key-direction 1' >> {{ user_folder }}/openvpn-ca/{{client_name}}/{{client_name}}.ovpn
+    - echo -e '<ca>' >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - cat {{ user_folder }}/openvpn-ca/keys/ca.crt >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - echo -e '</ca>\n<cert>' >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - cat {{ user_folder }}/openvpn-ca/keys/{{ client_name }}.crt >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - echo -e '</cert>\n<key>' >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - cat {{ user_folder }}/openvpn-ca/keys/{{ client_name }}.key >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - echo -e '</key>\n<tls-auth>' >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - cat {{ user_folder }}/openvpn-ca/keys/ta.key >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - echo -e '</tls-auth>' >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
+    - echo -e 'key-direction 1' >> {{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn
   args:
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
 
 - name: Fetch client configurations
   fetch:
-    src: "{{ user_folder }}/openvpn-ca/{{client_name}}/{{ item|basename }}"
+    src: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ item|basename }}"
     dest: "{{ destination_key }}/"
     flat: yes
   with_items:
-    - "{{client_name}}.ovpn"
+    - "{{ client_name }}.ovpn"

@@ -10,5 +10,6 @@
     full_image_name: "{{ image }}:{{ tag }}"
 
 - name: Pulling the image
+  become: true
   docker_image:
     name: "{{ full_image_name }}"

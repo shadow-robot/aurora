@@ -1,31 +1,38 @@
 ---
 - name: Ensures that Desktop folder exists
+  become: true
   file:
     path: "{{ user_folder }}/Desktop"
     mode: '755'
     state: directory
 
 - name: Ensures that shadow_hand_launcher directory exists
+  become: true
   file:
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
 - name: Copy Teleop desktop icon
-  copy: 
+  become: true
+  copy:
     src: files/teleop_icon.png
     dest: "{{ shadow_hand_launcher_folder }}/teleop_icon.png"
     mode: '664'
 
+- name: Setting facts for NUC
+  set_fact:
+    nuc_address: "{{ groups['control_machine']['ansible_default_ipv4']['address'] }}"
+    nuc_username: "{{ groups['control_machine'].ansible_user }}"
+
 - name: Create Teleop executable launch script
+  become: true
   template:
-    src: ../templates/scripts/start-docker-container-nuc.j2
+    src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
     mode: '755'
-  set_fact:
-    nuc_address: "{{ groups['control-machine']['ansible_default_ipv4']['address'] }}"
-    nuc_username: "{{ groups['control-machine'].ansible_user }}"
 
 - name: Create Teleop desktop icon
+  become: true
   template:
     src: ../../../hand-e/shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Teleop_Launcher.desktop"
@@ -39,12 +46,14 @@
     icon_file_name: teleop_icon.png
 
 - name: Create Shadow_Hand_TeleOp_Launcher executable launch script
+  become: true
   template:
     src: ../../../hand-e/shortcut-template/templates/scripts/start-docker-container.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
     mode: '755'
 
 - name: Create Shadow_Hand_Launcher desktop icon
+  become: true
   template:
     src: ../../../hand-e/shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Shadow_Hand_TeleOp_Launcher.desktop"

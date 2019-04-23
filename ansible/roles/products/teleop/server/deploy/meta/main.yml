@@ -8,4 +8,4 @@ dependencies:
   - { role: products/teleop/server/desktop-icons }
   - { role: products/hand-e/cyberglove, when: use_cyberglove }
   - { role: aws, when: use_aws }
-  - { role: installation/openvpn-server }
+  - { role: installation/openvpn-server, when: use_openvpn }

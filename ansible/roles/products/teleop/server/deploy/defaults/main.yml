@@ -5,3 +5,4 @@ tag: "kinetic-release"
 ethercat_interface: "eth0"
 sr_branch_name: "demohand_A"
 user_folder: "/home/{{ user }}"
+use_openvpn: false
