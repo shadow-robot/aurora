@@ -1,0 +1,39 @@
+#jinja2: trim_blocks:False
+#!/usr/bin/env bash
+
+# Add local user
+# Either use the LOCAL_USER_ID and optionally LOCAL_GROUP_ID if passed in at runtime or
+# fallback
+
+USER_ID=${LOCAL_USER_ID:-9001}
+GROUP_ID=${LOCAL_GROUP_ID:-$USER_ID}
+
+export HOME={{ new_docker_user_home }}
+
+export OLD_USER_ID=$(id -u {{ new_docker_user }})
+
+if [ $OLD_USER_ID -ne $USER_ID ]
+then
+  usermod  --uid $USER_ID {{ new_docker_user }}
+  find $HOME -user $OLD_USER_ID -exec chown -h $USER_ID {} \;
+fi
+
+export OLD_GROUP_ID=$(id -g {{ new_docker_user }})
+
+if [ $OLD_GROUP_ID -ne $GROUP_ID ]
+then
+  groupmod --gid $GROUP_ID {{ new_docker_user }}
+  find $HOME -group $OLD_GROUP_ID -exec chgrp -h $GROUP_ID {} \;
+  usermod -g $GROUP_ID {{ new_docker_user }}
+fi
+
+if mkdir -p {{ new_docker_user_home }}/.ros/log/core_dumps ; then
+    chown -R {{ new_docker_user }}:{{ new_docker_user }} {{ new_docker_user_home }}/.ros/log/core_dumps
+    chown -R {{ new_docker_user }}:{{ new_docker_user }} {{ new_docker_user_home }}/.ros/log
+fi
+echo 1 > /proc/sys/kernel/core_uses_pid
+ulimit -c unlimited
+echo 1 > /proc/sys/fs/suid_dumpable
+echo {{ new_docker_user_home }}/.ros/log/core_dumps/core_BOF_%e_EOF_%p.%h.%t > /proc/sys/kernel/core_pattern
+
+exec /usr/local/bin/gosu {{ new_docker_user }} "$@"
