@@ -4,7 +4,7 @@ MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
 LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
 
-ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
+ENV aurora_branch "master"
 
 RUN set -x && \
     \

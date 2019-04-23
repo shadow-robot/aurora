@@ -10,7 +10,7 @@ ENV LC_ALL C.UTF-8
 
 ENV LANG C.UTF-8
 
-ENV aurora_branch "F#SRC-3068_add_docker_for_testing"
+ENV aurora_branch "master"
 
 RUN set -x && \
     apt-get update && \
