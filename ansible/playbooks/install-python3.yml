@@ -6,20 +6,26 @@
   gather_facts: no
   pre_tasks:
 
-    - name: Check if python3 is installed
-      raw: 'test -e /usr/bin/python3'
+    - name: Check if Python 3 is installed
+      raw: 'python3 --version'
       register: output
       ignore_errors: yes
+      changed_when: output.rc != 0
 
     - name: Install Python 3 in case if it is not installed
-      raw: 'apt -y update && apt install -y python3'
-      when: output.rc == 1
+      raw: 'apt-get -y update && apt-get install -y python3'
+      when: output.rc != 0
 
 - name: Set Python 3 variable
   hosts: all
   gather_facts: no
   pre_tasks:
 
+    - name: Get path to Python 3 interpreter
+      raw: 'which python3'
+      register: path_to_python
+      changed_when: path_to_python.rc != 0
+
     - name: Set Python 3 interpreter
       set_fact:
-        ansible_python_interpreter: "/usr/bin/python3"
+        ansible_python_interpreter: "{{ path_to_python.stdout_lines | first }}"

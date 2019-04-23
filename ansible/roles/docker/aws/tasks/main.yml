@@ -1,17 +1,4 @@
 ---
-- name: Make sure AWS requirements.txt exists locally
-  copy:
-    src: files/requirements.txt
-    dest: "/tmp/aws-cli-requirements.txt"
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    mode: 0644
-
-- name: Install AWS CLI
-  pip:
-    requirements: "/tmp/aws-cli-requirements.txt"
-  become: true
-
 - name: Make sure shadow-upload.sh exists locally
   copy:
     src: files/shadow-upload.sh
@@ -25,11 +12,6 @@
 
 - name: Copy customer.key to the docker container
   shell: "echo {{ customer_key }} > /tmp/customer.key; docker cp /tmp/customer.key {{ container_name }}:/usr/local/bin/customer.key"
-
-- name: Removing customer.key from local
-  file:
-    path: "/tmp/aws-cli-requirements.txt"
-    state: absent
 
 - name: Removing aws-cli-requirements.txt local
   file:
