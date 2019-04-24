@@ -2,8 +2,7 @@
 - name: Checking if container exists
   shell: "docker ps -aq -f name=^/{{ container_name }}$"
   register: docker_id
-  when: docker_id is not defined
-  changed_when: docker_id is not defined
+  changed_when: docker_id.rc != 0
   become: yes
 
 - name: Set container_exists to true
