@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: nuc_machine
+  - name: teleop_control_machine_check_config_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial-manual
     groups:
       - control_machine
