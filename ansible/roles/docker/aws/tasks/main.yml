@@ -9,11 +9,13 @@
 
 - name: Copy shadow-upload.sh to the docker container
   shell: "docker cp /tmp/shadow-upload.sh {{ container_name }}:/usr/local/bin/shadow-upload.sh"
+  become: yes
 
 - name: Copy customer.key to the docker container
   shell: "echo {{ customer_key }} > /tmp/customer.key; docker cp /tmp/customer.key {{ container_name }}:/usr/local/bin/customer.key"
+  become: yes
 
-- name: Removing aws-cli-requirements.txt local
+- name: Removing shadow-upload.sh local
   file:
     path: "/tmp/shadow-upload.sh"
     state: absent
@@ -22,3 +24,4 @@
   file:
     path: "/tmp/customer.key"
     state: absent
+  become: yes
