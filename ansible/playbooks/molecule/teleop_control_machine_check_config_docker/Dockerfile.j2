@@ -1,0 +1,14 @@
+# Molecule managed
+
+{% if item.registry is defined %}
+FROM {{ item.registry.url }}/{{ item.image }}
+{% else %}
+FROM {{ item.image }}
+{% endif %}
+
+RUN if [ $(command -v apt-get) ]; then sudo apt-get update && sudo apt-get install -y python bash ca-certificates && sudo apt-get clean; \
+    elif [ $(command -v dnf) ]; then sudo dnf makecache && sudo dnf --assumeyes install python python-devel python*-dnf bash && sudo dnf clean all; \
+    elif [ $(command -v yum) ]; then sudo yum makecache fast && sudo yum install -y python sudo yum-plugin-ovl bash && sudo sed -i 's/plugins=0/plugins=1/g' /etc/yum.conf && sudo yum clean all; \
+    elif [ $(command -v zypper) ]; then sudo zypper refresh && sudo zypper install -y python bash python-xml && sudo zypper clean -a; \
+    elif [ $(command -v apk) ]; then sudo apk update && sudo apk add --no-cache python bash ca-certificates; \
+    elif [ $(command -v xbps-install) ]; then sudo xbps-install -Syu && sudo xbps-install -y python bash ca-certificates && sudo xbps-remove -O; fi

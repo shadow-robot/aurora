@@ -1,0 +1,27 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: nuc_machine
+    image: shadowrobot/aurora-test-ubuntu-docker:xenial-manual
+    groups:
+      - control_machine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../roles
+  inventory:
+    links:
+      group_vars: ../../../inventory/teleop/group_vars
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
