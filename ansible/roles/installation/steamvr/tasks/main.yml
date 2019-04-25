@@ -26,7 +26,6 @@
   apt_repository:
     repo: "{{ item }}"
   register: multiverse_installed
-  update_cache: false  # We will do ourselfs afterwards
   when: ansible_distribution == 'Ubuntu'
   with_items:
     - 'deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }} multiverse'
