@@ -23,6 +23,17 @@
 #    repo: multiverse
 #    state: present
 
+- apt_repository:
+    repo: "{{ item }}"
+  register: multiverse_installed
+  update_cache: false  # We will do ourselfs afterwards
+  when: ansible_distribution == 'Ubuntu'
+  with_items:
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
+    - 'deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse'
+    - 'deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
+    - 'deb-src http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse'
+
 - name: Update and upgrade apt packages
   become: true
   apt:
@@ -35,24 +46,7 @@
   failed_when: libudev0_check_deb.rc > 1
   changed_when: libudev0_check_deb.rc == 1
 
-#- name: Download libudev0
-#  get_url: 
-#    url=http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
-#    #url="{{ my_package_url }}"
-#    dest="/home/{{ ansible_env.USER }}/libudev0_175-0ubuntu9_amd64.deb"
-#  when: libudev0_check_deb.rc == 1
-
-#- name: Install libudev0
-#  apt: deb="/home/{{ ansible_env.USER }}/libudev0_175-0ubuntu9_amd64.deb"
-#  sudo: true
-#  when: libudev0_check_deb.rc == 1
-
-#- name: Removing libudev0_175-0ubuntu9_amd64.deb
-#  file:
-#    path: /home/{{ ansible_env.USER }}/libudev0_175-0ubuntu9_amd64.deb
-#    state: absent
-
-- name: Install a .deb package from the internet.
+- name: Install libudev0_175 from the internet if it is not already installed
   apt:
     deb: http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
   become: yes
@@ -63,7 +57,7 @@
     path: /home/user/steamcmd # parameterise?
     state: directory
 
-- name: Unarchive binaries from the internet
+- name: Unarchive steamcmd_linux from the internet
   unarchive:
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
     dest: /home/user/steamcmd
