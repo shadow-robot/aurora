@@ -2,7 +2,7 @@
 # SteamVR installation
 
 - name: Install Python3-apt
-  import_playbook: ./install-python3-apt.yml
+  import_playbook: ../../../../playbooks/install-python3-apt.yml
 
 - name: Update package lists
   apt: update_cache=yes
