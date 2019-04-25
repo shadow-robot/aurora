@@ -9,7 +9,7 @@
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
 
-- name: Pulling the image
-  become: true
+- name: Pulling the image (containing hack for Python 3 path)
   docker_image:
     name: "{{ full_image_name }}"
+  become: yes

@@ -1,0 +1,39 @@
+---
+# PyCharm IDE installation
+
+- name: Update package lists
+  apt: update_cache=yes
+  become: yes
+
+- name: Intall needed libs
+  apt: name={{item}} install_recommends=no
+  become: yes
+  with_items:
+    - wget
+    - git
+    - default-jre
+    - libxrender1
+    - libxtst6
+    - apt-utils
+
+- name: Creating PyCharm directory
+  file:
+    path: "{{ pycharm_home }}"
+    state: directory
+  become: yes
+
+- name: Unarchive binaries from the internet
+  unarchive:
+    src: https://download-cf.jetbrains.com/python/pycharm-community-2019.1.1.tar.gz
+    dest: "{{ pycharm_home }}"
+    remote_src: yes
+    extra_opts:
+      - --strip=1
+  become: yes
+
+- name: Create easy access symlink
+  file:
+    src: "{{pycharm_home}}/bin/pycharm.sh"
+    dest: /usr/bin/pycharm
+    state: link
+  become: yes

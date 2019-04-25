@@ -13,7 +13,6 @@
     state: directory
 
 - name: Copy Teleop desktop icon
-  become: true
   copy:
     src: files/teleop_icon.png
     dest: "{{ shadow_hand_launcher_folder }}/teleop_icon.png"

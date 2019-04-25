@@ -1,0 +1,18 @@
+---
+- name: Make sure AWS requirements.txt exists locally
+  copy:
+    src: files/requirements.txt
+    dest: "/tmp/aws-cli-requirements.txt"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+
+- name: Install AWS CLI
+  pip:
+    requirements: "/tmp/aws-cli-requirements.txt"
+  become: true
+
+- name: Removing aws-cli-requirements.txt local
+  file:
+    path: "/tmp/shadow-upload.sh"
+    state: absent

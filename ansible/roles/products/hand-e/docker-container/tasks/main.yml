@@ -2,7 +2,7 @@
 - name: Getting UID
   shell: id -u
   register: id
-  when: id is not defined
+  changed_when: id.rc != 0
 
 - name: Reinstall docker container
   when: reinstall|bool

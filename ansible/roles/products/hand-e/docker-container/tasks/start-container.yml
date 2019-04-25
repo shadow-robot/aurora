@@ -25,3 +25,4 @@
     interactive: yes
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
     command: "terminator -x bash -c 'bash'"
+  become: yes

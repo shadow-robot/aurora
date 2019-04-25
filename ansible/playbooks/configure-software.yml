@@ -1,0 +1,14 @@
+---
+- name: Install Python 3
+  import_playbook: ./install-python3.yml
+
+- name: Configure software based on external parameters
+  hosts: configure-software
+  pre_tasks:
+
+    - name: Initialize list of software
+      set_fact:
+        software_list: "{{software | default([])}}"
+
+  roles:
+    - {role: docker/setup-ui, when: "'setup-docker' in software_list" }

@@ -7,7 +7,7 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: ping all hosts
+    - name: ping all the machines
       ping:
 
 - name: Install Teleop software on Ubuntu teleop server laptop

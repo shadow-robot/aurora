@@ -28,4 +28,4 @@
     - {role: installation/nvidia-docker, when: nvidia_docker|bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
-    - {role: aws, when: use_aws}
+    - {role: docker/aws, when: use_aws}
