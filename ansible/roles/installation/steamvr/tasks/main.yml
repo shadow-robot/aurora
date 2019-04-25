@@ -6,7 +6,7 @@
   become: yes
 
 - name: Intall needed libs
-  apt: name={{item}} install_recommends=no
+  apt: name={{ item }} install_recommends=no
   become: yes
   with_items:
     - curl
@@ -95,7 +95,8 @@
     dest: /home/user/.steam/sdk64
 
 - name: install and update steamvr
-  shell: /home/user/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software +force_install_dir /home/user/.steam +app_update 250820 -beta beta validate +quit
+  shell: > /home/user/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software
+           +force_install_dir /home/user/.steam +app_update 250820 -beta beta validate +quit
 
 - name: I don't know what this does yet but things don't work without it
   shell: setcap CAP_SYS_NICE=eip /home/user/.steam/bin/linux64/vrcompositor-launcher
