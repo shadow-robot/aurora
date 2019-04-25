@@ -2,7 +2,7 @@
 - name: Install Python 3
   import_playbook: ./install-python3.yml
 
-#- name: Install Python 3-apt
+# - name: Install Python 3-apt
 #  import_playbook: ./install-python3-apt.yml
 
 - name: Install Python 3 in case if it is not installed
