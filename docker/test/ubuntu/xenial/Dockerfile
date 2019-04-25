@@ -18,6 +18,7 @@ RUN set -x && \
     useradd -m $USER && \
     passwd -d $USER && \
     adduser $USER sudo && \
+    echo "$USER ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers && \
     \
     echo "Clean up" && \
     apt-get clean && \
