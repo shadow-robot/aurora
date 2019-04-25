@@ -13,6 +13,10 @@ ENV aurora_branch "master"
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
 RUN set -x && \
+    sudo apt-get update && \
+    \
+    echo "Installing wget" && \
+    sudo apt-get install -y --no-install-recommends ca-certificates wget && \
     \
     echo "Installing Docker" && \
     wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
