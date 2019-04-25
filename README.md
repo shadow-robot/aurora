@@ -50,12 +50,15 @@ Also, for teleop demo, please specify production/staging/development using the -
 
 Run a playbook against one or more members of that group using the --limit tag:
 
-* --limit rules (e.g. --limit "all:!host1")
+* --limit rules (e.g. --limit 'all:!server' please use single quotes. More details could be found [here]
+    (https://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/commands/#limit-to-one-or-more-hosts))
 
-To begin with, the docker-deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. If the required image is private, 
-then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then, the specified docker image is pulled and a docker 
-container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and launches 
-the hand.
+To begin with, the docker-deploy playbook checks the installation status of docker. If docker is not installed then a 
+new clean installation is performed. If the required image is private, 
+then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then, 
+the specified docker image is pulled and a docker 
+container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
+launches the hand.
 
 Example:
 

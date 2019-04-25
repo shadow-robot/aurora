@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e # fail on errors
-set -x # echo commands run
+#set -x # echo commands run
 
 script_name=$(basename $BASH_SOURCE)
 
@@ -105,7 +105,7 @@ echo ""
 pushd $aurora_home
 
 pip3 install --user -r ansible/data/ansible/requirements.txt
-ansible_flags="-vvv --ask-become-pass "
+ansible_flags="-v --ask-become-pass "
 
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
