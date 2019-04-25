@@ -6,4 +6,4 @@
   gather_facts: no
   tasks:
     - name: Install Python 3 in case if it is not installed
-      raw: 'apt-get -y update && apt-get install -y python3-apt'
+      raw: 'apt-get -y update && apt-get install -y python3-apt && apt-get install -y python-apt-common'
