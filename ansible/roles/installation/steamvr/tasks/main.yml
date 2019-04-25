@@ -69,8 +69,6 @@
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
     dest: /home/user/steamcmd
     remote_src: yes
-    extra_opts:
-      - --strip=1
   become: yes
 
 - name: install and update steamcmd
