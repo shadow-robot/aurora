@@ -1,0 +1,18 @@
+---
+
+- name: Install Python 3-apt
+  hosts: all
+  become: yes
+  gather_facts: no
+  pre_tasks:
+
+    - name: Check if Python 3 is installed
+      shell: 'pip3 freeze | grep python-apt'
+      register: output
+      ignore_errors: yes
+      changed_when: output.rc != 0
+
+    - name: Install Python 3 in case if it is not installed
+      raw: 'apt-get -y update && apt-get install -y python3-apt'
+      when: output.rc != 0
+
