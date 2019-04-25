@@ -6,7 +6,7 @@
   become: yes
 
 - name: Intall needed libs
-  apt: name={{item}} install_recommends=no
+  apt: name={{ item }} install_recommends=no
   become: yes
   with_items:
     - libxkbfile1

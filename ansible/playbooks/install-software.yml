@@ -8,7 +8,7 @@
 
     - name: Initialize list of software
       set_fact:
-        software_list: "{{software | default([])}}"
+        software_list: "{{ software | default([]) }}"
 
   roles:
     - {role: installation/docker, when: "'docker' in software_list" }

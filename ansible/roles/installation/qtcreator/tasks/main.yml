@@ -6,7 +6,7 @@
   become: yes
 
 - name: Intall QtCreator
-  apt: name={{item}}
+  apt: name={{ item }}
   become: yes
   with_items:
     - qtcreator
