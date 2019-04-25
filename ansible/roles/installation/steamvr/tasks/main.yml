@@ -20,9 +20,9 @@
     - libvulkan1
     - usbutils
 
-- apt_repository:
-    repo: multiverse
-    state: present
+#- apt_repository:
+#    repo: multiverse
+#    state: present
 
 - name: Update and upgrade apt packages
   become: true
