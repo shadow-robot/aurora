@@ -1,8 +1,13 @@
 ---
 # SteamVR installation
-- name: Update package lists
-  apt: update_cache=yes
-  become: yes
+#- name: Update package lists
+#  apt: update_cache=yes
+#  become: yes
+
+- name: Update apt packages
+  become: true
+  apt:
+    update_cache: yes
 
 - name: Intall needed libs
   apt: name={{ item }} install_recommends=no
