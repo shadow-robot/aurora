@@ -1,0 +1,5 @@
+---
+- name: Docker deploy playbook for non existing product
+  import_playbook: ../../install-software.yml
+    software=[steamvr]
+    ethercat_interface="enp0s25"
