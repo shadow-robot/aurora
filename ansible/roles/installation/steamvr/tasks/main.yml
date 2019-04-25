@@ -1,53 +1,105 @@
 ---
-# steamvr udev rules installation
+# SteamVR installation
 
-- name: create 60-HTC-Vive-perms-Ubuntu.rules if it doesnt exist already
-  copy:
-    dest: "/lib/udev/rules.d/60-HTC-Vive-perms-Ubuntu.rules"
-    content: |
-      # HTC Vive HID Sensor naming and permissioning
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0bb4", ATTRS{idProduct}=="2c87", TAG+="uaccess"
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", ATTRS{idProduct}=="2101", TAG+="uaccess"
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", ATTRS{idProduct}=="2000", TAG+="uaccess"
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", ATTRS{idProduct}=="1043", TAG+="uaccess"
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", ATTRS{idProduct}=="2050", TAG+="uaccess"
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", ATTRS{idProduct}=="2011", TAG+="uaccess"
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28de", ATTRS{idProduct}=="2012", TAG+="uaccess"
-      SUBSYSTEM=="usb", ATTRS{idVendor}=="0bb4", ATTRS{idProduct}=="2c87", TAG+="uaccess"
-      # HTC Camera USB Node
-      SUBSYSTEM=="usb", ATTRS{idVendor}=="114d", ATTRS{idProduct}=="8328", TAG+="uaccess"
-      # HTC Mass Storage Node
-      SUBSYSTEM=="usb", ATTRS{idVendor}=="114d", ATTRS{idProduct}=="8200", TAG+="uaccess"
-      SUBSYSTEM=="usb", ATTRS{idVendor}=="114d", ATTRS{idProduct}=="8a12", TAG+="uaccess"
+- name: Update package lists
+  apt: update_cache=yes
   become: yes
-      
-- name: create 99-steam-perms.rules if it doesnt exist already
-  copy:
-    dest: "/lib/udev/rules.d/99-steam-perms.rules"
-    content: |
-      # Valve USB devices
-      SUBSYSTEM=="usb", ATTRS{idVendor}=="28de", MODE="0666"
-      # Steam Controller udev write access
-      KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess"
-      
-      # Valve HID devices over USB hidraw
-      KERNEL=="hidraw*", ATTRS{idVendor}=="28de", MODE="0666"
-      
-      # Valve HID devices over bluetooth hidraw
-      KERNEL=="hidraw*", KERNELS=="*28DE:*", MODE="0666"
-      
-      # DualShock 4 over USB hidraw
-      KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="05c4", MODE="0666"
-      
-      # DualShock 4 wireless adapter over USB hidraw
-      KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ba0", MODE="0666"
-      
-      # DualShock 4 Slim over USB hidraw
-      KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="09cc", MODE="0666"
-      
-      # DualShock 4 over bluetooth hidraw
-      KERNEL=="hidraw*", KERNELS=="*054C:05C4*", MODE="0666"
-      
-      # DualShock 4 Slim over bluetooth hidraw
-      KERNEL=="hidraw*", KERNELS=="*054C:09CC*", MODE="0666"
+
+- name: Intall needed libs
+  apt: name={{item}} install_recommends=no
   become: yes
+  with_items:
+    - curl
+    - ca-certificates
+    - lib32gcc1
+    - binutils
+    - terminator
+    - xdg-utils
+    - software-properties-common
+    - sudo
+    - libvulkan1
+    - usbutils
+
+- apt_repository:
+    repo: multiverse
+    state: present
+
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Check if libudev0 is installed
+  command: dpkg-query -W libudev0
+  register: libudev0_check_deb
+  failed_when: libudev0_check_deb.rc > 1
+  changed_when: libudev0_check_deb.rc == 1
+
+#- name: Download libudev0
+#  get_url: 
+#    url=http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
+#    #url="{{ my_package_url }}"
+#    dest="/home/{{ ansible_env.USER }}/libudev0_175-0ubuntu9_amd64.deb"
+#  when: libudev0_check_deb.rc == 1
+
+#- name: Install libudev0
+#  apt: deb="/home/{{ ansible_env.USER }}/libudev0_175-0ubuntu9_amd64.deb"
+#  sudo: true
+#  when: libudev0_check_deb.rc == 1
+
+#- name: Removing libudev0_175-0ubuntu9_amd64.deb
+#  file:
+#    path: /home/{{ ansible_env.USER }}/libudev0_175-0ubuntu9_amd64.deb
+#    state: absent
+
+- name: Install a .deb package from the internet.
+  apt:
+    deb: http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
+  become: yes
+  when: libudev0_check_deb.rc == 1
+
+- name: create steamcmd directory
+  file:
+    path: /home/user/steamcmd # parameterise?
+    state: directory
+
+- name: Unarchive binaries from the internet
+  unarchive:
+    src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+    dest: /home/user/steamcmd
+    remote_src: yes
+    extra_opts:
+      - --strip=1
+  become: yes
+
+- name: install and update steamcmd
+  shell: /home/user/steamcmd/steamcmd.sh +login anonymous +quit
+
+- name: create sdk32 directory
+  file:
+    path: /home/user/.steam/sdk32 # parameterise?
+    state: directory
+
+- name: create sdk64 directory
+  file:
+    path: /home/user/.steam/sdk64 # parameterise?
+    state: directory
+
+- name: copy 64bit steamclient
+  copy:
+    src: /home/user/steamcmd/linux32/steamclient.so
+    dest: /home/user/.steam/sdk32
+
+- name: copy 32bit steamclient
+  copy:
+    src: /home/user/steamcmd/linux64/steamclient.so
+    dest: /home/user/.steam/sdk64
+
+- name: install and update steamvr
+  shell: /home/user/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software +force_install_dir /home/user/.steam +app_update 250820 -beta beta validate +quit
+
+- name: I don't know what this does yet but things don't work without it
+  shell: setcap CAP_SYS_NICE=eip /home/user/.steam/bin/linux64/vrcompositor-launcher
+  become: yes
+
