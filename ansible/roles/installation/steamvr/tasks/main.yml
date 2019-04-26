@@ -18,6 +18,7 @@
     - sudo
     - libvulkan1
     - usbutils
+    - libcap2-bin
 
 - name: Update and upgrade apt packages
   become: true
