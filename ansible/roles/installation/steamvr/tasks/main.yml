@@ -88,33 +88,26 @@
     remote_src: true
 
 
-- name: debug1
-  shell: "ls -a /home/{{ user }}/steamcmd/"
-  register: result_1
+#- name: debug1
+#  shell: "ls -a /home/{{ user }}/steamcmd/"
+#  register: result_1
 
-- debug:
-    var: result_1
-
-- name: debug2
-  shell: "ls -a /home/{{ user }}/"
-  register: result_2
-
-- debug:
-    var: result_2
+#- debug:
+#    var: result_1
 
 
 #- name: install and update steamvr
+#  become: yes
 #  shell: >
-#        "/home/{{ user }}/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software
-#        +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
+#    "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
+#    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 - name: install and update steamvr
   become: yes
-  shell: >
-    "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
-
-
+  shell:
+    cmd: |
+      "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
+      +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 - name: This fails in ./vrstartup.sh unless I call it here first
   shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
