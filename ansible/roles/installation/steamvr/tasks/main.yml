@@ -88,12 +88,12 @@
     remote_src: true
 
 
-#- name: debug1
-#  shell: "ls -a /home/{{ user }}/steamcmd/"
-#  register: result_1
+- name: debug1
+  shell: "ls -a /home/{{ user }}/.steam"
+  register: result_1
 
-#- debug:
-#    var: result_1
+- debug:
+    var: result_1
 
 
 #- name: install and update steamvr
