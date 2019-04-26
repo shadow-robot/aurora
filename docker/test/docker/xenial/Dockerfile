@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV USER testuser
 
-ENV aurora_branch "master"
+ENV aurora_branch "F_fix_bootstrap"
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
