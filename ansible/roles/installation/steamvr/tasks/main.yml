@@ -84,7 +84,7 @@
   args:
     creates: /home/{{ user }}/.steam/bin/vrstartup.sh
 
-- name: Fix setcap error in vrstartup.sh two
+- name: Fix setcap error in vrstartup.sh
   become: yes
   capabilities:
     path: /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher
