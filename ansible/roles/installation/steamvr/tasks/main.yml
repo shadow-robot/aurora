@@ -91,17 +91,16 @@
     var: result_2
 
 - name: copy 32bit steamclient
-  remote_src: true
   copy:
     src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
     dest: "/home/{{ user }}/.steam/sdk32"
+    remote_src: true
 
 - name: copy 64bit steamclient
-  remote_src: true
   copy:
     src: "/home/{{ user }}/steamcmd/linux64/steamclient.so"
     dest: "/home/{{ user }}/.steam/sdk64"
-
+    remote_src: true
 
 - name: install and update steamvr
   shell: >
