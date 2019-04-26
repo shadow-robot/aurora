@@ -1,0 +1,18 @@
+---
+- name: Cleanup
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+    test_container_name: "test_hand_e_empty_machine_container"
+  tasks:
+    - name: Stop test Docker container
+      command: "docker stop {{ test_container_name }}"
+      ignore_errors: yes
+      become: yes
+
+    - name: Remove Docker container
+      # TODO: Use ansible modules for docker management
+      command: "docker rm {{ test_container_name }}"
+      ignore_errors: yes
+      become: yes
