@@ -75,15 +75,16 @@
     path: "/home/{{ user }}/.steam/sdk64" # parameterise?
     state: directory
 
-- name: copy 64bit steamclient
+- name: copy 32bit steamclient
   copy:
     src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
     dest: "/home/{{ user }}/.steam/sdk32"
 
-- name: copy 32bit steamclient
+- name: copy 64bit steamclient
   copy:
     src: "/home/{{ user }}/steamcmd/linux64/steamclient.so"
     dest: "/home/{{ user }}/.steam/sdk64"
+
 
 - name: install and update steamvr
   shell: >
