@@ -109,8 +109,8 @@
 #        +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 - name: install and update steamvr
-  command: >
-        "sh /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
+  script: >
+        "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
         +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 - name: This fails in ./vrstartup.sh unless I call it here first
