@@ -51,8 +51,8 @@
     creates: /home/{{ user }}/steamcmd/steamcmd.sh
 
 - name: install and update steamcmd
-  creates: /home/{{ user }}/steamcmd/package/steam_cmd_linux.installed
   shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
+    creates: /home/{{ user }}/steamcmd/package/steam_cmd_linux.installed
 
 - name: create sdk32 directory
   file:
