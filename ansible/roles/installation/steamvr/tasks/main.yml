@@ -76,6 +76,7 @@
     state: directory
 
 - name: copy 32bit steamclient
+  become: yes
   copy:
     src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
     dest: "/home/{{ user }}/.steam/sdk32"
