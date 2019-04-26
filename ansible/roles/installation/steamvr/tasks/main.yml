@@ -110,6 +110,20 @@
 #      +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 
+#- name: install and update steamvr one
+#  become: yes
+#  command: >
+#    "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
+#    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
+
+- name: install and update steamvr three
+  command: >
+    "steamcmd.sh +login shadow_software_1 shadow_software
+    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit" 
+  args:
+    chdir: "/home/{{ user }}/steamcmd"
+    executable: /bin/bash
+
 - name: install and update steamvr one
   become: yes
   command: >
