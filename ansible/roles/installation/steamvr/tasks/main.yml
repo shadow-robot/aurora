@@ -109,9 +109,14 @@
 #        +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 - name: install and update steamvr
-  script: >
+  become: yes
+  shell: >
         "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
         +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
+
+#- name: install and update steamcmd
+#  shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
+
 
 - name: This fails in ./vrstartup.sh unless I call it here first
   shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
