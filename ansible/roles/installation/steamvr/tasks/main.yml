@@ -118,7 +118,7 @@
 
 - name: install and update steamcmd t2 # try this
   shell: >
-    "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
+    /home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit
 
 - name: install and update steamcmd t3 # try this
   shell: >
