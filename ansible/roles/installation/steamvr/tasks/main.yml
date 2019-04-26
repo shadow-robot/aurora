@@ -4,7 +4,7 @@
   apt: update_cache=yes
   become: yes
 
-- name: Intall needed libs
+- name: Intall needed libs for steamvr
   apt: name={{ item }} install_recommends=no
   become: yes
   with_items:
@@ -107,6 +107,7 @@
 #  shell: >
 #        "/home/{{ user }}/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software
 #        +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
+
 - name: install and update steamcmd again
   shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
 
@@ -115,7 +116,7 @@
   become: yes
   shell: >
         "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-        +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
+        +app_update 250820 -beta beta validate +quit"
 
 
 
