@@ -75,6 +75,21 @@
     path: "/home/{{ user }}/.steam/sdk64" # parameterise?
     state: directory
 
+- shell: "ls /home/{{ user }}/steamcmd/"
+    register: result_1
+
+- shell: "ls /home/{{ user }}/steamcmd/linux32/"
+    register: result_2
+
+
+- debug:
+    var: result_1
+    verbosity: 2
+
+- debug:
+    var: result_2
+    verbosity: 2
+
 - name: copy 32bit steamclient
   become: yes
   copy:
