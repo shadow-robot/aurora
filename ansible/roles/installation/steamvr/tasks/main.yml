@@ -44,12 +44,14 @@
     state: directory
 
 - name: Unarchive steamcmd_linux from the internet
+  creates: /home/{{ user }}/steamcmd/steamcmd.sh
   unarchive:
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
     dest: "/home/{{ user }}/steamcmd"
     remote_src: yes
 
 - name: install and update steamcmd
+  creates: /home/{{ user }}/steamcmd/package/steam_cmd_linux.installed
   shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
 
 - name: create sdk32 directory
@@ -76,6 +78,7 @@
 
 - name: install and update steamvr
   become: yes
+  creates: /home/{{ user }}/.steam/bin/vrstartup.sh
   command: >
     /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
     +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit
