@@ -87,63 +87,11 @@
     dest: "/home/{{ user }}/.steam/sdk64"
     remote_src: true
 
-
-- name: debug1
-  shell: "ls -a /home/{{ user }}/.steam"
-  register: result_1
-
-- debug:
-    var: result_1
-
-
-#- name: install and update steamvr
-#  become: yes
-#  shell: >
-#    "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-#    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
-
-#- name: install and update steamvr
-#  become: yes
-#  shell:
-#    cmd: >
-#      "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-#      +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
-
-
-#- name: install and update steamvr one
-#  become: yes
-#  command: >
-#    "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-#    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
-
-#- name: install and update steamcmd t2 # try this
-#  shell: >
-#    /home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit
-
-#- name: install and update steamcmd t3 # try this
-#  shell: >
-#    "/home/{{ user }}/steamcmd/steamcmd.sh
-#    +login anonymous +quit"
-
-#- name: install and update steamvr three
-#  command: >
-#    steamcmd.sh +login shadow_software_1 shadow_software
-#    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit
-#  args:
-#    chdir: "/home/{{ user }}/steamcmd"
-#    executable: /bin/bash
-
 - name: install and update steamvr one
   become: yes
   command: >
     /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
     +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit
-
-
-- name: install and update steamvr two
-  become: yes
-  shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software +app_update 250820 +quit"
-
 
 - name: This fails in ./vrstartup.sh unless I call it here first
   shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
