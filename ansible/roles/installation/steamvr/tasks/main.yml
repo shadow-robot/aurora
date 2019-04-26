@@ -76,19 +76,19 @@
     state: directory
 
 - shell: "ls /home/{{ user }}/steamcmd/"
-    register: result_1
+  register: result_1
 
 - shell: "ls /home/{{ user }}/steamcmd/linux32/"
-    register: result_2
+  register: result_2
 
 
 - debug:
-    var: result_1
-    verbosity: 2
+  var: result_1
+  verbosity: 2
 
 - debug:
-    var: result_2
-    verbosity: 2
+  var: result_2
+  verbosity: 2
 
 - name: copy 32bit steamclient
   become: yes
