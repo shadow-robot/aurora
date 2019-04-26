@@ -105,7 +105,7 @@
 - name: install and update steamvr
   become: yes
   shell:
-    cmd: |
+    cmd: >
       "/home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
       +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
