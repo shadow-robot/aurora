@@ -4,7 +4,7 @@ MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
 LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and EC2 driver" Vendor="Shadow Robot" Version="1.0"
 
-ENV aurora_branch "master"
+ENV aurora_branch "F_fix_bootstrap"
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
