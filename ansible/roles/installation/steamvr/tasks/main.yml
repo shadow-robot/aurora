@@ -61,11 +61,9 @@
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
     dest: "/home/{{ user }}/steamcmd"
     remote_src: yes
-  become: yes
 
 - name: install and update steamcmd
   shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
-  become: yes
 
 - name: create sdk32 directory
   file:
