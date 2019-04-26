@@ -40,7 +40,7 @@
 
 - name: create steamcmd directory
   file:
-    path: "/home/{{ user }}/steamcmd" # parameterise?
+    path: "/home/{{ user }}/steamcmd"
     state: directory
 
 - name: Unarchive steamcmd_linux from the internet
@@ -54,12 +54,12 @@
 
 - name: create sdk32 directory
   file:
-    path: "/home/{{ user }}/.steam/sdk32" # parameterise?
+    path: "/home/{{ user }}/.steam/sdk32"
     state: directory
 
 - name: create sdk64 directory
   file:
-    path: "/home/{{ user }}/.steam/sdk64" # parameterise?
+    path: "/home/{{ user }}/.steam/sdk64"
     state: directory
 
 - name: copy 32bit steamclient
