@@ -119,7 +119,7 @@
 - name: install and update steamvr three
   command: >
     "steamcmd.sh +login shadow_software_1 shadow_software
-    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit" 
+    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
   args:
     chdir: "/home/{{ user }}/steamcmd"
     executable: /bin/bash
