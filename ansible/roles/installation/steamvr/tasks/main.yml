@@ -39,6 +39,9 @@
     upgrade: yes
     update_cache: yes
 
+- name: Upgrade APT to the latest packages
+  apt: upgrade=dist
+
 - name: Check if libudev0 is installed
   command: dpkg-query -W libudev0
   register: libudev0_check_deb
