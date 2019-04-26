@@ -11,4 +11,3 @@ def test_hosts_file(host):
     f = host.file('/home/testuser/.steam/bin/vrstartup.sh')
 
     assert f.exists
-
