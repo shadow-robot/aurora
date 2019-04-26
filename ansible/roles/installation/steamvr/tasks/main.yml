@@ -33,14 +33,11 @@
 #    - 'deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-updates multiverse'
 #    - 'deb-src http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-updates multiverse'
 
-#- name: Update and upgrade apt packages
-#  become: true
-#  apt:
-#    upgrade: yes
-#    update_cache: yes
-
-- name: Upgrade APT to the latest packages
-  apt: upgrade=dist
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: dist
+    update_cache: yes
 
 - name: Check if libudev0 is installed
   command: dpkg-query -W libudev0
