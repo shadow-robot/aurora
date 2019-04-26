@@ -53,45 +53,45 @@
 
 - name: create steamcmd directory
   file:
-    path: /home/user/steamcmd # parameterise?
+    path: "/home/{{ user }}/steamcmd" # parameterise?
     state: directory
 
 - name: Unarchive steamcmd_linux from the internet
   unarchive:
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
-    dest: /home/user/steamcmd
+    dest: "/home/{{ user }}/steamcmd"
     remote_src: yes
   become: yes
 
 - name: install and update steamcmd
-  shell: /home/user/steamcmd/steamcmd.sh +login anonymous +quit
+  shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
 
 - name: create sdk32 directory
   file:
-    path: /home/user/.steam/sdk32 # parameterise?
+    path: "/home/{{ user }}/.steam/sdk32" # parameterise?
     state: directory
 
 - name: create sdk64 directory
   file:
-    path: /home/user/.steam/sdk64 # parameterise?
+    path: "/home/{{ user }}/.steam/sdk64" # parameterise?
     state: directory
 
 - name: copy 64bit steamclient
   copy:
-    src: /home/user/steamcmd/linux32/steamclient.so
-    dest: /home/user/.steam/sdk32
+    src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
+    dest: "/home/{{ user }}/.steam/sdk32"
 
 - name: copy 32bit steamclient
   copy:
-    src: /home/user/steamcmd/linux64/steamclient.so
-    dest: /home/user/.steam/sdk64
+    src: "/home/{{ user }}/steamcmd/linux64/steamclient.so"
+    dest: "/home/{{ user }}/.steam/sdk64"
 
 - name: install and update steamvr
   shell: >
-        /home/user/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software
-        +force_install_dir /home/user/.steam +app_update 250820 -beta beta validate +quit
+        "/home/{{ user }}/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software
+        +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 - name: This fails in ./vrstartup.sh unless I call it here first
-  shell: setcap CAP_SYS_NICE=eip /home/user/.steam/bin/linux64/vrcompositor-launcher
+  shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
   become: yes
 
