@@ -44,11 +44,11 @@
     state: directory
 
 - name: Unarchive steamcmd_linux from the internet
-  creates: /home/{{ user }}/steamcmd/steamcmd.sh
   unarchive:
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
     dest: "/home/{{ user }}/steamcmd"
     remote_src: yes
+    creates: /home/{{ user }}/steamcmd/steamcmd.sh
 
 - name: install and update steamcmd
   creates: /home/{{ user }}/steamcmd/package/steam_cmd_linux.installed
