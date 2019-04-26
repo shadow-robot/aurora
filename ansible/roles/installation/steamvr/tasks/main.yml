@@ -65,6 +65,7 @@
 
 - name: install and update steamcmd
   shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
+  become: yes
 
 - name: create sdk32 directory
   file:
