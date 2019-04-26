@@ -2,16 +2,6 @@
 - name: Install Python 3
   import_playbook: ./install-python3.yml
 
-- name: Install Python 3-apt
-  import_playbook: ./install-python3-apt.yml
-
-# - name: Install Python 3-apt
-#  apt:
-#    name: python3-apt
-
-# - name: Install Python 3 in case if it is not installed
-#  raw: 'apt-get -y update && apt-get install -y python3-apt'
-
 - name: Install software based on external parameters
   hosts: install-software
   pre_tasks:
