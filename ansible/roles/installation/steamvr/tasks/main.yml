@@ -75,21 +75,6 @@
     path: "/home/{{ user }}/.steam/sdk64" # parameterise?
     state: directory
 
-- name: debug_1
-  shell: "ls /home/{{ user }}/steamcmd/"
-  register: result_1
-
-- name: debug_2
-  shell: "ls /home/{{ user }}/steamcmd/linux32/"
-  register: result_2
-
-
-- debug:
-    var: result_1
-
-- debug:
-    var: result_2
-
 - name: copy 32bit steamclient
   copy:
     src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
@@ -102,9 +87,23 @@
     dest: "/home/{{ user }}/.steam/sdk64"
     remote_src: true
 
+
+- name: debug1
+  shell: "ls /home/{{ user }}/steamcmd/linux32/"
+  register: result_1
+
+
+- debug:
+    var: result_1
+
+#- name: install and update steamvr
+#  shell: >
+#        "/home/{{ user }}/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software
+#        +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
+
 - name: install and update steamvr
-  shell: >
-        "/home/{{ user }}/steamcmd/./steamcmd.sh +login shadow_software_1 shadow_software
+  command: >
+        "sh /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
         +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit"
 
 - name: This fails in ./vrstartup.sh unless I call it here first
