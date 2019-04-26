@@ -26,19 +26,24 @@
     upgrade: dist
     update_cache: yes
 
-- name: Check if libudev0 is installed
-  command: dpkg-query -W libudev0
-  register: libudev0_check_deb
-  failed_when: libudev0_check_deb.rc > 1
-  changed_when: libudev0_check_deb.rc == 1
+- name: Gather package facts
+  package_facts:
+    manager: apt
 
-- name: Install libudev0_175 from the internet if it is not already installed
+#- name: Install debconf-utils if graphite-carbon is absent
+#  apt:
+#    name: debconf-utils
+#    state: present
+#  when: '"libudev0" not in ansible_facts.packages'
+
+- name: Install libudev0_175 from the internet if absent
   apt:
     deb: http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
+    state: present
   become: yes
-  when: libudev0_check_deb.rc == 1
+  when: '"libudev0" not in ansible_facts.packages'
 
-- name: create steamcmd directory
+- name: Create steamcmd directory
   file:
     path: "/home/{{ user }}/steamcmd"
     state: directory
@@ -50,34 +55,34 @@
     remote_src: yes
     creates: /home/{{ user }}/steamcmd/steamcmd.sh
 
-- name: install and update steamcmd
+- name: Install and update steamcmd
   shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
   args:
     creates: "/home/{{ user }}/steamcmd/package/steam_cmd_linux.installed"
 
-- name: create sdk32 directory
+- name: Create sdk32 directory
   file:
     path: "/home/{{ user }}/.steam/sdk32"
     state: directory
 
-- name: create sdk64 directory
+- name: Create sdk64 directory
   file:
     path: "/home/{{ user }}/.steam/sdk64"
     state: directory
 
-- name: copy 32bit steamclient
+- name: Copy 32bit steamclient
   copy:
     src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
     dest: "/home/{{ user }}/.steam/sdk32"
     remote_src: true
 
-- name: copy 64bit steamclient
+- name: Copy 64bit steamclient
   copy:
     src: "/home/{{ user }}/steamcmd/linux64/steamclient.so"
     dest: "/home/{{ user }}/.steam/sdk64"
     remote_src: true
 
-- name: install and update steamvr
+- name: Install and update steamvr
   become: yes
   command: >
     /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
@@ -89,7 +94,7 @@
 #  shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
 #  become: yes
 
-- name: fix setcap error in vrstartup.sh two
+- name: Fix setcap error in vrstartup.sh two
   become: yes
   capabilities:
     path: /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher

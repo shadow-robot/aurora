@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: steamvr_docker
+  - name: install_steamvr_docker
     image: shadowrobot/aurora-test-ubuntu-docker:bionic
     groups:
       - install-software
