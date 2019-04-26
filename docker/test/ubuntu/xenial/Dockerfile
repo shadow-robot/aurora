@@ -18,9 +18,16 @@ RUN set -x && \
     useradd -m $USER && \
     passwd -d $USER && \
     adduser $USER sudo && \
+    echo "$USER ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers && \
     \
     echo "Clean up" && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache
+    rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/* \
+        /root/.ansible \
+        /root/.gitconfig \
+        /root/.cache
 
 USER $USER

@@ -10,11 +10,16 @@
     name: 'python3-pip'
     state: 'present'
   when: pip_status.rc != 0
+  become: yes
 
 - name: Install Docker pip module
   pip:
     name: docker
     state: present
+  become: yes
+  changed_when: pip_status.rc != 0
+  # Hack because of not idempotent behavior of pip module
+  # Check this issue for details https://github.com/ansible/ansible/issues/28952
 
 - name: Check if Docker is already installed
   stat: 'path=/etc/init.d/docker'

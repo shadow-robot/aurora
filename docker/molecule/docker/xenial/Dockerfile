@@ -6,16 +6,21 @@ LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and Docker dri
 
 ENV aurora_branch "master"
 
+ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
+
 RUN set -x && \
     \
-    echo "Install Docker using playbook to avoid installing Python 3.5" && \
-    git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $aurora_branch /tmp/aurora && \
-    cd /tmp/aurora/ && \
-    export ANSIBLE_ROLES_PATH="/tmp/aurora/ansible/roles" && \
-    ansible-playbook -vvv --ask-become-pass -i ansible/inventory/local/install-software \
-        ansible/playbooks/install-software.yml --extra-vars 'software=[docker]' && \
-    cd /root && \
+    echo "Installing Docker" && \
+    wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
+    chmod 755 /tmp/oneliner && \
+    /tmp/oneliner install-software --debug-branch $aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache
+    rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/* \
+        /root/.ansible \
+        /root/.gitconfig \
+        /root/.cache
