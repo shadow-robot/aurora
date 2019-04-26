@@ -89,12 +89,19 @@
 
 
 - name: debug1
-  shell: "ls /home/{{ user }}/steamcmd/linux32/"
+  shell: "ls -a /home/{{ user }}/steamcmd/"
   register: result_1
-
 
 - debug:
     var: result_1
+
+- name: debug2
+  shell: "ls -a /home/{{ user }}/"
+  register: result_2
+
+- debug:
+    var: result_2
+
 
 #- name: install and update steamvr
 #  shell: >
