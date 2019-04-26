@@ -73,13 +73,13 @@
     dest: "/home/{{ user }}/.steam/sdk64"
     remote_src: true
 
-- name: install and update steamvr one
+- name: install and update steamvr
   become: yes
   command: >
     /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
     +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit
 
-- name: This fails in ./vrstartup.sh unless I call it here first
+- name: fix setcap error in vrstartup.sh
   shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
   become: yes
 
