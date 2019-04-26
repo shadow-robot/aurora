@@ -85,7 +85,13 @@
   args:
     creates: /home/{{ user }}/.steam/bin/vrstartup.sh
 
-- name: fix setcap error in vrstartup.sh
-  shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
-  become: yes
+#- name: fix setcap error in vrstartup.sh
+#  shell: "setcap CAP_SYS_NICE=eip /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher"
+#  become: yes
+
+- name: fix setcap error in vrstartup.sh two
+  capabilities:
+    path: /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher
+    capability: cap_sys_nice+eip
+    state: present
 
