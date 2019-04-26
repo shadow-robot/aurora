@@ -75,10 +75,12 @@
     path: "/home/{{ user }}/.steam/sdk64" # parameterise?
     state: directory
 
-- shell: "ls /home/{{ user }}/steamcmd/"
+- name: debug_1
+  shell: "ls /home/{{ user }}/steamcmd/"
   register: result_1
 
-- shell: "ls /home/{{ user }}/steamcmd/linux32/"
+- name: debug_2
+  shell: "ls /home/{{ user }}/steamcmd/linux32/"
   register: result_2
 
 
