@@ -77,7 +77,6 @@
     remote_src: true
 
 - name: Install and update steamvr
-  become: yes
   command: >
     /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
     +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit
