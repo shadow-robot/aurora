@@ -3,8 +3,12 @@
   apt: update_cache=yes
   become: yes
 
+- name: Find user
+    paths: /home
+    register: user_directory
+
 - debug:
-    msg: " user= {{ user }} env= {{ lookup('env','USER') }} ansible_user_id = {{ ansible_user_id }}"
+    msg: " user= {{ user }} env= {{ lookup('env','USER') }} ansible_user_id = {{ ansible_user_id }} dir = {{ user_directory.files }}"
 
 - name: Intall needed libs for steamvr
   apt: name={{ item }} install_recommends=no
