@@ -10,6 +10,53 @@
       set_fact:
         software_list: "{{ software | default([]) }}"
 
+
+  tasks:
+    - name: "PLAYBOOK SUDO=NO, TASK SUDO=NO"
+      command: whoami
+      register: whoami_output
+      sudo: no
+    - debug: var=whoami_output.stdout
+    - debug: var=ansible_ssh_user
+      sudo: no
+    - debug: var=ansible_user_id
+      sudo: no
+
+    - name: "PLAYBOOK SUDO=NO, TASK SUDO=YES"
+      command: whoami
+      register: whoami_output
+      sudo: yes
+    - debug: var=whoami_output.stdout
+    - debug: var=ansible_ssh_user
+      sudo: yes
+    - debug: var=ansible_user_id
+      sudo: yes
+
+- name: Testing variables with SUDO=YES
+  hosts: "*"
+  sudo: yes
+
+  tasks:
+    - name: "PLAYBOOK SUDO=YES, TASK SUDO=NO"
+      command: whoami
+      register: whoami_output
+      sudo: no
+    - debug: var=whoami_output.stdout
+    - debug: var=ansible_ssh_user
+      sudo: no
+    - debug: var=ansible_user_id
+      sudo: no
+
+    - name: "PLAYBOOK SUDO=YES, TASK SUDO=YES"
+      command: whoami
+      register: whoami_output
+      sudo: yes
+    - debug: var=whoami_output.stdout
+    - debug: var=ansible_ssh_user
+      sudo: yes
+    - debug: var=ansible_user_id
+      sudo: yes
+
   roles:
     - {role: installation/docker, when: "'docker' in software_list" }
     - {role: installation/nvidia-docker, when: "'nvidia-docker' in software_list"}
