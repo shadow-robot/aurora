@@ -12,6 +12,7 @@
   sudo: no
 - debug: var=ansible_user_id
   sudo: no
+- debug: "var={{ user }}" 
 
 - name: "PLAYBOOK SUDO=NO, TASK SUDO=YES"
   command: whoami
