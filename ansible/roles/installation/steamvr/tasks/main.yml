@@ -1,6 +1,4 @@
 ---
-- user: "{{ new_docker_user }}"
-
 - name: Update package lists
   apt: update_cache=yes
   become: yes
