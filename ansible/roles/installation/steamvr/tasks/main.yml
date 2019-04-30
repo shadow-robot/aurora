@@ -3,12 +3,8 @@
   apt: update_cache=yes
   become: yes
 
-- name: Find user
-    paths: /home
-    register: user_directory
-
 - debug:
-    msg: " user= {{ user }} env= {{ lookup('env','USER') }} ansible_user_id = {{ ansible_user_id }} dir = {{ user_directory.files }}"
+    msg: " user= {{ user }} env= {{ lookup('env','USER') }} new_docker_user = {{ new_docker_user }} hack_var = {{ hack_var }}"
 
 - name: Intall needed libs for steamvr
   apt: name={{ item }} install_recommends=no
@@ -45,54 +41,54 @@
 
 - name: Create steamcmd directory
   file:
-    path: "/home/{{ user }}/steamcmd"
+    path: "/home/{{ hack_var }}/steamcmd"
     state: directory
 
 - name: Unarchive steamcmd_linux from the internet
   unarchive:
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
-    dest: "/home/{{ user }}/steamcmd"
+    dest: "/home/{{ hack_var }}/steamcmd"
     remote_src: yes
-    creates: /home/{{ user }}/steamcmd/steamcmd.sh
+    creates: /home/{{ hack_var }}/steamcmd/steamcmd.sh
 
 - name: Install and update steamcmd
-  shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
+  shell: "/home/{{ hack_var }}/steamcmd/steamcmd.sh +login anonymous +quit"
   args:
-    creates: "/home/{{ user }}/steamcmd/package/steam_cmd_linux.installed"
+    creates: "/home/{{ hack_var }}/steamcmd/package/steam_cmd_linux.installed"
 
 - name: Create sdk32 directory
   file:
-    path: "/home/{{ user }}/.steam/sdk32"
+    path: "/home/{{ hack_var }}/.steam/sdk32"
     state: directory
 
 - name: Create sdk64 directory
   file:
-    path: "/home/{{ user }}/.steam/sdk64"
+    path: "/home/{{ hack_var }}/.steam/sdk64"
     state: directory
 
 - name: Copy 32bit steamclient
   copy:
-    src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
-    dest: "/home/{{ user }}/.steam/sdk32"
+    src: "/home/{{ hack_var }}/steamcmd/linux32/steamclient.so"
+    dest: "/home/{{ hack_var }}/.steam/sdk32"
     remote_src: true
 
 - name: Copy 64bit steamclient
   copy:
-    src: "/home/{{ user }}/steamcmd/linux64/steamclient.so"
-    dest: "/home/{{ user }}/.steam/sdk64"
+    src: "/home/{{ hack_var }}/steamcmd/linux64/steamclient.so"
+    dest: "/home/{{ hack_var }}/.steam/sdk64"
     remote_src: true
 
 - name: Install and update steamvr
   command: >
-    /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit
+    /home/{{ hack_var }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
+    +force_install_dir /home/{{ hack_var }}/.steam +app_update 250820 -beta beta validate +quit
   args:
-    creates: /home/{{ user }}/.steam/bin/vrstartup.sh
+    creates: /home/{{ hack_var }}/.steam/bin/vrstartup.sh
 
 - name: Fix setcap error in vrstartup.sh
   become: yes
   capabilities:
-    path: /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher
+    path: /home/{{ hack_var }}/.steam/bin/linux64/vrcompositor-launcher
     capability: cap_sys_nice+eip
     state: present
 

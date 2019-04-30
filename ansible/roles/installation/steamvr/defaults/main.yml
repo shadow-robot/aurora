@@ -1,2 +1,3 @@
 ---
-user: "{{ lookup('env','USER') }}"
+user: "{{ new_docker_user }}"
+hack_var: "{{ 'user' if 'root' in user else 'testuser' }}"
