@@ -4,7 +4,7 @@
   become: yes
 
 - debug:
-    msg: " user= {{ user }} env= {{ lookup('env','USER') }} new_docker_user = {{ new_docker_user }} hack_var = {{ hack_var }}"
+    msg: "user={{ user }} env={{ lookup('env','USER') }}ansible_user_id={{ ansible_user_id }} hack_var={{ hack_var }}"
 
 - name: Intall needed libs for steamvr
   apt: name={{ item }} install_recommends=no
