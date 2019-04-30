@@ -1,50 +1,9 @@
 ---
-
+user: "{{ ansible_user_id }}"
 # SteamVR installation
 - name: Update package lists
   apt: update_cache=yes
   become: yes
-
-- name: "PLAYBOOK SUDO=NO, TASK SUDO=NO"
-  command: whoami
-  register: whoami_output
-  sudo: no
-- debug: var=whoami_output.stdout
-- debug: var=ansible_ssh_user
-  sudo: no
-- debug: var=ansible_user_id
-  sudo: no
-
-- name: "PLAYBOOK SUDO=NO, TASK SUDO=YES"
-  command: whoami
-  register: whoami_output
-  sudo: yes
-- debug: var=whoami_output.stdout
-- debug: var=ansible_ssh_user
-  sudo: yes
-- debug: var=ansible_user_id
-  sudo: yes
-
-
-- name: "PLAYBOOK SUDO=YES, TASK SUDO=NO"
-  command: whoami
-  register: whoami_output
-  sudo: no
-- debug: var=whoami_output.stdout
-- debug: var=ansible_ssh_user
-  sudo: no
-- debug: var=ansible_user_id
-  sudo: no
-
-- name: "PLAYBOOK SUDO=YES, TASK SUDO=YES"
-  command: whoami
-  register: whoami_output
-  sudo: yes
-- debug: var=whoami_output.stdout
-- debug: var=ansible_ssh_user
-  sudo: yes
-- debug: var=ansible_user_id
-  sudo: yes
 
 - name: Intall needed libs for steamvr
   apt: name={{ item }} install_recommends=no
