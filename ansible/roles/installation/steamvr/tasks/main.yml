@@ -1,4 +1,5 @@
 ---
+user: "{{ ansible_user_id }}"
 # SteamVR installation
 - name: Update package lists
   apt: update_cache=yes

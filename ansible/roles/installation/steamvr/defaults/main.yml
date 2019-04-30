@@ -1,2 +1,2 @@
 ---
-user: "user"
+user: "{{ ansible_user_id }}"
