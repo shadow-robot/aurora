@@ -1,4 +1,18 @@
 ---
+- name: Update package lists
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Intall needed libs for AWS CLI help
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - less
+      - groff
+  become: yes
+
 - name: Make sure AWS requirements.txt exists locally
   copy:
     src: files/requirements.txt
