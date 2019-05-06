@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: ec2
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    image: ami-a5b196c0
+    instance_type: t2.micro
+    vpc_subnet_id: subnet-6456fd1f
+provisioner:
+  name: ansible
+  playbooks:
+    create: ../resources/ec2/create.yml
+    destroy: ../resources/ec2/destroy.yml
+    prepare: ../../install-python3.yml
+    converge: ../default/playbook.yml
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  directory: ../default/tests/
+  lint:
+    name: flake8
