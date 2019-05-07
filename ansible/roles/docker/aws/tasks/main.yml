@@ -15,13 +15,21 @@
   shell: "echo {{ customer_key }} > /tmp/customer.key; docker cp /tmp/customer.key {{ container_name }}:/usr/local/bin/customer.key"
   become: yes
 
-- name: Removing shadow-upload.sh local
+- name: Removing aws-cli-requirements.txt local
+  file:
+    path: "/tmp/aws-cli-requirements.txt"
+    state: absent
+  become: yes
+
+- name: Removing shadow-upload.sh from local
   file:
     path: "/tmp/shadow-upload.sh"
     state: absent
+  become: yes
 
-- name: Removing shadow-upload.sh from local
+- name: Removing customer.key from local
   file:
     path: "/tmp/customer.key"
     state: absent
   become: yes
+

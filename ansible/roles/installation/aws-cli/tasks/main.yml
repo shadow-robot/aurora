@@ -10,7 +10,7 @@
 - name: Install AWS CLI
   pip:
     requirements: "/tmp/aws-cli-requirements.txt"
-  become: true
+  become: yes
 
 - name: Removing aws-cli-requirements.txt local
   file:

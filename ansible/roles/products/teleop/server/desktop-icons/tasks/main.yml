@@ -4,23 +4,38 @@
     path: "{{ user_folder }}/Desktop"
     mode: '755'
     state: directory
+  become: yes
 
 - name: Ensures that shadow_hand_launcher directory exists
   file:
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
+  become: yes
 
 - name: Copy Teleop desktop icon
   copy:
     src: files/teleop_icon.png
     dest: "{{ shadow_hand_launcher_folder }}/teleop_icon.png"
     mode: '664'
+  become: yes
+
+# TODO: FIX THIS: find the correct way to access nuc IP and username from inventory file
+#- name: Setting facts for NUC
+#  set_fact:
+#    nuc_address: "{{ groups['control_machine']['ansible_default_ipv4']['address'] }}"
+#    nuc_username: "{{ groups['control_machine'].ansible_user }}"
+
+- name: Setting facts for NUC
+  set_fact:
+    nuc_address: "10.9.10.2"
+    nuc_username: "test"
 
 - name: Create Teleop executable launch script
   template:
-    src: ../../../hand-e/desktop-icons/templates/scripts/start-docker-container.j2
+    src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
     mode: '755'
+  become: yes
 
 - name: Create Teleop desktop icon
   template:
@@ -34,3 +49,25 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: teleop_exec.sh
     icon_file_name: teleop_icon.png
+  become: yes
+
+- name: Create Shadow_Hand_TeleOp_Launcher executable launch script
+  template:
+    src: ../../../hand-e/desktop-icons/templates/scripts/start-docker-container.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
+    mode: '755'
+  become: yes
+
+- name: Create Shadow_Hand_Launcher desktop icon
+  template:
+    src: ../../../hand-e/shortcut-template/templates/desktop-icon.j2
+    dest: "{{ user_folder }}/Desktop/Shadow_Hand_TeleOp_Launcher.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Shadow_Hand_TeleOp_Launcher
+    comment: "This is application launches the GUI of the hand"
+    window_title: shadow_launcher_app_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: shadow_launcher_exec.sh
+    icon_file_name: teleop_icon.png
+  become: yes
