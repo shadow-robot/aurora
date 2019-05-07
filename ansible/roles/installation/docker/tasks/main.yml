@@ -23,5 +23,4 @@
 
 - name: Install Docker
   import_tasks: install.yml
-  when: not docker_check.stat.exists
   become: true
