@@ -55,7 +55,7 @@
 - name: Create ROS Logs Saver desktop icon
   when: not use_aws
   template:
-    src: ../shortcut-template/templates/desktop-icon.j2
+    src: ../../../hand-e/shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop"
     mode: '755'
   vars:
@@ -69,7 +69,7 @@
 - name: Create ROS Logs Saver and Uploader desktop icon
   when: use_aws
   template:
-    src: ../shortcut-template/templates/desktop-icon.j2
+    src: ../../../hand-e/shortcut-template/templates/desktop-icon.j2   
     dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
     mode: '755'
   vars:
