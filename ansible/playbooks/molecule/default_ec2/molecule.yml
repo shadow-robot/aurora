@@ -6,12 +6,19 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
-    image: ami-a5b196c0
+  - name: default_ec2
+    image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
-    vpc_subnet_id: subnet-6456fd1f
+    vpc_subnet_id: subnet-e9054fa4
+    groups:
+      - docker-deploy
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../roles
+  inventory:
+    links:
+      group_vars: ../../../inventory/local/group_vars
   playbooks:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml

@@ -2,22 +2,15 @@ version: 0.2
 
 env:
   variables:
-     test_directory: "/home/user/.shadow_unit_tests"
-     user: "user"
+     EC2_REGION: "$AWS_DEFAULT_REGION"
 phases:
   pre_build:
     commands:
-      - branch=$(git branch -a --contains $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -d$'\n' -f2 | tr -d ' ')
-      - USER=$user
+      - aws configure set aws_access_key_id $AWS_ACCESS_KEY
+      - aws configure set aws_secret_access_key $AWS_SECRET_KEY
+      - aws configure set default.region $AWS_DEFAULT_REGION
   build:
     commands:
-      - chown -R $USER:$USER $CODEBUILD_SRC_DIR
-      - export remote_shell_script="https://raw.githubusercontent.com/shadow-robot/aurora/$branch/bin/run-ansible.sh"
-      - wget -O /tmp/oneliner "$( echo "$remote_shell_script" | sed 's/#/%23/g' )"
-      - chmod 755 /tmp/oneliner
-      - gosu $USER /tmp/oneliner run-unit-tests --debug-branch $branch
-      - mkdir -p $test_directory && touch $test_directory/.placeholder
-artifacts:
-  files:
-    - '$test_directory/**/*'
-  name: $(date -d @${CODEBUILD_START_TIME::10} +%d-%b-%Y_%H-%M-%S)-aurora-unit-tests
+      - sudo pip3 install boto boto3 # TODO: Move to the requirements.txt of AWS CLI role
+      - cd $CODEBUILD_SRC_DIR/aurora/ansible/playbooks
+      - molecule --debug test --scenario-name default_ec2
