@@ -1,5 +1,6 @@
 ---
 - name: Creating the container
+  changed_when: false
   docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
@@ -25,22 +26,24 @@
     path: /etc/network/interfaces
   register: stat_result
 
-- name: Check if network interface is the right one
-  find:
-    paths: /etc/network/interfaces
-    patterns: "{{ ansible_interfaces | select('match','enp.*') | list | first }}"
-    use_regex: true
-  register: ur_interface
-  when: stat_result.stat.exists
+- name: In case enp interface doesn't exist, use eth0
+  set_fact:
+    ur_interface: 'eth0'
+  when: "'enp' not in ansible_interfaces"
+
+- name: If an enp interface exists, use the first one for ur_interface
+  set_fact:
+    ur_interface: "{{ ansible_interfaces | select('match','enp.*') | list | first }}"
+  when: "'enp' in ansible_interfaces"
 
 - name: Add network setup to control machine
   become: yes
-  when: ur_interface|length is 0
+  when: ur_interface | length > 0
   blockinfile:
     path: /etc/network/interfaces
     backup: yes
     block: |
-      auto   {{ ansible_interfaces | select('match','enp.*') | list | first }}
-      iface {{ ansible_interfaces | select('match','enp.*') | list | first }} inet static
+      auto   {{ ur_interface }}
+      iface {{ ur_interface }} inet static
         address 192.168.1.100
         netmask 255.255.255.0
