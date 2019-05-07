@@ -21,7 +21,7 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: true
+      become: yes
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -43,7 +43,7 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: true
+      become: yes
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -58,7 +58,7 @@
   hosts: windows_machine
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
-      become: true
+      become: yes
       lineinfile:
         dest: c:\Windows\System32\Drivers\etc\hosts
         regexp: '.*{{ item }}$'
@@ -80,7 +80,7 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: true
+      become: yes
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
