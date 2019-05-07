@@ -7,4 +7,4 @@
 - name: Install OpenVPN server
   import_tasks: install.yml
   when: not openvpn_check.stat.exists
-  become: true
+  become: yes

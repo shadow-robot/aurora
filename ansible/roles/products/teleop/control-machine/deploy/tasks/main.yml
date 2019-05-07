@@ -26,25 +26,21 @@
   register: stat_result
 
 - name: Check if network interface is the right one
-  become: yes
-  when: stat_result.stat.exists == True
   find:
     paths: /etc/network/interfaces
     patterns: "{{ ansible_interfaces | select('match','enp.*') | list | first }}"
     use_regex: true
   register: ur_interface
+  when: stat_result.stat.exists
 
 - name: Add network setup to control machine
   become: yes
   when: ur_interface|length is 0
   blockinfile:
-    path: /etc/network/interfaces 
+    path: /etc/network/interfaces
     backup: yes
     block: |
       auto   {{ ansible_interfaces | select('match','enp.*') | list | first }}
       iface {{ ansible_interfaces | select('match','enp.*') | list | first }} inet static
         address 192.168.1.100
         netmask 255.255.255.0
-
-
-      

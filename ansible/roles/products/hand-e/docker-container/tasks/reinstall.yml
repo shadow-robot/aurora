@@ -1,19 +1,19 @@
 ---
 - name: Create the shadow_hand_launcher_folder
-  become: true
+  become: yes
   file:
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
 - name: Creating hand setup script
-  become: true
+  become: yes
   template:
     src: templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh"
     mode: '755'
 
 - name: Creating the container
-  become: true
+  become: yes
   docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
@@ -31,9 +31,7 @@
     interactive: yes
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
     command: "terminator -x bash -c '/usr/local/bin/setup_dexterous_hand.sh && bash || bash'"
-  become: yes
 
 - name: Copying hand setup script into docker container
-  become: true
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:/usr/local/bin/setup_dexterous_hand.sh"
   become: yes
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:/usr/local/bin/setup_dexterous_hand.sh"

@@ -109,14 +109,14 @@
     - { regex: "key server.key", value: "key server.key" }
 
 - name: Configuration IP forwarding
-  become: true
+  become: yes
   sysctl:
     name: net.ipv4.ip_forward
     value: 1
     state: present
 
 - name: Add ufw before content
-  become: true
+  become: yes
   blockinfile:
     path: /etc/ufw/before.rules
     insertbefore: BOF
@@ -127,22 +127,22 @@
       COMMIT
 
 - name: Customize ufw forwarding policy
-  become: true
+  become: yes
   lineinfile:
     line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
     path: "/etc/default/ufw"
     regexp: '^DEFAULT_FORWARD_POLICY="DROP"'
 
 - name: Open ufw ports for openvpn and ssh
-  become: true
+  become: yes
   shell: ufw allow openvpn && ufw allow OpenSSH
 
 - name: Enable ufw
-  become: true
+  become: yes
   shell: ufw --force enable
 
 - name: Start openvpn systemd service
-  become: true
+  become: yes
   systemd:
     name: openvpn@server
     state: started
