@@ -12,8 +12,6 @@
 
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
-  environment:
-    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python3.7/site-packages"
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -21,7 +19,6 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: yes
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -29,13 +26,12 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/server/deploy }
 
 - name: Install Teleop software on control machine
   hosts: control_machine
-  environment:
-    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python3.7/site-packages"
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -43,7 +39,6 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: yes
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -51,6 +46,7 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/control-machine/deploy }
 
@@ -58,7 +54,6 @@
   hosts: windows_machine
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
-      become: yes
       lineinfile:
         dest: c:\Windows\System32\Drivers\etc\hosts
         regexp: '.*{{ item }}$'
@@ -66,13 +61,12 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/windows-machine/deploy }
 
 - name: Install Teleop software on Ubuntu teleop client laptop
   hosts: client
-  environment:
-    PYTHONPATH: "{{ lookup('env','PYTHONPATH') }}:/usr/local/lib/python3.7/site-packages"
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -80,7 +74,6 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: yes
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -88,5 +81,6 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/client/deploy }

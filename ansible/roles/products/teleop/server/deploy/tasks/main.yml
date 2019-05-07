@@ -10,6 +10,7 @@
 
 - name: Create keypair for ssh
   authorized_key:
+    user: "{{ user }}"
     key: "{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"
     state: present
 
