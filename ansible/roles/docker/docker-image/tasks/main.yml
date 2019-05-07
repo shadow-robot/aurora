@@ -5,6 +5,15 @@
     password: "{{ password }}"
   when: username is defined and password is defined
 
+- name: Reading path to Python repository with Docker package
+  command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""
+  register: python_packages_path_output
+  changed_when: python_packages_path_output.rc != 0
+
+- name: Set path to Docker Python package
+  set_fact:
+    python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
+
 - name: Set docker full image name
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
@@ -12,4 +21,6 @@
 - name: Pulling the image (containing hack for Python 3 path)
   docker_image:
     name: "{{ full_image_name }}"
+  environment:
+    PYTHONPATH: "{{ python_packages_path }}"
   become: yes

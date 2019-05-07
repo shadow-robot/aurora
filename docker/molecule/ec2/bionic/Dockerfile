@@ -17,4 +17,10 @@ RUN set -x && \
     \
     echo "Clean up" && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache
+    rm -rf \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/* \
+        /root/.ansible \
+        /root/.gitconfig \
+        /root/.cache

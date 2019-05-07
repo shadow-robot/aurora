@@ -1,14 +1,22 @@
-FROM shadowrobot/aurora-molecule:bionic
+FROM shadowrobot/aurora-test-ubuntu:xenial
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
-LABEL Description="Ubuntu Bionic image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="This image is used for testing Ubuntu Xenial with Docker deployment" Vendor="Shadow Robot" Version="1.0"
+
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV USER testuser
 
 ENV aurora_branch "master"
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
 RUN set -x && \
+    sudo apt-get update && \
+    \
+    echo "Installing wget" && \
+    sudo apt-get install -y --no-install-recommends ca-certificates wget && \
     \
     echo "Installing Docker" && \
     wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
@@ -16,8 +24,8 @@ RUN set -x && \
     /tmp/oneliner install-software --debug-branch $aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
-    apt-get clean && \
-    rm -rf \
+    sudo apt-get clean && \
+    sudo rm -rf \
         /var/lib/apt/lists/* \
         /tmp/* \
         /var/tmp/* \

@@ -7,6 +7,7 @@ script_name=$(basename $BASH_SOURCE)
 
 if [[ $# < 2 ]]; then
     command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
+    command_usage_message="${command_usage_message} [--limit <rules>]"
     command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
     echo "${command_usage_message}"
     exit 1
@@ -14,6 +15,7 @@ fi
 
 aurora_home=/tmp/aurora
 playbook=$1
+aurora_limit=all
 shift
 
 while [[ $# > 1 ]]
@@ -26,6 +28,10 @@ case ${key} in
     ;;
     --inventory)
     aurora_inventory="$2"
+    shift 2
+    ;;
+    --limit)
+    aurora_limit="$2"
     shift 2
     ;;
     *)
@@ -54,12 +60,14 @@ echo ""
 echo "possible options: "
 echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
 echo "  * --inventory         Inventory of servers to use (local by default)"
+echo "  * --limit             Run a playbook against one or more members of that group (all by default)"
 echo ""
 echo "example: ./${script_name} docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
 echo "playbook     = ${playbook}"
 echo "debug-branch = ${aurora_tools_branch}"
 echo "inventory    = ${aurora_inventory}"
+echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 
@@ -98,6 +106,10 @@ pushd $aurora_home
 
 pip3 install --user -r ansible/data/ansible/requirements.txt
 ansible_flags="-v --ask-become-pass "
+
+if [[ "${aurora_limit}" != "all" ]]; then
+    ansible_flags="${ansible_flags} --limit ${aurora_limit} "
+fi
 if [[ "${playbook}" = "teleop-deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-pass "
     aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"

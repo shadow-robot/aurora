@@ -12,15 +12,16 @@
     container_exists: true
 
 - name: Checking if container already running
-  when: container_exists
   shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
-  register: container_running
+  register: container_running_output
+  when: container_exists
   become: yes
+  changed_when: container_running_output.rc != 0
 
 - name: Set container_running to true
-  when: container_exists
   set_fact:
-    container_running: "{{ container_running.stdout | bool }}"
+    container_running: "{{ container_running_output.stdout | bool }}"
+  when: container_exists
 
 - name: Exit if container already running
   import_tasks: exit.yml

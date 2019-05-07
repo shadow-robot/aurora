@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: hand_e_empty_machine_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:xenial-manual
+    image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
       - docker-deploy
     volumes:
@@ -16,6 +16,8 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../roles
+  playbooks:
+    cleanup: cleanup.yml
   inventory:
     links:
       group_vars: ../../../inventory/local/group_vars
