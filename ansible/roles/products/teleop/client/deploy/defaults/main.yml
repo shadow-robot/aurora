@@ -1,5 +1,10 @@
 ---
-container_name: "teleop-client"
 image: "shadowrobot/dexterous-hand"
 tag: "kinetic-release"
-ethercat_interface: "eth0"
+reinstall: false
+container_name: "teleop-client"
+nvidia_docker: false
+cyberglove: "A-penny"
+use_aws: true
+customer_key: false
+use_openvpn: false

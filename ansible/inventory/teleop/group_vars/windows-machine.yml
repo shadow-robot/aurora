@@ -1,7 +1,2 @@
 ---
-ethercat_interface: "eth0"
-use_aws: true
-customer_key: false
-nvidia_docker: false
-reinstall: false
-launch_hand: false
+use_openvpn: false
