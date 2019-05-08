@@ -22,14 +22,14 @@
 - name: Create Shadow_Hand_Launcher executable launch script
   become: yes
   template:
-    src: templates/scripts/start-docker-container.j2
+    src: ../../common/desktop-icons/templates/scripts/start-docker-container.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
     mode: '755'
 
 - name: Create Shadow_Hand_Launcher desktop icon
   become: yes
   template:
-    src: ../shortcut-template/templates/desktop-icon.j2
+    src: ../../common/shortcut-template/templates/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
     mode: '755'
   vars:
@@ -39,56 +39,6 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: shadow_launcher_exec.sh
     icon_file_name: hand-e.png
-
-- name: Ensures that save_latest_ros_logs_folder exists
-  become: yes
-  file:
-    path: "{{ save_latest_ros_logs_folder }}"
-    state: directory
-
-- name: Copy ROS Logs Saver desktop icon
-  become: yes
-  copy:
-    src: files/log-icon.png
-    dest: "{{ save_latest_ros_logs_folder }}/log-icon.png"
-    mode: '664'
-
-- name: Copy ROS Logs Saver main script
-  become: yes
-  copy:
-    src: files/save-latest-ros-logs.sh
-    dest: "{{ save_latest_ros_logs_folder }}/save-latest-ros-logs.sh"
-    mode: '755'
-
-- name: Create ROS Logs Saver desktop icon
-  become: yes
-  when: not use_aws
-  template:
-    src: ../shortcut-template/templates/desktop-icon.j2
-    dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: ROS_Logs_Saver
-    comment: "This application saves latest ros logs file from running docker container"
-    window_title: shadow_save_log_app_xterm
-    folder: "{{ save_latest_ros_logs_folder }}"
-    shell_script_file_name: save-latest-ros-logs.sh
-    icon_file_name: log-icon.png
-
-- name: Create ROS Logs Saver and Uploader desktop icon
-  become: yes
-  when: use_aws
-  template:
-    src: ../shortcut-template/templates/desktop-icon.j2
-    dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: ROS_Logs_Saver_And_Uploader
-    comment: "This application saves and uploads to AWS latest ros logs file from running docker container"
-    window_title: shadow_save_log_app_xterm
-    folder: "{{ save_latest_ros_logs_folder }}"
-    shell_script_file_name: save-latest-ros-logs.sh
-    icon_file_name: log-icon.png
 
 - name: Create demo icons
   become: yes
