@@ -9,8 +9,9 @@ platforms:
   - name: default_ec2
     image: ami-0b553b4cb25d77416
     instance_type: t2.micro
-    vpc_subnet_id: subnet-0c8e0047
+    region: us-east-1
     vpc_id: vpc-81068bf9
+    vpc_subnet_id: subnet-0c8e0047
     groups:
       - docker-deploy
 provisioner:

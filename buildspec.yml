@@ -1,14 +1,10 @@
 version: 0.2
 
-env:
-  variables:
-     EC2_REGION: "$AWS_DEFAULT_REGION"
 phases:
   pre_build:
     commands:
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY
       - aws configure set aws_secret_access_key $AWS_SECRET_KEY
-      - aws configure set default.region $AWS_DEFAULT_REGION
   build:
     commands:
       - sudo pip3 install boto boto3 # TODO: Move to the requirements.txt of AWS CLI role
