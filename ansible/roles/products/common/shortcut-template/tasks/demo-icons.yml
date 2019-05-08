@@ -7,7 +7,7 @@
 
 - name: Create Close Hand executable launch script
   template:
-    src: ../../common/desktop-icons/templates/scripts/rosrun-script.j2
+    src: templates/scripts/rosrun-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/close_hand.sh"
     mode: '755'
   vars:
@@ -16,7 +16,7 @@
 
 - name: Create Close Hand desktop icon
   template:
-    src: ../../common/shortcut-template/templates/desktop-icon.j2
+    src: templates/scripts/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Close_Hand.desktop"
     mode: '755'
   vars:
@@ -35,7 +35,7 @@
 
 - name: Create Open Hand executable launch script
   template:
-    src: ../../common/desktop-icons/templates/scripts/rosrun-script.j2
+    src: templates/scripts/rosrun-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/open_hand.sh"
     mode: '755'
   vars:
@@ -44,7 +44,7 @@
 
 - name: Create Open Hand desktop icon
   template:
-    src: ../../common/shortcut-template/templates/desktop-icon.j2
+    src: templates/scripts/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Open_Hand.desktop"
     mode: '755'
   vars:
@@ -63,7 +63,7 @@
 
 - name: Create Standard Demo executable launch script
   template:
-    src: ../../common/desktop-icons/templates/scripts/rosrun-script.j2
+    src: templates/scripts/rosrun-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/demo_hand.sh"
     mode: '755'
   vars:
@@ -72,7 +72,7 @@
 
 - name: Create Standard Demo desktop icon
   template:
-    src: ../../common/shortcut-template/templates/desktop-icon.j2
+    src: templates/scripts/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Demo_Hand.desktop"
     mode: '755'
   vars:

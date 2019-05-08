@@ -24,7 +24,7 @@
 
 - name: Create Cyberglove desktop icon
   template:
-    src: ../shortcut-template/templates/desktop-icon.j2
+    src: ../shortcut-template/templates/scripts/desktop-icon.j2
     dest: "{{ user_folder }}/Desktop/Launch_Cyberglove.desktop"
     mode: '755'
   vars:
