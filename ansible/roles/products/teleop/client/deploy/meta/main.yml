@@ -3,8 +3,9 @@ dependencies:
   - { role: installation/docker }
   - { role: installation/nvidia-docker, when: nvidia_docker|bool }
   - { role: docker/docker-image }
-  - { role: products/hand-e/docker-container }
-  - { role: products/hand-e/desktop-icons }
+  - { role: docker/aws, when: use_aws|bool }
+  - { role: products/common/docker-container }
+  - { role: products/common/desktop-icons }
+  - { role: products/common/cyberglove, when: use_cyberglove|bool }
   - { role: products/teleop/server/desktop-icons }
-  - { role: products/hand-e/cyberglove, when: use_cyberglove }
-  - { role: docker/aws, when: use_aws }
+
