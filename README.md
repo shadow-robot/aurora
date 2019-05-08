@@ -15,10 +15,9 @@ command in the console. At the bottom, there will be information similar to the 
 In the above example, ‘enp0s25’ is the ethercat_interface that is needed. 
 
 ## Playbooks ##
-<pre>
-* docker-deploy             For Hand E/G/H software deployments on single laptop
-* teleop-deploy             For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
-</pre>
+* docker-deploy : For Hand E/G/H software deployments on single laptop
+* teleop-deploy : For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
+
 
 ## How to run docker-deploy playbook ##
 
@@ -40,21 +39,17 @@ bash <(curl -Ls bit.ly/run-aurora) teleop-deploy --inventory name_of_inventory o
 name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
 
 Inventories correspond to fixed IP addresses as shown here:
-<pre>
-* development               <code>[here](ansible/inventory/teleop/development)</code>
-* staging                   <code>[here](ansible/inventory/teleop/staging)</code>
-* production                <code>[here](ansible/inventory/teleop/production)</code>
-</pre>
+* development               [here](ansible/inventory/teleop/development)
+* staging                   [here](ansible/inventory/teleop/staging)
+* production                [here](ansible/inventory/teleop/production)
 
 Teleop architecture is explained [here](https://shadowrobot.atlassian.net/wiki/spaces/TO/pages/734101505/Architecture)
 
 Options for teleop-deploy playbook are here for the following machines:
-<pre>
-* server                    <code>[here](ansible/inventory/teleop/group_vars/server.yml)</code>
-* control-machine           <code>[here](ansible/inventory/teleop/group_vars/control-machine.yml)</code>
-* client                    <code>[here](ansible/inventory/teleop/group_vars/client.yml)</code>
-* windows-machine           <code>[here](ansible/inventory/teleop/group_vars/windows-machine.yml)</code>
-</pre>
+* server                    [here](ansible/inventory/teleop/group_vars/server.yml)
+* control-machine           [here](ansible/inventory/teleop/group_vars/control-machine.yml)
+* client                    [here](ansible/inventory/teleop/group_vars/client.yml)
+* windows-machine           [here](ansible/inventory/teleop/group_vars/windows-machine.yml)
 
 Also, for debugging (not using the master branch), you can add the following immediately after docker-deploy or teleop-deploy:
 
