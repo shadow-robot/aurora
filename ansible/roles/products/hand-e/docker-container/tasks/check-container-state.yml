@@ -23,7 +23,7 @@
 
 - name: Print container_running
   debug:
-    msg: "container_running: {{ container_running.stdout }}"
+    msg: "container_running: {{ container_running }}"
 
 - name: Exit if container already running
   import_tasks: exit.yml
