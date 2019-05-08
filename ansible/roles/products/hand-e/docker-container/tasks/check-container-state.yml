@@ -4,17 +4,31 @@
   register: docker_id
   changed_when: docker_id.rc != 0
   become: yes
+  
+- name: Print docker_id
+  debug:
+    msg: "docker_id: {{ docker_id }}"
 
 - name: Set container_exists to true
   when: docker_id.stdout | length > 0
   set_fact:
     container_exists: true
 
+- name: Print container exists
+  debug:
+    msg: "container_exists: {{ container_exists }}"
+
+
 - name: Checking if container already running
   when: container_exists
   shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
   register: container_running
   become: yes
+  
+- name: Print container_running
+  debug:
+    msg: "container_running: {{ container_running }}"
+        
 
 - name: Set container_running to true
   when: container_exists
