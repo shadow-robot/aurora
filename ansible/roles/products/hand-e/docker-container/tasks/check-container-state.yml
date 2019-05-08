@@ -41,7 +41,7 @@
 
 - name: Exit if container already running
   import_tasks: exit.yml
-  when: container_running
+  when: container_running == true
 
 - name: Start container if container not running
   import_tasks: start-container.yml
