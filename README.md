@@ -39,17 +39,17 @@ bash <(curl -Ls bit.ly/run-aurora) teleop-deploy --inventory name_of_inventory o
 name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
 
 Inventories correspond to fixed IP addresses as shown here:
-* development               [here](ansible/inventory/teleop/development)
-* staging                   [here](ansible/inventory/teleop/staging)
-* production                [here](ansible/inventory/teleop/production)
+* [development](ansible/inventory/teleop/development)
+* [staging](ansible/inventory/teleop/staging)
+* [production](ansible/inventory/teleop/production)
 
 Teleop architecture is explained [here](https://shadowrobot.atlassian.net/wiki/spaces/TO/pages/734101505/Architecture)
 
 Options for teleop-deploy playbook are here for the following machines:
-* server                    [here](ansible/inventory/teleop/group_vars/server.yml)
-* control-machine           [here](ansible/inventory/teleop/group_vars/control-machine.yml)
-* client                    [here](ansible/inventory/teleop/group_vars/client.yml)
-* windows-machine           [here](ansible/inventory/teleop/group_vars/windows-machine.yml)
+* [server](ansible/inventory/teleop/group_vars/server.yml)
+* [control-machine](ansible/inventory/teleop/group_vars/control-machine.yml)
+* [client](ansible/inventory/teleop/group_vars/client.yml)
+* [windows-machine](ansible/inventory/teleop/group_vars/windows-machine.yml)
 
 Also, for debugging (not using the master branch), you can add the following immediately after docker-deploy or teleop-deploy:
 
