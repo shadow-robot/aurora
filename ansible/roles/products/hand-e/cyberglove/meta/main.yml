@@ -1,3 +1,3 @@
 ---
 dependencies:
-  - { role: shortcut-template }
+  - { role: products/common/shortcut-template }
