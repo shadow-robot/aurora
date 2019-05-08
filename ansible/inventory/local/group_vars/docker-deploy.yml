@@ -16,7 +16,7 @@ desktop_icon: true
 #Specify the branch of sr_cyberglove_config for cyberglove configuration
 cyberglove: "A-penny"
 #Flag to prompt for customer key for uploading files to AWS
-use_aws: true
+use_aws: false
 #Ethercat interface of the hand
 ethercat_interface: "eth0"
 #Specify the branch for the specific hand (Only for dexterous hand)

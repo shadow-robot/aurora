@@ -5,5 +5,5 @@ reinstall: false
 container_name: "teleop-server"
 nvidia_docker: false
 cyberglove: "A-penny"
-use_aws: true
+use_aws: false
 use_openvpn: false
