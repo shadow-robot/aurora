@@ -6,6 +6,10 @@
 - name: Pausing for 5 seconds
   pause:
     seconds: 5
+    
+- name: Print exit hit
+  debug:
+    msg: "/home/tom/aurora/ansible/roles/products/hand-e/docker-container/tasks/exit.yml hit"    
 
 - name: Exiting when container already running
   meta: end_play
