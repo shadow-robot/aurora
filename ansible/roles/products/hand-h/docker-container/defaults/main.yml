@@ -1,8 +1,0 @@
----
-container_name: "flexible_hand_real_hw"
-user: "user"
-password: "password"
-ethercat_interface: "eth0"
-image: "shadowrobot/flexible-hand"
-tag: "kinetic-release"
-full_image_name: "shadowrobot/flexible-hand:kinetic-release"

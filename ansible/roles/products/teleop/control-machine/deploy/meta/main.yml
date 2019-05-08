@@ -2,5 +2,5 @@
 dependencies:
   - { role: installation/docker }
   - { role: docker/docker-image }
-  - { role: products/hand-e/docker-container }
   - { role: docker/aws, when: use_aws|bool }
+  - { role: products/common/docker-container }
