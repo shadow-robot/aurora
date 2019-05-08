@@ -24,22 +24,25 @@
         from_port: 0
         to_port: 0
         cidr_ip: '0.0.0.0/0'
-    # TODO: This is hardcoded VPC due to bug in VPC configuration.
-    # fix it using molecule.yml configuration
-    # It will create group in default VPC !!! molecule_yml.platforms | first . vpc
-    # OR Create security group for all instances with VPC_ID !!! (when it is not empty)
-    security_group_vpc: "vpc-1212077b"
-
     keypair_name: molecule_key
     keypair_path: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}/ssh_key"
   tasks:
-    - name: Create security group
+    - name: Create security group default VPC
       ec2_group:
         name: "{{ security_group_name }}"
         description: "{{ security_group_name }}"
         rules: "{{ security_group_rules }}"
         rules_egress: "{{ security_group_rules_egress }}"
-        vpc_id: "{{ security_group_vpc }}"
+
+    - name: Create security group for all platforms with VPC
+      ec2_group:
+        name: "{{ security_group_name }}"
+        description: "{{ security_group_name }}"
+        rules: "{{ security_group_rules }}"
+        rules_egress: "{{ security_group_rules_egress }}"
+        vpc_id: "{{ item.vpc_id }}"
+      when: item.vpc_id is defined
+      with_items: "{{ molecule_yml.platforms }}"
 
     - name: Test for presence of local keypair
       stat:

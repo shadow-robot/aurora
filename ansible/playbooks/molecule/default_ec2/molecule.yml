@@ -7,15 +7,18 @@ lint:
   name: yamllint
 platforms:
   - name: default_ec2
-    image: ami-04606ba5d5fb731cc
+    image: ami-0b553b4cb25d77416
     instance_type: t2.micro
-    vpc_subnet_id: subnet-e9054fa4
+    vpc_subnet_id: subnet-0c8e0047
+    vpc_id: vpc-81068bf9
     groups:
       - docker-deploy
 provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../roles
+  connection_options:
+    ansible_python_interpreter: /usr/bin/python3
   inventory:
     links:
       group_vars: ../../../inventory/local/group_vars
