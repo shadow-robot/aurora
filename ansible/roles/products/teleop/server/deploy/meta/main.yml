@@ -6,6 +6,6 @@ dependencies:
   - { role: products/hand-e/docker-container }
   - { role: products/hand-e/desktop-icons }
   - { role: products/teleop/server/desktop-icons }
-  - { role: products/hand-e/cyberglove, when: use_cyberglove }
-  - { role: docker/aws, when: use_aws }
-  - { role: installation/openvpn-server, when: use_openvpn }
+  - { role: products/hand-e/cyberglove, when: use_cyberglove|bool }
+  - { role: docker/aws, when: use_aws|bool }
+  - { role: installation/openvpn-server, when: use_openvpn|bool }
