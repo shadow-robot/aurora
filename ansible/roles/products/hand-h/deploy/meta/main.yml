@@ -3,5 +3,5 @@ dependencies:
   - { role: docker/docker-image }
   - { role: products/hand-h/docker-container }
   - { role: products/hand-h/desktop-icons }
-  - { role: products/hand-h/optoforce, when: optoforce }
-  - { role: docker/aws, when: aws }
+  - { role: products/hand-h/optoforce, when: optoforce|bool }
+  - { role: docker/aws, when: use_aws|bool }

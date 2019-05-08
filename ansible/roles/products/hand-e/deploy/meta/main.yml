@@ -3,5 +3,5 @@ dependencies:
   - { role: docker/docker-image }
   - { role: products/hand-e/docker-container }
   - { role: products/hand-e/desktop-icons }
-  - { role: products/hand-e/cyberglove, when: use_cyberglove }
-  - { role: docker/aws, when: use_aws }
+  - { role: products/hand-e/cyberglove, when: use_cyberglove|bool }
+  - { role: docker/aws, when: use_aws|bool }
