@@ -1,2 +1,3 @@
 ---
+#Specify if openvpn-client should be installed
 use_openvpn: false

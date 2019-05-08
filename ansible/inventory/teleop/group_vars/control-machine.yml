@@ -1,12 +1,15 @@
 ---
+#Docker image name
 image: "shadowrobot/dexterous-hand"
+#Tag of the exact Docker hub image to pull
 tag: "kinetic-release"
+#Flag to know if the docker container should be fully reinstalled
 reinstall: false
+#Name of the docker container
 container_name: "control-machine"
+#Ethercat interface of the hand
 ethercat_interface: "eth0"
-nvidia_docker: false
+#Specify the branch for the specific hand (Only for dexterous hand)
 config_branch: "demohand_A"
-use_aws: true
-customer_key: false
-launch_hand: false
+#Allow Ansible to reboot the control-machine automatically during software installation
 allow_auto_reboot : true

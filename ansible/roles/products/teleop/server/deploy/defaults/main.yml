@@ -6,5 +6,4 @@ container_name: "teleop-server"
 nvidia_docker: false
 cyberglove: "A-penny"
 use_aws: true
-customer_key: false
 use_openvpn: false
