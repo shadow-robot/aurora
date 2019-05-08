@@ -1,8 +1,16 @@
 ---
-nvidia_docker: false
-reinstall: false
-launch_hand: false
-product: ''
-ethercat_interface: "eth0"
-use_aws: false
-customer_key: false
+image: "shadowrobot/dexterous-hand" # Docker image name
+tag: "kinetic-release" # Tag of the exact Docker hub image to pull
+product: '' # Name of the product (hand_e or hand_h)
+reinstall: false # Flag to know if the docker container should be fully reinstalled
+container_name: "dexterous_hand_real_hw" # Name of the docker container
+nvidia_docker: false # Enable nvidia docker
+desktop_icon: true # Generates a desktop icon to launch the hand
+cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
+use_aws: false # Flag to prompt for customer key for uploading files to AWS
+ethercat_interface: "eth0" # Ethercat interface of the hand
+config_branch: "demohand_A" # Specify the branch for the specific hand (Only for dexterous hand)
+shortcut_name: "Shadow_Hand_Launcher" # Specify the name for the desktop icon (default: Shadow_Hand_Launcher)
+optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
+launch_hand: false # Specify if hand driver should start when double clicking desktop icon
+demo_icons: true # Generates desktop icons to run demos

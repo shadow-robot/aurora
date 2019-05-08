@@ -14,6 +14,11 @@ command in the console. At the bottom, there will be information similar to the 
 ```
 In the above example, ‘enp0s25’ is the ethercat_interface that is needed. 
 
+## Playbooks ##
+* docker-deploy : For Hand E/G/H software deployments on single laptop
+* teleop-deploy : For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
+
+
 ## How to run docker-deploy playbook ##
 
 Open a terminal with Ctrl+Alt+T and run:
@@ -22,31 +27,31 @@ Open a terminal with Ctrl+Alt+T and run:
 bash <(curl -Ls bit.ly/run-aurora) docker-deploy option1=value1 option2=value2 option3=value3
 ```
 
-Possible options for the docker-deploy are:
-<pre>
-* product                   Name of the product (hand_e or hand_h)
-* tag                       Tag of the exact Docker hub image to pull (default: kinetic-devel)
-* reinstall                 Flag to know if the docker container should be fully reinstalled (default: false)
-* container_name            Name of the docker container
-* ethercat_interface        Ethercat interface of the hand
-* nvidia_docker             Enable nvidia docker (default: false)
-* desktop_icon              Generates a desktop icon to launch the hand (default: true)
-* config_branch             Specify the branch for the specific hand (Only for dexterous hand)
-* shortcut_name             Specify the name for the desktop icon (default: Shadow_Hand_Launcher)
-* optoforce                 Specify if optoforce sensors are going to be used with a branch name (default: false)
-* launch_hand               Specify if hand driver should start when double clicking desktop icon (default: true)
-* customer_key              Flag to prompt for customer key for uploading files to AWS (can be skipped or be set to true)
-* cyberglove                Specify the branch of sr_cyberglove_config for cyberglove configuration (default: false)
-* demo_icons                Generates desktop icons to run demos (default: false)
-</pre>
+Options for docker-deploy playbook are [here](ansible/inventory/local/group_vars/docker-deploy.yml)
 
-Also, for debugging (not using the master branch), you can add the following immediately after docker-deploy:
+## How to run teleop-deploy playbook ##
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) teleop-deploy --inventory name_of_inventory option1=value1 option2=value2 option3=value3
+```
+name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
+
+Inventories correspond to fixed IP addresses as shown here:
+* [development](ansible/inventory/teleop/development)
+* [staging](ansible/inventory/teleop/staging)
+* [production](ansible/inventory/teleop/production)
+
+Options for teleop-deploy playbook are here for the following machines:
+* [server](ansible/inventory/teleop/group_vars/server.yml)
+* [control-machine](ansible/inventory/teleop/group_vars/control-machine.yml)
+* [client](ansible/inventory/teleop/group_vars/client.yml)
+* [windows-machine](ansible/inventory/teleop/group_vars/windows-machine.yml)
+
+Also, for debugging (not using the master branch), you can add the following immediately after docker-deploy or teleop-deploy:
 
 * --debug-branch name_of_aurora_repo_branch (e.g. --debug-branch F#SRC-2603_add_ansible_bootstrap)
-
-Also, for teleop demo, please specify production/staging/development using the --inventory tag:
-
-* --inventory name_of_inventory (e.g. --inventory staging)
 
 Run a playbook against one or more members of that group using the --limit tag:
 

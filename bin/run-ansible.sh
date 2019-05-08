@@ -117,7 +117,12 @@ else
     aurora_inventory="ansible/inventory/${aurora_inventory}"
 fi
 
-~/.local/bin/ansible-playbook ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
+ansible_executable=~/.local/bin/ansible-playbook
+if [[ ! -f "${ansible_executable}" ]]; then
+    ansible_executable=ansible-playbook
+fi
+
+"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
 
 popd
 
