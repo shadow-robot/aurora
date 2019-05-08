@@ -1,17 +1,9 @@
 ---
-#Docker image name
-image: "shadowrobot/dexterous-hand"
-#Tag of the exact Docker hub image to pull
-tag: "kinetic-release"
-#Flag to know if the docker container should be fully reinstalled
-reinstall: false
-#Name of the docker container
-container_name: "teleop-server"
-#Enable nvidia docker
-nvidia_docker: false
-#Specify the branch of sr_cyberglove_config for cyberglove configuration
-cyberglove: "A-penny"
-#Flag to prompt for customer key for uploading files to AWS
-use_aws: false
-#Specify if openvpn-server should be installed
-use_openvpn: false
+image: "shadowrobot/dexterous-hand" # Docker image name
+tag: "kinetic-release" # Tag of the exact Docker hub image to pull
+reinstall: false # Flag to know if the docker container should be fully reinstalled
+container_name: "teleop-server" # Name of the docker container
+nvidia_docker: false # Enable nvidia docker
+cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
+use_aws: false # Flag to prompt for customer key for uploading files to AWS
+use_openvpn: false # Specify if openvpn-server should be installed

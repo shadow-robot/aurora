@@ -43,8 +43,6 @@ Inventories correspond to fixed IP addresses as shown here:
 * [staging](ansible/inventory/teleop/staging)
 * [production](ansible/inventory/teleop/production)
 
-Teleop architecture is explained [here](https://shadowrobot.atlassian.net/wiki/spaces/TO/pages/734101505/Architecture)
-
 Options for teleop-deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
 * [control-machine](ansible/inventory/teleop/group_vars/control-machine.yml)
