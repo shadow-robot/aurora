@@ -7,5 +7,5 @@
   pause:
     seconds: 5
 
-#- name: Exiting when container already running
-#  meta: end_play
+- name: Exiting when container already running
+  meta: end_play
