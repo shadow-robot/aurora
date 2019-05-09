@@ -2,11 +2,11 @@
 # QtCreator IDE installation
 
 - name: Update package lists
-  apt: update_cache=yes
+  apt:
+    update_cache: yes
   become: yes
 
 - name: Intall QtCreator
-  apt: name={{item}}
+  apt:
+    name: "qtcreator"
   become: yes
-  with_items:
-    - qtcreator
