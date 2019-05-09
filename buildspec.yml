@@ -7,6 +7,5 @@ phases:
       - aws configure set aws_secret_access_key $AWS_SECRET_KEY
   build:
     commands:
-      - sudo pip3 install boto boto3 # TODO: Move to the requirements.txt of AWS CLI role
       - cd $CODEBUILD_SRC_DIR/aurora/ansible/playbooks
       - molecule --debug test --scenario-name default_ec2
