@@ -41,6 +41,7 @@
         rules: "{{ security_group_rules }}"
         rules_egress: "{{ security_group_rules_egress }}"
         vpc_id: "{{ item.vpc_id }}"
+        region: "{{ item.region }}"
       when: item.vpc_id is defined
       with_items: "{{ molecule_yml.platforms }}"
 
