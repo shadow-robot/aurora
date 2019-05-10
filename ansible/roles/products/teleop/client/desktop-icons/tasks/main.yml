@@ -24,7 +24,7 @@
 
 - name: Create Teleop desktop icon
   template:
-    src: ../../../common/resources/templates/desktop-icon/standard-icon.j2
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/Teleop_Launcher.desktop"
     mode: '755'
   vars:
