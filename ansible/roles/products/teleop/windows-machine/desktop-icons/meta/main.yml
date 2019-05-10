@@ -1,3 +1,0 @@
----
-dependencies:
-  - { role: products/teleop/teleop-server/desktop-icons/shortcut-template }

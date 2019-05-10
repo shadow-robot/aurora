@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: teleop_control_machine_check_config_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:xenial-manual
+    image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
       - control_machine
     volumes:

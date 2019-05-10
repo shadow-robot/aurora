@@ -1,4 +1,15 @@
 ---
+- name: Ensures that Desktop folder exists
+  file:
+    path: "{{ user_folder }}/Desktop"
+    mode: '755'
+    state: directory
+
+- name: Ensures that shadow_hand_launcher directory exists
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
 - name: Copy Close Hand desktop icon
   copy:
     src: files/close-hand-icon.png
@@ -7,7 +18,7 @@
 
 - name: Create Close Hand executable launch script
   template:
-    src: templates/scripts/rosrun-script.j2
+    src: ../resources/templates/scripts/rosrun-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/close_hand.sh"
     mode: '755'
   vars:
@@ -16,7 +27,7 @@
 
 - name: Create Close Hand desktop icon
   template:
-    src: templates/scripts/desktop-icon.j2
+    src: ../resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/Close_Hand.desktop"
     mode: '755'
   vars:
@@ -35,7 +46,7 @@
 
 - name: Create Open Hand executable launch script
   template:
-    src: templates/scripts/rosrun-script.j2
+    src: ../resources/templates/scripts/rosrun-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/open_hand.sh"
     mode: '755'
   vars:
@@ -44,7 +55,7 @@
 
 - name: Create Open Hand desktop icon
   template:
-    src: templates/scripts/desktop-icon.j2
+    src: ../resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/Open_Hand.desktop"
     mode: '755'
   vars:
@@ -63,7 +74,7 @@
 
 - name: Create Standard Demo executable launch script
   template:
-    src: templates/scripts/rosrun-script.j2
+    src: ../resources/templates/scripts/rosrun-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/demo_hand.sh"
     mode: '755'
   vars:
@@ -72,7 +83,7 @@
 
 - name: Create Standard Demo desktop icon
   template:
-    src: templates/scripts/desktop-icon.j2
+    src: ../resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/Demo_Hand.desktop"
     mode: '755'
   vars:
