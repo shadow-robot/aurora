@@ -1,8 +1,14 @@
-sut:
-  build:
-    context: .
-    args:
-      aurora_branch: ${SOURCE_BRANCH}
-  command: pip3 list | grep molecule
-  environment:
-    - SOURCE_BRANCH
+version: '3'
+
+services:
+  sut:
+    build:
+      context: .
+      args:
+        aurora_branch: ${SOURCE_BRANCH}
+    command: >
+      bash -c "pip3 list | grep molecule &&
+               pip3 list | grep ansible &&
+               pip3 list | grep docker"
+    environment:
+      - SOURCE_BRANCH
