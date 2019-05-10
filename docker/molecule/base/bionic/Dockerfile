@@ -4,15 +4,15 @@ MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
 LABEL Description="This Ubuntu Bionic image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0"
 
-ARG aurora_branch
-
-ENV aurora_branch ${aurora_branch:-"master"}
-
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV LC_ALL C.UTF-8
 
 ENV LANG C.UTF-8
+
+ARG aurora_branch
+
+ENV aurora_branch ${aurora_branch:-"master"}
 
 RUN set -x && \
     apt-get update && \
