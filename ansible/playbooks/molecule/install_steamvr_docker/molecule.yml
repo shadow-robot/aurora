@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: install_steamvr_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:bionic
+    image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
       - install-software
     volumes:

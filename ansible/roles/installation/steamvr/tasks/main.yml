@@ -1,32 +1,32 @@
 ---
 - name: Update package lists
-  apt: update_cache=yes
+  apt:
+    update_cache: yes
   become: yes
-
-- debug:
-    msg: "user={{ user }}"
 
 - name: Intall needed libs for steamvr
-  apt: name={{ item }} install_recommends=no
-  become: yes
-  with_items:
-    - curl
-    - ca-certificates
-    - lib32gcc1
-    - binutils
-    - terminator
-    - xdg-utils
-    - software-properties-common
-    - sudo
-    - libvulkan1
-    - usbutils
-    - libcap2-bin
-
-- name: Update and upgrade apt packages
-  become: true
   apt:
-    upgrade: dist
+    name: "{{ packages }}"
+    install_recommends: no
+  vars:
+    packages:
+      - curl
+      - ca-certificates
+      - lib32gcc1
+      - binutils
+      - terminator
+      - xdg-utils
+      - software-properties-common
+      - sudo
+      - libvulkan1
+      - usbutils
+      - libcap2-bin
+  become: yes
+
+- name: Update package lists
+  apt:
     update_cache: yes
+  become: yes
 
 - name: Gather package facts
   package_facts:
@@ -36,59 +36,59 @@
   apt:
     deb: http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
     state: present
-  become: yes
   when: '"libudev0" not in ansible_facts.packages'
+  become: yes
 
 - name: Create steamcmd directory
   file:
-    path: "/home/{{ user }}/steamcmd"
+    path: "{{ user_home_dir }}/steamcmd"
     state: directory
 
 - name: Unarchive steamcmd_linux from the internet
   unarchive:
     src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
-    dest: "/home/{{ user }}/steamcmd"
+    dest: "{{ user_home_dir }}/steamcmd"
     remote_src: yes
-    creates: /home/{{ user }}/steamcmd/steamcmd.sh
+    creates: "{{ user_home_dir }}/steamcmd/steamcmd.sh"
 
 - name: Install and update steamcmd
-  shell: "/home/{{ user }}/steamcmd/steamcmd.sh +login anonymous +quit"
+  shell: "{{ user_home_dir }}/steamcmd/steamcmd.sh +login anonymous +quit"
   args:
-    creates: "/home/{{ user }}/steamcmd/package/steam_cmd_linux.installed"
+    creates: "{{ user_home_dir }}/steamcmd/package/steam_cmd_linux.installed"
 
 - name: Create sdk32 directory
   file:
-    path: "/home/{{ user }}/.steam/sdk32"
+    path: "{{ user_home_dir }}/.steam/sdk32"
     state: directory
 
 - name: Create sdk64 directory
   file:
-    path: "/home/{{ user }}/.steam/sdk64"
+    path: "{{ user_home_dir }}/.steam/sdk64"
     state: directory
 
 - name: Copy 32bit steamclient
   copy:
-    src: "/home/{{ user }}/steamcmd/linux32/steamclient.so"
-    dest: "/home/{{ user }}/.steam/sdk32"
+    src: "{{ user_home_dir }}/steamcmd/linux32/steamclient.so"
+    dest: "{{ user_home_dir }}/.steam/sdk32"
     remote_src: true
 
 - name: Copy 64bit steamclient
   copy:
-    src: "/home/{{ user }}/steamcmd/linux64/steamclient.so"
-    dest: "/home/{{ user }}/.steam/sdk64"
+    src: "{{ user_home_dir }}/steamcmd/linux64/steamclient.so"
+    dest: "{{ user_home_dir }}/.steam/sdk64"
     remote_src: true
 
 - name: Install and update steamvr
   command: >
-    /home/{{ user }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-    +force_install_dir /home/{{ user }}/.steam +app_update 250820 -beta beta validate +quit
+    {{ user_home_dir }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
+    +force_install_dir {{ user_home_dir }}/.steam +app_update 250820 -beta beta validate +quit
   args:
-    creates: /home/{{ user }}/.steam/bin/vrstartup.sh
+    creates: "{{ user_home_dir }}/.steam/bin/vrstartup.sh"
 
 - name: Fix setcap error in vrstartup.sh
-  become: yes
   capabilities:
-    path: /home/{{ user }}/.steam/bin/linux64/vrcompositor-launcher
+    path: "{{ user_home_dir }}/.steam/bin/linux64/vrcompositor-launcher"
     capability: cap_sys_nice+eip
     state: present
+  become: yes
 
