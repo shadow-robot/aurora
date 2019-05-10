@@ -8,7 +8,7 @@
 
     - name: Initialize list of software
       set_fact:
-        software_list: "{{software | default([])}}"
+        software_list: "{{ software | default([]) }}"
 
   roles:
     - {role: installation/docker, when: "'docker' in software_list" }
@@ -18,3 +18,4 @@
     - {role: installation/pycharm, when: "'pycharm' in software_list"}
     - {role: installation/qtcreator, when: "'qtcreator' in software_list"}
     - {role: installation/vscode, when: "'vscode' in software_list"}
+    - {role: installation/steamvr, when: "'steamvr' in software_list"}
