@@ -1,0 +1,8 @@
+sut:
+  build:
+    context: .
+    args:
+      aurora_branch: ${SOURCE_BRANCH}
+  command: pip3 list | grep molecule
+  environment:
+    - SOURCE_BRANCH
