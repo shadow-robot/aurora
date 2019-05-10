@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: default_ec2
-    image: ami-0b553b4cb25d77416
+    image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-1212077b
