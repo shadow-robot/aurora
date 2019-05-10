@@ -1,0 +1,37 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: ec2
+lint:
+  name: yamllint
+platforms:
+  - name: default_ec2
+    image: ami-0b553b4cb25d77416
+    instance_type: t2.micro
+    region: us-east-1
+    vpc_id: vpc-81068bf9
+    vpc_subnet_id: subnet-0c8e0047
+    groups:
+      - docker-deploy
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../roles
+  connection_options:
+    ansible_python_interpreter: /usr/bin/python3
+  inventory:
+    links:
+      group_vars: ../../../inventory/local/group_vars
+  playbooks:
+    create: ../resources/ec2/create.yml
+    destroy: ../resources/ec2/destroy.yml
+    prepare: ../../install-python3.yml
+    converge: ../default/playbook.yml
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  directory: ../default/tests/
+  lint:
+    name: flake8

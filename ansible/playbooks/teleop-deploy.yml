@@ -19,7 +19,6 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: true
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -27,6 +26,7 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/server/deploy }
 
@@ -39,7 +39,6 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: true
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -47,6 +46,7 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/control-machine/deploy }
 
@@ -54,7 +54,6 @@
   hosts: windows_machine
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
-      become: true
       lineinfile:
         dest: c:\Windows\System32\Drivers\etc\hosts
         regexp: '.*{{ item }}$'
@@ -62,6 +61,7 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/windows-machine/deploy }
 
@@ -74,7 +74,6 @@
         use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
-      become: true
       lineinfile:
         dest: /etc/hosts
         regexp: '.*{{ item }}$'
@@ -82,5 +81,6 @@
         state: present
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
+      become: yes
   roles:
     - { role: products/teleop/client/deploy }

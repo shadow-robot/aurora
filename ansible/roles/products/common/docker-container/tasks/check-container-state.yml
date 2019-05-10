@@ -1,0 +1,35 @@
+---
+- name: Checking if container exists
+  become: yes
+  shell: "docker ps -aq -f name=^/{{ container_name }}$"
+  register: docker_id
+  changed_when: docker_id.rc != 0
+
+- name: Set container_exists to true
+  when: docker_id.stdout | length > 0
+  set_fact:
+    container_exists: true
+
+- name: Checking if container already running
+  shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
+  register: container_running_output
+  when: container_exists
+  become: yes
+  changed_when: container_running_output.rc != 0
+
+- name: Set container_running to true
+  set_fact:
+    container_running: "{{ container_running_output.stdout | bool }}"
+  when: container_exists
+
+- name: Exit if container already running
+  import_tasks: exit.yml
+  when: container_running
+
+- name: Start container if container not running
+  import_tasks: start-container.yml
+  when: container_exists and not container_running
+
+- name: Reinstalling docker container because it doesn't exist
+  import_tasks: reinstall.yml
+  when: not container_exists

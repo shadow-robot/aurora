@@ -1,0 +1,31 @@
+---
+- name: Notifying user that the container already exists
+  debug:
+    msg:
+      - "Container with specified name already exists."
+      - "Please wait for docker container to start in a new terminal as this might take a while... "
+
+- name: Pausing for 5 seconds
+  pause:
+    seconds: 5
+
+- name: Start container if container not running
+  docker_container:
+    name: "{{ container_name }}"
+    state: started
+    env:
+      verbose: "true"
+      interface: "{{ ethercat_interface }}"
+      QT_X11_NO_MITSHM: "1"
+      LOCAL_USER_ID: "{{ id.stdout }}"
+      DISPLAY: :0
+    network_mode: "host"
+    privileged: yes
+    interactive: yes
+    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
+    command: "terminator -x bash -c 'bash'"
+  when: container_exists and not container_running
+  become: yes
+  # TODO: Investigate if idempotency check is failing due to this issue https://github.com/ansible/ansible/issues/44669
+  changed_when: false
+

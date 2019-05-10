@@ -3,3 +3,4 @@
   import_playbook: ../../docker-deploy.yml
     product="hand_e"
     ethercat_interface="enp0s25"
+    container_name="test_hand_e_empty_machine_container"

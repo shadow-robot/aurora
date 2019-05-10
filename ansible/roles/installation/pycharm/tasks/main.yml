@@ -2,19 +2,23 @@
 # PyCharm IDE installation
 
 - name: Update package lists
-  apt: update_cache=yes
+  apt:
+    update_cache: yes
   become: yes
 
 - name: Intall needed libs
-  apt: name={{ item }} install_recommends=no
+  apt:
+    name: "{{ packages }}"
+    install_recommends: no
+  vars:
+    packages:
+      - wget
+      - git
+      - default-jre
+      - libxrender1
+      - libxtst6
+      - apt-utils
   become: yes
-  with_items:
-    - wget
-    - git
-    - default-jre
-    - libxrender1
-    - libxtst6
-    - apt-utils
 
 - name: Creating PyCharm directory
   file:

@@ -2,15 +2,18 @@
 # VSCode IDE installation
 
 - name: Update package lists
-  apt: update_cache=yes
+  apt:
+    update_cache: yes
   become: yes
 
 - name: Intall needed libs
-  apt: name={{ item }} install_recommends=no
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - libxkbfile1
+      - libsecret-1-0
   become: yes
-  with_items:
-    - libxkbfile1
-    - libsecret-1-0
 
 - name: Install VSCode .deb package from the internet.
   apt:
