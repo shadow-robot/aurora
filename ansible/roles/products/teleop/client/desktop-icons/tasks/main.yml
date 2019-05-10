@@ -18,13 +18,13 @@
 
 - name: Create Teleop executable launch script
   template:
-    src: ../../../common/desktop-icons/templates/scripts/start-docker-container.j2
+    src: ../../../common/resources/templates/scripts/start-docker-container.j2
     dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
     mode: '755'
 
 - name: Create Teleop desktop icon
   template:
-    src: ../../../common/shortcut-template/templates/desktop-icon.j2
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/Teleop_Launcher.desktop"
     mode: '755'
   vars:
