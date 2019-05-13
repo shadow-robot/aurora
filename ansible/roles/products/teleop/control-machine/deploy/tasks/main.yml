@@ -47,3 +47,16 @@
       iface {{ ur_interface }} inet static
         address 192.168.1.100
         netmask 255.255.255.0
+
+- name: Make sure there is a 2048-bit SSH private and public keys on control-machine
+  user:
+    name: "{{ user }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- name: Fetch SSH public key to server (from control-machine)
+  fetch:
+    src: "{{ user_folder }}/.ssh/id_rsa.pub"
+    dest: "/tmp/ssh/id_rsa.pub"
+    flat: yes

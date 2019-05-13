@@ -5,6 +5,7 @@ import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+user = os.environ['USER']
 
 
 def test_hosts_file(host):
@@ -46,5 +47,5 @@ def test_sr_config_exists_in_docker(host):
 
 
 def test_icons_in_docker(host):
-    f = host.file('/home/Desktop/Teleop_Launcher.desktop')
+    f = host.file('/home/'+user+'/Desktop/Shadow_Hand_TeleOp_Launcher.desktop')
     assert f.exists

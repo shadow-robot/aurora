@@ -7,3 +7,7 @@ nvidia_docker: false
 cyberglove: "A-penny"
 use_aws: false
 use_openvpn: false
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+nuc_address: "10.10.10.10"
+nuc_username: "user"

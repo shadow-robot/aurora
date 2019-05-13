@@ -1,25 +1,13 @@
 ---
-- name: if USER is empty, set user to testuser
-  when: user| length == 0
-  set_fact:
-    user: "testuser"
-    user_folder: "/home/{{ user }}"
+- name: Check if SSH public key from control-computer exists
+  stat:
+    path: "/tmp/ssh/id_rsa.pub"
+  register: ssh_check
+  ignore_errors: yes
 
-- name: Generate /etc/ssh/ RSA host key
-  command : ssh-keygen -b 2048 -t rsa -f /home/testuser/.ssh/id_rsa -q -N ""
-
-- name: Create keypair for ssh
+- name: Register ssh keys with current user
+  when: ssh_check.stat.exists
   authorized_key:
     user: "{{ user }}"
-    key: "{{ lookup('file', '/home/{{ user }}/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '/tmp/ssh/id_rsa.pub') }}"
     state: present
-
-- name: Copying ssh key to Control-machine
-  copy:
-    src: "{{ user_folder }}/.ssh"
-    dest: "/home/{{ user }}/.ssh/{{ item }}"
-    mode: 0600
-    state: present
-  with_items:
-    - id_rsa
-    - id_rsa.pub

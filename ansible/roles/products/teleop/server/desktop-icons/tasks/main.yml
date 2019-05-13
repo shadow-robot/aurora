@@ -19,17 +19,6 @@
     mode: '664'
   become: yes
 
-# TODO: FIX THIS: find the correct way to access nuc IP and username from inventory file
-#- name: Setting facts for NUC
-#  set_fact:
-#    nuc_address: "{{ groups['control_machine']['ansible_default_ipv4']['address'] }}"
-#    nuc_username: "{{ groups['control_machine'].ansible_user }}"
-
-- name: Setting facts for NUC
-  set_fact:
-    nuc_address: "10.9.10.2"
-    nuc_username: "test"
-
 - name: Create Teleop executable launch script
   template:
     src: templates/scripts/start-docker-container-nuc.j2
