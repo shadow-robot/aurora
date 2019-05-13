@@ -16,6 +16,7 @@
   pip:
     name: docker
     state: present
+    executable: pip-3.5
   become: yes
   changed_when: pip_status.rc != 0
   # Hack because of not idempotent behavior of pip module
