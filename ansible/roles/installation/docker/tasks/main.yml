@@ -13,7 +13,7 @@
   become: yes
 
 - name: Check the default python3 version
-  command: python3 -V | cut -d ' ' -f2 | cut -d . -f1-2
+  shell: python3 -V | cut -d ' ' -f2 | cut -d . -f1-2
   changed_when: false
   register: python3_version
 
