@@ -1,6 +1,6 @@
 ---
-- name: Check pip3.5 installed (will prevent reinstallation in case if Pip3.5 was installed without Apt)
-  command: pip3.5 --version
+- name: Check pip3 installed (will prevent reinstallation in case if pip3 was installed without Apt)
+  command: pip3 --version
   register: pip_status
   ignore_errors: yes
   changed_when: pip_status.rc != 0
@@ -12,11 +12,20 @@
   when: pip_status.rc != 0
   become: yes
 
+- name: Check the default python3 version
+  command: python3 -V | cut -d ' ' -f2 | cut -d . -f1-2
+  changed_when: false
+  register: python3_version
+
+- name: Make sure pip3 default version matches the python3 version (3.5, 3.6, or 3.7 etc.)
+  command: cp /usr/local/bin/pip{{ python3_version.stdout }} /usr/local/bin/pip3
+  changed_when: false
+  become: yes
+
 - name: Install Docker pip module
   pip:
     name: docker
     state: present
-    executable: pip-3.5
   become: yes
   changed_when: pip_status.rc != 0
   # Hack because of not idempotent behavior of pip module
