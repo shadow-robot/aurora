@@ -9,6 +9,7 @@
   command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""
   register: python_packages_path_output
   changed_when: python_packages_path_output.rc != 0
+  ignore_errors: yes
 
 - name: Set path to Docker Python package
   set_fact:
