@@ -1,5 +1,5 @@
 ---
-image: "shadowrobot/shador-teleop"
+image: "shadowrobot/shadow-teleop"
 tag: "kinetic-release"
 reinstall: false
 container_name: "teleop"

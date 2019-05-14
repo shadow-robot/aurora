@@ -1,8 +1,8 @@
 ---
-image: "shadowrobot/dexterous-hand"
+image: "shadowrobot/shadow-teleop"
 tag: "kinetic-release"
 reinstall: false
-container_name: "teleop-client"
+container_name: "teleop"
 nvidia_docker: false
 cyberglove: "A-penny"
 use_aws: false
