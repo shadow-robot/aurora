@@ -1,13 +1,7 @@
 ---
-- name: Check if SSH public key from control-computer exists
-  stat:
-    path: "/tmp/ssh/id_rsa.pub"
-  register: ssh_check
-  ignore_errors: yes
-
-- name: Register ssh keys with current user
-  when: ssh_check.stat.exists
-  authorized_key:
-    user: "{{ user }}"
-    key: "{{ lookup('file', '/tmp/ssh/id_rsa.pub') }}"
-    state: present
+- name: Make sure there is a 2048-bit SSH private and public keys generated on teleop server (SSH client)
+  user:
+    name: "{{ user }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
