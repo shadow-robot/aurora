@@ -27,6 +27,10 @@
     keypair_name: molecule_key
     keypair_path: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}/ssh_key"
   tasks:
+    - name: First non-empty region will be main region
+      set_fact:
+        ec2_region: "{{ molecule_yml.platforms|selectattr('region','defined')|map(attribute='region')|list|first }}"
+
     - name: Create security group default VPC
       ec2_group:
         name: "{{ security_group_name }}"
@@ -41,6 +45,7 @@
         rules: "{{ security_group_rules }}"
         rules_egress: "{{ security_group_rules_egress }}"
         vpc_id: "{{ item.vpc_id }}"
+        region: "{{ ec2_region }}"
       when: item.vpc_id is defined
       with_items: "{{ molecule_yml.platforms }}"
 
@@ -53,11 +58,13 @@
       ec2_key:
         name: "{{ keypair_name }}"
         state: absent
+        region: "{{ ec2_region }}"
       when: not keypair_local.stat.exists
 
     - name: Create keypair
       ec2_key:
         name: "{{ keypair_name }}"
+        region: "{{ ec2_region }}"
       register: keypair
 
     - name: Persist the keypair
@@ -73,7 +80,7 @@
         image: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
         vpc_subnet_id: "{{ item.vpc_subnet_id }}"
-        region: "{{ item.region }}"
+        region: "{{ ec2_region }}"
         group: "{{ security_group_name }}"
         instance_tags:
           instance: "{{ item.name }}"
@@ -101,7 +108,7 @@
       set_fact:
         instance_conf_dict: {
           'instance': "{{ item.instances[0].tags.instance }}",
-          'region': "{{ item.instances[0].region }}",
+          'region': "{{ ec2_region }}",
           'address': "{{ item.instances[0].public_ip }}",
           'user': "{{ ssh_user }}",
           'port': "{{ ssh_port }}",
