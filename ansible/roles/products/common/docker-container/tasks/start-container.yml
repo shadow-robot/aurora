@@ -28,4 +28,3 @@
   become: yes
   # TODO: Investigate if idempotency check is failing due to this issue https://github.com/ansible/ansible/issues/44669
   changed_when: false
-

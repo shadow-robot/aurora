@@ -6,6 +6,6 @@ dependencies:
   - { role: docker/docker-image }
   - { role: docker/aws, when: use_aws|bool }
   - { role: products/common/docker-container }
-  - { role: products/common/desktop-icons }
+  - { role: products/common/save-logs-icons }
   - { role: products/common/cyberglove, when: use_cyberglove|bool }
   - { role: products/teleop/server/desktop-icons }

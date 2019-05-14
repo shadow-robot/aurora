@@ -1,3 +1,0 @@
----
-dependencies:
-  - { role: products/common/shortcut-template }

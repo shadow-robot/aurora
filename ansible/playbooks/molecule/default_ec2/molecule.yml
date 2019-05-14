@@ -7,11 +7,11 @@ lint:
   name: yamllint
 platforms:
   - name: default_ec2
-    image: ami-0b553b4cb25d77416
+    image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
-    region: us-east-1
-    vpc_id: vpc-81068bf9
-    vpc_subnet_id: subnet-0c8e0047
+    region: eu-west-2
+    vpc_id: vpc-0f8cc2cc245d57eb4
+    vpc_subnet_id: subnet-09c91c82c471613fc
     groups:
       - docker-deploy
 provisioner:

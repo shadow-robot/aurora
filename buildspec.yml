@@ -1,5 +1,9 @@
 version: 0.2
 
+env:
+  parameter-store:
+     AWS_ACCESS_KEY : CODE_BUILD_EC2_ACCESS_KEY
+     AWS_SECRET_KEY : CODE_BUILD_EC2_SECRET_KEY
 phases:
   pre_build:
     commands:
@@ -7,5 +11,5 @@ phases:
       - aws configure set aws_secret_access_key $AWS_SECRET_KEY
   build:
     commands:
-      - cd $CODEBUILD_SRC_DIR/aurora/ansible/playbooks
+      - cd $CODEBUILD_SRC_DIR/ansible/playbooks
       - molecule --debug test --scenario-name default_ec2

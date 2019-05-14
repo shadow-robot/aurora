@@ -1,36 +1,31 @@
 ---
 - name: Ensures that Desktop folder exists
-  become: yes
   file:
     path: "{{ user_folder }}/Desktop"
     mode: '755'
     state: directory
 
 - name: Ensures that save_latest_ros_logs_folder exists
-  become: yes
   file:
     path: "{{ save_latest_ros_logs_folder }}"
     state: directory
 
 - name: Copy ROS Logs Saver desktop icon
-  become: yes
   copy:
     src: files/log-icon.png
     dest: "{{ save_latest_ros_logs_folder }}/log-icon.png"
     mode: '664'
 
 - name: Copy ROS Logs Saver main script
-  become: yes
   copy:
     src: files/save-latest-ros-logs.sh
     dest: "{{ save_latest_ros_logs_folder }}/save-latest-ros-logs.sh"
     mode: '755'
 
 - name: Create ROS Logs Saver desktop icon
-  become: yes
   when: not use_aws
   template:
-    src: ../shortcut-template/templates/desktop-icon.j2
+    src: ../resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop"
     mode: '755'
   vars:
@@ -42,10 +37,9 @@
     icon_file_name: log-icon.png
 
 - name: Create ROS Logs Saver and Uploader desktop icon
-  become: yes
   when: use_aws
   template:
-    src: ../shortcut-template/templates/desktop-icon.j2
+    src: ../resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
     mode: '755'
   vars:
