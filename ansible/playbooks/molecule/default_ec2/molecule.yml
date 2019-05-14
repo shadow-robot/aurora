@@ -10,8 +10,8 @@ platforms:
     image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
-    vpc_id: vpc-1212077b
-    vpc_subnet_id: subnet-e9054fa4
+    vpc_id: vpc-0f8cc2cc245d57eb4
+    vpc_subnet_id: subnet-09c91c82c471613fc
     groups:
       - docker-deploy
 provisioner:
