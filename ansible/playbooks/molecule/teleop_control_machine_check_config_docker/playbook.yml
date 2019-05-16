@@ -1,6 +1,7 @@
 ---
 - name: Teleop Nuc machine playbook for config check
   import_playbook: ../../teleop-deploy.yml
+    image="shadowrobot/dexterous-hand"
     reinstall=true
     use_openvpn=false
     ethercat_interface="enp0s25"
