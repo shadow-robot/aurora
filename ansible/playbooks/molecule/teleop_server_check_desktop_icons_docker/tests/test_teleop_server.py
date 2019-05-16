@@ -1,5 +1,5 @@
 import os
-import docker
+
 
 import testinfra.utils.ansible_runner
 
@@ -13,10 +13,14 @@ def test_icons_in_docker(host):
     icon_list = []
     script_list = []
     script_path = '/home/'+str(user)+'/Desktop/'
-    desktop_path = '/home/'+str(user)+'/.shadow_launcher_app/shadow_hand_launcher/'
-    icon_list.append(desktop_path+'Teleop_Control_Machine_Launch_Demohand_A.desktop')
-    icon_list.append(desktop_path+'Teleop_Control_Machine_Launch_Demohand_B.desktop')
-    icon_list.append(desktop_path+'Teleop_Control_Machine_Launch_Demohand_C.desktop')
+    desktop_path = '/home/'+str(user)+
+                        '/.shadow_launcher_app/shadow_hand_launcher/'
+    icon_list.append(desktop_path+
+                        'Teleop_Control_Machine_Launch_Demohand_A.desktop')
+    icon_list.append(desktop_path+
+                        'Teleop_Control_Machine_Launch_Demohand_B.desktop')
+    icon_list.append(desktop_path+
+                        'Teleop_Control_Machine_Launch_Demohand_C.desktop')
     icon_list.append(desktop_path+'Teleop_Container_Launch.desktop')
     icon_list.append(desktop_path+'Teleop_GUI.desktop')
     icon_list.append(desktop_path+'Teleop_ROSCORE.desktop')
