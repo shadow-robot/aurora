@@ -12,27 +12,98 @@
     state: directory
   become: yes
 
-#NUC icon 
-- name: Create Teleop_Control_Machine_Launch executable launch script
-  template:
-    src: templates/scripts/start-docker-container-nuc.j2
-    dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
-    mode: '755'
-  # TODO: we need to add serial number for each hand. Probably use a list with variables
+#NUC demohand A 
+- name: Copy Teleop_Control_Machine_Launch_A desktop icon
+  copy:
+    src: files/demohand_A_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/demohand_A_icon.png"
+    mode: '664'
   become: yes
 
-- name: Create Teleop_Control_Machine_Launch desktop icon
+- name: Create Teleop_Control_Machine_Launch executable launch script for demohand_A
   template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_Control_Machine_Launch.desktop"
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/teleop_exec_A.sh"
     mode: '755'
   vars:
-    desktop_shortcut_name: Teleop_Control_Machine_Launch
+    hand_serial: 634
+    sr_config_branch: "demohand_A"
+  become: yes
+
+- name: Create Teleop_Control_Machine_Launch desktop icon for demohand_A
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Teleop_Control_Machine_Launch_Demohand_A.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Teleop_Control_Machine_Launch_Demohand_A
     comment: "This is application launches the teleop on the control-machine (nuc)"
     window_title: teleop_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: teleop_exec.sh
+    shell_script_file_name: teleop_exec_A.sh
     icon_file_name: demohand_A_icon.png
+  become: yes
+#NUC demohand B 
+- name: Copy Teleop_Control_Machine_Launch_B desktop icon
+  copy:
+    src: files/demohand_B_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/demohand_B_icon.png"
+    mode: '664'
+  become: yes
+
+- name: Create Teleop_Control_Machine_Launch executable launch script for demohand_B
+  template:
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/teleop_exec_B.sh"
+    mode: '755'
+  vars:
+    hand_serial: 1130
+    sr_config_branch: "demohand_B"
+  become: yes
+
+- name: Create Teleop_Control_Machine_Launch desktop icon for demohand_B
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Teleop_Control_Machine_Launch_Demohand_B.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Teleop_Control_Machine_Launch_Demohand_B
+    comment: "This is application launches the teleop on the control-machine (nuc)"
+    window_title: teleop_launcher_app_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: teleop_exec_B.sh
+    icon_file_name: demohand_B_icon.png
+  become: yes
+#NUC demohand C 
+- name: Copy Teleop_Control_Machine_Launch_C desktop icon
+  copy:
+    src: files/demohand_C_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/demohand_C_icon.png"
+    mode: '664'
+  become: yes
+
+- name: Create Teleop_Control_Machine_Launch executable launch script for demohand_C
+  template:
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/teleop_exec_C.sh"
+    mode: '755'
+  vars:
+    hand_serial: 1370
+    sr_config_branch: "demohand_C"
+  become: yes
+
+- name: Create Teleop_Control_Machine_Launch desktop icon for demohand_C
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Teleop_Control_Machine_Launch_Demohand_C.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Teleop_Control_Machine_Launch_Demohand_C
+    comment: "This is application launches the teleop on the control-machine (nuc)"
+    window_title: teleop_launcher_app_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: teleop_exec_C.sh
+    icon_file_name: demohand_C_icon.png
   become: yes
 # Container icon
 - name: Copy Teleop_Control_Machine_Launch desktop icon
@@ -62,97 +133,55 @@
     shell_script_file_name: shadow_launcher_exec.sh
     icon_file_name: cyberglove_teleop.png
   become: yes
-# Demohand A
-- name: Copy Teleop_Control_Machine_Launch_A desktop icon
-  copy:
-    src: files/demohand_A_icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/demohand_A_icon.png"
-    mode: '664'
-  become: yes
-
+# GUI
 - name: Create Teleop_Server_Launch executable launch script
   template:
     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_roslaunch_demo_A.sh"
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_roslaunch_demo.sh"
     mode: '755'
   vars:
     project_name: sr_teleop_vive_cyberglove
-    launch_file: 'demo.launch remote_cyberglove:=true hand_serial:=634'
+    launch_file: 'demo.launch remote_cyberglove:=true external_control_loop:=true'
   become: yes
 
 - name: Create Teleop_Server_Launch desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_demo_demohand_A_and_arm.desktop"
+    dest: "{{ user_folder }}/Desktop/Teleop_demohand_and_arm.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: Teleop_Server_Launch
-    comment: "This is application launches the teleop demo for demohand A"
+    desktop_shortcut_name: Teleop_Server_Launch GUI
+    comment: "This is application launches the teleop GUI"
     window_title: shadow_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: shadow_roslaunch_demo_A.sh
-    icon_file_name: demohand_A_icon.png
+    shell_script_file_name: shadow_roslaunch_demo.sh
+    icon_file_name: cyberglove_teleop.png
   become: yes
-
-# Demohand B
-- name: Copy Teleop_Control_Machine_Launch_B desktop icon
+# roscore
+- name: Copy Teleop_Control_Machine_Launch desktop icon
   copy:
-    src: files/demohand_B_icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/demohand_B_icon.png"
+    src: files/ROS_logo.png
+    dest: "{{ shadow_hand_launcher_folder }}/ROS_logo.png"
     mode: '664'
   become: yes
 
-- name: Create Teleop_Server_Launch executable launch script
+- name: Create Teleop_Server_ROSLaunch executable launch script
   template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_roslaunch_demo_B.sh"
+    src: ../../../common/resources/templates/scripts/start_roscore.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_roscore.sh"
     mode: '755'
-  vars:
-    project_name: sr_teleop_vive_cyberglove
-    launch_file: 'demo.launch remote_cyberglove:=true hand_serial:=1130'
   become: yes
 
-- name: Create Teleop_Server_Launch desktop icon
+- name: Create Teleop_Server_ROSLaunch desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_demo_demohand_B_and_arm.desktop"
+    dest: "{{ user_folder }}/Desktop/Teleop_ROSCORE.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: Teleop_Server_Launch
-    comment: "This is application launches the teleop demo for demohand B"
+    desktop_shortcut_name: Teleop_ROSCORE
+    comment: "This is application launches the teleop ROSCORE"
     window_title: shadow_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: shadow_roslaunch_demo_B.sh
-    icon_file_name: demohand_B_icon.png
-  become: yes
-# Demohand C
-- name: Copy Teleop_Control_Machine_Launch_C desktop icon
-  copy:
-    src: files/demohand_C_icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/demohand_C_icon.png"
-    mode: '664'
-  become: yes
-
-- name: Create Teleop_Server_Launch executable launch script
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_roslaunch_demo_C.sh"
-    mode: '755'
-  vars:
-    project_name: sr_teleop_vive_cyberglove
-    launch_file: 'demo.launch remote_cyberglove:=true hand_serial:=1370'
-  become: yes
-
-- name: Create Teleop_Server_Launch desktop icon
-  template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_demo_demohand_C_and_arm.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: Teleop_Server_Launch
-    comment: "This is application launches the teleop demo for demohand C"
-    window_title: shadow_launcher_app_xterm
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: shadow_roslaunch_demo_C.sh
-    icon_file_name: demohand_C_icon.png
+    shell_script_file_name: shadow_roscore.sh
+    icon_file_name: ROS_logo.png
   become: yes
