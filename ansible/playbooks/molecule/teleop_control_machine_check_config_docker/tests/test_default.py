@@ -23,7 +23,7 @@ def test_docker_installed(host):
 def test_docker_container_exists(host):
     client = docker.from_env()
     try:
-        client.containers.get('control-machine')
+        client.containers.get('teleop')
         assert True
     except docker.errors.NotFound:
         assert False
@@ -33,13 +33,13 @@ def test_docker_container_exists(host):
 
 def test_correct_docker_image(host):
     client = docker.from_env()
-    image = str(client.containers.get('control-machine').image)
+    image = str(client.containers.get('teleop').image)
     assert image == "<Image: 'shadowrobot/dexterous-hand:kinetic-release'>"
 
 
 def test_sr_config_exists_in_docker(host):
     client = docker.from_env()
-    container = client.containers.get('control-machine')
+    container = client.containers.get('teleop')
     path = '/home/user/projects/shadow_robot/base/src/sr_config'
     bits, stat = container.get_archive(path)
     assert stat['size'] > 0

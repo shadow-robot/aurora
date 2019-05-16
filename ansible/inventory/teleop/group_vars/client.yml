@@ -1,8 +1,8 @@
 ---
-image: "shadowrobot/dexterous-hand" # Docker image name
+image: "shadowrobot/shadow-teleop" # Docker image name
 tag: "kinetic-release" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
-container_name: "teleop-client" # Name of the docker container
+container_name: "teleop" # Name of the docker container
 nvidia_docker: false # Enable nvidia docker
 cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS

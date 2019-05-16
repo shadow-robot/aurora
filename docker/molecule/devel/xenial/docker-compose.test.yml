@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  sut:
+    build:
+      context: .
+      args:
+        aurora_branch: ${SOURCE_BRANCH}
+    command: >
+      bash -c "aws --version &&
+               test -f /usr/bin/pycharm &&
+               test -f /usr/bin/code"
+    environment:
+      - SOURCE_BRANCH

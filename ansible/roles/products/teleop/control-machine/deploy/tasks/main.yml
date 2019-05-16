@@ -48,15 +48,24 @@
         address 192.168.1.100
         netmask 255.255.255.0
 
-- name: Make sure there is a 2048-bit SSH private and public keys on control-machine
-  user:
-    name: "{{ user }}"
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
+- name: Check if the ssh public key has been generated in ~/.ssh/ on machine running Ansible (teleop server)
+  stat:
+    path: "~/.ssh/id_rsa.pub"
+  register: ssh_result
+  delegate_to: 127.0.0.1
 
-- name: Fetch SSH public key to server (from control-machine)
-  fetch:
-    src: "{{ user_folder }}/.ssh/id_rsa.pub"
-    dest: "/tmp/ssh/id_rsa.pub"
-    flat: yes
+- name: Copy SSH public key from server to control machine (if it exists in teleop server)
+  copy:
+    src: "~/.ssh/id_rsa.pub"
+    dest: ".ssh/id_rsa.pub"
+    mode: '664'
+  when: ssh_result.stat.exists
+  changed_when: false
+
+- name: Register SSH public key with current user on the control machine
+  authorized_key:
+    user: "{{ user }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    state: present
+  when: ssh_result.stat.exists
+  changed_when: false

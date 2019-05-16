@@ -1,8 +1,8 @@
 ---
-image: "shadowrobot/dexterous-hand"
+image: "shadowrobot/shadow-teleop"
 tag: "kinetic-release"
 reinstall: false
-container_name: "control-machine"
+container_name: "teleop"
 ethercat_interface: "eth0"
 config_branch: "demohand_A"
 allow_auto_reboot : true
