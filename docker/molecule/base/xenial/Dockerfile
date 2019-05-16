@@ -10,7 +10,9 @@ ENV LC_ALL C.UTF-8
 
 ENV LANG C.UTF-8
 
-ENV aurora_branch "master"
+ARG aurora_branch
+
+ENV aurora_branch ${aurora_branch:-"master"}
 
 RUN set -x && \
     apt-get update && \

@@ -8,7 +8,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV PULSE_SERVER /run/pulse/native
 
-ENV aurora_branch "master"
+ARG aurora_branch
+
+ENV aurora_branch ${aurora_branch:-"master"}
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 

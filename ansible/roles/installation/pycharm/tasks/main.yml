@@ -37,7 +37,7 @@
 
 - name: Create easy access symlink
   file:
-    src: "{{pycharm_home}}/bin/pycharm.sh"
+    src: "{{ pycharm_home }}/bin/pycharm.sh"
     dest: /usr/bin/pycharm
     state: link
   become: yes
