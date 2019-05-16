@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: teleop_empty_server_docker
+  - name: teleop_desktop_icons_server_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
       - server
