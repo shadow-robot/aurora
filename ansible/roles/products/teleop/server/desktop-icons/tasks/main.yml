@@ -147,7 +147,7 @@
 - name: Create Teleop_Server_Launch desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_demohand_and_arm.desktop"
+    dest: "{{ user_folder }}/Desktop/Teleop_GUI.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Teleop_Server_Launch GUI
