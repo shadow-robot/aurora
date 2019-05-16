@@ -9,8 +9,8 @@ def test_icons_in_docker(host):
     user = host.user().name
     icon_list = []
     script_list = []
-    script_path = '/home/'+str(user)+'/Desktop/'
-    desktop_path = '/home/'+str(user) + \
+    desktop_path = '/home/'+str(user)+'/Desktop/'
+    script_path = '/home/'+str(user) + \
                    '/.shadow_launcher_app/shadow_hand_launcher/'
     icon_list.append(desktop_path +
                      'Teleop_Control_Machine_Launch_Demohand_A.desktop')
