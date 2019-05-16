@@ -4,3 +4,5 @@
     reinstall=true
     use_openvpn=false
     ethercat_interface="enp0s25"
+    image="10.6.10.7:5000/dexterous-hand" 
+    tag="kinetic-release"
