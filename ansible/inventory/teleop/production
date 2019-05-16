@@ -1,5 +1,5 @@
 [server]
-10.9.12.1 ansible_host=teleop-server ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no' nuc_username=user nuc_address=10.9.12.2
+10.9.12.1 ansible_host=teleop-server ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [control_machine]
 10.9.12.2 ansible_host=control-machine ansible_connection=ssh ansible_ssh_user=user ansible_user=user remote_user=user ansible_ssh_common_args='-o StrictHostKeyChecking=no'

@@ -12,22 +12,6 @@
   when: pip_status.rc != 0
   become: yes
 
-- name: Check the default python3 version
-  shell: python3 -V | cut -d ' ' -f2 | cut -d . -f1-2
-  changed_when: false
-  register: python3_version
-
-- name: Check if there are more than 1 version of pip3
-  shell: ls /usr/local/bin/pip3* | wc -l
-  changed_when: false
-  register: pip3_count
-
-- name: Make sure pip3 default version matches the python3 version (3.5, 3.6, or 3.7 etc.)
-  command: cp /usr/local/bin/pip{{ python3_version.stdout }} /usr/local/bin/pip3
-  changed_when: false
-  when: pip3_count.stdout|int>1
-  become: yes
-
 - name: Install Docker pip module
   pip:
     name: docker

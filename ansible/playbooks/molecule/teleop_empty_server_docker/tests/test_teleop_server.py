@@ -48,9 +48,9 @@ def test_sr_config_exists_in_docker(host):
 def test_icons_in_docker(host):
     user = host.user().name
     icon_list = []
-    desktop_path = '/home/'+str(user)+'/Desktop/'
-    icon_list.append(desktop_path+'ROS_Logs_Saver.desktop')
-    icon_list.append(desktop_path+'Teleop_Control_Machine_Launch.desktop')
-    icon_list.append(desktop_path+'Teleop_Server_Launch.desktop')
+    desktop_path = '/home/' + str(user) + '/Desktop/'
+    icon_list.append(desktop_path + 'ROS_Logs_Saver.desktop')
+    icon_list.append(desktop_path + 'Teleop_Control_Machine_Launch.desktop')
+    icon_list.append(desktop_path + 'Teleop_Server_Launch.desktop')
     for icon in icon_list:
         assert host.file(icon).exists

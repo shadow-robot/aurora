@@ -104,10 +104,6 @@ echo ""
 
 pushd $aurora_home
 
-# Make sure pip3 default version matches the python3 version (3.5, 3.6, or 3.7 etc.)
-python3_version="$(python3 -V | cut -d ' ' -f2 | cut -d . -f1-2)"
-sudo cp /usr/local/bin/pip${python3_version} /usr/local/bin/pip3
-
 pip3 install --user -r ansible/data/ansible/requirements.txt
 ansible_flags="-v --ask-become-pass "
 

@@ -19,6 +19,11 @@
     mode: '664'
   become: yes
 
+- name: Set NUC IP address and username for SSH
+  set_fact:
+    nuc_username: hostvars[groups['control_machine'][0]]['ansible_user']['stdout_lines']
+    nuc_address: hostvars[groups['control_machine'][0]].ansible_default_ipv4.address
+
 - name: Create Teleop_Control_Machine_Launch executable launch script
   template:
     src: templates/scripts/start-docker-container-nuc.j2
