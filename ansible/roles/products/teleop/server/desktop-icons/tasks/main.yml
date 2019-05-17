@@ -12,56 +12,57 @@
     state: directory
   become: yes
 
-- name: Copy Teleop_Control_Machine_Launch desktop icon
-  copy:
-    src: files/teleop_icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/teleop_icon.png"
-    mode: '664'
-  become: yes
-
 - name: Set NUC IP address and username for SSH
   set_fact:
     nuc_username: hostvars[groups['control_machine'][0]]['ansible_user']['stdout_lines']
     nuc_address: hostvars[groups['control_machine'][0]].ansible_default_ipv4.address
 
-- name: Create Teleop_Control_Machine_Launch executable launch script
-  template:
-    src: templates/scripts/start-docker-container-nuc.j2
-    dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
-    mode: '755'
-  become: yes
-
-- name: Create Teleop_Control_Machine_Launch desktop icon
-  template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_Control_Machine_Launch.desktop"
-    mode: '755'
+- name: Install desktop icon for hand A
+  import_tasks: demohand-icon.yml
   vars:
-    desktop_shortcut_name: Teleop_Control_Machine_Launch
-    comment: "This is application launches the teleop on the control-machine (nuc)"
-    window_title: teleop_launcher_app_xterm
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: teleop_exec.sh
-    icon_file_name: teleop_icon.png
-  become: yes
+    desktop_icon_png: "demohand_A_icon.png"
+    launch_script: "teleop_exec_A.sh"
+    demohand_branch: "demohand_A"
+    desktop_icon_name: "Teleop_Control_Machine_Launch_Demohand_A"
+    hand_serial_no: "634"
 
-- name: Create Teleop_Server_Launch executable launch script
-  template:
-    src: ../../../common/resources/templates/scripts/start-docker-container.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
-    mode: '755'
-  become: yes
-
-- name: Create Teleop_Server_Launch desktop icon
-  template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_Server_Launch.desktop"
-    mode: '755'
+- name: Install desktop icon for hand B
+  import_tasks: demohand-icon.yml
   vars:
-    desktop_shortcut_name: Teleop_Server_Launch
-    comment: "This is application launches the GUI of the hand"
-    window_title: shadow_launcher_app_xterm
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: shadow_launcher_exec.sh
-    icon_file_name: teleop_icon.png
-  become: yes
+    desktop_icon_png: "demohand_B_icon.png"
+    launch_script: "teleop_exec_B.sh"
+    demohand_branch: "demohand_B"
+    desktop_icon_name: "Teleop_Control_Machine_Launch_Demohand_B"
+    hand_serial_no: "1130"
+
+- name: Install desktop icon for hand C
+  import_tasks: demohand-icon.yml
+  vars:
+    desktop_icon_png: "demohand_C_icon.png"
+    launch_script: "teleop_exec_C.sh"
+    demohand_branch: "demohand_C"
+    desktop_icon_name: "Teleop_Control_Machine_Launch_Demohand_C"
+    hand_serial_no: "1370"
+
+- name: Install desktop icon for Teleop server container
+  import_tasks: default-icon.yml
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "cyberglove_teleop.png"
+    launch_script: "shadow_launcher_exec.sh"
+    desktop_icon_name: "Teleop_Container_Launch"
+
+- name: Install desktop icon for Teleop server GUI
+  import_tasks: gui-icon.yml
+  vars:
+    desktop_icon_png: "cyberglove_teleop.png"
+    launch_script: "shadow_roslaunch_demo.sh"
+    desktop_icon_name: "Teleop_GUI"
+
+- name: Install desktop icon for launching Roscore
+  import_tasks: default-icon.yml
+  vars:
+    template: ../../../common/resources/templates/scripts/start_roscore.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "shadow_roscore.sh"
+    desktop_icon_name: "Teleop_ROSCORE"
