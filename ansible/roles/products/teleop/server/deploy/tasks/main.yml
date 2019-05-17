@@ -9,5 +9,5 @@
 - name: Evaluating the SSH agent and adding the ssh identity
   shell: |
     eval "$(ssh-agent)"
-    ssh-add ~/.ssh/id_rsa
+    ssh-add {{ user_folder }}/.ssh/id_rsa
   changed_when: false
