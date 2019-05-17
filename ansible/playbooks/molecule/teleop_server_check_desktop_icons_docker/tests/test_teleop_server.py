@@ -6,30 +6,26 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_icons_in_docker(host):
-    user = host.user().name
-    icon_list = []
-    script_list = []
-    desktop_path = '/home/' + str(user) + '/Desktop/'
-    script_path = '/home/' + str(user) + \
+    desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
+    script_path = '/home/' + str(host.user().name) + \
                   '/.shadow_launcher_app/shadow_hand_launcher/'
-    icon_list.append(desktop_path +
-                     'Teleop_Control_Machine_Launch_Demohand_A.desktop')
-    icon_list.append(desktop_path +
-                     'Teleop_Control_Machine_Launch_Demohand_B.desktop')
-    icon_list.append(desktop_path +
-                     'Teleop_Control_Machine_Launch_Demohand_C.desktop')
-    icon_list.append(desktop_path + 'Teleop_Container_Launch.desktop')
-    icon_list.append(desktop_path + 'Teleop_GUI.desktop')
-    icon_list.append(desktop_path + 'Teleop_ROSCORE.desktop')
-
-    script_list.append(script_path + 'teleop_exec_A.sh')
-    script_list.append(script_path + 'teleop_exec_B.sh')
-    script_list.append(script_path + 'teleop_exec_C.sh')
-    script_list.append(script_path + 'shadow_launcher_exec.sh')
-    script_list.append(script_path + 'shadow_roslaunch_demo.sh')
-    script_list.append(script_path + 'shadow_roscore.sh')
-
-    for icon in icon_list:
-        assert host.file(icon).exists
-    for script in script_list:
-        assert host.file(script).exists
+    icons = (
+        'Teleop_Control_Machine_Launch_Demohand_A',
+        'Teleop_Control_Machine_Launch_Demohand_B',
+        'Teleop_Control_Machine_Launch_Demohand_C',
+        'Teleop_Container_Launch',
+        'Teleop_GUI',
+        'Teleop_ROSCORE'
+        )
+    scripts = (
+        'teleop_exec_A',
+        'teleop_exec_B',
+        'teleop_exec_C',
+        'shadow_launcher_exec',
+        'shadow_roslaunch_demo',
+        'shadow_roscore'
+        )
+    for icon in icons:
+        assert host.file(desktop_path+icon+'.desktop').exists
+    for script in scripts:
+        assert host.file(script_path+script+'.sh').exists
