@@ -12,59 +12,53 @@
     state: directory
   become: yes
 
-- name: Copy Teleop desktop icon
+- name: Copy Teleop_Control_Machine_Launch desktop icon
   copy:
     src: files/teleop_icon.png
     dest: "{{ shadow_hand_launcher_folder }}/teleop_icon.png"
     mode: '664'
   become: yes
 
-# TODO: FIX THIS: find the correct way to access nuc IP and username from inventory file
-#- name: Setting facts for NUC
-#  set_fact:
-#    nuc_address: "{{ groups['control_machine']['ansible_default_ipv4']['address'] }}"
-#    nuc_username: "{{ groups['control_machine'].ansible_user }}"
-
-- name: Setting facts for NUC
+- name: Set NUC IP address and username for SSH
   set_fact:
-    nuc_address: "10.9.10.2"
-    nuc_username: "test"
+    nuc_username: hostvars[groups['control_machine'][0]]['ansible_user']['stdout_lines']
+    nuc_address: hostvars[groups['control_machine'][0]].ansible_default_ipv4.address
 
-- name: Create Teleop executable launch script
+- name: Create Teleop_Control_Machine_Launch executable launch script
   template:
     src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/teleop_exec.sh"
     mode: '755'
   become: yes
 
-- name: Create Teleop desktop icon
+- name: Create Teleop_Control_Machine_Launch desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_Launcher.desktop"
+    dest: "{{ user_folder }}/Desktop/Teleop_Control_Machine_Launch.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: Teleop_Launcher
-    comment: "This is application launches the teleop"
+    desktop_shortcut_name: Teleop_Control_Machine_Launch
+    comment: "This is application launches the teleop on the control-machine (nuc)"
     window_title: teleop_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: teleop_exec.sh
     icon_file_name: teleop_icon.png
   become: yes
 
-- name: Create Shadow_Hand_TeleOp_Launcher executable launch script
+- name: Create Teleop_Server_Launch executable launch script
   template:
     src: ../../../common/resources/templates/scripts/start-docker-container.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
     mode: '755'
   become: yes
 
-- name: Create Shadow_Hand_Launcher desktop icon
+- name: Create Teleop_Server_Launch desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Shadow_Hand_TeleOp_Launcher.desktop"
+    dest: "{{ user_folder }}/Desktop/Teleop_Server_Launch.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: Shadow_Hand_TeleOp_Launcher
+    desktop_shortcut_name: Teleop_Server_Launch
     comment: "This is application launches the GUI of the hand"
     window_title: shadow_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"

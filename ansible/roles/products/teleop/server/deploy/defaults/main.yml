@@ -1,9 +1,12 @@
 ---
-image: "shadowrobot/dexterous-hand"
+image: "shadowrobot/shadow-teleop"
 tag: "kinetic-release"
 reinstall: false
-container_name: "teleop-server"
+container_name: "teleop"
 nvidia_docker: false
 cyberglove: "A-penny"
 use_aws: false
 use_openvpn: false
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+nuc_username: "user"

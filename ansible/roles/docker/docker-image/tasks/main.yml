@@ -4,6 +4,7 @@
     username: "{{ username }}"
     password: "{{ password }}"
   when: username is defined and password is defined
+  become: yes
 
 - name: Reading path to Python repository with Docker package
   command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""

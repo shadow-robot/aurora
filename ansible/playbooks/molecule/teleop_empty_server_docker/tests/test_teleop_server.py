@@ -23,7 +23,7 @@ def test_docker_installed(host):
 def test_docker_container_exists(host):
     client = docker.from_env()
     try:
-        client.containers.get('dexterous_hand_real_hw')
+        client.containers.get('teleop')
         assert True
     except docker.errors.NotFound:
         assert False
@@ -33,18 +33,23 @@ def test_docker_container_exists(host):
 
 def test_correct_docker_image(host):
     client = docker.from_env()
-    image = str(client.containers.get('dexterous_hand_real_hw').image)
+    image = str(client.containers.get('teleop').image)
     assert image == "<Image: 'shadowrobot/dexterous-hand:kinetic-release'>"
 
 
 def test_sr_config_exists_in_docker(host):
     client = docker.from_env()
-    container = client.containers.get('dexterous_hand_real_hw')
+    container = client.containers.get('teleop')
     bits, stat = container.get_archive(
         '/home/user/projects/shadow_robot/base/src/sr_config')
     assert stat['size'] > 0
 
 
 def test_icons_in_docker(host):
-    f = host.file('/home/Desktop/Teleop_Launcher.desktop')
-    assert f.exists
+    path = '/home/' + str(host.user().name) + '/Desktop/'
+    icons = (
+        'ROS_Logs_Saver',
+        'Teleop_Control_Machine_Launch',
+        'Teleop_Server_Launch')
+    for icon in icons:
+        assert host.file(path+icon+'.desktop').exists

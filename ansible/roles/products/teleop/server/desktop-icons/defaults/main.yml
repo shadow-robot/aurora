@@ -5,3 +5,4 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 save_latest_ros_logs_folder: "{{ user_folder }}/.shadow_save_log_app/save_latest_ros_logs"
 container_name : "teleop-server"
 sr_config_branch: "demohand_A"
+nuc_username: "user"

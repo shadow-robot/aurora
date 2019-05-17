@@ -26,10 +26,6 @@
   import_tasks: exit.yml
   when: container_running
 
-- name: Start container if container not running
-  import_tasks: start-container.yml
-  when: container_exists and not container_running
-
 - name: Reinstalling docker container because it doesn't exist
   import_tasks: reinstall.yml
   when: not container_exists

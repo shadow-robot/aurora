@@ -1,5 +1,5 @@
 ---
-- name: Check pip3 installed (will prevent reinstallation in case if Pip3 was installed without Apt)
+- name: Check pip3 installed (will prevent reinstallation in case if pip3 was installed without Apt)
   command: pip3 --version
   register: pip_status
   ignore_errors: yes

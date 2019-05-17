@@ -47,3 +47,25 @@
       iface {{ ur_interface }} inet static
         address 192.168.1.100
         netmask 255.255.255.0
+
+- name: Check if the ssh public key has been generated in .ssh/ folder on machine running Ansible (teleop server)
+  stat:
+    path: "{{ user_folder }}/.ssh/id_rsa.pub"
+  register: ssh_result
+  delegate_to: 127.0.0.1
+
+- name: Copy SSH public key from server to control machine (if it exists in teleop server)
+  copy:
+    src: "{{ user_folder }}/.ssh/id_rsa.pub"
+    dest: ".ssh/id_rsa.pub"
+    mode: '664'
+  when: ssh_result.stat.exists
+  changed_when: false
+
+- name: Register SSH public key with current user on the control machine
+  authorized_key:
+    user: "{{ user }}"
+    key: "{{ lookup('file', '{{ user_folder }}/.ssh/id_rsa.pub') }}"
+    state: present
+  when: ssh_result.stat.exists
+  changed_when: false
