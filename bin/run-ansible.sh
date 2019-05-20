@@ -77,11 +77,11 @@ echo "limit        = ${aurora_limit}"
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 extra_vars=$*
 if [[ "${docker_login}" == "true" ]]; then
-    echo "Docker login:"
-    read docker_user
-    echo "Docker password:"
-    read docker_password
-    extra_vars=$*" docker_login=$docker_user docker_password=$docker_password"
+    printf "Docker login:"
+    read -r docker_user
+    printf "Docker password:"
+    read -r -s docker_password
+    extra_vars=$*" username=$docker_user password=$docker_password"
 fi
 
 echo ""
