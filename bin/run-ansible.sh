@@ -80,7 +80,7 @@ if [[ "${docker_login}" == "true" ]]; then
     printf "Docker login:"
     read -r docker_user
     printf "Docker password:"
-    read -r -s docker_password
+    read -rs docker_password
     extra_vars=$*" username=$docker_user password=$docker_password"
 fi
 
