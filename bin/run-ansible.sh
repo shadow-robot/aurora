@@ -16,6 +16,7 @@ fi
 aurora_home=/tmp/aurora
 playbook=$1
 aurora_limit=all
+docker_login=false
 shift
 
 while [[ $# > 1 ]]
@@ -32,6 +33,10 @@ case ${key} in
     ;;
     --limit)
     aurora_limit="$2"
+    shift 2
+    ;;
+    --docker_login)
+    docker_login="$2"
     shift 2
     ;;
     *)
@@ -70,6 +75,14 @@ echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
+extra_vars=$*
+if [[ "${docker_login}" == "true" ]]; then
+    echo "Docker login:"
+    read docker_user
+    echo "Docker password:"
+    read docker_password
+    extra_vars=$*" docker_login=$docker_user docker_password=$docker_password"
+fi
 
 echo ""
 echo " ---------------------------------"
@@ -122,7 +135,7 @@ if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
 fi
 
-"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
+"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$extra_vars"
 
 popd
 
