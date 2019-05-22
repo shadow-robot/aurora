@@ -1,0 +1,31 @@
+---
+- name: Copy desktop icon
+  copy:
+    src: files/{{ desktop_icon_png }}
+    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
+    mode: '664'
+  become: yes
+
+- name: Create executable launch script for GUI
+  template:
+    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+    mode: '755'
+  vars:
+    project_name: sr_teleop_vive_cyberglove
+    launch_file: 'demo.launch remote_cyberglove:=true external_control_loop:=true'
+  become: yes
+
+- name: Create desktop icon for GUI
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "{{ desktop_icon_name }}"
+    comment: "{{ desktop_icon_name }}"
+    window_title: teleop_launcher_app_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: "{{ launch_script }}"
+    icon_file_name: "{{ desktop_icon_png }}"
+  become: yes
