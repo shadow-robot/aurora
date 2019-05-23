@@ -1,26 +1,4 @@
 ---
-- name: Creating the container
-  changed_when: false
-  docker_container:
-    name: "{{ container_name }}"
-    image: "{{ full_image_name }}"
-    state: present
-    recreate: yes
-    pull: yes
-    env:
-      verbose: "true"
-      interface: "{{ ethercat_interface }}"
-      QT_X11_NO_MITSHM: "1"
-      LOCAL_USER_ID: "{{ id.stdout }}"
-      DISPLAY: :0
-      # ROS_MASTER_URI: "http://'{{ groups['control_machine']['ansible_default_ipv4']['address'] }}':11311"
-    network_mode: "host"
-    privileged: yes
-    interactive: yes
-    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "/bin/bash"
-  become: yes
-
 - name: Check if there is an interface file
   stat:
     path: /etc/network/interfaces

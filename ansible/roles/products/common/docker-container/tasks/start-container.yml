@@ -23,7 +23,7 @@
     privileged: yes
     interactive: yes
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "terminator -x bash -c 'bash'"
+    command: "{{ run_when_docker_launches }}"
   when: container_exists and not container_running
   become: yes
   # TODO: Investigate if idempotency check is failing due to this issue https://github.com/ansible/ansible/issues/44669

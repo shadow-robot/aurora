@@ -4,14 +4,12 @@
     src: files/{{ desktop_icon_png }}
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
-  become: yes
 
 - name: Create executable launch script
   template:
     src: "{{ template }}"
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
-  become: yes
 
 - name: Create desktop icon
   template:
@@ -25,4 +23,3 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
-  become: yes

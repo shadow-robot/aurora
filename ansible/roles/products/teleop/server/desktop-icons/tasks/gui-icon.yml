@@ -4,7 +4,6 @@
     src: files/{{ desktop_icon_png }}
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
-  become: yes
 
 - name: Create executable launch script for GUI
   template:
@@ -14,7 +13,6 @@
   vars:
     project_name: sr_teleop_vive_cyberglove
     launch_file: 'demo.launch remote_cyberglove:=true external_control_loop:=true'
-  become: yes
 
 - name: Create desktop icon for GUI
   template:
@@ -28,4 +26,3 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
-  become: yes
