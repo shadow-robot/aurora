@@ -22,5 +22,5 @@
     privileged: yes
     interactive: yes
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "{{ run_when_docker_launches }}"
+    command: "terminator -x bash -c '{{ setup_script }} && bash || bash'"
   become: yes

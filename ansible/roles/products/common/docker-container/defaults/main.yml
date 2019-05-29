@@ -14,4 +14,4 @@ cyberglove: "A-dg"
 reinstall: true
 container_exists: false
 container_running: false
-run_when_docker_launches: "terminator -x bash -c 'bash'"
+setup_script: false

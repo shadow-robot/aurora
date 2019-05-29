@@ -7,5 +7,5 @@
 
 - name: Copying hand setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:/usr/local/bin/setup_dexterous_hand.sh"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:{{ setup_script }}"
   become: yes
