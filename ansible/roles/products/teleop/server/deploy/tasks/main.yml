@@ -11,3 +11,14 @@
     eval "$(ssh-agent)"
     ssh-add {{ user_folder }}/.ssh/id_rsa
   changed_when: false
+
+- name: Creating teleop-server setup script
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/teleop-server-setup.sh"
+    mode: '755'
+
+- name: Copying teleop-server setup script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-server-setup.sh {{ container_name }}:{{ setup_script }}"
+  become: yes

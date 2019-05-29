@@ -1,3 +1,2 @@
 ---
 use_openvpn: false # Specify if openvpn-client should be installed
-setup_script: false
