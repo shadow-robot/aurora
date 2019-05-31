@@ -8,4 +8,4 @@ config_branch: "demohand_A"
 allow_auto_reboot : true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-setup_script: "/usr/local/bin/control-machine-setup.sh"
+setup_path: "/usr/local/bin/control-machine-setup.sh"

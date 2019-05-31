@@ -22,5 +22,5 @@
     privileged: yes
     interactive: yes
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "terminator -x bash -c '{{ setup_script }} && bash || bash'"
+    command: "terminator -x bash -c '-n {{ setup_path }} && {{ setup_path }} && bash || bash'"
   become: yes

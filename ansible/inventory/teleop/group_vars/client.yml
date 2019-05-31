@@ -7,4 +7,4 @@ nvidia_docker: false # Enable nvidia docker
 cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-client should be installed
-setup_script: "/usr/local/bin/teleop-client-setup.sh"
+setup_path: "/usr/local/bin/teleop-client-setup.sh"

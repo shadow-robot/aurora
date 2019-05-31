@@ -20,5 +20,5 @@
 
 - name: Copying teleop-server setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-server-setup.sh {{ container_name }}:{{ setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-server-setup.sh {{ container_name }}:{{ setup_path }}"
   become: yes

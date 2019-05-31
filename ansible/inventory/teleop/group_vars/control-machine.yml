@@ -6,4 +6,4 @@ container_name: "teleop" # Name of the docker container
 ethercat_interface: "eth0" # Ethercat interface of the hand
 config_branch: "demohand_A" # Specify the branch for the specific hand (Only for dexterous hand)
 allow_auto_reboot : true # Allow Ansible to reboot the control-machine automatically during software installation
-setup_script: "/usr/local/bin/control-machine-setup.sh"
+setup_path: "/usr/local/bin/control-machine-setup.sh"

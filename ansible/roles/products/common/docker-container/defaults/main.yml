@@ -14,4 +14,4 @@ cyberglove: "A-dg"
 reinstall: true
 container_exists: false
 container_running: false
-setup_script: false
+setup_path: ""
