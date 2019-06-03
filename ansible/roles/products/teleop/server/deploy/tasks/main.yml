@@ -12,13 +12,17 @@
     ssh-add {{ user_folder }}/.ssh/id_rsa
   changed_when: false
 
+- name: Setup script name
+  set_fact:
+    setup_script: teleop-server-setup.sh
+
 - name: Creating teleop-server setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
-    dest: "{{ shadow_hand_launcher_folder }}/teleop-server-setup.sh"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
 - name: Copying teleop-server setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-server-setup.sh {{ container_name }}:{{ setup_directory + setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-server-setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes

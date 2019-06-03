@@ -1,11 +1,15 @@
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: teleop-client-setup.sh
+
 - name: Creating teleop-client setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
-    dest: "{{ shadow_hand_launcher_folder }}/teleop-client-setup.sh"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
 - name: Copying teleop-client setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-client-setup.sh {{ container_name }}:{{ setup_directory + setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-client-setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes

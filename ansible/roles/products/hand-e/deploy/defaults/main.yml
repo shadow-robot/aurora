@@ -7,5 +7,4 @@ demo_icons: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
-setup_directory: "/usr/local/bin/"
-setup_script: "setup_dexterous_hand.sh"
+setup_directory: "/usr/local/bin"

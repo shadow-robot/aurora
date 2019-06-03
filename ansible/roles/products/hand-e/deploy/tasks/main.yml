@@ -1,11 +1,15 @@
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: setup_dexterous_hand.sh
+
 - name: Creating hand-e setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
-    dest: "{{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
 - name: Copying hand setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:{{ setup_directory + setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes

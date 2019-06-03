@@ -10,5 +10,4 @@ use_openvpn: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 nuc_username: "user"
-setup_directory: "/usr/local/bin/"
-setup_script: "teleop-server-setup.sh"
+setup_directory: "/usr/local/bin"
