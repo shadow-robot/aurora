@@ -16,8 +16,8 @@ fi
 aurora_home=/tmp/aurora
 playbook=$1
 aurora_limit=all
-password_data=""
-username_data=""
+read_input=""
+read_secure=""
 shift
 
 while [[ $# > 1 ]]
@@ -86,15 +86,15 @@ export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 extra_vars=$*
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
-    printf "Username for $i:"
+    printf "Data input for $i:"
     read -r input_data
-    extra_vars=$extra_vars" $i=$input_data"
+    extra_vars="$extra_vars $i=$input_data"
 done
 IFS=',' read -ra securedata <<< "$read_secure"
 for i in "${securedata[@]}"; do
-    printf "\nPassword for $i:"
+    printf "\nSecure data input for $i:"
     read -rs secure_data
-    extra_vars=$extra_vars" $i=$secure_data"
+    extra_vars="$extra_vars $i=$secure_data"
 done
 
 echo ""
