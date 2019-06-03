@@ -36,12 +36,12 @@ case ${key} in
     aurora_limit="$2"
     shift 2
     ;;
-    --username-data)
-    username_data="$2"
+    --read-input)
+    read_input="$2"
     shift 2
     ;;
-    --password-data)
-    password_data="$2"
+    --read-secure)
+    read_secure="$2"
     shift 2
     ;;
     *)
@@ -71,8 +71,8 @@ echo "possible options: "
 echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
 echo "  * --inventory         Inventory of servers to use (local by default)"
 echo "  * --limit             Run a playbook against one or more members of that group (all by default)"
-echo "  * --username-data     Prompt for username(s) required by some playbooks (e.g. docker_username,git_login)"
-echo "  * --password-data     Prompt for password(s) required by some playbooks (e.g. docker_password,git_password)"
+echo "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,git_login)"
+echo "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. docker_password,git_password)"
 echo ""
 echo "example: ./${script_name} docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
@@ -84,17 +84,17 @@ echo "limit        = ${aurora_limit}"
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 
 extra_vars=$*
-IFS=',' read -ra usrdata <<< "$username_data"
-for i in "${usrdata[@]}"; do
+IFS=',' read -ra inputdata <<< "$read_input"
+for i in "${inputdata[@]}"; do
     printf "Username for $i:"
-    read -r username
-    extra_vars=$extra_vars" $i=$username"
+    read -r input_data
+    extra_vars=$extra_vars" $i=$input_data"
 done
-IFS=',' read -ra pwddata <<< "$password_data"
-for i in "${pwddata[@]}"; do
+IFS=',' read -ra securedata <<< "$read_secure"
+for i in "${securedata[@]}"; do
     printf "\nPassword for $i:"
-    read -rs password
-    extra_vars=$extra_vars" $i=$password"
+    read -rs secure_data
+    extra_vars=$extra_vars" $i=$secure_data"
 done
 
 echo ""
