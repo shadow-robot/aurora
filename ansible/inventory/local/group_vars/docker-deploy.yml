@@ -14,4 +14,4 @@ shortcut_name: "Shadow_Hand_Launcher" # Specify the name for the desktop icon (d
 optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
 launch_hand: false # Specify if hand driver should start when double clicking desktop icon
 demo_icons: true # Generates desktop icons to run demos
-setup_path: "/usr/local/bin/setup_dexterous_hand.sh"
+setup_script: "/usr/local/bin/setup_dexterous_hand.sh"
