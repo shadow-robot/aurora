@@ -4,7 +4,7 @@
     update_cache: yes
   become: yes
 
-- name: Intall needed libs for steamvr
+- name: Install needed libs for steamvr
   apt:
     name: "{{ packages }}"
     install_recommends: no

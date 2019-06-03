@@ -4,7 +4,6 @@
     src: files/{{ desktop_icon_png }}
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
-  become: yes
 
 - name: Create executable launch script for demohand
   template:
@@ -14,7 +13,6 @@
   vars:
     hand_serial: "{{ hand_serial_no }}"
     sr_config_branch: "{{ demohand_branch }}"
-  become: yes
 
 - name: Create desktop icon for demohand
   template:
@@ -28,4 +26,3 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
-  become: yes
