@@ -1,9 +1,9 @@
 ---
 - name: Docker login
   docker_login:
-    username: "{{ username }}"
-    password: "{{ password }}"
-  when: username is defined and password is defined
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
+  when: docker_username is defined and docker_password is defined
   become: yes
 
 - name: Reading path to Python repository with Docker package
