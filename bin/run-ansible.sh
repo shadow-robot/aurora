@@ -34,6 +34,14 @@ case ${key} in
     aurora_limit="$2"
     shift 2
     ;;
+    --read-input)
+    read_input="$2"
+    shift 2
+    ;;
+    --read-secure)
+    read_secure="$2"
+    shift 2
+    ;;
     *)
     break
     ;;
@@ -61,6 +69,8 @@ echo "possible options: "
 echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
 echo "  * --inventory         Inventory of servers to use (local by default)"
 echo "  * --limit             Run a playbook against one or more members of that group (all by default)"
+echo "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,github_login)"
+echo "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. docker_password,git_password)"
 echo ""
 echo "example: ./${script_name} docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
@@ -70,6 +80,20 @@ echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
+
+extra_vars=$*
+IFS=',' read -ra inputdata <<< "$read_input"
+for i in "${inputdata[@]}"; do
+    printf "Data input for $i:"
+    read -r input_data
+    extra_vars="$extra_vars $i=$input_data"
+done
+IFS=',' read -ra securedata <<< "$read_secure"
+for i in "${securedata[@]}"; do
+    printf "\nSecure data input for $i:"
+    read -rs secure_data
+    extra_vars="$extra_vars $i=$secure_data"
+done
 
 echo ""
 echo " ---------------------------------"
@@ -122,7 +146,7 @@ if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
 fi
 
-"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$*"
+"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$extra_vars"
 
 popd
 
