@@ -16,8 +16,6 @@ fi
 aurora_home=/tmp/aurora
 playbook=$1
 aurora_limit=all
-read_input=""
-read_secure=""
 shift
 
 while [[ $# > 1 ]]
