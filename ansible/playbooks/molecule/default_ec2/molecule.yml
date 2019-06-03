@@ -1,4 +1,5 @@
 ---
+gather_facts: true
 dependency:
   name: galaxy
 driver:
