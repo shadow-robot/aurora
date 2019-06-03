@@ -7,4 +7,5 @@ nvidia_docker: false
 cyberglove: "A-penny"
 use_aws: false
 use_openvpn: false
-setup_path: "/usr/local/bin/teleop-client-setup.sh"
+setup_directory: "/usr/local/bin/"
+setup_script: "teleop-client-setup.sh"
