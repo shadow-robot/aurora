@@ -76,7 +76,8 @@
 
     - name: Create molecule instance(s)
       ec2:
-        gather_facts: true
+        set_fact:
+          random_number: "{{ 9999 | random }}"
         key_name: "{{ keypair_name }}"
         image: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
@@ -84,12 +85,12 @@
         region: "{{ ec2_region }}"
         group: "{{ security_group_name }}"
         instance_tags:
-          instance: "{{ item.name }}_{{ ansible_date_time.epoch }}"
+          instance: "{{ item.name }}_{{ random_number }}"
         wait: true
         assign_public_ip: true
         exact_count: 1
         count_tag:
-          instance: "{{ item.name }}_{{ ansible_date_time.epoch }}"
+          instance: "{{ item.name }}_{{ random_number }}"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
