@@ -5,6 +5,6 @@
   ignore_errors: yes
 
 - name: Install OpenVPN server
-  import_tasks: install.yml
+  include_tasks: install.yml
   when: not openvpn_check.stat.exists
   become: yes
