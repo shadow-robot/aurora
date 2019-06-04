@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: default_ec2
+  - name: "{{ molecule_yml.scenario.name }}_{{ item.name | d(uuid_function)  }}"
     image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
