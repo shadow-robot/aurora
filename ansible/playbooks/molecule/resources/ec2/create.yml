@@ -76,7 +76,7 @@
 
     - name: Generating random number for ec2 name
       set_fact:
-        ec2_name: "{{ molecule_yml.scenario.name }}_{{ item.name | d(uuid_function) }}"
+        ec2_name: "default_ec2_{{ 9999 | random }}"
 
     - name: Create molecule instance(s)
       ec2:
