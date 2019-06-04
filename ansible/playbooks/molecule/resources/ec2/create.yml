@@ -74,10 +74,12 @@
         mode: 0600
       when: keypair.changed
 
+    - name: Generating random number for ec2 name
+      set_fact:
+        random_number: "{{ 9999 | random }}"
+
     - name: Create molecule instance(s)
       ec2:
-        set_fact:
-          random_number: "{{ 9999 | random }}"
         key_name: "{{ keypair_name }}"
         image: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
