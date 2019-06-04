@@ -59,6 +59,7 @@ then
 fi
 
 
+
 echo "================================================================="
 echo "|                                                               |"
 echo "|                 Shadow Ansible bootstraper                    |"
