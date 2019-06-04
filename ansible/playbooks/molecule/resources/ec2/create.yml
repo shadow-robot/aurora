@@ -75,6 +75,7 @@
       when: keypair.changed
 
     - name: Create molecule instance(s)
+      gather_facts: true
       ec2:
         key_name: "{{ keypair_name }}"
         image: "{{ item.image }}"
