@@ -76,7 +76,7 @@
 
     - name: Generating random number for ec2 name
       set_fact:
-        ec2_name: "default_ec2_{{ 9999 | random }}"
+        molecule_yml.platforms.name: "default_ec2_{{ 9999 | random }}"
 
     - name: Create molecule instance(s)
       ec2:
@@ -87,12 +87,12 @@
         region: "{{ ec2_region }}"
         group: "{{ security_group_name }}"
         instance_tags:
-          instance: "{{ ec2_name }}"
+          instance: "{{ item.name }}"
         wait: true
         assign_public_ip: true
         exact_count: 1
         count_tag:
-          instance: "{{ ec2_name }}"
+          instance: "{{ item.name }}"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
