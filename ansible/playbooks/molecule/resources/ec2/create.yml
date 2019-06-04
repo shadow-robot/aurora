@@ -74,6 +74,10 @@
         mode: 0600
       when: keypair.changed
 
+    - name: Generating random number for ec2 name
+      set_fact:
+        ec2_name: "{{ molecule_yml.scenario.name }}_{{ item.name | d(uuid_function) }}"
+
     - name: Create molecule instance(s)
       ec2:
         key_name: "{{ keypair_name }}"
@@ -83,12 +87,12 @@
         region: "{{ ec2_region }}"
         group: "{{ security_group_name }}"
         instance_tags:
-          instance: "{{ item.name }}"
+          instance: "{{ ec2_name }}"
         wait: true
         assign_public_ip: true
         exact_count: 1
         count_tag:
-          instance: "{{ item.name }}"
+          instance: "{{ ec2_name }}"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
