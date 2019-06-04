@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-
-
 set -e # fail on errors
 #set -x # echo commands run
 
