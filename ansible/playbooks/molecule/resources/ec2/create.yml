@@ -83,12 +83,12 @@
         region: "{{ ec2_region }}"
         group: "{{ security_group_name }}"
         instance_tags:
-          instance: "{{ item.name }}"
+          instance: "{{ item.name }}_{{ ansible_date_time.epoch }}"
         wait: true
         assign_public_ip: true
         exact_count: 1
         count_tag:
-          instance: "{{ item.name }}"
+          instance: "{{ item.name }}_{{ ansible_date_time.epoch }}"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
