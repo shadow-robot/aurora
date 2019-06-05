@@ -16,7 +16,7 @@
     nuc_address: hostvars[groups['control_machine'][0]].ansible_default_ipv4.address
 
 - name: Install desktop icon for hand A
-  include_tasks: demohand-icon.yml
+  import_tasks: demohand-icon.yml
   vars:
     desktop_icon_png: "demohand_A_icon.png"
     launch_script: "teleop_exec_A.sh"
@@ -25,7 +25,7 @@
     hand_serial_no: "634"
 
 - name: Install desktop icon for hand B
-  include_tasks: demohand-icon.yml
+  import_tasks: demohand-icon.yml
   vars:
     desktop_icon_png: "demohand_B_icon.png"
     launch_script: "teleop_exec_B.sh"
@@ -34,7 +34,7 @@
     hand_serial_no: "1130"
 
 - name: Install desktop icon for hand C
-  include_tasks: demohand-icon.yml
+  import_tasks: demohand-icon.yml
   vars:
     desktop_icon_png: "demohand_C_icon.png"
     launch_script: "teleop_exec_C.sh"
@@ -43,7 +43,7 @@
     hand_serial_no: "1370"
 
 - name: Install desktop icon for Teleop server container
-  include_tasks: default-icon.yml
+  import_tasks: default-icon.yml
   vars:
     template: ../../../common/resources/templates/scripts/start-docker-container.j2
     desktop_icon_png: "cyberglove_teleop.png"
@@ -51,14 +51,14 @@
     desktop_icon_name: "Teleop_Container_Launch"
 
 - name: Install desktop icon for Teleop server GUI
-  include_tasks: gui-icon.yml
+  import_tasks: gui-icon.yml
   vars:
     desktop_icon_png: "cyberglove_teleop.png"
     launch_script: "shadow_roslaunch_demo.sh"
     desktop_icon_name: "Teleop_GUI"
 
 - name: Install desktop icon for launching Roscore
-  include_tasks: default-icon.yml
+  import_tasks: default-icon.yml
   vars:
     template: ../../../common/resources/templates/scripts/start_roscore.j2
     desktop_icon_png: "ROS_logo.png"

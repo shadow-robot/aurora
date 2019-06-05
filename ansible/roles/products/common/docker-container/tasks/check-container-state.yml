@@ -23,9 +23,9 @@
   when: container_exists
 
 - name: Exit if container already running
-  include_tasks: exit.yml
+  import_tasks: exit.yml
   when: container_running
 
 - name: Reinstalling docker container because it doesn't exist
-  include_tasks: reinstall.yml
+  import_tasks: reinstall.yml
   when: not container_exists

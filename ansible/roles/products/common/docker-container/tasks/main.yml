@@ -6,8 +6,8 @@
 
 - name: Reinstall docker container
   when: reinstall|bool
-  include_tasks: reinstall.yml
+  import_tasks: reinstall.yml
 
 - name: Don't reinstall docker container
   when: not reinstall|bool
-  include_tasks: check-container-state.yml
+  import_tasks: check-container-state.yml

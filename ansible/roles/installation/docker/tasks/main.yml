@@ -27,6 +27,6 @@
   ignore_errors: yes
 
 - name: Install Docker
-  include_tasks: install.yml
+  import_tasks: install.yml
   when: not docker_check.stat.exists
   become: yes
