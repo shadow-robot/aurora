@@ -42,7 +42,7 @@
   become: yes
 
 - name: Copy Shadow_Hand_Launcher desktop icon
-  copy: 
+  copy:
     src: files/hand-e.png
     dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
     mode: '664'
