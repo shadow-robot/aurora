@@ -31,7 +31,7 @@
     - { role: products/teleop/server/deploy }
 
 - name: Install Teleop software on control machine
-  hosts: control_machine
+  hosts: control-machine
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -51,7 +51,7 @@
     - { role: products/teleop/control-machine/deploy }
 
 - name: Install Teleop software on Windows Machine
-  hosts: windows_machine
+  hosts: windows-machine
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
       lineinfile:

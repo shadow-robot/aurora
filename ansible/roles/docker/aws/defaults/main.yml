@@ -4,4 +4,4 @@ user: "{{ ansible_user_id }}"
 # TODO: Potential issue with /root folder !!! (used in testing Dockers)
 user_folder: "/home/{{ ansible_user_id }}"
 shadow_hand_logs_folder: "{{ user_folder }}/.shadow_save_log_app/save_latest_ros_logs"
-container_name : "dexterous_hand_real_hw"
+container_name: "dexterous_hand_real_hw"
