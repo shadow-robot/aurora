@@ -12,8 +12,8 @@
 
 - name: Set NUC IP address and username for SSH
   set_fact:
-    nuc_username: hostvars[groups['control_machine'][0]]['ansible_user']['stdout_lines']
-    nuc_address: hostvars[groups['control_machine'][0]].ansible_default_ipv4.address
+    nuc_username: hostvars[groups['control-machine'][0]]['ansible_user']['stdout_lines']
+    nuc_address: hostvars[groups['control-machine'][0]].ansible_default_ipv4.address
 
 - name: Install desktop icon for hand A
   import_tasks: demohand-icon.yml
@@ -21,7 +21,7 @@
     desktop_icon_png: "demohand_A_icon.png"
     launch_script: "teleop_exec_A.sh"
     demohand_branch: "demohand_A"
-    desktop_icon_name: "Teleop_Control_Machine_Launch_Demohand_A"
+    desktop_icon_name: "Teleop_control-machine_Launch_Demohand_A"
     hand_serial_no: "634"
 
 - name: Install desktop icon for hand B
@@ -30,7 +30,7 @@
     desktop_icon_png: "demohand_B_icon.png"
     launch_script: "teleop_exec_B.sh"
     demohand_branch: "demohand_B"
-    desktop_icon_name: "Teleop_Control_Machine_Launch_Demohand_B"
+    desktop_icon_name: "Teleop_control-machine_Launch_Demohand_B"
     hand_serial_no: "1130"
 
 - name: Install desktop icon for hand C
@@ -39,7 +39,7 @@
     desktop_icon_png: "demohand_C_icon.png"
     launch_script: "teleop_exec_C.sh"
     demohand_branch: "demohand_C"
-    desktop_icon_name: "Teleop_Control_Machine_Launch_Demohand_C"
+    desktop_icon_name: "Teleop_control-machine_Launch_Demohand_C"
     hand_serial_no: "1370"
 
 - name: Install desktop icon for Teleop server container

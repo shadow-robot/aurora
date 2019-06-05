@@ -6,10 +6,10 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: teleop_control_machine_check_config_docker
+  - name: teleop_control-machine_check_config_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
-      - control_machine
+      - control-machine
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
 provisioner:
