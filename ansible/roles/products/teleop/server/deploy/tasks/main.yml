@@ -15,7 +15,7 @@
 
 - name: Include docker/docker-image role
   include_role:
-    name: docker/docker-image 
+    name: docker/docker-image
 
 - name: Include docker/aws role
   include_role:
