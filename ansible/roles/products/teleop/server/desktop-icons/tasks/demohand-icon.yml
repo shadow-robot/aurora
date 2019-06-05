@@ -12,7 +12,7 @@
     mode: '755'
   vars:
     hand_serial: "{{ hand_serial_no }}"
-    sr_config_branch: "{{ demohand_branch }}"
+    config_branch: "{{ demohand_branch }}"
 
 - name: Create desktop icon for demohand
   template:

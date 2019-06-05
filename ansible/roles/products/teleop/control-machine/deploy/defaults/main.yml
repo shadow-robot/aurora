@@ -5,7 +5,11 @@ reinstall: false
 container_name: "teleop"
 ethercat_interface: "eth0"
 config_branch: "demohand_A"
-allow_auto_reboot : true
+allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
+use_aws: false
+use_cyberglove: false
+launch_hand: false

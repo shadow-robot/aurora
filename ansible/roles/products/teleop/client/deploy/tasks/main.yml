@@ -1,4 +1,39 @@
 ---
+- name: Include installation/docker role
+  include_role:
+    name: installation/docker
+
+- name: Include installation/nvidia-docker role
+  include_role:
+    name: installation/nvidia-docker
+  when: nvidia_docker|bool
+
+- name: Include docker/docker-image role
+  include_role:
+    name: docker/docker-image
+
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
+- name: Include products/common/docker-container role
+  include_role:
+    name: products/common/docker-container
+
+- name: Include products/common/save-logs-icons role
+  include_role:
+    name: products/common/save-logs-icons
+
+- name: Include products/common/cyberglove role
+  include_role:
+    name: products/common/cyberglove
+  when: use_cyberglove|bool
+
+- name: Include products/teleop/server/desktop-icons role
+  include_role:
+    name: products/teleop/server/desktop-icons
+
 - name: Setup script name
   set_fact:
     setup_script: teleop-client-setup.sh
