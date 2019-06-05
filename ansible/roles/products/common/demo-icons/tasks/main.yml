@@ -38,6 +38,12 @@
     shell_script_file_name: close_hand.sh
     icon_file_name: close-hand-icon.png
 
+- name: Make Close Hand desktop icon Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Close_Hand.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
 - name: Copy Open Hand desktop icon
   copy:
     src: files/open-hand-icon.png
@@ -66,6 +72,12 @@
     shell_script_file_name: open_hand.sh
     icon_file_name: open-hand-icon.png
 
+- name: Make Open Hand desktop icon Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Open_Hand.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
 - name: Copy Standard Demo desktop icon
   copy:
     src: files/demo-hand-icon.png
@@ -93,3 +105,9 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: demo_hand.sh
     icon_file_name: demo-hand-icon.png
+
+- name: Make Standard desktop icon Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Demo_Hand.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'

@@ -1,4 +1,9 @@
 ---
+- name: Ensures that shadow_hand_launcher directory exists
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
 - name: Setup script name
   set_fact:
     setup_script: setup_dexterous_hand.sh
@@ -13,3 +18,34 @@
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
+
+- name: Copy Shadow_Hand_Launcher desktop icon
+  copy: 
+    src: files/hand-e.png
+    dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
+    mode: '664'
+
+- name: Create Shadow_Hand_Launcher executable launch script
+  template:
+    src: ../../../common/resources/templates/scripts/start-docker-container.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
+    mode: '755'
+
+- name: Create Shadow_Hand_Launcher desktop icon
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Shadow_Hand_Launcher
+    comment: "This is application launches the hand"
+    window_title: shadow_launcher_app_xterm
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: shadow_launcher_exec.sh
+    icon_file_name: hand-e.png
+
+- name: Make Shadow_Hand_Launcher Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
