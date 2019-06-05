@@ -79,6 +79,7 @@
     groups:
      - sudo
      - systemd-journal
+     - video
     state: present
     shell: /bin/bash
     system: no
