@@ -6,7 +6,7 @@
 
 - name: Setup script name
   set_fact:
-    setup_script: setup_dexterous_hand.sh
+    setup_script: "setup_dexterous_hand.sh"
 
 - name: Creating hand-e setup script
   template:
@@ -16,7 +16,7 @@
 
 - name: Copying hand setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/setup_dexterous_hand.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
 
 - name: Copy Shadow_Hand_Launcher desktop icon
