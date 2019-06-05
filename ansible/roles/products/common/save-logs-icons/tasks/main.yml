@@ -36,6 +36,12 @@
     shell_script_file_name: save-latest-ros-logs.sh
     icon_file_name: log-icon.png
 
+- name: Make ROS Logs Saver desktop icon trusted
+  shell: gio set "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
 - name: Create ROS Logs Saver and Uploader desktop icon
   when: use_aws
   template:
@@ -49,3 +55,10 @@
     folder: "{{ save_latest_ros_logs_folder }}"
     shell_script_file_name: save-latest-ros-logs.sh
     icon_file_name: log-icon.png
+
+- name: Make ROS Logs Saver and Uploader desktop icon trusted
+  shell: gio set "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop" "metadata::trusted" yes
+  when:
+    - use_aws
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
