@@ -1,4 +1,21 @@
 ---
+- name: Include installation/docker role
+  include_role:
+    name: installation/docker
+
+- name: Include docker/docker-image role
+  include_role:
+    name: docker/docker-image
+
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
+- name: Include products/common/docker-container role
+  include_role:
+    name: products/common/docker-container
+
 - name: Check if there is an interface file
   stat:
     path: /etc/network/interfaces
