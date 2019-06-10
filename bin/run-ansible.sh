@@ -5,7 +5,7 @@ set -e # fail on errors
 
 script_name=$(basename $BASH_SOURCE)
 
-if [[ $# < 2 ]]; then
+if [ $# < 2 ]; then
     command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
     command_usage_message="${command_usage_message} [--limit <rules>]"
     command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
@@ -18,7 +18,7 @@ playbook=$1
 aurora_limit=all
 shift
 
-while [[ $# > 1 ]]
+while [ $# > 1 ]
 do
 key="$1"
 case ${key} in
