@@ -23,7 +23,7 @@
 
   roles:
     - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker|bool}
+    - {role: installation/nvidia-docker, when: nvidia_docker != "0"}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws}
