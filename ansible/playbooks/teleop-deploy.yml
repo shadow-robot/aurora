@@ -55,7 +55,7 @@
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
       lineinfile:
-        dest: c:\Windows\System32\Drivers\etc\hosts
+        dest: C:\Windows\System32\Drivers\etc\hosts
         regexp: '^{{ item }}.*$'
         line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present

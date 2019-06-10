@@ -1,0 +1,21 @@
+---
+- name: Make sure C:\tmp\aurora folder exists on windows-machine
+  file:
+    path: "C:\tmp\aurora"
+    mode: '755'
+    state: directory
+
+- name: Copy Visual Studio Community 2017 to windows machine from AWS S3
+  aws_s3:
+    aws_access_key: "{{ lookup('env','aws_key') }}"
+    aws_secret_key: "{{ lookup('env','aws_secret') }}"
+    bucket: shadowrobot.aurora.files
+    object: \windows-machine\visualstudio\vs_community__297450187.1559229517.exe 
+    dest: C:\tmp\aurora\vs_community__297450187.1559229517.exe 
+    mode: get
+
+- name: Install Haptx SDK
+  win_package:
+    path: C:\tmp\aurora\vs_community__297450187.1559229517.exe 
+    state: present
+    

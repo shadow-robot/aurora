@@ -1,0 +1,5 @@
+---
+- name: Install OpenSSL binaries ( Win64 OpenSSL v1.0.2p )
+  win_package:
+    path: https://slproweb.com/download/Win64OpenSSL-1_0_2s.exe
+    state: present

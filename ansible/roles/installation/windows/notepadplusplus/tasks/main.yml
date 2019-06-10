@@ -1,0 +1,5 @@
+---
+- name: Install Notepad ++
+  win_package:
+    path: https://notepad-plus-plus.org/repository/7.x/7.7/npp.7.7.Installer.x64.exe
+    state: present

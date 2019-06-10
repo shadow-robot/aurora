@@ -1,0 +1,5 @@
+---
+- name: Install Git
+  win_package:
+    path: https://git-scm.com/download/win
+    state: present

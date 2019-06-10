@@ -1,1 +1,28 @@
 ---
+- name: Include installation/windows/visualstudio role
+  include_role:
+    name: installation/windows/visualstudio
+
+- name: Include installation/windows/visualcppredist role
+  include_role:
+    name: installation/windows/visualcppredist
+
+- name: Include installation/windows/notepadplusplus role
+  include_role:
+    name: installation/windows/notepadplusplus
+
+- name: Include installation/windows/git role
+  include_role:
+    name: installation/windows/git
+
+- name: Include installation/windows/haptx role
+  include_role:
+    name: installation/windows/haptx
+
+- name: Include installation/windows/boost role
+  include_role:
+    name: installation/windows/boost
+
+- name: Include installation/windows/openssl role
+  include_role:
+    name: installation/windows/openssl

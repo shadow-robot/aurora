@@ -1,0 +1,50 @@
+---
+- name: Make sure C:\tmp\aurora folder exists on windows-machine
+  file:
+    path: "C:\tmp\aurora"
+    mode: '755'
+    state: directory
+
+- name: Copy Haptx SDK to windows machine from AWS S3
+  aws_s3:
+    aws_access_key: "{{ lookup('env','aws_key') }}"
+    aws_secret_key: "{{ lookup('env','aws_secret') }}"
+    bucket: shadowrobot.aurora.files
+    object: \windows-machine\haptx\HaptX_SDK_Installer_1.5.0-alpha.1.exe
+    dest: C:\tmp\aurora\HaptX_SDK_Installer_1.5.0-alpha.1.exe
+    mode: get
+
+- name: Install Haptx SDK
+  win_package:
+    path: C:\tmp\aurora\HaptX_SDK_Installer_1.5.0-alpha.1.exe
+    state: present
+
+- name: Copy haptx_ros_driver_1.5.zip to windows machine from AWS S3
+  aws_s3:
+    aws_access_key: "{{ lookup('env','aws_key') }}"
+    aws_secret_key: "{{ lookup('env','aws_secret') }}"
+    bucket: shadowrobot.aurora.files
+    object: \windows-machine\haptx\haptx_ros_driver_1.5.zip
+    dest: C:\tmp\aurora\haptx_ros_driver_1.5.zip
+    mode: get
+
+- name: Unzip haptx_ros_driver_1.5.zip
+  win_unzip:
+    src: C:\tmp\aurora\haptx_ros_driver_1.5.zip
+    dest: "{{ user_home_dir }}\haptx_ros_driver_1.5"
+    creates: "{{ user_home_dir }}\haptx_ros_driver_1.5"
+
+- name: Copy sr_vive_tracker_windows.zip to windows machine from AWS S3
+  aws_s3:
+    aws_access_key: "{{ lookup('env','aws_key') }}"
+    aws_secret_key: "{{ lookup('env','aws_secret') }}"
+    bucket: shadowrobot.aurora.files
+    object: \windows-machine\haptx\sr_vive_tracker_windows.zip
+    dest: C:\tmp\aurora\sr_vive_tracker_windows.zip
+    mode: get
+
+- name: Unzip sr_vive_tracker_windows.zip
+  win_unzip:
+    src: C:\tmp\aurora\sr_vive_tracker_windows.zip
+    dest: "{{ user_home_dir }}\sr_vive_tracker_windows"
+    creates: "{{ user_home_dir }}\sr_vive_tracker_windows"

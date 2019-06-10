@@ -1,0 +1,5 @@
+---
+- name: Install boost 1.59 binaries (MSVC 14.0-64)
+  win_package:
+    path: https://sourceforge.net/projects/boost/files/boost-binaries/1.59.0/boost_1_59_0-msvc-14.0-64.exe/download
+    state: present
