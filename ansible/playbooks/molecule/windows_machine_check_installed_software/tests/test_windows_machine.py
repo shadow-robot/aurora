@@ -6,6 +6,6 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_hosts_file(host):
-    f = host.file('C:\Windows\System32\Drivers\etc\hosts')
+    f = host.file('C:/Windows/System32/Drivers/etc/hosts')
 
     assert f.exists
