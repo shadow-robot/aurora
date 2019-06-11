@@ -19,4 +19,3 @@
 - name: Creating the container which will not even start terminator (no setup script)
   when: "not {{ terminator }} and setup_script | length == 0"
   import_tasks: create-container/no-setup-no-terminator.yml
-  
