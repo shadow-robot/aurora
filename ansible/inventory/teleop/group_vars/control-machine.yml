@@ -10,3 +10,4 @@ use_aws: false # Boolean to indicate whether ROS logs will be uploaded to AWS S3
 cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
+nvidia_docker: "0" # Enable nvidia docker
