@@ -4,8 +4,8 @@
   import_playbook: ./install-python3.yml
 
 - name: Check which hosts are available for teleop system Install
-  hosts: all
-  gather_facts: true
+  hosts: server
+  gather_facts: false
   tasks:
     - name: ping all the machines
       ping:
