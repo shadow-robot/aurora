@@ -17,8 +17,6 @@
     pid_mode: "host"
     privileged: yes
     interactive: yes
-    ulimits:
-      core: -1
     security_opts:
       seccomp: "unconfined"
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
