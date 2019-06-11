@@ -6,6 +6,7 @@ container_name: "teleop" # Name of the docker container
 ethercat_interface: "eth0" # Ethercat interface of the hand
 config_branch: "demohand_A" # Specify the branch for the specific hand (Only for dexterous hand)
 allow_auto_reboot: true # Allow Ansible to reboot the control-machine automatically during software installation
-setup_directory: "/usr/local/bin" # In which folder will the setup script be installed
 use_aws: false # Boolean to indicate whether ROS logs will be uploaded to AWS S3
 cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
+setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
+terminator: false # Launch terminator when the Docker starts

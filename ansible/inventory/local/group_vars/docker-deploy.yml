@@ -14,4 +14,5 @@ shortcut_name: "Shadow_Hand_Launcher" # Specify the name for the desktop icon (d
 optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
 launch_hand: false # Specify if hand driver should start when double clicking desktop icon
 demo_icons: true # Generates desktop icons to run demos
-setup_directory: "/usr/local/bin"
+setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
+terminator: true # Launch terminator when the Docker starts

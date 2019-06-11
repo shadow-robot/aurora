@@ -7,4 +7,5 @@ nvidia_docker: "0" # Enable nvidia docker
 cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-client should be installed
-setup_directory: "/usr/local/bin" # In which folder will the setup script be installed
+setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
+terminator: true # Launch terminator when the Docker starts
