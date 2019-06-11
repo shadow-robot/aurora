@@ -16,3 +16,4 @@ container_exists: false
 container_running: false
 setup_directory: ""
 setup_script: ""
+docker_version: docker

@@ -6,3 +6,4 @@ ethercat_interface: "eth0"
 image: "shadowrobot/flexible-hand"
 tag: "kinetic-release"
 full_image_name: "shadowrobot/flexible-hand:kinetic-release"
+docker_version: docker

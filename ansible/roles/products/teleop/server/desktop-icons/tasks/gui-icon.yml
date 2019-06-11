@@ -7,7 +7,7 @@
 
 - name: Create executable launch script for GUI
   template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    src: ../../../common/resources/templates/scripts/roslaunch-script-nvidia.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:

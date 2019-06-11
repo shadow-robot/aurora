@@ -7,3 +7,4 @@ config_branch: "demohand_A"
 hand_serial: ""
 nuc_username: "user"
 setup_directory: ""
+docker_version: docker

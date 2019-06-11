@@ -21,6 +21,16 @@
       set_fact:
         use_cyberglove: true
 
+    - name: set docker_version to be just docker if nvidia_docker is 0
+      when: nvidia_docker=="0"
+      set_fact:
+        docker_version: docker
+
+    - name: set docker_version to be just nvidia-docker if nvidia_docker is not 0
+      when: nvidia_docker!="0"
+      set_fact:
+        docker_version: nvidia-docker
+
   roles:
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker != "0"}

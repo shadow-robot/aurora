@@ -27,6 +27,17 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
+    - name: set docker_version to be just docker if nvidia_docker is 0
+      when: nvidia_docker=="0"
+      set_fact:
+        docker_version: docker
+
+    - name: set docker_version to be just nvidia-docker if nvidia_docker is not 0
+      when: nvidia_docker!="0"
+      set_fact:
+        docker_version: nvidia-docker
+
   roles:
     - { role: products/teleop/server/deploy }
 
@@ -47,6 +58,17 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
+    - name: set docker_version to be just docker if nvidia_docker is 0
+      when: nvidia_docker=="0"
+      set_fact:
+        docker_version: docker
+
+    - name: set docker_version to be just nvidia-docker if nvidia_docker is not 0
+      when: nvidia_docker!="0"
+      set_fact:
+        docker_version: nvidia-docker
+
   roles:
     - { role: products/teleop/control-machine/deploy }
 
@@ -62,6 +84,17 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
+    - name: set docker_version to be just docker if nvidia_docker is 0
+      when: nvidia_docker=="0"
+      set_fact:
+        docker_version: docker
+
+    - name: set docker_version to be just nvidia-docker if nvidia_docker is not 0
+      when: nvidia_docker!="0"
+      set_fact:
+        docker_version: nvidia-docker
+
   roles:
     - { role: products/teleop/windows-machine/deploy }
 
@@ -82,5 +115,16 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
+    - name: set docker_version to be just docker if nvidia_docker is 0
+      when: nvidia_docker=="0"
+      set_fact:
+        docker_version: docker
+
+    - name: set docker_version to be just nvidia-docker if nvidia_docker is not 0
+      when: nvidia_docker!="0"
+      set_fact:
+        docker_version: nvidia-docker
+
   roles:
     - { role: products/teleop/client/deploy }

@@ -1,2 +1,2 @@
 #jinja2: trim_blocks:False
-docker exec -it {{ container_name }} /ros_entrypoint.sh bash -c 'xhost +local:;export DISPLAY=:0.0;source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch {{ project_name }} {{ launch_file }}'
+{{ docker_version }} exec -it {{ container_name }} /ros_entrypoint.sh bash -c 'xhost +local:;export DISPLAY=:0.0;source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch {{ project_name }} {{ launch_file }}'

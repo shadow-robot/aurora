@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop" # Docker image name
-tag: "kinetic-v0.0.10" # Tag of the exact Docker hub image to pull
+tag: "kinetic-v0.0.11" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 ethercat_interface: "eth0" # Ethercat interface of the hand
