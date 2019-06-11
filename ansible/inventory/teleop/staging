@@ -2,7 +2,7 @@
 10.5.10.29 ansible_host=teleop-server ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [control-machine]
-10.5.10.80 ansible_host=control-machine ansible_connection=ssh ansible_ssh_user=user ansible_user=user remote_user=user ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+10.5.10.80 ansible_host=control-machine ansible_ssh_pipelining=true ansible_connection=ssh ansible_ssh_user=user ansible_user=user remote_user=user ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [windows-machine]
 10.9.130.3 ansible_host=windows-machine ansible_connection=ssh ansible_ssh_user=shadowop ansible_user=shadowop ansible_ssh_common_args='-o StrictHostKeyChecking=no'

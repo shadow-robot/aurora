@@ -1,14 +1,13 @@
 ---
-
-- name: Install Python 3
-  import_playbook: ./install-python3.yml
-
 - name: Check which hosts are available for teleop system Install
-  hosts: server
+  hosts: all
   gather_facts: false
   tasks:
     - name: ping all the machines
       ping:
+      
+- name: Install Python 3
+  import_playbook: ./install-python3.yml
 
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
