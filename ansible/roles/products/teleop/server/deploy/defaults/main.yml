@@ -16,4 +16,3 @@ setup_directory: "/usr/local/bin"
 use_cyberglove: false
 launch_hand: false
 config_branch: "demohand_A"
-docker_version: docker

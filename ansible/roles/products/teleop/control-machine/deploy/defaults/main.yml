@@ -13,4 +13,3 @@ setup_directory: "/usr/local/bin"
 use_aws: false
 use_cyberglove: false
 launch_hand: false
-docker_version: docker

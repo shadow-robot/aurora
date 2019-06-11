@@ -2,7 +2,6 @@
 - name: remove packages
   apt:
     name:
-      - nvidia-docker
       - nvidia-docker2
     state: absent
     autoremove: yes
