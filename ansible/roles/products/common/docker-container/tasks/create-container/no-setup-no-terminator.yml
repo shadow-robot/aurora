@@ -18,7 +18,7 @@
     privileged: yes
     interactive: yes
     security_opts:
-      seccomp: "unconfined"
+    - "seccomp: unconfined"
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
     command: "bash -c 'bash'"
   become: yes
