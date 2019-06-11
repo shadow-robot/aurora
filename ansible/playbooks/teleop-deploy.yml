@@ -8,7 +8,7 @@
   tasks:
     - name: ping all the machines
       ping:
-      
+
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
   pre_tasks:
