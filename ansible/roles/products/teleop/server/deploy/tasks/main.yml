@@ -66,3 +66,15 @@
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-server-setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
+
+- name: Udev rules for vive
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr-build-tools/master/docker/utils/steam_udev/60-HTC-Vive-perms-Ubuntu.rules
+    dest: /lib/udev/rules.d/60-HTC-Vive-perms-Ubuntu.rules
+    mode: '0644'
+
+- name: Udev rules for steam
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr-build-tools/master/docker/utils/steam_udev/99-steam-perms.rules
+    dest: /lib/udev/rules.d/99-steam-perms.rules
+    mode: '0644'

@@ -1,4 +1,13 @@
 ---
+- name: remove packages
+  apt:
+    name:
+      - nvidia-docker
+      - nvidia-docker2
+    state: absent
+    autoremove: yes
+    purge: yes
+
 - import_tasks: install-nvidia-v1.yml
   when: nvidia_docker.startswith('1')
   become: yes

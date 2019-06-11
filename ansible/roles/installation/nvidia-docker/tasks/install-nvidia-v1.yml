@@ -9,4 +9,4 @@
   apt:
     deb: '{{ nvidia_docker_deb_url }}'
     state: present
-  notify: restart docker service
+  notify: reload docker
