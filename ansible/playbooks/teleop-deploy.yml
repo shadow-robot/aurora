@@ -5,7 +5,7 @@
 
 - name: Check which hosts are available for teleop system Install
   hosts: all
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: ping all the machines
       ping:
