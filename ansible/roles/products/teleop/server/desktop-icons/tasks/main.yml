@@ -11,6 +11,7 @@
     state: directory
 
 - name: Set NUC IP address and username for SSH
+  gather_facts: yes
   set_fact:
     nuc_username: "{{ hostvars[groups['control-machine'][0]]['ansible_user']['stdout_lines'] }}"
     nuc_address: "{{ hostvars[groups['control-machine'][0]].ansible_default_ipv4.address }}"
