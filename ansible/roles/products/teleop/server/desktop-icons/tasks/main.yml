@@ -10,7 +10,7 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
-- name: Collect facts for IP addresses
+- name: Collect facts for IP
   setup:
 
 - name: Set NUC IP address and username for SSH
