@@ -20,5 +20,5 @@
     security_opts:
     - "seccomp: unconfined"
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "terminator -x bash -c 'bash'"
+    command: terminator -x bash
   become: yes

@@ -20,5 +20,5 @@
     security_opts:
     - "seccomp: unconfined"
     volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "bash -c 'bash'"
+    command: bash
   become: yes
