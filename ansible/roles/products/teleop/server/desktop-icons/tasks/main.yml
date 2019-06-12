@@ -60,7 +60,7 @@
 - name: Install desktop icon for launching Roscore
   import_tasks: default-icon.yml
   vars:
-    template: ../../../common/resources/templates/scripts/start_roscore.j2
+    template: ../../../common/resources/templates/scripts/start-roscore.j2
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "Teleop_ROSCORE"

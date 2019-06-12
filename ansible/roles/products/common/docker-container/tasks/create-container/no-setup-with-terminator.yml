@@ -1,0 +1,24 @@
+---
+- name: Creating the container with terminator and no setup
+  changed_when: false
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ full_image_name }}"
+    state: present
+    recreate: yes
+    pull: yes
+    env:
+      verbose: "true"
+      interface: "{{ ethercat_interface }}"
+      QT_X11_NO_MITSHM: "1"
+      LOCAL_USER_ID: "{{ id.stdout }}"
+      DISPLAY: :0
+    network_mode: "host"
+    pid_mode: "host"
+    privileged: yes
+    interactive: yes
+    security_opts:
+    - "seccomp: unconfined"
+    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
+    command: terminator -x bash
+  become: yes

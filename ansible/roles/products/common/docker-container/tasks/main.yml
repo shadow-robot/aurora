@@ -4,6 +4,16 @@
   register: id
   changed_when: id.rc != 0
 
+- name: set docker_executable to be just docker if nvidia_docker is 0 or 2 (nvidia docker 2 uses just docker)
+  when: nvidia_docker==0 or nvidia_docker==2
+  set_fact:
+    docker_executable: docker
+
+- name: set docker_executable to be nvidia-docker if nvidia_docker is 1
+  when: nvidia_docker==1
+  set_fact:
+    docker_executable: nvidia-docker
+
 - name: Reinstall docker container
   when: reinstall|bool
   import_tasks: reinstall.yml

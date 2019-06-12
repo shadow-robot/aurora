@@ -1,10 +1,11 @@
 ---
 image: "shadowrobot/shadow-teleop" # Docker image name
-tag: "kinetic-v0.0.10" # Tag of the exact Docker hub image to pull
+tag: "kinetic-v0.0.11" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
-nvidia_docker: "0" # Enable nvidia docker
+nvidia_docker: 0 # Which version of nvidia-docker is enabled (0 means it is disabled)
 cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-server should be installed
-setup_directory: "/usr/local/bin" # In which folder will the setup script be installed
+setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
+terminator: true # Launch terminator when the Docker starts

@@ -3,10 +3,10 @@
   apt:
     name: nvidia-modprobe
     state: present
-    update_cache: yes
 
 - name: Installing nvidia-docker
   apt:
     deb: '{{ nvidia_docker_deb_url }}'
     state: present
+    update_cache: yes
   notify: reload docker

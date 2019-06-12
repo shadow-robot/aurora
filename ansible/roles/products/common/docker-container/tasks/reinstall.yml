@@ -4,46 +4,18 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
-- name: Creating the container which will execute setup script when started
-  when: setup_script | length > 0
-  changed_when: false
-  docker_container:
-    name: "{{ container_name }}"
-    image: "{{ full_image_name }}"
-    state: present
-    recreate: yes
-    pull: yes
-    env:
-      verbose: "true"
-      interface: "{{ ethercat_interface }}"
-      QT_X11_NO_MITSHM: "1"
-      LOCAL_USER_ID: "{{ id.stdout }}"
-      DISPLAY: :0
-    network_mode: "host"
-    privileged: yes
-    interactive: yes
-    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "terminator -x bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
-  become: yes
+- name: Creating the container which will execute setup script in terminator when started
+  when: "terminator and setup_script | length > 0"
+  import_tasks: create-container/with-setup-with-terminator.yml
 
-- name: Creating the container which will just open a terminal when started
-  when: setup_script | length == 0
-  changed_when: false
-  docker_container:
-    name: "{{ container_name }}"
-    image: "{{ full_image_name }}"
-    state: present
-    recreate: yes
-    pull: yes
-    env:
-      verbose: "true"
-      interface: "{{ ethercat_interface }}"
-      QT_X11_NO_MITSHM: "1"
-      LOCAL_USER_ID: "{{ id.stdout }}"
-      DISPLAY: :0
-    network_mode: "host"
-    privileged: yes
-    interactive: yes
-    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: "terminator -x bash -c 'bash'"
-  become: yes
+- name: Creating the container which will execute setup script when started without terminator
+  when: "not terminator and setup_script | length > 0"
+  import_tasks: create-container/with-setup-no-terminator.yml
+
+- name: Creating the container which will just start a terminator (no setup script)
+  when: "terminator and setup_script | length == 0"
+  import_tasks: create-container/no-setup-with-terminator.yml
+
+- name: Creating the container which will not even start terminator (no setup script)
+  when: "not terminator and setup_script | length == 0"
+  import_tasks: create-container/no-setup-no-terminator.yml

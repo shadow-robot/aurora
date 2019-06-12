@@ -27,6 +27,7 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
   roles:
     - { role: products/teleop/server/deploy }
 
@@ -47,6 +48,7 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
   roles:
     - { role: products/teleop/control-machine/deploy }
 
@@ -62,6 +64,7 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
   roles:
     - { role: products/teleop/windows-machine/deploy }
 
@@ -82,5 +85,6 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
+
   roles:
     - { role: products/teleop/client/deploy }

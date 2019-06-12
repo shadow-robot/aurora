@@ -3,7 +3,7 @@ image: "shadowrobot/shadow-teleop"
 tag: "kinetic-v0.0.10"
 reinstall: false
 container_name: "teleop"
-nvidia_docker: "0"
+nvidia_docker: 0
 cyberglove: "A-penny"
 use_aws: false
 use_openvpn: false
