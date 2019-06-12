@@ -10,6 +10,9 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Collect facts for IP addresses
+  setup:
+
 - name: Set NUC IP address and username for SSH
   set_fact:
     nuc_username: "{{ hostvars[groups['control-machine'][0]]['ansible_user'] }}"
