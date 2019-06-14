@@ -3,7 +3,6 @@
   apt:
     name: nvidia-modprobe
     state: present
-    update_cache: yes
 
 - name: Installing nvidia-docker
   apt:
