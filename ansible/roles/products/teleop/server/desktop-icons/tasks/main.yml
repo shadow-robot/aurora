@@ -13,7 +13,7 @@
 - name: Set NUC IP address and username for SSH
   set_fact:
     nuc_username: "{{ hostvars[groups['control-machine'][0]]['ansible_user'] }}"
-    nuc_address: "{{ groups['control-machine'] }}"
+    nuc_address: "{{ groups['control-machine'][0] }}"
   when: groups['control-machine'] is defined
 
 - name: Install desktop icon for hand A
