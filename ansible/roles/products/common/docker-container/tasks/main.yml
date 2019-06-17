@@ -14,11 +14,6 @@
   set_fact:
     docker_executable: nvidia-docker
 
-- name: append -nvidia to tag if nvidia_docker is not 0
-  when: nvidia_docker!=0
-  set_fact:
-    tag: "{{ tag }}-nvidia"
-
 - name: Reinstall docker container
   when: reinstall|bool
   import_tasks: reinstall.yml

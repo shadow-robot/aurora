@@ -15,6 +15,11 @@
   set_fact:
     python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
 
+- name: Append -nvidia to tag if nvidia_docker is not 0
+  when: nvidia_docker!=0
+  set_fact:
+    tag: "{{ tag }}-nvidia"
+
 - name: Set docker full image name
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
