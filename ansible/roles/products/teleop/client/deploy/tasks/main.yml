@@ -8,6 +8,11 @@
     name: installation/nvidia-docker
   when: nvidia_docker!=0
 
+- name: Include installation/openvpn-server role
+  include_role:
+    name: installation/openvpn-server
+  when: use_openvpn|bool
+
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
@@ -32,7 +37,7 @@
 
 - name: Include products/teleop/server/desktop-icons role
   include_role:
-    name: products/teleop/server/desktop-icons
+    name: products/teleop/client/desktop-icons
 
 - name: Setup script name
   set_fact:
