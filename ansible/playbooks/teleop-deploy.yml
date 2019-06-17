@@ -2,7 +2,8 @@
 - name: Add IP address of all hosts to server (running Ansible)
   hosts: server
   tasks:
-    - lineinfile:
+    - name: Add lines in /etc/hosts in teleop server
+      lineinfile:
         dest: /etc/hosts
         regexp: '^{{ item }}.*$'
         line: "{{ item }} {{ hostvars[item].ansible_host }}"
