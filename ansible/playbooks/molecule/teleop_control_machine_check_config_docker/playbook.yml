@@ -6,5 +6,3 @@
     reinstall=true
     use_openvpn=false
     ethercat_interface="enp0s25"
-    hostvars[groups['control-machine'][0]]['ansible_user']="user"
-    groups['control-machine']=10.9.10.1
