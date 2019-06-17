@@ -1,14 +1,15 @@
 ---
 - name: Add IP address of all hosts to server (running Ansible)
   hosts: server
-  lineinfile:
-    dest: /etc/hosts
-    regexp: '^{{ item }}.*$'
-    line: "{{ item }} {{ hostvars[item].ansible_host }}"
-    state: present
-  when: hostvars[item].ansible_host is defined
-  with_items: "{{ groups.all }}"
-  become: yes
+  tasks:
+    lineinfile:
+      dest: /etc/hosts
+      regexp: '^{{ item }}.*$'
+      line: "{{ item }} {{ hostvars[item].ansible_host }}"
+      state: present
+    when: hostvars[item].ansible_host is defined
+    with_items: "{{ groups.all }}"
+    become: yes
 
 - name: Install Python 3
   import_playbook: ./install-python3.yml
