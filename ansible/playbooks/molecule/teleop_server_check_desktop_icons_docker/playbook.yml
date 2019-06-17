@@ -7,4 +7,3 @@
     image="shadowrobot/dexterous-hand"
     tag="kinetic-release"
     nvidia_docker=0
-    

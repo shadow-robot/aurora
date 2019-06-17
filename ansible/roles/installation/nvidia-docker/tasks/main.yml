@@ -8,5 +8,5 @@
     purge: yes
 
 - import_tasks: install-nvidia-v1.yml
-  when: nvidia_docker==1
+  when: nvidia_docker | int ==1
   become: yes
