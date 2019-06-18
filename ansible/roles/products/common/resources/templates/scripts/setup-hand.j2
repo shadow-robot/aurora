@@ -21,7 +21,7 @@ if {{ use_cyberglove | lower }}; then
     git checkout {{ cyberglove }}
 fi
 sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
-if {{ use_steamvr }}; then
+if {{ use_steamvr | lower }}; then
       cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &
 fi
 if {{ launch_hand | lower }}; then
