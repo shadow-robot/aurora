@@ -14,7 +14,6 @@
       LOCAL_USER_ID: "{{ id.stdout }}"
       DISPLAY: :0
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
-      NVIDIA_VISIBLE_DEVICES: all
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
