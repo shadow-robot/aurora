@@ -12,7 +12,7 @@
     mode: '755'
   vars:
     project_name: sr_teleop_vive_cyberglove
-    launch_file: 'demo.launch remote_cyberglove:=true external_control_loop:=true'
+    launch_file: 'demo.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true'
 
 - name: Create desktop icon for GUI
   template:

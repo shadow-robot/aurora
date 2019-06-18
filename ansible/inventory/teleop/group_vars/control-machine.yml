@@ -11,3 +11,4 @@ cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglov
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
 nvidia_docker: 0 # No nvidia docker by default
+use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
