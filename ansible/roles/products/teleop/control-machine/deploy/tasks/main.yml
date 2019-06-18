@@ -1,4 +1,8 @@
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: control-machine-setup.sh
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -71,10 +75,6 @@
     state: present
   when: ssh_result.stat.exists
   changed_when: false
-
-- name: Setup script name
-  set_fact:
-    setup_script: control-machine-setup.sh
 
 - name: Creating control-machine setup script
   template:

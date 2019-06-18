@@ -6,7 +6,7 @@
     update_cache: yes
   become: yes
 
-- name: Intall QtCreator
+- name: Install QtCreator
   apt:
     name: "qtcreator"
   become: yes

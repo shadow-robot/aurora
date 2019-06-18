@@ -61,7 +61,7 @@
 - name: Update locale
   command: update-locale LANG=C.UTF-8 LC_MESSAGES=POSIX
 
-- name: Intall basic tools
+- name: Install basic tools
   apt:
     name: "{{ packages }}"
     state: present

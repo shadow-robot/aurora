@@ -1,4 +1,8 @@
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: teleop-client-setup.sh
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -33,10 +37,6 @@
 - name: Include products/teleop/server/desktop-icons role
   include_role:
     name: products/teleop/server/desktop-icons
-
-- name: Setup script name
-  set_fact:
-    setup_script: teleop-client-setup.sh
 
 - name: Creating teleop-client setup script
   template:

@@ -1,4 +1,8 @@
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: teleop-server-setup.sh
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -51,10 +55,6 @@
     eval "$(ssh-agent)"
     ssh-add {{ user_folder }}/.ssh/id_rsa
   changed_when: false
-
-- name: Setup script name
-  set_fact:
-    setup_script: teleop-server-setup.sh
 
 - name: Creating teleop-server setup script
   template:
