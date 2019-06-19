@@ -1,6 +1,6 @@
 ---
 - name: Add IP address of all hosts to computer that is running Ansible
-  hosts: localhost
+  hosts: server
   tasks:
     - name: Add lines in /etc/hosts in computer that is running Ansible
       lineinfile:
