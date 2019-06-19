@@ -1,8 +1,8 @@
 ---
-- name: Add IP address of all hosts to server (running Ansible)
-  hosts: server
+- name: Add IP address of all hosts to computer that is running Ansible
+  hosts: localhost
   tasks:
-    - name: Add lines in /etc/hosts in teleop server
+    - name: Add lines in /etc/hosts in computer that is running Ansible
       lineinfile:
         dest: /etc/hosts
         regexp: '^{{ item }}.*$'
