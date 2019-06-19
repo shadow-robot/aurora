@@ -1,6 +1,6 @@
 ---
 - name: Add IP address of all hosts to server (running Ansible)
-  hosts: server
+  hosts: localhost
   tasks:
     - name: Add lines in /etc/hosts in teleop server
       lineinfile:
