@@ -1,4 +1,8 @@
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: control-machine-setup.sh
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -12,9 +16,16 @@
     name: docker/aws
   when: use_aws|bool
 
+- name: Set server hostname
+  set_fact:
+    server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
+  when: groups['server'] is defined
+
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    ros_master: "{{ server_hostname }}"
 
 - name: Check if there is an interface file
   stat:
@@ -64,10 +75,6 @@
     state: present
   when: ssh_result.stat.exists
   changed_when: false
-
-- name: Setup script name
-  set_fact:
-    setup_script: control-machine-setup.sh
 
 - name: Creating control-machine setup script
   template:

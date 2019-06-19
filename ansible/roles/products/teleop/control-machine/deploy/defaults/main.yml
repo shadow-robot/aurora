@@ -13,3 +13,4 @@ setup_directory: "/usr/local/bin"
 use_aws: false
 use_cyberglove: false
 launch_hand: false
+server_hostname: "TELEOP-DEMO"

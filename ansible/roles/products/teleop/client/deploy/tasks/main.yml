@@ -1,4 +1,8 @@
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: teleop-client-setup.sh
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -6,7 +10,7 @@
 - name: Include installation/nvidia-docker role
   include_role:
     name: installation/nvidia-docker
-  when: nvidia_docker!=0
+  when: nvidia_docker | int !=0
 
 - name: Include installation/openvpn-server role
   include_role:
@@ -38,10 +42,6 @@
 - name: Include products/teleop/server/desktop-icons role
   include_role:
     name: products/teleop/client/desktop-icons
-
-- name: Setup script name
-  set_fact:
-    setup_script: teleop-client-setup.sh
 
 - name: Creating teleop-client setup script
   template:

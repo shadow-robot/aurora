@@ -1,4 +1,16 @@
 ---
+- name: Add IP address of all hosts to server (running Ansible)
+  hosts: server
+  tasks:
+    - name: Add lines in /etc/hosts in teleop server
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}.*$'
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+      become: yes
 
 - name: Install Python 3
   import_playbook: ./install-python3.yml
@@ -17,16 +29,6 @@
       when: cyberglove is defined and cyberglove|bool
       set_fact:
         use_cyberglove: true
-
-    - name: Add IP address of all hosts to all hosts
-      lineinfile:
-        dest: /etc/hosts
-        regexp: '^{{ item }}.*$'
-        line: "{{ item }} {{ hostvars[item].ansible_host }}"
-        state: present
-      when: hostvars[item].ansible_host is defined
-      with_items: "{{ groups.all }}"
-      become: yes
 
   roles:
     - { role: products/teleop/server/deploy }
