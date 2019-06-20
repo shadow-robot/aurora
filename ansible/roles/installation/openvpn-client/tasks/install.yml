@@ -28,6 +28,7 @@
     flat: yes
   with_items:
     - "{{ client_name }}.ovpn"
+  become: yes
 
 - name: Copy OpenVPN desktop icon
   copy: 
