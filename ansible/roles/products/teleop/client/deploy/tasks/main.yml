@@ -13,9 +13,9 @@
     name: installation/nvidia-docker
   when: nvidia_docker | int !=0
 
-- name: Include installation/openvpn-server role
+- name: Include installation/openvpn-clientr role
   include_role:
-    name: installation/openvpn-server
+    name: installation/openvpn-client
   when: use_openvpn|bool
 
 - name: Include docker/docker-image role
