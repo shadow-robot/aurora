@@ -1,10 +1,4 @@
 ---
-- name: Check if OpenVPN config file exists
-  stat: "path={{ shadow_hand_launcher_folder }}/{{ client_name }}.ovpn"
-  register: openvpn_check
-  ignore_errors: yes
-
 - name: Install OpenVPN server
   import_tasks: install.yml
-  when: not openvpn_check.stat.exists
   become: yes
