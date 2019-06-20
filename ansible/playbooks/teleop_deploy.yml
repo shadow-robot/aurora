@@ -1,5 +1,6 @@
 ---
 - name: Add IP address of all hosts to computer that is running Ansible
+  hosts: 127.0.0.1
   tasks:
     - name: Add lines in /etc/hosts in computer that is running Ansible
       lineinfile:
@@ -12,7 +13,7 @@
       become: yes
 
 - name: Install Python 3
-  import_playbook: ./install-python3.yml
+  import_playbook: ./install_python3.yml
 
 - name: Check which hosts are available for teleop system Install
   hosts: all
@@ -33,7 +34,7 @@
     - { role: products/teleop/server/deploy }
 
 - name: Install Teleop software on control machine
-  hosts: control-machine
+  hosts: control_machine
   pre_tasks:
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove|bool
@@ -51,10 +52,10 @@
       become: yes
 
   roles:
-    - { role: products/teleop/control-machine/deploy }
+    - { role: products/teleop/control_machine/deploy }
 
 - name: Install Teleop software on Windows Machine
-  hosts: windows-machine
+  hosts: windows_machine
   pre_tasks:
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -67,7 +68,7 @@
       become: yes
 
   roles:
-    - { role: products/teleop/windows-machine/deploy }
+    - { role: products/teleop/windows_machine/deploy }
 
 - name: Install Teleop software on Ubuntu teleop client laptop
   hosts: client

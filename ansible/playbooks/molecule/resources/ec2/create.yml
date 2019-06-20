@@ -59,7 +59,7 @@
         name: "{{ keypair_name }}"
         state: absent
         region: "{{ ec2_region }}"
-      when: not keypair_local.stat.exists
+      when: not keypair_local.stat.exists|bool
 
     - name: Create keypair
       ec2_key:
