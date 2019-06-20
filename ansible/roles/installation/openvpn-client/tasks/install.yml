@@ -39,6 +39,7 @@
   blockinfile:
     path: "{{ shadow_hand_launcher_folder }}/openvpn.sh"
     mode: '755'
+    create: true
     block: | 
       #!/bin/bash
       sudo openvpn --config "{{ shadow_hand_launcher_folder }}/{{ client_name }}.ovpn"
