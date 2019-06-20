@@ -7,6 +7,7 @@
     state: present
     recreate: yes
     pull: yes
+    runtime: "{{ docker_runtime }}"
     env:
       verbose: "true"
       interface: "{{ ethercat_interface }}"
