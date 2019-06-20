@@ -21,13 +21,13 @@ RUN set -x && \
     chmod 755 /tmp/oneliner && \
     \
     echo "Setting up UI and new Docker user" && \
-    /tmp/oneliner configure-software --debug-branch $aurora_branch software=[setup-docker] && \
+    /tmp/oneliner configure_software --debug-branch $aurora_branch software=[setup-docker] && \
     \
     echo "Add user to docker group" && \
     usermod -aG docker user && \
     \
     echo "Installing IDEs and AWS CLI" && \
-    /tmp/oneliner install-software --debug-branch $aurora_branch software=[pycharm,vscode,aws-cli] && \
+    /tmp/oneliner install_software --debug-branch $aurora_branch software=[pycharm,vscode,aws-cli] && \
     \
     echo "Clean up" && \
     apt-get clean && \

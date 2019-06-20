@@ -23,7 +23,7 @@ RUN set -x && \
     echo "Installing Docker" && \
     wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
-    /tmp/oneliner install-software --debug-branch $aurora_branch software=[docker] && \
+    /tmp/oneliner install_software --debug-branch $aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
     sudo apt-get clean && \
