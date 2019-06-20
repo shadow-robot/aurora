@@ -32,6 +32,7 @@
     name: products/common/docker-container
   vars:
     ros_master: "{{ server_hostname }}"
+    setup_script: ""
 
 - name: Include products/common/save-logs-icons role
   include_role:
