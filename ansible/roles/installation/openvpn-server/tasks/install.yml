@@ -180,7 +180,7 @@
   with_items:
     - {
         regex: "remote my-server-1 1194",
-        value: 'remote {{ groups["servers"][0] }} 1194',
+        value: 'remote {{ groups["server"][0] }} 1194',
       }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
@@ -206,11 +206,3 @@
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
   become: yes
-
-- name: Fetch client configurations
-  fetch:
-    src: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ item|basename }}"
-    dest: "{{ destination_key }}/"
-    flat: yes
-  with_items:
-    - "{{ client_name }}.ovpn"
