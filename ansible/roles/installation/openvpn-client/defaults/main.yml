@@ -3,3 +3,4 @@ openvpn_apt_repository: 'deb [arch=amd64] http://build.openvpn.net/debian/openvp
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 client_name: "teleop-client"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
