@@ -180,7 +180,7 @@
   with_items:
     - {
         regex: "remote my-server-1 1194",
-        value: 'remote {{ groups["servers"][0] }} 1194',
+        value: 'remote {{ groups["server"][0] }} 1194',
       }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
