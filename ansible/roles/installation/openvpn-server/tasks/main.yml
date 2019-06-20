@@ -1,6 +1,6 @@
 ---
 - name: Check if OpenVPN server is already installed
-  stat: "path={{ user_folder }}/openvpn-ca/{{ client_name }}/{{ client_name }}.ovpn"
+  stat: 'path=/etc/init.d/openvpn'
   register: openvpn_check
   ignore_errors: yes
 
