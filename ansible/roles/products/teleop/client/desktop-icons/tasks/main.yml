@@ -28,12 +28,12 @@
     dest: "{{ user_folder }}/Desktop/Teleop_Container_Launch.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: Teleop_Launcher
+    desktop_shortcut_name: Teleop_Container_Launcher
     comment: "This is application launches the Teleop Container"
     window_title: teleop_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: teleop_exec.sh
-    icon_file_name: teleop_icon.png
+    icon_file_name: cyberglove_teleop.png
 
 - name: Make Desktop icon trusted
   shell: gio set "{{ user_folder }}/Desktop/Teleop_Container_Launch.desktop" "metadata::trusted" yes
