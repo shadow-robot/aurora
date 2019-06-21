@@ -18,6 +18,13 @@
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 
+- name: Installing libnvidia_container_tools (needed before nvidia-container-runtime-hook)
+  apt:
+    deb: '{{ libnvidia_container_tools_deb_url }}'
+    state: present
+    update_cache: yes
+  notify: reload docker
+
 - name: Installing nvidia-container-runtime-hook (needed before runtime)
   apt:
     deb: '{{ nvidia_docker_runtime_hook_deb_url }}'
