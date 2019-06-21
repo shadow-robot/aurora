@@ -11,6 +11,13 @@
     update_cache: yes
   notify: reload docker
 
+- name: Set ubuntu_version for nvidia-container-runtime install
+  set_fact:
+    ubuntu_version: "18.04"
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
 - name: Installing nvidia-container-runtime
   apt:
     deb: '{{ nvidia_docker_runtime_deb_url }}'
