@@ -26,7 +26,7 @@
 
 - name: Install nvidia-docker 1
   apt:
-    name: ['nvidia-container-runtime','nvidia-docker']
+    name: ['nvidia-container-runtime={{ nvidia_container_runtime_version }}','nvidia-docker={{ nvidia_docker_1_version }}']
     state: present
     update_cache: yes
   when: nvidia_docker | int ==1
