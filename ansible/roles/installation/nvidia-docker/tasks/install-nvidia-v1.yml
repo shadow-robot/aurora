@@ -10,3 +10,10 @@
     state: present
     update_cache: yes
   notify: reload docker
+
+- name: install nvidia-container-runtime
+  apt:
+    name: nvidia-container-runtime
+    state: present
+    update_cache: yes
+  notify: reload docker
