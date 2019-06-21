@@ -11,9 +11,9 @@
     update_cache: yes
   notify: reload docker
 
-- name: install nvidia-container-runtime
+- name: Installing nvidia-container-runtime
   apt:
-    name: nvidia-container-runtime
+    deb: '{{ nvidia_docker_runtime_deb_url }}'
     state: present
     update_cache: yes
   notify: reload docker
