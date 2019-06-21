@@ -59,8 +59,13 @@
     dest: "/etc/systemd/system/docker.service.d/override.conf"
     mode: '755'
 
-- name: reload docker after installing nvidia_docker
+- name: Reload daemon
+  systemd:
+    daemon_reload: yes
+  become: yes
+  
+- name: Restart docker after installing nvidia_docker
   service:
     name: docker
-    state: reloaded
+    state: restarted
   become: yes
