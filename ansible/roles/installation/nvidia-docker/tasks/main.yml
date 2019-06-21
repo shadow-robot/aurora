@@ -7,6 +7,7 @@
     state: absent
     autoremove: yes
     purge: yes
+  become: yes
 
 - import_tasks: install-nvidia-v1.yml
   when: nvidia_docker | int ==1
