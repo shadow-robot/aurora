@@ -17,8 +17,8 @@
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "all"
-      PATH: "/usr/lib/nvidia-418/bin:{{ PATH }}"
-      LD_LIBRARY_PATH: "/usr/lib/nvidia-418"
+      PATH: "/usr/lib/nvidia-418/bin:{{ ansible_env.PATH }}"
+      LD_LIBRARY_PATH: "/usr/lib/nvidia-418:{{ ansible_env.LD_LIBRARY_PATH }}"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
