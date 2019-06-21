@@ -21,11 +21,11 @@
     name: openvpn
     state: "present"
 
-- name: Fetch client configurations
-  fetch:
+- name: Copy client configurations
+  copy:
     src: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ item|basename }}"
     dest: "{{ shadow_hand_launcher_folder }}/"
-    flat: yes
+    mode: '664'
   with_items:
     - "{{ client_name }}.ovpn"
 
