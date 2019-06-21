@@ -25,9 +25,18 @@
     - nvidia-container-runtime
     - nvidia-docker
 
-- name: Install nvidia-docker
+- name: Install nvidia-docker 1
   apt:
-    name: nvidia-docker{{ nvidia_docker }}
+    name: nvidia-docker
     state: present
     update_cache: yes
+  when: nvidia_docker | int ==1
+  notify: reload docker
+
+- name: Install nvidia-docker 2
+  apt:
+    name: nvidia-docker2
+    state: present
+    update_cache: yes
+  when: nvidia_docker | int ==2
   notify: reload docker
