@@ -2,7 +2,7 @@
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: 127.0.0.1
   connection: local
-  gather_facts: false
+  gather_facts: no
   tasks:
     - name: Add lines in /etc/hosts in computer that is running Ansible
       lineinfile:
@@ -19,7 +19,7 @@
 
 - name: Check which hosts are available for teleop system Install
   hosts: all
-  gather_facts: false
+  gather_facts: no
   tasks:
     - name: ping all the machines
       ping:

@@ -39,8 +39,28 @@
     update_cache: yes
   when: nvidia_docker | int ==2
 
+- name: Ensure /etc/systemd/system/docker.service.d folder exists (for nvidia_docker 1)
+  file:
+    path: "/etc/systemd/system/docker.service.d"
+    mode: '755'
+    state: directory
+  when: nvidia_docker | int ==1
+
+- name: Ensure /etc/systemd/system/docker.service.d folder exists (for nvidia_docker 1)
+  file:
+    path: "/etc/systemd/system/docker.service.d"
+    mode: '755'
+    state: directory
+  when: nvidia_docker | int ==1
+
+- name: Create override.conf in /etc/systemd/system/docker.service.d (for nvidia_docker 1)
+  template:
+    src: templates/override.j2
+    dest: "/etc/systemd/system/docker.service.d/override.conf"
+    mode: '755'
+
 - name: reload docker after installing nvidia_docker
   service:
     name: docker
-    state: restarted
+    state: reloaded
   become: yes
