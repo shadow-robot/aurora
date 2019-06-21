@@ -1,6 +1,8 @@
 ---
 nvidia_docker_version: 1.0.1
 nvidia_container_runtime_version: 2.0.0+docker18.09.6-3
+nvidia_container_runtime_hook_version: 1.4.0-1
 ubuntu_version: "16.04"
 nvidia_docker_deb_url: https://github.com/NVIDIA/nvidia-docker/releases/download/v{{ nvidia_docker_version }}/nvidia-docker_{{ nvidia_docker_version }}-1_amd64.deb
 nvidia_docker_runtime_deb_url: https://nvidia.github.io/nvidia-container-runtime/ubuntu{{ ubuntu_version }}/amd64/nvidia-container-runtime_{{ nvidia_container_runtime_version }}_amd64.deb
+nvidia_docker_runtime_hook_deb_url: https://nvidia.github.io/nvidia-container-runtime/ubuntu{{ ubuntu_version }}/amd64/./nvidia-container-runtime-hook_{{ nvidia_container_runtime_hook_version }}_amd64.deb
