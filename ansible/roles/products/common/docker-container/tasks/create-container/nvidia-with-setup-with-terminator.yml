@@ -1,5 +1,5 @@
 ---
-- name: Creating the container with no terminator and no setup
+- name: Creating the container which will execute setup script when started inside a terminator window
   changed_when: false
   docker_container:
     name: "{{ container_name }}"
@@ -7,6 +7,7 @@
     state: present
     recreate: yes
     pull: yes
+    runtime: "{{ docker_runtime }}"
     env:
       verbose: "true"
       interface: "{{ ethercat_interface }}"
@@ -14,12 +15,18 @@
       LOCAL_USER_ID: "{{ id.stdout }}"
       DISPLAY: :0
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "all"
+      PATH: "/usr/lib/nvidia-418/bin:{{ PATH }}"
+      LD_LIBRARY_PATH: "/usr/lib/nvidia-418":{{ LD_LIBRARY_PATH }}"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
     interactive: yes
     security_opts:
     - "seccomp: unconfined"
-    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    command: bash
+    volumes:
+    - /tmp/.X11-unix:/tmp/.X11-unix[rw]
+    - /usr/lib/nvidia-418:/usr/lib/nvidia-418
+    command: "terminator -x bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes
