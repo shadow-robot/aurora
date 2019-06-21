@@ -18,7 +18,7 @@
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "all"
       PATH: "/usr/lib/nvidia-418/bin:{{ PATH }}"
-      LD_LIBRARY_PATH: "/usr/lib/nvidia-418":{{ LD_LIBRARY_PATH }}"
+      LD_LIBRARY_PATH: "/usr/lib/nvidia-418:{{ LD_LIBRARY_PATH }}"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
