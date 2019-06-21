@@ -27,13 +27,9 @@
 
 - name: Install nvidia-docker 1
   apt:
-    name: "{{ item }}"
+    name: ['libnvidia-container','nvidia-container-runtime','nvidia-docker']
     state: present
     update_cache: yes
-  with_items:
-    - libnvidia-container
-    - nvidia-container-runtime
-    - nvidia-docker
   when: nvidia_docker | int ==1
 
 - name: Install nvidia-docker 2
