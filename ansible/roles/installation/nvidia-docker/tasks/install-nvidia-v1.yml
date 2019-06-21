@@ -4,37 +4,30 @@
     name: nvidia-modprobe
     state: present
 
-- name: Installing nvidia-docker
-  apt:
-    deb: '{{ nvidia_docker_deb_url }}'
+- name: Install nvidia-docker gpg key
+  apt_key:
+    url: https://nvidia.github.io/nvidia-docker/gpgkey
     state: present
-    update_cache: yes
-  notify: reload docker
 
-- name: Set ubuntu_version for nvidia-container-runtime install
+- name: Set ubuntu_version for nvidia-dockerinstall
   set_fact:
     ubuntu_version: "18.04"
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 
-- name: Installing libnvidia_container_tools (needed before nvidia-container-runtime-hook)
-  apt:
-    deb: '{{ libnvidia_container_tools_deb_url }}'
+- name: Add nvidia-docker repository
+  apt_repository:
+    repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
     state: present
-    update_cache: yes
-  notify: reload docker
+  with_items:
+    - libnvidia-container
+    - nvidia-container-runtime
+    - nvidia-docker
 
-- name: Installing nvidia-container-runtime-hook (needed before runtime)
+- name: Install nvidia-docker
   apt:
-    deb: '{{ nvidia_docker_runtime_hook_deb_url }}'
-    state: present
-    update_cache: yes
-  notify: reload docker
-
-- name: Installing nvidia-container-runtime
-  apt:
-    deb: '{{ nvidia_docker_runtime_deb_url }}'
+    name: nvidia-docker{{ nvidia_docker }}
     state: present
     update_cache: yes
   notify: reload docker
