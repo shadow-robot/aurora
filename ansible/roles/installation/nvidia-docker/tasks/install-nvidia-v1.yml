@@ -21,13 +21,12 @@
     repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
     state: present
   with_items:
-    - libnvidia-container
     - nvidia-container-runtime
     - nvidia-docker
 
 - name: Install nvidia-docker 1
   apt:
-    name: ['libnvidia-container','nvidia-container-runtime','nvidia-docker']
+    name: ['nvidia-container-runtime','nvidia-docker']
     state: present
     update_cache: yes
   when: nvidia_docker | int ==1
