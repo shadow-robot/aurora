@@ -23,7 +23,7 @@
   with_items:
     - nvidia-docker2
 
-- name: Install nvidia-docker 1
+- name: Install nvidia-docker 2
   apt:
     name: nvidia-docker2
     state: present
