@@ -1,6 +1,8 @@
 ---
 - name: Add IP address of all hosts to computer that is running Ansible
-  hosts: server
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
   tasks:
     - name: Add lines in /etc/hosts in computer that is running Ansible
       lineinfile:
@@ -17,7 +19,7 @@
 
 - name: Check which hosts are available for teleop system Install
   hosts: all
-  gather_facts: false
+  gather_facts: no
   tasks:
     - name: ping all the machines
       ping:
@@ -29,6 +31,16 @@
       when: cyberglove is defined and cyberglove|bool
       set_fact:
         use_cyberglove: true
+
+    - name: Add IP address of all hosts to all hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}.*$'
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+      become: yes
 
   roles:
     - { role: products/teleop/server/deploy }
