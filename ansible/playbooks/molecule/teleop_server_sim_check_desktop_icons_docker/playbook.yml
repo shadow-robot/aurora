@@ -1,0 +1,10 @@
+---
+- name: Teleop deploy playbook for teleop server
+  import_playbook: ../../teleop-deploy.yml
+    reinstall=true
+    use_openvpn=false
+    ethercat_interface="enp0s25"
+    image="shadowrobot/dexterous-hand"
+    tag="kinetic-release"
+    nvidia_docker=0
+    sim_icon=true
