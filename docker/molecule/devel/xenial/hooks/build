@@ -1,0 +1,1 @@
+docker build --build-arg aurora_branch=$SOURCE_BRANCH .

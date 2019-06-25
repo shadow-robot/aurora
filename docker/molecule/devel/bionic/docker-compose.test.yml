@@ -2,10 +2,7 @@ version: '3'
 
 services:
   sut:
-    build:
-      context: .
-      args:
-        aurora_branch: ${SOURCE_BRANCH}
+    build: .
     command: >
       bash -c "aws --version &&
                test -f /usr/bin/pycharm &&
