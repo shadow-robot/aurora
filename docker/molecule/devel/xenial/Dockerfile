@@ -10,7 +10,7 @@ ENV PULSE_SERVER /run/pulse/native
 
 ARG aurora_branch
 
-ENV aurora_branch ${aurora_branch:-"master"}
+ENV aurora_branch_value ${aurora_branch:-"master"}
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
@@ -19,6 +19,8 @@ RUN set -x && \
     echo "Downloading one-liner" && \
     wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
+    echo " aurora_branch_value => $aurora_branch_value  : aurora_branch => $aurora_branch" && \
+    false && \
     \
     echo "Setting up UI and new Docker user" && \
     /tmp/oneliner configure-software --debug-branch $aurora_branch software=[setup-docker] && \
