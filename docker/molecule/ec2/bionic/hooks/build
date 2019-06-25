@@ -1,3 +1,2 @@
 #!/bin/bash
-echo $SOURCE_BRANCH
-docker build --build-arg aurora_branch=$SOURCE_BRANCH .
+docker build --build-arg branch=$SOURCE_BRANCH .
