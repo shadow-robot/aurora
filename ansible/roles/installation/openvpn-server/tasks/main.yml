@@ -1,6 +1,6 @@
 ---
 - name: Check if OpenVPN server is already installed
-  stat: 'path=/etc/init.d/openvpn'
+  stat: 'path=/etc/openvpn/server.key'
   register: openvpn_check
   ignore_errors: yes
 
