@@ -157,6 +157,7 @@
   args:
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
+  become: yes
 
 - name: Create client certificate configs dir
   file:
@@ -165,7 +166,8 @@
     path: "{{ user_folder }}/openvpn-ca/{{ client_name }}"
     state: directory
     mode: 0700
-
+  become: yes
+  
 - name: Copy client sample configs from remote host itself
   copy:
     remote_src: yes
