@@ -6,7 +6,8 @@ LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and Docker dri
 
 ARG aurora_branch
 
-ENV aurora_branch_value ${aurora_branch:-"master"}
+#ENV aurora_branch_value ${aurora_branch:-"master"}
+ENV aurora_branch_value "test_master_test"
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 

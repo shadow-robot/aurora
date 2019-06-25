@@ -7,6 +7,6 @@ echo "SOURCE_BRANCH => $SOURCE_BRANCH"
 echo "aurora_branch => $aurora_branch"
 
 
-docker build --build-arg aurora_branch=$SOURCE_BRANCH -f $DOCKERFILE_PATH -t $IMAGE_NAME .
+docker build --build-arg aurora_branch="${SOURCE_BRANCH}" -f "${DOCKERFILE_PATH}" -t "${IMAGE_NAME}" .
 
 # docker build --build-arg CUSTOM=$VAR -f $DOCKERFILE_PATH -t $IMAGE_NAME .
