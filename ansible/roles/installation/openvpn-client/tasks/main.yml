@@ -32,14 +32,12 @@
     mode: '664'
   with_items:
     - "{{ client_name }}.ovpn"
-  become: yes
 
 - name: Copy OpenVPN desktop icon
   copy: 
     src: files/openvpn.png
     dest: "{{ shadow_hand_launcher_folder }}/openvpn.png"
     mode: '664'
-  become: yes
 
 - name: Create OpenVPN executable launch script
   blockinfile:
@@ -49,7 +47,6 @@
     block: | 
       #!/bin/bash
       sudo openvpn --config "{{ shadow_hand_launcher_folder }}/{{ client_name }}.ovpn"
-  become: yes
 
 - name: Create openVPN desktop icon
   template:

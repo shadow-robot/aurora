@@ -3,23 +3,27 @@
   apt:
     name: ["easy-rsa", "openssh-server"]
     state: "present"
+  become: yes
 
 - name: Add OpenVPN repo apt key
   apt_key:
     url: "https://swupdate.openvpn.net/repos/repo-public.gpg"
     id: "30EBF4E73CCE63EEE124DD278E6DA8B4E158C569"
     state: "present"
+  become: yes
 
 - name: Add OpenVPN repository
   apt_repository:
     repo: "{{ openvpn_apt_repository }}"
     state: "present"
     update_cache: "yes"
+  become: yes
 
 - name: Install OpenVPN
   apt:
     name: openvpn
     state: "present"
+  become: yes
 
 - name: Remove CA directory
   file:
@@ -29,7 +33,6 @@
 
 - name: Create CA directory
   command: make-cadir {{ user_folder }}/openvpn-ca
-  become: yes
 
 - name: Customize CA variable configuration
   lineinfile:
@@ -154,7 +157,6 @@
   args:
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
-  become: yes
 
 - name: Create client certificate configs dir
   file:
@@ -163,7 +165,6 @@
     path: "{{ user_folder }}/openvpn-ca/{{ client_name }}"
     state: directory
     mode: 0700
-  become: yes
 
 - name: Copy client sample configs from remote host itself
   copy:
