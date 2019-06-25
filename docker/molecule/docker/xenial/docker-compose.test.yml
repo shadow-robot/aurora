@@ -2,10 +2,10 @@ version: '3'
 
 services:
   sut:
-    build:
-      context: .
-      args:
-        aurora_branch: "test"
+#    build:
+#      context: .
+#      args:
+#        aurora_branch: "test"
     command: docker --version
     environment:
       - SOURCE_BRANCH
