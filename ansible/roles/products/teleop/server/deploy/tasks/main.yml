@@ -10,7 +10,7 @@
 - name: Include installation/nvidia-docker role
   include_role:
     name: installation/nvidia-docker
-  when: nvidia_docker | int ==1
+  when: nvidia_docker | int == 1
 
 - name: Include installation/openvpn-server role
   include_role:

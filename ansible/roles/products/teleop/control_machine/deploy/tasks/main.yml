@@ -1,7 +1,7 @@
 ---
 - name: Setup script name
   set_fact:
-    setup_script: control_machine-setup.sh
+    setup_script: control_machine_setup.sh
 
 - name: Include installation/docker role
   include_role:
@@ -84,5 +84,5 @@
 
 - name: Copying control_machine setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/control_machine-setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/control_machine_setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
