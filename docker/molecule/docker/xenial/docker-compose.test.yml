@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        aurora_branch: ${SOURCE_BRANCH}
+        aurora_branch: "test"
     command: docker --version
     environment:
       - SOURCE_BRANCH

@@ -6,7 +6,7 @@ LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and Docker dri
 
 ARG aurora_branch
 
-ENV aurora_branch ${aurora_branch:-"master"}
+ENV aurora_branch_value ${aurora_branch:-"master"}
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
@@ -15,6 +15,9 @@ RUN set -x && \
     echo "Installing Docker" && \
     wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
+    echo " aurora_branch_value => $aurora_branch_value  : aurora_branch => $aurora_branch" && \
+    false && \
+    \
     /tmp/oneliner install-software --debug-branch $aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
