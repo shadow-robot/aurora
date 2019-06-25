@@ -4,3 +4,5 @@ services:
   sut:
     build: .
     command: id -u testuser
+    environment:
+      - SOURCE_BRANCH
