@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "docker build --build-arg CUSTOM=$VAR -f $DOCKERFILE_PATH -t $IMAGE_NAME ."
+echo "SOURCE_BRANCH => $SOURCE_BRANCH"
+echo "aurora_branch => $aurora_branch"
+
+# docker build --build-arg CUSTOM=$VAR -f $DOCKERFILE_PATH -t $IMAGE_NAME .
