@@ -4,9 +4,9 @@ MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
 LABEL Description="Ubuntu Bionic image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
 
-ARG aurora_branch
+ARG branch="master"
 
-ENV aurora_branch ${aurora_branch:-"master"}
+ENV aurora_branch=$branch
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
