@@ -8,9 +8,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV USER testuser
 
-ARG aurora_branch
+ARG branch="master"
 
-ENV aurora_branch ${aurora_branch:-"master"}
+ENV aurora_branch=$branch
 
 ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
 
