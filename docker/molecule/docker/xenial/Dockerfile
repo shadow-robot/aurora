@@ -4,18 +4,18 @@ MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
 LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
 
-ARG aurora_branch
+ARG ml_docker_aurora_branch
 
-ENV aurora_branch ${aurora_branch:-"master"}
+ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"master"}
 
-ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
+ENV ml_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_docker_aurora_branch/bin/run-ansible.sh"
 
 RUN set -x && \
     \
     echo "Installing Docker" && \
-    wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
+    wget -O /tmp/oneliner "$( echo "$ml_docker_aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
-    /tmp/oneliner install-software --debug-branch $aurora_branch software=[docker] && \
+    /tmp/oneliner install-software --debug-branch $ml_docker_aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
     apt-get clean && \
