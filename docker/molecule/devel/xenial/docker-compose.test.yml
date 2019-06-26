@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        aurora_branch: "test"
+        ml_devel_aurora_branch: ${SOURCE_BRANCH}
     command: >
       bash -c "aws --version &&
                test -f /usr/bin/pycharm &&
