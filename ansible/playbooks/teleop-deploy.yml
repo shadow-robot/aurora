@@ -104,4 +104,5 @@
     - { role: products/teleop/client/deploy }
 
 - name: Inform user for reboot
-  debug: msg="!!! Please restart the client and the server laptops and re-run this script to finalize the installation. Ignore if you already ran this !!!"
+  hosts: 127.0.0.1
+  debug: msg="!!! Please restart the server laptop and re-run this script to finalize the installation. Ignore if you already ran this !!!"
