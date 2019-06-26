@@ -2,7 +2,10 @@ version: '3'
 
 services:
   sut:
-    build: .
+    build:
+      context: .
+      args:
+        ml_base_aurora_branch: ${SOURCE_BRANCH}
     command: >
       bash -c "pip3 list | grep molecule &&
                pip3 list | grep ansible &&

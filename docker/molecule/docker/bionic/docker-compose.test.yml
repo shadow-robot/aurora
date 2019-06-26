@@ -2,7 +2,10 @@ version: '3'
 
 services:
   sut:
-    build: .
+    build:
+      context: .
+      args:
+        ml_docker_aurora_branch: ${SOURCE_BRANCH}
     command: docker --version
     environment:
       - SOURCE_BRANCH

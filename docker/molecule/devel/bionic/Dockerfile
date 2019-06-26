@@ -8,26 +8,26 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV PULSE_SERVER /run/pulse/native
 
-ARG branch="master"
+ARG ml_devel_aurora_branch
 
-ENV aurora_branch=$branch
+ENV ml_devel_aurora_branch ${ml_devel_aurora_branch:-"master"}
 
-ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
+ENV ml_devel_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_devel_aurora_branch/bin/run-ansible.sh"
 
 RUN set -x && \
     \
     echo "Downloading one-liner" && \
-    wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
+    wget -O /tmp/oneliner "$( echo "$ml_devel_aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
     \
     echo "Setting up UI and new Docker user" && \
-    /tmp/oneliner configure_software --debug-branch $aurora_branch software=[setup-docker] && \
+    /tmp/oneliner configure-software --debug-branch $ml_devel_aurora_branch software=[setup-docker] && \
     \
     echo "Add user to docker group" && \
     usermod -aG docker user && \
     \
     echo "Installing IDEs and AWS CLI" && \
-    /tmp/oneliner install_software --debug-branch $aurora_branch software=[pycharm,vscode,aws-cli] && \
+    /tmp/oneliner install-software --debug-branch $ml_devel_aurora_branch software=[pycharm,vscode,aws-cli] && \
     \
     echo "Clean up" && \
     apt-get clean && \

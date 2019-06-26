@@ -8,11 +8,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV USER testuser
 
-ARG branch="master"
+ARG ts_docker_aurora_branch
 
-ENV aurora_branch=$branch
+ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"master"}
 
-ENV aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$aurora_branch/bin/run-ansible.sh"
+ENV ts_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ts_docker_aurora_branch/bin/run-ansible.sh"
 
 RUN set -x && \
     sudo apt-get update && \
@@ -21,9 +21,9 @@ RUN set -x && \
     sudo apt-get install -y --no-install-recommends ca-certificates wget && \
     \
     echo "Installing Docker" && \
-    wget -O /tmp/oneliner "$( echo "$aurora_script" | sed 's/#/%23/g' )" && \
+    wget -O /tmp/oneliner "$( echo "$ts_docker_aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
-    /tmp/oneliner install_software --debug-branch $aurora_branch software=[docker] && \
+    /tmp/oneliner install-software --debug-branch $ts_docker_aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
     sudo apt-get clean && \

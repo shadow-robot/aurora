@@ -1,2 +1,8 @@
-#!/bin/bash
-docker build --build-arg branch=$SOURCE_BRANCH .
+#!/usr/bin/env bash
+
+export DOCKERFILE_PATH=${DOCKERFILE_PATH:-Dockerfile}
+
+echo "Executing build command"
+echo "docker build --build-arg ts_docker_aurora_branch=${SOURCE_BRANCH} -f ${DOCKERFILE_PATH} -t ${IMAGE_NAME} ."
+
+docker build --build-arg ts_docker_aurora_branch="${SOURCE_BRANCH}" -f "${DOCKERFILE_PATH}" -t "${IMAGE_NAME}" .
