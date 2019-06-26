@@ -56,9 +56,3 @@
   systemd:
     daemon_reload: yes
   become: yes
-
-- name: Restart docker after installing nvidia_docker
-  service:
-    name: docker
-    state: restarted
-  become: yes

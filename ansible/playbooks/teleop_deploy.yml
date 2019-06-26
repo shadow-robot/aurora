@@ -23,6 +23,7 @@
   tasks:
     - name: ping all the machines
       ping:
+  become: yes
 
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
