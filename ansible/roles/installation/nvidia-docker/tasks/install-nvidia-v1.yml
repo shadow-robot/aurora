@@ -40,12 +40,6 @@
     mode: '755'
     state: directory
 
-- name: Ensure /etc/systemd/system/docker.service.d folder exists
-  file:
-    path: "/etc/systemd/system/docker.service.d"
-    mode: '755'
-    state: directory
-
 - name: Create override.conf in /etc/systemd/system/docker.service.d
   template:
     src: templates/override.j2
