@@ -4,4 +4,3 @@ services:
   sut:
     build: .
     command: id -u testuser
-
