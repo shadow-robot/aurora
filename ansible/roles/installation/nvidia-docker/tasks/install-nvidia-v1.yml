@@ -53,6 +53,6 @@
 
 - name: Restart docker after installing nvidia_docker
   service:
-    name: nvidia-docker
+    name: docker
     state: restarted
   become: yes
