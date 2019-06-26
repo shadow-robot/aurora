@@ -23,7 +23,7 @@
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "all"
       PATH: "/usr/lib/nvidia-{{ nvidia_driver_version.stdout }}/bin:{{ ansible_env.PATH }}"
-      LD_LIBRARY_PATH: "/usr/lib/nvidia-{{ nvidia_driver_version.stdout }}:{{ ansible_env.LD_LIBRARY_PATH }}"
+      LD_LIBRARY_PATH: "/usr/lib/nvidia-{{ nvidia_driver_version.stdout }}"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
