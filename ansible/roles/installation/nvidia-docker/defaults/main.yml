@@ -2,3 +2,4 @@
 ubuntu_version: "16.04"
 nvidia_docker_1_version: "1.0.1-1"
 nvidia_container_runtime_version: "2.0.0+docker18.09.6-3"
+libnvidia_container_version: "1.0.2-1"
