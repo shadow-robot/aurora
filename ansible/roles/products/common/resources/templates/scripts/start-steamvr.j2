@@ -1,0 +1,5 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+if {{ use_steamvr | lower }}; then
+    cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &
+fi
