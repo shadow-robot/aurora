@@ -8,4 +8,4 @@
 10.9.11.3 ansible_host=windows_machine ansible_connection=ssh ansible_ssh_user=shadowop ansible_user=shadowop ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [client]
-10.9.11.4 ansible_host=teleop-client ansible_ssh_pipelining=true ansible_connection=ssh ansible_ssh_user=user ansible_user=user ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+10.9.11.4 ansible_host=teleop-client ansible_ssh_pipelining=true ansible_connection=ssh ansible_ssh_user=shadowop ansible_user=shadowop ansible_ssh_common_args='-o StrictHostKeyChecking=no'
