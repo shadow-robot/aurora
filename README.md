@@ -63,7 +63,7 @@ For assigning input and secure input to playbook variables you can use the tags:
 * --read-input vars (e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
 * --read-secure secure_vars (e.g. --read_secure docker_password - To allow aurora script to prompt for docker password)
 
-To begin with, the docker-deploy playbook checks the installation status of docker. If docker is not installed then a 
+To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
 new clean installation is performed. If the required image is private, 
 then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then, 
 the specified docker image is pulled and a docker 
