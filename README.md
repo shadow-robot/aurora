@@ -1,6 +1,6 @@
 ## Table of Contents  
 [Development](#development)  
-[Development Docker](#developmentdocker)  
+[Development Docker](#development_docker)  
 
 # Aurora project #
 
@@ -15,13 +15,15 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/stabl
 For certain tests (e.g. AWS EC2 tests) and certain private docker images, contact the system administrator to ask for access
 
 <a name="development"/>
+
 ## Development ##
 
 The preferred way to develop code for this project is to pull a certain docker image with a lot of tools already installed and open a container in it, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
 
 Instructions how to access the docker image and container for development, see Development Docker section below
 
-<a name="developmentdocker"/>
+<a name="development_docker"/>
+
 ### Development Docker ###
 
 The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel)
