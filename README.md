@@ -4,6 +4,7 @@
 - [Testing](#testing)
   * [Test creation](#test-creation)
   * [Testing on real hardware](#testing-on-real-hardware)
+   * [Ethercat interface](#ethercat-interface)
 - [Deployment](#deployment)
 - [Structure of files](#structure-of-files)
   * [Common](#common)
@@ -88,7 +89,7 @@ molecule --debug test --all
 
 3. Fix any errors
 
-4. If you want to run a specific test case (in playbooks/molecule folder), use:
+4. If you want to run a specific test case (in ansible/playbooks/molecule folder), use:
 
 ```
 molecule --debug test -s name_of_your_scenario
@@ -102,7 +103,23 @@ molecule --debug test -s name_of_your_scenario
 
 ### Test creation ###
 
+Create tests for both docker and EC2 in ansible/playbooks/molecule folder. Copy the folder structure from other tests and modify the python .py file in tests folder.
+
 ### Testing on real hardware ###
+
+#### Ethercat interface ####
+
+Before running the docker_deploy playbook ##
+
+Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
+```shell
+sudo dmesg
+```
+command in the console. At the bottom, there will be information similar to the one below:
+```shell
+[490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
+```
+In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
 
 ## Deployment ##
 
@@ -142,17 +159,7 @@ molecule --debug test -s name_of_your_scenario
 
 
 
-## Before running the docker_deploy playbook ##
-
-Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
-```shell
-sudo dmesg
-```
-command in the console. At the bottom, there will be information similar to the one below:
-```shell
-[490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
-```
-In the above example, ‘enp0s25’ is the ethercat_interface that is needed. 
+ 
 
 ## Playbooks ##
 * docker_deploy : For Hand E/G/H software deployments on single laptop
