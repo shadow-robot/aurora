@@ -4,9 +4,9 @@ Aurora is an installation automation tool using Ansible. It uses Molecule for te
 
 For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
-Ansible user guide is available here (We are currently using Ansible 2.8.1)
+Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (We are currently using Ansible 2.8.1)
 
-Molecule user guide is available here (We are currently using Molecule 2.20.1)
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/) (We are currently using Molecule 2.20.1)
 
 For certain tests (e.g. AWS EC2 tests) and certain private docker images, contact the system administrator to ask for access
 
