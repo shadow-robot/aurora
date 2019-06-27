@@ -74,7 +74,7 @@ code
 
 Once you have written your code for aurora in your branch, test it with Molecule first before pushing to GitHub.
 
-1. In the docker container terminal (see [this](Development) section to make sure you are using the correct Docker container), go to /ansible/playbooks folder
+1. In the docker container terminal go to /ansible/playbooks folder
 
 ```
 cd /home/user/aurora/ansible/playbooks
