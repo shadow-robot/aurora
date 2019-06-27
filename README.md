@@ -21,7 +21,7 @@
 - [Molecule tests](#molecule-tests)
   * [Docker tests](#docker-tests)
   * [AWS EC2 tests](#aws-ec2-tests)
-[Syntax and rules](#syntax-and-rules)
+- [Syntax and rules](#syntax-and-rules)
 
 # Aurora project #
 
