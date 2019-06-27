@@ -1,3 +1,7 @@
+##### Table of Contents  
+[Development](#development)  
+[Emphasis](#emphasis)
+
 # Aurora project #
 
 Aurora is an installation automation tool using Ansible. It uses Molecule for testing Ansible scripts and it has automated builds in AWS EC2/CodeBuild and DockerHub. It can be used to develop, test and deploy complicated, multi-machine, multi-operating-system automated installs of software. Aurora's purpose is to unify one-liners approaches based on Ansible best practices.
@@ -10,6 +14,7 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/stabl
 
 For certain tests (e.g. AWS EC2 tests) and certain private docker images, contact the system administrator to ask for access
 
+<a name="development"/>
 ## Development ##
 
 The preferred way to develop code for this project is to pull a certain docker image with a lot of tools already installed and open a container in it, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
