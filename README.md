@@ -1,6 +1,6 @@
 ## Table of Contents  
 [Development](#development)  
-#[Development Docker](#development_docker)  
+* [Development Docker](#development_docker)  
 
 # Aurora project #
 
