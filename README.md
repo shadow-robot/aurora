@@ -14,8 +14,6 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/stabl
 
 For certain tests (e.g. AWS EC2 tests) and certain private docker images, contact the system administrator to ask for access
 
-<a name="development"/>
-
 ## Development ##
 
 The preferred way to develop code for this project is to pull a certain docker image with a lot of tools already installed and open a container in it, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
