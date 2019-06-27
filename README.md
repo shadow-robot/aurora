@@ -8,7 +8,7 @@
 [Structure of files](#structure-of-files)
 * [Common](#common)
 * [Products](#products)
-* [Dependencies](#dependencies
+* [Dependencies](#dependencies)
 [Playbooks and possible command line arguments](#playbooks-and-possible-command-line-arguments)
 * [Playbook creation](#playbook-creation)
 * [teleop_deploy](#teleop_deploy)
