@@ -2,12 +2,14 @@
 - name: Update package lists
   apt:
     update_cache: yes
+    force_apt_get: yes
   become: yes
 
 - name: Install basic dependencies
   apt:
     name: "{{ packages }}"
     state: present
+    force_apt_get: yes
   become: yes
   vars:
     packages:
