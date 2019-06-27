@@ -1,9 +1,9 @@
 ---
 - name: Install Python 3
-  import_playbook: ./install-python3.yml
+  import_playbook: ./install_python3.yml
 
 - name: Install software based on external parameters
-  hosts: install-software
+  hosts: install_software
   pre_tasks:
 
     - name: Initialize list of software
