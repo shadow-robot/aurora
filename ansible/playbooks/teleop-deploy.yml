@@ -108,4 +108,7 @@
   tasks:
     - name: Reboot message
       debug: 
-        msg="!!! Please restart the server laptop and re-run this script to finalize the installation. Ignore if you already ran this !!!"
+        msg: 
+          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+          - "!!! Please restart the server laptop and re-run this script to finalize the installation. Ignore if you already ran this !!!"
+          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
