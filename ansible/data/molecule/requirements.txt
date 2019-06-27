@@ -52,7 +52,7 @@ pyparsing==2.4.0
 pytest==4.6.3
 python-dateutil==2.8.0
 python-gilt==1.2.1
-PyYAML==5.1.1
+PyYAML==3.13
 requests==2.22.0
 ruamel.yaml==0.15.94
 sh==1.12.14
