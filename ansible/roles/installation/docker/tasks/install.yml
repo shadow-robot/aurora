@@ -49,17 +49,17 @@
     msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
 
 - name: Rebooting computer to finish Docker installation
-  when: allow_auto_reboot
+  when: allow_auto_reboot|bool
   async: 1
   poll: 0
   shell: sleep 5 && reboot
 
 - name: Waiting for remote host to come back after reboot
-  when: allow_auto_reboot
+  when: allow_auto_reboot|bool
   wait_for_connection:
     delay: '10'
     timeout: '300'
 
 - name: Finishing Docker installation
-  when: not allow_auto_reboot
+  when: not allow_auto_reboot|bool
   meta: end_play

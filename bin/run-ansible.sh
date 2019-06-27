@@ -72,7 +72,7 @@ echo "  * --limit             Run a playbook against one or more members of that
 echo "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,github_login)"
 echo "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. docker_password,git_password)"
 echo ""
-echo "example: ./${script_name} docker-deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
+echo "example: ./${script_name} docker_deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
 echo "playbook     = ${playbook}"
 echo "debug-branch = ${aurora_tools_branch}"
@@ -134,7 +134,7 @@ ansible_flags="-v --ask-become-pass "
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
 fi
-if [[ "${playbook}" = "teleop-deploy" ]]; then
+if [[ "${playbook}" = "teleop_deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-pass "
     aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
 else

@@ -1,2 +1,2 @@
-[install-software]
+[install_software]
 127.0.0.1 ansible_connection=local

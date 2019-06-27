@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        aurora_branch: ${SOURCE_BRANCH}
+        ml_base_aurora_branch: ${SOURCE_BRANCH}
     command: >
       bash -c "pip3 list | grep molecule &&
                pip3 list | grep ansible &&

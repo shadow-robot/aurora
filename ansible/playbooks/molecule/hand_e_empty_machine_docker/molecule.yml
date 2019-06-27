@@ -9,7 +9,7 @@ platforms:
   - name: hand_e_empty_machine_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
-      - docker-deploy
+      - docker_deploy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
 provisioner:
