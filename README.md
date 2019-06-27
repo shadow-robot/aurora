@@ -12,7 +12,38 @@ For certain tests (e.g. AWS EC2 tests) and certain private docker images, contac
 
 ## Development ##
 
+The preferred way to develop code for this project is to pull a certain docker image with a lot of tools already installed and open a container in it, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
+
+Instructions how to access the docker image and container for development, see Development Docker section below
+
 ### Development Docker ###
+
+The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel)
+
+We are currently using the bionic tag
+
+Instructions on how to use this:
+1. Use a Ubuntu 16.04 or Ubuntu 18.04 computer
+2. Install Docker (using instructions from [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/))
+3. Run the following command in terminal to create a container for aurora development:
+
+```
+docker run -it --name aurora_dev -e DISPLAY -e QT_X11_NO_MITSHM=1 -e LOCAL_USER_ID=$(id -u) -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix:rw shadowrobot/aurora-molecule-devel:bionic
+```
+4. Once the container has launched, clone aurora to it:
+```
+git clone https://github.com/shadow-robot/aurora.git
+```
+5. Go into the aurora folder:
+```
+cd aurora
+```
+6. Open Visual Studio Code which is already installed inside the Docker container:
+```
+code
+```
+7. Open the aurora folder in Visual Studio Code
+
 
 ## Testing ##
 
