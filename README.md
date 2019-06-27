@@ -1,6 +1,6 @@
 ## Table of Contents  
 [Development](#development)  
-[Development Docker](#development_docker)  
+[Development Docker](#developmentdocker)  
 
 # Aurora project #
 
@@ -21,7 +21,7 @@ The preferred way to develop code for this project is to pull a certain docker i
 
 Instructions how to access the docker image and container for development, see Development Docker section below
 
-<a name="development_docker"/>
+<a name="developmentdocker"/>
 ### Development Docker ###
 
 The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel)
