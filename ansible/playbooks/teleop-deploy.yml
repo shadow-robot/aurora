@@ -102,3 +102,13 @@
 
   roles:
     - { role: products/teleop/client/deploy }
+
+- name: Inform user for reboot
+  hosts: 127.0.0.1
+  tasks:
+    - name: Reboot message
+      debug: 
+        msg: 
+          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+          - "!!! Please restart the server laptop and re-run this script to finalize the installation. Ignore if you already ran this !!!"
+          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
