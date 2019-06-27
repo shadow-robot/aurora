@@ -1,6 +1,27 @@
 ## Table of Contents  
-[Development](#development)  
-* [Development Docker](#development_docker)  
+[Development](#development)
+* [Development Docker](#development-docker)
+[Testing](#testing)
+* [Test creation](#test-creation)
+* [Testing on real hardware](#testing-on-real-hardware)
+[Deployment](#deployment)
+[Structure of files](#structure-of-files)
+* [Common](#common)
+* [Products](#products)
+* [Dependencies](#dependencies
+[Playbooks and possible command line arguments](#playbooks-and-possible-command-line-arguments)
+* [Playbook creation](#playbook-creation)
+* [teleop_deploy](#teleop_deploy)
+* [docker_deploy](#docker_deploy)
+* [configure_software](#configure_software)
+* [install_software](#install_software)
+* [install_python3](#install_python3)
+[Inventories](#inventories)
+[Roles](#roles)
+[Molecule tests](#molecule-tests)
+* [Docker tests](#docker-tests)
+* [AWS EC2 tests](#aws-ec2-tests)
+[Syntax and rules](#syntax-and-rules)
 
 # Aurora project #
 
@@ -19,8 +40,6 @@ For certain tests (e.g. AWS EC2 tests) and certain private docker images, contac
 The preferred way to develop code for this project is to pull a certain docker image with a lot of tools already installed and open a container in it, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
 
 Instructions how to access the docker image and container for development, see Development Docker section below
-
-<a name="development_docker"/>
 
 ### Development Docker ###
 
