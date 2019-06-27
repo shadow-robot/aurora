@@ -1,6 +1,62 @@
 # Aurora project #
 
-The main purpose of this subsystem is to unify one-liners approaches based on Ansible best practices. This one-liner is able to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
+Aurora is an installation automation tool using Ansible. It uses Molecule for testing Ansible scripts and it has automated builds in AWS EC2/CodeBuild and DockerHub. It can be used to develop, test and deploy complicated, multi-machine, multi-operating-system automated installs of software. Aurora's purpose is to unify one-liners approaches based on Ansible best practices.
+
+For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
+
+Ansible user guide is available here (We are currently using Ansible 2.8.1)
+
+Molecule user guide is available here (We are currently using Molecule 2.20.1)
+
+For certain tests (e.g. AWS EC2 tests) and certain private docker images, contact the system administrator to ask for access
+
+## Development ##
+
+### Development Docker ###
+
+## Testing ##
+
+### Test creation ###
+
+### Testing on real hardware ###
+
+## Deployment ##
+
+## Structure of files ##
+
+### Common ###
+
+### Products ###
+
+### Dependencies ###
+
+## Playbooks and possible command line arguments ##
+
+### Playbook creation ###
+
+### teleop_deploy ###
+
+### docker_deploy ###
+
+### configure_software ###
+
+### install_software ###
+
+### install_python3 ###
+
+## Inventories ##
+
+## Roles ##
+
+## Molecule tests ##
+
+### Docker tests ###
+
+### AWS EC2 tests ###
+
+## Syntax and rules ##
+
+
 
 ## Before running the docker_deploy playbook ##
 
