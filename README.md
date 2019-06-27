@@ -72,6 +72,34 @@ code
 
 ## Testing ##
 
+Once you have written your code for aurora in your branch, test it with Molecule first before pushing to GitHub.
+
+1. In the docker container terminal (see [this](Development) section to make sure you are using the correct Docker container), go to /ansible/playbooks folder
+
+```
+cd /home/user/aurora/ansible/playbooks
+```
+
+2. Run the following command to execute all molecule tests with debug mode:
+
+```
+molecule --debug test --all
+```
+
+3. Fix any errors
+
+4. If you want to run a specific test case (in playbooks/molecule folder), use:
+
+```
+molecule --debug test -s name_of_your_scenario
+```
+5. If you want to to run Molecule in stages (create, converge, etc.), see [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+```
+molecule --debug create -s name_of_your_scenario
+molecule --debug converge -s name_of_your_scenario
+molecule --debug test -s name_of_your_scenario
+```
+
 ### Test creation ###
 
 ### Testing on real hardware ###
