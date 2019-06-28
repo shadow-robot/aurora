@@ -10,6 +10,8 @@
         regexp: '^{{ item }}.*$'
         line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
+      retries: 10
+      delay: 1
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
       become: yes
