@@ -40,7 +40,7 @@
 
 - name: Creating teleop-client setup script
   template:
-    src: ../../../common/resources/templates/scripts/teleop_setup.j2
+    src: ../../../common/resources/templates/scripts/teleop-setup.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
