@@ -1,0 +1,41 @@
+---
+- name: Installing nvidia-modprobe
+  apt:
+    name: nvidia-modprobe
+    state: present
+
+- name: Install nvidia-docker gpg key
+  apt_key:
+    url: https://nvidia.github.io/nvidia-docker/gpgkey
+    state: present
+
+- name: Set ubuntu_version for nvidia-dockerinstall
+  set_fact:
+    ubuntu_version: "18.04"
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
+- name: Add nvidia-docker repository
+  apt_repository:
+    repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
+    state: present
+  with_items:
+    - nvidia-docker2
+
+- name: Install nvidia-docker 2
+  apt:
+    name: nvidia-docker2
+    state: present
+    update_cache: yes
+
+- name: Reload daemon
+  systemd:
+    daemon_reload: yes
+  become: yes
+
+- name: Restart docker after installing nvidia_docker
+  service:
+    name: docker
+    state: restarted
+  become: yes
