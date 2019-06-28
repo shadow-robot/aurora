@@ -8,3 +8,5 @@ hand_serial: ""
 setup_directory: ""
 nuc_username: "user"
 nuc_address: "10.9.10.2"
+remote_cyberglove: false
+sim_icon: false

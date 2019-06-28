@@ -9,5 +9,6 @@ use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: true # Specify if openvpn-client should be installed
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
+remote_cyberglove: true # Determines if the cyberglove is run locally (server) or remotely (client)
 setup_script: ""
 use_steamvr: false

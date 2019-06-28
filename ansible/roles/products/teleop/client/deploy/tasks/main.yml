@@ -1,6 +1,8 @@
 ---
 - name: Set server hostname
   set_fact:
+    setup_script: teleop-client-setup.sh
+    use_steamvr: false
     server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
   when: groups['server'] is defined
 
@@ -46,3 +48,14 @@
 - name: Include products/teleop/server/desktop-icons role
   include_role:
     name: products/teleop/client/desktop-icons
+
+- name: Creating teleop-client setup script
+  template:
+    src: ../../../common/resources/templates/scripts/teleop-setup.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
+    mode: '755'
+
+- name: Copying teleop-client setup script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  become: yes
