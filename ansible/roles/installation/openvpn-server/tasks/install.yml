@@ -1,25 +1,29 @@
 ---
 - name: Install OpenVPN dependencies
   apt:
-    name: ["easy-rsa"]
+    name: ["easy-rsa", "openssh-server"]
     state: "present"
+  become: yes
 
 - name: Add OpenVPN repo apt key
   apt_key:
     url: "https://swupdate.openvpn.net/repos/repo-public.gpg"
     id: "30EBF4E73CCE63EEE124DD278E6DA8B4E158C569"
     state: "present"
+  become: yes
 
 - name: Add OpenVPN repository
   apt_repository:
     repo: "{{ openvpn_apt_repository }}"
     state: "present"
     update_cache: "yes"
+  become: yes
 
 - name: Install OpenVPN
   apt:
     name: openvpn
     state: "present"
+  become: yes
 
 - name: Remove CA directory
   file:
@@ -29,7 +33,6 @@
 
 - name: Create CA directory
   command: make-cadir {{ user_folder }}/openvpn-ca
-  become: yes
 
 - name: Customize CA variable configuration
   lineinfile:
@@ -164,7 +167,7 @@
     state: directory
     mode: 0700
   become: yes
-
+  
 - name: Copy client sample configs from remote host itself
   copy:
     remote_src: yes
@@ -180,7 +183,7 @@
   with_items:
     - {
         regex: "remote my-server-1 1194",
-        value: 'remote {{ groups["servers"][0] }} 1194',
+        value: 'remote {{ groups["server"][0] }} 1194',
       }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
@@ -206,11 +209,3 @@
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
   become: yes
-
-- name: Fetch client configurations
-  fetch:
-    src: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ item|basename }}"
-    dest: "{{ destination_key }}/"
-    flat: yes
-  with_items:
-    - "{{ client_name }}.ovpn"

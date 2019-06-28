@@ -6,7 +6,7 @@ container_name: "teleop"
 nvidia_docker: 0
 cyberglove: "A-penny"
 use_aws: false
-use_openvpn: false
+use_openvpn: true
 setup_directory: "/usr/local/bin"
 ethercat_interface: "eth0"
 config_branch: "demohand_A"
@@ -17,3 +17,4 @@ use_cyberglove: true
 launch_hand: false
 use_steamvr: false
 remote_cyberglove: true
+setup_script: ""

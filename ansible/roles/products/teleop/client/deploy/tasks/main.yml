@@ -1,9 +1,11 @@
 ---
-- name: Setup script name
+- name: Set server hostname
   set_fact:
     setup_script: teleop-client-setup.sh
     use_steamvr: false
-  
+    server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
+  when: groups['server'] is defined
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -12,6 +14,11 @@
   include_role:
     name: installation/nvidia-docker
   when: nvidia_docker | int !=0
+
+- name: Include installation/openvpn-client role
+  include_role:
+    name: installation/openvpn-client
+  when: use_openvpn|bool
 
 - name: Include docker/docker-image role
   include_role:
@@ -25,6 +32,9 @@
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    ros_master: "{{ server_hostname }}"
+    setup_script: ""
 
 - name: Include products/common/save-logs-icons role
   include_role:
@@ -37,7 +47,7 @@
 
 - name: Include products/teleop/server/desktop-icons role
   include_role:
-    name: products/teleop/server/desktop-icons
+    name: products/teleop/client/desktop-icons
 
 - name: Creating teleop-client setup script
   template:
