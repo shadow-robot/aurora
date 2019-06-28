@@ -122,6 +122,7 @@
   blockinfile:
     path: /etc/ufw/before.rules
     insertbefore: BOF
+    create: yes
     content: |
       *nat
       :POSTROUTING ACCEPT [0:0]
