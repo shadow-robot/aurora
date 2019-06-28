@@ -15,5 +15,6 @@ user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
 launch_hand: false
 use_steamvr: false
+use_cyberglove: false
 remote_cyberglove: true
 setup_script: ""
