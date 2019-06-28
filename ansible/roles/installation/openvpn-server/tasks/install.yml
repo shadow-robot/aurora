@@ -140,7 +140,6 @@
 
 - name: Open ufw ports for openvpn and ssh
   shell: ufw allow openvpn && ufw allow OpenSSH
-  when: groups['server'] is defined
   become: yes
 
 - name: Enable ufw
