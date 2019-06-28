@@ -18,3 +18,4 @@ use_steamvr: false
 use_cyberglove: false
 remote_cyberglove: true
 setup_script: ""
+server_hostname: "TELEOP-DEMO"
