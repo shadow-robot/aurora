@@ -143,7 +143,7 @@
   become: yes
 
 - name: Enable ufw
-  shell: ufw --force enable
+  shell: ufw --force disable
   become: yes
 
 - name: Start openvpn systemd service
