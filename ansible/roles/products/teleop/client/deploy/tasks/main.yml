@@ -1,10 +1,13 @@
 ---
 - name: Set server hostname
   set_fact:
-    setup_script: teleop-client-setup.sh
-    use_steamvr: false
     server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
   when: groups['server'] is defined
+
+- name: Set setup parameters
+  set_fact:
+    setup_script: teleop-client-setup.sh
+    use_steamvr: false
 
 - name: Include installation/docker role
   include_role:
