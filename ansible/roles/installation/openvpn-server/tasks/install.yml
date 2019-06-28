@@ -135,6 +135,7 @@
     line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
     path: "/etc/default/ufw"
     regexp: '^DEFAULT_FORWARD_POLICY="DROP"'
+    create: yes
   become: yes
 
 - name: Open ufw ports for openvpn and ssh
