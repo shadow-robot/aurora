@@ -6,7 +6,10 @@
   become: yes
 
 - name: Set chrony server IP address
-  shell: "echo "server {{ chrony_server_ip }} iburst prefer" >> /etc/chrony/chrony.conf"
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    state: present
+    line: "server {{ chrony_server_ip }} iburst prefer"
   become: yes
 
 - name: Restart chrony service

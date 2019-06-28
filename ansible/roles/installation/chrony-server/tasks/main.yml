@@ -6,11 +6,17 @@
   become: yes
 
 - name: Allow local network to use chrony
-  shell: "echo "allow {{ chrony_allowed_network }}" >> /etc/chrony/chrony.conf"
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    state: present
+    line: "allow {{ chrony_allowed_network }}"
   become: yes
 
 - name: Set chrony local stratum
-  shell: "echo "local stratum 10" >> /etc/chrony/chrony.conf"
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    state: present
+    line: "local stratum 10"
   become: yes
 
 - name: Restart chrony service
