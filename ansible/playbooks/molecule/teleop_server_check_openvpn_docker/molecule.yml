@@ -15,6 +15,7 @@ platforms:
     privileged: yes
     capabilities:
       - NET_ADMIN
+      - NET_RAW
 provisioner:
   name: ansible
   env:
