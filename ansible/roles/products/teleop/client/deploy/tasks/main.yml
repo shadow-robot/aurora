@@ -2,6 +2,7 @@
 - name: Setup script name
   set_fact:
     setup_script: teleop-client-setup.sh
+    use_steamvr: false
   
 - name: Include installation/docker role
   include_role:
