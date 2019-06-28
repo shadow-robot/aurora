@@ -1,0 +1,20 @@
+---
+- name: Install chrony
+  apt:
+    name: chrony
+    state: present
+  become: yes
+
+- name: Allow local network to use chrony
+  shell: "echo "allow {{ chrony_allowed_network }}" >> /etc/chrony/chrony.conf"
+  become: yes
+
+- name: Set chrony local stratum
+  shell: "echo "local stratum 10" >> /etc/chrony/chrony.conf"
+  become: yes
+
+- name: Restart chrony service
+  service:
+    name: chrony
+    state: restarted
+  become: yes
