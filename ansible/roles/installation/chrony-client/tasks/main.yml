@@ -17,3 +17,4 @@
     name: chrony
     state: restarted
   become: yes
+  changed_when: false
