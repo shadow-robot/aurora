@@ -13,4 +13,3 @@ phases:
     commands:
       - cd $CODEBUILD_SRC_DIR/ansible/playbooks
       - molecule --debug test --scenario-name default_ec2
-      - molecule --debug test --scenario-name teleop_server_chrony_ec2
