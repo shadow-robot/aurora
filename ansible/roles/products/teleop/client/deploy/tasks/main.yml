@@ -23,6 +23,15 @@
     name: installation/openvpn-client
   when: use_openvpn|bool
 
+- name: Set chrony server ip
+  set_fact:
+    chrony_server_ip: "{{ groups['server'][0] }}"
+  when: groups['server'] is defined
+
+- name: Include installation/chrony-client role
+  include_role:
+    name: installation/chrony-client
+
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image

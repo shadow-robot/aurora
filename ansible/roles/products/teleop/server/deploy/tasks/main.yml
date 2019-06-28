@@ -17,6 +17,15 @@
     name: installation/openvpn-server
   when: use_openvpn|bool
 
+- name: Set chrony allowed network
+  set_fact:
+    chrony_allowed_network: "{{ groups['server'][0].split('.')[0:3] | join('.') }}"
+  when: groups['server'] is defined
+
+- name: Include installation/chrony-server role
+  include_role:
+    name: installation/chrony-server
+
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
