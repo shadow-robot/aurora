@@ -1,7 +1,7 @@
 ---
 - name: Install OpenVPN dependencies
   apt:
-    name: ["easy-rsa", "openssh-server"]
+    name: ["easy-rsa", "openssh-server","ufw"]
     state: "present"
   become: yes
 
