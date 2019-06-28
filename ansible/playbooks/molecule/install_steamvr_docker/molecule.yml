@@ -9,7 +9,7 @@ platforms:
   - name: install_steamvr_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
-      - install-software
+      - install_software
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
 provisioner:

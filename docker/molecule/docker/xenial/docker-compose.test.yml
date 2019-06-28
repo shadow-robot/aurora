@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        aurora_branch: ${SOURCE_BRANCH}
+        ml_docker_aurora_branch: ${SOURCE_BRANCH}
     command: docker --version
     environment:
       - SOURCE_BRANCH

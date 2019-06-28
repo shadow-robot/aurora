@@ -19,3 +19,4 @@ setup_script: ""
 docker_executable: docker
 use_steamvr: false
 ros_master: "localhost"
+docker_runtime: "runc"

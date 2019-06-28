@@ -27,6 +27,7 @@
 - name: Pulling the image (containing hack for Python 3 path)
   docker_image:
     name: "{{ full_image_name }}"
+    source: pull
   environment:
     PYTHONPATH: "{{ python_packages_path }}"
   become: yes

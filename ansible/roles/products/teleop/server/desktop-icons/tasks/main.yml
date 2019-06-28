@@ -12,9 +12,9 @@
 
 - name: Set NUC IP address and username for SSH
   set_fact:
-    nuc_username: "{{ hostvars[groups['control-machine'][0]]['ansible_user'] }}"
-    nuc_address: "{{ groups['control-machine'][0] }}"
-  when: groups['control-machine'] is defined
+    nuc_username: "{{ hostvars[groups['control_machine'][0]]['ansible_user'] }}"
+    nuc_address: "{{ groups['control_machine'][0] }}"
+  when: groups['control_machine'] is defined
 
 - name: Install desktop icon for hand A
   import_tasks: demohand-icon.yml
@@ -22,7 +22,7 @@
     desktop_icon_png: "demohand_A_icon.png"
     launch_script: "teleop_exec_A.sh"
     demohand_branch: "demohand_A"
-    desktop_icon_name: "Teleop_control-machine_Launch_Demohand_A"
+    desktop_icon_name: "Teleop_control_machine_Launch_Demohand_A"
     hand_serial_no: "634"
 
 - name: Install desktop icon for hand B
@@ -31,7 +31,7 @@
     desktop_icon_png: "demohand_B_icon.png"
     launch_script: "teleop_exec_B.sh"
     demohand_branch: "demohand_B"
-    desktop_icon_name: "Teleop_control-machine_Launch_Demohand_B"
+    desktop_icon_name: "Teleop_control_machine_Launch_Demohand_B"
     hand_serial_no: "1130"
 
 - name: Install desktop icon for hand C
@@ -40,7 +40,7 @@
     desktop_icon_png: "demohand_C_icon.png"
     launch_script: "teleop_exec_C.sh"
     demohand_branch: "demohand_C"
-    desktop_icon_name: "Teleop_control-machine_Launch_Demohand_C"
+    desktop_icon_name: "Teleop_control_machine_Launch_Demohand_C"
     hand_serial_no: "1370"
 
 - name: Install desktop icon for Teleop server container
@@ -65,3 +65,11 @@
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "Teleop_ROSCORE"
+
+- name: Install desktop icon for Teleop server Simulation
+  import_tasks: sim-icon.yml
+  vars:
+    desktop_icon_png: "cyberglove_teleop.png"
+    launch_script: "shadow_sim_demo.sh"
+    desktop_icon_name: "Teleop_Simulation"
+  when: sim_icon|bool

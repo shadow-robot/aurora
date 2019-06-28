@@ -5,7 +5,7 @@ services:
     build:
       context: .
       args:
-        aurora_branch: ${SOURCE_BRANCH}
+        ml_ec2_aurora_branch: ${SOURCE_BRANCH}
     command: aws --version
     environment:
       - SOURCE_BRANCH

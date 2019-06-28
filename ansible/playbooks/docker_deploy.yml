@@ -1,10 +1,10 @@
 ---
 
 - name: Install Python 3
-  import_playbook: ./install-python3.yml
+  import_playbook: ./install_python3.yml
 
 - name: Install product Docker container and icons
-  hosts: docker-deploy
+  hosts: docker_deploy
   pre_tasks:
 
     - name: No product is defined
@@ -26,4 +26,4 @@
     - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
-    - {role: docker/aws, when: use_aws}
+    - {role: docker/aws, when: use_aws|bool}

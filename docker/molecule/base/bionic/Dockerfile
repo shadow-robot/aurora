@@ -10,9 +10,9 @@ ENV LC_ALL C.UTF-8
 
 ENV LANG C.UTF-8
 
-ARG aurora_branch
+ARG ml_base_aurora_branch
 
-ENV aurora_branch ${aurora_branch:-"master"}
+ENV ml_base_aurora_branch ${ml_base_aurora_branch:-"master"}
 
 RUN set -x && \
     apt-get update && \
@@ -32,7 +32,7 @@ RUN set -x && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
     \
     echo "Cloning Aurora" && \
-    git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $aurora_branch /tmp/aurora && \
+    git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $ml_base_aurora_branch /tmp/aurora && \
     \
     echo "Installing molecule" && \
     pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
