@@ -22,10 +22,6 @@
     container_running: "{{ container_running_output.stdout | bool }}"
   when: container_exists | bool
 
-- name: Exit if container already running
-  import_tasks: exit.yml
-  when: container_running | bool
-
 - name: Reinstalling docker container because it doesn't exist
   import_tasks: reinstall.yml
   when: not container_exists | bool
