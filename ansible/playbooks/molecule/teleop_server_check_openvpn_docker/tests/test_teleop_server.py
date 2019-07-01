@@ -18,4 +18,5 @@ def test_udev_files(host):
     for openvpn_file in openvpn_files:
         assert host.file(openvpn_path + openvpn_file).exists
     assert host.file(
-        '/home/user/openvpn-ca/teleop-client/teleop-client.ovpn').exists
+        '/home/' + str(host.user().name) +
+        '/openvpn-ca/teleop-client/teleop-client.ovpn').exists
