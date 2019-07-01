@@ -52,17 +52,14 @@
   include_role:
     name: products/teleop/server/desktop-icons
 
-- name: Make sure there is a 2048-bit SSH private and public keys generated on teleop server (SSH client)
-  user:
-    name: "{{ user }}"
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  openssh_keypair:
+    path: /tmp/id_ssh_rsa
 
 - name: Evaluating the SSH agent and adding the ssh identity
   shell: |
     eval "$(ssh-agent)"
-    ssh-add {{ user_folder }}/.ssh/id_rsa
+    ssh-add /tmp/id_ssh_rsa
   changed_when: false
 
 - name: Creating teleop-server setup script
