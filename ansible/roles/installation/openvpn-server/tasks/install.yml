@@ -101,14 +101,13 @@
     regexp: "^{{ item.regex | regex_escape() }}"
     line: "{{ item.value }}"
   with_items:
+    - { regex: "port 1194", value: "port {{ openvpn_port }}" }
+    - { regex: ";proto tcp", value: "proto tcp" }
+    - { regex: "proto udp", value: ";proto udp" }
+    - { regex: ";dev tap", value: "dev tap" }
+    - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
-    - {
-        regex: ';push "redirect-gateway def1 bypass-dhcp"',
-        value: 'push "redirect-gateway def1 bypass-dhcp"',
-      }
-    - { regex: "cert server.crt", value: "cert server.crt" }
-    - { regex: "key server.key", value: "key server.key" }
   become: yes
 
 - name: Configuration IP forwarding
@@ -182,10 +181,16 @@
   with_items:
     - {
         regex: "remote my-server-1 1194",
-        value: 'remote {{ groups["server"][0] }} 1194',
+        value: 'remote newvpn.shadowrobot.com {{ openvpn_port }}',
       }
+    - { regex: "port 1194", value: "port {{ openvpn_port }}" }
+    - { regex: ";proto tcp", value: "proto tcp" }
+    - { regex: "proto udp", value: ";proto udp" }
+    - { regex: ";dev tap", value: "dev tap" }
+    - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
+  become: yes
     - { regex: "ca ca.crt", value: "#ca ca.crt" }
     - { regex: "cert client.crt", value: "#cert client.crt" }
     - { regex: "key client.key", value: "#key client.key" }
