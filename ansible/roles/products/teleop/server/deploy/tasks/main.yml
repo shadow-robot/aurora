@@ -54,14 +54,11 @@
 
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   openssh_keypair:
-    path: /tmp/id_ssh_rsa
+    path: "{{ ssh_keys_path }}"
 
 - name: Evaluating the SSH agent and adding the ssh identity
-  shell: |
-    eval "$(ssh-agent)"
-    ssh-add /tmp/id_ssh_rsa
+  shell: "ssh-add {{ ssh_keys_path }}"
   changed_when: false
-  become: yes
 
 - name: Creating teleop-server setup script
   template:
