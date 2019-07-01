@@ -181,7 +181,7 @@
   with_items:
     - {
         regex: "remote my-server-1 1194",
-        value: 'remote newvpn.shadowrobot.com {{ openvpn_port }}',
+        value: "remote newvpn.shadowrobot.com {{ openvpn_port }}",
       }
     - { regex: "port 1194", value: "port {{ openvpn_port }}" }
     - { regex: ";proto tcp", value: "proto tcp" }
@@ -190,11 +190,11 @@
     - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
-  become: yes
     - { regex: "ca ca.crt", value: "#ca ca.crt" }
     - { regex: "cert client.crt", value: "#cert client.crt" }
     - { regex: "key client.key", value: "#key client.key" }
     - { regex: "tls-auth ta.key 1", value: "#tls-auth ta.key 1" }
+  become: yes
 
 - name: Create client ovpn file
   shell: "{{ item }}"
