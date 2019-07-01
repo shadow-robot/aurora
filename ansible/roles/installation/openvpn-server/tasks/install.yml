@@ -169,7 +169,7 @@
     state: directory
     mode: 0700
   become: yes
-  
+
 - name: Copy client sample configs from remote host itself
   copy:
     remote_src: yes
