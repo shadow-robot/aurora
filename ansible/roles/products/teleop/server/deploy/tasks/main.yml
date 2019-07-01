@@ -61,6 +61,7 @@
     eval "$(ssh-agent)"
     ssh-add /tmp/id_ssh_rsa
   changed_when: false
+  become: yes
 
 - name: Creating teleop-server setup script
   template:
