@@ -8,6 +8,8 @@ config_branch: "demohand_A"
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
+server_user: "shadowop"
+server_user_folder: "/home/{{ server_user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 use_aws: false

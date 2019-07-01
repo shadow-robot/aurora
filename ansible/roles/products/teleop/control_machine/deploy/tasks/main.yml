@@ -41,9 +41,9 @@
     path: /etc/network/interfaces
   register: stat_result
 
-- name: In case enp interface doesn't exist, use eth0
+- name: In case enp interface doesn't exist, use enp3s0 (ethernet port of NUC)
   set_fact:
-    ur_interface: 'eth0'
+    ur_interface: 'enp3s0'
   when: "'enp' not in ansible_interfaces"
 
 - name: If an enp interface exists, use the first one for ur_interface
@@ -65,13 +65,13 @@
 
 - name: Check if the ssh public key has been generated in .ssh/ folder on machine running Ansible (teleop server)
   stat:
-    path: "{{ user_folder }}/.ssh/id_rsa.pub"
+    path: "{{ server_user_folder }}/.ssh/id_rsa.pub"
   register: ssh_result
   delegate_to: 127.0.0.1
 
 - name: Copy SSH public key from server to control machine (if it exists in teleop server)
   copy:
-    src: "{{ user_folder }}/.ssh/id_rsa.pub"
+    src: "{{ server_user_folder }}/.ssh/id_rsa.pub"
     dest: ".ssh/id_rsa.pub"
     mode: '664'
   when: ssh_result.stat.exists
