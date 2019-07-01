@@ -138,11 +138,7 @@
     create: yes
   become: yes
 
-- name: Open ufw ports for openvpn and ssh
-  shell: ufw allow openvpn && ufw allow OpenSSH
-  become: yes
-
-- name: Enable ufw
+- name: Disable ufw
   shell: ufw --force disable
   become: yes
 
@@ -153,7 +149,8 @@
     daemon_reload: yes
     enabled: yes
   become: yes
-
+  when: skip_molecule_task is not defined
+  
 - name: Generate client certificate key
   shell: source vars; ./build-key --batch {{ client_name }}
   args:

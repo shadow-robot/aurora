@@ -12,7 +12,7 @@ platforms:
       - server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
-    privileged: yes
+    privileged: true
     capabilities:
       - NET_ADMIN
       - NET_RAW
