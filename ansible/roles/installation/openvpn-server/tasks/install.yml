@@ -150,7 +150,7 @@
     enabled: yes
   become: yes
   when: skip_molecule_task is not defined
-  
+
 - name: Generate client certificate key
   shell: source vars; ./build-key --batch {{ client_name }}
   args:
