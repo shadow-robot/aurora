@@ -63,6 +63,7 @@
 - name: Adding the ssh identity
   shell: "ssh-add {{ ssh_keys_path }}"
   changed_when: false
+  when: skip_molecule_task is not defined
 
 - name: Creating teleop-server setup script
   template:
