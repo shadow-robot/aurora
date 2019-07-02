@@ -8,3 +8,4 @@
     tag="kinetic-release"
     nvidia_docker=0
     sim_icon=true
+    skip_molecule_task=true

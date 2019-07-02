@@ -46,6 +46,7 @@
     create: true
     block: | 
       #!/bin/bash
+      sudo killall openvpn
       sudo openvpn --config "{{ shadow_hand_launcher_folder }}/{{ client_name }}.ovpn"
 
 - name: Create openVPN desktop icon

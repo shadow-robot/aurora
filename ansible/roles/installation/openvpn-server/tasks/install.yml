@@ -101,20 +101,20 @@
     regexp: "^{{ item.regex | regex_escape() }}"
     line: "{{ item.value }}"
   with_items:
+    - { regex: "port 1194", value: "port {{ openvpn_port }}" }
+    - { regex: ";proto tcp", value: "proto tcp" }
+    - { regex: "proto udp", value: ";proto udp" }
+    - { regex: ";dev tap", value: "dev tap" }
+    - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
-    - {
-        regex: ';push "redirect-gateway def1 bypass-dhcp"',
-        value: 'push "redirect-gateway def1 bypass-dhcp"',
-      }
-    - { regex: "cert server.crt", value: "cert server.crt" }
-    - { regex: "key server.key", value: "key server.key" }
+    - { regex: ";tls-auth ta.key 0", value: "tls-auth ta.key 0" }
   become: yes
 
 - name: Configuration IP forwarding
   sysctl:
     name: net.ipv4.ip_forward
-    value: 1
+    value: "1"
     state: present
   become: yes
 
@@ -150,7 +150,7 @@
     enabled: yes
   become: yes
   when: skip_molecule_task is not defined
-  
+
 - name: Generate client certificate key
   shell: source vars; ./build-key --batch {{ client_name }}
   args:
@@ -182,14 +182,20 @@
   with_items:
     - {
         regex: "remote my-server-1 1194",
-        value: 'remote {{ groups["server"][0] }} 1194',
+        value: "remote newvpn.shadowrobot.com {{ openvpn_port }}",
       }
+    - { regex: "port 1194", value: "port {{ openvpn_port }}" }
+    - { regex: ";proto tcp", value: "proto tcp" }
+    - { regex: "proto udp", value: ";proto udp" }
+    - { regex: ";dev tap", value: "dev tap" }
+    - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
     - { regex: "ca ca.crt", value: "#ca ca.crt" }
     - { regex: "cert client.crt", value: "#cert client.crt" }
     - { regex: "key client.key", value: "#key client.key" }
     - { regex: "tls-auth ta.key 1", value: "#tls-auth ta.key 1" }
+  become: yes
 
 - name: Create client ovpn file
   shell: "{{ item }}"
