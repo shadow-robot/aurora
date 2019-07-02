@@ -108,6 +108,7 @@
     - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
+    - { regex: ";tls-auth ta.key 1", value: "tls-auth ta.key 0" }
   become: yes
 
 - name: Configuration IP forwarding
