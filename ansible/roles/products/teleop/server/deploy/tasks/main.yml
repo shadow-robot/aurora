@@ -56,8 +56,12 @@
   openssh_keypair:
     path: "{{ ssh_keys_path }}"
 
-- name: Evaluating the SSH agent and adding the ssh identity
-  shell: "eval $(ssh-agent) && ssh-add {{ ssh_keys_path }}"
+- name: Evaluating the SSH agent
+  shell: "eval $(ssh-agent)"
+  changed_when: false
+
+- name: Adding the ssh identity
+  shell: "ssh-add {{ ssh_keys_path }}"
   changed_when: false
 
 - name: Creating teleop-server setup script
