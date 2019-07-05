@@ -49,7 +49,8 @@ Instructions how to access the docker image and container for development, see D
 
 The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel)
 
-We are currently using the bionic tag
+Currently both xenial and bionic tags are working well and there is no difference.
+The rest of the document assumes the user is using bionic tag.
 
 Instructions on how to use this:
 1. Use a Ubuntu 16.04 or Ubuntu 18.04 computer
