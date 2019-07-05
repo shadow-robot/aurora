@@ -104,6 +104,7 @@ molecule --debug test -s name_of_your_scenario
 molecule --debug create -s name_of_your_scenario
 molecule --debug converge -s name_of_your_scenario
 molecule --debug test -s name_of_your_scenario
+molecule --debug destroy -s name_of_your_scenario
 ```
 ### Testing with molecule_ec2 ###
 
@@ -133,6 +134,7 @@ molecule --debug test -s name_of_your_scenario
 molecule --debug create -s name_of_your_scenario
 molecule --debug converge -s name_of_your_scenario
 molecule --debug test -s name_of_your_scenario
+molecule --debug destroy -s name_of_your_scenario
 ```
 ### Automatic tests ###
 
