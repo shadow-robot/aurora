@@ -1,6 +1,6 @@
 ---
-- name: Teleop deploy playbook for teleop server
-  import_playbook: ../../teleop_deploy.yml
+- name: Teleop Nuc machine playbook for config check
+  import_playbook: ../../../teleop_deploy.yml
     image="shadowrobot/dexterous-hand"
     tag="kinetic-release"
     reinstall=true

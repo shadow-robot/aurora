@@ -6,19 +6,19 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: teleop_server_udev_rules_docker
+  - name: teleop_control_machine_check_config_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
-      - server
+      - control_machine
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
 provisioner:
   name: ansible
   env:
-    ANSIBLE_ROLES_PATH: ../../../roles
+    ANSIBLE_ROLES_PATH: ../../../../roles
   inventory:
     links:
-      group_vars: ../../../inventory/teleop/group_vars
+      group_vars: ../../../../inventory/teleop/group_vars
   lint:
     name: ansible-lint
 verifier:

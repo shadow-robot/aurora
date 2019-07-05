@@ -1,4 +1,4 @@
 ---
 - name: Docker deploy playbook for non existing product
-  import_playbook: ../../install_software.yml
+  import_playbook: ../../../install_software.yml
     software=[steamvr]

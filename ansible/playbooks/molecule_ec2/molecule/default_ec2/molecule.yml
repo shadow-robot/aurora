@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: default_ec2
+  - name: default_ec2_${HOSTNAME}
     image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
@@ -17,21 +17,21 @@ platforms:
 provisioner:
   name: ansible
   env:
-    ANSIBLE_ROLES_PATH: ../../../roles
+    ANSIBLE_ROLES_PATH: ../../../../roles
   connection_options:
     ansible_python_interpreter: /usr/bin/python3
   inventory:
     links:
-      group_vars: ../../../inventory/local/group_vars
+      group_vars: ../../../../inventory/local/group_vars
   playbooks:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
-    prepare: ../../install_python3.yml
-    converge: ../default/playbook.yml
+    prepare: ../../../install_python3.yml
+    converge: ../../../molecule_docker/molecule/default/playbook.yml
   lint:
     name: ansible-lint
 verifier:
   name: testinfra
-  directory: ../default/tests/
+  directory: ../../../molecule_docker/molecule/default/tests/
   lint:
     name: flake8
