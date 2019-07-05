@@ -73,15 +73,17 @@ code
 
 ## Testing ##
 
-Once you have written your code for aurora in your branch, test it with Molecule first before pushing to GitHub.
+### Testing with molecule_docker ###
 
-1. In the docker container terminal go to /ansible/playbooks folder
+Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
+
+1. In the docker container terminal go to /ansible/playbooks/molecule_docker folder
 
 ```
-cd /home/user/aurora/ansible/playbooks
+cd /home/user/aurora/ansible/playbooks/molecule_docker
 ```
 
-2. Run the following command to execute all molecule tests with debug mode:
+2. Run the following command to execute all molecule tests locally with debug mode:
 
 ```
 molecule --debug test --all
@@ -89,7 +91,7 @@ molecule --debug test --all
 
 3. Fix any errors
 
-4. If you want to run a specific test case (in ansible/playbooks/molecule folder), use:
+4. If you want to run a specific test case (scenarios are in ansible/playbooks/molecule_docker/molecule folder), use:
 
 ```
 molecule --debug test -s name_of_your_scenario
@@ -100,6 +102,38 @@ molecule --debug create -s name_of_your_scenario
 molecule --debug converge -s name_of_your_scenario
 molecule --debug test -s name_of_your_scenario
 ```
+### Testing with molecule_ec2 ###
+
+Once you have written your code for aurora in your branch, and tested it locally with molecule_docker, you can test it with AWS EC2 (initiated from local), by following the steps here:
+
+1. In the docker container terminal go to /ansible/playbooks/molecule_ec2 folder
+
+```
+cd /home/user/aurora/ansible/playbooks/molecule_ec2
+```
+
+2. Run the following command to execute all AWS EC2 molecule tests in AWS (but you can see local debug logs):
+
+```
+molecule --debug test --all
+```
+
+3. Fix any errors
+
+4. If you want to run a specific test case (the AWS EC2 scenarios are in ansible/playbooks/molecule_ec2/molecule folder), use:
+
+```
+molecule --debug test -s name_of_your_scenario
+```
+5. If you want to to run Molecule in stages (create, converge, etc.), see [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+```
+molecule --debug create -s name_of_your_scenario
+molecule --debug converge -s name_of_your_scenario
+molecule --debug test -s name_of_your_scenario
+```
+### Automatic tests by AWS CodeBuild and EC2: daily and when a PR is created or updated ###
+
+The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder
 
 ### Test creation ###
 
