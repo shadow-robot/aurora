@@ -18,21 +18,21 @@ platforms:
 provisioner:
   name: ansible
   env:
-    ANSIBLE_ROLES_PATH: ../../../roles
+    ANSIBLE_ROLES_PATH: ../../../../roles
   connection_options:
     ansible_python_interpreter: /usr/bin/python3
   inventory:
     links:
-      group_vars: ../../../inventory/teleop/group_vars
+      group_vars: ../../../../inventory/teleop/group_vars
   playbooks:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
-    prepare: ../../install_python3.yml
-    converge: ../teleop_server_chrony_docker/playbook.yml
+    prepare: ../../../install_python3.yml
+    converge: ../../../molecule_docker/molecule/teleop_server_chrony_docker/playbook.yml
   lint:
     name: ansible-lint
 verifier:
   name: testinfra
-  directory: ../teleop_server_chrony_docker/tests/
+  directory: ../../../molecule_docker/molecule/teleop_server_chrony_docker/tests/
   lint:
     name: flake8
