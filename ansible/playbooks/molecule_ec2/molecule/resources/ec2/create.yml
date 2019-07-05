@@ -90,7 +90,7 @@
         count_tag:
           instance: "{{ item.name }}"
         volumes:
-          - device_name: /dev/sda1
+          - device_name: /dev/xvda
             volume_type: io1
             iops: 1000
             volume_size: 50
