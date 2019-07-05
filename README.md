@@ -143,7 +143,7 @@ The buildspec.yml file in the root of the project defines what AWS CodeBuild sho
 
 ### Test creation ###
 
-Create tests for both docker and EC2 in ansible/playbooks/molecule folder. Copy the folder structure from other tests and modify the python .py file in tests folder.
+Create test scenarios for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. Copy the folder structure from other tests and modify the python .py file in tests folder.
 
 ### Testing or deploying on real hardware ###
 
