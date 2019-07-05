@@ -9,6 +9,7 @@
   apt:
     name: 'python3-pip'
     state: 'present'
+    update_cache: yes
   when: pip_status.rc != 0
   become: yes
 
