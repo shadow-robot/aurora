@@ -8,6 +8,6 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 def test_hosts_file(host):
 
-    f = host.file('/home/testuser/.steam/bin/vrstartup.sh')
+    f = host.file('/home/'+str(host.user().name)+'/.steam/bin/vrstartup.sh')
 
     assert f.exists
