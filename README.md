@@ -2,6 +2,9 @@
 - [Development](#development)
   * [Development Docker](#development-docker)
 - [Testing](#testing)
+  * [Testing with molecule_docker](#testing-with-molecule_docker)
+  * [Testing with molecule_ec2](#testing-with-molecule_ec2)
+  * [Automatic tests](#automatic-tests)
   * [Test creation](#test-creation)
   * [Testing on real hardware](#testing-on-real-hardware)
   * [Ethercat interface](#ethercat-interface)
@@ -131,7 +134,7 @@ molecule --debug create -s name_of_your_scenario
 molecule --debug converge -s name_of_your_scenario
 molecule --debug test -s name_of_your_scenario
 ```
-### Automatic tests by AWS CodeBuild and EC2: daily and when a PR is created or updated ###
+### Automatic tests ###
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder
 
