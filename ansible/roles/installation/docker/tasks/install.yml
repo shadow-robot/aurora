@@ -44,22 +44,11 @@
     groups: 'docker'
     append: 'yes'
 
-- name: Docker installation finished
-  debug:
-    msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
+- name: Restart Docker
+  systemd:
+    name: "docker"
+    state: "restarted"
 
-- name: Rebooting computer to finish Docker installation
-  when: allow_auto_reboot|bool
-  async: 1
-  poll: 0
-  shell: sleep 5 && reboot
-
-- name: Waiting for remote host to come back after reboot
-  when: allow_auto_reboot|bool
-  wait_for_connection:
-    delay: '10'
-    timeout: '300'
-
-- name: Finishing Docker installation
-  when: not allow_auto_reboot|bool
-  meta: end_play
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: true
