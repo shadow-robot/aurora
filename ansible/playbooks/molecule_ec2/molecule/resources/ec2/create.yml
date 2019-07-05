@@ -89,6 +89,13 @@
         exact_count: 1
         count_tag:
           instance: "{{ item.name }}"
+        volumes:
+          - device_name: /dev/sdb
+            snapshot: snap-abcdef12
+            volume_type: io1
+            iops: 1000
+            volume_size: 50
+            delete_on_termination: true
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
