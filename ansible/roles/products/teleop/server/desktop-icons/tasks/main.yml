@@ -65,3 +65,11 @@
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "Teleop_ROSCORE"
+
+- name: Install desktop icon for Teleop server Simulation
+  import_tasks: sim-icon.yml
+  vars:
+    desktop_icon_png: "cyberglove_teleop.png"
+    launch_script: "shadow_sim_demo.sh"
+    desktop_icon_name: "Teleop_Simulation"
+  when: sim_icon|bool

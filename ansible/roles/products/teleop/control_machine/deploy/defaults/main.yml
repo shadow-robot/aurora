@@ -14,3 +14,4 @@ use_aws: false
 use_cyberglove: false
 launch_hand: false
 server_hostname: "TELEOP-DEMO"
+ssh_keys_path: "/tmp/id_ssh_rsa"

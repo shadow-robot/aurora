@@ -1,25 +1,29 @@
 ---
 - name: Install OpenVPN dependencies
   apt:
-    name: ["easy-rsa"]
+    name: ["easy-rsa", "openssh-server","ufw"]
     state: "present"
+  become: yes
 
 - name: Add OpenVPN repo apt key
   apt_key:
     url: "https://swupdate.openvpn.net/repos/repo-public.gpg"
     id: "30EBF4E73CCE63EEE124DD278E6DA8B4E158C569"
     state: "present"
+  become: yes
 
 - name: Add OpenVPN repository
   apt_repository:
     repo: "{{ openvpn_apt_repository }}"
     state: "present"
     update_cache: "yes"
+  become: yes
 
 - name: Install OpenVPN
   apt:
     name: openvpn
     state: "present"
+  become: yes
 
 - name: Remove CA directory
   file:
@@ -29,7 +33,6 @@
 
 - name: Create CA directory
   command: make-cadir {{ user_folder }}/openvpn-ca
-  become: yes
 
 - name: Customize CA variable configuration
   lineinfile:
@@ -98,20 +101,20 @@
     regexp: "^{{ item.regex | regex_escape() }}"
     line: "{{ item.value }}"
   with_items:
+    - { regex: "port 1194", value: "port {{ openvpn_port }}" }
+    - { regex: ";proto tcp", value: "proto tcp" }
+    - { regex: "proto udp", value: ";proto udp" }
+    - { regex: ";dev tap", value: "dev tap" }
+    - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
-    - {
-        regex: ';push "redirect-gateway def1 bypass-dhcp"',
-        value: 'push "redirect-gateway def1 bypass-dhcp"',
-      }
-    - { regex: "cert server.crt", value: "cert server.crt" }
-    - { regex: "key server.key", value: "key server.key" }
+    - { regex: ";tls-auth ta.key 0", value: "tls-auth ta.key 0" }
   become: yes
 
 - name: Configuration IP forwarding
   sysctl:
     name: net.ipv4.ip_forward
-    value: 1
+    value: "1"
     state: present
   become: yes
 
@@ -119,6 +122,7 @@
   blockinfile:
     path: /etc/ufw/before.rules
     insertbefore: BOF
+    create: yes
     content: |
       *nat
       :POSTROUTING ACCEPT [0:0]
@@ -131,14 +135,11 @@
     line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
     path: "/etc/default/ufw"
     regexp: '^DEFAULT_FORWARD_POLICY="DROP"'
+    create: yes
   become: yes
 
-- name: Open ufw ports for openvpn and ssh
-  shell: ufw allow openvpn && ufw allow OpenSSH
-  become: yes
-
-- name: Enable ufw
-  shell: ufw --force enable
+- name: Disable ufw
+  shell: ufw --force disable
   become: yes
 
 - name: Start openvpn systemd service
@@ -148,6 +149,7 @@
     daemon_reload: yes
     enabled: yes
   become: yes
+  when: skip_molecule_task is not defined
 
 - name: Generate client certificate key
   shell: source vars; ./build-key --batch {{ client_name }}
@@ -180,14 +182,20 @@
   with_items:
     - {
         regex: "remote my-server-1 1194",
-        value: 'remote {{ groups["servers"][0] }} 1194',
+        value: "remote newvpn.shadowrobot.com {{ openvpn_port }}",
       }
+    - { regex: "port 1194", value: "port {{ openvpn_port }}" }
+    - { regex: ";proto tcp", value: "proto tcp" }
+    - { regex: "proto udp", value: ";proto udp" }
+    - { regex: ";dev tap", value: "dev tap" }
+    - { regex: "dev tun", value: ";dev tun" }
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
     - { regex: "ca ca.crt", value: "#ca ca.crt" }
     - { regex: "cert client.crt", value: "#cert client.crt" }
     - { regex: "key client.key", value: "#key client.key" }
     - { regex: "tls-auth ta.key 1", value: "#tls-auth ta.key 1" }
+  become: yes
 
 - name: Create client ovpn file
   shell: "{{ item }}"
@@ -206,11 +214,3 @@
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
   become: yes
-
-- name: Fetch client configurations
-  fetch:
-    src: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ item|basename }}"
-    dest: "{{ destination_key }}/"
-    flat: yes
-  with_items:
-    - "{{ client_name }}.ovpn"

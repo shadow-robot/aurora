@@ -1,0 +1,20 @@
+---
+- name: Install chrony
+  apt:
+    name: chrony
+    state: present
+  become: yes
+
+- name: Set chrony server IP address
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    state: present
+    line: "server {{ chrony_server_ip }} iburst prefer"
+  become: yes
+
+- name: Restart chrony service
+  service:
+    name: chrony
+    state: restarted
+  become: yes
+  changed_when: false

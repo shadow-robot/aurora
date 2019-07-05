@@ -17,6 +17,15 @@
     name: installation/openvpn-server
   when: use_openvpn|bool
 
+- name: Set chrony allowed network
+  set_fact:
+    chrony_allowed_network: "{{ groups['server'][0].split('.')[0:3] | join('.') }}"
+  when: groups['server'] is defined
+
+- name: Include installation/chrony-server role
+  include_role:
+    name: installation/chrony-server
+
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
@@ -43,28 +52,28 @@
   include_role:
     name: products/teleop/server/desktop-icons
 
-- name: Make sure there is a 2048-bit SSH private and public keys generated on teleop server (SSH client)
-  user:
-    name: "{{ user }}"
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  openssh_keypair:
+    path: "{{ ssh_keys_path }}"
 
-- name: Evaluating the SSH agent and adding the ssh identity
-  shell: |
-    eval "$(ssh-agent)"
-    ssh-add {{ user_folder }}/.ssh/id_rsa
+- name: Evaluating the SSH agent
+  shell: "eval $(ssh-agent)"
   changed_when: false
+
+- name: Adding the ssh identity
+  shell: "ssh-add {{ ssh_keys_path }}"
+  changed_when: false
+  when: skip_molecule_task is not defined
 
 - name: Creating teleop-server setup script
   template:
-    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    src: ../../../common/resources/templates/scripts/teleop-setup.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
 - name: Copying teleop-server setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/teleop-server-setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
 
 - name: Udev rules for vive
