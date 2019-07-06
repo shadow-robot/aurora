@@ -55,5 +55,5 @@
     name: docker
     state: restarted
   become: yes
-  ignore_erros: yes
+  ignore_errors: yes
 
