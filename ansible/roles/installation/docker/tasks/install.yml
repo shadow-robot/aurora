@@ -44,11 +44,13 @@
     groups: 'docker'
     append: 'yes'
 
-- name: Restart Docker
+- name: Reload daemon
   systemd:
-    name: "docker"
-    state: "restarted"
+    daemon_reload: yes
+  become: yes
 
-- name: Reload systemd daemon
-  systemd:
-    daemon_reload: true
+- name: Restart docker after installing docker
+  service:
+    name: docker
+    state: restarted
+  become: yes
