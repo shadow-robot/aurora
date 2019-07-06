@@ -48,6 +48,7 @@
   systemd:
     daemon_reload: yes
   become: yes
+  ignore_errors: yes
 
 - name: Restart docker after installing docker
   service:
