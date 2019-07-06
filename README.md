@@ -53,7 +53,7 @@ Currently both xenial and bionic tags are working well and there is no differenc
 The rest of the document assumes the user is using bionic tag.
 
 Instructions on how to use this:
-1. Use a Ubuntu 16.04 or Ubuntu 18.04 computer
+1. Use Ubuntu 16.04 or Ubuntu 18.04 computer
 2. Install Docker (using instructions from [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/))
 3. Run the following command in terminal to create a container for aurora development:
 
