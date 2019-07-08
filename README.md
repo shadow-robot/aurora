@@ -4,7 +4,9 @@
   * [Development Docker](#development-docker)
 - [Testing](#testing)
   * [Testing with molecule_docker](#testing-with-molecule_docker)
+    * [Private docker images](#private-docker-images)
   * [Testing with molecule_ec2](#testing-with-molecule_ec2)
+    * [Credentials](#credentials)
   * [Automatic tests](#automatic-tests)
   * [Test creation](#test-creation)
   * [Testing on real hardware](#testing-on-real-hardware)
@@ -52,7 +54,9 @@ The rest of the document assumes the user is using bionic tag.
 
 Instructions on how to use this:
 1. Use Ubuntu 16.04 or Ubuntu 18.04 computer
+
 2. Install Docker (using instructions from [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/))
+
 3. Run the following command in terminal to create a container for aurora development:
 
 ```
@@ -71,7 +75,6 @@ cd aurora
 code
 ```
 7. Open the aurora folder in Visual Studio Code
-
 
 ## Testing ##
 
@@ -106,7 +109,7 @@ molecule --debug verify -s name_of_your_scenario
 molecule --degub login -s name_of_your_scenario
 molecule --debug destroy -s name_of_your_scenario
 ```
-### Private docker images ###
+#### Private docker images ####
 
 At the moment, we don't want to give molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test scenarios in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test scenario. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
 
@@ -114,7 +117,7 @@ At the moment, we don't want to give molecule access to private docker hub crede
 
 Once you have written your code for aurora in your branch, and tested it locally with molecule_docker, you can test it with AWS EC2 (initiated from local), by following the steps here:
 
-### Credentials ###
+#### Credentials ####
 
 1. Ask the system adminstrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
 
