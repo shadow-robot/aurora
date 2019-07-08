@@ -4,9 +4,9 @@
   * [Development Docker](#development-docker)
 - [Testing](#testing)
   * [Testing with molecule_docker](#testing-with-molecule_docker)
-    * [Private docker images](#private-docker-images)
+  * [Private docker images](#private-docker-images)
   * [Testing with molecule_ec2](#testing-with-molecule_ec2)
-    * [Credentials](#credentials)
+  * [Credentials](#credentials)
   * [Automatic tests](#automatic-tests)
   * [Test creation](#test-creation)
   * [Testing on real hardware](#testing-on-real-hardware)
@@ -41,11 +41,11 @@ Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/u
 
 Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/) (Aurora is currently using Molecule 2.20.1)
 
-## Development ##
+# Development #
 
 The recommended way to develop code for this project is to pull a certain docker image ([Development Docker](#development-docker)) with a lot of tools already installed and open a container of this image, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
 
-### Development Docker ###
+## Development Docker ##
 
 The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel)
 
