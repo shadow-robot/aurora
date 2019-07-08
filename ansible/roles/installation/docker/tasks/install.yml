@@ -43,7 +43,6 @@
     name: "{{ user }}"
     groups: 'docker'
     append: 'yes'
-  become: yes
 
 - name: Reload daemon
   systemd:
@@ -57,3 +56,7 @@
     state: restarted
   become: yes
   ignore_errors: yes
+
+- name: Give current user docker permissions
+  shell: "newgrp docker"
+  changed_when: false
