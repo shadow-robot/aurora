@@ -41,3 +41,4 @@
   register: docker_pull_result
   until: docker_pull_result.finished
   retries: 1440
+  become: yes
