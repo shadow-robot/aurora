@@ -1,4 +1,5 @@
-## Table of Contents  
+## Table of Contents
+- [Introduction](#introduction)
 - [Development](#development)
   * [Development Docker](#development-docker)
 - [Testing](#testing)
@@ -26,24 +27,21 @@
   * [Docker tests](#docker-tests)
   * [AWS EC2 tests](#aws-ec2-tests)
 - [Syntax and rules](#syntax-and-rules)
+- [Tutorial 1: desktop icon](#tutorial-1)
 
-# Aurora project #
+# Introduction #
 
 Aurora is an installation automation tool using Ansible. It uses Molecule for testing Ansible scripts and it has automated builds in AWS EC2/CodeBuild and DockerHub. It can be used to develop, test and deploy complicated, multi-machine, multi-operating-system automated installs of software. Aurora's purpose is to unify one-liners approaches based on Ansible best practices.
 
 For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
-Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (We are currently using Ansible 2.8.1)
+Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.8.1)
 
-Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/) (We are currently using Molecule 2.20.1)
-
-For certain tests (e.g. AWS EC2 tests) and certain private docker images, contact the system administrator to ask for access
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/) (Aurora is currently using Molecule 2.20.1)
 
 ## Development ##
 
-The preferred way to develop code for this project is to pull a certain docker image with a lot of tools already installed and open a container in it, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
-
-Instructions how to access the docker image and container for development, see Development Docker section below
+The recommended way to develop code for this project is to pull a certain docker image ([Development Docker](#development-docker)) with a lot of tools already installed and open a container of this image, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
 
 ### Development Docker ###
 
@@ -100,41 +98,60 @@ molecule --debug test --all
 ```
 molecule --debug test -s name_of_your_scenario
 ```
-5. If you want to to run Molecule in stages (create, converge, etc.), see [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+5. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
 ```
 molecule --debug create -s name_of_your_scenario
 molecule --debug converge -s name_of_your_scenario
-molecule --debug test -s name_of_your_scenario
+molecule --debug verify -s name_of_your_scenario
+molecule --degub login -s name_of_your_scenario
 molecule --debug destroy -s name_of_your_scenario
 ```
+### Private docker images ###
+
+At the moment, we don't want to give molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test scenarios in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test scenario. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+
 ### Testing with molecule_ec2 ###
 
 Once you have written your code for aurora in your branch, and tested it locally with molecule_docker, you can test it with AWS EC2 (initiated from local), by following the steps here:
 
-1. In the docker container terminal go to /ansible/playbooks/molecule_ec2 folder
+### Credentials ###
+
+1. Ask the system adminstrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
+
+```
+aws configure
+```
+2. Paste the access key and the secret access key
+
+3. Default region name must be: eu-west-2
+
+4. Press enter on the Default format
+
+5. In the docker container terminal go to /ansible/playbooks/molecule_ec2 folder
 
 ```
 cd /home/user/aurora/ansible/playbooks/molecule_ec2
 ```
 
-2. Run the following command to execute all AWS EC2 molecule tests in AWS (but you can see local debug logs):
+6. Run the following command to execute all AWS EC2 molecule tests in AWS (but you can see local debug logs):
 
 ```
 molecule --debug test --all
 ```
 
-3. Fix any errors
+7. Fix any errors
 
-4. If you want to run a specific test case (the AWS EC2 scenarios are in ansible/playbooks/molecule_ec2/molecule folder), use:
+8. If you want to run a specific test case (the AWS EC2 scenarios are in ansible/playbooks/molecule_ec2/molecule folder), use:
 
 ```
 molecule --debug test -s name_of_your_scenario
 ```
-5. If you want to to run Molecule in stages (create, converge, etc.), see [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+9. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
 ```
 molecule --debug create -s name_of_your_scenario
 molecule --debug converge -s name_of_your_scenario
-molecule --debug test -s name_of_your_scenario
+molecule --debug verify -s name_of_your_scenario
+molecule --degub login -s name_of_your_scenario
 molecule --debug destroy -s name_of_your_scenario
 ```
 ### Automatic tests ###
@@ -143,7 +160,7 @@ The buildspec.yml file in the root of the project defines what AWS CodeBuild sho
 
 ### Test creation ###
 
-Create test scenarios for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. Copy the folder structure from other tests and modify the python .py file in tests folder.
+Create test scenarios for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the python .py file in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
 ### Testing or deploying on real hardware ###
 
@@ -254,3 +271,5 @@ Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars
 ### AWS EC2 tests ###
 
 ## Syntax and rules ##
+
+## Tutorial 1: desktop icon ##
