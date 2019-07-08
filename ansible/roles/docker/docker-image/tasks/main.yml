@@ -24,10 +24,20 @@
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
 
-- name: Pulling the image (containing hack for Python 3 path)
+- name: Starting to pull the image
   docker_image:
     name: "{{ full_image_name }}"
     source: pull
   environment:
     PYTHONPATH: "{{ python_packages_path }}"
   become: yes
+  async: 14400
+  poll: 10
+  register: docker_pull_progress
+
+- name: Docker pull in progress...
+  async_status:
+    jid: "{{ docker_pull_progress.ansible_job_id }}"
+  register: docker_pull_result
+  until: docker_pull_result.finished
+  retries: 1440
