@@ -10,6 +10,5 @@ use_openvpn: false # Specify if openvpn-client should be installed
 openvpn_port: "1196" # Override this with another value if you want to use a different port
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
-allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 remote_cyberglove: true # Determines if the cyberglove is run locally (server) or remotely (client)
 use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine

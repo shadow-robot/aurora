@@ -31,3 +31,6 @@
   import_tasks: install.yml
   when: not docker_check.stat.exists
   become: yes
+
+- name: Reset the connection to allow any Docker group changes to affect the user
+  meta: reset_connection
