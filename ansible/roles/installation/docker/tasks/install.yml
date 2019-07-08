@@ -43,6 +43,16 @@
     name: "{{ user }}"
     groups: 'docker'
     append: 'yes'
+  register: user_status
+
+#TODO: find a better fix for this issue: https://github.com/ansible/ansible/issues/24794#issuecomment-311223304
+- name: "Remove cp dir to force ssh reconnection"
+  file:
+    path: ~/.ansible/cp
+    state: absent
+  delegate_to: 127.0.0.1
+  changed_when: false
+  when: user_status is changed
 
 - name: Reload daemon
   systemd:
@@ -56,7 +66,3 @@
     state: restarted
   become: yes
   ignore_errors: yes
-
-- name: Give current user docker permissions
-  shell: "newgrp docker"
-  changed_when: false
