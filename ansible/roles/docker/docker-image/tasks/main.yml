@@ -34,6 +34,7 @@
   poll: 0
   register: docker_pull_job
   become: yes
+  changed_when: false
 
 - name: Wait for Docker image pull to complete
   async_status:
