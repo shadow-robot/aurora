@@ -76,9 +76,9 @@ code
 ```
 7. Open the aurora folder in Visual Studio Code
 
-## Testing ##
+# Testing #
 
-### Testing with molecule_docker ###
+## Testing with molecule_docker ##
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
 
@@ -109,15 +109,15 @@ molecule --debug verify -s name_of_your_scenario
 molecule --degub login -s name_of_your_scenario
 molecule --debug destroy -s name_of_your_scenario
 ```
-#### Private docker images ####
+## Private docker images ##
 
 At the moment, we don't want to give molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test scenarios in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test scenario. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
 
-### Testing with molecule_ec2 ###
+## Testing with molecule_ec2 ##
 
 Once you have written your code for aurora in your branch, and tested it locally with molecule_docker, you can test it with AWS EC2 (initiated from local), by following the steps here:
 
-#### Credentials ####
+## Credentials ##
 
 1. Ask the system adminstrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
 
@@ -130,26 +130,29 @@ aws configure
 
 4. Press enter on the Default format
 
-5. In the docker container terminal go to /ansible/playbooks/molecule_ec2 folder
+
+Then continue testing with molecule_ec2:
+
+1. In the docker container terminal go to /ansible/playbooks/molecule_ec2 folder
 
 ```
 cd /home/user/aurora/ansible/playbooks/molecule_ec2
 ```
 
-6. Run the following command to execute all AWS EC2 molecule tests in AWS (but you can see local debug logs):
+2. Run the following command to execute all AWS EC2 molecule tests in AWS (but you can see local debug logs):
 
 ```
 molecule --debug test --all
 ```
 
-7. Fix any errors
+3. Fix any errors
 
-8. If you want to run a specific test case (the AWS EC2 scenarios are in ansible/playbooks/molecule_ec2/molecule folder), use:
+4. If you want to run a specific test case (the AWS EC2 scenarios are in ansible/playbooks/molecule_ec2/molecule folder), use:
 
 ```
 molecule --debug test -s name_of_your_scenario
 ```
-9. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+5. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
 ```
 molecule --debug create -s name_of_your_scenario
 molecule --debug converge -s name_of_your_scenario
@@ -157,15 +160,15 @@ molecule --debug verify -s name_of_your_scenario
 molecule --degub login -s name_of_your_scenario
 molecule --debug destroy -s name_of_your_scenario
 ```
-### Automatic tests ###
+## Automatic tests ##
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder
 
-### Test creation ###
+## Test creation ##
 
 Create test scenarios for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the python .py file in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
-### Testing or deploying on real hardware ###
+## Testing or deploying on real hardware ##
 
 For debugging (not using the master branch), you can add the following immediately after playbook name (for example docker_deploy or teleop_deploy):
 
@@ -181,7 +184,7 @@ For assigning input and secure input to playbook variables you can use the tags:
 * --read-input vars (e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
 * --read-secure secure_vars (e.g. --read_secure docker_password - To allow aurora script to prompt for docker password)
 
-#### Ethercat interface ####
+## Ethercat interface ##
 
 Before running the docker_deploy playbook ##
 
@@ -195,19 +198,21 @@ command in the console. At the bottom, there will be information similar to the 
 ```
 In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
 
-## Structure of files ##
+# Deployment #
 
-### Common ###
+# Structure of files #
 
-### Products ###
+## Common ##
 
-### Dependencies ###
+## Products ##
 
-## Playbooks and possible command line arguments ##
+## Dependencies ##
 
-### Playbook creation ###
+# Playbooks and possible command line arguments #
 
-### teleop_deploy ###
+## Playbook creation ##
+
+## teleop_deploy ##
 
 For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
 
@@ -231,7 +236,7 @@ Options for teleop_deploy playbook are here for the following machines:
 * [client](ansible/inventory/teleop/group_vars/client.yml)
 * [windows-machine](ansible/inventory/teleop/group_vars/windows-machine.yml)
 
-### docker_deploy ###
+## docker_deploy ##
 
 For Hand E/G/H software deployments on single laptop.
 
@@ -257,22 +262,22 @@ bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interfa
 
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
-### configure_software ###
+## configure_software ##
 
-### install_software ###
+## install_software ##
 
-### install_python3 ###
+## install_python3 ##
 
-## Inventories ##
+# Inventories #
 
-## Roles ##
+# Roles #
 
-## Molecule tests ##
+# Molecule tests #
 
-### Docker tests ###
+## Docker tests ##
 
-### AWS EC2 tests ###
+## AWS EC2 tests ##
 
-## Syntax and rules ##
+# Syntax and rules #
 
-## Tutorial 1: desktop icon ##
+# Tutorial 1: desktop icon #
