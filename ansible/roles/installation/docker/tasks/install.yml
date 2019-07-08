@@ -59,3 +59,4 @@
 
 - name: Reset the connection to allow user changes to affect the user
   meta: reset_connection
+  become: yes
