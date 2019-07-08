@@ -1,4 +1,4 @@
-## Table of Contents
+# Table of Contents
 - [Introduction](#introduction)
 - [Development](#development)
   * [Development Docker](#development-docker)
