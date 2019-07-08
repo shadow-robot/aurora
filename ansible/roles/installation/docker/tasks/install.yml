@@ -42,7 +42,7 @@
   user:
     name: "{{ user }}"
     groups: 'docker'
-    present: 'yes'
+    append: 'yes'
   become: yes
 
 - name: Reload daemon
