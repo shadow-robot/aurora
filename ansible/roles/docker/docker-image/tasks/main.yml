@@ -24,7 +24,7 @@
   - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 1)
     docker_image_info:
       name: "{{ full_image_name }}-nvidia"
-      register: docker_nvidia_facts
+    register: docker_nvidia_facts
 
   - name: Create an nvidialized image (for nvidia-docker 1) if it does not exist on Dockerhub
     when: docker_nvidia_facts.images[0].Id == ""
@@ -45,7 +45,7 @@
   - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 2)
     docker_image_info:
       name: "{{ full_image_name }}-nvidia2"
-      register: docker_nvidia_facts
+    register: docker_nvidia_facts
 
   - name: Create an nvidialized image (for nvidia-docker 2) if it does not exist on Dockerhub
     when: docker_nvidia_facts.images[0].Id == ""
