@@ -26,4 +26,5 @@ def test_docker_container_exists(host):
 def test_correct_docker_image(host):
     client = docker.from_env()
     image = str(client.containers.get('teleop').image)
-    assert image == "<Image: 'shadowrobot/dexterous-hand:kinetic-release-nvidia2'>"
+    correct_image = "shadowrobot/dexterous-hand:kinetic-release-nvidia2"
+    assert image == "<Image: '"+correct_image+"'>"
