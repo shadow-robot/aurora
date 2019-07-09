@@ -281,7 +281,7 @@ molecule --debug destroy -s name_of_your_test_case
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder. AWS buildspec specification is [here](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
 
-## Testing or deploying on real hardware ##
+## Testing on real hardware ##
 
 For debugging (not using the master branch), you can add the following immediately after playbook name (for example docker_deploy or teleop_deploy):
 
