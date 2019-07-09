@@ -459,6 +459,13 @@ Steps:
 
 4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create sub-folders deploy and desktop-icons. Inside deploy and desktop-icons folders, create sub-folders defaults and tasks, in each folder. Inside those, create an empty main.yml file. Also create a sub-folder files inside desktop-icons folder. You should have the following file structure:
 
+# products
+- some other folders
+- tutorial
+  * deploy
+
+  
+  
 products
 * (some other folders)
  * tutorial
