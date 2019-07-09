@@ -3,7 +3,6 @@
 - [How to run](#how-to-run)
   * [teleop_deploy](#teleop_deploy)
   * [docker_deploy](#docker_deploy)
-    * [Ethercat interface](#ethercat-interface)
   * [configure_software](#configure_software)
   * [install_software](#install_software)
   * [install_python3](#install_python3)
@@ -84,6 +83,12 @@ For assigning input and secure input to playbook variables you can use the tags:
 
 For Hand E/G/H software deployments on single laptop.
 
+To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
+new clean installation is performed. If the required image is private, 
+then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
+container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
+launches the hand.
+
 Ethercat interface
 
 Before running the docker_deploy playbook, the ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
@@ -95,12 +100,6 @@ command in the console. At the bottom, there will be information similar to the 
 [490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
 ```
 In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
-
-To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
-new clean installation is performed. If the required image is private, 
-then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
-container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
-launches the hand.
 
 How to run:
 
