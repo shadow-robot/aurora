@@ -1,5 +1,12 @@
 # Table of Contents
 - [Introduction](#introduction)
+- [How to run](#how-to-run)
+  * [Ethercat interface](#ethercat-interface)
+  * [teleop_deploy](#teleop_deploy)
+  * [docker_deploy](#docker_deploy)
+  * [configure_software](#configure_software)
+  * [install_software](#install_software)
+  * [install_python3](#install_python3)
 - [Development](#development)
   * [Development Docker](#development-docker)
 - [Testing](#testing)
@@ -10,8 +17,6 @@
   * [Automatic tests](#automatic-tests)
   * [Test creation](#test-creation)
   * [Testing on real hardware](#testing-on-real-hardware)
-  * [Ethercat interface](#ethercat-interface)
-- [Deployment](#deployment)
 - [Structure of files](#structure-of-files)
   * [Roles](#roles)
   * [Docker](#docker)
@@ -22,11 +27,6 @@
   * [Dependencies](#dependencies)
 - [Playbooks and possible command line arguments](#playbooks-and-possible-command-line-arguments)
   * [Playbook creation](#playbook-creation)
-  * [teleop_deploy](#teleop_deploy)
-  * [docker_deploy](#docker_deploy)
-  * [configure_software](#configure_software)
-  * [install_software](#install_software)
-  * [install_python3](#install_python3)
 - [Inventories](#inventories)
 - [Molecule tests](#molecule-tests)
   * [Docker tests](#docker-tests)
@@ -43,6 +43,88 @@ For example, it's possible to use Aurora to install Docker, download the specifi
 Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.8.1)
 
 Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/) (Aurora is currently using Molecule 2.20.1)
+
+# How to run #
+
+## Ethercat interface ##
+
+Before running the docker_deploy playbook ##
+
+Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
+```shell
+sudo dmesg
+```
+command in the console. At the bottom, there will be information similar to the one below:
+```shell
+[490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
+```
+In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
+
+## teleop_deploy ##
+
+For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
+
+How to run:
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory option1=value1 option2=value2 option3=value3
+```
+name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
+
+Inventories correspond to fixed IP addresses as shown here:
+* [development](ansible/inventory/teleop/development)
+* [staging](ansible/inventory/teleop/staging)
+* [production](ansible/inventory/teleop/production)
+
+Options for teleop_deploy playbook are here for the following machines:
+* [server](ansible/inventory/teleop/group_vars/server.yml)
+* [control-machine](ansible/inventory/teleop/group_vars/control-machine.yml)
+* [client](ansible/inventory/teleop/group_vars/client.yml)
+* [windows-machine](ansible/inventory/teleop/group_vars/windows-machine.yml)
+
+Run a playbook against one or more members of that group using the --limit tag:
+
+* --limit rules (e.g. --limit 'all:!server' please use single quotes. More details could be found 
+[here](https://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/commands/#limit-to-one-or-more-hosts))
+
+For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
+
+* --read-input vars (e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
+* --read-secure secure_vars (e.g. --read_secure docker_password - To allow aurora script to prompt for docker password)
+
+## docker_deploy ##
+
+For Hand E/G/H software deployments on single laptop.
+
+To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
+new clean installation is performed. If the required image is private, 
+then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
+container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
+launches the hand.
+
+How to run:
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy option1=value1 option2=value2 option3=value3
+```
+
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25
+```
+
+Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
+
+## configure_software ##
+
+## install_software ##
+
+## install_python3 ##
 
 # Development #
 
@@ -65,7 +147,7 @@ Instructions on how to use this:
 ```
 docker run -it --name aurora_dev -e DISPLAY -e QT_X11_NO_MITSHM=1 -e LOCAL_USER_ID=$(id -u) -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix:rw shadowrobot/aurora-molecule-devel:bionic
 ```
-4. Once the container has launched, clone aurora to it:
+4. Once the container has launched, clone aurora to home directory:
 ```
 git clone https://github.com/shadow-robot/aurora.git
 ```
@@ -176,32 +258,6 @@ Create test scenarios for both docker in ansible/playbooks/molecule_docker/molec
 For debugging (not using the master branch), you can add the following immediately after playbook name (for example docker_deploy or teleop_deploy):
 
 * --debug-branch name_of_aurora_repo_branch (e.g. --debug-branch F#SRC-2603_add_ansible_bootstrap)
-
-Run a playbook against one or more members of that group using the --limit tag:
-
-* --limit rules (e.g. --limit 'all:!server' please use single quotes. More details could be found 
-[here](https://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/commands/#limit-to-one-or-more-hosts))
-
-For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
-
-* --read-input vars (e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
-* --read-secure secure_vars (e.g. --read_secure docker_password - To allow aurora script to prompt for docker password)
-
-## Ethercat interface ##
-
-Before running the docker_deploy playbook ##
-
-Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
-```shell
-sudo dmesg
-```
-command in the console. At the bottom, there will be information similar to the one below:
-```shell
-[490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
-```
-In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
-
-# Deployment #
 
 # Structure of files #
 
@@ -369,65 +425,7 @@ An example of a role section:
     - {role: docker/aws, when: use_aws|bool}
 ```
 
-## teleop_deploy ##
-
-For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
-
-How to run:
-
-Open a terminal with Ctrl+Alt+T and run:
-
-```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory option1=value1 option2=value2 option3=value3
-```
-name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
-
-Inventories correspond to fixed IP addresses as shown here:
-* [development](ansible/inventory/teleop/development)
-* [staging](ansible/inventory/teleop/staging)
-* [production](ansible/inventory/teleop/production)
-
-Options for teleop_deploy playbook are here for the following machines:
-* [server](ansible/inventory/teleop/group_vars/server.yml)
-* [control-machine](ansible/inventory/teleop/group_vars/control-machine.yml)
-* [client](ansible/inventory/teleop/group_vars/client.yml)
-* [windows-machine](ansible/inventory/teleop/group_vars/windows-machine.yml)
-
-## docker_deploy ##
-
-For Hand E/G/H software deployments on single laptop.
-
-To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
-new clean installation is performed. If the required image is private, 
-then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
-container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
-launches the hand.
-
-How to run:
-
-Open a terminal with Ctrl+Alt+T and run:
-
-```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy option1=value1 option2=value2 option3=value3
-```
-
-Example:
-
-```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25
-```
-
-Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
-
-## configure_software ##
-
-## install_software ##
-
-## install_python3 ##
-
 # Inventories #
-
-
 
 # Molecule tests #
 
@@ -648,7 +646,7 @@ lint:
   name: yamllint
 platforms:
   # Adding hostname to instance name in order to allow parallel EC2 execution of tests from CodeBuild
-  - name: teleop_server_chrony_ec2_${HOSTNAME}
+  - name: tutorial_1_ec2_${HOSTNAME}
     image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
