@@ -275,13 +275,13 @@ The roles folder contains the following sub-folders:
 
 ## Docker ##
 
-The docker folder contains some general roles that are used in after docker install. It has the following folders:
+The docker folder contains some general roles that are used after docker install. It has the following folders:
 
-aws: this is used for installing our shadow-upload.sh script and AWS customer key which uploads ROS logs to AWS. It has a dependency of installation/aws-cli
+ - aws: this is used for installing our shadow-upload.sh script and AWS customer key which uploads ROS logs to AWS. It has a dependency of installation/aws-cli
 
-docker-image: this is used for pulling the docker image (and if nvidia_docker it not 0, it will append -nvidia to the docker image before it is pulled)
+ - docker-image: this is used for pulling the docker image (and if nvidia_docker is not 0, it will append -nvidia to the docker image before it is pulled)(nvidia_docker group_var specifies the version of nvidia-docker that should be used: 1 or 2. 0 means nvidia-docker is not installed, only normal docker.
 
-setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, and to create the /usr/local/bin/entrypoint.sh file
+ - setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, and to create the /usr/local/bin/entrypoint.sh file
 
 ## Installation ##
 
@@ -333,7 +333,7 @@ For various bash/docker/etc. scripts, it's often useful to use Jinja2 templates 
 
 ## Dependencies ##
 
-There are 2 main way of including dependencies in Ansible roles. The primary way we use is the "include_role" method because it is dynamic (see [here](https://docs.ansible.com/ansible/latest/modules/include_role_module.html) for documentation).
+There are 2 main way of including dependencies in Ansible roles. The preferred way we use is the "include_role" method because it is dynamic (see [here](https://docs.ansible.com/ansible/latest/modules/include_role_module.html) for documentation).
 
 E.g. if we want to include a particular role to install Docker, we do:
 
