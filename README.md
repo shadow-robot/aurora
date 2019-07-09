@@ -465,14 +465,14 @@ products
   * deploy
     * defaults
       * main.yml
-   * tasks
-    * main.yml
+    * tasks
+      * main.yml
   * desktop-icons
-   * defaults
-    * main.yml
-   * tasks
-    * main.yml
-   * files
+    * defaults
+      * main.yml
+     * tasks
+       * main.yml
+     * files
 
 5. Edit your playbook's (tutorial_icon_deploy.yml) role section to point to the tutorial role's deploy section like this:
 
