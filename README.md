@@ -117,10 +117,44 @@ Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars
 
 ## configure_software ##
 
+This runs the docker/setup-ui role (details are [here](ansible/roles/docker/setup-ui/tasks/main.yml) when it is passed a list of software which includes 'setup-docker'. This is used in the DockerHub Docker image builds for Aurora
+
+**How to run:**
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) configure_software software=['setup-docker']
+```
+
 ## install_software ##
+
+This installs software based on external parameters (details are [here](https://github.com/shadow-robot/aurora/blob/master/ansible/playbooks/install_software.yml) when it is passed a list of software. This is used in the DockerHub Docker image builds for Aurora and also builds of shadow-teleop Docker images
+
+**How to run:**
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) install_software software=['software1','software2','software3']
+```
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) install_software software=['docker','aws-cli']
+```
 
 ## install_python3 ##
 
+This installs the default Python3 for Ubuntu 16.04 and 18.04 (Python 3.5.2). Details [here](https://github.com/shadow-robot/aurora/blob/master/ansible/playbooks/install_python3.yml). It also sets ansible_python_interpreter correctly for Python3 
+
+**How to run:**
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) install_python3
+```
 # Development #
 
 The recommended way to develop code for this project is to pull a certain docker image ([Development Docker](#development-docker)) with a lot of tools already installed and open a container of this image, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
@@ -276,7 +310,7 @@ The docker folder contains some general roles that are used after docker install
 
  - docker-image: this is used for pulling the docker image (and if nvidia_docker is not 0, it will append -nvidia to the docker image before it is pulled)(nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) specifies the version of nvidia-docker that should be used: 1 or 2. 0 means nvidia-docker is not installed, only normal docker.
 
- - setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, and to create the /usr/local/bin/entrypoint.sh file
+ - setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, etc., to create the /usr/local/bin/entrypoint.sh file and setting up a new Docker user
 
 ## Installation ##
 
