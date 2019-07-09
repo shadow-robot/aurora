@@ -41,7 +41,7 @@ For example, it's possible to use Aurora to install Docker, download the specifi
 
 Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.8.1)
 
-Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/) (Aurora is currently using Molecule 2.20.1)
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/usage.html) (Aurora is currently using Molecule 2.20.1)
 
 # How to run #
 
@@ -49,7 +49,7 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/stabl
 
 For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
 
-How to run:
+**How to run:**
 
 Open a terminal with Ctrl+Alt+T and run:
 
@@ -89,7 +89,7 @@ then a valid Docker Hub account with pull credentials from Shadow Robot's Docker
 container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
 launches the hand.
 
-Ethercat interface
+**Ethercat interface**
 
 Before running the docker_deploy playbook, the ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
 ```shell
@@ -101,7 +101,7 @@ command in the console. At the bottom, there will be information similar to the 
 ```
 In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
 
-How to run:
+**How to run:**
 
 Open a terminal with Ctrl+Alt+T and run:
 
@@ -161,7 +161,7 @@ code .
 
 ## Test creation ##
 
-Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the python .py file in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
+Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the .py, playbook.yml and molecule.yml files in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
 ## Testing with molecule_docker ##
 
@@ -247,7 +247,7 @@ molecule --debug destroy -s name_of_your_test_case
 ```
 ## Automatic tests ##
 
-The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder
+The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder. AWS buildspec specification is [here](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
 
 ## Testing or deploying on real hardware ##
 
@@ -276,7 +276,7 @@ The docker folder contains some general roles that are used after docker install
 
  - aws: this is used for installing our shadow-upload.sh script and AWS customer key which uploads ROS logs to AWS. It has a dependency of installation/aws-cli
 
- - docker-image: this is used for pulling the docker image (and if nvidia_docker is not 0, it will append -nvidia to the docker image before it is pulled)(nvidia_docker group_var specifies the version of nvidia-docker that should be used: 1 or 2. 0 means nvidia-docker is not installed, only normal docker.
+ - docker-image: this is used for pulling the docker image (and if nvidia_docker is not 0, it will append -nvidia to the docker image before it is pulled)(nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) specifies the version of nvidia-docker that should be used: 1 or 2. 0 means nvidia-docker is not installed, only normal docker.
 
  - setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, and to create the /usr/local/bin/entrypoint.sh file
 
@@ -347,6 +347,12 @@ dependencies:
 ```
 
 # Playbooks #
+
+Playbooks are "the main thing that runs" in Ansible and Aurora. 
+
+From the Ansible [website](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html): "Playbooks are the basis for a really simple configuration management and multi-machine deployment system, unlike any that already exist, and one that is very well suited to deploying complex applications. 
+
+Playbooks can declare configurations, but they can also orchestrate steps of any manual ordered process, even as different steps must bounce back and forth between sets of machines in particular orders. They can launch tasks synchronously or asynchronously."
 
 ## Playbook creation ##
 
@@ -423,10 +429,14 @@ An example of a role section:
 
 # Inventories #
 
-# Molecule tests #
+An inventory is a file with group names and fixed IP addresses and some limited connection-related variables of the machines where we want the playbook to run. The inventory group names are required in playbooks in the hosts parameter (e.g. hosts: all). You can read more about hosts in playbooks [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#hosts-and-users)
 
-## Docker tests ##
-## AWS EC2 tests ##
+Inventories for teleop correspond to fixed IP addresses as shown here:
+* [development](ansible/inventory/teleop/development)
+* [staging](ansible/inventory/teleop/staging)
+* [production](ansible/inventory/teleop/production)
+
+More information available [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
 
 # Syntax and rules #
 
