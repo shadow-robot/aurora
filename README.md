@@ -3,7 +3,7 @@
 - [How to run](#how-to-run)
   * [teleop_deploy](#teleop_deploy)
   * [docker_deploy](#docker_deploy)
-  * [Ethercat interface](#ethercat-interface)
+    * [Ethercat interface](#ethercat-interface)
   * [configure_software](#configure_software)
   * [install_software](#install_software)
   * [install_python3](#install_python3)
@@ -82,7 +82,7 @@ For assigning input and secure input to playbook variables you can use the tags:
 
 ## docker_deploy ##
 
-## Ethercat interface ##
+### Ethercat interface ###
 
 Before running the docker_deploy playbook
 
