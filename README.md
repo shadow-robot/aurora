@@ -339,7 +339,7 @@ E.g. if we want to include a particular role to install Docker, we do:
   include_role:
     name: installation/docker
 ```
-The other way of having dependencies in Ansible is by using the meta folder and main.yml inside the meta folder. Any tasks in meta/main.yml are run before the task/main.yml. An example of meta/main.yml:
+The other way of having dependencies in Ansible is by using the meta folder and main.yml inside the meta folder. Please note: any meta dependencies are static only and will not take into account any group_vars or dynamic variables. That means that meta dependencies will only use the default/main.yml default value, nothing else. Any tasks in meta/main.yml are run before the task/main.yml. An example of meta/main.yml:
 
 ```bash
 dependencies:
