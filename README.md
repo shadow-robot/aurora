@@ -27,10 +27,8 @@
 - [Playbooks](#playbooks)
   * [Playbook creation](#playbook-creation)
 - [Inventories](#inventories)
-- [Molecule tests](#molecule-tests)
-  * [Docker tests](#docker-tests)
-  * [AWS EC2 tests](#aws-ec2-tests)
 - [Syntax and rules](#syntax-and-rules)
+- [Special variables](#special-variables)
 - [Tutorial 1 desktop icon](#tutorial-1-desktop-icon)
 
 # Introduction #
@@ -348,11 +346,9 @@ dependencies:
 
 # Playbooks #
 
-Playbooks are "the main thing that runs" in Ansible and Aurora. 
+Playbooks are "the main thing that runs"/"main executable" in Aurora. 
 
-From the Ansible [website](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html): "Playbooks are the basis for a really simple configuration management and multi-machine deployment system, unlike any that already exist, and one that is very well suited to deploying complex applications. 
-
-Playbooks can declare configurations, but they can also orchestrate steps of any manual ordered process, even as different steps must bounce back and forth between sets of machines in particular orders. They can launch tasks synchronously or asynchronously."
+From the Ansible [website](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html): "Playbooks are the basis for a really simple configuration management and multi-machine deployment system, unlike any that already exist, and one that is very well suited to deploying complex applications."
 
 ## Playbook creation ##
 
@@ -439,6 +435,14 @@ Inventories for teleop correspond to fixed IP addresses as shown here:
 More information available [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
 
 # Syntax and rules #
+
+1. Use lower case, words_separated_by_underscore file, folder, task, role, inventory group, playbook and any other names
+2. Spaces are very important! Don't leave extra, unnecessary spaces anywhere, but also remember to add a newline to the end of all files
+3. Follow [this](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html) YAML syntax, paying special attention to the "Gotchas" [here](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#gotchas)
+
+# Special variables #
+
+Ansible has several special variables which can be accessed in playbooks, roles and tasks. E.g. if the special variable is ansible_user, you can access it using {{ ansible_user }}. Full list of special variables is [here](https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html)
 
 # Tutorial 1 desktop icon #
 
@@ -688,5 +692,10 @@ verifier:
 
 19. When all tests are passing (initiated locally), create a PR of your branch and see the AWS automatic build activate as well as the DockerHub tests (building aurora Docker images). All tests must pass before even thinking about merging to master (and in this exercise, please DO NOT MERGE to master!). More information available here: [Automatic tests](#automatic-tests)
 
-20. 
+20. Once your PR is passing (all green), you are ready to test your branch on real hardware. For this tutorial, you will test your branch on your own local machine by opening a terminal window by pressing Ctrl+Alt+T and run this:
+```bash
+bash <(curl -Ls bit.ly/run-aurora) tutorial_icon_deploy --debug-branch NameOfYourBranch username=YourName
+```
+Rememeber to substitute in NameOfYourBranch and YourName
 
+21. The desktop icon should be created and when you double-click on it, a window should pop up and greet you using the username you passed in. You have now completed Tutorial 1
