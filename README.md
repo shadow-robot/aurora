@@ -84,7 +84,7 @@ For assigning input and secure input to playbook variables you can use the tags:
 
 ## Ethercat interface ##
 
-Before running the docker_deploy playbook ##
+Before running the docker_deploy playbook
 
 Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
 ```shell
