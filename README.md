@@ -287,26 +287,26 @@ The docker folder contains some general roles that are used after docker install
 
 Any programs that need to be installed are placed in the installation role. It has the following folders:
 
-aws-cli
-chrony-client
-chrony-server
-docker
-nvidia-docker
-openvpn-client
-openvpn-server
-pycharm
-qtcreator
-steamvr
-vscode
+ - aws-cli
+ - chrony-client
+ - chrony-server
+ - docker
+ - nvidia-docker
+ - openvpn-client
+ - openvpn-server
+ - pycharm
+ - qtcreator
+ - steamvr
+ - vscode
 
 ## Products ##
 
 The Products folder (/ansible/roles/products) contains groupings of roles under folders:
 
-common
-hand-e
-hand-h
-teleop
+ - common
+ - hand-e
+ - hand-h
+ - teleop
 
 The logic is: everything to do with hand-e is in the hand-e folder, everything to do with teleop is in the teleop folder.
 The common product is special, see below.
@@ -317,11 +317,11 @@ The common role contains any common task or roles that is used repeatedly in man
 
 It contains the following roles:
 
-cyberglove
-demo-icons
-docker-container
-resources
-save-logs-icons
+ - cyberglove
+ - demo-icons
+ - docker-container
+ - resources
+ - save-logs-icons
 
 For example, since docker-container contains the Ansible scripts for creating a Docker container, and it is a very common task shared by many products, it makes sense to have it in common so it can be referred to by other products.
 
