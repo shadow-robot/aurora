@@ -31,7 +31,7 @@
   * [Docker tests](#docker-tests)
   * [AWS EC2 tests](#aws-ec2-tests)
 - [Syntax and rules](#syntax-and-rules)
-- [Tutorial 1: desktop icon](#tutorial-1)
+- [Tutorial 1: desktop icon](#tutorial-1:-desktop-icon)
 
 # Introduction #
 
