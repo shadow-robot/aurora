@@ -1,9 +1,9 @@
 # Table of Contents
 - [Introduction](#introduction)
 - [How to run](#how-to-run)
-  * [Ethercat interface](#ethercat-interface)
   * [teleop_deploy](#teleop_deploy)
   * [docker_deploy](#docker_deploy)
+  * [Ethercat interface](#ethercat-interface)
   * [configure_software](#configure_software)
   * [install_software](#install_software)
   * [install_python3](#install_python3)
@@ -46,20 +46,6 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/stabl
 
 # How to run #
 
-## Ethercat interface ##
-
-Before running the docker_deploy playbook ##
-
-Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
-```shell
-sudo dmesg
-```
-command in the console. At the bottom, there will be information similar to the one below:
-```shell
-[490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
-```
-In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
-
 ## teleop_deploy ##
 
 For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
@@ -95,6 +81,20 @@ For assigning input and secure input to playbook variables you can use the tags:
 * --read-secure secure_vars (e.g. --read_secure docker_password - To allow aurora script to prompt for docker password)
 
 ## docker_deploy ##
+
+## Ethercat interface ##
+
+Before running the docker_deploy playbook ##
+
+Before setting up the docker container, ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
+```shell
+sudo dmesg
+```
+command in the console. At the bottom, there will be information similar to the one below:
+```shell
+[490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
+```
+In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
 
 For Hand E/G/H software deployments on single laptop.
 
