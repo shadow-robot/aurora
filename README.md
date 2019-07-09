@@ -82,6 +82,8 @@ For assigning input and secure input to playbook variables you can use the tags:
 
 ## docker_deploy ##
 
+For Hand E/G/H software deployments on single laptop.
+
 ### Ethercat interface ###
 
 Before running the docker_deploy playbook
@@ -96,7 +98,6 @@ command in the console. At the bottom, there will be information similar to the 
 ```
 In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
 
-For Hand E/G/H software deployments on single laptop.
 
 To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
 new clean installation is performed. If the required image is private, 
