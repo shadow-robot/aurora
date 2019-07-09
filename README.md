@@ -25,7 +25,7 @@
   * [Common](#common)
   * [Templating](#templating)
   * [Dependencies](#dependencies)
-- [Playbooks and possible command line arguments](#playbooks-and-possible-command-line-arguments)
+- [Playbooks](#playbooks)
   * [Playbook creation](#playbook-creation)
 - [Inventories](#inventories)
 - [Molecule tests](#molecule-tests)
@@ -132,7 +132,7 @@ The recommended way to develop code for this project is to pull a certain docker
 
 ## Development Docker ##
 
-The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel)
+The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel).
 
 Currently both xenial and bionic tags are working well and there is no difference.
 The rest of the document assumes the user is using bionic tag.
@@ -157,9 +157,8 @@ cd aurora
 ```
 6. Open Visual Studio Code which is already installed inside the Docker container:
 ```
-code
+code .
 ```
-7. Open the aurora folder in Visual Studio Code
 
 # Testing #
 
@@ -167,7 +166,7 @@ code
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
 
-1. In the docker container terminal go to /ansible/playbooks/molecule_docker folder
+1. In the docker container terminal execute the following command:
 
 ```
 cd /home/user/aurora/ansible/playbooks/molecule_docker
@@ -181,22 +180,22 @@ molecule --debug test --all
 
 3. Fix any errors
 
-4. If you want to run a specific test case (scenarios are in ansible/playbooks/molecule_docker/molecule folder), use:
+4. If you want to run a specific test case (test cases are in ansible/playbooks/molecule_docker/molecule folder), use:
 
 ```
-molecule --debug test -s name_of_your_scenario
+molecule --debug test -s name_of_your_test_case
 ```
 5. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
 ```
-molecule --debug create -s name_of_your_scenario
-molecule --debug converge -s name_of_your_scenario
-molecule --debug verify -s name_of_your_scenario
-molecule --degub login -s name_of_your_scenario
-molecule --debug destroy -s name_of_your_scenario
+molecule --debug create -s name_of_your_test_case
+molecule --debug converge -s name_of_your_test_case
+molecule --debug verify -s name_of_your_test_case
+molecule --degub login -s name_of_your_test_case
+molecule --debug destroy -s name_of_your_test_case
 ```
 ## Private docker images ##
 
-At the moment, we don't want to give molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test scenarios in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test scenario. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+At the moment, we don't want to give molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
 
 ## Testing with molecule_ec2 ##
 
@@ -232,18 +231,18 @@ molecule --debug test --all
 
 3. Fix any errors
 
-4. If you want to run a specific test case (the AWS EC2 scenarios are in ansible/playbooks/molecule_ec2/molecule folder), use:
+4. If you want to run a specific test case (the AWS EC2 test cases are in ansible/playbooks/molecule_ec2/molecule folder), use:
 
 ```
-molecule --debug test -s name_of_your_scenario
+molecule --debug test -s name_of_your_test_case
 ```
 5. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
 ```
-molecule --debug create -s name_of_your_scenario
-molecule --debug converge -s name_of_your_scenario
-molecule --debug verify -s name_of_your_scenario
-molecule --degub login -s name_of_your_scenario
-molecule --debug destroy -s name_of_your_scenario
+molecule --debug create -s name_of_your_test_case
+molecule --debug converge -s name_of_your_test_case
+molecule --debug verify -s name_of_your_test_case
+molecule --degub login -s name_of_your_test_case
+molecule --debug destroy -s name_of_your_test_case
 ```
 ## Automatic tests ##
 
@@ -251,7 +250,7 @@ The buildspec.yml file in the root of the project defines what AWS CodeBuild sho
 
 ## Test creation ##
 
-Create test scenarios for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the python .py file in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
+Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the python .py file in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
 ## Testing or deploying on real hardware ##
 
@@ -350,7 +349,7 @@ dependencies:
   - { role: installation/aws-cli }
 ```
 
-# Playbooks and possible command line arguments #
+# Playbooks #
 
 ## Playbook creation ##
 
