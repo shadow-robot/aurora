@@ -31,7 +31,7 @@
   * [Docker tests](#docker-tests)
   * [AWS EC2 tests](#aws-ec2-tests)
 - [Syntax and rules](#syntax-and-rules)
-- [Tutorial 1: desktop icon](#tutorial-1:-desktop-icon)
+- [Tutorial 1 desktop icon](#tutorial-1-desktop-icon)
 
 # Introduction #
 
@@ -431,7 +431,7 @@ Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars
 
 # Syntax and rules #
 
-# Tutorial 1: desktop icon #
+# Tutorial 1 desktop icon #
 
 Aim: to create a branch of aurora which has an Ansible role to install a desktop icon. When the user clicks on the desktop icon, a terminal window will open and say: "Hello, User!". The user can supply a different username as an extra vars parameter, so e.g. if the user runs the playbook with username=Peter, the terminal window will show "Hello, Peter!"
 
