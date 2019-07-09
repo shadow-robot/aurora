@@ -106,13 +106,13 @@ How to run:
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy ethercat_interface=enp0s25 option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25 config_branch=demohand_C
 ```
 
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
