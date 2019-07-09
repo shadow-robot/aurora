@@ -7,3 +7,4 @@
     use_openvpn=false
     ethercat_interface="enp0s25"
     nvidia_docker=0
+    allow_auto_reboot=true

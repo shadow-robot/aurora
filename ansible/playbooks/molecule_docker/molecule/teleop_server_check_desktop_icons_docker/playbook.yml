@@ -8,3 +8,4 @@
     tag="kinetic-release"
     nvidia_docker=0
     skip_molecule_task=true
+    allow_auto_reboot=true
