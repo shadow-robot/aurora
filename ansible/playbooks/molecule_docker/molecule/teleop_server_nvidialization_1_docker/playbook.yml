@@ -1,0 +1,11 @@
+---
+- name: Testing teleop_server_nvidialization_1_docker
+  import_playbook: ../../../teleop_deploy.yml
+    image="shadowrobot/dexterous-hand"
+    tag="kinetic-release"
+    reinstall=true
+    use_openvpn=false
+    ethercat_interface="enp0s25"
+    nvidia_docker=1
+    skip_molecule_task=true
+    allow_auto_reboot=true
