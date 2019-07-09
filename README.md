@@ -211,8 +211,11 @@ Everything you need to do in Ansible is achieved using roles. Roles basically me
 The roles folder contains the following sub-folders:
 
 [Docker](#docker)
+
 [Installation](#installation)
+
 [Products](#products)
+
 
 ## Docker ##
 
