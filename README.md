@@ -18,6 +18,7 @@
   * [Installation](#installation)
   * [Products](#products)
   * [Common](#common)
+  * [Templating](#templating)
   * [Dependencies](#dependencies)
 - [Playbooks and possible command line arguments](#playbooks-and-possible-command-line-arguments)
   * [Playbook creation](#playbook-creation)
@@ -271,6 +272,10 @@ For example, since docker-container contains the Ansible scripts for creating a 
 
 Whenever you create a role, if it will likely be used by other products (e.g. it's not very specific to your product), please put it under common roles, or if it's for installing some commonly used program, put it under installation.
 
+## Templating ##
+
+For various bash/docker/etc. scripts, it's often useful to use Jinja2 templates (.j2 files). You can read more about .j2 files [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html)). They are stored either in /products/common/resources/ or if they are specific to a particular product, they should be in that products /templates/scripts folder.
+
 ## Dependencies ##
 
 There are 2 main way of including dependencies in Ansible roles. The primary way we use is the "include_role" method because it is dynamic (see [here](https://docs.ansible.com/ansible/latest/modules/include_role_module.html) for documentation).
@@ -496,6 +501,7 @@ user_folder: "/home/{{ user }}"
 ---
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
+username: "{{ user }}"
 tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
 ```
 8. Your desktop-icons/tasks/main.yml should look like this:
@@ -545,6 +551,138 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
 ```
 9. Download a suitable image (.jpg or .png) (e.g min 64x64 resolution, max 1000x1000 resolution) from the internet to be your tutorial_1_icon.png (or .jpg but then remember to change the extension to .jpg in your Ansible scripts as well). Place this image in the desktop-icons/files folder
 
-10. 
+10. Your desktop-icons/templates/scripts/show_terminal.j2 should look like this:
+(you can read more about .j2 files in [Templating](#templating))
+```bash
+#jinja2: trim_blocks:False
+#! /bin/bash
+echo -e \"Hello, {{ username }}!\"
+sleep infinity
 
+```
+11. Now, let's add a Molecule test, which tests if the desktop icon exists. In /playbooks/molecule_docker folder, copy an existing folder (e.g. teleop_empty_server_docker) and paste it and then change the name to e.g. tutorial_1_docker. Inside tutorial_1_docker folder you should have the following folders and files (change file and folder names when necessary)
+
+tutorial_1_docker
+- tests
+  * test_tutorial_1.py
+- Dockerfile.j2
+- molecule.yml
+- playbook.yml
+
+12. You don't need to edit the Dockerfile.j2. Just edit the molecule.yml so it looks like this:
+```bash
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: tutorial_1_docker
+    image: shadowrobot/aurora-test-ubuntu-docker:xenial
+    groups:
+      - docker_deploy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../../roles
+  inventory:
+    links:
+      group_vars: ../../../../inventory/local/group_vars
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
+```
+13. Edit the playbook.yml so it looks like this:
+```bash
+---
+- name: Tutorial 1 playbook
+  import_playbook: ../../../tutorial_icon_deploy.yml
+
+```
+
+14. Edit the test_tutorial_1.py so it looks like this (we are using a general pattern here, which is why we have for loops for icons and scripts).
+```bash
+import os
+import testinfra.utils.ansible_runner
+
+testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+
+
+def test_icons_in_docker(host):
+    desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
+    script_path = '/home/' + str(host.user().name) + \
+                  '/.tutorial/tutorial_1/'
+    icons = (
+        'Launch_Tutorial_1'
+        )
+    scripts = (
+        'show_terminal'
+        )
+    for icon in icons:
+        assert host.file(desktop_path+icon+'.desktop').exists
+    for script in scripts:
+        assert host.file(script_path+script+'.sh').exists
+
+```
+15. Now that your Docker test is ready, create the EC2 test which tests if the desktop icon exists, but it runs on an AWS virtual machine (not in Docker). In /playbooks/molecule_ec2 folder, copy an existing folder (e.g. teleop_server_chrony_ec2) and paste it and then change the name to e.g. tutorial_1_ec2. Inside tutorial_1_ec2 folder you should have the following folders and files (change file and folder names when necessary):
+
+tutorial_1_ec2
+- molecule.yml
+
+16. Edit the molecule.yml so it looks like this:
+```bash
+---
+dependency:
+  name: galaxy
+driver:
+  name: ec2
+lint:
+  name: yamllint
+platforms:
+  # Adding hostname to instance name in order to allow parallel EC2 execution of tests from CodeBuild
+  - name: teleop_server_chrony_ec2_${HOSTNAME}
+    image: ami-04606ba5d5fb731cc
+    instance_type: t2.micro
+    region: eu-west-2
+    vpc_id: vpc-0f8cc2cc245d57eb4
+    vpc_subnet_id: subnet-09c91c82c471613fc
+    groups:
+      - docker_deploy
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../../roles
+  connection_options:
+    ansible_python_interpreter: /usr/bin/python3
+  inventory:
+    links:
+      group_vars: ../../../../inventory/local/group_vars
+  playbooks:
+    create: ../resources/ec2/create.yml
+    destroy: ../resources/ec2/destroy.yml
+    prepare: ../../../install_python3.yml
+    converge: ../../../molecule_docker/molecule/tutorial_1_docker/playbook.yml
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  directory: ../../../molecule_docker/molecule/tutorial_1_docker/tests/
+  lint:
+    name: flake8
+```
+17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)
+
+18. After local Docker tests are complete, you can optionally run the EC2 triggered locally as well by following the steps here: [Testing with molecule_ec2](#testing-with-molecule_ec2) (However, you need to contact the System Adminstrator for credentials as explained here: [Credentials](#credentials))
+
+19. When all tests are passing (initiated locally), create a PR of your branch and see the AWS automatic build activate as well as the DockerHub tests (building aurora Docker images). All tests must pass before even thinking about merging to master (and in this exercise, please DO NOT MERGE to master!). More information available here: [Automatic tests](#automatic-tests)
+
+20. 
 
