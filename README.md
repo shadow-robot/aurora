@@ -13,8 +13,11 @@
   * [Ethercat interface](#ethercat-interface)
 - [Deployment](#deployment)
 - [Structure of files](#structure-of-files)
-  * [Common](#common)
+  * [Roles](#roles)
+  * [Docker](#docker)
+  * [Installation](#installation)
   * [Products](#products)
+  * [Common](#common)
   * [Dependencies](#dependencies)
 - [Playbooks and possible command line arguments](#playbooks-and-possible-command-line-arguments)
   * [Playbook creation](#playbook-creation)
@@ -24,7 +27,6 @@
   * [install_software](#install_software)
   * [install_python3](#install_python3)
 - [Inventories](#inventories)
-- [Roles](#roles)
 - [Molecule tests](#molecule-tests)
   * [Docker tests](#docker-tests)
   * [AWS EC2 tests](#aws-ec2-tests)
@@ -202,15 +204,162 @@ In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
 
 # Structure of files #
 
-## Common ##
+# Roles #
+
+Everything you need to do in Ansible is achieved using roles. Roles basically mean: "execute this set of tasks" (defined in the role's tasks/main.yml file). The roles folder is very important and contains roles and tasks for teleop, hand_e, hand_h and a common role section. It is very important that you re-use existing roles whenever possible to avoid code duplication. Please read about roles [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html) 
+
+The roles folder contains the following sub-folders:
+
+[Docker](#docker)
+[Installation](#installation)
+[Products](#products)
+
+## Docker ##
+
+The docker folder contains some general roles that are used in after docker install. It has the following folders:
+
+aws: this is used for installing our shadow-upload.sh script and AWS customer key which uploads ROS logs to AWS. It has a dependency of installation/aws-cli
+
+docker-image: this is used for pulling the docker image (and if nvidia_docker it not 0, it will append -nvidia to the docker image before it is pulled)
+
+setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, and to create the /usr/local/bin/entrypoint.sh file
+
+## Installation ##
+
+Any programs that need to be installed are placed in the installation role. It has the following folders:
+
+aws-cli
+chrony-client
+chrony-server
+docker
+nvidia-docker
+openvpn-client
+openvpn-server
+pycharm
+qtcreator
+steamvr
+vscode
 
 ## Products ##
 
+The Products folder (/ansible/roles/products) contains groupings of roles under folders:
+
+common
+hand-e
+hand-h
+teleop
+
+The logic is: everything to do with hand-e is in the hand-e folder, everything to do with teleop is in the teleop folder.
+The common product is special, see below.
+
+## Common ##
+
+The common role contains any common task or roles that is used repeatedly in many different products. 
+
+It contains the following roles:
+
+cyberglove
+demo-icons
+docker-container
+resources
+save-logs-icons
+
+For example, since docker-container contains the Ansible scripts for creating a Docker container, and it is a very common task shared by many products, it makes sense to have it in common so it can be referred to by other products.
+
+Whenever you create a role, if it will likely be used by other products (e.g. it's not very specific to your product), please put it under common roles, or if it's for installing some commonly used program, put it under installation.
+
 ## Dependencies ##
+
+There are 2 main way of including dependencies in Ansible roles. The primary way we use is the "include_role" method because it is dynamic (see [here](https://docs.ansible.com/ansible/latest/modules/include_role_module.html) for documentation).
+
+E.g. if we want to include a particular role to install Docker, we do:
+
+```bash
+- name: Include installation/docker role
+  include_role:
+    name: installation/docker
+```
+The other way of having dependencies in Ansible is by using the meta folder and main.yml inside the meta folder. Any tasks in meta/main.yml are run before the task/main.yml. An example of meta/main.yml:
+
+```bash
+dependencies:
+  - { role: installation/aws-cli }
+```
 
 # Playbooks and possible command line arguments #
 
 ## Playbook creation ##
+
+Create your playbook in ansible/playbooks folder. It has be a .yml file with no hyphens (underscores are allowed).
+
+You can read more about playbooks [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
+
+It has to have a similar structure to this:
+
+```bash
+---
+
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
+- name: Install product Docker container and icons
+  hosts: docker_deploy
+  pre_tasks:
+
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
+    - name: check if customer_key is provided and not false
+      when: customer_key is defined and customer_key|bool
+      set_fact:
+        use_aws: true
+
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove|bool
+      set_fact:
+        use_cyberglove: true
+
+  roles:
+    - {role: installation/docker}
+    - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
+    - {role: products/hand-h/deploy, when: product == 'hand_h'}
+    - {role: products/hand-e/deploy, when: product == 'hand_e'}
+    - {role: docker/aws, when: use_aws|bool}
+```
+Key points:
+
+Always start by having:
+
+```bash
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+```
+This is to ensure Python3 is installed. Aurora uses Python3.
+
+Then you need to have one or more of task sections (or pre-task sections, which are executed before tasks) and an optional role section. Another example of a task section in a playbook (without role section):
+
+```bash
+- name: Check which hosts are available for teleop system Install
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: ping all the machines
+      ping:
+  become: yes
+```
+Some task sections specify "hosts", which tells Ansible which hosts to limit the execution to. You can read more about hosts in playbooks [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#hosts-and-users)
+
+An example of a role section:
+
+```bash
+  roles:
+    - {role: installation/docker}
+    - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
+    - {role: products/hand-h/deploy, when: product == 'hand_h'}
+    - {role: products/hand-e/deploy, when: product == 'hand_e'}
+    - {role: docker/aws, when: use_aws|bool}
+```
 
 ## teleop_deploy ##
 
@@ -270,14 +419,73 @@ Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars
 
 # Inventories #
 
-# Roles #
+
 
 # Molecule tests #
 
 ## Docker tests ##
-
 ## AWS EC2 tests ##
 
 # Syntax and rules #
 
 # Tutorial 1: desktop icon #
+
+Aim: to create a branch of aurora which has an Ansible role to install a desktop icon. When the user clicks on the desktop icon, a terminal window will open and say: "Hello, User!". The user can supply a different username as an extra vars parameter, so e.g. if the user runs the playbook with username=Peter, the terminal window will show "Hello, Peter!"
+
+Requirements: you need a laptop/PC with internet, Ubuntu 16.04 or 18.04 installed.
+
+Steps:
+
+1. Create your own branch of aurora (from master). You can call your branch: Tutorial_YourName
+
+2. Go to [Development Docker](#development-docker) section and follow instructions there to set up your development environment
+
+3. Follow instructions in the [Playbook creation](#playbook-creation) section to create your own playbook, you can call it tutorial_icon_deploy.yml. Remember use the Install Python3 import as documented in [Playbook creation](#playbook-creation) and include a roles section. Your playbook should look something like this (yes, use hosts: docker_deploy for this tutorial):
+
+```bash
+---
+
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
+- name: TODO
+  hosts: docker_deploy
+  roles:
+    - {role: TODO}
+```
+
+4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create sub-folders deploy and desktop-icons. Inside deploy and desktop-icons folders, create sub-folders defaults and tasks, in each folder. Inside those, create an empty main.yml file. Also create a sub-folder files inside desktop-icons folder. You should have the following file structure:
+
+products
+   (some other folders)
+   tutorial
+      deploy
+         defaults
+            main.yml
+         tasks
+            main.yml
+      desktop-icons
+         defaults
+            main.yml
+         tasks
+            main.yml
+         files
+
+5. Edit your playbook's (tutorial_icon_deploy.yml) role section to point to the tutorial role's deploy section like this:
+
+```bash
+  roles:
+    - {role: products/tutorial/deploy}
+```
+6. deploy/defaults/main.yml
+Your main.yml file here should look like this:
+```bash
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+```
+
+
+
+
+
