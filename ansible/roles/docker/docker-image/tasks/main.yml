@@ -22,7 +22,7 @@
 - name: Check the correct docker image to pull for nvidia-docker 1
   block:
   - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 1)
-    docker_image_facts:
+    docker_image_info:
       name: "{{ full_image_name }}-nvidia"
       register: docker_nvidia_facts
 
@@ -43,7 +43,7 @@
 - name: Check the correct docker image to pull for nvidia-docker 2
   block:
   - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 2)
-    docker_image_facts:
+    docker_image_info:
       name: "{{ full_image_name }}-nvidia2"
       register: docker_nvidia_facts
 
