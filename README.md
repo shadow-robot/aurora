@@ -451,13 +451,13 @@ Steps:
 - name: Install Python 3
   import_playbook: ./install_python3.yml
 
-- name: TODO
+- name: Tutorial 1 installation
   hosts: docker_deploy
   roles:
-    - {role: TODO}
+    - {role: products/tutorial/deploy }
 ```
 
-4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create sub-folders deploy and desktop-icons. Inside deploy and desktop-icons folders, create sub-folders defaults and tasks, in each folder. Inside those, create an empty main.yml file. Also create a sub-folder files inside desktop-icons folder. You should have the following file structure:
+4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create the following folder structure and empty files where indicated. You should have the following file structure:
 
 products
 - (some other folders)
@@ -472,36 +472,33 @@ products
       * main.yml
     * tasks
       * main.yml
+    * templates
+      * scripts
+        * show_terminal.j2
     * files
 
-5. Edit your playbook's (tutorial_icon_deploy.yml) role section to point to the tutorial role's deploy section like this:
-
-```bash
-  roles:
-    - {role: products/tutorial/deploy}
-```
-6. You deploy/defaults/main.yml should look like this:
+5. You deploy/defaults/main.yml should look like this:
 ```bash
 ---
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 
 ```
-7. Your deploy/tasks/main.yml should look like this:
+6. Your deploy/tasks/main.yml should look like this:
 ```bash
 ---
 - name: Include products/tutorial/desktop-icons role
   include_role:
     name: products/tutorial/desktop-icons
 ```
-8. Your desktop-icons/defaults/main.yml should look like this:
+7. Your desktop-icons/defaults/main.yml should look like this:
 ```bash
 ---
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
 ```
-9. Your desktop-icons/tasks/main.yml should look like this:
+8. Your desktop-icons/tasks/main.yml should look like this:
 ```bash
 ---
 - name: Ensures that Desktop folder exists
@@ -546,5 +543,8 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 ```
+9. Download a suitable image (.jpg or .png) (e.g min 64x64 resolution, max 1000x1000 resolution) from the internet to be your tutorial_1_icon.png (or .jpg but then remember to change the extension to .jpg in your Ansible scripts as well). Place this image in the desktop-icons/files folder
+
+10. 
 
 
