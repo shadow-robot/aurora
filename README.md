@@ -10,12 +10,12 @@
 - [Development](#development)
   * [Development Docker](#development-docker)
 - [Testing](#testing)
+  * [Test creation](#test-creation)
   * [Testing with molecule_docker](#testing-with-molecule_docker)
   * [Private docker images](#private-docker-images)
   * [Testing with molecule_ec2](#testing-with-molecule_ec2)
   * [Credentials](#credentials)
   * [Automatic tests](#automatic-tests)
-  * [Test creation](#test-creation)
   * [Testing on real hardware](#testing-on-real-hardware)
 - [Structure of files](#structure-of-files)
   * [Roles](#roles)
@@ -162,6 +162,10 @@ code .
 
 # Testing #
 
+## Test creation ##
+
+Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the python .py file in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
+
 ## Testing with molecule_docker ##
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
@@ -247,10 +251,6 @@ molecule --debug destroy -s name_of_your_test_case
 ## Automatic tests ##
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder
-
-## Test creation ##
-
-Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the python .py file in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
 ## Testing or deploying on real hardware ##
 
