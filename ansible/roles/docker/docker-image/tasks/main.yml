@@ -28,7 +28,7 @@
 
   - name: Create an nvidialized image (for nvidia-docker 1) if it does not exist on Dockerhub
     when: docker_nvidia_facts.images|length == 0
-    shell: files/docker_nvidialize.sh {{ full_image_name }}
+    script: files/docker_nvidialize.sh {{ full_image_name }}
   
   - name: Append -nvidia to tag if nvidia_docker is 1
     set_fact:
@@ -49,7 +49,7 @@
 
   - name: Create an nvidialized image (for nvidia-docker 2) if it does not exist on Dockerhub
     when: docker_nvidia_facts.images|length == 0
-    shell: files/docker2_nvidialize.sh {{ full_image_name }}
+    script: files/docker2_nvidialize.sh {{ full_image_name }}
   
   - name: Append -nvidia2 to tag if nvidia_docker is 2
     set_fact:
