@@ -1,0 +1,3 @@
+---
+- name: Tutorial 1 playbook
+  import_playbook: ../../../tutorial_icon_deploy.yml
