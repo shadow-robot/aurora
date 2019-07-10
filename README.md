@@ -10,7 +10,9 @@
   * [Development Docker](#development-docker)
 - [Testing](#testing)
   * [Test creation](#test-creation)
+  * [Unlimited scroll in terminator](#unlimited-scroll-in-terminator)
   * [Testing with molecule_docker](#testing-with-molecule_docker)
+  * [Debugging and Lint](#debugging-and-lint)
   * [Private docker images](#private-docker-images)
   * [Testing with molecule_ec2](#testing-with-molecule_ec2)
   * [Credentials](#credentials)
@@ -201,6 +203,10 @@ code .
 
 Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the .py, playbook.yml and molecule.yml files in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
+## Unlimited scroll in terminator ##
+
+Before executing any tests, it is very useful to make sure you have unlimited scroll in terminator, because Molecule produces a lot of debug logs. Follow these steps to enable it: right click on the Terminator -> Preferences -> Profiles -> Scrolling and select Infinite scrollback.
+
 ## Testing with molecule_docker ##
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
@@ -211,30 +217,47 @@ Once you have written your code for aurora in your branch, test it locally with 
 cd /home/user/aurora/ansible/playbooks/molecule_docker
 ```
 
-2. Run the following command to execute all molecule tests locally with debug mode:
+2. Start with testing only your test case, without extra debug statements:
 
 ```
-molecule --debug test --all
+molecule test -s name_of_your_test_case
 ```
 
-3. Fix any errors
-
-4. If you want to run a specific test case (test cases are in ansible/playbooks/molecule_docker/molecule folder), use:
-
+3. Fix any errors. If you want more debug information, execute the following:
 ```
 molecule --debug test -s name_of_your_test_case
 ```
-5. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+The --debug flag produces a lot of information. Remember to scroll up to see any possible lint or other errors that might have occurred.
+
+4. Now test all test cases to check for effects on other aurora components and knock-on-effects:
 ```
-molecule --debug create -s name_of_your_test_case
-molecule --debug converge -s name_of_your_test_case
-molecule --debug verify -s name_of_your_test_case
-molecule --degub login -s name_of_your_test_case
-molecule --debug destroy -s name_of_your_test_case
+molecule test --all
 ```
+5. Fix any errors. If you want more debug information, execute the following:
+```
+molecule --debug test all
+```
+
+6. Often it is useful to run Molecule in stages (create, converge, verify, login (if necessary), and finally destroy) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+```
+molecule create -s name_of_your_test_case
+molecule converge -s name_of_your_test_case
+molecule verify -s name_of_your_test_case
+molecule login -s name_of_your_test_case
+molecule destroy -s name_of_your_test_case
+```
+
+## Debugging and Lint ##
+
+1. For a successful test, Molecule requires that all lint checks (yaml lint, flake8 python lint and ansible lint) pass. The AWS EC2 build will fail if any lint check fails or if any Molecule test fails.
+
+2. In the Molecule logs, do a text search for "error" or "error occurred" as well as "failure" and "fatal".
+
+3. You can add the --debug flag after molecule for more debug information, but remember to scroll up to see any possible lint or other errors that might have happened.
+
 ## Private docker images ##
 
-At the moment, we don't want to give molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
 
 ## Testing with molecule_ec2 ##
 
@@ -242,7 +265,7 @@ Once you have written your code for aurora in your branch, and tested it locally
 
 ## Credentials ##
 
-1. Ask the system adminstrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
+1. Ask the system administrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
 
 ```
 aws configure
@@ -262,30 +285,40 @@ Then continue testing with molecule_ec2:
 cd /home/user/aurora/ansible/playbooks/molecule_ec2
 ```
 
-2. Run the following command to execute all AWS EC2 molecule tests in AWS (but you can see local debug logs):
+2. Start with testing only your test case, without extra debug statements:
 
 ```
-molecule --debug test --all
+molecule test -s name_of_your_test_case
 ```
 
-3. Fix any errors
-
-4. If you want to run a specific test case (the AWS EC2 test cases are in ansible/playbooks/molecule_ec2/molecule folder), use:
-
+3. Fix any errors. If you want more debug information, execute the following:
 ```
 molecule --debug test -s name_of_your_test_case
 ```
-5. Often it is useful to run molecule in stages (create, converge, verify, login (if necessary), and finally destory) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+The --debug flag produces a lot of information. Remember to scroll up to see any possible lint or other errors that might have occurred.
+
+4. Now test all test cases to check for effects on other aurora components and knock-on-effects:
 ```
-molecule --debug create -s name_of_your_test_case
-molecule --debug converge -s name_of_your_test_case
-molecule --debug verify -s name_of_your_test_case
-molecule --degub login -s name_of_your_test_case
-molecule --debug destroy -s name_of_your_test_case
+molecule test --all
+```
+5. Fix any errors. If you want more debug information, execute the following:
+```
+molecule --debug test all
+```
+
+6. Often it is useful to run Molecule in stages (create, converge, verify, login (if necessary), and finally destroy) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+```
+molecule create -s name_of_your_test_case
+molecule converge -s name_of_your_test_case
+molecule verify -s name_of_your_test_case
+molecule login -s name_of_your_test_case
+molecule destroy -s name_of_your_test_case
 ```
 ## Automatic tests ##
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder. AWS buildspec specification is [here](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
+
+Note that AWS EC2 tests take about 1 hour to complete a build due to provisioning a new AWS virtual machines for each test and for each test running in a separate virtual machine and each virtual machine needing to pull the right Docker images and then execute the tests
 
 ## Testing on real hardware ##
 
@@ -706,7 +739,7 @@ verifier:
 ```
 17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)
 
-18. After local Docker tests are complete, you can optionally run the EC2 triggered locally as well by following the steps here: [Testing with molecule_ec2](#testing-with-molecule_ec2) (However, you need to contact the System Adminstrator for credentials as explained here: [Credentials](#credentials))
+18. After local Docker tests are complete, you can optionally run the EC2 triggered locally as well by following the steps here: [Testing with molecule_ec2](#testing-with-molecule_ec2) (However, you need to contact the System Administrator for credentials as explained here: [Credentials](#credentials))
 
 19. When all tests are passing (initiated locally), create a PR of your branch and see the AWS automatic build activate as well as the DockerHub tests (building aurora Docker images). All tests must pass before even thinking about merging to master (and in this exercise, please DO NOT MERGE to master!). More information available here: [Automatic tests](#automatic-tests)
 
