@@ -512,7 +512,7 @@ Steps:
 
 4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create the following folder structure and empty files where indicated. You should have the following file structure:
 
- ![Folder structure](docs/iamges/folder_structure.png)
+ ![Folder structure](docs/images/folder_structure.png)
 
 5. You deploy/defaults/main.yml should look like this:
 ```bash
