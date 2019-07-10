@@ -548,7 +548,7 @@ Steps:
     - {role: products/tutorial/deploy }
 ```
 
-4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create the following folder structure and empty files where indicated. You should have the following file structure:
+4. Create a role in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create the following folder structure and empty files where indicated. You should have the following file structure:
 
  ![Folder structure](docs/images/folder_structure.png)
 
