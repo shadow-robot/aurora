@@ -594,12 +594,7 @@ sleep infinity
 ```
 11. Now, let's add a Molecule test, which tests if the desktop icon exists. In /playbooks/molecule_docker folder, copy an existing folder (e.g. teleop_empty_server_docker) and paste it and then change the name to e.g. tutorial_1_docker. Inside tutorial_1_docker folder you should have the following folders and files (change file and folder names when necessary)
 
-tutorial_1_docker
-- tests
-  * test_tutorial_1.py
-- Dockerfile.j2
-- molecule.yml
-- playbook.yml
+ ![Docker test structure](docs/images/tutorial_1_docker.png)
 
 12. You don't need to edit the Dockerfile.j2. Just edit the molecule.yml so it looks like this:
 ```bash
@@ -666,8 +661,7 @@ def test_icons_in_docker(host):
 ```
 15. Now that your Docker test is ready, create the EC2 test which tests if the desktop icon exists, but it runs on an AWS virtual machine (not in Docker). In /playbooks/molecule_ec2 folder, copy an existing folder (e.g. teleop_server_chrony_ec2) and paste it and then change the name to e.g. tutorial_1_ec2. Inside tutorial_1_ec2 folder you should have the following folders and files (change file and folder names when necessary):
 
-tutorial_1_ec2
-- molecule.yml
+ ![EC2 test structure](docs/images/molecule_ec2_tutorial.png)
 
 16. Edit the molecule.yml so it looks like this:
 ```bash
