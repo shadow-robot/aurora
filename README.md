@@ -255,6 +255,8 @@ molecule destroy -s name_of_your_test_case
 
 3. You can add the --debug flag after molecule for more debug information, but remember to scroll up to see any possible lint or other errors that might have happened.
 
+4. It's useful to enable [Unlimited scroll in terminator](#unlimited-scroll-in-terminator)
+
 ## Private docker images ##
 
 At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
