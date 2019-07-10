@@ -56,6 +56,12 @@ bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory o
 ```
 name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
 
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory staging --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
+```
+
 Inventories correspond to fixed IP addresses as shown here:
 * [development](ansible/inventory/teleop/development)
 * [staging](ansible/inventory/teleop/staging)
@@ -486,9 +492,9 @@ Requirements: you need a laptop/PC with internet, Ubuntu 16.04 or 18.04 installe
 
 Steps:
 
-1. Create your own branch of aurora (from master). You can call your branch: Tutorial_YourName
+1. Go to [Development Docker](#development-docker) section and follow instructions there to set up your development environment
 
-2. Go to [Development Docker](#development-docker) section and follow instructions there to set up your development environment
+2. Create your own branch of aurora (from master). You can call your branch: Tutorial_YourName
 
 3. Follow instructions in the [Playbook creation](#playbook-creation) section to create your own playbook, you can call it tutorial_icon_deploy.yml. Remember use the Install Python3 import as documented in [Playbook creation](#playbook-creation) and include a roles section. Your playbook should look something like this (yes, use hosts: docker_deploy for this tutorial):
 
@@ -506,23 +512,7 @@ Steps:
 
 4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create the following folder structure and empty files where indicated. You should have the following file structure:
 
-products
-- (some other folders)
-- tutorial
-  * deploy
-    * defaults
-      * main.yml
-    * tasks
-      * main.yml
-  * desktop-icons
-    * defaults
-      * main.yml
-    * tasks
-      * main.yml
-    * templates
-      * scripts
-        * show_terminal.j2
-    * files
+ ![Folder structure](docs/iamges/folder_structure.png)
 
 5. You deploy/defaults/main.yml should look like this:
 ```bash
