@@ -10,7 +10,13 @@
   * [Development Docker](#development-docker)
 - [Testing](#testing)
   * [Test creation](#test-creation)
+<<<<<<< HEAD
   * [Testing with molecule_docker](#testing-with-molecule_docker)
+=======
+  * [Unlimited scroll in terminator](#unlimited-scroll-in-terminator)
+  * [Testing with molecule_docker](#testing-with-molecule_docker)
+  * [Debugging and Lint](#debugging-and-lint)
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
   * [Private docker images](#private-docker-images)
   * [Testing with molecule_ec2](#testing-with-molecule_ec2)
   * [Credentials](#credentials)
@@ -42,9 +48,15 @@ Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/u
 Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/usage.html) (Aurora is currently using Molecule 2.20.1)
 
 # How to run #
+<<<<<<< HEAD
 
 ## teleop_deploy ##
 
+=======
+
+## teleop_deploy ##
+
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
 
 **How to run:**
@@ -55,6 +67,12 @@ Open a terminal with Ctrl+Alt+T and run:
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory option1=value1 option2=value2 option3=value3
 ```
 name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
+
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory staging --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
+```
 
 Inventories correspond to fixed IP addresses as shown here:
 * [development](ansible/inventory/teleop/development)
@@ -163,7 +181,14 @@ The recommended way to develop code for this project is to pull a certain docker
 
 The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel).
 
+<<<<<<< HEAD
 Currently both xenial and bionic tags are working well and there is no difference.
+=======
+Currently both xenial and bionic tags are working well.
+
+Use the tag that matches your host operating system.
+
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 The rest of the document assumes the user is using bionic tag.
 
 Instructions on how to use this:
@@ -195,6 +220,13 @@ code .
 
 Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the .py, playbook.yml and molecule.yml files in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
+<<<<<<< HEAD
+=======
+## Unlimited scroll in terminator ##
+
+Before executing any tests, it is very useful to make sure you have unlimited scroll in terminator, because Molecule produces a lot of debug logs. Follow these steps to enable it: right click on the Terminator -> Preferences -> Profiles -> Scrolling and select Infinite scrollback.
+
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 ## Testing with molecule_docker ##
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
@@ -205,6 +237,7 @@ Once you have written your code for aurora in your branch, test it locally with 
 cd /home/user/aurora/ansible/playbooks/molecule_docker
 ```
 
+<<<<<<< HEAD
 2. Run the following command to execute all molecule tests locally with debug mode:
 
 ```
@@ -229,6 +262,51 @@ molecule --debug destroy -s name_of_your_test_case
 ## Private docker images ##
 
 At the moment, we don't want to give molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+=======
+2. Start with testing only your test case, without extra debug statements:
+
+```
+molecule test -s name_of_your_test_case
+```
+
+3. Fix any errors. If you want more debug information, execute the following:
+```
+molecule --debug test -s name_of_your_test_case
+```
+The --debug flag produces a lot of information. Remember to scroll up to see any possible lint or other errors that might have occurred.
+
+4. Now test all test cases to check for effects on other aurora components and knock-on-effects:
+```
+molecule test --all
+```
+5. Fix any errors. If you want more debug information, execute the following:
+```
+molecule --debug test all
+```
+
+6. Often it is useful to run Molecule in stages (create, converge, verify, login (if necessary), and finally destroy) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+```
+molecule create -s name_of_your_test_case
+molecule converge -s name_of_your_test_case
+molecule verify -s name_of_your_test_case
+molecule login -s name_of_your_test_case
+molecule destroy -s name_of_your_test_case
+```
+
+## Debugging and Lint ##
+
+1. For a successful test, Molecule requires that all lint checks (yaml lint, flake8 python lint and ansible lint) pass. The AWS EC2 build will fail if any lint check fails or if any Molecule test fails.
+
+2. In the Molecule logs, do a text search for "error" or "error occurred" as well as "failure" and "fatal".
+
+3. You can add the --debug flag after molecule for more debug information, but remember to scroll up to see any possible lint or other errors that might have happened.
+
+4. It's useful to enable [Unlimited scroll in terminator](#unlimited-scroll-in-terminator)
+
+## Private docker images ##
+
+At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 
 ## Testing with molecule_ec2 ##
 
@@ -236,6 +314,7 @@ Once you have written your code for aurora in your branch, and tested it locally
 
 ## Credentials ##
 
+<<<<<<< HEAD
 1. Ask the system adminstrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
 
 ```
@@ -276,11 +355,66 @@ molecule --debug converge -s name_of_your_test_case
 molecule --debug verify -s name_of_your_test_case
 molecule --degub login -s name_of_your_test_case
 molecule --debug destroy -s name_of_your_test_case
+=======
+1. Ask the system administrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
+
+```
+aws configure
+```
+2. Paste the access key and the secret access key
+
+3. Default region name must be: eu-west-2
+
+4. Press enter on the Default format
+
+
+Then continue testing with molecule_ec2:
+
+1. In the docker container terminal go to /ansible/playbooks/molecule_ec2 folder
+
+```
+cd /home/user/aurora/ansible/playbooks/molecule_ec2
+```
+
+2. Start with testing only your test case, without extra debug statements:
+
+```
+molecule test -s name_of_your_test_case
+```
+
+3. Fix any errors. If you want more debug information, execute the following:
+```
+molecule --debug test -s name_of_your_test_case
+```
+The --debug flag produces a lot of information. Remember to scroll up to see any possible lint or other errors that might have occurred.
+
+4. Now test all test cases to check for effects on other aurora components and knock-on-effects:
+```
+molecule test --all
+```
+5. Fix any errors. If you want more debug information, execute the following:
+```
+molecule --debug test all
+```
+
+6. Often it is useful to run Molecule in stages (create, converge, verify, login (if necessary), and finally destroy) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
+```
+molecule create -s name_of_your_test_case
+molecule converge -s name_of_your_test_case
+molecule verify -s name_of_your_test_case
+molecule login -s name_of_your_test_case
+molecule destroy -s name_of_your_test_case
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 ```
 ## Automatic tests ##
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder. AWS buildspec specification is [here](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
 
+<<<<<<< HEAD
+=======
+Note that AWS EC2 tests take about 1 hour to complete a build due to provisioning a new AWS virtual machines for each test and for each test running in a separate virtual machine and each virtual machine needing to pull the right Docker images and then execute the tests
+
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 ## Testing on real hardware ##
 
 For debugging (not using the master branch), you can add the following immediately after playbook name (for example docker_deploy or teleop_deploy):
@@ -486,9 +620,15 @@ Requirements: you need a laptop/PC with internet, Ubuntu 16.04 or 18.04 installe
 
 Steps:
 
+<<<<<<< HEAD
 1. Create your own branch of aurora (from master). You can call your branch: Tutorial_YourName
 
 2. Go to [Development Docker](#development-docker) section and follow instructions there to set up your development environment
+=======
+1. Go to [Development Docker](#development-docker) section and follow instructions there to set up your development environment
+
+2. Create your own branch of aurora (from master). You can call your branch: Tutorial_YourName
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 
 3. Follow instructions in the [Playbook creation](#playbook-creation) section to create your own playbook, you can call it tutorial_icon_deploy.yml. Remember use the Install Python3 import as documented in [Playbook creation](#playbook-creation) and include a roles section. Your playbook should look something like this (yes, use hosts: docker_deploy for this tutorial):
 
@@ -504,6 +644,7 @@ Steps:
     - {role: products/tutorial/deploy }
 ```
 
+<<<<<<< HEAD
 4. Create a role for in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create the following folder structure and empty files where indicated. You should have the following file structure:
 
 products
@@ -523,6 +664,11 @@ products
       * scripts
         * show_terminal.j2
     * files
+=======
+4. Create a role in roles/products/tutorial folder (you will have to create the tutorial folder). Inside the tutorial folder, create the following folder structure and empty files where indicated. You should have the following file structure:
+
+ ![Folder structure](docs/images/folder_structure.png)
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 
 5. You deploy/defaults/main.yml should look like this:
 ```bash
@@ -604,12 +750,16 @@ sleep infinity
 ```
 11. Now, let's add a Molecule test, which tests if the desktop icon exists. In /playbooks/molecule_docker folder, copy an existing folder (e.g. teleop_empty_server_docker) and paste it and then change the name to e.g. tutorial_1_docker. Inside tutorial_1_docker folder you should have the following folders and files (change file and folder names when necessary)
 
+<<<<<<< HEAD
 tutorial_1_docker
 - tests
   * test_tutorial_1.py
 - Dockerfile.j2
 - molecule.yml
 - playbook.yml
+=======
+ ![Docker test structure](docs/images/tutorial_1_docker.png)
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 
 12. You don't need to edit the Dockerfile.j2. Just edit the molecule.yml so it looks like this:
 ```bash
@@ -676,8 +826,12 @@ def test_icons_in_docker(host):
 ```
 15. Now that your Docker test is ready, create the EC2 test which tests if the desktop icon exists, but it runs on an AWS virtual machine (not in Docker). In /playbooks/molecule_ec2 folder, copy an existing folder (e.g. teleop_server_chrony_ec2) and paste it and then change the name to e.g. tutorial_1_ec2. Inside tutorial_1_ec2 folder you should have the following folders and files (change file and folder names when necessary):
 
+<<<<<<< HEAD
 tutorial_1_ec2
 - molecule.yml
+=======
+ ![EC2 test structure](docs/images/molecule_ec2_tutorial.png)
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 
 16. Edit the molecule.yml so it looks like this:
 ```bash
@@ -722,7 +876,11 @@ verifier:
 ```
 17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)
 
+<<<<<<< HEAD
 18. After local Docker tests are complete, you can optionally run the EC2 triggered locally as well by following the steps here: [Testing with molecule_ec2](#testing-with-molecule_ec2) (However, you need to contact the System Adminstrator for credentials as explained here: [Credentials](#credentials))
+=======
+18. After local Docker tests are complete, you can optionally run the EC2 triggered locally as well by following the steps here: [Testing with molecule_ec2](#testing-with-molecule_ec2) (However, you need to contact the System Administrator for credentials as explained here: [Credentials](#credentials))
+>>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 
 19. When all tests are passing (initiated locally), create a PR of your branch and see the AWS automatic build activate as well as the DockerHub tests (building aurora Docker images). All tests must pass before even thinking about merging to master (and in this exercise, please DO NOT MERGE to master!). More information available here: [Automatic tests](#automatic-tests)
 
