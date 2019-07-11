@@ -19,7 +19,6 @@
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
 
-<<<<<<< HEAD
 - name: Check the correct docker image to pull for nvidia-docker 1
   block:
   - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 1)
@@ -62,8 +61,6 @@
 
   when: nvidia_docker | int == 2
 
-=======
->>>>>>> 43aa5ce5f2f0218587024dbcf64a8593cf181360
 - name: Pull Docker image
   docker_image:
     name: "{{ full_image_name }}"
