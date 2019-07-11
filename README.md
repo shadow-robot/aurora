@@ -750,8 +750,14 @@ verifier:
 
 20. Once your PR is passing (all green), you are ready to test your branch on real hardware. For this tutorial, you will test your branch on your own local machine by opening a terminal window by pressing Ctrl+Alt+T and run this:
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) tutorial_icon_deploy --debug-branch NameOfYourBranch username=YourName
+bash <(curl -Ls bit.ly/run-aurora) tutorial_icon_deploy --debug-branch NameOfYourBranch --inventory local/docker_deploy username=YourName
 ```
 Rememeber to substitute in NameOfYourBranch and YourName
 
+You will have to enter the sudo password for your computer twice (once for the bash script and once for ansible)
+
 21. The desktop icon should be created and when you double-click on it, a window should pop up and greet you using the username you passed in. You have now completed Tutorial 1
+
+  ![Tutorial 1 icon](docs/images/tutorial_1_icon.png)
+ 
+  ![Tutorial 1 result](docs/images/tutorial_1_result.png)
