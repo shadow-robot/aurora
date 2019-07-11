@@ -71,9 +71,9 @@ Inventories correspond to fixed IP addresses as shown here:
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
-* [control-machine](ansible/inventory/teleop/group_vars/control-machine.yml)
+* [control-machine](ansible/inventory/teleop/group_vars/control_machine.yml)
 * [client](ansible/inventory/teleop/group_vars/client.yml)
-* [windows-machine](ansible/inventory/teleop/group_vars/windows-machine.yml)
+* [windows-machine](ansible/inventory/teleop/group_vars/windows_machine.yml)
 
 Run a playbook against one or more members of that group using the --limit tag:
 
