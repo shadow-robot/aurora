@@ -11,5 +11,5 @@ phases:
       - aws configure set aws_secret_access_key $AWS_SECRET_KEY
   build:
     commands:
-      - cd $CODEBUILD_SRC_DIR/ansible/playbooks
-      - molecule --debug test --scenario-name default_ec2
+      - cd $CODEBUILD_SRC_DIR/ansible/playbooks/molecule_ec2
+      - molecule --debug test --all
