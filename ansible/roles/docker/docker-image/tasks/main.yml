@@ -15,19 +15,69 @@
   set_fact:
     python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
 
-- name: Append -nvidia to tag if nvidia_docker is not 0
-  when: nvidia_docker | int !=0
-  set_fact:
-    tag: "{{ tag }}-nvidia"
-
 - name: Set docker full image name
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
 
-- name: Pulling the image (containing hack for Python 3 path)
+- name: Check the correct docker image to pull for nvidia-docker 1
+  block:
+  - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 1)
+    docker_image_info:
+      name: "{{ full_image_name }}-nvidia"
+    register: docker_nvidia_facts
+
+  - name: Create an nvidialized image (for nvidia-docker 1) if it does not exist on Dockerhub
+    when: docker_nvidia_facts.images|length == 0
+    script: files/docker_nvidialize.sh {{ full_image_name }}
+
+  - name: Append -nvidia to tag if nvidia_docker is 1
+    set_fact:
+      tag: "{{ tag }}-nvidia"
+
+  - name: Set docker full image name (with -nvidia)
+    set_fact:
+      full_image_name: "{{ image }}:{{ tag }}"
+
+  when: nvidia_docker | int == 1
+
+- name: Check the correct docker image to pull for nvidia-docker 2
+  block:
+  - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 2)
+    docker_image_info:
+      name: "{{ full_image_name }}-nvidia2"
+    register: docker_nvidia_facts
+
+  - name: Create an nvidialized image (for nvidia-docker 2) if it does not exist on Dockerhub
+    when: docker_nvidia_facts.images|length == 0
+    script: files/docker2_nvidialize.sh {{ full_image_name }}
+
+  - name: Append -nvidia2 to tag if nvidia_docker is 2
+    set_fact:
+      tag: "{{ tag }}-nvidia2"
+
+  - name: Set docker full image name (with -nvidia)
+    set_fact:
+      full_image_name: "{{ image }}:{{ tag }}"
+
+  when: nvidia_docker | int == 2
+
+- name: Pull Docker image
   docker_image:
     name: "{{ full_image_name }}"
     source: pull
   environment:
     PYTHONPATH: "{{ python_packages_path }}"
+  async: 50000
+  poll: 0
+  register: docker_pull_job
+  become: yes
+  changed_when: false
+
+- name: Wait for Docker image pull to complete
+  async_status:
+    jid: "{{ docker_pull_job.ansible_job_id }}"
+  register: docker_pull_result
+  until: docker_pull_result.finished
+  retries: 10000
+  delay: 5
   become: yes

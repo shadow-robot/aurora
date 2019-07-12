@@ -9,7 +9,7 @@
     url: https://nvidia.github.io/nvidia-docker/gpgkey
     state: present
 
-- name: Set ubuntu_version for nvidia-dockerinstall
+- name: Set ubuntu_version for nvidia-docker install
   set_fact:
     ubuntu_version: "18.04"
   when:
@@ -33,6 +33,7 @@
   systemd:
     daemon_reload: yes
   become: yes
+  when: skip_molecule_task is not defined
 
 - name: Restart docker after installing nvidia_docker
   service:
