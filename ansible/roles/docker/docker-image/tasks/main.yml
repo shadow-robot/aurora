@@ -25,10 +25,12 @@
     docker_image_info:
       name: "{{ full_image_name }}-nvidia"
     register: docker_nvidia_facts
+    become: yes
 
   - name: Create an nvidialized image (for nvidia-docker 1) if it does not exist on Dockerhub
     when: docker_nvidia_facts.images|length == 0
     script: files/docker_nvidialize.sh {{ full_image_name }}
+    become: yes
 
   - name: Append -nvidia to tag if nvidia_docker is 1
     set_fact:
@@ -46,10 +48,12 @@
     docker_image_info:
       name: "{{ full_image_name }}-nvidia2"
     register: docker_nvidia_facts
+    become: yes
 
   - name: Create an nvidialized image (for nvidia-docker 2) if it does not exist on Dockerhub
     when: docker_nvidia_facts.images|length == 0
     script: files/docker2_nvidialize.sh {{ full_image_name }}
+    become: yes
 
   - name: Append -nvidia2 to tag if nvidia_docker is 2
     set_fact:
