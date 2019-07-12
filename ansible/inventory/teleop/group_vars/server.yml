@@ -12,3 +12,4 @@ terminator: true # Launch terminator when the Docker starts
 remote_cyberglove: false # Determines if the cyberglove is run locally (server) or remotely (client)
 use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 sim_icon: false # creates an extra icon that runs teleoperation in simulation mode
+demo_icons: true # Generates desktop icons to run demos
