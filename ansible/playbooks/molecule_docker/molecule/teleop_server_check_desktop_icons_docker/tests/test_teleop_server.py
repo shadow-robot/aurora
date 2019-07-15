@@ -48,9 +48,9 @@ def test_sr_config_exists_in_docker(host):
 def test_icons_in_docker(host):
     desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
     script_path = '/home/' + str(host.user().name) + \
-                  '/.shadow_launcher_app/shadow_hand_launcher/'
+        '/.shadow_launcher_app/shadow_hand_launcher/'
     save_logs_path = '/home/' + str(host.user().name) + \
-                  '/.shadow_save_log_app/save_latest_ros_logs/'
+        '/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Teleop_control_machine_Launch_Demohand_A',
         'Teleop_control_machine_Launch_Demohand_B',
