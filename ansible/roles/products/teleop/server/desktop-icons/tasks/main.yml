@@ -67,3 +67,8 @@
     launch_script: "shadow_sim_demo.sh"
     desktop_icon_name: "Teleop_Simulation"
   when: sim_icon|bool
+
+- name: Include products/common/demo-icons role
+  include_role:
+    name: products/common/demo-icons
+  when: demo_icons|bool

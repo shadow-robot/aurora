@@ -13,3 +13,4 @@ remote_cyberglove: false # Determines if the cyberglove is run locally (server) 
 use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 sim_icon: false # creates an extra icon that runs teleoperation in simulation mode
 save_nuc_logs: true # enables saving ROS logs from control-computer to server
+demo_icons: true # Generates desktop icons to run demos
