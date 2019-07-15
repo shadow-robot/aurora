@@ -29,10 +29,10 @@ computer_name=""
 function copy_logs
 {
     echo "Copying logs from $docker_ros_folder to $docker_logs_temp inside the $container_name Docker container on $HOSTNAME"
-    if computer_name=="server"; then
+    if [ "$computer_name" = "server" ]; then
         record_node="/server_record"
     fi
-    if computer_name=="server"; then
+    if [ "$computer_name" = "control_machine" ]; then
         record_node="/control_box/record"
     fi
     docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
@@ -83,7 +83,7 @@ function scp_nuc_to_server
 {
     copy_logs
     copy_to_host
-    if save_nuc_logs; then
+    if $save_nuc_logs; then
         ssh $NUC_NAME@$NUC_ADDRESS container_name=$container_name 'bash -s' < ENDSSH
         container_name={{ container_name }}
         save_nuc_logs={{ save_nuc_logs | lower }} 
@@ -107,7 +107,7 @@ function scp_nuc_to_server
 
 info_message="You are about to save latest ROS logs from $container_name Docker container on this computer ($HOSTNAME)"
 warning_message="WARNING! This closes the $container_name docker container in this computer. Do you wish to continue? (Y/n) "
-if save_nuc_logs; then
+if $save_nuc_logs; then
     info_message="You are about to save latest ROS logs from $container_name Docker containers on teleop server and control computer"
     warning_message="WARNING! This closes the $container_name Docker containers in this and the control computer. Do you wish to continue? (Y/n) "
     computer_name="server"
@@ -188,7 +188,7 @@ if [ ! -z "$container_name" ]; then
         customer_key=false
     fi
 
-    if [ computer_name!="" ]; then
+    if [ "$computer_name" = "" ]; then
         local_ros_log_dir="$local_ros_log_dir/$computer_name"
     fi
 
@@ -213,7 +213,7 @@ if [ ! -z "$container_name" ]; then
             docker exec $container_name bash -c "rm -rf $docker_logs_temp"
         fi
         save_all_logs
-        if save_nuc_logs; then
+        if $save_nuc_logs; then
             scp_nuc_to_server
         fi
         if [[ $upload_sr_log_messages == "true" ]]; then
@@ -231,7 +231,7 @@ if [ ! -z "$container_name" ]; then
         fi
     else
         save_all_logs
-        if save_nuc_logs; then
+        if $save_nuc_logs; then
             scp_nuc_to_server
         fi
         docker exec $container_name bash -c "rm -rf $docker_logs_temp"
