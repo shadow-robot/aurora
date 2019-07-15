@@ -78,8 +78,8 @@ function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
     scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/$dir/ros_log_$timestamp/ $local_ros_log_dir/control_machine/$dir/ros_log_$timestamp/
+    docker cp -L $local_ros_log_dir/control_machine/$dir/ros_log_$timestamp/ $container_name:$docker_logs_temp
 }
-function save_all_logs
 {
     copy_logs
     copy_to_host
