@@ -4,7 +4,7 @@
     nuc_username: "{{ hostvars[groups['control_machine'][0]]['ansible_user'] }}"
     nuc_address: "{{ groups['control_machine'][0] }}"
   when: groups['control_machine'] is defined
-  
+
 - name: Setup script name
   set_fact:
     setup_script: teleop-server-setup.sh
