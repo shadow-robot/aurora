@@ -456,12 +456,12 @@ It has to have a similar structure to this:
       meta: end_play
 
     - name: check if customer_key is provided and not false
-      when: customer_key is defined and customer_key|bool
+      when: customer_key is defined and customer_key| length > 0
       set_fact:
         use_aws: true
 
     - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove|bool
+      when: cyberglove is defined and cyberglove| length > 0
       set_fact:
         use_cyberglove: true
 
