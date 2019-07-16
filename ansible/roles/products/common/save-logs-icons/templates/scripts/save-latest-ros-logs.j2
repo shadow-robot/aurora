@@ -205,7 +205,7 @@ if [ ! -z "$container_name" ]; then
             read old_logs
             if [[ $old_logs == "y" || $old_logs == "Y" || $old_logs == "yes" || $old_logs == "Yes" || $old_logs == "YES" ]]; then
                 echo "Uploading to Shadow servers - Please wait..."
-                upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow_upload.sh ${customer_key} $docker_logs_temp $timestamp" || true) 
+                upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customer_key} $docker_logs_temp $timestamp" || true) 
                 if [[ $upload_command == "ok" ]]; then
                     echo -e "${GREEN} Previous logs Uploaded to Shadow servers for $container_name! ${NC}"
                 else
@@ -224,7 +224,7 @@ if [ ! -z "$container_name" ]; then
         fi
         if [[ "$upload_sr_log_messages" == "true" ]]; then
             echo "Uploading to Shadow servers - Please wait..."
-            upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow_upload.sh ${customerkey} $docker_logs_temp $timestamp" || true)
+            upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customerkey} $docker_logs_temp $timestamp" || true)
             if [[ $upload_command == "ok" ]]; then
                 # delete temp folder
                 docker exec $container_name bash -c "rm -rf $docker_logs_temp"
