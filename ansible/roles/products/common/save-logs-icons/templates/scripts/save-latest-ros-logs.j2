@@ -15,7 +15,7 @@ normal=$(tput sgr0)
 docker_user_home="/home/user"
 docker_ros_folder="$docker_user_home/.ros"
 docker_logs_temp="$docker_user_home/logs_temp"
-docker_ros_logs_folder="$docker_ros_folder/log/"
+docker_ros_logs_folder="$docker_ros_folder/log"
 record_node="/record"
 container_name={{ container_name }}
 save_nuc_logs={{ save_nuc_logs | lower }} 
@@ -80,6 +80,7 @@ function scp_nuc_to_server
     scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/$dir/ros_log_$timestamp/ $local_ros_log_dir/control_machine/$dir/ros_log_$timestamp/
     docker cp -L $local_ros_log_dir/control_machine/$dir/ros_log_$timestamp/ $container_name:$docker_logs_temp
 }
+function save_all_logs
 {
     copy_logs
     copy_to_host
@@ -105,11 +106,11 @@ function scp_nuc_to_server
     fi
 }
 
-info_message="You are about to save latest ROS logs from $container_name Docker container on this computer ($HOSTNAME)"
-warning_message="WARNING! This closes the $container_name docker container in this computer. Do you wish to continue? (Y/n) "
+info_message="You are about to save latest ROS logs from $container_name\nDocker container on this computer ($HOSTNAME)"
+warning_message="WARNING! This closes the $container_name docker container in this computer.\nDo you wish to continue? (Y/n) "
 if $save_nuc_logs; then
-    info_message="You are about to save latest ROS logs from $container_name Docker containers on teleop server and control computer"
-    warning_message="WARNING! This closes the $container_name Docker containers in this and the control computer. Do you wish to continue? (Y/n) "
+    info_message="You are about to save latest ROS logs from $container_name\nDocker containers on teleop server and control computer"
+    warning_message="WARNING! This closes the $container_name Docker containers in this and the control computer.\nDo you wish to continue? (Y/n) "
     computer_name="server"
 fi
 
@@ -124,7 +125,7 @@ fi
 echo -e "${NC}${normal}Please add a note for logging with reasons... ${normal}${NC}"
 read notes_from_user
 mkdir -p $local_ros_log_dir
-echo $notes_from_user > $local_ros_log_dir/notes_from_user.tx
+echo $notes_from_user > $local_ros_log_dir/notes_from_user.txt
 
 if [ "$(docker exec ${container_name} bash -c 'ls /usr/local/bin/customer.key')" ]; then
     save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
