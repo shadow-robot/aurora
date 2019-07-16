@@ -1,11 +1,11 @@
 ---
-- name: teleop_server_check_desktop_icons_docker
+- name: Teleop deploy playbook for teleop server
   import_playbook: ../../../teleop_deploy.yml
-    image="shadowrobot/dexterous-hand"
-    tag="kinetic-release"
     reinstall=true
     use_openvpn=false
     ethercat_interface="enp0s25"
+    image="shadowrobot/dexterous-hand"
+    tag="kinetic-release"
     nvidia_docker=0
     skip_molecule_task=true
     allow_auto_reboot=true

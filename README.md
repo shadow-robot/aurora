@@ -123,6 +123,9 @@ bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interfa
 
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
+* --read-input vars (e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
+* --read-secure secure_vars (e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure customer_key - To allow aurora scripts to prompt for ROS logs upload key)
+
 ## configure_software ##
 
 This runs the docker/setup-ui role (details are [here](ansible/roles/docker/setup-ui/tasks/main.yml) when it is passed a list of software which includes 'setup-docker'. This is used in the DockerHub Docker image builds for Aurora
