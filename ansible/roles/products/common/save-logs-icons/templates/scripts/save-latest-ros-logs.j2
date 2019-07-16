@@ -22,6 +22,7 @@ save_nuc_logs={{ save_nuc_logs | lower }}
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 local_ros_log_dir=~/Desktop/ROS_LOGS/$container_name
+local_ros_log_dir_base=~/Desktop/ROS_LOGS/$container_name
 local_ros_date_directory=ros_logs_$(date +%Y-%m-%d)
 timestamp=$(date +%Y-%m-%d-%T)
 computer_name=""
@@ -63,13 +64,15 @@ function copy_logs
     docker exec $container_name bash -c "cp $latestparam $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestws $docker_logs_temp"  || true
     container_image=$(docker ps -a | grep $container_name | awk '{print $2}' | tail -1)
-    docker container inspect $container_name > $docker_logs_temp/container_info.txt
-    docker images $container_image > $docker_logs_temp/image_info.txt
+    docker container inspect $container_name > ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/container_info.txt
+    docker images $container_image > ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/image_info.txt
+    docker cp -L ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/container_info.txt $container_name:$docker_logs_temp/
+    docker cp -L ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/image_info.txt $container_name:$docker_logs_temp/
 }
 function copy_to_host
 {
     if [ "$computer_name" != "" ]; then
-        local_ros_log_dir="$local_ros_log_dir/$computer_name"
+        local_ros_log_dir="$local_ros_log_dir_base/$computer_name"
     fi
     mkdir -p ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp
     echo "Copying logs $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
@@ -80,8 +83,9 @@ function copy_to_host
 function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
-    scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/$local_ros_date_directoryros_log_$timestamp/ $local_ros_log_dir/control_machine/$local_ros_date_directory/ros_log_$timestamp/
-    docker cp -L $local_ros_log_dir/control_machine/$local_ros_date_directory/ros_log_$timestamp/ $container_name:$docker_logs_temp
+    #/home/user/ROS_LOGS/teleop/control_machine/ros_log_2019-07-16-12:49:16
+    scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/control_machine/$}/$local_ros_date_directory/ros_log_$timestamp/ $local_ros_log_dir_base/control_machine/$local_ros_date_directory/ros_log_$timestamp/
+    docker cp -L $local_ros_log_dir_base/control_machine/$local_ros_date_directory/ros_log_$timestamp/ $container_name:$docker_logs_temp
 }
 function save_all_logs
 {
@@ -101,6 +105,7 @@ function save_all_logs
         docker_logs_temp=$docker_logs_temp
         docker_ros_logs_folder=$docker_ros_logs_folder
         local_ros_log_dir=$docker_user_home/ROS_LOGS/$container_name
+        local_ros_log_dir_base=$local_ros_log_dir_base
         $(typeset -f)
         copy_logs   
         copy_to_host
@@ -127,7 +132,7 @@ fi
 echo -e "${NC}${normal}Please add a note for logging with reasons... ${normal}${NC}"
 read notes_from_user
 if [ "$computer_name" != "" ]; then
-    local_ros_log_dir="$local_ros_log_dir/$computer_name"
+    local_ros_log_dir="$local_ros_log_dir_base/$computer_name"
 fi
 mkdir -p $local_ros_log_dir
 echo $notes_from_user > $local_ros_log_dir/notes_from_user.txt
@@ -220,13 +225,13 @@ if [ ! -z "$container_name" ]; then
         fi
         if [[ $upload_sr_log_messages == "true" ]]; then
             echo "Uploading to Shadow servers - Please wait..."
-            upload_command=$(docker exec $current_container_name bash -c "source /usr/local/bin/shadow_upload.sh ${customerkey} $docker_logs_temp $timestamp" || true)
+            upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow_upload.sh ${customerkey} $docker_logs_temp $timestamp" || true)
             if [[ $upload_command == "ok" ]]; then
                 # delete temp folder
-                docker exec $current_container_name bash -c "rm -rf $docker_logs_temp"
-                echo -e "${GREEN} Latest Logs Saved and Uploaded to Shadow servers for $current_container_name! ${NC}"
+                docker exec $container_name bash -c "rm -rf $docker_logs_temp"
+                echo -e "${GREEN} Latest Logs Saved and Uploaded to Shadow servers for $container_name! ${NC}"
             else
-                echo -e "${RED}${bold} Failed to upload logs to Shadow servers for $current_container_name! Check your internet connection and try again.${normal}${NC}"
+                echo -e "${RED}${bold} Failed to upload logs to Shadow servers for $container_name! Check your internet connection and try again.${normal}${NC}"
                 sleep 5
             fi
             sleep 1
@@ -236,12 +241,12 @@ if [ ! -z "$container_name" ]; then
         if $save_nuc_logs; then
             scp_nuc_to_server
         fi
-        docker exec $container_name bash -c "rm -rf $docker_logs_temp"
+        docker exec ${container_name} bash -c "rm -rf $docker_logs_temp"
         echo -e "${GREEN} Latest Logs Saved for $container_name! ${NC}"
         sleep 1
     fi
     echo "Killing container $container_name..."
-    docker kill $container_name
+    docker kill ${container_name}
 else
     echo -e "${RED}There is no $container_name Docker container running, please start a container to save logs${NC}"
     sleep 1
