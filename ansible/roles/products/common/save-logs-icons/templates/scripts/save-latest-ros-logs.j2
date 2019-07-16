@@ -20,11 +20,11 @@ container_name={{ container_name }}
 save_nuc_logs={{ save_nuc_logs | lower }} 
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
-local_ros_log_dir=~/Desktop/ROS_LOGS/$container_name
+local_ros_log_dir=/home/$USER/Desktop/ROS_LOGS/$container_name
 local_ros_date_directory=ros_logs_$(date +%Y-%m-%d)
 timestamp=$(date +%Y-%m-%d-%T)
 computer_name=""
-desktop_timestamp_path=""
+desktop_timestamp_path=$local_ros_log_dir/$local_ros_date_directory/ros_log_$timestamp
 
 function copy_logs
 {
@@ -35,7 +35,6 @@ function copy_logs
     if [ "$computer_name" = "control_machine" ]; then
         record_node="/control_box/record"
     fi
-    desktop_timestamp_path=${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp
     if [ "$computer_name" != "" ]; then
         mkdir -p $desktop_timestamp_path/$computer_name
     else
@@ -78,12 +77,14 @@ function copy_to_host
 {
     echo "Copying logs from $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
     docker cp -L $container_name:$docker_logs_temp $desktop_timestamp_path/
+    mv $desktop_timestamp_path/logs_temp/* $desktop_timestamp_path/
+    rm -rf $desktop_timestamp_path/logs_temp/
 }
 function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
     scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/$local_ros_date_directory/ros_log_$timestamp/control_machine ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/control_machine
-    docker cp -L ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/control_machine/ $container_name:$docker_logs_temp/
+    docker cp -L ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/control_machine/* $container_name:$docker_logs_temp/
 }
 function save_all_logs
 {
@@ -160,7 +161,7 @@ if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]
         while ! [[ $upload_to_server == "Y" || $upload_to_server == "y" || $upload_to_server == "yes" || $upload_to_server == "YES" || $upload_to_server == "N" || $upload_to_server == "n" || $upload_to_server == "no" || $upload_to_server == "NO" ]]; do
             if [ $counter -gt 4 ]; then
                 echo -e "${RED}Too many invalid inputs. Exiting the program...${normal}${NC}"
-                sleep 5
+                sleep 10
                 exit 1
             fi
             echo -e "${YELLOW}We are going to upload logs to Shadow servers so we can diagnose problems. Do you want to do this? (Y/n) ${normal}${NC}"
@@ -209,7 +210,7 @@ if [ ! -z "$container_name" ]; then
                     echo -e "${GREEN} Previous logs Uploaded to Shadow servers for $container_name! ${NC}"
                 else
                     echo -e "${RED}${bold} Failed to upload previous logs to Shadow servers for $container_name! Check your internet connection and try again. Exiting... ${normal}${NC}"
-                    sleep 5
+                    sleep 10
                     exit 1
                 fi
 		        sleep 1
@@ -221,7 +222,7 @@ if [ ! -z "$container_name" ]; then
         if $save_nuc_logs; then
             scp_nuc_to_server
         fi
-        if [[ $upload_sr_log_messages == "true" ]]; then
+        if [[ "$upload_sr_log_messages" == "true" ]]; then
             echo "Uploading to Shadow servers - Please wait..."
             upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow_upload.sh ${customerkey} $docker_logs_temp $timestamp" || true)
             if [[ $upload_command == "ok" ]]; then
@@ -232,7 +233,7 @@ if [ ! -z "$container_name" ]; then
                 echo -e "${RED}${bold} Failed to upload logs to Shadow servers for $container_name! Check your internet connection and try again.${normal}${NC}"
                 sleep 5
             fi
-            sleep 1
+            sleep 10
         fi
     else
         save_all_logs
@@ -241,15 +242,15 @@ if [ ! -z "$container_name" ]; then
         fi
         docker exec $container_name bash -c "rm -rf $docker_logs_temp"
         echo -e "${GREEN} Latest Logs Saved for $container_name! ${NC}"
-        sleep 1
+        sleep 10
     fi
     echo "Killing container $container_name..."
     docker kill $container_name
 else
     echo -e "${RED}There is no $container_name Docker container running, please start a container to save logs${NC}"
-    sleep 1
+    sleep 10
     exit 1
 fi
 
 echo -e "${GREEN}${bold}All ROS logs have been successfully saved!${normal}${NC}"
-sleep 5
+sleep 10

@@ -5,7 +5,7 @@
     dest: "/tmp/shadow-upload.sh"
     owner: "{{ user }}"
     group: "{{ user }}"
-    mode: 0644
+    mode: 0755
 
 - name: Copy shadow-upload.sh to the docker container
   shell: "docker cp /tmp/shadow-upload.sh {{ container_name }}:/usr/local/bin/shadow-upload.sh"
