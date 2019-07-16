@@ -35,6 +35,11 @@
       set_fact:
         use_cyberglove: true
 
+    - name: check if customer_key is provided and not false
+      when: customer_key is defined and customer_key|bool
+      set_fact:
+        use_aws: true
+
     - name: Add IP address of all hosts to all hosts
       lineinfile:
         dest: /etc/hosts
