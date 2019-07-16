@@ -11,7 +11,6 @@ NC='\033[0m' # No Color
 bold=$(tput bold)
 normal=$(tput sgr0)
 
-#default values - some are temporarily overridden in ssh sessions later on
 docker_user_home="/home/user"
 docker_ros_folder="$docker_user_home/.ros"
 docker_logs_temp="$docker_user_home/logs_temp"
@@ -22,10 +21,10 @@ save_nuc_logs={{ save_nuc_logs | lower }}
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 local_ros_log_dir=~/Desktop/ROS_LOGS/$container_name
-local_ros_log_dir_base=~/Desktop/ROS_LOGS/$container_name
 local_ros_date_directory=ros_logs_$(date +%Y-%m-%d)
 timestamp=$(date +%Y-%m-%d-%T)
 computer_name=""
+desktop_timestamp_path=""
 
 function copy_logs
 {
@@ -35,6 +34,12 @@ function copy_logs
     fi
     if [ "$computer_name" = "control_machine" ]; then
         record_node="/control_box/record"
+    fi
+    desktop_timestamp_path=${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp
+    if [ "$computer_name" != "" ]; then
+        mkdir -p $desktop_timestamp_path/$computer_name
+    else
+        mkdir -p $desktop_timestamp_path
     fi
     docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
     sleep 1
@@ -64,28 +69,21 @@ function copy_logs
     docker exec $container_name bash -c "cp $latestparam $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestws $docker_logs_temp"  || true
     container_image=$(docker ps -a | grep $container_name | awk '{print $2}' | tail -1)
-    docker container inspect $container_name > ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/container_info.txt
-    docker images $container_image > ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/image_info.txt
-    docker cp -L ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/container_info.txt $container_name:$docker_logs_temp/
-    docker cp -L ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/image_info.txt $container_name:$docker_logs_temp/
+    docker container inspect $container_name > $desktop_timestamp_path/container_info.txt
+    docker images $container_image > $desktop_timestamp_path/image_info.txt
+    docker cp -L $desktop_timestamp_path/container_info.txt $container_name:$docker_logs_temp/
+    docker cp -L $desktop_timestamp_path/image_info.txt $container_name:$docker_logs_temp/
 }
 function copy_to_host
 {
-    if [ "$computer_name" != "" ]; then
-        local_ros_log_dir="$local_ros_log_dir_base/$computer_name"
-    fi
-    mkdir -p ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp
-    echo "Copying logs $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
-    docker cp -L $container_name:$docker_logs_temp ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/
-    mv ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/logs_temp/* ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/
-    rm -rf ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/logs_temp
+    echo "Copying logs from $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
+    docker cp -L $container_name:$docker_logs_temp $desktop_timestamp_path/
 }
 function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
-    #/home/user/ROS_LOGS/teleop/control_machine/ros_log_2019-07-16-12:49:16
-    scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/control_machine/$}/$local_ros_date_directory/ros_log_$timestamp/ $local_ros_log_dir_base/control_machine/$local_ros_date_directory/ros_log_$timestamp/
-    docker cp -L $local_ros_log_dir_base/control_machine/$local_ros_date_directory/ros_log_$timestamp/ $container_name:$docker_logs_temp
+    scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/$local_ros_date_directory/ros_log_$timestamp/control_machine ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/control_machine
+    docker cp -L ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/control_machine/ $container_name:$docker_logs_temp/
 }
 function save_all_logs
 {
@@ -105,7 +103,7 @@ function save_all_logs
         docker_logs_temp=$docker_logs_temp
         docker_ros_logs_folder=$docker_ros_logs_folder
         local_ros_log_dir=$docker_user_home/ROS_LOGS/$container_name
-        local_ros_log_dir_base=$local_ros_log_dir_base
+        desktop_timestamp_path=$desktop_timestamp_path
         $(typeset -f)
         copy_logs   
         copy_to_host
@@ -137,7 +135,7 @@ fi
 mkdir -p $local_ros_log_dir
 echo $notes_from_user > $local_ros_log_dir/notes_from_user.txt
 
-if [ "$(docker exec ${container_name} bash -c 'ls /usr/local/bin/customer.key')" ]; then
+if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
     save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
     tmp_save_log_msg_config_file="/home/$USER/.shadow_save_log_app/tmp_save_sr_log_msg_config.cfg"
 
@@ -193,15 +191,15 @@ if [ "$(docker exec ${container_name} bash -c 'ls /usr/local/bin/customer.key')"
 fi
 
 if [ ! -z "$container_name" ]; then
-    if [ "$(docker exec ${container_name} bash -c 'ls /usr/local/bin/customer.key')" ]; then
-        customer_key=$(docker exec ${container_name} bash -c "head -n 1 /usr/local/bin/customer.key")
+    if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
+        customer_key=$(docker exec $container_name bash -c "head -n 1 /usr/local/bin/customer.key")
     else
         customer_key=false
     fi
 
     if [ ${customer_key} ]; then
         # check if the folder is empty.
-        if [ ! -z "$(docker exec ${container_name} bash -c 'find $docker_logs_temp -maxdepth 0 -type d 2>/dev/null')" ]; then
+        if [ ! -z "$(docker exec $container_name bash -c 'find $docker_logs_temp -maxdepth 0 -type d 2>/dev/null')" ]; then
             echo -e "${YELLOW}${bold}There are previous logs that havent been sent yet. Would you like to send them now? Type 'Y' to send or 'n' to ignore and overwrite them ${normal}${NC}"
             read old_logs
             if [[ $old_logs == "y" || $old_logs == "Y" || $old_logs == "yes" || $old_logs == "Yes" || $old_logs == "YES" ]]; then
@@ -241,12 +239,12 @@ if [ ! -z "$container_name" ]; then
         if $save_nuc_logs; then
             scp_nuc_to_server
         fi
-        docker exec ${container_name} bash -c "rm -rf $docker_logs_temp"
+        docker exec $container_name bash -c "rm -rf $docker_logs_temp"
         echo -e "${GREEN} Latest Logs Saved for $container_name! ${NC}"
         sleep 1
     fi
     echo "Killing container $container_name..."
-    docker kill ${container_name}
+    docker kill $container_name
 else
     echo -e "${RED}There is no $container_name Docker container running, please start a container to save logs${NC}"
     sleep 1
