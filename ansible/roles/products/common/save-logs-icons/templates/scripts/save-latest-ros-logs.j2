@@ -84,20 +84,20 @@ function scp_nuc_to_server
     copy_logs
     copy_to_host
     if $save_nuc_logs; then
-        ssh $NUC_NAME@$NUC_ADDRESS container_name=$container_name 'bash -s' < ENDSSH
-        container_name={{ container_name }}
-        save_nuc_logs={{ save_nuc_logs | lower }} 
-        NUC_NAME={{ nuc_username }}
-        NUC_ADDRESS={{ nuc_address }}
-        local_ros_date_directory=ros_logs_$(date +%Y-%m-%d)
-        timestamp=$(date +%Y-%m-%d-%T)
+        ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' < ENDSSH
+        container_name=$container_name
+        save_nuc_logs=$save_nuc_logs
+        NUC_NAME=$NUC_NAME
+        NUC_ADDRESS=$NUC_ADDRESS
+        local_ros_date_directory=$local_ros_date_directory
+        timestamp=$timestamp
         computer_name="control_machine"
-        docker_user_home="/home/user"
-        docker_ros_folder="$docker_user_home/.ros"
-        docker_logs_temp="$docker_user_home/logs_temp"
-        docker_ros_logs_folder="$docker_ros_folder/log/"
+        docker_user_home=$docker_user_home
+        docker_ros_folder=$docker_ros_folder
+        docker_logs_temp=$docker_logs_temp
+        docker_ros_logs_folder=$docker_ros_logs_folder
         local_ros_log_dir=$docker_user_home/ROS_LOGS/$container_name
-        dir=ros_logs_$(date +%Y-%m-%d)
+        dir=$dir
         $(typeset -f)
         copy_logs   
         copy_to_host
