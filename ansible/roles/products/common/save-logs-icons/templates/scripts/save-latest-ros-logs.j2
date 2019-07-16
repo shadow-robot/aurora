@@ -71,17 +71,17 @@ function copy_to_host
     if [ "$computer_name" != "" ]; then
         local_ros_log_dir="$local_ros_log_dir/$computer_name"
     fi
-    mkdir -p ${local_ros_log_dir}/$dir/ros_log_$timestamp
+    mkdir -p ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp
     echo "Copying logs $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
-    docker cp -L $container_name:$docker_logs_temp ${local_ros_log_dir}/$dir/ros_log_$timestamp/
-    mv ${local_ros_log_dir}/$dir/ros_log_$timestamp/logs_temp/* ${local_ros_log_dir}/$dir/ros_log_$timestamp/
-    rm -rf ${local_ros_log_dir}/$dir/ros_log_$timestamp/logs_temp
+    docker cp -L $container_name:$docker_logs_temp ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/
+    mv ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/logs_temp/* ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/
+    rm -rf ${local_ros_log_dir}/$local_ros_date_directory/ros_log_$timestamp/logs_temp
 }
 function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
-    scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/$dir/ros_log_$timestamp/ $local_ros_log_dir/control_machine/$dir/ros_log_$timestamp/
-    docker cp -L $local_ros_log_dir/control_machine/$dir/ros_log_$timestamp/ $container_name:$docker_logs_temp
+    scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/$local_ros_date_directoryros_log_$timestamp/ $local_ros_log_dir/control_machine/$local_ros_date_directory/ros_log_$timestamp/
+    docker cp -L $local_ros_log_dir/control_machine/$local_ros_date_directory/ros_log_$timestamp/ $container_name:$docker_logs_temp
 }
 function save_all_logs
 {
@@ -101,11 +101,10 @@ function save_all_logs
         docker_logs_temp=$docker_logs_temp
         docker_ros_logs_folder=$docker_ros_logs_folder
         local_ros_log_dir=$docker_user_home/ROS_LOGS/$container_name
-        dir=$dir
         $(typeset -f)
         copy_logs   
         copy_to_host
-        ENDSSH
+ENDSSH
     fi
 }
 
