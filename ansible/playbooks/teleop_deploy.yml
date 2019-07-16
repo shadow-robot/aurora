@@ -27,6 +27,19 @@
       ping:
   become: yes
 
+- name: check if customer_key is provided and not false
+  when: customer_key is defined and customer_key|bool
+  set_fact:
+    use_aws: true
+
+- name: debug
+  debug:
+    msg: "{{ customer_key }}"
+
+- name: debug2
+  debug:
+    msg: "{{ use_aws }}"
+
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
   pre_tasks:
@@ -34,11 +47,6 @@
       when: cyberglove is defined and cyberglove|bool
       set_fact:
         use_cyberglove: true
-
-    - name: check if customer_key is provided and not false
-      when: customer_key is defined and customer_key|bool
-      set_fact:
-        use_aws: true
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
