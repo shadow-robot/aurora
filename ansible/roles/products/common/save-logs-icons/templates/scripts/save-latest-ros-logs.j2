@@ -85,7 +85,7 @@ function save_all_logs
     copy_logs
     copy_to_host
     if $save_nuc_logs; then
-        ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' < ENDSSH
+        ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << ENDSSH
         container_name=$container_name
         save_nuc_logs=$save_nuc_logs
         NUC_NAME=$NUC_NAME
@@ -109,8 +109,8 @@ function save_all_logs
 info_message="You are about to save latest ROS logs from $container_name\nDocker container on this computer ($HOSTNAME)"
 warning_message="WARNING! This closes the $container_name docker container in this computer.\nDo you wish to continue? (Y/n) "
 if $save_nuc_logs; then
-    info_message="You are about to save latest ROS logs from $container_name\nDocker containers on teleop server and control computer"
-    warning_message="WARNING! This closes the $container_name Docker containers in this and the control computer.\nDo you wish to continue? (Y/n) "
+    info_message="You are about to save latest ROS logs from $container_name Docker containers\non teleop server and control computer"
+    warning_message="WARNING! This closes the $container_name Docker containers\nin this and the control computer. Do you wish to continue? (Y/n) "
     computer_name="server"
 fi
 
