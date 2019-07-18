@@ -19,6 +19,8 @@
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
+  vars:
+    nvidia_docker: 0
 
 - name: Include docker/aws role
   include_role:

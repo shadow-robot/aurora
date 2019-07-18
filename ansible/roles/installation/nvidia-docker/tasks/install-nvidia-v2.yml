@@ -21,7 +21,7 @@
     repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
     state: present
   with_items:
-    - nvidia-docker2
+    - nvidia-docker
 
 - name: Install nvidia-docker 2
   apt:
