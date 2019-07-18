@@ -8,7 +8,6 @@
   apt_key:
     url: https://nvidia.github.io/nvidia-docker/gpgkey
     state: present
-  become: yes
 
 - name: Set ubuntu_version for nvidia-docker install
   set_fact:
@@ -22,24 +21,22 @@
     repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
     state: present
   with_items:
+    - nvidia-container-runtime
     - nvidia-docker
-  become: yes
+    - libnvidia-container
 
 - name: Install nvidia-docker 2
   apt:
     name: nvidia-docker2
     state: present
     update_cache: yes
-  become: yes
 
 - name: Reload daemon
   systemd:
     daemon_reload: yes
-  become: yes
   when: skip_molecule_task is not defined
 
 - name: Restart docker after installing nvidia_docker
   service:
     name: docker
     state: restarted
-  become: yes
