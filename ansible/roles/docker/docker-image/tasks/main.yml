@@ -40,7 +40,7 @@
     set_fact:
       full_image_name: "{{ image }}:{{ tag }}"
 
-  when: nvidia_docker | int == 1
+  when: nvidia_docker | int == 1 and skip_nvidia is false
 
 - name: Check the correct docker image to pull for nvidia-docker 2
   block:
@@ -63,7 +63,7 @@
     set_fact:
       full_image_name: "{{ image }}:{{ tag }}"
 
-  when: nvidia_docker | int == 2
+  when: nvidia_docker | int == 2 and skip_nvidia is false
 
 - name: Pull Docker image
   docker_image:
