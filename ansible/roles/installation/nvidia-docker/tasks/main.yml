@@ -14,5 +14,5 @@
   become: yes
 
 - import_tasks: install-nvidia-v2.yml
-  when: nvidia_docker | int == 2
-  become: yes and skip_nvidia|bool == false
+  when: nvidia_docker | int == 2 and skip_nvidia|bool == false
+  become: yes
