@@ -54,7 +54,6 @@
     when: docker_nvidia_facts.images|length == 0
     script: files/docker2_nvidialize.sh {{ full_image_name }}
     become: yes
-    gather_facts: no
 
   - name: Append -nvidia2 to tag if nvidia_docker is 2
     set_fact:
