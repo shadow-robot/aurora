@@ -43,7 +43,7 @@ function copy_logs
         record_node="/control_box/record"
     fi
     sleep 1
-    latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_folder/*.bag | tail -1") || true
+    latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag | tail -1") || true
     docker exec $container_name bash -c "mkdir $docker_logs_temp" || true
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/stderr.log $docker_logs_temp" || true
     docker exec $container_name bash -c "rm $docker_ros_logs_folder/std*.log" || true
@@ -63,8 +63,8 @@ function copy_logs
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/core_dumps/* $docker_logs_temp" || true
     docker exec $container_name bash -c "rm $docker_ros_logs_folder/core_dumps/core_*" || true
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/latest/* $docker_logs_temp"  || true
-    latestws=$(docker exec $container_name bash -c "ls -dtr $docker_ros_folder/wsdiff_ws_diff* | tail -1")
-    latestparam=$(docker exec $container_name bash -c "ls -dtr $docker_ros_folder/run_params* | tail -1")
+    latestws=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/wsdiff_ws_diff* | tail -1")
+    latestparam=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/run_params* | tail -1")
     docker exec $container_name bash -c "cp $latestbag $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestparam $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestws $docker_logs_temp"  || true
