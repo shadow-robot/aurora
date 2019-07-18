@@ -10,9 +10,9 @@
   become: yes
 
 - import_tasks: install-nvidia-v1.yml
-  when: nvidia_docker | int == 1 and skip_nvidia|bool == false
+  when: nvidia_docker | int == 1 and not skip_nvidia|bool
   become: yes
 
 - import_tasks: install-nvidia-v2.yml
-  when: nvidia_docker | int == 2 and skip_nvidia|bool == false
+  when: nvidia_docker | int == 2 and not skip_nvidia|bool
   become: yes
