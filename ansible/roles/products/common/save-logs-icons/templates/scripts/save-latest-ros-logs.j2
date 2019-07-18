@@ -4,6 +4,7 @@
 set -e # fails on errors
 #set -x # echo commands run
 
+#colours
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RED='\033[0;31m'
@@ -11,20 +12,26 @@ NC='\033[0m' # No Color
 bold=$(tput bold)
 normal=$(tput sgr0)
 
+#docker variables
 docker_user_home="/home/user"
-docker_ros_folder="$docker_user_home/.ros"
 docker_logs_temp="$docker_user_home/logs_temp"
+docker_ros_folder="$docker_user_home/.ros"
 docker_ros_logs_folder="$docker_ros_folder/log"
 record_node="/record"
+
+#external variables from jinja2
 container_name={{ container_name }}
 save_nuc_logs={{ save_nuc_logs | lower }} 
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
+
+#local computer variables
 local_ros_log_dir=/home/$USER/Desktop/ROS_LOGS/$container_name
-local_ros_date_directory=ros_logs_$(date +%Y-%m-%d)
+datestamp=$(date +%Y-%m-%d)
 timestamp=$(date +%Y-%m-%d-%T)
 computer_name=""
-desktop_timestamp_path=$local_ros_log_dir/$local_ros_date_directory/ros_log_$timestamp
+local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
+local_desktop_path=$local_desktop_path_base
 
 function copy_logs
 {
@@ -35,14 +42,8 @@ function copy_logs
     if [ "$computer_name" = "control_machine" ]; then
         record_node="/control_box/record"
     fi
-    if [ "$computer_name" != "" ]; then
-        mkdir -p $desktop_timestamp_path/$computer_name
-    else
-        mkdir -p $desktop_timestamp_path
-    fi
-    docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
     sleep 1
-    latestbag=$(docker exec $container_name bash -c 'ls -dtr $docker_ros_folder/*.bag | tail -1') || true
+    latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_folder/*.bag | tail -1") || true
     docker exec $container_name bash -c "mkdir $docker_logs_temp" || true
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/stderr.log $docker_logs_temp" || true
     docker exec $container_name bash -c "rm $docker_ros_logs_folder/std*.log" || true
@@ -62,23 +63,23 @@ function copy_logs
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/core_dumps/* $docker_logs_temp" || true
     docker exec $container_name bash -c "rm $docker_ros_logs_folder/core_dumps/core_*" || true
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/latest/* $docker_logs_temp"  || true
-    latestws=$(docker exec $container_name bash -c 'ls -dtr $docker_ros_folder/wsdiff_ws_diff* | tail -1')
-    latestparam=$(docker exec $container_name bash -c 'ls -dtr $docker_ros_folder/run_params* | tail -1')
+    latestws=$(docker exec $container_name bash -c "ls -dtr $docker_ros_folder/wsdiff_ws_diff* | tail -1")
+    latestparam=$(docker exec $container_name bash -c "ls -dtr $docker_ros_folder/run_params* | tail -1")
     docker exec $container_name bash -c "cp $latestbag $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestparam $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestws $docker_logs_temp"  || true
     container_image=$(docker ps -a | grep $container_name | awk '{print $2}' | tail -1)
-    docker container inspect $container_name > $desktop_timestamp_path/container_info.txt
-    docker images $container_image > $desktop_timestamp_path/image_info.txt
-    docker cp -L $desktop_timestamp_path/container_info.txt $container_name:$docker_logs_temp/
-    docker cp -L $desktop_timestamp_path/image_info.txt $container_name:$docker_logs_temp/
+    docker container inspect $container_name/container_info.txt
+    docker images $container_image/image_info.txt
+    docker cp /container_info.txt $container_name:$docker_logs_temp/
+    docker cp /image_info.txt $container_name:$docker_logs_temp/
 }
 function copy_to_host
 {
     echo "Copying logs from $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
-    docker cp -L $container_name:$docker_logs_temp $desktop_timestamp_path/
-    mv $desktop_timestamp_path/logs_temp/* $desktop_timestamp_path/
-    rm -rf $desktop_timestamp_path/logs_temp/
+    docker cp -L $container_name:$docker_logs_te/
+    /logs_temp/
+    rm -/logs_temp/
 }
 function scp_nuc_to_server
 {
@@ -103,8 +104,7 @@ function save_all_logs
         docker_ros_folder=$docker_ros_folder
         docker_logs_temp=$docker_logs_temp
         docker_ros_logs_folder=$docker_ros_logs_folder
-        local_ros_log_dir=$docker_user_home/ROS_LOGS/$container_name
-        desktop_timestamp_path=$desktop_timestamp_path
+        local_ros_log_dir=$docker_user_home/ROS_LOGS/$container_nam
         $(typeset -f)
         copy_logs   
         copy_to_host
@@ -131,10 +131,10 @@ fi
 echo -e "${NC}${normal}Please add a note for logging with reasons... ${normal}${NC}"
 read notes_from_user
 if [ "$computer_name" != "" ]; then
-    local_ros_log_dir="$local_ros_log_dir_base/$computer_name"
+    local_desktop_path="$local_desktop_path_base/$computer_name"
 fi
-mkdir -p $local_ros_log_dir
-echo $notes_from_user > $local_ros_log_dir/notes_from_user.txt
+mkdir -p $local_desktop_path
+echo $notes_from_user > $local_desktop_path/notes_from_user.txt
 
 if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
     save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
