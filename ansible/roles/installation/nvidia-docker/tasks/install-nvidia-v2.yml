@@ -21,7 +21,9 @@
     repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
     state: present
   with_items:
-    - nvidia-docker2
+    - nvidia-container-runtime
+    - nvidia-docker
+    - libnvidia-container
 
 - name: Install nvidia-docker 2
   apt:
@@ -32,11 +34,9 @@
 - name: Reload daemon
   systemd:
     daemon_reload: yes
-  become: yes
   when: skip_molecule_task is not defined
 
 - name: Restart docker after installing nvidia_docker
   service:
     name: docker
     state: restarted
-  become: yes

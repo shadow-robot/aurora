@@ -6,6 +6,8 @@
 - name: Include installation/docker role
   include_role:
     name: installation/docker
+  vars:
+    skip_nvidia: true
 
 - name: Set chrony server ip
   set_fact:
@@ -19,6 +21,8 @@
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
+  vars:
+    skip_nvidia: true
 
 - name: Include docker/aws role
   include_role:
@@ -35,6 +39,7 @@
     name: products/common/docker-container
   vars:
     ros_master: "{{ server_hostname }}"
+    nvidia_docker: 0
 
 - name: Check if there is an interface file
   stat:
