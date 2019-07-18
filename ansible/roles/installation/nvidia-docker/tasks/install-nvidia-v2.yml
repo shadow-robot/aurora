@@ -8,6 +8,7 @@
   apt_key:
     url: https://nvidia.github.io/nvidia-docker/gpgkey
     state: present
+  become: yes
 
 - name: Set ubuntu_version for nvidia-docker install
   set_fact:
@@ -22,12 +23,14 @@
     state: present
   with_items:
     - nvidia-docker
+  become: yes
 
 - name: Install nvidia-docker 2
   apt:
     name: nvidia-docker2
     state: present
     update_cache: yes
+  become: yes
 
 - name: Reload daemon
   systemd:
