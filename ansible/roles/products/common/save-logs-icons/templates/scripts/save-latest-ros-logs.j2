@@ -42,6 +42,7 @@ function copy_logs
     if [ "$computer_name" = "control_machine" ]; then
         record_node="/control_box/record"
     fi
+    docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
     sleep 1
     latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag | tail -1") || true
     docker exec $container_name bash -c "mkdir $docker_logs_temp" || true
@@ -84,8 +85,8 @@ function copy_to_host
 function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
-    scp -r $NUC_NAME@$NUC_ADDRESS:$docker_user_home/ROS_LOGS/$container_name/ros_logs_$datestamp/ros_log_$timestamp/control_machine $local_desktop_path_base/control_machine
-    docker cp -L $local_desktop_path_base/control_machine/* $container_name:$docker_logs_temp/
+    scp -r $NUC_NAME@$NUC_ADDRESS:/home/user/ROS_LOGS/$container_name/ros_logs_$datestamp/ros_log_$timestamp/control_machine $local_desktop_path_base/control_machine
+    docker cp -L $local_desktop_path_base/control_machine/* $container_name:$docker_logs_temp/control_machine/
 }
 function save_all_logs
 {
@@ -102,12 +103,12 @@ function save_all_logs
         save_nuc_logs=$save_nuc_logs
         NUC_NAME=$NUC_NAME
         NUC_ADDRESS=$NUC_ADDRESS
-        local_ros_log_dir=$local_ros_log_dir
+        local_ros_log_dir=/home/user/ROS_LOGS/$container_name
         datestamp=$datestamp
         timestamp=$timestamp
         computer_name="control_machine"
-        local_desktop_path_base=$local_desktop_path_base
-        local_desktop_path=$local_desktop_path
+        local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
+        local_desktop_path=$local_desktop_path_base/$computer_name
 
         $(typeset -f)
         copy_logs   
@@ -139,6 +140,7 @@ if [ "$computer_name" != "" ]; then
 fi
 mkdir -p $local_desktop_path
 echo $notes_from_user > $local_desktop_path/notes_from_user.txt
+docker cp -L $local_desktop_path/notes_from_user.txt $container_name:$docker_logs_temp
 
 if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
     save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
