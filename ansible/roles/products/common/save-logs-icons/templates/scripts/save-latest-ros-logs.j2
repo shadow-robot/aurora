@@ -211,12 +211,12 @@ if [ ! -z "$container_name" ]; then
 
     if [ ${customer_key} ]; then
         # check if the folder is empty.
-        if [ ! -z "$(docker exec $container_name bash -c 'find $docker_logs_temp -maxdepth 0 -type d 2>/dev/null')" ]; then
+        if [ ! -z "$(docker exec $container_name bash -c 'find $docker_logs_temp_base -maxdepth 0 -type d 2>/dev/null')" ]; then
             echo -e "${YELLOW}${bold}There are previous logs that havent been sent yet. Would you like to send them now? Type 'Y' to send or 'n' to ignore and overwrite them ${normal}${NC}"
             read old_logs
             if [[ $old_logs == "y" || $old_logs == "Y" || $old_logs == "yes" || $old_logs == "Yes" || $old_logs == "YES" ]]; then
                 echo "Uploading to Shadow servers - Please wait..."
-                upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customer_key} $docker_logs_temp $timestamp" || true) 
+                upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customer_key} $docker_logs_temp_base $timestamp" || true) 
                 if [[ $upload_command == "ok" ]]; then
                     echo -e "${GREEN} Previous logs Uploaded to Shadow servers for $container_name! ${NC}"
                 else
@@ -227,7 +227,7 @@ if [ ! -z "$container_name" ]; then
 		        sleep 1
             fi
             # delete temp folder
-            docker exec $container_name bash -c "rm -rf $docker_logs_temp"
+            docker exec $container_name bash -c "rm -rf $docker_logs_temp_base"
         fi
         save_all_logs
         if $save_nuc_logs; then
@@ -235,10 +235,10 @@ if [ ! -z "$container_name" ]; then
         fi
         if [[ "$upload_sr_log_messages" == "true" ]]; then
             echo "Uploading to Shadow servers - Please wait..."
-            upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customer_key} $docker_logs_temp $timestamp" || true)
+            upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customer_key} $docker_logs_temp_base $timestamp" || true)
             if [[ $upload_command == "ok" ]]; then
                 # delete temp folder
-                docker exec $container_name bash -c "rm -rf $docker_logs_temp"
+                docker exec $container_name bash -c "rm -rf $docker_logs_temp_base"
                 echo -e "${GREEN} Latest Logs Saved and Uploaded to Shadow servers for $container_name! ${NC}"
             else
                 echo -e "${RED}${bold} Failed to upload logs to Shadow servers for $container_name! Check your internet connection and try again.${normal}${NC}"
@@ -251,7 +251,7 @@ if [ ! -z "$container_name" ]; then
         if $save_nuc_logs; then
             scp_nuc_to_server
         fi
-        docker exec $container_name bash -c "rm -rf $docker_logs_temp"
+        docker exec $container_name bash -c "rm -rf $docker_logs_temp_base"
         echo -e "${GREEN} Latest Logs Saved for $container_name! ${NC}"
         sleep 10
     fi
