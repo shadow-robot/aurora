@@ -69,10 +69,10 @@ function copy_logs
     docker exec $container_name bash -c "cp $latestparam $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestws $docker_logs_temp"  || true
     container_image=$(docker ps -a | grep $container_name | awk '{print $2}' | tail -1)
-    docker container inspect $container_name/container_info.txt
-    docker images $container_image/image_info.txt
-    docker cp /container_info.txt $container_name:$docker_logs_temp/
-    docker cp /image_info.txt $container_name:$docker_logs_temp/
+    docker container inspect $container_name > $local_desktop_path/container_info.txt
+    docker images $container_image > $local_desktop_path/image_info.txt
+    docker cp $local_desktop_path/container_info.txt $container_name:$docker_logs_temp/
+    docker cp $local_desktop_path/image_info.txt $container_name:$docker_logs_temp/
 }
 function copy_to_host
 {
@@ -92,7 +92,7 @@ function save_all_logs
     copy_logs
     copy_to_host
     if $save_nuc_logs; then
-        ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << 'ENDSSH'
+        ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << ENDSSH
         container_name=$container_name
         docker_user_home=$docker_user_home
         docker_logs_temp=$docker_logs_temp
