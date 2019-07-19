@@ -14,7 +14,8 @@ normal=$(tput sgr0)
 
 #docker variables
 docker_user_home="/home/user"
-docker_logs_temp="$docker_user_home/logs_temp"
+docker_logs_temp_base="$docker_user_home/logs_temp"
+docker_logs_temp=$docker_logs_temp_base
 docker_ros_folder="$docker_user_home/.ros"
 docker_ros_logs_folder="$docker_ros_folder/log"
 record_node="/record"
@@ -35,13 +36,16 @@ local_desktop_path=$local_desktop_path_base
 
 function copy_logs
 {
-    echo "Copying logs from $docker_ros_folder to $docker_logs_temp inside the $container_name Docker container on $HOSTNAME"
     if [ "$computer_name" = "server" ]; then
         record_node="/server_record"
+        docker_logs_temp=$docker_logs_temp_base/$computer_name        
     fi
     if [ "$computer_name" = "control_machine" ]; then
         record_node="/control_box/record"
+        docker_logs_temp=$docker_logs_temp_base/$computer_name
     fi
+    echo "Copying logs from $docker_ros_folder to $docker_logs_temp inside the $container_name Docker container on $HOSTNAME"
+
     docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
     sleep 1
     latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag | tail -1") || true
@@ -74,6 +78,7 @@ function copy_logs
     docker images $container_image > $local_desktop_path/image_info.txt
     docker cp $local_desktop_path/container_info.txt $container_name:$docker_logs_temp/
     docker cp $local_desktop_path/image_info.txt $container_name:$docker_logs_temp/
+    docker cp -L $local_desktop_path/notes_from_user.txt $container_name:$docker_logs_temp
 }
 function copy_to_host
 {
@@ -86,7 +91,7 @@ function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
     scp -r $NUC_NAME@$NUC_ADDRESS:/home/user/ROS_LOGS/$container_name/ros_logs_$datestamp/ros_log_$timestamp/control_machine $local_desktop_path_base/control_machine
-    docker cp -L $local_desktop_path_base/control_machine/* $container_name:$docker_logs_temp/control_machine/
+    docker cp -L $local_desktop_path_base/control_machine/* $container_name:$docker_logs_temp_base/control_machine/
 }
 function save_all_logs
 {
@@ -96,6 +101,7 @@ function save_all_logs
         ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << ENDSSH
         container_name=$container_name
         docker_user_home=$docker_user_home
+        docker_logs_temp_base=$docker_logs_temp_base
         docker_logs_temp=$docker_logs_temp
         docker_ros_folder=$docker_ros_folder
         docker_ros_logs_folder=$docker_ros_logs_folder
@@ -140,7 +146,6 @@ if [ "$computer_name" != "" ]; then
 fi
 mkdir -p $local_desktop_path
 echo $notes_from_user > $local_desktop_path/notes_from_user.txt
-docker cp -L $local_desktop_path/notes_from_user.txt $container_name:$docker_logs_temp
 
 if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
     save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
