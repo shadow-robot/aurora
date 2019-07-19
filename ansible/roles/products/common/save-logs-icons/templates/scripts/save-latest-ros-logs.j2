@@ -97,6 +97,8 @@ function save_all_logs
 {
     copy_logs
     copy_to_host
+    echo "preparing to ssh to nuc"
+    sleep 10
     if $save_nuc_logs; then
         ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << ENDSSH
         container_name=$container_name
@@ -120,6 +122,8 @@ function save_all_logs
         copy_logs   
         copy_to_host
 ENDSSH
+    echo "nuc ssh finished"
+    sleep 10
     fi
 }
 
