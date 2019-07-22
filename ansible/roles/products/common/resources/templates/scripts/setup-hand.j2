@@ -4,6 +4,11 @@ source /home/user/projects/shadow_robot/base/devel/setup.bash
 roscd sr_ethercat_hand_config
 git fetch
 git pull
+echo "########################################################################"
+echo "########################################################################"
+echo "########################################################################"
+echo "########################################################################"
+echo "########################################################################"
 echo -e \"Latest sr_config has been pulled!\"
 git checkout {{ config_branch }}
 # TODO: FIX so that cyberglove is not mentioned here in docker-container role, and cyberglove setup is handled in cyberglove role
