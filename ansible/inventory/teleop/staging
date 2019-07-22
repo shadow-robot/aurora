@@ -1,7 +1,7 @@
-[tom-ThinkPad-W540]
-10.6.10.5 ansible_host=TELEOP-DEMO ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+[server]
+10.6.10.5 ansible_host=tom-ThinkPad-W540 ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
-[nuc-control]
+[control_machine]
 10.6.10.2 ansible_host=nuc-control ansible_ssh_pipelining=true ansible_connection=ssh ansible_ssh_user=user ansible_user=user remote_user=user ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [windows_machine]
