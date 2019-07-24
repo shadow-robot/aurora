@@ -1,0 +1,42 @@
+---
+- name: Ensures that Desktop folder exists
+  file:
+    path: "{{ user_folder }}/Desktop"
+    mode: '755'
+    state: directory
+
+- name: Ensures that tutorial directory exists
+  file:
+    path: "{{ tutorial_launcher_folder }}"
+    state: directory
+
+- name: Copy the tutorial desktop icon
+  copy: 
+    src: files/tutorial_1_icon.png
+    dest: "{{ tutorial_launcher_folder }}/tutorial_1_icon.png"
+    mode: '664'
+
+- name: Create the executable launch script
+  template:
+    src: templates/scripts/show_terminal.j2
+    dest: "{{ tutorial_launcher_folder }}/show_terminal.sh"
+    mode: '755'
+
+- name: Create the tutorial desktop icon
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Launch_Tutorial_1.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: Launch_Tutorial_1
+    comment: "This is application launches Tutorial 1 of Aurora"
+    window_title: tutorial_1_launcher_app_xterm
+    folder: "{{ tutorial_launcher_folder }}"
+    shell_script_file_name: show_terminal.sh
+    icon_file_name: tutorial_1_icon.png
+
+- name: Make Desktop icon trusted
+  shell: gio set "{{ user_folder }}/Desktop/Launch_Tutorial_1.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'xenial'
