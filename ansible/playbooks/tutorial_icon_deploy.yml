@@ -1,0 +1,9 @@
+---
+
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
+- name: Tutorial 1 installation
+  hosts: docker_deploy
+  roles:
+    - {role: products/tutorial/deploy }
