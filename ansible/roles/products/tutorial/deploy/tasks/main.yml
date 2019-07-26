@@ -1,0 +1,4 @@
+---
+- name: Include products/tutorial/desktop-icons role
+  include_role:
+    name: products/tutorial/desktop-icons
