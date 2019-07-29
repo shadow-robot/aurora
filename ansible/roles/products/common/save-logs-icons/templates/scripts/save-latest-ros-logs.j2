@@ -84,6 +84,11 @@ function copy_logs
 }
 function copy_to_host
 {
+    local_ros_log_dir=/home/$USER/ROS_LOGS/$container_name
+    local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
+    local_desktop_path=$local_desktop_path_base/$computer_name
+                        
+    mkdir -p $local_desktop_path
     echo "Copying logs from $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
     docker cp -L $container_name:$docker_logs_temp $local_desktop_path/ || true
     mv $local_desktop_path/logs_temp/* $local_desktop_path || true
