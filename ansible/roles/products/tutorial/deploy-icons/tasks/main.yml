@@ -39,4 +39,4 @@
   shell: gio set "{{ user_folder }}/Desktop/Launch_Tutorial_1.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'xenial'
+    - ansible_distribution_release|string == 'bionic'
