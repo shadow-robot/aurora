@@ -1,0 +1,6 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+username: "{{ user }}"
+tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
+
