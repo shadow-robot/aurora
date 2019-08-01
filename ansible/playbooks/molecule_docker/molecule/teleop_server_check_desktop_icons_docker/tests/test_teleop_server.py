@@ -10,7 +10,7 @@ def test_icons_in_docker(host):
     script_path = '/home/' + str(host.user().name) + \
                   '/.shadow_launcher_app/shadow_hand_launcher/'
     save_logs_script_path = '/home/' + str(host.user().name) + \
-                  '/.shadow_save_log_app/save_latest_ros_log/'
+                            '/.shadow_save_log_app/save_latest_ros_log/'
     icons = (
         'Teleop_control_machine_Launch_Demohand_A',
         'Teleop_control_machine_Launch_Demohand_B',
