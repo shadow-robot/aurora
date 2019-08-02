@@ -33,7 +33,6 @@
   vars:
     desktop_shortcut_name: Close Hand
     comment: "This runs closes the hand for transportation"
-    window_title: close_hand_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: close_hand.sh
     icon_file_name: close-hand-icon.png
@@ -67,7 +66,6 @@
   vars:
     desktop_shortcut_name: Open Hand
     comment: "This opens the hand"
-    window_title: open_hand_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: open_hand.sh
     icon_file_name: open-hand-icon.png
