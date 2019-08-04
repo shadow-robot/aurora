@@ -31,8 +31,8 @@
 
 - name: Copy documentation desktop icon
   copy:
-    src: files/{{ desktop_icon_doc_name }}
-    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_doc_name }}"
+    src: files/{{ desktop_doc_icon_png }}
+    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_doc_icon_png }}"
     mode: '664'
 
 - name: Create executable launch script
@@ -44,17 +44,17 @@
 - name: Create documentation desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/{{ desktop_icon_doc_name }}.desktop"
+    dest: "{{ user_folder }}/Desktop/{{ desktop_doc_icon_name }}.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: "{{ desktop_icon_doc_name }}"
-    comment: "{{ desktop_icon_doc_name }}"
+    desktop_shortcut_name: "{{ desktop_doc_icon_name }}"
+    comment: "{{ desktop_doc_icon_name }}"
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_doc_script }}"
-    icon_file_name: "{{ desktop_icon_doc_name }}"
+    icon_file_name: "{{ desktop_doc_icon_png }}"
 
 - name: Make documentation Desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_doc_name }}.desktop" "metadata::trusted" yes
+  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_doc_icon_name }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
