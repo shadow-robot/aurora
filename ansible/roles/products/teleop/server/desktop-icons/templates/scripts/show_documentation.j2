@@ -1,11 +1,9 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
-echo "Starting the container..."
-echo {{ container_name }}
-echo {{ shadow_hand_launcher_folder }}
-if [ ! -d /home/beatriz/.shadow_launcher_app/shadow_hand_launcher/shadow-robot-company-teleoperation-latest/ ]; then
-  docker cp teleop:/home/user/projects/shadow_robot/base/src/sr_teleop_documentation/html/shadow-robot-company-teleoperation-latest.zip /tmp/
-  unzip /tmp/shadow-robot-company-teleoperation-latest.zip -d /home/beatriz/.shadow_launcher_app/shadow_hand_launcher/
+DOC_ZIP_FILENAME=shadow-robot-company-teleoperation-latest
+if [ ! -d {{ shadow_hand_launcher_folder }}/$DOC_ZIP_FILENAME ]; then
+  docker cp {{ container_name }}:/home/user/projects/shadow_robot/base/src/sr_teleop_documentation/html/shadow-robot-company-teleoperation-latest.zip /tmp/
+  unzip /tmp/$DOC_ZIP_FILENAME.zip -d {{ shadow_hand_launcher_folder }}
 fi
-xdg-open /home/beatriz/.shadow_launcher_app/shadow_hand_launcher/shadow-robot-company-teleoperation-latest/index.html
+xdg-open {{ shadow_hand_launcher_folder }}/$DOC_ZIP_FILENAME/index.html
 sleep infinity
