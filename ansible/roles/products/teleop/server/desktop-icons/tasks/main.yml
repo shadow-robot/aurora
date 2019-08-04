@@ -50,6 +50,8 @@
     desktop_icon_png: "cyberglove_teleop.png"
     launch_script: "shadow_launcher_exec.sh"
     desktop_icon_name: "Teleop_Container_Launch"
+    launch_doc_script: "shadow_launcher_doc_exec.sh"
+    desktop_icon_doc_name: "Teleop_Documentation_Launch"
 
 - name: Install desktop icon for Teleop server GUI
   import_tasks: gui-icon.yml
