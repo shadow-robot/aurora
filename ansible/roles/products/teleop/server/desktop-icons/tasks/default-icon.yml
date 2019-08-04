@@ -31,8 +31,8 @@
 
 - name: Copy documentation desktop icon
   copy:
-    src: files/{{ desktop_doc_icon_png }}
-    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_doc_icon_png }}"
+    src: files/{{ desktop_icon_png }}
+    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
 - name: Create executable launch script
