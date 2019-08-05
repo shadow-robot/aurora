@@ -3,7 +3,7 @@
 set -e # fail on errors
 #set -x # echo commands run
 
-script_name=$(basename $BASH_SOURCE)
+script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
 if [ $# < 2 ]; then
     command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
