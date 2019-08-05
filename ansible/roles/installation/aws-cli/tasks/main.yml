@@ -3,6 +3,7 @@
   apt:
     update_cache: yes
   become: yes
+  changed_when: false
 
 - name: Install needed libs for AWS CLI help
   apt:
