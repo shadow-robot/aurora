@@ -2,4 +2,6 @@
 #! /bin/bash
 docker start {{ container_name }}
 docker exec -it --user user teleop  bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch sr_teleop_documentation sr_teleop_documentation_server.launch &"
+sleep 1
 xdg-open http://localhost:9090/
+sleep infinity
