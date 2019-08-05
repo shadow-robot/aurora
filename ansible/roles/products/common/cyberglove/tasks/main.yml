@@ -30,7 +30,6 @@
   vars:
     desktop_shortcut_name: Launch Cyberglove
     comment: "This is application launches the Cyberglove"
-    window_title: launch_cyberglove_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: launch-cyberglove.sh
     icon_file_name: cyberglove.png

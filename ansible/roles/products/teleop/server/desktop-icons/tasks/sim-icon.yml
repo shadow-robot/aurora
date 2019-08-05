@@ -22,7 +22,6 @@
   vars:
     desktop_shortcut_name: "{{ desktop_icon_name }}"
     comment: "{{ desktop_icon_name }}"
-    window_title: teleop_launcher_app_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"

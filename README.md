@@ -613,7 +613,6 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
   vars:
     desktop_shortcut_name: Launch_Tutorial_1
     comment: "This is application launches Tutorial 1 of Aurora"
-    window_title: tutorial_1_launcher_app_xterm
     folder: "{{ tutorial_launcher_folder }}"
     shell_script_file_name: show_terminal.sh
     icon_file_name: tutorial_1_icon.png
