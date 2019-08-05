@@ -3,8 +3,8 @@
 Version=1.0
 Name={{ desktop_shortcut_name }}
 Comment={{ comment }}
-Exec=bash -c "exec -a '{{ window_title }}' xterm -title '{{ window_title }}' -e '{{ folder }}/{{ shell_script_file_name }}'"
+Exec={{ folder }}/{{ shell_script_file_name }}
 Icon={{ folder }}/{{ icon_file_name }}
-Terminal=false
+Terminal=true
 Type=Application
 Categories=Utility;Application;

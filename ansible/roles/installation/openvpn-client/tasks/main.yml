@@ -57,7 +57,6 @@
   vars:
     desktop_shortcut_name: OpenVPN_Config_Launch
     comment: "This is application launches OpenVPN config"
-    window_title: openvpn
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: openvpn.sh
     icon_file_name: openvpn.png
