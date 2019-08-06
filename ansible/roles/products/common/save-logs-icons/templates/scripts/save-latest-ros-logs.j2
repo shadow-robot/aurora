@@ -1,0 +1,278 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+
+set -e # fails on errors
+#set -x # echo commands run
+
+#colours
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+#docker variables
+docker_user_home="/home/user"
+docker_logs_temp_base="$docker_user_home/logs_temp"
+docker_logs_temp=$docker_logs_temp_base
+docker_ros_folder="$docker_user_home/.ros"
+docker_ros_logs_folder="$docker_ros_folder/log"
+record_node="/record"
+
+#external variables from jinja2
+container_name={{ container_name }}
+save_nuc_logs={{ save_nuc_logs | lower }} 
+NUC_NAME={{ nuc_username }}
+NUC_ADDRESS={{ nuc_address }}
+
+#local computer variables
+local_ros_log_dir=/home/$USER/Desktop/ROS_LOGS/$container_name
+datestamp=$(date +%Y-%m-%d)
+timestamp=$(date +%Y-%m-%d-%T)
+computer_name=""
+local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
+local_desktop_path=$local_desktop_path_base
+
+function copy_logs
+{
+    if [ "$computer_name" = "server" ]; then
+        record_node="/server_record"       
+    fi
+    if [ "$computer_name" = "control_machine" ]; then
+        record_node="/control_box/record"
+    fi
+    if [ "$computer_name" != "" ]; then
+        docker_logs_temp=$docker_logs_temp_base/$computer_name 
+        local_desktop_path="$local_desktop_path_base/$computer_name"
+    fi
+    mkdir -p $local_desktop_path || true
+    docker exec $container_name bash -c "mkdir -p $docker_logs_temp" || true
+    echo "Copying logs from $docker_ros_folder to $docker_logs_temp inside the $container_name Docker container on $HOSTNAME"
+    docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
+    sleep 1
+    latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag | tail -1") || true
+    docker exec $container_name bash -c "mkdir -p $docker_logs_temp" || true
+    docker exec $container_name bash -c "cp $docker_ros_logs_folder/stderr.log $docker_logs_temp" || true
+    docker exec $container_name bash -c "rm $docker_ros_logs_folder/std*.log" || true
+    core_name=$(docker exec $container_name bash -c "ls $docker_ros_logs_folder/core_dumps/core* | grep -v '\.log' | awk '{if(NR>0) print $NF}'")
+    if [ ! -z "$core_name" ]; then
+        core_array=($core_name)
+        for core in ${!core_array[@]}; do
+            current_core=${core_array[$core]}
+            current_runtime=$(docker exec $container_name bash -c "echo $current_core | grep -o -P '(?<=core_BOF_).*(?=_EOF_)'")
+            runtime_name=$(docker exec $container_name bash -c "strings $current_core | grep $current_runtime | tail -1")
+            #use runtime name in the log file to use later
+            docker exec $container_name bash -c "echo 'Executable:' $runtime_name > $current_core.log" || true
+            #extract readable info to log file
+            docker exec $container_name bash -c "gdb --core=$current_core $runtime_name -ex 'bt full' -ex 'quit' >> $current_core.log" || true
+        done
+    fi
+    docker exec $container_name bash -c "cp $docker_ros_logs_folder/core_dumps/* $docker_logs_temp" || true
+    docker exec $container_name bash -c "rm $docker_ros_logs_folder/core_dumps/core_*" || true
+    docker exec $container_name bash -c "cp $docker_ros_logs_folder/latest/* $docker_logs_temp"  || true
+    latestws=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/wsdiff_ws_diff* | tail -1")
+    latestparam=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/run_params* | tail -1")
+    docker exec $container_name bash -c "cp $latestbag $docker_logs_temp"  || true
+    docker exec $container_name bash -c "cp $latestparam $docker_logs_temp"  || true
+    docker exec $container_name bash -c "cp $latestws $docker_logs_temp"  || true
+    container_image=$(docker ps -a | grep $container_name | awk '{print $2}' | tail -1) || true
+    docker container inspect $container_name > $local_desktop_path/container_info.txt || true
+    docker images $container_image > $local_desktop_path/image_info.txt || true
+    docker cp $local_desktop_path/container_info.txt $container_name:$docker_logs_temp/ || true
+    docker cp $local_desktop_path/image_info.txt $container_name:$docker_logs_temp/ || true
+}
+function copy_to_host
+{
+    local_ros_log_dir=/home/$USER/ROS_LOGS/$container_name
+    local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
+    local_desktop_path=$local_desktop_path_base/$computer_name
+                        
+    mkdir -p $local_desktop_path
+    echo "Copying logs from $docker_logs_temp folder in $container_name Docker container to host $HOSTNAME local folder $local_ros_log_dir"
+    docker cp -L $container_name:$docker_logs_temp $local_desktop_path/ || true
+    mv $local_desktop_path/logs_temp/* $local_desktop_path || true
+    rm -rf $local_desktop_path/logs_temp || true
+}
+function scp_nuc_to_server
+{
+    echo "Copying files from control machine to teleop server"
+    scp -r $NUC_NAME@$NUC_ADDRESS:/home/user/ROS_LOGS/$container_name/ros_logs_$datestamp/ros_log_$timestamp/control_machine $local_desktop_path_base/control_machine || true
+    docker cp -L $local_desktop_path_base/control_machine/* $container_name:$docker_logs_temp_base/control_machine/ || true
+}
+function save_all_logs
+{
+    copy_logs
+    copy_to_host
+    echo "preparing to ssh to nuc"
+    sleep 10
+    if $save_nuc_logs; then
+        ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << ENDSSH
+        container_name=$container_name
+        docker_user_home=$docker_user_home
+        docker_logs_temp_base=$docker_logs_temp_base
+        docker_logs_temp=$docker_logs_temp
+        docker_ros_folder=$docker_ros_folder
+        docker_ros_logs_folder=$docker_ros_logs_folder
+        record_node=$record_node
+        save_nuc_logs=$save_nuc_logs
+        NUC_NAME=$NUC_NAME
+        NUC_ADDRESS=$NUC_ADDRESS
+        local_ros_log_dir=/home/user/ROS_LOGS/$container_name
+        datestamp=$datestamp
+        timestamp=$timestamp
+        computer_name="control_machine"
+        local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
+        local_desktop_path=$local_desktop_path_base/$computer_name
+
+        $(typeset -f)
+        copy_logs   
+        copy_to_host
+ENDSSH
+    echo "nuc ssh finished"
+    sleep 10
+    fi
+}
+
+info_message="You are about to save latest ROS logs from $container_name\nDocker container on this computer ($HOSTNAME)"
+warning_message="WARNING! This closes the $container_name docker container in this computer.\nDo you wish to continue? (Y/n) "
+if $save_nuc_logs; then
+    info_message="You are about to save latest ROS logs from $container_name Docker containers\non teleop server and control computer"
+    warning_message="WARNING! This closes the $container_name Docker containers\nin this and the control computer. Do you wish to continue? (Y/n) "
+    computer_name="server"
+fi
+
+echo -e "${NC}${normal}${info_message}${normal}${NC}"
+echo -e "${YELLOW}${bold}${warning_message}${normal}${NC}"
+read prompt
+
+if [[ $prompt == "n" || $prompt == "N" || $prompt == "no" || $prompt == "No" || $prompt == "NO" ]]; then
+    exit 1
+fi
+
+echo -e "${NC}${normal}Please add a note for logging with reasons... ${normal}${NC}"
+read notes_from_user
+
+mkdir -p $local_desktop_path_base
+docker exec $container_name bash -c "mkdir -p $docker_logs_temp_base" || true
+echo $notes_from_user > $local_desktop_path_base/notes_from_user.txt
+docker cp -L $local_desktop_path_base/notes_from_user.txt $container_name:$docker_logs_temp_base
+
+if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
+    save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
+    tmp_save_log_msg_config_file="/home/$USER/.shadow_save_log_app/tmp_save_sr_log_msg_config.cfg"
+
+    if [ -f $save_log_msg_config_file ]; then
+        # check if the file contains something we don't want
+        if egrep -q -v '^#|^[^ ]*=[^;&]*' "$save_log_msg_config_file"; then
+          echo "Config file is unclean, cleaning it..." >&2
+          # filter the original to a tmp file
+          egrep '^#|^[^ ]*=[^;&]*'  "$configfile" > "$tmp_save_log_msg_config_file"
+          mv $tmp_save_log_msg_config_file $save_log_msg_config_file
+        fi
+    else
+        touch $save_log_msg_config_file
+        echo 'do_not_show_upload_log_message="false"' >> $save_log_msg_config_file
+        echo 'upload_sr_log_messages="true"' >> $save_log_msg_config_file
+    fi
+
+    source $save_log_msg_config_file
+
+    if [ ! $do_not_show_upload_log_message == "true" ]; then
+        counter=0
+        while ! [[ $upload_to_server == "Y" || $upload_to_server == "y" || $upload_to_server == "yes" || $upload_to_server == "YES" || $upload_to_server == "N" || $upload_to_server == "n" || $upload_to_server == "no" || $upload_to_server == "NO" ]]; do
+            if [ $counter -gt 4 ]; then
+                echo -e "${RED}Too many invalid inputs. Exiting the program...${normal}${NC}"
+                sleep 10
+                exit 1
+            fi
+            echo -e "${YELLOW}We are going to upload logs to Shadow servers so we can diagnose problems. Do you want to do this? (Y/n) ${normal}${NC}"
+            read upload_to_server
+            if ! [[ $upload_to_server == "Y" || $upload_to_server == "y" || $upload_to_server == "yes" || $upload_to_server == "YES" || $upload_to_server == "N" || $upload_to_server == "n" || $upload_to_server == "no" || $upload_to_server == "NO" ]]; then
+                echo "Please type 'Y' or 'n'"
+            fi
+            let counter+=1
+        done
+        echo -e "${YELLOW}If you don't want to see the previous message again, type 'Y'. Otherwise, type 'n' (Y/n) ${normal}${NC}"
+        read do_not_show_upload_log_message
+
+        if [[ $do_not_show_upload_log_message == "Y" || $do_not_show_upload_log_message == "Yes" || $do_not_show_upload_log_message == "y" || $do_not_show_upload_log_message == "YES" || $show_upload_log_message == "NO" ]]; then
+            sed -i 's/\(do_not_show_upload_log_message *= *\).*/\1"true"/' $save_log_msg_config_file
+        else
+            sed -i 's/\(do_not_show_upload_log_message *= *\).*/\1"false"/' $save_log_msg_config_file
+        fi
+
+        if [[ $upload_to_server == "N" || $upload_to_server == "No" || $upload_to_server == "n" || $upload_to_server == "no" || $upload_to_server == "NO" ]]; then
+            sed -i 's/\(upload_sr_log_messages *= *\).*/\1"false"/' $save_log_msg_config_file
+            upload_sr_log_messages="false"
+            echo -e "${YELLOW}Your logs will be stored locally and not uploaded to Shadow servers! ${normal}${NC}"
+        else
+            sed -i 's/\(upload_sr_log_messages *= *\).*/\1"true"/' $save_log_msg_config_file
+            upload_sr_log_messages="true"
+        fi
+    fi
+fi
+
+if [ ! -z "$container_name" ]; then
+    if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
+        customer_key=$(docker exec $container_name bash -c "head -n 1 /usr/local/bin/customer.key")
+    else
+        customer_key=false
+    fi
+
+    if [ ${customer_key} ]; then
+        # check if the folder is empty.
+        if [ ! -z "$(docker exec $container_name bash -c 'find $docker_logs_temp_base -maxdepth 0 -type d 2>/dev/null')" ]; then
+            echo -e "${YELLOW}${bold}There are previous logs that havent been sent yet. Would you like to send them now? Type 'Y' to send or 'n' to ignore and overwrite them ${normal}${NC}"
+            read old_logs
+            if [[ $old_logs == "y" || $old_logs == "Y" || $old_logs == "yes" || $old_logs == "Yes" || $old_logs == "YES" ]]; then
+                echo "Uploading to Shadow servers - Please wait..."
+                upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customer_key} $docker_logs_temp_base $timestamp" || true) 
+                if [[ $upload_command == "ok" ]]; then
+                    echo -e "${GREEN} Previous logs Uploaded to Shadow servers for $container_name! ${NC}"
+                else
+                    echo -e "${RED}${bold} Failed to upload previous logs to Shadow servers for $container_name! Check your internet connection and try again. Exiting... ${normal}${NC}"
+                    sleep 10
+                    exit 1
+                fi
+		        sleep 1
+            fi
+            # delete temp folder
+            docker exec $container_name bash -c "rm -rf $docker_logs_temp_base"
+        fi
+        save_all_logs
+        if $save_nuc_logs; then
+            scp_nuc_to_server
+        fi
+        if [[ "$upload_sr_log_messages" == "true" ]]; then
+            echo "Uploading to Shadow servers - Please wait..."
+            upload_command=$(docker exec $container_name bash -c "source /usr/local/bin/shadow-upload.sh ${customer_key} $docker_logs_temp_base $timestamp" || true)
+            if [[ $upload_command == "ok" ]]; then
+                # delete temp folder
+                docker exec $container_name bash -c "rm -rf $docker_logs_temp_base"
+                echo -e "${GREEN} Latest Logs Saved and Uploaded to Shadow servers for $container_name! ${NC}"
+            else
+                echo -e "${RED}${bold} Failed to upload logs to Shadow servers for $container_name! Check your internet connection and try again.${normal}${NC}"
+                sleep 5
+            fi
+            sleep 10
+        fi
+    else
+        save_all_logs
+        if $save_nuc_logs; then
+            scp_nuc_to_server
+        fi
+        docker exec $container_name bash -c "rm -rf $docker_logs_temp_base"
+        echo -e "${GREEN} Latest Logs Saved for $container_name! ${NC}"
+        sleep 10
+    fi
+    echo "Killing container $container_name..."
+    docker kill $container_name
+else
+    echo -e "${RED}There is no $container_name Docker container running, please start a container to save logs${NC}"
+    sleep 10
+    exit 1
+fi
+
+echo -e "${GREEN}${bold}All ROS logs have been successfully saved!${normal}${NC}"
+sleep 10

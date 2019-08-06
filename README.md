@@ -82,8 +82,8 @@ Run a playbook against one or more members of that group using the --limit tag:
 
 For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
 
-* --read-input vars (e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
-* --read-secure secure_vars (e.g. --read_secure docker_password - To allow aurora script to prompt for docker password)
+* --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
+* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
 
 ## docker_deploy ##
 
@@ -122,6 +122,11 @@ bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interfa
 ```
 
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
+
+For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
+
+* --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
+* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
 
 ## configure_software ##
 
@@ -451,12 +456,12 @@ It has to have a similar structure to this:
       meta: end_play
 
     - name: check if customer_key is provided and not false
-      when: customer_key is defined and customer_key|bool
+      when: customer_key is defined and customer_key| length > 0
       set_fact:
         use_aws: true
 
     - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove|bool
+      when: cyberglove is defined and cyberglove| length > 0
       set_fact:
         use_cyberglove: true
 

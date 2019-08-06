@@ -24,11 +24,6 @@
   vars:
     skip_nvidia: true
 
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
-
 - name: Set server hostname
   set_fact:
     server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
@@ -40,6 +35,11 @@
   vars:
     ros_master: "{{ server_hostname }}"
     nvidia_docker: 0
+
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
 
 - name: Check if there is an interface file
   stat:

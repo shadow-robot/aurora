@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop" # Docker image name
-tag: "kinetic-release" # Tag of the exact Docker hub image to pull
+tag: "kinetic-v0.0.17" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 nvidia_docker: 1 # Which version of nvidia-docker is enabled (0 means it is disabled)
@@ -12,4 +12,5 @@ terminator: true # Launch terminator when the Docker starts
 remote_cyberglove: false # Determines if the cyberglove is run locally (server) or remotely (client)
 use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 sim_icon: false # creates an extra icon that runs teleoperation in simulation mode
+save_nuc_logs: true # enables saving ROS logs from control-computer to server
 demo_icons: true # Generates desktop icons to run demos
