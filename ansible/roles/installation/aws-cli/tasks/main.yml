@@ -3,6 +3,7 @@
   apt:
     update_cache: yes
   become: yes
+  changed_when: false
 
 - name: Install needed libs for AWS CLI help
   apt:
@@ -20,13 +21,16 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: 0644
+  changed_when: false
 
 - name: Install AWS CLI
   pip:
     requirements: "/tmp/aws-cli-requirements.txt"
   become: yes
+  changed_when: false
 
 - name: Removing aws-cli-requirements.txt local
   file:
     path: "/tmp/shadow-upload.sh"
     state: absent
+  changed_when: false
