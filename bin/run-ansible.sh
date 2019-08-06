@@ -3,10 +3,10 @@
 set -e # fail on errors
 #set -x # echo commands run
 
-script_name=$(basename $BASH_SOURCE)
+script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
-if [ $# < 2 ]; then
-    command_usage_message="Command usage: ./${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
+if [[ $# < 2 ]]; then
+    command_usage_message="Command usage: ${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
     command_usage_message="${command_usage_message} [--limit <rules>]"
     command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
     echo "${command_usage_message}"
@@ -18,7 +18,7 @@ playbook=$1
 aurora_limit=all
 shift
 
-while [ $# > 1 ]
+while [[ $# > 1 ]]
 do
 key="$1"
 case ${key} in
@@ -72,7 +72,7 @@ echo "  * --limit             Run a playbook against one or more members of that
 echo "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,github_login)"
 echo "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. docker_password,git_password)"
 echo ""
-echo "example: ./${script_name} docker_deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
+echo "example: ${script_name} docker_deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
 echo "playbook     = ${playbook}"
 echo "debug-branch = ${aurora_tools_branch}"
