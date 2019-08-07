@@ -28,3 +28,33 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+
+- name: Copy documentation desktop icon
+  copy:
+    src: files/documentation_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/documentation_icon.png"
+    mode: '664'
+
+- name: Create executable launch script
+  template:
+    src:  templates/scripts/show_documentation.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_doc_exec.sh"
+    mode: '755'
+
+- name: Create documentation desktop icon
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Teleop_Documentation.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "Teleop_Documentation"
+    comment: "Teleop_Documentation"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: "shadow_launcher_doc_exec.sh"
+    icon_file_name: "documentation_icon.png"
+
+- name: Make documentation Desktop icon trusted
+  shell: gio set "{{ user_folder }}/Desktop/Teleop_Documentation.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'

@@ -16,7 +16,8 @@ def test_icons_in_docker(host):
         'Teleop_Container_Launch',
         'Teleop_GUI',
         'Teleop_ROSCORE',
-        'Teleop_Simulation'
+        'Teleop_Simulation',
+        'Teleop_Documentation'
         )
     scripts = (
         'teleop_exec_A',
@@ -25,7 +26,8 @@ def test_icons_in_docker(host):
         'shadow_launcher_exec',
         'shadow_roslaunch_demo',
         'shadow_roscore',
-        'shadow_sim_demo'
+        'shadow_sim_demo',
+        'shadow_launcher_doc_exec'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
