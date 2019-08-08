@@ -1,10 +1,9 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
-docker start {{ container_name }}
-
 HOST='localhost'
 PORT='7070'
 
+docker start {{ container_name }}
 check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
 if [[ $check == 200 ]]
 then

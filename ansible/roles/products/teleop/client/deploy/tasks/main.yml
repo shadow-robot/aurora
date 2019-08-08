@@ -36,16 +36,16 @@
   include_role:
     name: docker/docker-image
 
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
-
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
   vars:
     ros_master: "{{ server_hostname }}"
+
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
 
 - name: Include products/common/save-logs-icons role
   include_role:

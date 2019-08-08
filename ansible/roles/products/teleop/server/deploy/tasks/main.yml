@@ -1,4 +1,10 @@
 ---
+- name: Set NUC IP address and username for SSH
+  set_fact:
+    nuc_username: "{{ hostvars[groups['control_machine'][0]]['ansible_user'] }}"
+    nuc_address: "{{ groups['control_machine'][0] }}"
+  when: groups['control_machine'] is defined
+
 - name: Setup script name
   set_fact:
     setup_script: teleop-server-setup.sh
@@ -10,7 +16,7 @@
 - name: Include installation/nvidia-docker role
   include_role:
     name: installation/nvidia-docker
-  when: nvidia_docker | int == 1
+  when: nvidia_docker | int !=0
 
 - name: Include installation/openvpn-server role
   include_role:
@@ -30,14 +36,14 @@
   include_role:
     name: docker/docker-image
 
+- name: Include products/common/docker-container role
+  include_role:
+    name: products/common/docker-container
+
 - name: Include docker/aws role
   include_role:
     name: docker/aws
   when: use_aws|bool
-
-- name: Include products/common/docker-container role
-  include_role:
-    name: products/common/docker-container
 
 - name: Include products/common/save-logs-icons role
   include_role:

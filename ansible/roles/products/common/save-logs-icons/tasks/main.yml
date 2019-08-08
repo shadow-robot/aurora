@@ -16,9 +16,9 @@
     dest: "{{ save_latest_ros_logs_folder }}/log-icon.png"
     mode: '664'
 
-- name: Copy ROS Logs Saver main script
-  copy:
-    src: files/save-latest-ros-logs.sh
+- name:  Copy ROS Logs Saver main script
+  template:
+    src: templates/scripts/save-latest-ros-logs.j2
     dest: "{{ save_latest_ros_logs_folder }}/save-latest-ros-logs.sh"
     mode: '755'
 
