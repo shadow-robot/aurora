@@ -1,9 +1,23 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
-DOC_ZIP_FILENAME=shadow-robot-company-teleoperation-latest
-if [ ! -d {{ shadow_hand_launcher_folder }}/$DOC_ZIP_FILENAME ]; then
-  docker cp {{ container_name }}:/home/user/projects/shadow_robot/base/src/sr_teleop_documentation/html/shadow-robot-company-teleoperation-latest.zip /tmp/
-  unzip /tmp/$DOC_ZIP_FILENAME.zip -d {{ shadow_hand_launcher_folder }}
+docker start {{ container_name }}
+
+HOST='localhost'
+PORT='7070'
+
+check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+if [[ $check == 200 ]]
+then
+    echo "Documentation Server is online"
+
+else
+    echo "Documentation Server is offline. Starting it"
+    docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch sr_teleop_documentation sr_teleop_documentation_server.launch port:=${PORT}"
+    check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+    if [[ $check == 200 ]]
+    then
+        echo "Documentation Server is online"
+    fi
 fi
-xdg-open {{ shadow_hand_launcher_folder }}/$DOC_ZIP_FILENAME/index.html
-sleep infinity
+xdg-open http://${HOST}:${PORT}/
+sleep 2
