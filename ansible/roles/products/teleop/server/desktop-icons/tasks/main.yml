@@ -80,6 +80,7 @@
     launch_script: "teleop_exec_B_right_haptx.sh"
     demohand_branch: "demohand_B"
     desktop_icon_name: "Teleop_Haptx_control_machine_Launch_Demohand_B"
+    hand_serial_no: "1130"
   when: not bimanual|bool and glove=='haptx'
 
 - name: Install the haptx teleop bimanual icon
@@ -89,4 +90,6 @@
     launch_script: "teleop_exec_B_right_and_D_left_haptx.sh"
     demohand_branch: "bimanual_demohands_B_D"
     desktop_icon_name: "Teleop_Haptx_control_machine_Launch_Demohands_B_and_D"
+    hand_serial_no: "1130"
+    hand_left_serial_no: "2346"
   when: bimanual|bool and glove=='haptx'

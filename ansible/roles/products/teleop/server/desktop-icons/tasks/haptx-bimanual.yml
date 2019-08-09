@@ -5,13 +5,14 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Create executable launch script for demohand
+- name: Create executable launch script for haptx bimanual teleop
   template:
-    src: templates/scripts/start-docker-container-nuc.j2
+    src: templates/scripts/start-docker-container-nuc-bimanual.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
     hand_serial: "{{ hand_serial_no }}"
+    hand_serial_left: "{{ hand_left_serial_no }}"
     config_branch: "{{ demohand_branch }}"
 
 - name: Create desktop icon for demohand
