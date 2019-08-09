@@ -64,6 +64,8 @@ Example:
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory staging --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
 ```
 
+If you are prompted for SSH password, enter the password of the NUC. For the BECOME password, just press Enter, as it will default to the SSH password.
+
 Inventories correspond to fixed IP addresses as shown here:
 * [development](ansible/inventory/teleop/development)
 * [staging](ansible/inventory/teleop/staging)
@@ -120,6 +122,8 @@ Example:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25 config_branch=demohand_C
 ```
+
+If you are prompted for SSH password, enter the password of the NUC. For the BECOME password, just press Enter, as it will default to the SSH password.
 
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 

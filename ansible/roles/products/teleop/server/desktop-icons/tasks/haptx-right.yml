@@ -5,16 +5,16 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Create executable launch script for demohand
+- name: Create executable launch script for haptx right hand teleop
   template:
-    src: templates/scripts/start-docker-container-nuc.j2
+    src: templates/scripts/start-docker-container-nuc-haptx.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
     hand_serial: "{{ hand_serial_no }}"
     config_branch: "{{ demohand_branch }}"
 
-- name: Create desktop icon for demohand
+- name: Create desktop icon for haptx right hand teleop
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop"
@@ -26,7 +26,7 @@
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
 
-- name: Make desktop icon for demohand trusted
+- name: Make desktop icon for haptx right hand teleop trusted
   shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'

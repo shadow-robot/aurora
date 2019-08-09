@@ -15,7 +15,7 @@
     hand_serial_left: "{{ hand_left_serial_no }}"
     config_branch: "{{ demohand_branch }}"
 
-- name: Create desktop icon for demohand
+- name: Create desktop icon for haptx bimanual teleop
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop"
@@ -27,7 +27,7 @@
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
 
-- name: Make desktop icon for demohand trusted
+- name: Make desktop icon for haptx bimanual teleop trusted
   shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
