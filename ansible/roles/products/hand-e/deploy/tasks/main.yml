@@ -2,6 +2,7 @@
 - name: Setup script name
   set_fact:
     setup_script: "setup_dexterous_hand.sh"
+    upgrade_script: "upgrade_image.sh"
 
 - name: Include docker/docker-image role
   include_role:
@@ -29,6 +30,13 @@
   include_role:
     name: docker/aws
   when: use_aws|bool
+
+- name: Creating upgrade script
+  template:
+    src: ../../../common/resources/templates/scripts/upgrade_image.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ upgrade_script }}"
+    mode: '755'
+  when: upgrade_check|bool
 
 - name: Creating hand-e setup script
   template:
