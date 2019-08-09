@@ -12,8 +12,8 @@
 
 - name: Copy Close Hand desktop icon
   copy:
-    src: files/close-hand-icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon.png"
+    src: files/close-hand-icon-right.png
+    dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
     mode: '664'
 
 - name: Create Close Hand executable launch script
@@ -35,7 +35,7 @@
     comment: "This runs closes the hand for transportation"
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: close_hand.sh
-    icon_file_name: close-hand-icon.png
+    icon_file_name: close-hand-icon-right.png
 
 - name: Make Close Hand desktop icon Trusted
   shell: gio set "{{ user_folder }}/Desktop/Close_Hand.desktop" "metadata::trusted" yes
@@ -45,8 +45,8 @@
 
 - name: Copy Open Hand desktop icon
   copy:
-    src: files/open-hand-icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon.png"
+    src: files/open-hand-icon-right.png
+    dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-right.png"
     mode: '664'
 
 - name: Create Open Hand executable launch script
@@ -68,7 +68,7 @@
     comment: "This opens the hand"
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: open_hand.sh
-    icon_file_name: open-hand-icon.png
+    icon_file_name: open-hand-icon-right.png
 
 - name: Make Open Hand desktop icon Trusted
   shell: gio set "{{ user_folder }}/Desktop/Open_Hand.desktop" "metadata::trusted" yes
@@ -78,8 +78,8 @@
 
 - name: Copy Standard Demo desktop icon
   copy:
-    src: files/demo-hand-icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon.png"
+    src: files/demo-hand-icon-right.png
+    dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-right.png"
     mode: '664'
 
 - name: Create Standard Demo executable launch script
@@ -102,7 +102,7 @@
     window_title: demo_hand_xterm
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: demo_hand.sh
-    icon_file_name: demo-hand-icon.png
+    icon_file_name: demo-hand-icon-right.png
 
 - name: Make Standard desktop icon Trusted
   shell: gio set "{{ user_folder }}/Desktop/Demo_Hand.desktop" "metadata::trusted" yes

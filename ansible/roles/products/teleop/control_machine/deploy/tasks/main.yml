@@ -67,6 +67,7 @@
       iface {{ ur_interface }} inet static
         address 192.168.1.100
         netmask 255.255.255.0
+  changed_when: false
 
 - name: Add network setup to control machine for left arm
   become: yes
@@ -79,6 +80,7 @@
       iface {{ ethercat_left_arm }} inet static
         address 192.168.2.100
         netmask 255.255.255.0
+  changed_when: false
 
 - name: Check if the ssh public key has been generated in ssh_keys_path folder on machine running Ansible (teleop server)
   stat:
