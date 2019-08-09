@@ -4,6 +4,7 @@ tag: "kinetic-release" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 nvidia_docker: 2 # Which version of nvidia-docker is enabled (0 means it is disabled)
+glove: "cyberglove" # Determines which glove is installed (cyberglove or haptx)
 cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-client should be installed
@@ -13,3 +14,4 @@ terminator: true # Launch terminator when the Docker starts
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 remote_cyberglove: true # Determines if the cyberglove is run locally (server) or remotely (client)
 use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
+server_hostname: "TELEOP-DEMO" # Specifies the host name for ROS master (teleop server)

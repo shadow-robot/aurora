@@ -1,9 +1,12 @@
 ---
 image: "shadowrobot/shadow-teleop"
-tag: "kinetic-v0.0.10"
+tag: "kinetic-release"
 reinstall: false
 container_name: "teleop"
 ethercat_interface: "eth0"
+bimanual: false
+ethercat_left_hand: "enx1"
+ethercat_left_arm: "enx2"
 config_branch: "demohand_A"
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
@@ -11,7 +14,12 @@ user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 use_aws: false
+glove: "cyberglove"
 use_cyberglove: false
+cyberglove: "A-penny"
 launch_hand: false
 server_hostname: "TELEOP-DEMO"
 ssh_keys_path: "/tmp/id_ssh_rsa"
+terminator: false
+use_steamvr: false
+nvidia_docker: 0

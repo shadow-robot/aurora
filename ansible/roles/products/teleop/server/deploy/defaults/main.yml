@@ -1,9 +1,10 @@
 ---
 image: "shadowrobot/shadow-teleop"
-tag: "kinetic-v0.0.10"
+tag: "kinetic-release"
 reinstall: false
 container_name: "teleop"
-nvidia_docker: 0
+nvidia_docker: 2
+glove: "cyberglove"
 cyberglove: "A-penny"
 use_aws: false
 use_openvpn: false
@@ -14,8 +15,13 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 nuc_username: "user"
 setup_directory: "/usr/local/bin"
 use_cyberglove: false
+remote_cyberglove: false
 launch_hand: false
 config_branch: "demohand_A"
 ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
 nuc_address: "10.9.10.2"
+terminator: true
+use_steamvr: true
+sim_icon: false
+demo_icons: true

@@ -1,9 +1,10 @@
 ---
 image: "shadowrobot/shadow-teleop"
-tag: "kinetic-v0.0.10"
+tag: "kinetic-release"
 reinstall: false
 container_name: "teleop"
-nvidia_docker: 0
+nvidia_docker: 2
+glove: "cyberglove"
 cyberglove: "A-penny"
 use_aws: false
 use_openvpn: false
@@ -20,3 +21,5 @@ use_cyberglove: false
 remote_cyberglove: true
 setup_script: ""
 server_hostname: "TELEOP-DEMO"
+openvpn_port: "1196"
+terminator: true
