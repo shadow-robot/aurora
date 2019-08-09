@@ -5,7 +5,7 @@ reinstall: false # Flag to know if the docker container should be fully reinstal
 container_name: "teleop" # Name of the docker container
 nvidia_docker: 2 # Which version of nvidia-docker is enabled (0 means it is disabled)
 glove: "cyberglove" # Determines which glove is installed (cyberglove or haptx)
-cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
+cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-client should be installed
 openvpn_port: "1196" # Override this with another value if you want to use a different port

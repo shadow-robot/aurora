@@ -5,7 +5,7 @@ reinstall: false
 container_name: "teleop"
 nvidia_docker: 2
 glove: "cyberglove"
-cyberglove: "A-penny"
+cyberglove: ""
 use_aws: false
 use_openvpn: false
 ethercat_interface: "eth0"

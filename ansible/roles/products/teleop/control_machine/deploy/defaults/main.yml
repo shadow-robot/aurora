@@ -16,7 +16,7 @@ setup_directory: "/usr/local/bin"
 use_aws: false
 glove: "cyberglove"
 use_cyberglove: false
-cyberglove: "A-penny"
+cyberglove: ""
 launch_hand: false
 server_hostname: "TELEOP-DEMO"
 ssh_keys_path: "/tmp/id_ssh_rsa"
