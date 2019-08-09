@@ -11,8 +11,8 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    project_name: sr_teleop_vive_cyberglove
-    launch_file: 'demo.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true'
+    project_name: "{{ gui_project_name }}"
+    launch_file: "{{ gui_launch_name }}"
 
 - name: Create desktop icon for GUI
   template:

@@ -18,6 +18,7 @@
     demohand_branch: "demohand_A"
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_A"
     hand_serial_no: "634"
+  when: not bimanual|bool
 
 - name: Install desktop icon for hand B
   import_tasks: demohand-icon.yml
@@ -27,6 +28,7 @@
     demohand_branch: "demohand_B"
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_B"
     hand_serial_no: "1130"
+  when: not bimanual|bool
 
 - name: Install desktop icon for hand C
   import_tasks: demohand-icon.yml
@@ -36,6 +38,18 @@
     demohand_branch: "demohand_C"
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_C"
     hand_serial_no: "1370"
+  when: not bimanual|bool
+
+- name: Install desktop icon for bimanual
+  import_tasks: demohand-icon-bimanual.yml
+  vars:
+    desktop_icon_png: "demohands_bimanual.png"
+    launch_script: "teleop_exec_bimanual.sh"
+    demohand_branch: "bimanual_demohands_B_D"
+    desktop_icon_name: "Teleop_control_machine_Launch_bimanual_demohands_B_D"
+    hand_serial_no: "1130"
+    hand_left_serial_no: "2346"
+when: bimanual|bool
 
 - name: Install desktop icon for Teleop server container
   import_tasks: default-icon.yml
@@ -45,12 +59,25 @@
     launch_script: "shadow_launcher_exec.sh"
     desktop_icon_name: "Teleop_Container_Launch"
 
-- name: Install desktop icon for Teleop server GUI
+- name: Install desktop icon for Teleop server GUI (for cyberglove)
   import_tasks: gui-icon.yml
   vars:
     desktop_icon_png: "cyberglove_teleop.png"
     launch_script: "shadow_roslaunch_demo.sh"
     desktop_icon_name: "Teleop_GUI"
+    gui_project_name: "sr_teleop_vive_cyberglove"
+    gui_launch_file: "demo.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true"
+  when: glove=="cyberglove"
+
+- name: Install desktop icon for Teleop server GUI (for haptx)
+  import_tasks: gui-icon.yml
+  vars:
+    desktop_icon_png: "haptx_right.png"
+    launch_script: "shadow_roslaunch_demo.sh"
+    desktop_icon_name: "Teleop_GUI"
+    gui_project_name: "sr_teleop_vive_haptx"
+    gui_launch_file: "teleop_demo.launch external_control_loop:=true"
+  when: glove=="haptx"
 
 - name: Install desktop icon for launching Roscore
   import_tasks: default-icon.yml
@@ -75,21 +102,18 @@
 
 - name: Install the haptx teleop right hand icon
   import_tasks: haptx-right.yml
-    vars:
+  vars:
     desktop_icon_png: "haptx_right.png"
-    launch_script: "teleop_exec_B_right_haptx.sh"
-    demohand_branch: "demohand_B"
-    desktop_icon_name: "Teleop_Haptx_control_machine_Launch_Demohand_B"
-    hand_serial_no: "1130"
+    launch_script: "teleop_haptx_right.sh"
+    desktop_icon_name: "Teleop_Haptx_Launch"
   when: not bimanual|bool and glove=='haptx'
 
 - name: Install the haptx teleop bimanual icon
   import_tasks: haptx-bimanual.yml
-    vars:
+  vars:
     desktop_icon_png: "haptx_bimanual.png"
-    launch_script: "teleop_exec_B_right_and_D_left_haptx.sh"
-    demohand_branch: "bimanual_demohands_B_D"
-    desktop_icon_name: "Teleop_Haptx_control_machine_Launch_Demohands_B_and_D"
+    launch_script: "teleop_haptx_bimanual.sh"
+    desktop_icon_name: "Teleop_Haptx_Launch_Bimanual"
     hand_serial_no: "1130"
     hand_left_serial_no: "2346"
   when: bimanual|bool and glove=='haptx'
