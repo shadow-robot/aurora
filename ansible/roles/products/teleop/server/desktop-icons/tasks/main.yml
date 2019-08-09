@@ -72,3 +72,21 @@
   include_role:
     name: products/common/demo-icons
   when: demo_icons|bool
+
+- name: Install the haptx teleop right hand icon
+  import_tasks: haptx-right.yml
+    vars:
+    desktop_icon_png: "haptx_right.png"
+    launch_script: "teleop_exec_B_right_haptx.sh"
+    demohand_branch: "demohand_B"
+    desktop_icon_name: "Teleop_Haptx_control_machine_Launch_Demohand_B"
+  when: not bimanual|bool and glove=='haptx'
+
+- name: Install the haptx teleop bimanual icon
+  import_tasks: haptx-bimanual.yml
+    vars:
+    desktop_icon_png: "haptx_bimanual.png"
+    launch_script: "teleop_exec_B_right_and_D_left_haptx.sh"
+    demohand_branch: "bimanual_demohands_B_D"
+    desktop_icon_name: "Teleop_Haptx_control_machine_Launch_Demohands_B_and_D"
+  when: bimanual|bool and glove=='haptx'
