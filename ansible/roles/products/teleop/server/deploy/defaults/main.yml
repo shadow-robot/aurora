@@ -4,7 +4,7 @@ tag: "kinetic-release"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: 2
-glove: "cyberglove"
+glove: "haptx"
 cyberglove: ""
 use_aws: false
 use_openvpn: false
