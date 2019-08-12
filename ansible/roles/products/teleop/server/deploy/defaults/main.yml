@@ -25,3 +25,4 @@ terminator: true
 use_steamvr: true
 sim_icon: false
 demo_icons: true
+bimanual: false
