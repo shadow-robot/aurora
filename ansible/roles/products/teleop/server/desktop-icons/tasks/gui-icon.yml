@@ -12,7 +12,7 @@
     mode: '755'
   vars:
     project_name: "{{ gui_project_name }}"
-    launch_file: "{{ gui_launch_name }}"
+    launch_file: "{{ gui_launch_file }}"
 
 - name: Create desktop icon for GUI
   template:
