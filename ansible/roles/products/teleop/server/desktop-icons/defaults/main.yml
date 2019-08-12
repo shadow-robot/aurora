@@ -9,3 +9,5 @@ setup_directory: ""
 nuc_username: "user"
 remote_cyberglove: false
 sim_icon: false
+haptx_type: "right"
+haptx_icon: "haptx_{{ haptx_type }}.png"
