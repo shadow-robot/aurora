@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop"
-tag: "kinetic-release"
+tag: "kinetic-v0.0.20"
 reinstall: false
 container_name: "teleop"
 ethercat_interface: "eth0"

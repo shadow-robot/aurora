@@ -54,7 +54,7 @@
     mode: '755'
 
 - name: Install the documentation desktop icon
-  include_tasks: default-icon.yml
+  import_tasks: default-icon.yml
   vars:
     template: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     desktop_icon_png: "documentation_icon.png"
