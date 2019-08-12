@@ -30,7 +30,7 @@
 - name: If bimanual is true, force glove to be haptx
   set_fact:
     glove: "haptx"
-  when: bimanual and glove!="haptx"
+  when: bimanual|bool and glove!="haptx"
 
 - name: Set docker image based on glove type
   set_fact:
