@@ -9,6 +9,7 @@ def test_chrony_server_installed(host):
     file_path = "/etc/chrony/chrony.conf"
     assert host.file(file_path).exists
 
+
 def test_udev_files(host):
     udev_path = '/lib/udev/rules.d/'
 
@@ -18,6 +19,7 @@ def test_udev_files(host):
         )
     for udev_rule in udev_rules:
         assert host.file(udev_path + udev_rule).exists
+
 
 def test_icons_in_docker(host):
     desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
