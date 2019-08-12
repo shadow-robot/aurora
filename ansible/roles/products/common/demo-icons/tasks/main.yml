@@ -43,41 +43,42 @@
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 
-block:
-- name: Copy Close Left Hand desktop icon
-  copy:
-    src: files/close-hand-icon-left.png
-    dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-left.png"
-    mode: '664'
+- name: Install left hand close hand icon if bimanual is true
+  block:
+  - name: Copy Close Left Hand desktop icon
+    copy:
+      src: files/close-hand-icon-left.png
+      dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-left.png"
+      mode: '664'
 
-- name: Create Close Left Hand executable launch script
-  template:
-    src: ../resources/templates/scripts/rosrun-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/close_left_hand.sh"
-    mode: '755'
-  vars:
-    project_name: sr_ethercat_hand_config
-    script_name: demo_ls.py
+  - name: Create Close Left Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/close_left_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_ethercat_hand_config
+      script_name: demo_ls.py
 
-- name: Create Close Left Hand desktop icon
-  template:
-    src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Close_Left_Hand.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: Close Left Hand
-    comment: "This runs closes the left hand for transportation"
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: close_left_hand.sh
-    icon_file_name: close-hand-icon-left.png
+  - name: Create Close Left Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Close_Left_Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Close Left Hand
+      comment: "This runs closes the left hand for transportation"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: close_left_hand.sh
+      icon_file_name: close-hand-icon-left.png
 
-- name: Make Close Left Hand desktop icon Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Close_Left_Hand.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+  - name: Make Close Left Hand desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Close_Left_Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
 
-when: bimanual|bool
+  when: bimanual|bool
 
 - name: Copy Open Right Hand desktop icon
   copy:
@@ -112,41 +113,42 @@ when: bimanual|bool
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 
-block:
-- name: Copy Open Left Hand desktop icon
-  copy:
-    src: files/open-hand-icon-left.png
-    dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-left.png"
-    mode: '664'
+- name: Install left hand open hand icon if bimanual is true
+  block:
+  - name: Copy Open Left Hand desktop icon
+    copy:
+      src: files/open-hand-icon-left.png
+      dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-left.png"
+      mode: '664'
 
-- name: Create Open Left Hand executable launch script
-  template:
-    src: ../resources/templates/scripts/rosrun-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/open_left_hand.sh"
-    mode: '755'
-  vars:
-    project_name: sr_ethercat_hand_config
-    script_name: demo_lo.py
+  - name: Create Open Left Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/open_left_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_ethercat_hand_config
+      script_name: demo_lo.py
 
-- name: Create Open Left Hand desktop icon
-  template:
-    src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Open_Left_Hand.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: Open Left Hand
-    comment: "This opens the left hand"
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: open_left_hand.sh
-    icon_file_name: open-hand-icon-left.png
+  - name: Create Open Left Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Open_Left_Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Open Left Hand
+      comment: "This opens the left hand"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: open_left_hand.sh
+      icon_file_name: open-hand-icon-left.png
 
-- name: Make Open Left Hand desktop icon Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Open_Left_Hand.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+  - name: Make Open Left Hand desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Open_Left_Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
 
-when: bimanual|bool
+  when: bimanual|bool
 
 - name: Copy Standard Right Demo desktop icon
   copy:
@@ -182,39 +184,40 @@ when: bimanual|bool
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 
-block:
-- name: Copy Standard Left Demo desktop icon
-  copy:
-    src: files/demo-hand-icon-left.png
-    dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-left.png"
-    mode: '664'
+- name: Install left hand standard demo icon if bimanual is true
+  block:
+  - name: Copy Standard Left Demo desktop icon
+    copy:
+      src: files/demo-hand-icon-left.png
+      dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-left.png"
+      mode: '664'
 
-- name: Create Standard Left Demo executable launch script
-  template:
-    src: ../resources/templates/scripts/rosrun-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/demo_left_hand.sh"
-    mode: '755'
-  vars:
-    project_name: sr_ethercat_hand_config
-    script_name: demo_l.py
+  - name: Create Standard Left Demo executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/demo_left_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_ethercat_hand_config
+      script_name: demo_l.py
 
-- name: Create Standard Left Demo desktop icon
-  template:
-    src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Demo_Left_Hand.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: Demo Left Hand
-    comment: "This runs the standard demo for the left hand"
-    window_title: demo_left_hand_xterm
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: demo_left_hand.sh
-    icon_file_name: demo-hand-icon-left.png
+  - name: Create Standard Left Demo desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Demo_Left_Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Demo Left Hand
+      comment: "This runs the standard demo for the left hand"
+      window_title: demo_left_hand_xterm
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: demo_left_hand.sh
+      icon_file_name: demo-hand-icon-left.png
 
-- name: Make Standard Left Demo desktop icon Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Demo_Left_Hand.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+  - name: Make Standard Left Demo desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Demo_Left_Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
 
-when: bimanual|bool
+  when: bimanual|bool
