@@ -1,7 +1,22 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
+HOST='localhost'
+PORT='7070'
+
 docker start {{ container_name }}
-docker exec -it --user user {{ container_name }}  bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch sr_teleop_documentation sr_teleop_documentation_server.launch &"
-sleep 1
-xdg-open http://localhost:7070/
-sleep infinity
+check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+if [[ $check == 200 ]]
+then
+    echo "Documentation Server is online"
+
+else
+    echo "Documentation Server is offline. Starting it"
+    docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch sr_teleop_documentation sr_teleop_documentation_server.launch port:=${PORT}"
+    check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+    if [[ $check == 200 ]]
+    then
+        echo "Documentation Server is online"
+    fi
+fi
+xdg-open http://${HOST}:${PORT}/
+sleep 2

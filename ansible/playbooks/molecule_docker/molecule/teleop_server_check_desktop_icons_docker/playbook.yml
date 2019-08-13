@@ -10,3 +10,4 @@
     skip_molecule_task=true
     allow_auto_reboot=true
     customer_key="invalidkey"
+    glove="cyberglove"
