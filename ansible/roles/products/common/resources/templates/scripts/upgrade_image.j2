@@ -7,9 +7,9 @@ NC='\033[0m' # No Color
 IMAGE={{ full_image_name }}
 CID=$(docker ps -a | grep $IMAGE | awk '{print $1}')
 docker pull $IMAGE
-LATEST=docker inspect --format {%raw%}"{{.Id}}"{%endraw%} $IMAGE
-RUNNING=docker inspect --format {%raw%}"{{.Image}}"{%endraw%} $CID
-NAME=docker inspect --format {%raw%}"{{.Name}}"{%endraw%} $CID | sed "s/\///g"
+LATEST=`docker inspect --format {%raw%}"{{.Id}}"{%endraw%} $IMAGE`
+RUNNING=`docker inspect --format {%raw%}"{{.Image}}"{%endraw%} $CID`
+NAME=`docker inspect --format {%raw%}"{{.Name}}"{%endraw%} $CID | sed "s/\///g"`
 echo "Latest:" $LATEST
 echo "Running:" $RUNNING
 if [ "$RUNNING" != "$LATEST" ];then
