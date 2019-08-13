@@ -61,7 +61,6 @@
   when: ur_interface | length > 0
   blockinfile:
     path: /etc/network/interfaces
-    backup: yes
     block: |
       auto {{ ur_interface }}
       iface {{ ur_interface }} inet static
@@ -74,7 +73,6 @@
   when: ethercat_left_arm | length > 0
   blockinfile:
     path: /etc/network/interfaces
-    backup: yes
     block: |
       auto {{ ethercat_left_arm }}
       iface {{ ethercat_left_arm }} inet static
