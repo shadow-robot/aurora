@@ -13,8 +13,8 @@ NAME=`docker inspect --format {%raw%}"{{.Name}}"{%endraw%} $CID | sed "s/\///g"`
 echo "Latest:" $LATEST
 echo "Running:" $RUNNING
 if [ "$RUNNING" != "$LATEST" ];then
-    echo -e "A new image has been released and pulled from Shadow Robot. Please re-run the one-liner with the additional argument: ${GREEN}reinstall=true${NC} to upgrade your container. ${RED}Note that you will lose all your data! ${NC} \nPress enter to continue "
-    read -p
+    echo -e "A new image has been released and pulled from Shadow Robot. Please re-run the one-liner with the additional argument: ${GREEN}reinstall=true${NC} to upgrade your container.\n${RED}Note that you will lose all your data! ${NC}"
+    read -p "Press enter to continue"
 else
     echo "$NAME up to date"
 fi
