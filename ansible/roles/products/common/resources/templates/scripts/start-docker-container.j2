@@ -5,7 +5,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 if {{ upgrade_check | lower }}; then
-    {{ upgrade_script }}
+    "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher/{{ upgrade_script }}"
 fi
 echo -e \"${YELLOW}Please wait for docker container to start in a new terminal as this might take a while... ${NC}\"
 {{ docker_executable }} start {{ container_name  }} &> /dev/null
