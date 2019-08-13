@@ -14,3 +14,4 @@ use_steamvr: true # Determines if SteamVR will launch inside the container creat
 sim_icon: false # creates an extra icon that runs teleoperation in simulation mode
 save_nuc_logs: true # enables saving ROS logs from control-computer to server
 demo_icons: true # Generates desktop icons to run demos
+upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
