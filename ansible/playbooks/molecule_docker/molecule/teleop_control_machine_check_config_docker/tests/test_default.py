@@ -49,4 +49,4 @@ def test_ur_network_setup(host):
     f = host.file('/etc/network/interfaces')
     assert f.exists
     assert f.contains('address 192.168.1.100')
-    assert f.contains('address 192.168.2.100')    
+    assert f.contains('address 192.168.2.100')
