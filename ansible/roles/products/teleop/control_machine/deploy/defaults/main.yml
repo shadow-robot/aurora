@@ -23,3 +23,4 @@ ssh_keys_path: "/tmp/id_ssh_rsa"
 terminator: false
 use_steamvr: false
 nvidia_docker: 0
+ur_interface: "eth0"

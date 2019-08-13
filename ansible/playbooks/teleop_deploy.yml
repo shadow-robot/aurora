@@ -48,7 +48,7 @@
     - name: Set docker image based on glove type
       set_fact:
         image: "{{ image }}-{{ glove }}"
-      when: image=="shadow-teleop" and glove | length > 0
+      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -79,7 +79,7 @@
     - name: Set docker image based on glove type
       set_fact:
         image: "{{ image }}-{{ glove }}"
-      when: image=="shadow-teleop" and glove | length > 0
+      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -126,7 +126,7 @@
     - name: Set docker image based on glove type
       set_fact:
         image: "{{ image }}-{{ glove }}"
-      when: image=="shadow-teleop" and glove | length > 0
+      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
