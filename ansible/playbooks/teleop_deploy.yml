@@ -40,6 +40,16 @@
       set_fact:
         use_aws: true
 
+    - name: If bimanual is true, set glove to be haptx
+      set_fact:
+        glove: "haptx"
+      when: bimanual|bool and glove!="haptx"
+
+    - name: Set docker image based on glove type
+      set_fact:
+        image: "{{ image }}-{{ glove }}"
+      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
+
     - name: Add IP address of all hosts to all hosts
       lineinfile:
         dest: /etc/hosts
@@ -60,6 +70,16 @@
       when: cyberglove is defined and cyberglove| length > 0
       set_fact:
         use_cyberglove: true
+
+    - name: If bimanual is true, set glove to be haptx
+      set_fact:
+        glove: "haptx"
+      when: bimanual|bool and glove!="haptx"
+
+    - name: Set docker image based on glove type
+      set_fact:
+        image: "{{ image }}-{{ glove }}"
+      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -97,6 +117,16 @@
       when: cyberglove is defined and cyberglove| length > 0
       set_fact:
         use_cyberglove: true
+
+    - name: If bimanual is true, set glove to be haptx
+      set_fact:
+        glove: "haptx"
+      when: bimanual|bool and glove!="haptx"
+
+    - name: Set docker image based on glove type
+      set_fact:
+        image: "{{ image }}-{{ glove }}"
+      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:

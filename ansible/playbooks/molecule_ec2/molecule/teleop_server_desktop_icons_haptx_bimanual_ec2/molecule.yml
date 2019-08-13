@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   # Adding hostname to instance name in order to allow parallel EC2 execution of tests from CodeBuild
-  - name: teleop_server_chrony_ec2_${HOSTNAME}
+  - name: teleop_server_desktop_icons_haptx_bimanual_ec2_${HOSTNAME}
     image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
@@ -28,11 +28,11 @@ provisioner:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
-    converge: ../../../molecule_docker/molecule/teleop_server_chrony_docker/playbook.yml
+    converge: ../../../molecule_docker/molecule/teleop_server_desktop_icons_haptx_bimanual_docker/playbook.yml
   lint:
     name: ansible-lint
 verifier:
   name: testinfra
-  directory: ../../../molecule_docker/molecule/teleop_server_chrony_docker/tests/
+  directory: ../../../molecule_docker/molecule/teleop_server_desktop_icons_haptx_bimanual_docker/tests/
   lint:
     name: flake8

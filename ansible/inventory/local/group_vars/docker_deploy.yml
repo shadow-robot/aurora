@@ -6,7 +6,7 @@ reinstall: false # Flag to know if the docker container should be fully reinstal
 container_name: "dexterous_hand_real_hw" # Name of the docker container
 nvidia_docker: 0 # Define the version of nvidia docker (defaul is 0 = disabled)
 desktop_icon: true # Generates a desktop icon to launch the hand
-cyberglove: "A-penny" # Specify the branch of sr_cyberglove_config for cyberglove configuration
+cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 ethercat_interface: "eth0" # Ethercat interface of the hand
 config_branch: "demohand_A" # Specify the branch for the specific hand (Only for dexterous hand)
