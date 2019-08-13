@@ -58,9 +58,10 @@
 
 - name: Add network setup to control machine for right arm
   become: yes
-  when: ur_interface | length > 0
+  when: ur_interface | length > 0 and not ethercat_left_arm | length > 0
   blockinfile:
     path: /etc/network/interfaces
+    backup: yes
     block: |
       auto {{ ur_interface }}
       iface {{ ur_interface }} inet static
@@ -68,12 +69,17 @@
         netmask 255.255.255.0
   changed_when: false
 
-- name: Add network setup to control machine for left arm
+- name: Add network setup to control machine for both arms
   become: yes
-  when: ethercat_left_arm | length > 0
+  when: ur_interface | length > 0 and ethercat_left_arm | length > 0
   blockinfile:
     path: /etc/network/interfaces
+    backup: yes
     block: |
+      auto {{ ur_interface }}
+      iface {{ ur_interface }} inet static
+        address 192.168.1.100
+        netmask 255.255.255.0
       auto {{ ethercat_left_arm }}
       iface {{ ethercat_left_arm }} inet static
         address 192.168.2.100
