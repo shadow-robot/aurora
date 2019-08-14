@@ -16,3 +16,4 @@ remote_cyberglove: true # Determines if the cyberglove is run locally (server) o
 use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
 server_hostname: "TELEOP-DEMO" # Specifies the host name for ROS master (teleop server)
 bimanual: false # Determines if left arm and left hand should be set up
+upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container

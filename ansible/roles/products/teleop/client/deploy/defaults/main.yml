@@ -24,3 +24,4 @@ server_hostname: "TELEOP-DEMO"
 openvpn_port: "1196"
 terminator: true
 bimanual: false
+upgrade_check: false
