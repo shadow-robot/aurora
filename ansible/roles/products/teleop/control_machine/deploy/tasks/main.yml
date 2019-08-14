@@ -80,7 +80,7 @@
       iface {{ ur_interface }} inet static
         address 192.168.1.100
         netmask 255.255.255.0
-      
+
       auto {{ ethercat_left_arm }}
       iface {{ ethercat_left_arm }} inet static
         address 192.168.2.100
