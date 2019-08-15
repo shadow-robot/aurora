@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop" # Docker image name
-tag: "kinetic-v0.0.23" # Tag of the exact Docker hub image to pull
+tag: "kinetic-v0.0.22" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 nvidia_docker: 2 # Which version of nvidia-docker is enabled (0 means it is disabled)
