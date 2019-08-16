@@ -28,5 +28,5 @@ fi
 sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
 sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
 if {{ launch_hand | lower }}; then
-    roslaunch sr_ethercat_hand_config sr_rhand.launch 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+    roslaunch sr_ethercat_hand_config sr_rhand.launch sim:={{ sim_hand }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
 fi
