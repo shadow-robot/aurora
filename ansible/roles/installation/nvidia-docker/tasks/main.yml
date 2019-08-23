@@ -8,11 +8,14 @@
     autoremove: yes
     purge: yes
   become: yes
+  changed_when: false
 
 - import_tasks: install-nvidia-v1.yml
   when: nvidia_docker | int == 1 and not skip_nvidia|bool
   become: yes
+  changed_when: false
 
 - import_tasks: install-nvidia-v2.yml
   when: nvidia_docker | int == 2 and not skip_nvidia|bool
   become: yes
+  changed_when: false

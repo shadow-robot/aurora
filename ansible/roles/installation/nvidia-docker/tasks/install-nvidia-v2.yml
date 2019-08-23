@@ -40,3 +40,4 @@
   service:
     name: docker
     state: restarted
+  changed_when: false
