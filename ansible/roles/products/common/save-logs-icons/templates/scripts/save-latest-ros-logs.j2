@@ -107,8 +107,6 @@ function save_all_logs
 {
     copy_logs
     copy_to_host
-    echo "preparing to ssh to nuc"
-    sleep 10
     if $save_nuc_logs; then
         ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << ENDSSH
         container_name=$container_name
@@ -132,9 +130,9 @@ function save_all_logs
         copy_logs   
         copy_to_host
 ENDSSH
-    echo "nuc ssh finished"
-    sleep 10
     fi
+    docker exec $container_name bash -c "mkdir -p $docker_logs_temp_base" || true
+    docker cp -L $local_desktop_path_base/notes_from_user.txt $container_name:$docker_logs_temp_base
 }
 
 info_message="You are about to save latest ROS logs from $container_name\nDocker container on this computer ($HOSTNAME)"
@@ -157,9 +155,7 @@ echo -e "${NC}${normal}Please add a note for logging with reasons... ${normal}${
 read notes_from_user
 
 mkdir -p $local_desktop_path_base
-docker exec $container_name bash -c "mkdir -p $docker_logs_temp_base" || true
 echo $notes_from_user > $local_desktop_path_base/notes_from_user.txt
-docker cp -L $local_desktop_path_base/notes_from_user.txt $container_name:$docker_logs_temp_base
 
 if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
     save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
