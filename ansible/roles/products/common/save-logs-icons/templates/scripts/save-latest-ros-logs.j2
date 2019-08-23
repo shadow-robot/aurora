@@ -221,7 +221,7 @@ if [ ! -z "$container_name" ]; then
 
     if [[ "${customer_key}" != "false"  ]]; then
         # check if the folder is empty.
-        has_logs=$(latestbag=$(docker exec $container_name bash -c "find $docker_logs_temp_base -maxdepth 0 -type d 2>/dev/null")
+        has_logs=$(docker exec $container_name bash -c "find $docker_logs_temp_base -maxdepth 0 -type d 2>/dev/null")
         if [ ! -z "$has_logs" ]; then
             echo -e "${YELLOW}${bold}There are previous logs that havent been sent yet. Would you like to send them now? Type 'Y' to send or 'n' to ignore and overwrite them ${normal}${NC}"
             read old_logs
