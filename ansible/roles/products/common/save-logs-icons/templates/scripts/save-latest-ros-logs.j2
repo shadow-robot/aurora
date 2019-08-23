@@ -84,7 +84,7 @@ function copy_logs
 }
 function copy_to_host
 {
-    local_ros_log_dir=/home/$USER/ROS_LOGS/$container_name
+    local_ros_log_dir=/home/$USER/Desktop/ROS_LOGS/$container_name
     local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
     local_desktop_path=$local_desktop_path_base/$computer_name
                         
@@ -220,7 +220,7 @@ if [ ! -z "$container_name" ]; then
         customer_key=false
     fi
 
-    if [ ${customer_key} ]; then
+    if [[ "${customer_key}" != "false"  ]]; then
         # check if the folder is empty.
         if [ ! -z "$(docker exec $container_name bash -c 'find $docker_logs_temp_base -maxdepth 0 -type d 2>/dev/null')" ]; then
             echo -e "${YELLOW}${bold}There are previous logs that havent been sent yet. Would you like to send them now? Type 'Y' to send or 'n' to ignore and overwrite them ${normal}${NC}"
