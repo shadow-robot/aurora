@@ -75,7 +75,7 @@
     dest: "{{ user_home_dir }}/.steam/sdk64"
     remote_src: true
 
-- name: Install and update steamvr
+- name: Install and update steamvr (retrying for 10 minutes if there are network problems)
   command: >
     {{ user_home_dir }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
     +force_install_dir {{ user_home_dir }}/.steam +app_update 250820 -beta beta validate +quit
@@ -83,8 +83,8 @@
     creates: "{{ user_home_dir }}/.steam/bin/vrstartup.sh"
   register: steamvr_install_job
   until: steamvr_install_job is success
-  retries: 10
-  delay: 120
+  retries: 120
+  delay: 5
 
 - name: Fix setcap error in vrstartup.sh
   capabilities:
