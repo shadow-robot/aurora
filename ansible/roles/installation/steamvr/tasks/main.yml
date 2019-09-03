@@ -81,6 +81,10 @@
     +force_install_dir {{ user_home_dir }}/.steam +app_update 250820 -beta beta validate +quit
   args:
     creates: "{{ user_home_dir }}/.steam/bin/vrstartup.sh"
+  register: steamvr_install_job
+  until: steamvr_install_job is success
+  retries: 10
+  delay: 120
 
 - name: Fix setcap error in vrstartup.sh
   capabilities:
