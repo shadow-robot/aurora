@@ -64,8 +64,6 @@ Example:
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory staging --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
 ```
 
-If you are prompted for SSH password, enter the password of the NUC. For the BECOME password, just press Enter, as it will default to the SSH password.
-
 Inventories correspond to fixed IP addresses as shown here:
 * [development](ansible/inventory/teleop/development)
 * [staging](ansible/inventory/teleop/staging)
@@ -86,6 +84,10 @@ For assigning input and secure input to playbook variables you can use the tags:
 
 * --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
 * --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
+
+**SSH and BECOME passwords:**
+
+If you are prompted for an SSH password, enter the sudo password of the NUC. For the BECOME password (i.e. the sudo password for teleop server), just press Enter, as it will default to the SSH password.
 
 ## docker_deploy ##
 
@@ -122,15 +124,16 @@ Example:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25 config_branch=demohand_C
 ```
-
-If you are prompted for SSH password, enter the password of the NUC. For the BECOME password, just press Enter, as it will default to the SSH password.
-
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
 For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
 
 * --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
 * --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
+
+**BECOME password:**
+
+If you are prompted for a BECOME password, enter the sudo password of the computer you are using. 
 
 ## configure_software ##
 
