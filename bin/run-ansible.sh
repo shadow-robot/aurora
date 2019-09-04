@@ -137,8 +137,21 @@ fi
 if [[ "${playbook}" = "teleop_deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-pass "
     aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
+    echo ""
+    echo " ---------------------------------------------------"
+    echo " |             SSH and BECOME passwords:           |"
+    echo " | SSH: enter the NUC sudo password                |"
+    echo " | BECOME: just press enter (same as SSH password) |"
+    echo " ---------------------------------------------------"
+    echo ""
 else
     aurora_inventory="ansible/inventory/${aurora_inventory}"
+    echo ""
+    echo " --------------------------------------------"
+    echo " |             BECOME password:             |"
+    echo " | Enter the sudo password of this computer |"
+    echo " --------------------------------------------"
+    echo ""
 fi
 
 ansible_executable=~/.local/bin/ansible-playbook
