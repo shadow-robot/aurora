@@ -57,3 +57,4 @@
     name: docker
     state: restarted
   become: yes
+  changed_when: false

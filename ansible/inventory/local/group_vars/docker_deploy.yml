@@ -17,3 +17,4 @@ demo_icons: true # Generates desktop icons to run demos
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
+sim_hand: false # if set to true it will autolaunch the hand in simulation

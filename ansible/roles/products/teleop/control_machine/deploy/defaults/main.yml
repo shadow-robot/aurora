@@ -24,3 +24,4 @@ terminator: false
 use_steamvr: false
 nvidia_docker: 0
 ur_interface: "eth0"
+sim_hand: false

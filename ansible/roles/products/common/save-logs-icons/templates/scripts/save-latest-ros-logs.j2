@@ -50,8 +50,10 @@ function copy_logs
     docker exec $container_name bash -c "mkdir -p $docker_logs_temp" || true
     echo "Copying logs from $docker_ros_folder to $docker_logs_temp inside the $container_name Docker container on $HOSTNAME"
     docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
+    docker exec $container_name /ros_entrypoint.sh bash -c "rosnode list | grep /bag_rotate | xargs rosnode kill" || true
     sleep 1
     latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag | tail -1") || true
+    latestbag_tmp=$(docker exec $container_name bash -c "ls -dtr $docker_user_home/*.bag | tail -1") || true
     docker exec $container_name bash -c "mkdir -p $docker_logs_temp" || true
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/stderr.log $docker_logs_temp" || true
     docker exec $container_name bash -c "rm $docker_ros_logs_folder/std*.log" || true
@@ -74,6 +76,7 @@ function copy_logs
     latestws=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/wsdiff_ws_diff* | tail -1")
     latestparam=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/run_params* | tail -1")
     docker exec $container_name bash -c "cp $latestbag $docker_logs_temp"  || true
+    docker exec $container_name bash -c "cp $latestbag_tmp $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestparam $docker_logs_temp"  || true
     docker exec $container_name bash -c "cp $latestws $docker_logs_temp"  || true
     container_image=$(docker ps -a | grep $container_name | awk '{print $2}' | tail -1) || true
@@ -84,7 +87,7 @@ function copy_logs
 }
 function copy_to_host
 {
-    local_ros_log_dir=/home/$USER/ROS_LOGS/$container_name
+    local_ros_log_dir=/home/$USER/Desktop/ROS_LOGS/$container_name
     local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
     local_desktop_path=$local_desktop_path_base/$computer_name
                         
@@ -104,8 +107,6 @@ function save_all_logs
 {
     copy_logs
     copy_to_host
-    echo "preparing to ssh to nuc"
-    sleep 10
     if $save_nuc_logs; then
         ssh $NUC_NAME@$NUC_ADDRESS 'bash -s' << ENDSSH
         container_name=$container_name
@@ -129,9 +130,9 @@ function save_all_logs
         copy_logs   
         copy_to_host
 ENDSSH
-    echo "nuc ssh finished"
-    sleep 10
     fi
+    docker exec $container_name bash -c "mkdir -p $docker_logs_temp_base" || true
+    docker cp -L $local_desktop_path_base/notes_from_user.txt $container_name:$docker_logs_temp_base
 }
 
 info_message="You are about to save latest ROS logs from $container_name\nDocker container on this computer ($HOSTNAME)"
@@ -154,9 +155,7 @@ echo -e "${NC}${normal}Please add a note for logging with reasons... ${normal}${
 read notes_from_user
 
 mkdir -p $local_desktop_path_base
-docker exec $container_name bash -c "mkdir -p $docker_logs_temp_base" || true
 echo $notes_from_user > $local_desktop_path_base/notes_from_user.txt
-docker cp -L $local_desktop_path_base/notes_from_user.txt $container_name:$docker_logs_temp_base
 
 if [ "$(docker exec $container_name bash -c 'ls /usr/local/bin/customer.key')" ]; then
     save_log_msg_config_file="/home/$USER/.shadow_save_log_app/save_sr_log_msg_config.cfg"
@@ -220,9 +219,10 @@ if [ ! -z "$container_name" ]; then
         customer_key=false
     fi
 
-    if [ ${customer_key} ]; then
+    if [[ "${customer_key}" != "false"  ]]; then
         # check if the folder is empty.
-        if [ ! -z "$(docker exec $container_name bash -c 'find $docker_logs_temp_base -maxdepth 0 -type d 2>/dev/null')" ]; then
+        has_logs=$(docker exec $container_name bash -c "find $docker_logs_temp_base -maxdepth 0 -type d 2>/dev/null") || echo ""
+        if [ ! -z "$has_logs" ]; then
             echo -e "${YELLOW}${bold}There are previous logs that havent been sent yet. Would you like to send them now? Type 'Y' to send or 'n' to ignore and overwrite them ${normal}${NC}"
             read old_logs
             if [[ $old_logs == "y" || $old_logs == "Y" || $old_logs == "yes" || $old_logs == "Yes" || $old_logs == "YES" ]]; then
