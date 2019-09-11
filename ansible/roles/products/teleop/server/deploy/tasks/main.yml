@@ -97,6 +97,13 @@
     mode: '0644'
   become: yes
 
+- name: Udev rules for pedal
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr_teleop_devices/kinetic-devel/sr_pedal/90-VEC-USB-Footpedal.rules
+    dest: /lib/udev/rules.d/90-VEC-USB-Footpedal.rules
+    mode: '0644'
+  become: yes
+
 - name: Creating upgrade script
   template:
     src: ../../../common/resources/templates/scripts/upgrade_image.j2
