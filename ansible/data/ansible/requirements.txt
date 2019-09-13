@@ -7,7 +7,7 @@ keyring==10.6.0
 keyrings.alt==3.0
 MarkupSafe==1.1.1
 pycrypto==2.6.1
-pygobject==3.26.1
+pygobject==3.27.0
 pyxdg==0.25
 PyYAML==5.1.2
 SecretStorage==2.3.1
