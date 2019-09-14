@@ -15,9 +15,13 @@
   set_fact:
     python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
 
+- name: Set modified_tag variable
+  set_fact:
+    modified_tag: "{{ tag }}"
+
 - name: Set docker full image name
   set_fact:
-    full_image_name: "{{ image }}:{{ tag }}"
+    full_image_name: "{{ image }}:{{ modified_tag }}"
 
 - name: Check the correct docker image to pull for nvidia-docker 1
   block:
@@ -34,11 +38,11 @@
 
   - name: Append -nvidia to tag if nvidia_docker is 1
     set_fact:
-      tag: "{{ tag }}-nvidia"
+      modified_tag: "{{ modified_tag }}-nvidia"
 
   - name: Set docker full image name (with -nvidia)
     set_fact:
-      full_image_name: "{{ image }}:{{ tag }}"
+      full_image_name: "{{ image }}:{{ modified_tag }}"
 
   when: nvidia_docker | int == 1 and not skip_nvidia|bool and not tag is search("-nvidia")
 
@@ -57,11 +61,11 @@
 
   - name: Append -nvidia2 to tag if nvidia_docker is 2
     set_fact:
-      tag: "{{ tag }}-nvidia2"
+      modified_tag: "{{ modified_tag }}-nvidia2"
 
   - name: Set docker full image name (with -nvidia)
     set_fact:
-      full_image_name: "{{ image }}:{{ tag }}"
+      full_image_name: "{{ image }}:{{ modified_tag }}"
 
   when: nvidia_docker | int == 2 and not skip_nvidia|bool and not tag is search("-nvidia")
 
