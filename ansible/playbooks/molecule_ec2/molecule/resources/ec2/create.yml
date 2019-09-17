@@ -24,7 +24,7 @@
         from_port: 0
         to_port: 0
         cidr_ip: '0.0.0.0/0'
-    keypair_name: molecule_key
+    keypair_name: molecule_key_${CODEBUILD_BUILD_ID}
     keypair_path: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}/ssh_key"
   tasks:
     - name: First non-empty region will be main region
