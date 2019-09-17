@@ -722,8 +722,8 @@ driver:
 lint:
   name: yamllint
 platforms:
-  # Adding hostname to instance name in order to allow parallel EC2 execution of tests from CodeBuild
-  - name: tutorial_1_ec2_${HOSTNAME}
+  # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
+  - name: tutorial_1_ec2_${CODEBUILD_BUILD_ID}
     image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
