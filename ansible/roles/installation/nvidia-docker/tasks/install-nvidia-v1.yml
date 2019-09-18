@@ -33,6 +33,7 @@
         - nvidia-docker={{ nvidia_docker_1_version }}
     state: present
     update_cache: yes
+  changed_when: false
 
 - name: Ensure /etc/systemd/system/docker.service.d folder exists
   file:
