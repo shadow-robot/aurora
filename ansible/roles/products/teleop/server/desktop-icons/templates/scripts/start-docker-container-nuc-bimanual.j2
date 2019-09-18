@@ -4,8 +4,8 @@ NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP=$(for ip_addr in $(hostname -I) ; do if [[ $ip_addr =~ "10.".*"10.".* ]] ;then echo $ip_addr; fi; done)
 
-ssh $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} HAND_SERIALN_LEFT={{ hand_serial_left }} ETH_PORT={{ ethercat_interface }} ETH_PORT_LHAND={{ ethercat_left_hand }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS NUC_NAME=$NUC_NAME 'bash -s' <<'ENDSSH'
-bash $(while [[ $(lsof -n -w | grep $HOST_IP | grep $NUC_ADDRESS | wc -l) == 1 ]]; do sleep 1; done ; docker exec -it rosnode kill $(rosnode machine $HOSTNAME)) &
+ssh $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} HAND_SERIALN_LEFT={{ hand_serial_left }} ETH_PORT={{ ethercat_interface }} ETH_PORT_LHAND={{ ethercat_left_hand }} 'bash -s' <<'ENDSSH'
+bash $(while [[ $(lsof -n -w | grep $HOST_IP | grep $NUC_ADDRESS | grep ESTABLISHED | wc -l) == 1 ]]; do sleep 1; done ; pkill -f ros) &
 docker stop ${CONTAINER}
 docker start ${CONTAINER}
 echo "Starting the container..."
