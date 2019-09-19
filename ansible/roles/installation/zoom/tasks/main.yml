@@ -29,7 +29,7 @@
       - libsqlite3-0
       - libxcb-keysyms1
       - libxcb-xtest0
-    become: yes
+  become: yes
 
 - name: Install Zoom .deb package from the internet.
   apt:
