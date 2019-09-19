@@ -30,6 +30,7 @@
     name: nvidia-docker2
     state: present
     update_cache: yes
+  changed_when: false
 
 - name: Reload daemon
   systemd:

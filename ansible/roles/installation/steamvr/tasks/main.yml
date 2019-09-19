@@ -24,7 +24,6 @@
       - libcap2-bin
   become: yes
 
-# this results in a warning in ansible 2.8.1 but should be fixed in 2.8.2 https://github.com/ansible/ansible/pull/56008
 - name: Gather package facts
   package_facts:
     manager: apt
