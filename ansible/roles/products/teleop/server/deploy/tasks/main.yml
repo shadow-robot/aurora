@@ -24,6 +24,21 @@
     name: installation/openvpn-server
   when: use_openvpn|bool
 
+- name: Include installation/ccrypt role
+  include_role:
+    name: installation/ccrypt
+  when: use_openvpn|bool
+
+- name: Include installation/zoom role
+  include_role:
+    name: installation/zoom
+  when: use_openvpn|bool
+
+- name: Include installation/v4l-utils role
+  include_role:
+    name: installation/v4l-utils
+  when: use_openvpn|bool
+
 - name: Set chrony allowed network
   set_fact:
     chrony_allowed_network: "{{ groups['server'][0].split('.')[0:3] | join('.') }}"
