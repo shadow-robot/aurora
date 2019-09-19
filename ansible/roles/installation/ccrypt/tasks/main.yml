@@ -1,0 +1,15 @@
+---
+# ccrypt installation (for decryptiong VPN credentials)
+
+- name: Update package lists
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install needed package
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - ccrypt
+  become: yes

@@ -1,0 +1,29 @@
+---
+# v4l-utils installation (for setting the powerline frequency of USB cameras)
+
+- name: Update package lists
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install needed package
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - v4l-utils
+  become: yes
+
+- name: Add a block to .bashrc to set the powerline frequency of USB cameras
+  blockinfile:
+    dest: "{{ ansible_env.HOME }}"/.bashrc
+    block: |
+      if [[ ! -z ${v4l2-ctl --list-devices | grep /dev/video1} ]]; then
+        v4l2-ctl -d /dev/video1 --set-ctrl power_line_frequency=1
+      fi
+      if [[ ! -z ${v4l2-ctl --list-devices | grep /dev/video2} ]]; then
+        v4l2-ctl -d /dev/video2 --set-ctrl power_line_frequency=1
+      fi
+      if [[ ! -z ${v4l2-ctl --list-devices | grep /dev/video3} ]]; then
+        v4l2-ctl -d /dev/video3 --set-ctrl power_line_frequency=1
+      fi
