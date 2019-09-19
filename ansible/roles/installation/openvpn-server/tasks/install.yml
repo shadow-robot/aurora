@@ -109,7 +109,7 @@
     - { regex: ";user nobody", value: "user nobody" }
     - { regex: ";group nogroup", value: "group nogroup" }
     - { regex: ";tls-auth ta.key 0", value: "tls-auth ta.key 0" }
-    - { regex: ";push "route 192.168.20.0 255.255.255.0"", value: "push "route 10.9.0.0 255.255.0.0"" }
+    - { regex: ';push "route 192.168.20.0 255.255.255.0"', value: 'push "route 10.9.0.0 255.255.0.0"' }
   become: yes
 
 - name: Configuration IP forwarding
