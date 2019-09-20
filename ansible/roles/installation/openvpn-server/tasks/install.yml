@@ -215,3 +215,11 @@
     chdir: "{{ user_folder }}/openvpn-ca/"
     executable: /bin/bash
   become: yes
+
+- name: Encrypt the client ovpn file
+  shell: "{{ item }}"
+  with_items:
+  args:
+    chdir: "{{ user_folder }}/openvpn-ca/"
+    executable: /bin/bash
+  become: yes
