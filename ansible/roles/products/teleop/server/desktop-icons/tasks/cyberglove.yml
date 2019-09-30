@@ -8,10 +8,10 @@
     desktop_icon_name: "Teleop_Container_Launch"
 
 - name: Install desktop icon for Teleop server GUI (for cyberglove)
-  include_tasks: gui-icon.yml
+  include_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "cyberglove_teleop.png"
     launch_script: "shadow_roslaunch_demo.sh"
     desktop_icon_name: "Teleop_GUI"
-    gui_project_name: "sr_teleop_vive_cyberglove"
-    gui_launch_file: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true"
+    project_name_input: "sr_teleop_vive_cyberglove"
+    launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true"
