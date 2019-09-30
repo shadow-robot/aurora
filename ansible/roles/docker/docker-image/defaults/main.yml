@@ -2,5 +2,4 @@
 container_name: "dexterous_hand_real_hw"
 image: "shadowrobot/dexterous-hand"
 tag: "kinetic-release"
-modified_tag: "kinetic-release"
 skip_nvidia: false
