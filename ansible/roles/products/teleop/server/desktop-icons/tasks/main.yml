@@ -34,7 +34,7 @@
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "Teleop_ROSCORE"
 
-- name: Install desktop icon for Teleop server Simulation
+- name: Install desktop icon for Teleop server Simulation (Cyberglove)
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "cyberglove_teleop.png"
@@ -43,6 +43,26 @@
     project_name_input: "sr_teleop_vive_cyberglove"
     launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=false sim:=true"
   when: sim_icon|bool and glove=="cyberglove"
+
+- name: Install desktop icon for Teleop server Simulation (Unimanual HaptX)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "haptx_right.png"
+    launch_script: "shadow_sim_demo.sh"
+    desktop_icon_name: "Teleop_Simulation"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "teleop_vive_haptx_control_right.launch external_control_loop:=false sim:=true"
+  when: sim_icon|bool and glove=="haptx" and not bimanual|bool
+
+- name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "haptx_bimanual.png"
+    launch_script: "shadow_sim_demo.sh"
+    desktop_icon_name: "Teleop_Simulation"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true"
+  when: sim_icon|bool and glove=="haptx" and bimanual|bool
 
 - name: Include products/common/demo-icons role
   include_role:
