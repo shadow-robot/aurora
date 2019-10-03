@@ -5,6 +5,13 @@
     state: present
   become: yes
 
+- name: Set local chrony server address
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    state: present
+    line: "server 127.127.1.0"
+  become: yes
+
 - name: Allow local network to use chrony
   lineinfile:
     dest: /etc/chrony/chrony.conf
