@@ -26,7 +26,7 @@
 
 - name: Set chrony allowed network
   set_fact:
-    chrony_allowed_network: "{{ groups['server'][0].split('.')[0:3] | join('.') }}"
+    chrony_allowed_network: "0/0"
   when: groups['server'] is defined
 
 - name: Include installation/chrony-server role
