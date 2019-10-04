@@ -20,7 +20,7 @@
     launch_script: "shadow_roslaunch_Right.sh"
     desktop_icon_name: "Teleop_GUI_haptx_Right"
     gui_project_name: "sr_teleop_vive_haptx"
-    gui_launch_file: "teleop_vive_haptx.launch external_control_loop:=true"
+    gui_launch_file: "teleop_vive_haptx.launch external_control_loop:=true vive:=false"
 
 - name: Install desktop icon for running haptx mapping node right
   include_tasks: gui-icon.yml
@@ -38,7 +38,7 @@
     launch_script: "shadow_roslaunch_Left.sh"
     desktop_icon_name: "Teleop_GUI_haptx_Left_Launch"
     gui_project_name: "sr_teleop_vive_haptx"
-    gui_launch_file: "teleop_vive_haptx.launch external_control_loop:=true side:=left"
+    gui_launch_file: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false"
 
 - name: Install desktop icon for running haptx mapping node Left
   include_tasks: gui-icon.yml

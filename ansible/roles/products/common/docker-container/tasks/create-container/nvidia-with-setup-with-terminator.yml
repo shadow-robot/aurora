@@ -30,7 +30,7 @@
     security_opts:
     - "seccomp: unconfined"
     ulimits:
-    - "nofile=40000:40000"
+    - "core: -1"
     volumes:
     - /tmp/.X11-unix:/tmp/.X11-unix[rw]
     - /usr/lib/nvidia-{{ nvidia_driver_version.stdout }}:/usr/lib/nvidia-{{ nvidia_driver_version.stdout }}
