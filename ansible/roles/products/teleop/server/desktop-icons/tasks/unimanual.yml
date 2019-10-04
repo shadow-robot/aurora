@@ -25,3 +25,12 @@
     demohand_branch: "demohand_C"
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_C"
     hand_serial_no: "1370"
+
+- name: Install desktop icon for hand D
+  import_tasks: demohand-icon.yml
+  vars:
+    desktop_icon_png: "demohand_D_icon.png"
+    launch_script: "teleop_exec_D.sh"
+    demohand_branch: "demohand_D"
+    desktop_icon_name: "Teleop_control_machine_Launch_Demohand_D"
+    hand_serial_no: "2346"

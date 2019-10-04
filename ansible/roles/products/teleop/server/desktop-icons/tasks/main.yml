@@ -12,7 +12,6 @@
 
 - name: Setting up icons for unimanual teleop
   include_tasks: unimanual.yml
-  when: not bimanual|bool
  
 - name: Setting up icons for bimanual teleop
   include_tasks: bimanual.yml

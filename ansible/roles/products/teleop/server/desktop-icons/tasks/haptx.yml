@@ -13,20 +13,58 @@
     launch_script: "shadow_launcher_exec.sh"
     desktop_icon_name: "Teleop_Container_Launch"
 
-- name: Install desktop icon for Teleop server GUI (for haptx)
+- name: Install desktop icon for Teleop server GUI Right (for haptx)
   include_tasks: gui-icon.yml
   vars:
     desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_roslaunch_demo.sh"
-    desktop_icon_name: "Teleop_GUI_haptx"
+    launch_script: "shadow_roslaunch_Right.sh"
+    desktop_icon_name: "Teleop_GUI_haptx_Right"
     gui_project_name: "sr_teleop_vive_haptx"
-    gui_launch_file: "teleop_vive_haptx_right.launch external_control_loop:=true"
+    gui_launch_file: "teleop_vive_haptx.launch external_control_loop:=true"
 
-- name: Install desktop icon for running haptx mapping node
+- name: Install desktop icon for running haptx mapping node right
   include_tasks: gui-icon.yml
   vars:
     desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_haptx_mapping_launch_demo.sh"
-    desktop_icon_name: "Teleop_Haptx_Mapping_Launch"
+    launch_script: "shadow_haptx_mapping_launch_Right.sh"
+    desktop_icon_name: "Teleop_Haptx_Mapping_Right_Launch"
     gui_project_name: "sr_teleop_vive_haptx"
     gui_launch_file: "haptx_base.launch"
+
+- name: Install desktop icon for Teleop server GUI Left (for haptx)
+  include_tasks: gui-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_roslaunch_Left.sh"
+    desktop_icon_name: "Teleop_GUI_haptx_Left_Launch"
+    gui_project_name: "sr_teleop_vive_haptx"
+    gui_launch_file: "teleop_vive_haptx.launch external_control_loop:=true side:=left"
+
+- name: Install desktop icon for running haptx mapping node Left
+  include_tasks: gui-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_haptx_mapping_launch_Left.sh"
+    desktop_icon_name: "Teleop_Haptx_Mapping_Left_Launch"
+    gui_project_name: "sr_teleop_vive_haptx"
+    gui_launch_file: "haptx_base.launch hand_side_prefix:=lh"
+
+- name: Install desktop icon for Teleop server GUI Bimanual (for haptx)
+  include_tasks: gui-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_roslaunch_bimanual.sh"
+    desktop_icon_name: "Teleop_GUI_haptx_Bimanual_Launch"
+    gui_project_name: "sr_teleop_vive_haptx"
+    gui_launch_file: "teleop_bimanual_vive_haptx.launch external_control_loop:=true"
+  when: bimanual|bool
+
+- name: Install desktop icon for running haptx mapping node Bimanual
+  include_tasks: gui-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
+    desktop_icon_name: "Teleop_Haptx_Mapping_Bimanual_Launch"
+    gui_project_name: "sr_teleop_vive_haptx"
+    gui_launch_file: "haptx_base_bimanual.launch"
+  when: bimanual|bool

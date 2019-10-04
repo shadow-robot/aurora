@@ -20,6 +20,8 @@
     interactive: yes
     security_opts:
     - "seccomp: unconfined"
+    ulimits:
+    - "core: unlimited"
     volumes:
     - /tmp/.X11-unix:/tmp/.X11-unix[rw]
     - /dev/input:/dev/input[rw]
