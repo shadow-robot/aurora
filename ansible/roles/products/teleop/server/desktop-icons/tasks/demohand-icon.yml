@@ -13,7 +13,7 @@
   vars:
     hand_serial: "{{ hand_serial_no }}"
     config_branch: "{{ demohand_branch }}"
-  when: not bimanual|bool and glove=="cyberglove"
+  when: glove=="cyberglove"
 
 - name: Create executable launch script for demohand (with haptx)
   template:
@@ -23,18 +23,7 @@
   vars:
     hand_serial: "{{ hand_serial_no }}"
     config_branch: "{{ demohand_branch }}"
-  when: not bimanual|bool and glove=="haptx"
-
-- name: Create executable launch script for bimanual teleop
-  template:
-    src: templates/scripts/start-docker-container-nuc-bimanual.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
-    mode: '755'
-  vars:
-    hand_serial: "{{ hand_serial_no }}"
-    hand_serial_left: "{{ hand_left_serial_no }}"
-    config_branch: "{{ demohand_branch }}"
-  when: bimanual|bool
+  when: glove=="haptx"
 
 - name: Create desktop icon for demohand
   template:

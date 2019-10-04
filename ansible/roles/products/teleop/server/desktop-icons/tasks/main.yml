@@ -21,7 +21,7 @@
   include_tasks: cyberglove.yml
   when: glove=="cyberglove"
 
-- name: Setting up icons for haptx teleop
+- name: Setting up icons for haptx teleop GUI
   include_tasks: haptx.yml
   when: glove=="haptx"
 
