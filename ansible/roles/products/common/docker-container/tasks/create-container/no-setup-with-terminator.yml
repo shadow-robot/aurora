@@ -21,7 +21,7 @@
     security_opts:
     - "seccomp: unconfined"
     ulimits:
-    - "core: unlimited"
+    - "core: -1"
     volumes:
     - /tmp/.X11-unix:/tmp/.X11-unix[rw]
     - /dev/input:/dev/input[rw]
