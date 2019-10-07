@@ -34,7 +34,7 @@
     name: products/common/docker-container
   vars:
     ros_master: "{{ server_hostname }}"
-    nvidia_docker: 0
+    nvidia_docker: false
 
 - name: Include docker/aws role
   include_role:

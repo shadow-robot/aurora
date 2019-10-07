@@ -3,7 +3,7 @@ image: "shadowrobot/shadow-teleop-haptx" # Docker image name
 tag: "kinetic-v0.0.25" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
-nvidia_docker: 2 # Which version of nvidia-docker is enabled (0 means it is disabled)
+nvidia_docker: true # Define if nvidia docker 2 is used (defaul is false)
 glove: "haptx" # Determines which glove is installed (cyberglove or haptx)
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
