@@ -6,7 +6,7 @@
     ethercat_interface="enp0s25"
     image="shadowrobot/dexterous-hand"
     tag="kinetic-release"
-    nvidia_docker=0
+    nvidia_docker=false
     skip_molecule_task=true
     allow_auto_reboot=true
     demo_icons=true

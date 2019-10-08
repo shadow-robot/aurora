@@ -5,21 +5,21 @@
     state: directory
 
 - name: Creating the container which will execute setup script in terminator when started
-  when: "nvidia_docker|int == 0 and terminator and setup_script | length > 0"
+  when: "not nvidia_docker|bool and terminator and setup_script | length > 0"
   import_tasks: create-container/with-setup-with-terminator.yml
 
 - name: Creating the container which will execute setup script when started without terminator
-  when: "nvidia_docker|int == 0 and not terminator and setup_script | length > 0"
+  when: "not nvidia_docker|bool and not terminator and setup_script | length > 0"
   import_tasks: create-container/with-setup-no-terminator.yml
 
 - name: Creating the container which will just start a terminator (no setup script)
-  when: "nvidia_docker|int == 0 and terminator and setup_script | length == 0"
+  when: "not nvidia_docker|bool and terminator and setup_script | length == 0"
   import_tasks: create-container/no-setup-with-terminator.yml
 
 - name: Creating the container which will not even start terminator (no setup script)
-  when: "nvidia_docker|int == 0 and not terminator and setup_script | length == 0"
+  when: "not nvidia_docker|bool and not terminator and setup_script | length == 0"
   import_tasks: create-container/no-setup-no-terminator.yml
 
 - name: Creating the container which will execute setup script in terminator when started (NVIDIA)
-  when: "nvidia_docker|int !=0 and terminator and setup_script | length > 0"
+  when: "nvidia_docker|bool and terminator and setup_script | length > 0"
   import_tasks: create-container/nvidia-with-setup-with-terminator.yml

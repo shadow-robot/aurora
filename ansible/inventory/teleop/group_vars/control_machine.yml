@@ -14,5 +14,5 @@ glove: "haptx" # Determines which glove is installed (cyberglove or haptx)
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
-nvidia_docker: 0 # No nvidia docker by default
+nvidia_docker: false # Define if nvidia docker 2 is used (defaul is false)
 use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
