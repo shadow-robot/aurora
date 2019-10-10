@@ -12,6 +12,13 @@
     line: "server {{ chrony_server_ip }} minpoll 1 maxpoll 3 iburst prefer"
   become: yes
 
+- name: Prevent chrony client from syncing time with internet
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    state: absent
+    line: "pool 2.debian.pool.ntp.org offline iburst"
+  become: yes
+
 - name: Restart chrony service
   service:
     name: chrony
