@@ -13,7 +13,6 @@
     src: files/{{ desktop_icon_png }}
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
-  
 
 - name: Create executable launch script for bimanual teleop
   template:
@@ -24,6 +23,7 @@
     hand_serial: "{{ hand_serial_no }}"
     hand_serial_left: "{{ hand_left_serial_no }}"
     config_branch: "{{ demohand_branch }}"
+  changed_when: false
 
 - name: Create desktop icon for demohand
   template:
