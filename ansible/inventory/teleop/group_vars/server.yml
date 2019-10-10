@@ -1,5 +1,5 @@
 ---
-image: "10.6.10.7:5000/shadow-teleop-haptx" # Docker image name
+image: "shadowrobot/shadow-teleop-haptx" # Docker image name
 tag: "kinetic-v0.0.25" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
@@ -11,7 +11,7 @@ use_openvpn: false # Specify if openvpn-server should be installed
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
 remote_cyberglove: false # Determines if the cyberglove is run locally (server) or remotely (client)
-use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
+use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 sim_icon: false # creates an extra icon that runs teleoperation in simulation mode
 save_nuc_logs: true # enables saving ROS logs from control-computer to server
 demo_icons: true # Generates desktop icons to run demos
