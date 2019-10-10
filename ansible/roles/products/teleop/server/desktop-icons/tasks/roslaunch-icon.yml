@@ -11,8 +11,8 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    project_name: "{{ gui_project_name }}"
-    launch_file: "{{ gui_launch_file }}"
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_input }}"
 
 - name: Create desktop icon for GUI
   template:

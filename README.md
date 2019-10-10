@@ -364,7 +364,7 @@ The docker folder contains some general roles that are used after docker install
 
  - aws: this is used for installing our shadow-upload.sh script and AWS customer key which uploads ROS logs to AWS. It has a dependency of installation/aws-cli
 
- - docker-image: this is used for pulling the docker image (and if nvidia_docker is not 0, it will append -nvidia to the docker image before it is pulled)(nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) specifies the version of nvidia-docker that should be used: 1 or 2. 0 means nvidia-docker is not installed, only normal docker.
+ - docker-image: this is used for pulling the docker image (nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) is a boolean which specifies whether nvidia docker 2 should be used)
 
  - setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, etc., to create the /usr/local/bin/entrypoint.sh file and setting up a new Docker user
 
@@ -474,7 +474,7 @@ It has to have a similar structure to this:
 
   roles:
     - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
+    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
@@ -507,7 +507,7 @@ An example of a role section:
 ```bash
   roles:
     - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
+    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}

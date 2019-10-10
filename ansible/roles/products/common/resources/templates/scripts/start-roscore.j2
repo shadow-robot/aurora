@@ -1,4 +1,4 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
-{{ docker_executable }} exec -it --user user {{ container_name }}  bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;roscore"
+docker exec -it --user user {{ container_name }}  bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;roscore"
 sleep infinity

@@ -17,7 +17,7 @@
 - name: Include installation/nvidia-docker role
   include_role:
     name: installation/nvidia-docker
-  when: nvidia_docker | int !=0
+  when: nvidia_docker | bool
 
 - name: Include installation/openvpn-server role
   include_role:
@@ -26,7 +26,7 @@
 
 - name: Set chrony allowed network
   set_fact:
-    chrony_allowed_network: "{{ groups['server'][0].split('.')[0:3] | join('.') }}"
+    chrony_allowed_network: "0/0"
   when: groups['server'] is defined
 
 - name: Include installation/chrony-server role
