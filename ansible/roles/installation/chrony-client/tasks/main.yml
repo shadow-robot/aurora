@@ -9,7 +9,7 @@
   lineinfile:
     dest: /etc/chrony/chrony.conf
     state: present
-    line: "server {{ chrony_server_ip }} iburst prefer"
+    line: "server {{ chrony_server_ip }} minpoll 1 maxpoll 3 iburst prefer"
   become: yes
 
 - name: Restart chrony service
