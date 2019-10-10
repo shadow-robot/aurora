@@ -23,7 +23,7 @@
   lineinfile:
     dest: /etc/chrony/chrony.conf
     state: present
-    line: "local stratum 10"
+    line: "local stratum 1"
   become: yes
 
 - name: Restart chrony service
