@@ -11,7 +11,6 @@
     allow_auto_reboot=true
     demo_icons=true
     bimanual=true
-    glove="haptx"
     ethercat_left_hand="enx0001"
     ethercat_left_arm="enx0002"
     config_branch="bimanual_demohands_B_D"
