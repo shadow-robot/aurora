@@ -30,17 +30,17 @@ def test_icons_in_docker(host):
     icons = (
         'Teleop_control_machine_Launch_bimanual_demohands_B_D',
         'Teleop_Container_Launch',
-        'Teleop_GUI_haptx',
+        'Teleop_GUI_haptx_Bimanual_Launch',
         'Teleop_ROSCORE',
         'ROS_Logs_Saver',
-        'Teleop_Haptx_Mapping_Launch'
+        'Teleop_Haptx_Mapping_Bimanual_Launch'
         )
     scripts = (
         'teleop_exec_bimanual',
         'shadow_launcher_exec',
-        'shadow_roslaunch_demo',
+        'shadow_roslaunch_bimanual',
         'shadow_roscore',
-        'shadow_haptx_mapping_launch_demo'
+        'shadow_haptx_mapping_launch_bimanual'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
