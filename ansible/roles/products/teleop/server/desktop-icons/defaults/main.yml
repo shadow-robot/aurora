@@ -14,3 +14,4 @@ haptx_icon: "haptx_{{ haptx_type }}.png"
 upgrade_script: false
 hand_side_var: right
 ethercat_interface_var: "eth0"
+ethercat_interface_modified: "eth0"
