@@ -24,6 +24,7 @@
     hand_serial: "{{ hand_serial_no }}"
     hand_side: "{{ hand_side_var }}"
     config_branch: "{{ demohand_branch }}"
+    ethercat_interface_modified: "{{ ethercat_interface_var }}"
   when: glove=="haptx"
 
 - name: Create desktop icon for demohand

@@ -8,6 +8,7 @@
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_A"
     hand_serial_no: "634"
     hand_side_var: "right"
+    ethercat_interface_var: "{{ ethercat_interface }}"
 
 - name: Install desktop icon for hand B
   import_tasks: demohand-icon.yml
@@ -18,6 +19,7 @@
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_B"
     hand_serial_no: "1130"
     hand_side_var: "right"
+    ethercat_interface_var: "{{ ethercat_interface }}"
 
 - name: Install desktop icon for hand C
   import_tasks: demohand-icon.yml
@@ -28,6 +30,7 @@
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_C"
     hand_serial_no: "1370"
     hand_side_var: "right"
+    ethercat_interface_var: "{{ ethercat_interface }}"
 
 - name: Install desktop icon for hand D
   import_tasks: demohand-icon.yml
@@ -38,3 +41,4 @@
     desktop_icon_name: "Teleop_control_machine_Launch_Demohand_D"
     hand_serial_no: "2346"
     hand_side_var: "left"
+    ethercat_interface_var: "{{ ethercat_left_hand }}"

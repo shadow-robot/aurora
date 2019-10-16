@@ -104,6 +104,11 @@
     mode: '0644'
   become: yes
 
+- name: Reload udev rules
+  command: udevadm control --reload-rules && udevadm trigger
+  changed_when: false
+  become: yes
+
 - name: Creating upgrade script
   template:
     src: ../../../common/resources/templates/scripts/upgrade_image.j2
