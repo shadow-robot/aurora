@@ -29,8 +29,12 @@
     interactive: yes
     security_opts:
     - "seccomp: unconfined"
+    ulimits:
+    - "core: -1"
     volumes:
     - /tmp/.X11-unix:/tmp/.X11-unix[rw]
     - /usr/lib/nvidia-{{ nvidia_driver_version.stdout }}:/usr/lib/nvidia-{{ nvidia_driver_version.stdout }}
+    - /dev/input:/dev/input[rw]
+    - /run/udev/data:/run/udev/data
     command: "terminator -x bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes

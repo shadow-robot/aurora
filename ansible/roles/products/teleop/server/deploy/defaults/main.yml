@@ -1,14 +1,15 @@
 ---
-image: "shadowrobot/shadow-teleop"
-tag: "kinetic-v0.0.21"
+image: "shadowrobot/shadow-teleop-haptx"
+tag: "kinetic-v0.0.28"
 reinstall: false
 container_name: "teleop"
-nvidia_docker: 2
+nvidia_docker: true
 glove: "haptx"
 cyberglove: ""
 use_aws: false
 use_openvpn: false
 ethercat_interface: "eth0"
+ethercat_left_hand: "eth0"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
@@ -28,3 +29,4 @@ sim_icon: false
 demo_icons: true
 bimanual: false
 sim_hand: false
+encryption_password: ""

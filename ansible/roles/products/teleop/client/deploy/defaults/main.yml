@@ -1,9 +1,9 @@
 ---
-image: "shadowrobot/shadow-teleop"
-tag: "kinetic-v0.0.21"
+image: "shadowrobot/shadow-teleop-haptx"
+tag: "kinetic-v0.0.28"
 reinstall: false
 container_name: "teleop"
-nvidia_docker: 2
+nvidia_docker: true
 glove: "haptx"
 cyberglove: ""
 use_aws: false

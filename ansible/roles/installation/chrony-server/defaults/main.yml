@@ -1,2 +1,2 @@
 ---
-chrony_allowed_network: "10.9.10"
+chrony_allowed_network: "0/0"

@@ -8,5 +8,5 @@ if {{ upgrade_check | lower }}; then
     "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher/{{ upgrade_script }}"
 fi
 echo -e \"${YELLOW}Please wait for docker container to start in a new terminal as this might take a while... ${NC}\"
-{{ docker_executable }} start {{ container_name  }} &> /dev/null
+docker start {{ container_name  }} &> /dev/null
 sleep 3

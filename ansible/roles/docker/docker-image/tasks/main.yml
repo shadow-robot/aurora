@@ -19,52 +19,6 @@
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
 
-- name: Check the correct docker image to pull for nvidia-docker 1
-  block:
-  - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 1)
-    docker_image_info:
-      name: "{{ full_image_name }}-nvidia"
-    register: docker_nvidia_facts
-    become: yes
-
-  - name: Create an nvidialized image (for nvidia-docker 1) if it does not exist on Dockerhub
-    when: docker_nvidia_facts.images|length == 0
-    script: files/docker_nvidialize.sh {{ full_image_name }}
-    become: yes
-
-  - name: Append -nvidia to tag if nvidia_docker is 1
-    set_fact:
-      tag: "{{ tag }}-nvidia"
-
-  - name: Set docker full image name (with -nvidia)
-    set_fact:
-      full_image_name: "{{ image }}:{{ tag }}"
-
-  when: nvidia_docker | int == 1 and not skip_nvidia|bool and not tag is search("-nvidia")
-
-- name: Check the correct docker image to pull for nvidia-docker 2
-  block:
-  - name: Check if the nvidialized image exists on Dockerhub (nvidia-docker 2)
-    docker_image_info:
-      name: "{{ full_image_name }}-nvidia2"
-    register: docker_nvidia_facts
-    become: yes
-
-  - name: Create an nvidialized image (for nvidia-docker 2) if it does not exist on Dockerhub
-    when: docker_nvidia_facts.images|length == 0
-    script: files/docker2_nvidialize.sh {{ full_image_name }}
-    become: yes
-
-  - name: Append -nvidia2 to tag if nvidia_docker is 2
-    set_fact:
-      tag: "{{ tag }}-nvidia2"
-
-  - name: Set docker full image name (with -nvidia)
-    set_fact:
-      full_image_name: "{{ image }}:{{ tag }}"
-
-  when: nvidia_docker | int == 2 and not skip_nvidia|bool and not tag is search("-nvidia")
-
 - name: Pull Docker image
   docker_image:
     name: "{{ full_image_name }}"

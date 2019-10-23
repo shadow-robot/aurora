@@ -6,7 +6,7 @@
     reinstall=true
     use_openvpn=false
     ethercat_interface="enp0s25"
-    nvidia_docker=0
+    nvidia_docker=false
     allow_auto_reboot=true
     bimanual=true
     glove="haptx"

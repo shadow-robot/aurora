@@ -1,6 +1,6 @@
 ---
-image: "shadowrobot/shadow-teleop" # Docker image name
-tag: "kinetic-v0.0.21" # Tag of the exact Docker hub image to pull
+image: "shadowrobot/shadow-teleop-haptx" # Docker image name
+tag: "kinetic-v0.0.28" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 ethercat_interface: "eth0" # Ethercat interface of the right hand
@@ -14,5 +14,5 @@ glove: "haptx" # Determines which glove is installed (cyberglove or haptx)
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
-nvidia_docker: 0 # No nvidia docker by default
+nvidia_docker: false # Define if nvidia docker 2 is used (defaul is false)
 use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine

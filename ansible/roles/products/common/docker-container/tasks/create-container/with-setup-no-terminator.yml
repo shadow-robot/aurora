@@ -20,6 +20,11 @@
     interactive: yes
     security_opts:
     - "seccomp: unconfined"
-    volumes: /tmp/.X11-unix:/tmp/.X11-unix[rw]
+    ulimits:
+    - "core: -1"
+    volumes:
+    - /tmp/.X11-unix:/tmp/.X11-unix[rw]
+    - /dev/input:/dev/input[rw]
+    - /run/udev/data:/run/udev/data
     command: "bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes
