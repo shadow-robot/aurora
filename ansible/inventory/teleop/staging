@@ -1,3 +1,5 @@
 [server]
-10.6.10.2 ansible_host=tom-ThinkPad-W540 ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+10.9.11.253 ansible_host=tom-ThinkPad-W540 ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
+[control_machine]
+10.9.11.21 ansible_host=nuc-control ansible_ssh_pipelining=true ansible_connection=ssh ansible_ssh_user=user ansible_user=user remote_user=user ansible_ssh_common_args='-o StrictHostKeyChecking=no'
