@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-haptx"
-tag: "kinetic-v0.0.28"
+tag: "kinetic-v0.0.30"
 reinstall: false
 container_name: "teleop"
 ethercat_interface: "eth0"
