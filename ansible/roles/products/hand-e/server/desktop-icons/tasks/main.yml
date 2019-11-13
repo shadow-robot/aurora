@@ -1,0 +1,33 @@
+---
+- name: Ensures that Desktop folder exists
+  file:
+    path: "{{ user_folder }}/Desktop"
+    mode: '755'
+    state: directory
+
+- name: Ensures that shadow_hand_launcher directory exists
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
+- name: Install desktop icon for launching SERVER_ROSCORE
+  import_tasks: default-icon.yml
+  vars:
+    template: ../../../common/resources/templates/scripts/start-roscore.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "shadow_roscore.sh"
+    desktop_icon_name: "SERVER_ROSCORE"
+
+- name: Include products/common/demo-icons role
+  include_role:
+    name: products/common/demo-icons
+  when: demo_icons|bool
+
+- name: Install desktop icon for hand
+  import_tasks: demohand-icon.yml
+  vars:
+    desktop_icon_png: "hand-e.png"
+    launch_script: "shadow_launcher_exec.sh"
+    demohand_branch: "{{ demohand_branch }}"
+    desktop_icon_name: "Shadow_Hand_Launcher"
+    ethercat_interface_var: "{{ ethercat_interface }}"

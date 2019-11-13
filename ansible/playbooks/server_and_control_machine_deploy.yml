@@ -1,0 +1,99 @@
+---
+- name: Add IP address of all hosts to computer that is running Ansible
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Add lines in /etc/hosts in computer that is running Ansible
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}.*$'
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
+        state: present
+        # Allowing Ansible to modify /etc/hosts inside Docker containers
+        unsafe_writes: yes
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+      become: yes
+
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
+- name: Check which hosts are available for server and control machine system Install
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: ping all the machines
+      ping:
+  become: yes
+
+- name: Install Hand software on Ubuntu server laptop
+  hosts: server
+  pre_tasks:
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
+    - name: check if customer_key is provided and not false
+      when: customer_key is defined and customer_key | length > 0
+      set_fact:
+        use_aws: true
+
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove| length > 0
+      set_fact:
+        use_cyberglove: true
+
+    - name: Add IP address of all hosts to all hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}.*$'
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+      become: yes
+
+  roles:
+    - { role: products/hand-e/server/deploy }
+
+- name: Install Hand software on control machine
+  hosts: control_machine
+  pre_tasks:
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'hand_h'
+      meta: end_play
+
+    - name: check if customer_key is provided and not false
+      when: customer_key is defined and customer_key | length > 0
+      set_fact:
+        use_aws: true
+
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove| length > 0
+      set_fact:
+        use_cyberglove: true
+
+    - name: Add IP address of all hosts to all hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^{{ item }}.*$'
+        line: "{{ item }} {{ hostvars[item].ansible_host }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"
+      become: yes
+
+  roles:
+    - { role: products/hand-e/control_machine/deploy }
+
+- name: Inform user for reboot
+  hosts: 127.0.0.1
+  gather_facts: no
+  tasks:
+    - name: Reboot message
+      debug:
+        msg:
+          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+          - "!!! Please restart the server laptop and re-run this script to finalize the installation. Ignore if you have already done  this !!!"
+          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
