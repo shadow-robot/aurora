@@ -135,8 +135,13 @@ if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
 fi
 if [[ "${playbook}" = "teleop_deploy" ]]; then
-    ansible_flags="${ansible_flags} --ask-pass "
     aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
+fi
+if [[ "${playbook}" = "server_and_control_machine_deploy" ]]; then
+    aurora_inventory="server_and_control_machine/production"
+fi
+if [[ "${playbook}" = "server_and_control_machine_deploy" || "${playbook}" = "teleop_deploy" ]]; then
+    ansible_flags="${ansible_flags} --ask-pass "
     echo ""
     echo " ---------------------------------------------------"
     echo " |             SSH and BECOME passwords:           |"

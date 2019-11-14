@@ -55,7 +55,7 @@
       become: yes
 
   roles:
-    - { role: products/hand-e/server/deploy }
+    - { role: products/hand-e/server/deploy, when: product == 'hand_e' }
 
 - name: Install Hand software on control machine
   hosts: control_machine
@@ -85,7 +85,7 @@
       become: yes
 
   roles:
-    - { role: products/hand-e/control_machine/deploy }
+    - { role: products/hand-e/control_machine/deploy, when: product == 'hand_e' }
 
 - name: Inform user for reboot
   hosts: 127.0.0.1
