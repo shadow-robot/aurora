@@ -1,0 +1,66 @@
+---
+- name: Install isc-dhcp-server
+  apt:
+    name: isc-dhcp-server
+    state: present
+  become: yes
+
+- name: Configure static IP for DHCP
+  become: yes
+  blockinfile:
+    path: /etc/network/interfaces
+    backup: yes
+    block: |
+      allow-hotplug {{ dhcp_interface_name }}
+      iface {{ dhcp_interface_name }} inet static
+        address {{ dhcp_ip }}
+        netmask {{ dhcp_netmask }}
+        network {{ dhcp_network }}
+        gateway {{ dhcp_gateway }}
+  changed_when: false
+
+- name: Restart networking on DHCP interface
+  become: true
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+
+- name: Configure DHCP interface
+  become: yes
+  blockinfile:
+    path: /etc/default/isc-dhcp-server
+    backup: yes
+    block: |
+      INTERFACES="{{ dhcp_interface_name }}"
+  changed_when: false
+
+- name: Configure IPv4 forwarding
+  become: yes
+  blockinfile:
+    path: /etc/sysctl.conf
+    backup: yes
+    block: |
+      net.ipv4.ip_forward=1
+  changed_when: false
+
+- name: Configure DHCP
+  become: yes
+  blockinfile:
+    path: /etc/dhcp/dhcpd.conf
+    backup: yes
+    block: |
+      option domain-name-servers 8.8.8.8, 8.8.4.4;
+      authoritative;
+      subnet {{ dhcp_network }} netmask {{ dhcp_netmask }} {
+        range {{ dhcp_range_start }} {{ dhcp_range_end }};
+        option routers {{ dhcp_ip }};
+        host server {
+          hardware ethernet {{ dhcp_server_mac }};
+          server-name "server";
+          fixed-address {{ dhcp_ip }};
+        }
+        host nuc-control {
+          hardware ethernet {{ dhcp_client_mac }};
+          server-name "nuc-control";
+          fixed-address {{ dhcp_client_ip }};
+        }
+      }
+  changed_when: false
