@@ -92,7 +92,7 @@ If you are prompted for an SSH password, enter the sudo password of the NUC. For
 
 ## server_and_nuc_deploy ##
 
-For Hand E/G/H software deployments on a control computer (NUC) and a laptop (called "server" in this playbook)
+For Hand E/G/H software deployments on a laptop (called "server" in this playbook) and a control machine (NUC)
 
 To begin with, the server_and_nuc_deploy playbook checks the installation status of docker. If docker is not installed then a 
 new clean installation is performed. If the required image is private, 
