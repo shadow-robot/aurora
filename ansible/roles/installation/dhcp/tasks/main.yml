@@ -5,6 +5,12 @@
     state: present
   become: yes
 
+- name: Install iptables-persistent
+  apt:
+    name: iptables-persistent
+    state: present
+  become: yes
+
 - name: Configure static IP for DHCP
   become: yes
   blockinfile:
@@ -16,12 +22,13 @@
         address {{ dhcp_ip }}
         netmask {{ dhcp_netmask }}
         network {{ dhcp_network }}
-        gateway {{ dhcp_gateway }}
+        gateway {{ dhcp_ip }}
   changed_when: false
 
 - name: Restart networking on DHCP interface
   become: true
   command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  changed_when: false
 
 - name: Configure DHCP interface
   become: yes
@@ -63,4 +70,54 @@
           fixed-address {{ dhcp_client_ip }};
         }
       }
+  changed_when: false
+
+- name: Configure IP forwarding and routing part 1
+  become: true
+  command: bash -c "iptables -A FORWARD -o {{ internet_interface_name }} -i {{ dhcp_interface_name }} -s {{ dhcp_network }}/24 -m conntrack --ctstate NEW -j ACCEPT"
+  changed_when: false
+
+- name: Configure IP forwarding and routing part 2
+  become: true
+  command: bash -c "iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
+  changed_when: false
+
+- name: Configure IP forwarding and routing part 3
+  become: true
+  command: bash -c "iptables -t nat -F POSTROUTING"
+  changed_when: false
+  
+- name: Configure IP forwarding and routing part 4
+  become: true
+  command: bash -c "iptables -t nat -A POSTROUTING -o {{ internet_interface_name }} -j MASQUERADE"
+  changed_when: false
+
+- name: Save the iptables
+  become: true
+  command: bash -c "iptables-save | sudo tee /etc/iptables.sav"
+  changed_when: false
+
+- name: Edit /etc/rc.local
+  become: yes
+  blockinfile:
+    path: /etc/rc.local
+    backup: yes
+    block: |
+      iptables-restore < /etc/iptables.sav
+    insertbefore: "exit 0"
+  changed_when: false
+
+- name: Stop DHCP service
+  become: true
+  command: bash -c "systemctl stop isc-dhcp-server.service"
+  changed_when: false
+
+- name: Restart networking on DHCP interface (after iptables is set)
+  become: true
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  changed_when: false
+
+- name: Start DHCP service
+  become: true
+  command: bash -c "systemctl start isc-dhcp-server.service"
   changed_when: false

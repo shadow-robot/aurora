@@ -19,3 +19,5 @@ terminator: false
 use_steamvr: false
 nvidia_docker: false
 sim_hand: false
+hand_id: "rh"
+hand_serial: "1082"

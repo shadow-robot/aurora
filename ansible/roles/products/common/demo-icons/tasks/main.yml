@@ -15,6 +15,7 @@
     src: files/close-hand-icon-right.png
     dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
     mode: '664'
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Create Close Right Hand executable launch script
   template:
@@ -24,6 +25,7 @@
   vars:
     project_name: sr_ethercat_hand_config
     script_name: demo_rs.py
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Create Close Right Hand desktop icon
   template:
@@ -36,14 +38,16 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: close_right_hand.sh
     icon_file_name: close-hand-icon-right.png
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Make Close Right Hand desktop icon Trusted
   shell: gio set "{{ user_folder }}/Desktop/Close_Right_Hand.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - bimanual|bool or hand_id=="rh"
 
-- name: Install left hand close hand icon if bimanual is true
+- name: Install left hand close hand icon if bimanual is true or if hand_id="lh"
   block:
   - name: Copy Close Left Hand desktop icon
     copy:
@@ -78,13 +82,14 @@
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
 
-  when: bimanual|bool
+  when: bimanual|bool or hand_id=="lh"
 
 - name: Copy Open Right Hand desktop icon
   copy:
     src: files/open-hand-icon-right.png
     dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-right.png"
     mode: '664'
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Create Open Right Hand executable launch script
   template:
@@ -94,6 +99,7 @@
   vars:
     project_name: sr_ethercat_hand_config
     script_name: demo_ro.py
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Create Open Right Hand desktop icon
   template:
@@ -106,14 +112,16 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: open_right_hand.sh
     icon_file_name: open-hand-icon-right.png
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Make Open Right Hand desktop icon Trusted
   shell: gio set "{{ user_folder }}/Desktop/Open_Right_Hand.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - bimanual|bool or hand_id=="rh"
 
-- name: Install left hand open hand icon if bimanual is true
+- name: Install left hand open hand icon if bimanual is true or if hand_id="lh"
   block:
   - name: Copy Open Left Hand desktop icon
     copy:
@@ -148,13 +156,14 @@
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
 
-  when: bimanual|bool
+  when: bimanual|bool or hand_id=="lh"
 
 - name: Copy Standard Right Demo desktop icon
   copy:
     src: files/demo-hand-icon-right.png
     dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-right.png"
     mode: '664'
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Create Standard Right Demo executable launch script
   template:
@@ -164,6 +173,7 @@
   vars:
     project_name: sr_ethercat_hand_config
     script_name: demo_r.py
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Create Standard Right Demo desktop icon
   template:
@@ -177,14 +187,16 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: demo_right_hand.sh
     icon_file_name: demo-hand-icon-right.png
+  when: bimanual|bool or hand_id=="rh"
 
 - name: Make Standard Right Demo desktop icon Trusted
   shell: gio set "{{ user_folder }}/Desktop/Demo_Right_Hand.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - bimanual|bool or hand_id=="rh"
 
-- name: Install left hand standard demo icon if bimanual is true
+- name: Install left hand standard demo icon if bimanual is true or if hand_id="lh"
   block:
   - name: Copy Standard Left Demo desktop icon
     copy:
@@ -220,4 +232,4 @@
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
 
-  when: bimanual|bool
+  when: bimanual|bool or hand_id=="lh"

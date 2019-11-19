@@ -1,0 +1,15 @@
+#jinja2: trim_blocks:False
+#!/bin/bash
+NUC_NAME={{ nuc_username }}
+NUC_ADDRESS={{ nuc_address }}
+LOCAL_IP=$(for ip_addr in $(hostname -I) ; do if [[ $ip_addr =~ "10.".*"10.".* ]] ;then echo $ip_addr; fi; done)
+
+ssh $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} ETH_PORT={{ ethercat_interface }} HAND_ID={{ hand_id }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
+docker stop ${CONTAINER}
+sleep 2
+docker start ${CONTAINER}
+echo "Starting the container..."
+sleep 3
+bash
+ENDSSH
+sleep infinity
