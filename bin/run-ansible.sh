@@ -138,7 +138,7 @@ if [[ "${playbook}" = "teleop_deploy" ]]; then
     aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
 fi
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
-    aurora_inventory="server_and_nuc/production"
+    aurora_inventory="ansible/inventory/server_and_nuc/production"
 fi
 if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-pass "
