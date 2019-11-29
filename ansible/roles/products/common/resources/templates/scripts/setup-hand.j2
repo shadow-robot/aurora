@@ -10,6 +10,7 @@ git fetch
 git pull
 echo -e Latest sr_config has been pulled!
 git checkout {{ config_branch }}
+rosrun sr_firmware_checker ur_firmware_check
 # TODO: FIX so that cyberglove is not mentioned here in docker-container role, and cyberglove setup is handled in cyberglove role
 if {{ use_cyberglove | lower }}; then
     if [ -d "/home/user/projects/shadow_robot/base/src/sr_config/sr_cyberglove_config" ]; then
