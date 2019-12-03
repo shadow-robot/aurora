@@ -28,6 +28,7 @@
     repo: 'https://github.com/NVIDIA/libglvnd.git'
     dest: /opt/libglvnd
     version: "{{ libglvnd_version }}"
+  become: yes
 
 - name: Change the working directory to /opt/libglvnd and running autogen and configure
   shell: ./autogen.sh && ./configure --prefix=/usr/local --libdir=/usr/local/lib/x86_64-linux-gnu
