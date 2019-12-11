@@ -12,7 +12,7 @@
       interface: "{{ ethercat_interface }}"
       QT_X11_NO_MITSHM: "1"
       LOCAL_USER_ID: "{{ id.stdout }}"
-      DISPLAY:
+      DISPLAY: "{{ lookup('env','DISPLAY') }}"
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
     network_mode: "host"
     pid_mode: "host"
