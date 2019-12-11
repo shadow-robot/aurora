@@ -49,7 +49,3 @@
 - name: Copying glvnd config file
   shell: echo '/usr/local/lib/x86_64-linux-gnu' >> /etc/ld.so.conf.d/glvnd.conf
   become: yes
-
-- name: Running ldconfig
-  shell: ldconfig
-  become: yes
