@@ -15,4 +15,3 @@ optoforce: false # Specify if optoforce sensors are going to be used with a bran
 launch_hand: false # Specify if hand driver should start when double clicking desktop icon
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 hand_id: "rh" # Specify if the hand is right hand or left hand (rh or lh)
-hand_serial: "1082" # Specify the hand serial number

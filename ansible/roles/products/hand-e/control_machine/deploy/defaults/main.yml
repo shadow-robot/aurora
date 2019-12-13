@@ -13,11 +13,9 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 setup_directory: "/usr/local/bin"
 use_aws: false
 launch_hand: false
-server_hostname: "SERVER"
 ssh_keys_path: "/tmp/id_ssh_rsa"
 terminator: false
 use_steamvr: false
 nvidia_docker: false
 sim_hand: false
 hand_id: "rh"
-hand_serial: "1082"

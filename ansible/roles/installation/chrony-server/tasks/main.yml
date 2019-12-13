@@ -32,3 +32,5 @@
     state: restarted
   become: yes
   changed_when: false
+
+#TODO before CLIENT delivery: fix chrony restart here: https://chrony.tuxfamily.org/doc/3.4/chrony.conf.html
