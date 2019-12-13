@@ -14,6 +14,10 @@
   include_role:
     name: installation/docker
 
+- name: Include installation/terminator role
+  include_role:
+    name: installation/terminator
+
 - name: Include installation/nvidia-docker role
   include_role:
     name: installation/nvidia-docker
