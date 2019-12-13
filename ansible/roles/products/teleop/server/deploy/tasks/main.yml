@@ -109,7 +109,7 @@
   become: yes
 
 - name: Reload udev rules
-  command: udevadm control --reload-rules && udevadm trigger
+  shell: udevadm control --reload-rules && udevadm trigger
   changed_when: false
   become: yes
 
