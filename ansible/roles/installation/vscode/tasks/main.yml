@@ -1,21 +1,21 @@
 ---
 # VSCode IDE installation
 
-- name: Update package lists
-  apt:
-    update_cache: yes
-  become: yes
+#- name: Update package lists
+#  apt:
+#    update_cache: yes
+#  become: yes
 
-- name: Install needed libs
-  apt:
-    name: "{{ packages }}"
-  vars:
-    packages:
-      - libxkbfile1
-      - libsecret-1-0
-  become: yes
+#- name: Install needed libs
+#  apt:
+#    name: "{{ packages }}"
+#  vars:
+#    packages:
+#      - libxkbfile1
+#      - libsecret-1-0
+#  become: yes
 
-- name: Install VSCode .deb package from the internet.
-  apt:
-    deb: https://go.microsoft.com/fwlink/?LinkID=760868
-  become: yes
+#- name: Install VSCode .deb package from the internet.
+#  apt:
+#    deb: https://go.microsoft.com/fwlink/?LinkID=760868
+#  become: yes
