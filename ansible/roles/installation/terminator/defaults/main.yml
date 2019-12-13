@@ -1,0 +1,3 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ ansible_user_id }}"
