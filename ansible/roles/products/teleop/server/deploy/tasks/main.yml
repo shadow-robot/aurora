@@ -78,7 +78,7 @@
 
 - name: Copying ssh key pair into docker container
   changed_when: false
-  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:{{ user_folder }}/.ssh/."
+  shell: "docker exec {{ container_name }} mkdir /home/user/ssh && docker cp {{ ssh_keys_path }} {{ container_name }}:{{ user_folder }}/.ssh/."
   become: yes
 
 - name: Creating known_hosts file with nuc credentials inside the docker container
