@@ -78,7 +78,12 @@
 
 - name: Copying ssh key pair into docker container
   changed_when: false
-  shell: "docker cp {{ ssh_keys_path }}/ {{ container_name }}:{{ user_folder }}/.ssh/."
+  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:{{ user_folder }}/.ssh/."
+  become: yes
+
+- name: Creating known_hosts file with nuc credentials inside the docker container
+  changed_when: false
+  shell: "ssh-keyscan -H {{ nuc_address}} >> known_hosts && docker cp known_hosts {{ container_name }}:{{ user_folder }}/.ssh/. && rm known_hosts"
   become: yes
 
 - name: Creating teleop-server setup script
