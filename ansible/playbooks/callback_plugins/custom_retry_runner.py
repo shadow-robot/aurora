@@ -5,7 +5,7 @@ __metaclass__ = type
 
 from ansible import constants as C
 from ansible.playbook.task_include import TaskInclude
-from ansible.plugins.callback import CallbackBase
+from ansible.plugins.callback.default import CallbackModule as CallbackModule_default
 from ansible.utils.color import colorize, hostcolor
 
 class CallbackModule_custom_retry_runner(CallbackModule_default):
