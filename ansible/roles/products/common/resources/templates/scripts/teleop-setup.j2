@@ -19,8 +19,8 @@ if {{ use_steamvr | lower }}; then
 fi
 # move ssh key and known_hosts to ssh folder
 if [ -f /tmp/id_ssh_rsa ]; then
-    mv /tmp/id_ssh_rsa {{ user_folder }}/.ssh/.
+    mv /tmp/id_ssh_rsa /home/user/.ssh/.
 fi
 if [ -f /tmp/known_hosts ]; then
-    mv /tmp/known_hosts {{ user_folder }}/.ssh/.
+    mv /tmp/known_hosts /home/user/.ssh/.
 fi
