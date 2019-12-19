@@ -80,6 +80,7 @@ echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
+export ANSIBLE_LOAD_CALLBACK_PLUGINS=1
 
 extra_vars=$*
 IFS=',' read -ra inputdata <<< "$read_input"
