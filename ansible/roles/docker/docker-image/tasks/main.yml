@@ -26,16 +26,16 @@
   environment:
     PYTHONPATH: "{{ python_packages_path }}"
   async: 50000
-  poll: 5
+  poll: 0
   register: docker_pull_job
   become: yes
   changed_when: false
 
-#- name: Wait for Docker image pull to complete
-#  async_status:
-#    jid: "{{ docker_pull_job.ansible_job_id }}"
-#  register: docker_pull_result
-#  until: docker_pull_result.finished
-#  retries: 10000
-#  delay: 5
-#  become: yes
+- name: Wait for Docker image pull to complete
+  async_status:
+    jid: "{{ docker_pull_job.ansible_job_id }}"
+  register: docker_pull_result
+  until: docker_pull_result.finished
+  retries: 10000
+  delay: 5
+  become: yes
