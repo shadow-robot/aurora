@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e # fail on errors
-#set -x # echo commands run
+set -x # echo commands run
 
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
@@ -80,7 +80,7 @@ echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
-export ANSIBLE_LOAD_CALLBACK_PLUGINS=1
+export ANSIBLE_CALLBACK_PLUGINS=1="${aurora_home}/ansible/playbooks/callback_plugins"
 
 extra_vars=$*
 IFS=',' read -ra inputdata <<< "$read_input"
