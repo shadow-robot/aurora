@@ -21,6 +21,3 @@ fi
 if [ -f /tmp/id_ssh_rsa ]; then
     mv /tmp/id_ssh_rsa /home/user/.ssh/.
 fi
-if [ -f /home/user/.ssh/known_hosts ]; then
-    cd /home/user/.ssh && ssh-keyscan -H {{ nuc_address}} >> known_hosts && ssh-keyscan -H nuc-control >> known_hosts
-fi
