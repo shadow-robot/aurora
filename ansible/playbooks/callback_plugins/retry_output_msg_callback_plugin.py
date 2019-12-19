@@ -7,25 +7,6 @@ from ansible.plugins.callback import CallbackBase
 from ansible import constants as C
 from __main__ import cli
 
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
-
-DOCUMENTATION = '''
-    callback: example_callback_plugin
-    type: notification
-    short_description: Send callback on various runners to an API endpoint.
-    description:
-      - On ansible runner calls report state and task output to an API endpoint.
-      - Configuration via callback_config.ini, place the file in the same directory
-        as the plugin.
-    requirements:
-      - python requests library
-      - HTTPBasicAuth library from python requests.auth
-      - ConfigParser for reading configuration file
-    '''
-
 class CallbackModule(CallbackBase):
 
     '''
