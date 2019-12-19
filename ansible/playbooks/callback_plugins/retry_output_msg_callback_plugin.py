@@ -3,21 +3,24 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from ansible.plugins.callback import CallbackBase
 from ansible import constants as C
-from __main__ import cli
+from ansible.playbook.task_include import TaskInclude
+from ansible.plugins.callback import CallbackBase
+from ansible.utils.color import colorize, hostcolor
 
 class CallbackModule(CallbackBase):
 
-    '''
-    Callback to API endpoints on ansible runner calls.
+    ''''
+    This is the default callback interface, which simply prints messages
+    to stdout when new callback events are received.
     '''
 
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'stdout'
     CALLBACK_NAME = 'retry_output_msg_callback_plugin'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
+
         self._play = None
         self._last_task_banner = None
         super(CallbackModule, self).__init__()
@@ -283,12 +286,12 @@ class CallbackModule(CallbackBase):
         task_name = result.task_name or result._task
         if "pull" in result.task_name:
             msg = "PULLING IN PROGRESS: %s (%d retries left)." % (task_name, result._result['retries'] - result._result['attempts'])
-            if self._run_is_verbose(result, verbosity=2):
+            if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) and '_ansible_verbose_override' not in result._result:
                 msg += "Result was: %s" % self._dump_results(result._result)
             self._display.display(msg, color=C.COLOR_DEBUG)
         else:
-            msg = "PEPEPEP - RETRYING: %s (%d retries left)." % (task_name, result._result['retries'] - result._result['attempts'])
-            if self._run_is_verbose(result, verbosity=2):
+            msg = "PPE - RETRYING: %s (%d retries left)." % (task_name, result._result['retries'] - result._result['attempts'])
+            if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) and '_ansible_verbose_override' not in result._result:
                 msg += "Result was: %s" % self._dump_results(result._result)
             self._display.display(msg, color=C.COLOR_DEBUG)
 

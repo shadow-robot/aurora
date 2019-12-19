@@ -80,7 +80,7 @@ echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
-export ANSIBLE_CALLBACK_PLUGINS="${aurora_home}/ansible/playbooks/callback_plugins"
+export ANSIBLE_CALLBACK_PLUGINS="~/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
 export ANSIBLE_STDOUT_CALLBACK="retry_output_msg_callback_plugin"
 extra_vars=$*
 IFS=',' read -ra inputdata <<< "$read_input"
