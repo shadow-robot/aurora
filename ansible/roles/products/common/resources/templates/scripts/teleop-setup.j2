@@ -17,3 +17,7 @@ fi
 if {{ use_steamvr | lower }}; then
     cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &
 fi
+# move ssh key to ssh folder
+if [ -f /tmp/id_ssh_rsa ]; then
+    mv /tmp/id_ssh_rsa /home/user/.ssh/id_rsa
+fi

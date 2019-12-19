@@ -76,6 +76,11 @@
   changed_when: false
   when: skip_molecule_task is not defined
 
+- name: Copying ssh key pair into docker container
+  changed_when: false
+  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
+  become: yes
+
 - name: Creating teleop-server setup script
   template:
     src: ../../../common/resources/templates/scripts/teleop-setup.j2
