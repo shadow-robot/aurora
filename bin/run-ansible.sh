@@ -81,7 +81,7 @@ echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 export ANSIBLE_CALLBACK_PLUGINS="${aurora_home}/ansible/playbooks/callback_plugins"
-
+export ANSIBLE_STDOUT_CALLBACK="retry_output_msg_callback_plugin"
 extra_vars=$*
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
