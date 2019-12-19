@@ -38,6 +38,4 @@ class CallbackModule_custom_retry_runner(CallbackModule_default):
                 msg += "Result was: %s" % self._dump_results(result._result)
             self._display.display(msg, color=C.COLOR_DEBUG)
 
-    def v2_playbook_on_notify(self, handler, host):
-        if self._display.verbosity > 1:
-            self._display.display("NOTIFIED HANDLER %s for %s" % (handler.get_name(), host), color=C.COLOR_VERBOSE, screen_only=True)
+CallbackModule = CallbackModule_custom_retry_runner
