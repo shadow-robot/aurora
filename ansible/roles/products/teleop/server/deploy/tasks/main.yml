@@ -81,11 +81,6 @@
   shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
   become: yes
 
-- name: Creating known_hosts file with nuc credentials inside the docker container
-  changed_when: false
-  shell: "ssh-keyscan -H {{ nuc_address}} >> known_hosts && docker cp known_hosts {{ container_name }}:/tmp/. && rm known_hosts"
-  become: yes
-
 - name: Creating teleop-server setup script
   template:
     src: ../../../common/resources/templates/scripts/teleop-setup.j2
