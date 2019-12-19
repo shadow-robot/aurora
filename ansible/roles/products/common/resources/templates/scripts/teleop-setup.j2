@@ -22,5 +22,6 @@ if [ -f /tmp/id_ssh_rsa ]; then
     mv /tmp/id_ssh_rsa /home/user/.ssh/.
 fi
 if [ -f /tmp/known_hosts ]; then
+    sudo chown -R user:user /tmp/known_hosts
     mv /tmp/known_hosts /home/user/.ssh/.
 fi
