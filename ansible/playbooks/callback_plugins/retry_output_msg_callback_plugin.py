@@ -47,7 +47,7 @@ class CallbackModule(CallbackBase):
                 msg += "Result was: %s" % self._dump_results(result._result)
             self._display.display(msg, color=C.COLOR_DEBUG)
         else:
-            msg = "FAILED - RETRYING: %s (%d retries left)." % (task_name, result._result['retries'] - result._result['attempts'])
+            msg = "PEPEPEP - RETRYING: %s (%d retries left)." % (task_name, result._result['retries'] - result._result['attempts'])
             if self._run_is_verbose(result, verbosity=2):
                 msg += "Result was: %s" % self._dump_results(result._result)
             self._display.display(msg, color=C.COLOR_DEBUG)
