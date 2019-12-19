@@ -17,3 +17,10 @@ fi
 if {{ use_steamvr | lower }}; then
     cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &
 fi
+# move ssh key and known_hosts to ssh folder
+if [ -f /tmp/id_ssh_rsa ]; then
+    mv {{ user_folder }}/.ssh/.
+fi
+if [ -f /tmp/known_hosts ]; then
+    mv /tmp/known_hosts {{ user_folder }}/.ssh/.
+fi
