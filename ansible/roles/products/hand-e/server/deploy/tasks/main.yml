@@ -141,8 +141,13 @@
 
 - name: Set chrony allowed network
   set_fact:
-    chrony_allowed_network: "0/0"
+    chrony_allowed_network: "{{ groups['server'][0]/255.255.255.0 | ipaddr('network/prefix') }}"
   when: groups['server'] is defined
+
+- name: Set chrony client IP
+  set_fact:
+    chrony_client_ip: "{{ groups['control_machine'][0] }}"
+  when: groups['control_machine'] is defined
 
 - name: Include installation/chrony-server role
   include_role:

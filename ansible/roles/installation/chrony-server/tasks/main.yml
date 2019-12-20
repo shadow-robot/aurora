@@ -5,25 +5,19 @@
     state: present
   become: yes
 
-- name: Set local chrony server address
-  lineinfile:
-    dest: /etc/chrony/chrony.conf
-    state: present
-    line: "server 127.127.1.0"
-  become: yes
-
-- name: Allow local network to use chrony
-  lineinfile:
-    dest: /etc/chrony/chrony.conf
-    state: present
-    line: "allow {{ chrony_allowed_network }}"
-  become: yes
-
-- name: Set chrony local stratum
-  lineinfile:
-    dest: /etc/chrony/chrony.conf
-    state: present
-    line: "local stratum 1"
+- name: Set chrony config
+  blockinfile:
+    path: /etc/chrony/chrony.conf
+    insertbefore: EOF
+    create: yes
+    content: |
+      initstepslew 1 {{ chrony_client_ip }}
+      driftfile /var/lib/chrony/drift
+      local stratum 8
+      manual
+      allow {{ chrony_allowed_network }}
+      smoothtime 400 0.01
+      rtcsync
   become: yes
 
 - name: Restart chrony service
@@ -32,5 +26,3 @@
     state: restarted
   become: yes
   changed_when: false
-
-#TODO before CLIENT delivery: fix chrony restart here: https://chrony.tuxfamily.org/doc/3.4/chrony.conf.html

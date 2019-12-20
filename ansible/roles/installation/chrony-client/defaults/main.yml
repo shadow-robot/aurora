@@ -1,2 +1,3 @@
 ---
 chrony_server_ip: "10.9.10.1"
+chrony_allowed_network: "10.9.10.0/24"

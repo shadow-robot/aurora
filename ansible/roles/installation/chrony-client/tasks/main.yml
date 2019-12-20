@@ -5,18 +5,17 @@
     state: present
   become: yes
 
-- name: Set chrony server IP address
-  lineinfile:
-    dest: /etc/chrony/chrony.conf
-    state: present
-    line: "server {{ chrony_server_ip }} minpoll 1 maxpoll 3 iburst prefer"
-  become: yes
-
-- name: Prevent chrony client from syncing time with internet
-  lineinfile:
-    dest: /etc/chrony/chrony.conf
-    state: absent
-    line: "pool 2.debian.pool.ntp.org offline iburst"
+- name: Set chrony config
+  blockinfile:
+    path: /etc/chrony/chrony.conf
+    insertbefore: EOF
+    create: yes
+    content: |
+      server {{ chrony_server_ip }} iburst
+      driftfile /var/lib/chrony/drift
+      allow {{ chrony_allowed_network }}
+      makestep 1.0 3
+      rtcsync
   become: yes
 
 - name: Restart chrony service

@@ -9,7 +9,12 @@
   vars:
     skip_nvidia: true
 
-- name: Set chrony server ip
+- name: Set chrony allowed network
+  set_fact:
+    chrony_allowed_network: "{{ groups['server'][0]/255.255.255.0 | ipaddr('network/prefix') }}"
+  when: groups['server'] is defined
+
+- name: Set chrony server IP
   set_fact:
     chrony_server_ip: "{{ groups['server'][0] }}"
   when: groups['server'] is defined
