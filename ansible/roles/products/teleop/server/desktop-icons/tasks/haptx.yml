@@ -20,7 +20,7 @@
     launch_script: "shadow_roslaunch_Right.sh"
     desktop_icon_name: "Teleop_GUI_haptx_Right"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true vive:=false"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true vive:=false hand_eth_interface:={{ ethercat_interface }}"
 
 - name: Install desktop icon for running haptx mapping node right
   include_tasks: roslaunch-icon.yml
@@ -38,7 +38,7 @@
     launch_script: "shadow_roslaunch_Left.sh"
     desktop_icon_name: "Teleop_GUI_haptx_Left_Launch"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false hand_eth_interface:={{ ethercat_left_hand }}"
 
 - name: Install desktop icon for running haptx mapping node Left
   include_tasks: roslaunch-icon.yml
@@ -56,7 +56,7 @@
     launch_script: "shadow_roslaunch_bimanual.sh"
     desktop_icon_name: "Teleop_GUI_haptx_Bimanual_Launch"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=true"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=true hand_eth_interface:={{ ethercat_interface }}_{{ ethercat_left_hand }}"
   when: bimanual|bool
 
 - name: Install desktop icon for running haptx mapping node Bimanual
