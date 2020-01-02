@@ -100,7 +100,7 @@ function copy_to_host
 function scp_nuc_to_server
 {
     echo "Copying files from control machine to teleop server"
-    scp -r $NUC_NAME@$NUC_ADDRESS:/home/user/ROS_LOGS/$container_name/ros_logs_$datestamp/ros_log_$timestamp/control_machine $local_desktop_path_base/control_machine || true
+    scp -r $NUC_NAME@$NUC_ADDRESS:/home/user/Desktop/ROS_LOGS/$container_name/ros_logs_$datestamp/ros_log_$timestamp/control_machine $local_desktop_path_base/control_machine || true
     docker cp -L $local_desktop_path_base/control_machine/* $container_name:$docker_logs_temp_base/control_machine/ || true
 }
 function save_all_logs
