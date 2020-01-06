@@ -88,6 +88,9 @@ function copy_logs
 function copy_to_host
 {
     local_ros_log_dir=/home/$USER/Desktop/ROS_LOGS/$container_name
+    if [ "$computer_name" = "control_machine" ]; then
+        local_ros_log_dir=/home/$USER/ROS_LOGS/$container_name
+    fi
     local_desktop_path_base=$local_ros_log_dir/ros_logs_$datestamp/ros_log_$timestamp
     local_desktop_path=$local_desktop_path_base/$computer_name
                         
