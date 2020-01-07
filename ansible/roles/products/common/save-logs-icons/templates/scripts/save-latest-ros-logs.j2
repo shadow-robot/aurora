@@ -50,7 +50,7 @@ function copy_logs
     docker exec $container_name bash -c "mkdir -p $docker_logs_temp" || true
     echo "Copying logs from $docker_ros_folder to $docker_logs_temp inside the $container_name Docker container on $HOSTNAME"
     docker exec $container_name /ros_entrypoint.sh bash -c "rosnode kill $record_node" || true
-    docker exec $container_name /ros_entrypoint.sh bash -c "rosnode list | grep /bag_rotate | xargs -I{} rosnode kill {} || true
+    docker exec $container_name /ros_entrypoint.sh bash -c "rosnode list | grep /bag_rotate | xargs -I{} rosnode kill {}" || true
     sleep 1
     latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag | tail -1") || true
     latestbag_tmp=$(docker exec $container_name bash -c "ls -dtr $docker_user_home/*.bag | tail -1") || true
