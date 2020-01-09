@@ -1,8 +1,4 @@
 ---
-- name: Include installation/dhcp role
-  include_role:
-    name: installation/dhcp
-
 - name: Set NUC IP address and username for SSH
   set_fact:
     nuc_username: "{{ hostvars[groups['control_machine'][0]]['ansible_user'] }}"
