@@ -30,6 +30,9 @@
   register: docker_pull_job
   become: yes
   changed_when: false
+  until: docker_pull_job.image=="success"
+  retries: 10000   
+  delay: 5
 
 - name: Wait for Docker image pull to complete
   async_status:
