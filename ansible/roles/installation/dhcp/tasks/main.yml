@@ -25,11 +25,15 @@
         gateway {{ dhcp_ip }}
   changed_when: false
 
+- name: Bring DHCP interface down
+  net_interface:
+    name: "{{ dhcp_interface_name }}"
+    enabled: False
+
 - name: Bring DHCP interface up
-  become: true
-  command: bash -c "ifconfig {{ dhcp_interface_name }} up"
-  changed_when: false
-  ignore_errors: true
+  net_interface:
+    name: "{{ dhcp_interface_name }}"
+    enabled: True
 
 - name: Configure DHCP interface
   become: yes
@@ -112,6 +116,16 @@
   become: true
   command: bash -c "systemctl stop isc-dhcp-server.service"
   changed_when: false
+
+- name: Bring DHCP interface down
+  net_interface:
+    name: "{{ dhcp_interface_name }}"
+    enabled: False
+
+- name: Bring DHCP interface up
+  net_interface:
+    name: "{{ dhcp_interface_name }}"
+    enabled: True
 
 - name: Start DHCP service
   become: true
