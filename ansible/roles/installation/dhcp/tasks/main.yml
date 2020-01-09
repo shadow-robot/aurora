@@ -33,6 +33,7 @@
   become: true
   command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
   changed_when: false
+  register: command_result
   failed_when: "'Unknown' in command_result.stderr"
 
 - name: Configure DHCP interface
@@ -121,6 +122,7 @@
   become: true
   command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
   changed_when: false
+  register: command_result
   failed_when: "'Unknown' in command_result.stderr"
 
 - name: Start DHCP service
