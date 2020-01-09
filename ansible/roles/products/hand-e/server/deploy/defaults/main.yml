@@ -16,7 +16,7 @@ launch_hand: false
 config_branch: "demohand_A"
 ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
-nuc_address: "10.9.10.2"
+nuc_address: "10.9.11.2"
 upgrade_check: false
 terminator: true
 use_steamvr: true

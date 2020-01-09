@@ -2,9 +2,29 @@
 #!/bin/bash
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
-LOCAL_IP=$(for ip_addr in $(hostname -I) ; do if [[ $ip_addr =~ "10.".*"10.".* ]] ;then echo $ip_addr; fi; done)
+LOCAL_IP={{ dhcp_ip }}
+
+echo "Copying sr_config files from server to nuc..."
+# first make sure temp folder is empty
+rm -rf /tmp/sr_config
+mkdir /tmp/sr_config
+
+# copy sr_config files to tmp
+docker cp {{ container_name }}:/home/user/projects/shadow_robot/base/src/sr_config/sr_ethercat_hand_config/calibrations/ /tmp/sr_config
+docker cp {{ container_name }}:/home/user/projects/shadow_robot/base/src/sr_config/sr_ethercat_hand_config/controls/ /tmp/sr_config
+docker cp {{ container_name }}:/home/user/projects/shadow_robot/base/src/sr_config/sr_ethercat_hand_config/rates/ /tmp/sr_config
+docker cp {{ container_name }}:/home/user/projects/shadow_robot/base/src/sr_config/sr_ur_arm_config /tmp/sr_config
+
+# empy the remote folder
+ssh $NUC_NAME@$NUC_ADDRESS 'rm -rf /tmp/sr_config;mkdir /tmp/sr_config'
+# scp tmp files to nuc
+scp -r /tmp/sr_config $NUC_NAME@$NUC_ADDRESS:/tmp/
 
 ssh $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} ETH_PORT={{ ethercat_interface }} HAND_ID={{ hand_id }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
+docker cp /tmp/sr_config/calibrations ${CONTAINER}:/home/user/projects/shadow_robot/base/src/sr_config/sr_ethercat_hand_config
+docker cp /tmp/sr_config/controls ${CONTAINER}:/home/user/projects/shadow_robot/base/src/sr_config/sr_ethercat_hand_config
+docker cp /tmp/sr_config/rates ${CONTAINER}:/home/user/projects/shadow_robot/base/src/sr_config/sr_ethercat_hand_config
+docker cp /tmp/sr_config/sr_ur_arm_config ${CONTAINER}:/home/user/projects/shadow_robot/base/src/sr_config
 bash $(while [[ $(ss | grep $HOST_IP | grep $NUC_ADDRESS | grep ssh | grep ESTAB | wc -l) -gt 0 ]]; do sleep 1; done ; pkill -INT -f roslaunch) &
 docker stop ${CONTAINER}
 sleep 2
