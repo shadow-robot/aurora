@@ -35,7 +35,7 @@
   async_status:
     jid: "{{ docker_pull_job.ansible_job_id }}"
   register: docker_pull_result
-  until: docker_pull_result is succeeded
+  until: docker_pull_result.finished and "500 Server Error" not in docker_pull_result.msg
   retries: 10000
   delay: 5
   become: yes
