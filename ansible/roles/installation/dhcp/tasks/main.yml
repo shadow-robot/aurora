@@ -25,9 +25,9 @@
         gateway {{ dhcp_ip }}
   changed_when: false
 
-- name: Restart networking on DHCP interface
+- name: Bring DHCP interface up
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  command: bash -c "ifconfig {{ dhcp_interface_name }} up"
   changed_when: false
   ignore_errors: true
 
@@ -112,12 +112,6 @@
   become: true
   command: bash -c "systemctl stop isc-dhcp-server.service"
   changed_when: false
-
-- name: Restart networking on DHCP interface (after iptables is set)
-  become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
-  changed_when: false
-  ignore_errors: true
 
 - name: Start DHCP service
   become: true
