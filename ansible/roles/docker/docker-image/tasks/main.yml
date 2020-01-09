@@ -30,7 +30,7 @@
   register: docker_pull_job
   become: yes
   changed_when: false
-  until: image in docker_pull_job and docker_pull_job.image="success"
+  until: image in docker_pull_job and docker_pull_job.image=="success"
   retries: 10000
   delay: 5
 
