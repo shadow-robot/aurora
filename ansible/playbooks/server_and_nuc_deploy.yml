@@ -6,7 +6,7 @@
   tasks:
     - name: Extract hostname from server
       set_fact:
-        ansible_host: "{{ ansible_ hostname }}"
+        ansible_host: "{{ ansible_hostname }}"
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: 127.0.0.1
