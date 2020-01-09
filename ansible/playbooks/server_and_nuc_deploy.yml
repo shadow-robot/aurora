@@ -1,4 +1,13 @@
 ---
+- name: Set server hostname variable
+  hosts: server
+  connection: local
+  gather_facts: yes
+  tasks:
+    - name: Extract hostname from server
+      set_fact:
+        ansible_host: "{{ ansible_ hostname }}"
+
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: 127.0.0.1
   connection: local
