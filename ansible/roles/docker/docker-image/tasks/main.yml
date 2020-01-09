@@ -30,15 +30,12 @@
   register: docker_pull_job
   become: yes
   changed_when: false
-  until: docker_pull_job.image=="success"
-  retries: 10000   
-  delay: 5
 
 - name: Wait for Docker image pull to complete
   async_status:
     jid: "{{ docker_pull_job.ansible_job_id }}"
   register: docker_pull_result
-  until: docker_pull_result.finished
+  until: image in docker_pull_result and docker_pull_result.image=="success"
   retries: 10000
   delay: 5
   become: yes
