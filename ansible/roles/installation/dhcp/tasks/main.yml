@@ -22,7 +22,6 @@
         address {{ dhcp_ip }}
         netmask {{ dhcp_netmask }}
         network {{ dhcp_network }}
-        gateway {{ dhcp_client_ip }}
   changed_when: false
 
 - name: Stop DHCP service
