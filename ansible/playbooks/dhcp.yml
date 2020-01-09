@@ -4,7 +4,7 @@
 
 - name: Install DHCP server on this host
   hosts: dhcp
-  pre_tasks:
+  tasks:
     - name: Include installation/dhcp role
       include_role:
-      name: installation/dhcp
+        name: installation/dhcp

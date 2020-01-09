@@ -168,11 +168,6 @@ fi
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
-    echo ""
-    echo " ----------------------------------------------------------------------"
-    echo " |    Configuring DHCP network for server and nuc playbook            |"
-    echo " ----------------------------------------------------------------------"
-    echo ""
     "${ansible_executable}" ${ansible_flags} -i "local" "ansible/playbooks/dhcp.yml" --extra-vars "$extra_vars"
     echo ""
     echo " ----------------------------------------------------------------------"
