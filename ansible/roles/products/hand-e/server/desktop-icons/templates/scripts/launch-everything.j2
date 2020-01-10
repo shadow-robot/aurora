@@ -1,0 +1,7 @@
+#jinja2: trim_blocks:False
+#!/bin/bash
+
+bash -c "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+bash -c "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
+bash -c "{{ shadow_hand_launcher_folder}}/shadow_nuc_hardware_control_loop.sh"
+bash -c "{{ shadow_hand_launcher_folder}}/shadow_server_gui.sh"

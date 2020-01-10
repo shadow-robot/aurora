@@ -30,7 +30,7 @@
 - name: Create Close Right Hand desktop icon
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Close_Right_Hand.desktop"
+    dest: "{{ demo_icon_folder }}/Close Right Hand.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Close Right Hand
@@ -41,7 +41,7 @@
   when: bimanual|bool or hand_id=="rh"
 
 - name: Make Close Right Hand desktop icon Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Close_Right_Hand.desktop" "metadata::trusted" yes
+  shell: gio set "{{ demo_icon_folder }}/Close Right Hand.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
@@ -67,7 +67,7 @@
   - name: Create Close Left Hand desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ user_folder }}/Desktop/Close_Left_Hand.desktop"
+      dest: "{{ demo_icon_folder }}/Close Left Hand.desktop"
       mode: '755'
     vars:
       desktop_shortcut_name: Close Left Hand
@@ -77,7 +77,7 @@
       icon_file_name: close-hand-icon-left.png
 
   - name: Make Close Left Hand desktop icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Close_Left_Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ demo_icon_folder }}/Close Left Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
@@ -104,7 +104,7 @@
 - name: Create Open Right Hand desktop icon
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Open_Right_Hand.desktop"
+    dest: "{{ demo_icon_folder }}/Open Right Hand.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Open Right Hand
@@ -115,7 +115,7 @@
   when: bimanual|bool or hand_id=="rh"
 
 - name: Make Open Right Hand desktop icon Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Open_Right_Hand.desktop" "metadata::trusted" yes
+  shell: gio set "{{ demo_icon_folder }}/Open Right Hand.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
@@ -141,7 +141,7 @@
   - name: Create Open Left Hand desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ user_folder }}/Desktop/Open_Left_Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Open Left Hand.desktop"
       mode: '755'
     vars:
       desktop_shortcut_name: Open Left Hand
@@ -151,7 +151,7 @@
       icon_file_name: open-hand-icon-left.png
 
   - name: Make Open Left Hand desktop icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Open_Left_Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ demo_icon_folder }}//Open Left Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
@@ -178,7 +178,7 @@
 - name: Create Standard Right Demo desktop icon
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Demo_Right_Hand.desktop"
+    dest: "{{ demo_icon_folder }}//Demo Right Hand.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Demo Right Hand
@@ -190,7 +190,7 @@
   when: bimanual|bool or hand_id=="rh"
 
 - name: Make Standard Right Demo desktop icon Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Demo_Right_Hand.desktop" "metadata::trusted" yes
+  shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
@@ -216,7 +216,7 @@
   - name: Create Standard Left Demo desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ user_folder }}/Desktop/Demo_Left_Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Demo Left Hand.desktop"
       mode: '755'
     vars:
       desktop_shortcut_name: Demo Left Hand
@@ -227,7 +227,7 @@
       icon_file_name: demo-hand-icon-left.png
 
   - name: Make Standard Left Demo desktop icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Demo_Left_Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ demo_icon_folder }}//Demo Left Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
