@@ -18,6 +18,7 @@
     desktop_icon_name: "Launch Shadow Hand"
     template: templates/scripts/launch-everything.j2
     desktop_icon_path: "Launch Shadow Hand"
+    launch_terminal: "true"
 
 - name: Install desktop icon for RQT on NUC
   include_tasks: default-icon.yml
@@ -28,6 +29,7 @@
     desktop_icon_name: "Shadow RQT"
     desktop_icon_path: "Shadow RQT"
     command_to_run: "rqt"
+    launch_terminal: "false"
 
 - name: Create Shadow Demos folder
   file:
@@ -49,6 +51,7 @@
     launch_script: "shadow_server_container.sh"
     desktop_icon_name: "1 - Launch Server Container"
     desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
+    launch_terminal: "true"
 
 - name: Install desktop icon for launching ROSCORE
   import_tasks: default-icon.yml
@@ -58,6 +61,7 @@
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "2 - Launch Server ROSCORE"
     desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
+    launch_terminal: "true"
 
 - name: Install desktop icon for NUC hardware control loop
   import_tasks: hand-icon.yml
@@ -88,6 +92,7 @@
     desktop_icon_name: "Launch NUC Container"
     desktop_icon_path: "Shadow Advanced Launchers/Launch NUC Container"
     command_to_run: "bash"
+    launch_terminal: "true"
 
 - name: Include products/common/demo-icons role
   include_role:

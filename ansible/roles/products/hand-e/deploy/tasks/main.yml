@@ -72,6 +72,7 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: shadow_launcher_exec.sh
     icon_file_name: hand-e.png
+    start_terminal: "true"
 
 - name: Make Shadow_Hand_Launcher Trusted
   shell: gio set "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop" "metadata::trusted" yes

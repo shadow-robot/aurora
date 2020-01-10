@@ -60,3 +60,4 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: openvpn.sh
     icon_file_name: openvpn.png
+    start_terminal: "true"

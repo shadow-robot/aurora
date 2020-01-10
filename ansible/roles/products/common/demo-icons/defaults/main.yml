@@ -7,3 +7,4 @@ use_aws: false
 bimanual: false
 hand_id: "rh"
 demo_icon_folder: "{{ user_folder }}/Desktop"
+start_terminal: "true"
