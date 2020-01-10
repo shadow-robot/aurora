@@ -2,14 +2,5 @@
 #!/bin/bash
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
-LOCAL_IP={{ dhcp_ip }}
 
-ssh $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} ETH_PORT={{ ethercat_interface }} HAND_ID={{ hand_id }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
-docker stop ${CONTAINER}
-sleep 2
-docker start ${CONTAINER}
-echo "Starting the container..."
-sleep 3
-bash
-ENDSSH
-sleep infinity
+ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} "docker exec --user user -it ${CONTAINER} bash -c 'source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;{{ command_to_run }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)'"

@@ -5,7 +5,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Create executable launch script for hand (with cyberglove)
+- name: Create executable launch script for hand
   template:
     src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"

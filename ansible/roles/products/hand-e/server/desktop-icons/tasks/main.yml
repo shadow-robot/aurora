@@ -10,21 +10,56 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Install desktop icon for right hand
+  import_tasks: hand-icon.yml
+  vars:
+    desktop_icon_png: "hand-e.png"
+    launch_script: "shadow_launcher_exec.sh"
+    hand_branch: "{{ config_branch }}"
+    desktop_icon_name: "Launch Shadow Right Hand"
+    ethercat_interface_var: "{{ ethercat_interface }}"
+  when: hand_id == "rh"
+
+- name: Install desktop icon for left hand
+  import_tasks: hand-icon.yml
+  vars:
+    desktop_icon_png: "hand-e.png"
+    launch_script: "shadow_launcher_exec.sh"
+    hand_branch: "{{ config_branch }}"
+    desktop_icon_name: "Launch Shadow Left Hand"
+    ethercat_interface_var: "{{ ethercat_interface }}"
+  when: hand_id == "lh"
+
+- name: Install desktop icon for RQT on NUC
+  include_tasks: default-icon.yml
+  vars:
+    template: templates/scripts/start-docker-container-only-nuc.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "nuc_rqt.sh"
+    desktop_icon_name: "Shadow RQT"
+    desktop_icon_path: "Shadow RQT"
+    command_to_run: "rqt"
+
+- name: Create Shadow Demos folder
+  file:
+    path: "{{ user_folder }}/Desktop/Shadow Demos"
+    mode: '755'
+    state: directory
+
+- name: Create Shadow Advanced Launchers folder
+  file:
+    path: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
+    mode: '755'
+    state: directory
+
 - name: Install desktop icon for server container
   include_tasks: default-icon.yml
   vars:
     template: ../../../common/resources/templates/scripts/start-docker-container.j2
     desktop_icon_png: "laptop.jpg"
     launch_script: "shadow_server_container.sh"
-    desktop_icon_name: "Server_Container_Launch"
-
-- name: Install desktop icon for NUC container
-  include_tasks: default-icon.yml
-  vars:
-    template: templates/scripts/start-docker-container-only-nuc.j2
-    desktop_icon_png: "nuc.jpg"
-    launch_script: "shadow_nuc_container.sh"
-    desktop_icon_name: "NUC_Container_Launch"
+    desktop_icon_name: "1 - Launch Server Container"
+    desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
 
 - name: Install desktop icon for launching ROSCORE
   import_tasks: default-icon.yml
@@ -32,7 +67,20 @@
     template: ../../../common/resources/templates/scripts/start-roscore.j2
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
-    desktop_icon_name: "ROSCORE"
+    desktop_icon_name: "2 - Launch Server ROSCORE"
+    desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
+
+- name: Install desktop icon for NUC container
+  include_tasks: default-icon.yml
+  vars:
+    template: templates/scripts/start-docker-container-only-nuc.j2
+    desktop_icon_png: "nuc.jpg"
+    launch_script: "shadow_nuc_container.sh"
+    desktop_icon_name: "Launch NUC Container"
+    desktop_icon_path: "Shadow Advanced Launchers/Launch NUC Container"
+    command_to_run: "bash"
+
+
 
 - name: Include products/common/demo-icons role
   include_role:
