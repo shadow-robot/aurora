@@ -2,6 +2,8 @@
 #!/bin/bash
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
-CONTAINER={{ container_name }}
 
-ssh -X $NUC_NAME@$NUC_ADDRESS "docker exec --user user -it $CONTAINER bash -c 'source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;export DISPLAY={{ lookup('env','DISPLAY') }};{{ command_to_run }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)'"
+ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} 'bash -s' <<'ENDSSH'
+docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;export DISPLAY=${DISPLAY};{{ command_to_run }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)'"
+ENDSSH
+sleep infinity
