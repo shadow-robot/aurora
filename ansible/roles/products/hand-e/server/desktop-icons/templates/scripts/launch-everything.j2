@@ -1,7 +1,10 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
-bash -c "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
-bash -c "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
-bash -c "{{ shadow_hand_launcher_folder}}/shadow_nuc_hardware_control_loop.sh"
-bash -c "{{ shadow_hand_launcher_folder}}/shadow_server_gui.sh"
+gnome-terminal --title="SERVER CONTAINER" -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+sleep 3
+gnome-terminal --title="SERVER ROS CORE" -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
+sleep 3
+gnome-terminal --title="NUC HARDWARE CONTROL LOOP" -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_hardware_control_loop.sh"
+sleep 3
+gnome-terminal --title="SERVER GUI" -e "{{ shadow_hand_launcher_folder}}/shadow_server_gui.sh"
