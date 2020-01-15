@@ -26,8 +26,8 @@
     template: templates/scripts/start-docker-container-only-nuc.j2
     desktop_icon_png: "ROS_logo.png"
     launch_script: "nuc_rqt.sh"
-    desktop_icon_name: "Shadow RQT"
-    desktop_icon_path: "Shadow RQT"
+    desktop_icon_name: "Shadow NUC RQT"
+    desktop_icon_path: "Shadow NUC RQT"
     command_to_run: "rqt"
     launch_terminal: "false"
 
