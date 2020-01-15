@@ -136,9 +136,6 @@ ansible_flags="-v "
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
 fi
-if [[ "${playbook}" = "teleop_deploy" ]]; then
-    aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
-fi
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     aurora_inventory="ansible/inventory/server_and_nuc/production"
     ansible_flags="${ansible_flags} --ask-vault-pass"
@@ -148,9 +145,9 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     echo " | Enter the VAULT password provided by Shadow     |"
     echo " ---------------------------------------------------"
     echo ""
-fi
-if [[ "${playbook}" = "teleop_deploy" ]]; then
+elif [[ "${playbook}" = "teleop_deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-become-pass --ask-pass "
+    aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
     echo ""
     echo " ---------------------------------------------------"
     echo " |             SSH and BECOME passwords:           |"
