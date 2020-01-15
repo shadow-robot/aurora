@@ -1,10 +1,10 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
-terminator --title="SERVER CONTAINER" -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+terminator --title="LAUNCHING SERVER CONTAINER..." -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 sleep 3
-terminator --title="SERVER ROS CORE" -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
+terminator --title="SERVER ROS CORE" -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 3
-terminator --title="NUC HARDWARE CONTROL LOOP" -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_hardware_control_loop.sh"
+terminator --title="NUC HARDWARE CONTROL LOOP" -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_hardware_control_loop.sh" &
 sleep 3
 terminator --title="SERVER GUI" -e "{{ shadow_hand_launcher_folder}}/shadow_GUI.sh"
