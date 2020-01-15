@@ -100,3 +100,34 @@
   vars:
     demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
   when: demo_icons|bool
+
+- name: Copy Launch Local Shadow Hand desktop icon
+  copy:
+    src: files/hand-e.png
+    dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
+    mode: '664'
+
+- name: Create Launch Local Shadow Hand script
+  template:
+    src: ../../../common/resources/templates/scripts/start-docker-container.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
+    mode: '755'
+
+- name: Create Shadow Local Hand Launch desktop icon
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Hand.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "Launch Local Shadow Hand"
+    comment: "This is application launches the hand locally without the NUC"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: shadow_local_launcher_exec.sh
+    icon_file_name: hand-e.png
+    start_terminal: "true"
+
+- name: Make Shadow Local Hand Launch desktop icon Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Hand.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
