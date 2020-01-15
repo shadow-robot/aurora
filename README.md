@@ -100,18 +100,20 @@ then a valid Docker Hub account with pull credentials from Shadow Robot's Docker
 container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
 launches the hand.
 
+You will be asked for a sudo password for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
+
 **How to run:**
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-secure sudo_password option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-secure sudo_password ethercat_interface=enx5647929203 config_branch=demohand_C
 ```
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
@@ -126,11 +128,11 @@ Run a playbook against one or more members of that group using the --limit tag:
 For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
 
 * --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
-* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
+* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read-secure sudo_password,docker_password,customer_key - To allow aurora script to prompt for sudo password for the laptop this playbook is being run from, the docker hub password and the ROS logs upload key)
 
-**SSH and BECOME passwords:**
+**VAULT password:**
 
-If you are prompted for an SSH password, enter the sudo password of the NUC. For the BECOME password (i.e. the sudo password for the server laptop), just press Enter, as it will default to the SSH password.
+Shadow will supply you with the Vault password, which is needed to decrypt some credentials to access the NUC.
 
 ## docker_deploy ##
 

@@ -70,7 +70,7 @@ echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip de
 echo "  * --inventory         Inventory of servers to use (local by default)"
 echo "  * --limit             Run a playbook against one or more members of that group (all by default)"
 echo "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,github_login)"
-echo "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. docker_password,git_password)"
+echo "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. sudo_password,docker_password,git_password)"
 echo ""
 echo "example: ${script_name} docker_deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
@@ -131,7 +131,7 @@ echo ""
 pushd $aurora_home
 
 pip3 install --user -r ansible/data/ansible/requirements.txt
-ansible_flags="-v --ask-become-pass "
+ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
@@ -141,9 +141,16 @@ if [[ "${playbook}" = "teleop_deploy" ]]; then
 fi
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     aurora_inventory="ansible/inventory/server_and_nuc/production"
+    ansible_flags="${ansible_flags} --ask-vault-pass"
+    echo ""
+    echo " ---------------------------------------------------"
+    echo " |                 VAULT password:                 |"
+    echo " | Enter the VAULT password provided by Shadow     |"
+    echo " ---------------------------------------------------"
+    echo ""
 fi
-if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
-    ansible_flags="${ansible_flags} --ask-pass "
+if [[ "${playbook}" = "teleop_deploy" ]]; then
+    ansible_flags="${ansible_flags} --ask-become-pass --ask-pass "
     echo ""
     echo " ---------------------------------------------------"
     echo " |             SSH and BECOME passwords:           |"
@@ -153,6 +160,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy"
     echo ""
 else
     aurora_inventory="ansible/inventory/${aurora_inventory}"
+    ansible_flags="${ansible_flags} --ask-become-pass"
     echo ""
     echo " --------------------------------------------"
     echo " |             BECOME password:             |"
