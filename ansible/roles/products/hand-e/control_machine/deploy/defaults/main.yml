@@ -21,3 +21,5 @@ nvidia_docker: false
 sim_hand: false
 hand_id: "rh"
 hand_serial: "1082"
+use_cyberglove: false
+cyberglove: ""
