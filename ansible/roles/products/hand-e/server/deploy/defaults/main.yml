@@ -37,3 +37,5 @@ dhcp_server_mac: "00:0e:c6:c0:46:97"
 dhcp_client_mac: "00:0e:c6:bd:f4:b4"
 hand_id: "rh"
 hand_serial: "1082"
+use_cyberglove: false
+cyberglove: ""
