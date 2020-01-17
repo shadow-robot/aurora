@@ -134,4 +134,3 @@
   service:
     name: network
     state: restarted
-    args: "{{ internet_interface_name }}"
