@@ -118,6 +118,12 @@
   command: bash -c "systemctl stop isc-dhcp-server.service"
   changed_when: false
 
+- name: Restart networking service
+  service:
+    name: networking
+    state: restarted
+  become: true
+
 - name: Restart networking on DHCP interface (after iptables is set)
   become: true
   command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
@@ -129,9 +135,3 @@
   become: true
   command: bash -c "systemctl start isc-dhcp-server.service"
   changed_when: false
-
-- name: Restart networking service
-  service:
-    name: networking
-    state: restarted
-  become: true
