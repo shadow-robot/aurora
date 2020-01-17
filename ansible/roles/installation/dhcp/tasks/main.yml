@@ -129,3 +129,9 @@
   become: true
   command: bash -c "systemctl start isc-dhcp-server.service"
   changed_when: false
+
+- name: Restart network service for {{ internet_interface_name }}
+  service:
+    name: network
+    state: restarted
+    args: "{{ internet_interface_name }}"
