@@ -67,11 +67,11 @@
 
 - name: Creating control_machine setup script
   template:
-    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    src: ../../../common/resources/templates/scripts/setup-hand-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
 - name: Copying control_machine setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/control_machine_setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes

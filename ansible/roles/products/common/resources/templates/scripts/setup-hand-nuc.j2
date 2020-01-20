@@ -1,0 +1,15 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+source /home/user/projects/shadow_robot/base/devel/setup.bash
+roscd sr_ethercat_hand_config/launch
+git checkout sr_rhand.launch
+git checkout sr_lhand.launch
+git remote set-url origin https://github.com/shadow-robot/sr-config.git
+echo -e Pulling changes from the sr_config repo...
+git fetch
+git pull
+echo -e Latest sr_config has been pulled!
+git checkout {{ config_branch }}
+rosrun sr_firmware_checker ur_firmware_check
+sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
+sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
