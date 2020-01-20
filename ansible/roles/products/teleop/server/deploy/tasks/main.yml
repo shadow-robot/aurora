@@ -117,6 +117,7 @@
   shell: udevadm control --reload-rules && udevadm trigger
   changed_when: false
   become: yes
+  when: skip_molecule_task is not defined
 
 - name: Creating upgrade script
   template:
