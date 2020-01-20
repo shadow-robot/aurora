@@ -108,7 +108,7 @@
 
 - name: Create Launch Local Shadow Hand script
   template:
-    src: ../../../common/resources/templates/scripts/start-docker-container.j2
+    src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_local_launcher_exec.sh"
     mode: '755'
 
