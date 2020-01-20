@@ -7,8 +7,11 @@ NC='\033[0m' # No Color
 if {{ upgrade_check | lower }}; then
     "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher/{{ upgrade_script }}"
 fi
+if [ "$(docker ps -q -f name={{ container_name  }})" ]; then
+  echo -e \"${YELLOW}Container is already running. Exiting...${NC}\"
+  sleep 2
+else
 echo -e \"${YELLOW}Please wait for docker container to start in a new terminal as this might take a while... ${NC}\"
-docker stop {{ container_name  }}
-sleep 2
 docker start {{ container_name  }} &> /dev/null
 sleep 3
+fi
