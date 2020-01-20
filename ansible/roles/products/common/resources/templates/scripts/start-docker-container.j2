@@ -8,6 +8,6 @@ if {{ upgrade_check | lower }}; then
     "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher/{{ upgrade_script }}"
 fi
 echo -e \"${YELLOW}Please wait for docker container to start in a new terminal as this might take a while... ${NC}\"
-docker cp "{{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:/{{ setup_directory }}/{{ setup_script }}"
+docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:/{{ setup_directory }}/{{ setup_script }}
 docker start {{ container_name  }} &> /dev/null
 sleep 3
