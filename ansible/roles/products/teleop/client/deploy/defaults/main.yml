@@ -25,3 +25,4 @@ openvpn_port: "1196"
 terminator: true
 bimanual: false
 upgrade_check: false
+container_terminal_title: "Teleop Container"
