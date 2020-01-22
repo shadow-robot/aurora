@@ -100,9 +100,9 @@ then a valid Docker Hub account with pull credentials from Shadow Robot's Docker
 container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
 launches the hand.
 
-You will be asked for a sudo password for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
-
 **How to run:**
+
+You will be asked for a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
 
 Open a terminal with Ctrl+Alt+T and run:
 
@@ -117,6 +117,7 @@ bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-secure sudo_pass
 ```
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
+* [dhcp_installation_on_server](ansible/inventory/local/group_vars/dhcp.yml)
 * [server](ansible/inventory/server_and_nuc/group_vars/server.yml)
 * [control-machine](ansible/inventory/server_and_nuc/group_vars/control_machine.yml)
 
