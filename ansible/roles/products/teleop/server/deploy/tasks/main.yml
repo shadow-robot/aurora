@@ -5,7 +5,7 @@
     nuc_address: "{{ groups['control_machine'][0] }}"
   when: groups['control_machine'] is defined
 
-- name: Setup script name
+- name: Setup variables
   set_fact:
     setup_script: teleop-server-setup.sh
     upgrade_script: "upgrade_image.sh"
@@ -44,6 +44,8 @@
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "Teleop Server Container"
 
 - name: Include docker/aws role
   include_role:

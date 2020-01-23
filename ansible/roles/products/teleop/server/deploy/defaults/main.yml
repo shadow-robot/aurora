@@ -30,4 +30,3 @@ demo_icons: true
 bimanual: false
 sim_hand: false
 encryption_password: ""
-container_terminal_title: "Teleop Container"
