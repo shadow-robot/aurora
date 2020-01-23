@@ -5,7 +5,7 @@
     nuc_address: "{{ groups['control_machine'][0] }}"
   when: groups['control_machine'] is defined
 
-- name: Setup variables
+- name: Setup script name
   set_fact:
     setup_script: teleop-server-setup.sh
     upgrade_script: "upgrade_image.sh"
