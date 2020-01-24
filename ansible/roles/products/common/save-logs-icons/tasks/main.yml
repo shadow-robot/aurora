@@ -39,6 +39,7 @@
 - name: Make ROS Logs Saver desktop icon trusted
   shell: gio set "{{ user_folder }}/Desktop/Shadow ROS Logs Saver.desktop" "metadata::trusted" yes
   when:
+    - not use_aws|bool
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 
