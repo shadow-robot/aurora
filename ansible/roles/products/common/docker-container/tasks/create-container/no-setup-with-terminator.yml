@@ -26,5 +26,5 @@
     - /tmp/.X11-unix:/tmp/.X11-unix[rw]
     - /dev/input:/dev/input[rw]
     - /run/udev/data:/run/udev/data
-    command: terminator --title='SERVER CONTAINER' -x bash
+    command: terminator -T '{{ container_terminal_title }}' -x bash
   become: yes

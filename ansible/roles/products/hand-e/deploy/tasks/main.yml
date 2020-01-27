@@ -11,6 +11,8 @@
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "Hand E Container"
 
 - name: Include products/common/save-logs-icons role
   include_role:
