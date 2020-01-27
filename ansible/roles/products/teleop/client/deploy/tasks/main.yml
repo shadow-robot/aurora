@@ -45,6 +45,7 @@
     name: products/common/docker-container
   vars:
     ros_master: "{{ server_hostname }}"
+    container_terminal_title: "Teleop Client Container"
 
 - name: Include docker/aws role
   include_role:

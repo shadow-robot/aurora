@@ -44,6 +44,8 @@
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "Teleop Server Container"
 
 - name: Include docker/aws role
   include_role:
