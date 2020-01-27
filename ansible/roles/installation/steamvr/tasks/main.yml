@@ -35,28 +35,6 @@
   when: '"libudev0" not in ansible_facts.packages'
   become: yes
 
-- name: Create sdk32 directory
-  file:
-    path: "{{ user_home_dir }}/.steam/sdk32"
-    state: directory
-
-- name: Create sdk64 directory
-  file:
-    path: "{{ user_home_dir }}/.steam/sdk64"
-    state: directory
-
-- name: Copy 32bit steamclient
-  copy:
-    src: "{{ user_home_dir }}/steamcmd/linux32/steamclient.so"
-    dest: "{{ user_home_dir }}/.steam/sdk32"
-    remote_src: true
-
-- name: Copy 64bit steamclient
-  copy:
-    src: "{{ user_home_dir }}/steamcmd/linux64/steamclient.so"
-    dest: "{{ user_home_dir }}/.steam/sdk64"
-    remote_src: true
-
 - name: Download steamvr 1.5.15
   aws_s3:
     aws_access_key: "{{ lookup('env','aws_key') }}"
