@@ -35,6 +35,11 @@
   when: '"libudev0" not in ansible_facts.packages'
   become: yes
 
+- name: Ensure botocore and boto3 modules are installed
+  pip:
+    name: [ "boto3", "botocore"]
+    extra_args: "--user"
+
 - name: Download steamvr 1.5.15
   aws_s3:
     aws_access_key: "{{ lookup('env','aws_key') }}"
