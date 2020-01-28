@@ -77,17 +77,11 @@
   changed_when: false
   when: skip_molecule_task is not defined
 
-- name: Copy SSH keys to a /tmp/ folder for transmission to NUC
+- name: Make a copy of SSH keys to a /tmp/ folder for copying to other machines
   copy:
     src: "{{ ssh_keys_path }}.pub"
     dest: "{{ temp_ssh_keys_path }}.pub"
-    mode: '644'
   changed_when: false
-
-- name: Copying ssh key pair into docker container
-  changed_when: false
-  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/home/user/.ssh/"
-  become: yes
 
 - name: Creating server setup script
   template:
