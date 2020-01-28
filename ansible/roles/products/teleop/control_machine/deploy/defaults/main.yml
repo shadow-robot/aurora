@@ -19,7 +19,7 @@ use_cyberglove: false
 cyberglove: ""
 launch_hand: false
 server_hostname: "TELEOP-DEMO"
-ssh_keys_path: "/tmp/id_ssh_rsa"
+ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 terminator: false
 use_steamvr: false
 nvidia_docker: false
