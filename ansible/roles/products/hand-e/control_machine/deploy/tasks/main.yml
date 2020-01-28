@@ -49,7 +49,7 @@
 
 - name: Copy SSH public key from server to control machine (if it exists in server laptop)
   copy:
-    src: "{{ temp_ssh_key_path }}.pub"
+    src: "{{ temp_ssh_keys_path }}.pub"
     dest: "{{ ssh_keys_path }}.pub"
     mode: '644'
   when: ssh_result.stat.exists
