@@ -26,6 +26,6 @@ sim_hand: false
 encryption_password: ""
 cyberglove: ""
 server_ip: "10.9.11.1"
-hand_id: "rh"
+hand_side: "right"
 hand_serial: "1082"
 use_cyberglove: false
