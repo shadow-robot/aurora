@@ -84,6 +84,7 @@
     dest: "{{ temp_ssh_keys_path }}.pub"
     mode: '644'
   changed_when: false
+  when: skip_molecule_task is not defined
 
 - name: Copying ssh key pair into docker container
   changed_when: false

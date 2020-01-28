@@ -82,6 +82,7 @@
     src: "{{ ssh_keys_path }}.pub"
     dest: "{{ temp_ssh_keys_path }}.pub"
   changed_when: false
+  when: skip_molecule_task is not defined
 
 - name: Creating server setup script
   template:
