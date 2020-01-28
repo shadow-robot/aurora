@@ -12,6 +12,7 @@ if [ "$(docker ps -q -f name={{ container_name  }})" ]; then
   sleep 2
 else
 echo -e \"${YELLOW}Please wait for docker container to start in a new terminal as this might take a while... ${NC}\"
+docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:/{{ setup_directory }}/{{ setup_script }}
 docker start {{ container_name  }} &> /dev/null
 sleep 3
 fi

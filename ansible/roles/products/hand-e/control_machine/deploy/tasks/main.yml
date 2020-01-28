@@ -1,0 +1,77 @@
+---
+- name: Setup script name
+  set_fact:
+    setup_script: control_machine_setup.sh
+
+- name: Include installation/docker role
+  include_role:
+    name: installation/docker
+  vars:
+    skip_nvidia: true
+
+- name: Set chrony server ip
+  set_fact:
+    chrony_server_ip: "{{ groups['server'][0] }}"
+  when: groups['server'] is defined
+
+- name: Include installation/chrony-client role
+  include_role:
+    name: installation/chrony-client
+
+- name: Include docker/docker-image role
+  include_role:
+    name: docker/docker-image
+  vars:
+    skip_nvidia: true
+
+- name: Set server hostname
+  set_fact:
+    server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
+  when: groups['server'] is defined
+
+- name: Include products/common/docker-container role
+  include_role:
+    name: products/common/docker-container
+  vars:
+    ros_master: "{{ server_hostname }}"
+    nvidia_docker: false
+
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
+- name: Check if the ssh public key has been generated in ssh_keys_path folder on machine running Ansible (server laptop)
+  stat:
+    path: "{{ ssh_keys_path }}.pub"
+  register: ssh_result
+  delegate_to: 127.0.0.1
+
+- name: Copy SSH public key from server to control machine (if it exists in server laptop)
+  copy:
+    src: "{{ ssh_keys_path }}.pub"
+    dest: "{{ ssh_keys_path }}.pub"
+    mode: '644'
+  when: ssh_result.stat.exists
+  changed_when: false
+  become: yes
+
+- name: Register SSH public key with current user on the control machine
+  authorized_key:
+    user: "{{ user }}"
+    key: "{{ lookup('file', '{{ ssh_keys_path }}.pub') }}"
+    state: present
+  when: ssh_result.stat.exists
+  changed_when: false
+  become: yes
+
+- name: Creating control_machine setup script
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
+    mode: '755'
+
+- name: Copying control_machine setup script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  become: yes

@@ -5,3 +5,6 @@ save_latest_ros_logs_folder: "{{ user_folder }}/.shadow_save_log_app/save_latest
 container_name: "dexterous_hand_real_hw"
 use_aws: false
 bimanual: false
+hand_id: "rh"
+demo_icon_folder: "{{ user_folder }}/Desktop"
+start_terminal: "true"

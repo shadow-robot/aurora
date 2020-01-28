@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-haptx"
-tag: "kinetic-v0.0.32"
+tag: "kinetic-v0.0.33"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true

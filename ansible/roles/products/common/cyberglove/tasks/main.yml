@@ -33,3 +33,4 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: launch-cyberglove.sh
     icon_file_name: cyberglove.png
+    start_terminal: "true"
