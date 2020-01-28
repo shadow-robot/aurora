@@ -30,6 +30,7 @@
   register: docker_pull_job
   become: yes
   changed_when: false
+  ignore_errors: yes
 
 - name: Wait for Docker image pull to complete
   async_status:
