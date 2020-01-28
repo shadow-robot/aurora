@@ -17,6 +17,6 @@ save_nuc_logs: true # enables saving ROS logs from control-computer to server
 demo_icons: true # Generates desktop icons to run demos
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 launch_hand: false # Specify if hand driver should start when double clicking desktop icon
-hand_id: "rh" # Specify if the hand is right hand or left hand (rh or lh)
+hand_side: "right" # Specify if the hand is right hand or left hand (rh or lh)
 hand_serial: "1082" # Specify the hand serial number
 ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
