@@ -49,6 +49,11 @@
     dest: "{{ user_home_dir }}/steam.tar.gz"
     mode: get
 
+- name: Create .steam directory
+  file:
+    path: "{{ user_home_dir }}/.steam"
+    state: directory
+    
 - name: Extract steamvr
   unarchive:
     src: "{{ user_home_dir }}/steam.tar.gz"
