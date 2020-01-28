@@ -105,7 +105,7 @@
 - name: Register SSH public key with current user on the control machine
   authorized_key:
     user: "{{ user }}"
-    key: "{{ lookup('file', '{{ ssh_keys_path }}.pub') }}"
+    key: "{{ lookup('file', '{{ temp_ssh_keys_path }}.pub') }}"
     state: present
   when: ssh_result.stat.exists
   changed_when: false
