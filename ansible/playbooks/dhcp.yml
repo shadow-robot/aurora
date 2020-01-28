@@ -1,0 +1,10 @@
+---
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
+- name: Install DHCP server on this host
+  hosts: dhcp
+  tasks:
+    - name: Include installation/dhcp role
+      include_role:
+        name: installation/dhcp

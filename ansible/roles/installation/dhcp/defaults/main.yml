@@ -1,0 +1,11 @@
+---
+dhcp_interface_name: "eth0"
+server_ip: "10.9.11.1"
+dhcp_client_ip: "10.9.11.2"
+dhcp_netmask: "255.255.255.0"
+dhcp_network: "10.9.11.0"
+dhcp_range_start: "10.9.11.5"
+dhcp_range_end: "10.9.11.254"
+dhcp_server_mac: "00:0e:c6:c0:46:97"
+dhcp_client_mac: "00:0e:c6:bd:f4:b4"
+internet_interface_name: "eth0"

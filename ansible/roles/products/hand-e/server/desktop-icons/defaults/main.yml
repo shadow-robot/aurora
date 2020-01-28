@@ -1,0 +1,17 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+container_name: "dexterous_hand_real_hw"
+config_branch: "demohand_A"
+hand_serial: ""
+setup_directory: ""
+nuc_username: "user"
+sim_icon: false
+upgrade_script: false
+hand_side_var: right
+ethercat_interface_var: "eth0"
+ethercat_interface_modified: "eth0"
+cyberglove: ""
+use_cyberglove: false
+server_ip: "10.9.11.1"

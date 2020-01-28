@@ -1,0 +1,143 @@
+---
+- name: Install isc-dhcp-server
+  apt:
+    name: isc-dhcp-server
+    state: present
+  become: yes
+
+- name: Install iptables-persistent
+  apt:
+    name: iptables-persistent
+    state: present
+  become: yes
+
+- name: Configure static IP for DHCP
+  become: yes
+  blockinfile:
+    path: /etc/network/interfaces
+    backup: yes
+    block: |
+      allow-hotplug {{ dhcp_interface_name }}
+      iface {{ dhcp_interface_name }} inet static
+        address {{ server_ip }}
+        netmask {{ dhcp_netmask }}
+        network {{ dhcp_network }}
+  changed_when: false
+
+- name: Stop DHCP service
+  service:
+    name: isc-dhcp-server
+    state: stopped
+  become: true
+  changed_when: false
+
+- name: Restart networking on DHCP interface
+  become: true
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  changed_when: false
+  register: command_result
+  failed_when: "'Unknown' in command_result.stderr"
+
+- name: Configure DHCP interface
+  become: yes
+  blockinfile:
+    path: /etc/default/isc-dhcp-server
+    backup: yes
+    block: |
+      INTERFACES="{{ dhcp_interface_name }}"
+  changed_when: false
+
+- name: Configure IPv4 forwarding
+  become: yes
+  blockinfile:
+    path: /etc/sysctl.conf
+    backup: yes
+    block: |
+      net.ipv4.ip_forward=1
+  changed_when: false
+
+- name: Configure DHCP
+  become: yes
+  blockinfile:
+    path: /etc/dhcp/dhcpd.conf
+    backup: yes
+    block: |
+      option domain-name-servers 8.8.8.8, 8.8.4.4;
+      authoritative;
+      subnet {{ dhcp_network }} netmask {{ dhcp_netmask }} {
+        range {{ dhcp_range_start }} {{ dhcp_range_end }};
+        option routers {{ server_ip }};
+        host server {
+          hardware ethernet {{ dhcp_server_mac }};
+          server-name "server";
+          fixed-address {{ server_ip }};
+        }
+        host nuc-control {
+          hardware ethernet {{ dhcp_client_mac }};
+          server-name "nuc-control";
+          fixed-address {{ dhcp_client_ip }};
+        }
+      }
+  changed_when: false
+
+- name: Configure IP forwarding and routing part 1
+  become: true
+  command: bash -c "iptables -A FORWARD -o {{ internet_interface_name }} -i {{ dhcp_interface_name }} -s {{ dhcp_network }}/24 -m conntrack --ctstate NEW -j ACCEPT"
+  changed_when: false
+
+- name: Configure IP forwarding and routing part 2
+  become: true
+  command: bash -c "iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT"
+  changed_when: false
+
+- name: Configure IP forwarding and routing part 3
+  become: true
+  command: bash -c "iptables -t nat -F POSTROUTING"
+  changed_when: false
+  
+- name: Configure IP forwarding and routing part 4
+  become: true
+  command: bash -c "iptables -t nat -A POSTROUTING -o {{ internet_interface_name }} -j MASQUERADE"
+  changed_when: false
+
+- name: Save the iptables
+  become: true
+  command: bash -c "iptables-save | sudo tee /etc/iptables.sav"
+  changed_when: false
+
+- name: Edit /etc/rc.local
+  become: yes
+  blockinfile:
+    path: /etc/rc.local
+    backup: yes
+    block: |
+      iptables-restore < /etc/iptables.sav
+    insertbefore: "exit 0"
+  changed_when: false
+
+- name: Stop DHCP service
+  service:
+    name: isc-dhcp-server
+    state: stopped
+  become: true
+  changed_when: false
+
+- name: Restart networking service
+  service:
+    name: networking
+    state: restarted
+  become: true
+
+- name: Restart networking on DHCP interface (after iptables is set)
+  become: true
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  changed_when: false
+  register: command_result
+  failed_when: "'Unknown' in command_result.stderr"
+
+- name: Start DHCP service
+  service:
+    name: isc-dhcp-server
+    state: started
+  become: true
+  changed_when: false

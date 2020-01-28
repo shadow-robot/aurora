@@ -5,6 +5,6 @@ Name={{ desktop_shortcut_name }}
 Comment={{ comment }}
 Exec=terminator -T '{{ desktop_shortcut_name }}' -e {{ folder }}/{{ shell_script_file_name }}
 Icon={{ folder }}/{{ icon_file_name }}
-Terminal=true
+Terminal={{ start_terminal }}
 Type=Application
 Categories=Utility;Application;

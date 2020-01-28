@@ -2,6 +2,7 @@
 - [Introduction](#introduction)
 - [How to run](#how-to-run)
   * [teleop_deploy](#teleop_deploy)
+  * [server_and_nuc_deploy](#server_and_nuc_deploy)
   * [docker_deploy](#docker_deploy)
   * [configure_software](#configure_software)
   * [install_software](#install_software)
@@ -88,6 +89,51 @@ For assigning input and secure input to playbook variables you can use the tags:
 **SSH and BECOME passwords:**
 
 If you are prompted for an SSH password, enter the sudo password of the NUC. For the BECOME password (i.e. the sudo password for teleop server), just press Enter, as it will default to the SSH password.
+
+## server_and_nuc_deploy ##
+
+For Hand E/G/H software deployments on a laptop (called "server" in this playbook) and a control machine (NUC)
+
+To begin with, the server_and_nuc_deploy playbook checks the installation status of docker. If docker is not installed then a 
+new clean installation is performed. If the required image is private, 
+then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
+container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
+launches the hand.
+
+**How to run:**
+
+You will be asked for a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-secure sudo_password option1=value1 option2=value2 option3=value3
+```
+
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-secure sudo_password ethercat_interface=enx5647929203 config_branch=demohand_C
+```
+
+Options for server_and_nuc_deploy playbook are here for the following machines:
+* [dhcp_installation_on_server](ansible/inventory/local/group_vars/dhcp.yml)
+* [server](ansible/inventory/server_and_nuc/group_vars/server.yml)
+* [control-machine](ansible/inventory/server_and_nuc/group_vars/control_machine.yml)
+
+Run a playbook against one or more members of that group using the --limit tag:
+
+* --limit rules (e.g. --limit 'all:!server' please use single quotes. More details could be found 
+[here](https://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/commands/#limit-to-one-or-more-hosts))
+
+For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
+
+* --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
+* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read-secure sudo_password,docker_password,customer_key - To allow aurora script to prompt for sudo password for the laptop this playbook is being run from, the docker hub password and the ROS logs upload key)
+
+**VAULT password:**
+
+Shadow will supply you with the Vault password, which is needed to decrypt some credentials to access the NUC.
 
 ## docker_deploy ##
 

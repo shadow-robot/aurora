@@ -33,6 +33,7 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: teleop_exec.sh
     icon_file_name: cyberglove_teleop.png
+    start_terminal: "true"
 
 - name: Make Desktop icon trusted
   shell: gio set "{{ user_folder }}/Desktop/Teleop_Container_Launch.desktop" "metadata::trusted" yes
@@ -66,6 +67,7 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "roslaunch-cyberglove.sh"
     icon_file_name: "cyberglove.jpg"
+    start_terminal: "true"
 
 - name: Make desktop icon for Cyberglove icon trusted
   shell: gio set "{{ user_folder }}/Desktop/Cyberglove_Launch.desktop" "metadata::trusted" yes

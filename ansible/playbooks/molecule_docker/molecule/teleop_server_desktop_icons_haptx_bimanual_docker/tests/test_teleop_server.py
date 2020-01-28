@@ -32,7 +32,7 @@ def test_icons_in_docker(host):
         'Teleop_Container_Launch',
         'Teleop_GUI_haptx_Bimanual_Launch',
         'Teleop_ROSCORE',
-        'ROS_Logs_Saver',
+        'Shadow ROS Logs Saver',
         'Teleop_Haptx_Mapping_Bimanual_Launch'
         )
     scripts = (
