@@ -45,7 +45,3 @@
 - name: Deleting unnecessary files as per libglvnd install instructions
   shell: find /usr/local/lib/x86_64-linux-gnu -type f -name 'lib*.la' -delete
   become: yes
-
-- name: Copying glvnd config file
-  shell: echo '/usr/local/lib/x86_64-linux-gnu' >> /etc/ld.so.conf.d/glvnd.conf
-  become: yes
