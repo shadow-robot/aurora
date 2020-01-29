@@ -1,0 +1,114 @@
+---
+- name: Set NUC IP address and username for SSH
+  set_fact:
+    nuc_username: "{{ hostvars[groups['control_machine'][0]]['ansible_user'] }}"
+    nuc_address: "{{ groups['control_machine'][0] }}"
+  when: groups['control_machine'] is defined
+
+- name: Set server ip
+  set_fact:
+    server_ip: "{{ groups['server'][0] }}"
+  when: groups['server'] is defined
+
+- name: Setup script names
+  set_fact:
+    setup_script: server-setup.sh
+    local_setup_script: local-server-setup.sh
+    upgrade_script: "upgrade_image.sh"
+
+- name: Include installation/docker role
+  include_role:
+    name: installation/docker
+
+- name: Include installation/terminator role
+  include_role:
+    name: installation/terminator
+
+- name: Include installation/nvidia-docker role
+  include_role:
+    name: installation/nvidia-docker
+  when: nvidia_docker | bool
+
+- name: Set chrony allowed network
+  set_fact:
+    chrony_allowed_network: "0/0"
+  when: groups['server'] is defined
+
+- name: Include installation/chrony-server role
+  include_role:
+    name: installation/chrony-server
+
+- name: Include docker/docker-image role
+  include_role:
+    name: docker/docker-image
+
+- name: Include products/common/docker-container role
+  include_role:
+    name: products/common/docker-container
+
+- name: Include products/common/cyberglove role
+  include_role:
+    name: products/common/cyberglove
+  when: use_cyberglove|bool
+
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
+- name: Include products/common/save-logs-icons role
+  include_role:
+    name: products/common/save-logs-icons
+
+- name: Include products/hand-e/server/desktop-icons role
+  include_role:
+    name: products/hand-e/server/desktop-icons
+
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  openssh_keypair:
+    path: "{{ ssh_keys_path }}"
+
+- name: Evaluating the SSH agent
+  shell: "eval $(ssh-agent)"
+  changed_when: false
+
+- name: Adding the ssh identity
+  shell: "ssh-add {{ ssh_keys_path }}"
+  changed_when: false
+  when: skip_molecule_task is not defined
+
+- name: Make a copy of SSH keys to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}.pub"
+    dest: "{{ temp_ssh_keys_path }}.pub"
+  changed_when: false
+  when: skip_molecule_task is not defined
+
+- name: Creating server setup script
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand-server.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
+    mode: '755'
+
+- name: Copying the server setup script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  become: yes
+
+- name: Creating server setup script for local hand launch
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ local_setup_script }}"
+    mode: '755'
+
+- name: Copying the server setup script for local hand launch into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ local_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ local_setup_script }}"
+  become: yes
+
+- name: Creating upgrade script
+  template:
+    src: ../../../common/resources/templates/scripts/upgrade_image.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ upgrade_script }}"
+    mode: '755'
+  when: upgrade_check|bool

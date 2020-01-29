@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-haptx"
-tag: "kinetic-v0.0.32"
+tag: "kinetic-v0.0.33"
 reinstall: false
 container_name: "teleop"
 ethercat_interface: "eth0"
@@ -19,7 +19,8 @@ use_cyberglove: false
 cyberglove: ""
 launch_hand: false
 server_hostname: "TELEOP-DEMO"
-ssh_keys_path: "/tmp/id_ssh_rsa"
+ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
+temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 terminator: false
 use_steamvr: false
 nvidia_docker: false

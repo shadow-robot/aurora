@@ -44,6 +44,8 @@
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "Teleop Server Container"
 
 - name: Include docker/aws role
   include_role:
@@ -73,6 +75,14 @@
 
 - name: Adding the ssh identity
   shell: "ssh-add {{ ssh_keys_path }}"
+  changed_when: false
+  when: skip_molecule_task is not defined
+
+- name: Make a copy of SSH keys to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}.pub"
+    dest: "{{ temp_ssh_keys_path }}.pub"
+    mode: '644'
   changed_when: false
   when: skip_molecule_task is not defined
 

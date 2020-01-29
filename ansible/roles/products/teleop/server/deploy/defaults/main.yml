@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-haptx"
-tag: "kinetic-v0.0.32"
+tag: "kinetic-v0.0.33"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true
@@ -19,7 +19,8 @@ use_cyberglove: false
 remote_cyberglove: false
 launch_hand: false
 config_branch: "demohand_A"
-ssh_keys_path: "/tmp/id_ssh_rsa"
+ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
+temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
 nuc_address: "10.9.10.2"
 upgrade_check: false

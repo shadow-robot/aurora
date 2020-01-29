@@ -38,6 +38,7 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
+    start_terminal: "true"
 
 - name: Make desktop icon for demohand trusted
   shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop" "metadata::trusted" yes

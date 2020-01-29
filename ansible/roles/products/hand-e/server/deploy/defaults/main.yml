@@ -1,0 +1,32 @@
+---
+image: "shadowrobot/dexterous-hand"
+tag: "kinetic-release"
+reinstall: false
+container_name: "dexterous_hand_real_hw"
+nvidia_docker: true
+use_aws: false
+ethercat_interface: "eth0"
+ethercat_left_hand: "eth0"
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+nuc_username: "user"
+setup_directory: "/usr/local/bin"
+launch_hand: false
+config_branch: "demohand_A"
+ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
+temp_ssh_keys_path: "/tmp/id_ssh_rsa"
+save_nuc_logs: true
+nuc_address: "10.9.11.2"
+upgrade_check: false
+terminator: true
+use_steamvr: true
+sim_icon: false
+demo_icons: true
+sim_hand: false
+encryption_password: ""
+cyberglove: ""
+server_ip: "10.9.11.1"
+hand_side: "right"
+hand_serial: "1082"
+use_cyberglove: false

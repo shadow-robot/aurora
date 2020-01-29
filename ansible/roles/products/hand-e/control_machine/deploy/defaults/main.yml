@@ -1,0 +1,26 @@
+---
+image: "shadowrobot/dexterous-hand"
+tag: "kinetic-release"
+reinstall: false
+container_name: "dexterous_hand_real_hw"
+ethercat_interface: "eth0"
+ethercat_left_hand: "enx1"
+config_branch: "demohand_A"
+allow_auto_reboot: true
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+setup_directory: "/usr/local/bin"
+use_aws: false
+launch_hand: false
+server_hostname: "SERVER"
+ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
+temp_ssh_keys_path: "/tmp/id_ssh_rsa"
+terminator: false
+use_steamvr: false
+nvidia_docker: false
+sim_hand: false
+hand_side: "right"
+hand_serial: "1082"
+use_cyberglove: false
+cyberglove: ""

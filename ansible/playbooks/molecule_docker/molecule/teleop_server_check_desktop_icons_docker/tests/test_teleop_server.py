@@ -18,7 +18,7 @@ def test_icons_in_docker(host):
         'Teleop_Container_Launch',
         'Teleop_GUI',
         'Teleop_ROSCORE',
-        'ROS_Logs_Saver_And_Uploader'
+        'Shadow ROS Logs Saver and Uploader'
         )
     scripts = (
         'teleop_exec_A',

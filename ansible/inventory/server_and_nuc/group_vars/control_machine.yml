@@ -1,0 +1,32 @@
+---
+image: "shadowrobot/dexterous-hand" # Docker image name
+tag: "kinetic-release" # Tag of the exact Docker hub image to pull
+product: '' # Name of the product (hand_e or hand_h)
+reinstall: false # Flag to know if the docker container should be fully reinstalled
+container_name: "dexterous_hand_real_hw" # Name of the docker container
+ethercat_interface: "eth0" # Ethercat interface of the right hand
+config_branch: "demohand_A" # Specify the branch for the specific hand E (or for bimanual: branch for both hands)
+allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
+use_aws: false # Flag to prompt for customer key for uploading files to AWS
+setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
+terminator: false # Launch terminator when the Docker starts
+nvidia_docker: false # Define if nvidia docker 2 is used (defaul is false)
+optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
+launch_hand: false # Specify if hand driver should start when double clicking desktop icon
+upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
+hand_side: "right" # Specify if the hand is right hand or left hand (rh or lh)
+hand_serial: "1082" # Specify the hand serial number
+ansible_become_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37666530346662303365643738316338633231613365666339383135616237666336646133326435
+          6166613437633262363964613332343363343439323534300a323538326234326139313133653861
+          31613934306166313637326339313136393537393664663664353862613762646333646437646630
+          3331323561646639620a363162363661363834616465393132383664363038666532323162393934
+          3239
+ansible_ssh_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37666530346662303365643738316338633231613365666339383135616237666336646133326435
+          6166613437633262363964613332343363343439323534300a323538326234326139313133653861
+          31613934306166313637326339313136393537393664663664353862613762646333646437646630
+          3331323561646639620a363162363661363834616465393132383664363038666532323162393934
+          3239

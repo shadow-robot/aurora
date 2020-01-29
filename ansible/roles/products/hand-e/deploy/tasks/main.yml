@@ -11,6 +11,8 @@
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "Hand E Container"
 
 - name: Include products/common/save-logs-icons role
   include_role:
@@ -72,6 +74,7 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: shadow_launcher_exec.sh
     icon_file_name: hand-e.png
+    start_terminal: "true"
 
 - name: Make Shadow_Hand_Launcher Trusted
   shell: gio set "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop" "metadata::trusted" yes
