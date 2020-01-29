@@ -14,7 +14,8 @@ nuc_username: "user"
 setup_directory: "/usr/local/bin"
 launch_hand: false
 config_branch: "demohand_A"
-ssh_keys_path: "/tmp/id_ssh_rsa"
+ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
+temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
 nuc_address: "10.9.11.2"
 upgrade_check: false

@@ -41,15 +41,15 @@
     name: docker/aws
   when: use_aws|bool
 
-- name: Check if the ssh public key has been generated in ssh_keys_path folder on machine running Ansible (server laptop)
+- name: Check if the ssh public key has been generated and copied to temp_ssh_keys_path folder on machine running Ansible (server laptop)
   stat:
-    path: "{{ ssh_keys_path }}.pub"
+    path: "{{ temp_ssh_keys_path }}.pub"
   register: ssh_result
   delegate_to: 127.0.0.1
 
 - name: Copy SSH public key from server to control machine (if it exists in server laptop)
   copy:
-    src: "{{ ssh_keys_path }}.pub"
+    src: "{{ temp_ssh_keys_path }}.pub"
     dest: "{{ ssh_keys_path }}.pub"
     mode: '644'
   when: ssh_result.stat.exists
@@ -59,7 +59,7 @@
 - name: Register SSH public key with current user on the control machine
   authorized_key:
     user: "{{ user }}"
-    key: "{{ lookup('file', '{{ ssh_keys_path }}.pub') }}"
+    key: "{{ lookup('file', '{{ temp_ssh_keys_path }}.pub') }}"
     state: present
   when: ssh_result.stat.exists
   changed_when: false
