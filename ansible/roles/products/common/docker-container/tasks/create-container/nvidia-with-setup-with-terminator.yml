@@ -36,5 +36,8 @@
     - /usr/lib/nvidia-{{ nvidia_driver_version.stdout }}:/usr/lib/nvidia-{{ nvidia_driver_version.stdout }}
     - /dev/input:/dev/input[rw]
     - /run/udev/data:/run/udev/data
-    command: "terminator -T '{{ container_terminal_title }}' -x bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
+    command: 
+    - bash -c 'echo "/usr/local/lib/x86_64-linux-gnu" >> /etc/ld.so.conf.d/glvnd.conf'
+    - ldconfig
+    -"terminator -T '{{ container_terminal_title }}' -x bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes
