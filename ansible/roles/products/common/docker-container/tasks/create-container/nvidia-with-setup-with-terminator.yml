@@ -29,7 +29,6 @@
     - /dev/input:/dev/input[rw]
     - /run/udev/data:/run/udev/data
     command: >
-      "terminator -T '{{ container_terminal_title }}' -x bash -c
-      'echo "/usr/local/lib/x86_64-linux-gnu" | sudo tee -a /etc/ld.so.conf.d/glvnd.conf && sudo ldconfig &&
-      {{ setup_directory }}/{{ setup_script }} && bash || bash'"
+      "sudo bash -c 'echo /usr/local/lib/x86_64-linux-gnu >> /etc/ld.so.conf.d/glvnd.conf && ldconfig';"
+      "terminator -T '{{ container_terminal_title }}' -x bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes
