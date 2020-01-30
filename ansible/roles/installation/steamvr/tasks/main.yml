@@ -35,55 +35,29 @@
   when: '"libudev0" not in ansible_facts.packages'
   become: yes
 
-- name: Create steamcmd directory
-  file:
-    path: "{{ user_home_dir }}/steamcmd"
-    state: directory
+- name: Ensure botocore and boto3 modules are installed
+  pip:
+    name: [ "boto3", "botocore"]
+    extra_args: "--user"
 
-- name: Unarchive steamcmd_linux from the internet
+- name: Downloading steamvr 1.5.15
+  aws_s3:
+    aws_access_key: "{{ lookup('env','aws_key') }}"
+    aws_secret_key: "{{ lookup('env','aws_secret') }}"
+    bucket: shadowrobot.aurora.files
+    object: /server/steamvr/steam.tar.gz
+    dest: "{{ user_home_dir }}/steam.tar.gz"
+    mode: get
+ 
+- name: Extracting steamvr
   unarchive:
-    src: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
-    dest: "{{ user_home_dir }}/steamcmd"
-    remote_src: yes
-    creates: "{{ user_home_dir }}/steamcmd/steamcmd.sh"
+    src: "{{ user_home_dir }}/steam.tar.gz"
+    dest: "{{ user_home_dir }}/"
 
-- name: Install and update steamcmd
-  shell: "{{ user_home_dir }}/steamcmd/steamcmd.sh +login anonymous +quit"
-  args:
-    creates: "{{ user_home_dir }}/steamcmd/package/steam_cmd_linux.installed"
-
-- name: Create sdk32 directory
+- name: Removing steamvr.tar.gz file
   file:
-    path: "{{ user_home_dir }}/.steam/sdk32"
-    state: directory
-
-- name: Create sdk64 directory
-  file:
-    path: "{{ user_home_dir }}/.steam/sdk64"
-    state: directory
-
-- name: Copy 32bit steamclient
-  copy:
-    src: "{{ user_home_dir }}/steamcmd/linux32/steamclient.so"
-    dest: "{{ user_home_dir }}/.steam/sdk32"
-    remote_src: true
-
-- name: Copy 64bit steamclient
-  copy:
-    src: "{{ user_home_dir }}/steamcmd/linux64/steamclient.so"
-    dest: "{{ user_home_dir }}/.steam/sdk64"
-    remote_src: true
-
-- name: Install and update steamvr (retrying for 10 minutes if there are network problems)
-  command: >
-    {{ user_home_dir }}/steamcmd/steamcmd.sh +login shadow_software_1 shadow_software
-    +force_install_dir {{ user_home_dir }}/.steam +app_update 250820 -beta beta validate +quit
-  args:
-    creates: "{{ user_home_dir }}/.steam/bin/vrstartup.sh"
-  register: steamvr_install_job
-  until: steamvr_install_job is success
-  retries: 120
-  delay: 5
+    path: "{{ user_home_dir }}/steam.tar.gz"
+    state: absent
 
 - name: Fix setcap error in vrstartup.sh
   capabilities:
