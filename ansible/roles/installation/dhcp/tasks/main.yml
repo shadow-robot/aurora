@@ -65,7 +65,7 @@
     dhcp_server_mac: "{{ hostvars[groups['dhcp'][0]]['ansible_'+dhcp_interface_name]['macaddress'] }}"
 
 - name: Run arp to get dhcp_client_mac
-  shell: "arp -i {{ dhcp_interface_name }} | awk 'NR== 2 {print $3}'"
+  shell: "arp -i {{ dhcp_interface_name }} | awk '{print $3}' | grep -E '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'"
   register: arp_output
   changed_when: arp_output.rc !=0
 
