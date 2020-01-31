@@ -11,6 +11,10 @@
     state: present
   become: yes
 
+- name: Get dhcp_interface_name
+  set_fact:
+    dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
+
 - name: Configure static IP for DHCP
   become: yes
   blockinfile:
@@ -55,6 +59,24 @@
     block: |
       net.ipv4.ip_forward=1
   changed_when: false
+
+- name: Get dhcp_server_mac
+  set_fact:
+    dhcp_server_mac: "{{ hostvars[groups['dhcp'][0]]['ansible_'+dhcp_interface_name]['macaddress'] }}"
+
+- name: Run arp to get dhcp_client_mac
+  shell: "arp -i {{ dhcp_interface_name }} | awk 'NR== 2 {print $3}'"
+  register: arp_output
+  changed_when: arp_output.rc !=0
+
+- name: Get dhcp_client_mac
+  set_fact:
+    dhcp_client_mac: "{{ arp_output.stdout }}"
+  when: arp_output.stdout | length > 0
+
+- name: Get internet_interface_name
+  set_fact:
+    internet_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_default_ipv4']['interface'] }}"
 
 - name: Configure DHCP
   become: yes
