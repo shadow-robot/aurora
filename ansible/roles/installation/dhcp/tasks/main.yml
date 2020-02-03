@@ -64,18 +64,17 @@
   set_fact:
     dhcp_server_mac: "{{ hostvars[groups['dhcp'][0]]['ansible_'+dhcp_interface_name]['macaddress'] }}"
 
+- name: Start DHCP service to get dhcp_client_mac
+  service:
+    name: isc-dhcp-server
+    state: started
+  become: true
+  changed_when: false
+
 - name: Run arp to get dhcp_client_mac
   shell: "arp -i {{ dhcp_interface_name }} | awk '{print $3}' | grep -E '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'"
   register: arp_output
   changed_when: arp_output.rc !=0
-  ignore_errors: true
-  become: true
-
-- name: Run arp to get dhcp_client_mac 2
-  shell: "arp -i {{ dhcp_interface_name }} | awk '{print $3}'"
-  register: arp_output2
-  changed_when: arp_output2.rc !=0
-  ignore_errors: true
   become: true
 
 - name: Run arp to get dhcp_client_mac 3
@@ -85,10 +84,6 @@
   ignore_errors: true
   become: true
 
-- name: debug
-  debug:
-    msg: arp_output2
-
 - name: debug2
   debug:
     msg: arp_output3
@@ -97,6 +92,13 @@
   set_fact:
     dhcp_client_mac: "{{ arp_output.stdout }}"
   when: arp_output.stdout | length > 0
+
+- name: Stop DHCP service before we configure it properly with dhcp_client_mac
+  service:
+    name: isc-dhcp-server
+    state: stopped
+  become: true
+  changed_when: false
 
 - name: Get internet_interface_name
   set_fact:
@@ -159,13 +161,6 @@
     block: |
       iptables-restore < /etc/iptables.sav
     insertbefore: "exit 0"
-  changed_when: false
-
-- name: Stop DHCP service
-  service:
-    name: isc-dhcp-server
-    state: stopped
-  become: true
   changed_when: false
 
 - name: Restart networking service
