@@ -15,16 +15,16 @@
     dest: "{{ launch_file_path }}"
     mode: '755'
 
-- name: Get the hand_serial from the launch file
+- name: Get the hand_serial xml_response from the launch file
   xml:
     path: "{{ launch_file_path }}"
-    xpath: "//attribute::*[contains(., 's{{ hand_side[0] }}hand.launch')]/..//attribute::*[contains(., 'hand_serial')]/../@value"
-    content: text
-  register: hand_serial
+    xpath: "//attribute::*[contains(., 's{{ hand_side[0] }}hand.launch')]/..//attribute::*[contains(., 'hand_serial')]/.."
+    content: attribute
+  register: xml_response
 
-- name: debug2
-  debug:
-    msg: "{{ hand_serial }}"
+- name: Set the hand_serial from xml_response
+  set_fact:
+    hand_serial: xml_response.matches[0].value
 
 - name: Create executable launch script for hand
   template:
