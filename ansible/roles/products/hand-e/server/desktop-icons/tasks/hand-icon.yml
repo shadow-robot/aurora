@@ -24,7 +24,7 @@
 
 - name: Set the hand_serial from xml_response
   set_fact:
-    hand_serial: "{{ xml_response.matches[0].value }}"
+    hand_serial: "{{ xml_response.matches[0].arg.value }}"
 
 - name: Create executable launch script for hand
   template:
