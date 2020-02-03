@@ -20,7 +20,7 @@
     path: "{{ launch_file_path }}"
     xpath: //attribute::*[contains(., 'srhand.launch')]/..//attribute::*[contains(., 'hand_serial')]/../@value
     content: text
-    register: hand_serial
+  register: hand_serial
 
 - name: Create executable launch script for hand
   template:
