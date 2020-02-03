@@ -48,7 +48,7 @@
     object: /server/steamvr/steam.tar.gz
     dest: "{{ user_home_dir }}/steam.tar.gz"
     mode: get
- 
+
 - name: Extracting steamvr
   unarchive:
     src: "{{ user_home_dir }}/steam.tar.gz"
@@ -65,4 +65,3 @@
     capability: cap_sys_nice+eip
     state: present
   become: yes
-

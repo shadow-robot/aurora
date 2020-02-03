@@ -11,6 +11,10 @@
     state: present
   become: yes
 
+- name: Get dhcp_interface_name
+  set_fact:
+    dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
+
 - name: Configure static IP for DHCP
   become: yes
   blockinfile:
@@ -55,6 +59,45 @@
     block: |
       net.ipv4.ip_forward=1
   changed_when: false
+
+- name: Get dhcp_server_mac
+  set_fact:
+    dhcp_server_mac: "{{ hostvars[groups['dhcp'][0]]['ansible_'+dhcp_interface_name]['macaddress'] }}"
+
+- name: Start DHCP service to get dhcp_client_mac
+  service:
+    name: isc-dhcp-server
+    state: started
+  become: true
+  changed_when: false
+
+- name: Wait 5 seconds for dhcp_client_mac to be available in arp
+  wait_for: 
+    timeout: 5
+
+- name: Running arp until dhcp_client_mac has been obtained
+  shell: "arp -i {{ dhcp_interface_name }} | awk '{print $3}' | grep -E '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'"
+  register: arp_output
+  until: arp_output.rc == 0
+  retries: 10
+  delay: 2
+  become: true
+
+- name: Get dhcp_client_mac
+  set_fact:
+    dhcp_client_mac: "{{ arp_output.stdout }}"
+  when: arp_output.stdout | length > 0
+
+- name: Stop DHCP service before we configure it properly with dhcp_client_mac
+  service:
+    name: isc-dhcp-server
+    state: stopped
+  become: true
+  changed_when: false
+
+- name: Get internet_interface_name
+  set_fact:
+    internet_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_default_ipv4']['interface'] }}"
 
 - name: Configure DHCP
   become: yes
@@ -113,13 +156,6 @@
     block: |
       iptables-restore < /etc/iptables.sav
     insertbefore: "exit 0"
-  changed_when: false
-
-- name: Stop DHCP service
-  service:
-    name: isc-dhcp-server
-    state: stopped
-  become: true
   changed_when: false
 
 - name: Restart networking service
