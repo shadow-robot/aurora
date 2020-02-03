@@ -18,7 +18,7 @@
 - name: Get the hand_serial xml_response from the launch file
   xml:
     path: "{{ launch_file_path }}"
-    xpath: "//attribute::*[contains(., 's{{ hand_side[0] }}hand.launch')]/..//attribute::*[contains(., 'hand_serial')]/.."
+    xpath: "//attribute::*[contains(., 'srhand.launch')]/..//attribute::*[contains(., 'hand_serial')]/.."
     content: attribute
   register: xml_response
 
