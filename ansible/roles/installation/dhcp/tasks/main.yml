@@ -79,7 +79,7 @@
   become: true
 
 - name: Run arp to get dhcp_client_mac 3
-  shell: "arp -i {{ dhcp_interface_name }}"
+  shell: "arp"
   register: arp_output3
   changed_when: arp_output3.rc !=0
   ignore_errors: true
