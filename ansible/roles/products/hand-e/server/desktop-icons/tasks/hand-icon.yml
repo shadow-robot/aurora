@@ -5,6 +5,23 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
+- name: Set launch file path based on hand_side {{ hand_side }} for getting hand_serial
+  set_fact:
+    launch_file_path: "{{ shadow_hand_launcher_folder }}/sr_{{ hand_side[0] }}hand.launch"
+
+- name: Download the launch file config branch {{ config_branch }} and hand_side {{ hand_side }} from Github
+  get_url:
+    url: "https://raw.githubusercontent.com/shadow-robot/sr-config/{{ config_branch }}/sr_ethercat_hand_config/launch/sr_{{ hand_side[0] }}hand.launch"
+    dest: "{{ launch_file_path }}"
+    mode: '755'
+
+- name: Get the hand_serial from the launch file
+  xml:
+    path: "{{ launch_file_path }}"
+    xpath: //attribute::*[contains(., 'srhand.launch')]/..//attribute::*[contains(., 'hand_serial')]/../@value
+    content: text
+    register: hand_serial
+
 - name: Create executable launch script for hand
   template:
     src: templates/scripts/start-docker-container-nuc.j2
