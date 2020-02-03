@@ -71,24 +71,17 @@
   become: true
   changed_when: false
 
+- name: Wait 5 seconds for dhcp_client_mac to be available in arp
+  wait_for: 
+    timeout: 5
+
 - name: Running arp until dhcp_client_mac has been obtained
   shell: "arp -i {{ dhcp_interface_name }} | awk '{print $3}' | grep -E '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'"
   register: arp_output
-  until: arp_output.rc ==0
+  until: arp_output.rc == 0
   retries: 10
   delay: 2
   become: true
-
-- name: Run arp to get dhcp_client_mac 3
-  shell: "arp"
-  register: arp_output3
-  changed_when: arp_output3.rc !=0
-  ignore_errors: true
-  become: true
-
-- name: debug2
-  debug:
-    msg: arp_output3
 
 - name: Get dhcp_client_mac
   set_fact:
