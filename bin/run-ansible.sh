@@ -54,7 +54,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     if [[ -z ${read_secure} ]]; then
         read_secure="sudo_password"
     else
-        read_secure=$read_secure+",sudo_password"
+        read_secure=$read_secure",sudo_password"
     fi
 fi
 
