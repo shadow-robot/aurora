@@ -21,7 +21,8 @@ def test_icons_in_docker(host):
         'Shadow NUC RQT',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch NUC Container and Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Launch NUC Container ' + \
+        'and Hardware Control Loop',
         'Shadow Advanced Launchers/4 - Launch Server GUI',
         'Shadow Advanced Launchers/Launch NUC Container',
         'Shadow Demos/Close Right Hand',
