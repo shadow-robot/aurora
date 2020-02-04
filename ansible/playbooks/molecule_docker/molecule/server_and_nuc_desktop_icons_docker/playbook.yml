@@ -1,14 +1,12 @@
 ---
 - name: Server_and_nuc playbook server desktop icons
   import_playbook: ../../../server_and_nuc_deploy.yml
+    sudo_password="ubuntu"
+    skip_molecule_task=true
     reinstall=true
     ethercat_interface="enp0s25"
-    image="shadowrobot/dexterous-hand"
-    tag="kinetic-release"
     nvidia_docker=false
-    skip_molecule_task=true
     config_branch="demohand_A"
     product="hand_e"
     upgrade_check=true
     launch_hand=true
-    sudo_password="ubuntu"
