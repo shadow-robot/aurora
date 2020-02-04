@@ -3,6 +3,7 @@
   import_playbook: ../../../server_and_nuc_deploy.yml
     sudo_password="ubuntu"
     skip_molecule_task=true
+    allow_auto_reboot=true
     reinstall=true
     ethercat_interface="enp0s25"
     nvidia_docker=false
