@@ -18,6 +18,8 @@ playbook=$1
 aurora_limit=all
 shift
 
+
+
 while [[ $# -gt 1 ]]
 do
 key="$1"
@@ -47,6 +49,14 @@ case ${key} in
     ;;
 esac
 done
+
+if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
+    if [[ -z ${read_secure} ]]; then
+        read_secure="sudo_password"
+    else
+        read_secure=$read_secure",sudo_password"
+    fi
+fi
 
 if [[ -z ${aurora_tools_branch} ]];
 then
