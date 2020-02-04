@@ -11,3 +11,4 @@
     product="hand_e"
     upgrade_check=true
     launch_hand=true
+    sudo_password="ubuntu"
