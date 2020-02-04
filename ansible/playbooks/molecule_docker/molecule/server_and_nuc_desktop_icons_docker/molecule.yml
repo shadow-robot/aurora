@@ -12,6 +12,10 @@ platforms:
       - server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
+    privileged: true
+    capabilities:
+      - NET_ADMIN
+      - NET_RAW
 provisioner:
   name: ansible
   env:
