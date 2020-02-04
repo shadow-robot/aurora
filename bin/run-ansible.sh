@@ -18,6 +18,10 @@ playbook=$1
 aurora_limit=all
 shift
 
+if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
+    read_secure="sudo_password"
+fi
+
 while [[ $# -gt 1 ]]
 do
 key="$1"
