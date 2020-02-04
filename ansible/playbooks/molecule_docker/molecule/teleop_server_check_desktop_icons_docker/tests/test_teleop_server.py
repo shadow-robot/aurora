@@ -39,6 +39,7 @@ def test_icons_in_docker(host):
     save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
     assert host.file(save_logs_file).exists
 
+
 def test_openvpn_server_files(host):
     openvpn_path = '/etc/openvpn/'
 
