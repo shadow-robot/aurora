@@ -7,14 +7,14 @@ lint:
   name: yamllint
 platforms:
   # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
-  - name: teleop_client_check_desktop_icons_docker_ec2_${CODEBUILD_BUILD_ID}
+  - name: server_and_nuc_desktop_icons_docker_ec2_${CODEBUILD_BUILD_ID}
     image: ami-04606ba5d5fb731cc
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-0f8cc2cc245d57eb4
     vpc_subnet_id: subnet-09c91c82c471613fc
     groups:
-      - client
+      - server
 provisioner:
   name: ansible
   env:
@@ -23,16 +23,16 @@ provisioner:
     ansible_python_interpreter: /usr/bin/python3
   inventory:
     links:
-      group_vars: ../../../../inventory/teleop/group_vars
+      group_vars: ../../../../inventory/server_and_nuc/group_vars
   playbooks:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
-    converge: ../../../molecule_docker/molecule/teleop_client_check_desktop_icons_docker/playbook.yml
+    converge: ../../../molecule_docker/molecule/server_and_nuc_desktop_icons_docker/playbook.yml
   lint:
     name: ansible-lint
 verifier:
   name: testinfra
-  directory: ../../../molecule_docker/molecule/teleop_client_check_desktop_icons_docker/tests/
+  directory: ../../../molecule_docker/molecule/server_and_nuc_desktop_icons_docker/tests/
   lint:
     name: flake8
