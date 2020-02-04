@@ -1,7 +1,7 @@
 ---
 - name: Server_and_nuc playbook server desktop icons
   import_playbook: ../../../server_and_nuc_deploy.yml
-    ansible_become_pass="ubuntu"
+    sudo_password="ubuntu"
     skip_molecule_task=true
     reinstall=true
     ethercat_interface="enp0s25"
