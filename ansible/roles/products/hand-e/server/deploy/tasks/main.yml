@@ -20,6 +20,10 @@
   include_role:
     name: installation/docker
 
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
+
 - name: Include installation/terminator role
   include_role:
     name: installation/terminator
