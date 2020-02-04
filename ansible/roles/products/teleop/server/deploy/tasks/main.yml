@@ -67,7 +67,7 @@
 
 - name: Ensure the .ssh folder exists
   file:
-    path: "{{ ssh_keys_path }}"
+    path: "{{ user_folder }}/.ssh/"
     mode: '700'
     state: directory
 
