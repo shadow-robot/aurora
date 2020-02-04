@@ -31,8 +31,6 @@
     src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
-  vars:
-    config_branch: "{{ hand_branch }}"
 
 - name: Create desktop icon for hand
   template:
