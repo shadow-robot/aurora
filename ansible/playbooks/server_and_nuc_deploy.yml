@@ -21,7 +21,7 @@
         state: present
         # Allowing Ansible to modify /etc/hosts inside Docker containers
         unsafe_writes: yes
-      when: hostvars[item].ansible_host is defined
+      when: hostvars[item].ansible_host is defined and skip_molecule_task is not defined
       with_items: "{{ groups.all }}"
       become: yes
 
