@@ -64,6 +64,12 @@
   include_role:
     name: products/hand-e/server/desktop-icons
 
+- name: Ensure the .ssh folder exists
+  file:
+    path: "{{ ssh_keys_path }}"
+    mode: '700'
+    state: directory
+
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   openssh_keypair:
     path: "{{ ssh_keys_path }}"
