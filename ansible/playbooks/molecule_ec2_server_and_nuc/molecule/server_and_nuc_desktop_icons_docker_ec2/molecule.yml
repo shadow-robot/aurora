@@ -21,11 +21,10 @@ provisioner:
     ANSIBLE_ROLES_PATH: ../../../../roles
   connection_options:
     ansible_python_interpreter: /usr/bin/python3
+    sudo_password: ubuntu
   inventory:
     links:
       group_vars: ../../../../inventory/server_and_nuc/group_vars
-  ansible_args:
-    - sudo_password=ubuntu
   playbooks:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
