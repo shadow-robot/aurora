@@ -14,6 +14,10 @@
   include_role:
     name: installation/docker
 
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
+
 - name: Include installation/terminator role
   include_role:
     name: installation/terminator
@@ -64,6 +68,12 @@
 - name: Include products/teleop/server/desktop-icons role
   include_role:
     name: products/teleop/server/desktop-icons
+
+- name: Ensure the .ssh folder exists
+  file:
+    path: "{{ user_folder }}/.ssh/"
+    mode: '700'
+    state: directory
 
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   openssh_keypair:

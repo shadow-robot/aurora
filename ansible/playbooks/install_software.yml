@@ -21,3 +21,4 @@
     - {role: installation/steamvr, when: "'steamvr' in software_list"}
     - {role: installation/libglvnd, when: "'libglvnd' in software_list"}
     - {role: installation/terminator, when: "'terminator' in software_list"}
+    - {role: installation/lxml, when: "'lxml' in software_list"}

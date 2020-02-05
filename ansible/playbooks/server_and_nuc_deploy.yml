@@ -7,6 +7,7 @@
     - name: Extract hostname from server
       set_fact:
         ansible_host: "{{ ansible_hostname }}"
+      when: skip_molecule_task is not defined
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: 127.0.0.1

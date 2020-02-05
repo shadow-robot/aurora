@@ -2,7 +2,7 @@
 - name: Teleop deploy playbook for teleop server
   import_playbook: ../../../teleop_deploy.yml
     reinstall=true
-    use_openvpn=false
+    use_openvpn=true
     ethercat_interface="enp0s25"
     image="shadowrobot/dexterous-hand"
     tag="kinetic-release"
@@ -11,3 +11,4 @@
     allow_auto_reboot=true
     customer_key="invalidkey"
     glove="cyberglove"
+    sim_icon=true

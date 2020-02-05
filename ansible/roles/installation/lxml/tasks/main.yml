@@ -1,0 +1,23 @@
+---
+- name: Check pip3 installed (will prevent reinstallation in case if pip3 was installed without Apt)
+  command: pip3 --version
+  register: pip_status
+  ignore_errors: yes
+  changed_when: pip_status.rc != 0
+
+- name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
+  apt:
+    name: 'python3-pip'
+    state: 'present'
+    update_cache: yes
+  when: pip_status.rc != 0
+  become: yes
+
+- name: Install lxml pip module
+  pip:
+    name: lxml
+    state: present
+  become: yes
+  changed_when: pip_status.rc != 0
+  # Hack because of not idempotent behavior of pip module
+  # Check this issue for details https://github.com/ansible/ansible/issues/28952

@@ -6,7 +6,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: teleop_server_check_openvpn_docker
+  - name: server_and_nuc_desktop_icons_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
     groups:
       - server
@@ -22,7 +22,7 @@ provisioner:
     ANSIBLE_ROLES_PATH: ../../../../roles
   inventory:
     links:
-      group_vars: ../../../../inventory/teleop/group_vars
+      group_vars: ../../../../inventory/server_and_nuc/group_vars
   lint:
     name: ansible-lint
 verifier:
