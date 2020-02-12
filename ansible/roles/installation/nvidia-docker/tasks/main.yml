@@ -1,9 +1,8 @@
 ---
-- name: remove packages
+- name: remove nvidia-docker1 before installing nvidia-docker2
   apt:
     name:
       - nvidia-docker
-      - nvidia-docker2
     state: absent
     autoremove: yes
     purge: yes
