@@ -13,7 +13,9 @@
 - name: Setup script names
   set_fact:
     setup_script: server-setup.sh
-    local_setup_script: local-server-setup.sh
+    local_right_setup_script: local-right-server-setup.sh
+    local_left_setup_script: local-left-server-setup.sh
+    local_bimanual_setup_script: local-bimanual-server-setup.sh
     upgrade_script: "upgrade_image.sh"
 
 - name: Include installation/docker role
@@ -113,16 +115,50 @@
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
 
-- name: Creating server setup script for local hand launch
+- name: Creating server setup script for local right hand launch
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ local_setup_script }}"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ local_right_setup_script }}"
     mode: '755'
+  vars:
+    launch_file_name: "sr_rhand.launch"
+  when: bimanual|bool or hand_side=="right"
 
-- name: Copying the server setup script for local hand launch into docker container
+- name: Creating server setup script for local left hand launch
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ local_left_setup_script }}"
+    mode: '755'
+  vars:
+    launch_file_name: "sr_lhand.launch"
+  when: bimanual|bool or hand_side=="left"
+
+- name: Creating server setup script for local bimanual hand launch
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ local_bimanual_setup_script }}"
+    mode: '755'
+  vars:
+    launch_file_name: "sr_bimanual.launch"
+  when: bimanual|bool
+
+- name: Copying the server setup script for local right hand launch into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ local_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ local_setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ local_right_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ local_right_setup_script }}"
   become: yes
+  when: bimanual|bool or hand_side=="right"
+
+- name: Copying the server setup script for local left hand launch into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ local_left_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ local_left_setup_script }}"
+  become: yes
+  when: bimanual|bool or hand_side=="left"
+
+- name: Copying the server setup script for local bimanual hand launch into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ local_bimanual_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ local_bimanual_setup_script }}"
+  become: yes
+  when: bimanual|bool
 
 - name: Creating upgrade script
   template:

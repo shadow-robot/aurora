@@ -70,6 +70,8 @@
     src: ../../../common/resources/templates/scripts/setup-hand-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
+  vars:
+    launch_file_name: "sr_rhand.launch"
 
 - name: Copying control_machine setup script into docker container
   changed_when: false

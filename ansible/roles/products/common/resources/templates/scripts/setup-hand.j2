@@ -4,6 +4,7 @@ source /home/user/projects/shadow_robot/base/devel/setup.bash
 roscd sr_ethercat_hand_config/launch
 git checkout sr_rhand.launch
 git checkout sr_lhand.launch
+git checkout sr_bimanual.launch
 git remote set-url origin https://github.com/shadow-robot/sr-config.git
 echo -e Pulling changes from the sr_config repo...
 git fetch
@@ -28,11 +29,12 @@ if {{ use_cyberglove | lower }}; then
     git checkout {{ cyberglove }}
 fi
 sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
-sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
+sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
+sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}_{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
 if {{ launch_hand | lower }}; then
     if {{ sim_hand | lower }}; then
         roslaunch sr_robot_launch srhand.launch
     else
-        roslaunch sr_ethercat_hand_config sr_rhand.launch 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        roslaunch sr_ethercat_hand_config {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 fi
