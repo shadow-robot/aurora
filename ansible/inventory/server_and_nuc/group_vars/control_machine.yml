@@ -5,6 +5,7 @@ product: '' # Name of the product (hand_e or hand_h)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "dexterous_hand_real_hw" # Name of the docker container
 ethercat_interface: "eth0" # Ethercat interface of the right hand
+ethercat_left_hand: "enx1" # Ethercat interface of the left hand
 config_branch: "demohand_A" # Specify the branch for the specific hand E (or for bimanual: branch for both hands)
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
@@ -14,8 +15,10 @@ nvidia_docker: false # Define if nvidia docker 2 is used (defaul is false)
 optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
 launch_hand: false # Specify if hand driver should start when double clicking desktop icon
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
-hand_side: "right" # Specify if the hand is right hand or left hand (rh or lh)
-hand_serial: "1082" # Specify the hand serial number
+hand_side: "right" # Specify if the hand is right or left (skip for bimanual)
+bimanual: false # Specify if both left and right hands are used or not
+hand_serial: "1082" # Specify the right hand serial number
+hand_serial_left: "2346" # Specify the left hand serial number
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435
