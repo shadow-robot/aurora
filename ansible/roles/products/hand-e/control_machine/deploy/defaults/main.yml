@@ -20,7 +20,9 @@ terminator: false
 use_steamvr: false
 nvidia_docker: false
 sim_hand: false
+bimanual: false
 hand_side: "right"
 hand_serial: "1082"
+hand_serial_left: "2346"
 use_cyberglove: false
 cyberglove: ""

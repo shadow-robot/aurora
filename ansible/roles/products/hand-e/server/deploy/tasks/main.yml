@@ -64,6 +64,10 @@
   include_role:
     name: products/common/save-logs-icons
 
+- name: Include products/common/hand-serial role
+  include_role:
+    name: products/common/hand-serial
+
 - name: Include products/hand-e/server/desktop-icons role
   include_role:
     name: products/hand-e/server/desktop-icons
