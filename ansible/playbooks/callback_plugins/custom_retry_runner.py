@@ -24,7 +24,12 @@ class CallbackModule_custom_retry_runner(CallbackModule_default):
     def v2_runner_retry(self, result):
         task_name = result.task_name or result._task
         if "pull" in result.task_name.lower() and "docker" in result.task_name.lower():
-            msg = "Docker image pulling in progress..."
+            msg = "Docker image pulling in progress... Message count: "+str(result._result['attempts'])
+            if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) and '_ansible_verbose_override' not in result._result:
+                msg += "Result was: %s" % self._dump_results(result._result)
+            self._display.display(msg, color=C.COLOR_DEBUG)
+        elif "arp" in result.task_name.lower() and "mac" in result.task_name.lower():
+            msg = "Waiting for the MAC address of a connected adapter to appear in arp... Message count: "+str(result._result['attempts'])"
             if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) and '_ansible_verbose_override' not in result._result:
                 msg += "Result was: %s" % self._dump_results(result._result)
             self._display.display(msg, color=C.COLOR_DEBUG)
