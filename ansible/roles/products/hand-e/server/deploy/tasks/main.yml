@@ -24,6 +24,10 @@
   include_role:
     name: installation/lxml
 
+- name: Include installation/net-tools role
+  include_role:
+    name: installation/net-tools
+
 - name: Include installation/terminator role
   include_role:
     name: installation/terminator

@@ -107,13 +107,13 @@ You will be asked for a sudo_password (i.e. the password of the user with sudo p
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-secure sudo_password option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --read-secure sudo_password ethercat_interface=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat_interface=enx5647929203 config_branch=demohand_C
 ```
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
@@ -129,7 +129,7 @@ Run a playbook against one or more members of that group using the --limit tag:
 For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
 
 * --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
-* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read-secure sudo_password,docker_password,customer_key - To allow aurora script to prompt for sudo password for the laptop this playbook is being run from, the docker hub password and the ROS logs upload key)
+* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for the docker hub password and the ROS logs upload key)
 
 **VAULT password:**
 
