@@ -28,5 +28,7 @@ encryption_password: ""
 cyberglove: ""
 server_ip: "10.9.11.1"
 hand_side: "right"
+bimanual: false
 hand_serial: "1082"
+hand_serial_left: "2346"
 use_cyberglove: false
