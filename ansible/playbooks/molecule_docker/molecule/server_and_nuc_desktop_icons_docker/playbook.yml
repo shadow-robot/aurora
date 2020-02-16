@@ -6,8 +6,10 @@
     allow_auto_reboot=true
     reinstall=true
     ethercat_interface="enp0s25"
+    ethercat_left_hand="enx1"
     nvidia_docker=false
     config_branch="demohand_A"
     product="hand_e"
     upgrade_check=true
     launch_hand=true
+    bimanual=true
