@@ -209,7 +209,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/shadow_local_bimanual_launcher_exec.sh"
       mode: '755'
     vars:
-      local_setup_script_var: "{{ local_bimanual_setup_script }}"
+      local_setup_script_var: "{{ local_bm_setup_script }}"
 
   - name: Create Shadow Local Bimanual Hands Launch desktop icon
     template:
