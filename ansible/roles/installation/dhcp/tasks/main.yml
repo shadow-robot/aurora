@@ -48,7 +48,7 @@
     path: /etc/default/isc-dhcp-server
     backup: yes
     block: |
-      INTERFACES="{{ dhcp_interface_name }}"
+      INTERFACESv4="{{ dhcp_interface_name }}"
   changed_when: false
 
 - name: Configure IPv4 forwarding
