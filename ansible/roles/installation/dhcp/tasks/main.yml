@@ -50,6 +50,25 @@
     line: INTERFACESv4="{{ dhcp_interface_name }}"
   changed_when: false
 
+- name: Initial DHCP configuration
+  become: yes
+  blockinfile:
+    path: /etc/dhcp/dhcpd.conf
+    backup: yes
+    block: |
+      option domain-name-servers 8.8.8.8, 8.8.4.4;
+      authoritative;
+      subnet {{ dhcp_network }} netmask {{ dhcp_netmask }} {
+        range {{ dhcp_range_start }} {{ dhcp_range_end }};
+        option routers {{ server_ip }};
+        host server {
+          hardware ethernet {{ dhcp_server_mac }};
+          server-name "server";
+          fixed-address {{ server_ip }};
+        }
+      }
+  changed_when: false
+
 - name: Configure IPv4 forwarding
   become: yes
   blockinfile:
