@@ -1,4 +1,8 @@
 ---
+- name: Include installation/net-tools role
+  include_role:
+    name: installation/net-tools
+
 - name: Install isc-dhcp-server
   apt:
     name: isc-dhcp-server
@@ -42,13 +46,28 @@
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
 
-- name: Configure DHCP interface
+- name: Configure DHCP interface for Ubuntu Bionic
   become: yes
   lineinfile:
     path: /etc/default/isc-dhcp-server
     regexp: '^INTERFACESv4='
     line: INTERFACESv4="{{ dhcp_interface_name }}"
   changed_when: false
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
+- name: Configure DHCP interface for Ubuntu Xenial
+  become: yes
+  blockinfile:
+    path: /etc/default/isc-dhcp-server
+    backup: yes
+    block: |
+      INTERFACES="{{ dhcp_interface_name }}"
+  changed_when: false
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'xenial'
 
 - name: Initial DHCP configuration
   become: yes
