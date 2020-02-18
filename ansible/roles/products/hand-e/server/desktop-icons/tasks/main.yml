@@ -120,9 +120,6 @@
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
-    ethercat_interface_var: "{{ ethercat_left_hand }}"
-    hand_serial_var: "{{ hand_serial_left }}"
-    hand_side_var: "left"
   when: bimanual|bool
 
 - name: Install desktop icon for unimanual hand GUI

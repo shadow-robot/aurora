@@ -11,7 +11,9 @@ sim_icon: false
 upgrade_script: false
 hand_side_var: right
 ethercat_interface_var: "eth0"
-ethercat_interface_modified: "eth0"
+ethercat_interface_value: "eth0"
+ethercat_interface: "eth00"
+ethercat_left_hand: "eth01"
 cyberglove: ""
 use_cyberglove: false
 server_ip: "10.9.11.1"
