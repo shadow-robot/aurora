@@ -10,43 +10,43 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
-- name: Copy Close Right Hand desktop icon
-  copy:
-    src: files/close-hand-icon-right.png
-    dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
-    mode: '664'
-  when: bimanual|bool or hand_side=="right"
+- name: Install right hand close hand icon if bimanual is true or if hand_side="right"
+  block:
+  - name: Copy Close Right Hand desktop icon
+    copy:
+      src: files/close-hand-icon-right.png
+      dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
+      mode: '664'
 
-- name: Create Close Right Hand executable launch script
-  template:
-    src: ../resources/templates/scripts/rosrun-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/close_right_hand.sh"
-    mode: '755'
-  vars:
-    project_name: sr_ethercat_hand_config
-    script_name: demo_rs.py
-  when: bimanual|bool or hand_side=="right"
+  - name: Create Close Right Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/close_right_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_ethercat_hand_config
+      script_name: demo_rs.py
 
-- name: Create Close Right Hand desktop icon
-  template:
-    src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ demo_icon_folder }}/Close Right Hand.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: Close Right Hand
-    comment: "This runs closes the right hand for transportation"
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: close_right_hand.sh
-    icon_file_name: close-hand-icon-right.png
-    start_terminal: "true"
-  when: bimanual|bool or hand_side=="right"
+  - name: Create Close Right Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Close Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Close Right Hand
+      comment: "This runs closes the right hand for transportation"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: close_right_hand.sh
+      icon_file_name: close-hand-icon-right.png
+      start_terminal: "true"
 
-- name: Make Close Right Hand desktop icon Trusted
-  shell: gio set "{{ demo_icon_folder }}/Close Right Hand.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
-    - bimanual|bool or hand_side=="right"
+  - name: Make Close Right Hand desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Close Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+
+  when: bimanual|bool or hand_side=="right"
 
 - name: Install left hand close hand icon if bimanual is true or if hand_side="left"
   block:
@@ -86,43 +86,43 @@
 
   when: bimanual|bool or hand_side=="left"
 
-- name: Copy Open Right Hand desktop icon
-  copy:
-    src: files/open-hand-icon-right.png
-    dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-right.png"
-    mode: '664'
-  when: bimanual|bool or hand_side=="right"
+- name: Install right hand open hand icon if bimanual is true or if hand_side="right"
+  block:
+  - name: Copy Open Right Hand desktop icon
+    copy:
+      src: files/open-hand-icon-right.png
+      dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-right.png"
+      mode: '664'
 
-- name: Create Open Right Hand executable launch script
-  template:
-    src: ../resources/templates/scripts/rosrun-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/open_right_hand.sh"
-    mode: '755'
-  vars:
-    project_name: sr_ethercat_hand_config
-    script_name: demo_ro.py
-  when: bimanual|bool or hand_side=="right"
+  - name: Create Open Right Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/open_right_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_ethercat_hand_config
+      script_name: demo_ro.py
 
-- name: Create Open Right Hand desktop icon
-  template:
-    src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ demo_icon_folder }}/Open Right Hand.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: Open Right Hand
-    comment: "This opens the right hand"
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: open_right_hand.sh
-    icon_file_name: open-hand-icon-right.png
-    start_terminal: "true"
-  when: bimanual|bool or hand_side=="right"
+  - name: Create Open Right Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Open Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Open Right Hand
+      comment: "This opens the right hand"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: open_right_hand.sh
+      icon_file_name: open-hand-icon-right.png
+      start_terminal: "true"
 
-- name: Make Open Right Hand desktop icon Trusted
-  shell: gio set "{{ demo_icon_folder }}/Open Right Hand.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
-    - bimanual|bool or hand_side=="right"
+  - name: Make Open Right Hand desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Open Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+
+  when: bimanual|bool or hand_side=="right"
 
 - name: Install left hand open hand icon if bimanual is true or if hand_side="left"
   block:
@@ -162,44 +162,44 @@
 
   when: bimanual|bool or hand_side=="left"
 
-- name: Copy Standard Right Demo desktop icon
-  copy:
-    src: files/demo-hand-icon-right.png
-    dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-right.png"
-    mode: '664'
-  when: bimanual|bool or hand_side=="right"
+- name: Install right hand standard demo icon if bimanual is true or if hand_side="right"
+  block:
+  - name: Copy Standard Right Demo desktop icon
+    copy:
+      src: files/demo-hand-icon-right.png
+      dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-right.png"
+      mode: '664'
 
-- name: Create Standard Right Demo executable launch script
-  template:
-    src: ../resources/templates/scripts/rosrun-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/demo_right_hand.sh"
-    mode: '755'
-  vars:
-    project_name: sr_ethercat_hand_config
-    script_name: demo_r.py
-  when: bimanual|bool or hand_side=="right"
+  - name: Create Standard Right Demo executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/demo_right_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_ethercat_hand_config
+      script_name: demo_r.py
 
-- name: Create Standard Right Demo desktop icon
-  template:
-    src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ demo_icon_folder }}//Demo Right Hand.desktop"
-    mode: '755'
-  vars:
-    desktop_shortcut_name: Demo Right Hand
-    comment: "This runs the standard demo for the right hand"
-    window_title: demo_right_hand_xterm
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: demo_right_hand.sh
-    icon_file_name: demo-hand-icon-right.png
-    start_terminal: "true"
-  when: bimanual|bool or hand_side=="right"
+  - name: Create Standard Right Demo desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}//Demo Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Demo Right Hand
+      comment: "This runs the standard demo for the right hand"
+      window_title: demo_right_hand_xterm
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: demo_right_hand.sh
+      icon_file_name: demo-hand-icon-right.png
+      start_terminal: "true"
 
-- name: Make Standard Right Demo desktop icon Trusted
-  shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
-    - bimanual|bool or hand_side=="right"
+  - name: Make Standard Right Demo desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+  
+  when: bimanual|bool or hand_side=="right"
 
 - name: Install left hand standard demo icon if bimanual is true or if hand_side="left"
   block:

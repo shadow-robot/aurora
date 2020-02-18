@@ -1,0 +1,36 @@
+---
+- name: Ensure the {{ netplan_file }} exists
+  file:
+    path: "{{ netplan_file }}"
+    mode: '700'
+    state: touch
+  become: yes
+
+- name: Configuring netplan for right arm
+  template:
+    src: templates/netplan-right.j2
+    dest: "{{ netplan_file }}"
+  become: true
+  when: not bimanual|bool and ethercat_right_arm | length > 0
+
+- name: Configuring netplan for left arm
+  template:
+    src: templates/netplan-left.j2
+    dest: "{{ netplan_file }}"
+  become: true
+  when: not bimanual|bool and ethercat_left_arm | length > 0
+
+- name: Configuring netplan for bimanual arms
+  template:
+    src: templates/netplan-bimanual.j2
+    dest: "{{ netplan_file }}"
+  become: true
+  when: bimanual|bool
+
+- name: Generate netplan config
+  command: netplan generate
+  become: true
+
+- name: Apply netplan config
+  command: netplan apply
+  become: true

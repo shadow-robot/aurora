@@ -1,0 +1,10 @@
+---
+- import_tasks: bionic.yml
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
+- import_tasks: xenial.yml
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'xenial'
