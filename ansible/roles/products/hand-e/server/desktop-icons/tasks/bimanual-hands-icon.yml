@@ -12,7 +12,7 @@
     mode: '755'
   vars:
     hand_serial_var: ""
-    ethercat_serial_var: ""
+    ethercat_interface_var: ""
 
 - name: Create desktop icon for hand
   template:
