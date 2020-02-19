@@ -187,7 +187,7 @@
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_right_launcher_exec.sh
       icon_file_name: hand-e.png
-      start_terminal: "true"
+      start_terminal: "false"
 
   - name: Make Shadow Local Right Hand Launch desktop icon Trusted
     shell: gio set "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
@@ -223,7 +223,7 @@
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_left_launcher_exec.sh
       icon_file_name: hand-e-left.png
-      start_terminal: "true"
+      start_terminal: "false"
 
   - name: Make Shadow Local Left Hand Launch desktop icon Trusted
     shell: gio set "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Left Hand.desktop" "metadata::trusted" yes
@@ -259,7 +259,7 @@
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_bimanual_launcher_exec.sh
       icon_file_name: hand-e-bimanual.png
-      start_terminal: "true"
+      start_terminal: "false"
 
   - name: Make Shadow Local Bimanual Hands Launch desktop icon Trusted
     shell: gio set "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands.desktop" "metadata::trusted" yes
