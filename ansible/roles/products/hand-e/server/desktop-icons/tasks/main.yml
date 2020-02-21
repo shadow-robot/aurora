@@ -122,15 +122,27 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
   when: bimanual|bool
 
-- name: Install desktop icon for unimanual hand GUI
+- name: Install desktop icon for right hand GUI
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "rviz.png"
-    launch_script: "shadow_GUI_unimanual.sh"
+    launch_script: "shadow_GUI_right.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: "srhand.launch external_control_loop:=true sim:=false"
-    desktop_icon_name: "4 - Launch Server Unimanual GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Unimanual GUI"
+    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_id:=rh"
+    desktop_icon_name: "4 - Launch Server Right Hand GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand GUI"
+  when: bimanual|bool or hand_side=="right"
+
+- name: Install desktop icon for left hand GUI
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "rviz.png"
+    launch_script: "shadow_GUI_left.sh"
+    project_name_input: "sr_robot_launch"
+    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_id:=lh"
+    desktop_icon_name: "4 - Launch Server Left Hand GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Left Hand GUI"
+  when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for bimanual hand GUI
   import_tasks: roslaunch-icon.yml
