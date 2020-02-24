@@ -11,7 +11,7 @@
     state: directory
 
 - name: Install desktop icon for launching everything for Shadow Right Hand
-  import_tasks: default-icon.yml
+  import_tasks: default-icon-no-terminator.yml
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_launch_everything_right.sh"
@@ -22,7 +22,7 @@
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for launching everything for Shadow Left Hand
-  import_tasks: default-icon.yml
+  import_tasks: default-icon-no-terminator.yml
   vars:
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_launch_everything_left.sh"
@@ -33,7 +33,7 @@
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for launching everything for Shadow Bimanual Hands
-  import_tasks: default-icon.yml
+  import_tasks: default-icon-no-terminator.yml
   vars:
     desktop_icon_png: "hand-e-bimanual.png"
     launch_script: "shadow_launch_everything_bimanual.sh"
