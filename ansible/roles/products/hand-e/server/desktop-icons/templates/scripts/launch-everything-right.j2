@@ -1,10 +1,10 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
-terminator -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 sleep 3
-terminator -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
+terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 3
-terminator -T 'NUC right hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_hardware_control_loop.sh" &
+terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x+term_width }}+{{ term_y }}" -T 'NUC right hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_hardware_control_loop.sh" &
 sleep 3
-terminator -T 'Server right hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right.sh"
+terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x+term_width }}+{{ term_y+term_height+term_y_correction }}" -T 'Server right hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right.sh"

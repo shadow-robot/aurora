@@ -17,3 +17,8 @@ ethercat_left_hand: "eth01"
 cyberglove: ""
 use_cyberglove: false
 server_ip: "10.9.11.1"
+term_width: 656
+term_heigh: 400
+term_x: 188
+term_y: 0
+term_y_correction: 58
