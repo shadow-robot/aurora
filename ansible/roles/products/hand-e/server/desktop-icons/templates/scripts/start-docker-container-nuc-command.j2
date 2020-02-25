@@ -3,4 +3,4 @@
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 CONTAINER={{ container_name }}
-ssh -X $NUC_NAME@$NUC_ADDRESS "docker exec --user user -e DISPLAY=$DISPLAY $CONTAINER bash -c 'source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;{{ command_to_run }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)'"
+ssh -X $NUC_NAME@$NUC_ADDRESS "docker exec -i --user user $CONTAINER bash -c 'cat > ~/.Xauthority' < ~/.Xauthority; docker exec --user user -e DISPLAY=$DISPLAY $CONTAINER bash -c 'source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;{{ command_to_run }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)'"
