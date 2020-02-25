@@ -44,7 +44,7 @@
   when: bimanual|bool
 
 - name: Install desktop icon for RQT on NUC
-  include_tasks: default-icon.yml
+  include_tasks: default-icon-no-terminator.yml
   vars:
     template: templates/scripts/start-docker-container-nuc-command.j2
     desktop_icon_png: "ROS_logo.png"
