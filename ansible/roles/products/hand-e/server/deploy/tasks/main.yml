@@ -49,12 +49,12 @@
     name: docker/docker-image
 
 - name: Get screen width
-  command: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f1"
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f1"
   register: xrandr_width
   changed_when: xrandr_width.rc != 0
 
 - name: Get screen height
-  command: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f2"
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f2"
   register: xrandr_height
   changed_when: xrandr_height.rc != 0
 
