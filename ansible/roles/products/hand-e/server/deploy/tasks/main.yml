@@ -61,7 +61,7 @@
 - name: Set terminator dimensions and locations
   set_fact:
     term_width: "{{ ((xrandr_width.stdout|int)*0.34)|int }}"
-    term_height: "{{ ((xrandr_height.stdout|int)*0.21)|int }}"
+    term_height: "{{ ((xrandr_height.stdout|int)*0.37)|int }}"
     term_x: "{{ ((xrandr_width.stdout|int)*0.12)|int }}"
     term_y: 0
     term_y_correction: 58
