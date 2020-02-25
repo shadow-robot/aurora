@@ -15,7 +15,7 @@ if {{ use_cyberglove | lower or remote_cyberglove | lower }}; then
     git checkout {{ cyberglove }}
 fi
 if {{ use_steamvr | lower }}; then
-    cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &
+    cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &> /dev/null 2>&1
 fi
 # move ssh key to ssh folder
 if [ -f /tmp/id_ssh_rsa ]; then
