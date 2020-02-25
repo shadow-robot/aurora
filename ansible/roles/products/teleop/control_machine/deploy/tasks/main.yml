@@ -111,6 +111,10 @@
   changed_when: false
   become: yes
 
+- name: Include products/common/hand-serial role
+  include_role:
+    name: products/common/hand-serial
+
 - name: Creating control_machine setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
