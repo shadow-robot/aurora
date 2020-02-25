@@ -14,6 +14,10 @@
   vars:
     container_terminal_title: "Hand E Container"
 
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
+
 - name: Include products/common/save-logs-icons role
   include_role:
     name: products/common/save-logs-icons
