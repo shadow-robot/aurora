@@ -33,3 +33,8 @@ bimanual: false
 hand_serial: "1082"
 hand_serial_left: "2346"
 use_cyberglove: false
+term_width: 656
+term_height: 400
+term_x: 230
+term_y: 0
+term_y_correction: 58

@@ -48,9 +48,30 @@
   include_role:
     name: docker/docker-image
 
+- name: Get screen width
+  command: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f1"
+  register: xrandr_width
+  changed_when: xrandr_width.rc != 0
+
+- name: Get screen height
+  command: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f2"
+  register: xrandr_height
+  changed_when: xrandr_height.rc != 0
+
+- name: Set terminator dimensions and locations
+  set_fact:
+    term_width: "{ xrandr_width.stdout * 0.34 | int }}"
+    term_height: "{ xrandr_height.stdout * 0.21 | int }}"
+    term_x: "{ xrandr_width.stdout * 0.12 | int }}"
+    term_y: 0
+    term_y_correction: 58
+
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "Server Docker Container"
+    term_args: "--geometry {{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}"
 
 - name: Include products/common/cyberglove role
   include_role:
