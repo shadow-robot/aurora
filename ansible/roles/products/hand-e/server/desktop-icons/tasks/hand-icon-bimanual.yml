@@ -7,13 +7,9 @@
 
 - name: Create executable launch script for hand
   template:
-    src: templates/scripts/start-docker-container-nuc.j2
+    src: templates/scripts/start-docker-container-nuc-bimanual.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
-  vars:
-    hand_serial_var: "{{ hand_serial_value }}"
-    ethercat_interface_var: "{{ ethercat_interface_value }}"
-    hand_side_var: "{{ hand_side_value }}"
 
 - name: Create desktop icon for hand
   template:

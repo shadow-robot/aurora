@@ -5,6 +5,6 @@
     use_openvpn=false
     ethercat_interface="enp0s25"
     image="shadowrobot/dexterous-hand"
-    tag="kinetic-release"
+    tag="melodic-release"
     nvidia_docker=false
     allow_auto_reboot=true

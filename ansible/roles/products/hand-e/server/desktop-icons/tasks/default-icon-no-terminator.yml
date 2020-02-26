@@ -5,19 +5,15 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Create executable launch script for hand
+- name: Create executable launch script
   template:
-    src: templates/scripts/start-docker-container-nuc.j2
+    src: "{{ template }}"
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
-  vars:
-    hand_serial_var: "{{ hand_serial_value }}"
-    ethercat_interface_var: "{{ ethercat_interface_value }}"
-    hand_side_var: "{{ hand_side_value }}"
 
-- name: Create desktop icon for hand
+- name: Create desktop icon
   template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    src: ../../../common/resources/templates/desktop-icons/standard-icon-no-terminator.j2
     dest: "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop"
     mode: '755'
   vars:
@@ -26,9 +22,9 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
-    start_terminal: "false"
+    start_terminal: "{{ launch_terminal }}"
 
-- name: Make desktop icon for hand trusted
+- name: Make Desktop icon trusted
   shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'

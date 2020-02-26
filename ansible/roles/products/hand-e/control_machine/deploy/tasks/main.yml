@@ -47,6 +47,12 @@
   register: ssh_result
   delegate_to: 127.0.0.1
 
+- name: Ensure the .ssh folder exists
+  file:
+    path: "{{ user_folder }}/.ssh/"
+    mode: '700'
+    state: directory
+
 - name: Copy SSH public key from server to control machine (if it exists in server laptop)
   copy:
     src: "{{ temp_ssh_keys_path }}.pub"
@@ -70,6 +76,8 @@
     src: ../../../common/resources/templates/scripts/setup-hand-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
+  vars:
+    launch_file_name: "sr_rhand.launch"
 
 - name: Copying control_machine setup script into docker container
   changed_when: false

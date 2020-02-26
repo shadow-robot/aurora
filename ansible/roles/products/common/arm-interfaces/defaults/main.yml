@@ -1,0 +1,5 @@
+---
+ethercat_left_arm: ""
+netplan_file: "/etc/netplan/50-cloud-init.yaml"
+ethercat_right_arm: "enp3s0"
+bimanual: false

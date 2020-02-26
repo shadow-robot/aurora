@@ -5,15 +5,14 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Create executable launch script for hand
+- name: Create executable launch script for bimanual hands
   template:
-    src: templates/scripts/start-docker-container-nuc.j2
+    src: templates/scripts/start-docker-container-nuc-bimanual.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_serial_var: "{{ hand_serial_value }}"
-    ethercat_interface_var: "{{ ethercat_interface_value }}"
-    hand_side_var: "{{ hand_side_value }}"
+    hand_serial_var: ""
+    ethercat_interface_var: ""
 
 - name: Create desktop icon for hand
   template:

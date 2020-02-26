@@ -14,6 +14,10 @@
   vars:
     container_terminal_title: "Hand E Container"
 
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
+
 - name: Include products/common/save-logs-icons role
   include_role:
     name: products/common/save-logs-icons
@@ -40,11 +44,17 @@
     mode: '755'
   when: upgrade_check|bool
 
+- name: Include products/common/hand-serial role
+  include_role:
+    name: products/common/hand-serial
+
 - name: Creating hand-e setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
+  vars:
+    launch_file_name: "sr_rhand.launch"
 
 - name: Copying hand setup script into docker container
   changed_when: false

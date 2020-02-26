@@ -1,4 +1,8 @@
 ---
+- name: Include installation/net-tools role
+  include_role:
+    name: installation/net-tools
+
 - name: Install isc-dhcp-server
   apt:
     name: isc-dhcp-server
@@ -42,13 +46,46 @@
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
 
-- name: Configure DHCP interface
+- name: Configure DHCP interface for Ubuntu Bionic
+  become: yes
+  lineinfile:
+    path: /etc/default/isc-dhcp-server
+    regexp: '^INTERFACESv4='
+    line: INTERFACESv4="{{ dhcp_interface_name }}"
+  changed_when: false
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+
+- name: Configure DHCP interface for Ubuntu Xenial
   become: yes
   blockinfile:
     path: /etc/default/isc-dhcp-server
     backup: yes
     block: |
       INTERFACES="{{ dhcp_interface_name }}"
+  changed_when: false
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'xenial'
+
+- name: Initial DHCP configuration
+  become: yes
+  blockinfile:
+    path: /etc/dhcp/dhcpd.conf
+    backup: yes
+    block: |
+      option domain-name-servers 8.8.8.8, 8.8.4.4;
+      authoritative;
+      subnet {{ dhcp_network }} netmask {{ dhcp_netmask }} {
+        range {{ dhcp_range_start }} {{ dhcp_range_end }};
+        option routers {{ server_ip }};
+        host server {
+          hardware ethernet {{ dhcp_server_mac }};
+          server-name "server";
+          fixed-address {{ server_ip }};
+        }
+      }
   changed_when: false
 
 - name: Configure IPv4 forwarding
@@ -156,6 +193,7 @@
     block: |
       iptables-restore < /etc/iptables.sav
     insertbefore: "exit 0"
+    create: yes
   changed_when: false
 
 - name: Restart networking service

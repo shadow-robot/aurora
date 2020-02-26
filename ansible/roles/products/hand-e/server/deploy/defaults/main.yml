@@ -1,12 +1,13 @@
 ---
 image: "shadowrobot/dexterous-hand"
-tag: "kinetic-release"
+tag: "melodic-release"
 reinstall: false
 container_name: "dexterous_hand_real_hw"
 nvidia_docker: true
 use_aws: false
 ethercat_interface: "eth0"
 ethercat_left_hand: "eth0"
+ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
@@ -32,3 +33,8 @@ bimanual: false
 hand_serial: "1082"
 hand_serial_left: "2346"
 use_cyberglove: false
+term_width: 656
+term_height: 400
+term_x: 230
+term_y: 0
+term_y_correction: 58

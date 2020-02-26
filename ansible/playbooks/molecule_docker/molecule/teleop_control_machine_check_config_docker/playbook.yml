@@ -2,7 +2,7 @@
 - name: Teleop Nuc machine playbook for config check
   import_playbook: ../../../teleop_deploy.yml
     image="shadowrobot/dexterous-hand"
-    tag="kinetic-release"
+    tag="melodic-release"
     reinstall=true
     use_openvpn=false
     ethercat_interface="enp0s25"

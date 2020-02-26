@@ -34,7 +34,7 @@ def test_docker_container_exists(host):
 def test_correct_docker_image(host):
     client = docker.from_env()
     image = str(client.containers.get('teleop').image)
-    assert image == "<Image: 'shadowrobot/dexterous-hand:kinetic-release'>"
+    assert image == "<Image: 'shadowrobot/dexterous-hand:melodic-release'>"
 
 
 def test_sr_config_exists_in_docker(host):
