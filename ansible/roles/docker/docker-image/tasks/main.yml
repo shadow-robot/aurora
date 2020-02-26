@@ -43,9 +43,9 @@
       become: yes
   rescue:
     - name: Temporary error in docker pull. Automatically waiting 10 seconds before trying again. If it still fails, re-run the aurora script
-      wait_for: 
+      wait_for:
         timeout: 10
-  
+
     - name: Pull Docker image (attempt 2)
       docker_image:
         name: "{{ full_image_name }}"
