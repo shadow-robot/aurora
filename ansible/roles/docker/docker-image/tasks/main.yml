@@ -19,24 +19,50 @@
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
 
-- name: Pull Docker image
-  docker_image:
-    name: "{{ full_image_name }}"
-    source: pull
-  environment:
-    PYTHONPATH: "{{ python_packages_path }}"
-  async: 50000
-  poll: 0
-  register: docker_pull_job
-  become: yes
-  changed_when: false
-  ignore_errors: yes
+- name: Pull Docker image in progress
+  block:
+    - name: Pull Docker image
+      docker_image:
+        name: "{{ full_image_name }}"
+        source: pull
+      environment:
+        PYTHONPATH: "{{ python_packages_path }}"
+      async: 50000
+      poll: 0
+      register: docker_pull_job
+      become: yes
+      changed_when: false
 
-- name: Wait for Docker image pull to complete
-  async_status:
-    jid: "{{ docker_pull_job.ansible_job_id }}"
-  register: docker_pull_result
-  until: docker_pull_result.finished and not docker_pull_result.failed
-  retries: 10000
-  delay: 5
-  become: yes
+    - name: Wait for Docker image pull to complete
+      async_status:
+        jid: "{{ docker_pull_job.ansible_job_id }}"
+      register: docker_pull_result
+      until: docker_pull_result.finished
+      retries: 10000
+      delay: 5
+      become: yes
+  rescue:
+    - name: Temporary error in docker pull. Automatically waiting 10 seconds before trying again. If it still fails, re-run the aurora script
+      wait_for: 
+        timeout: 10
+    
+    - name: Pull Docker image (attempt 2)
+      docker_image:
+        name: "{{ full_image_name }}"
+        source: pull
+      environment:
+        PYTHONPATH: "{{ python_packages_path }}"
+      async: 50000
+      poll: 0
+      register: docker_pull_job2
+      become: yes
+      changed_when: false
+
+    - name: Wait for Docker image pull to complete (attempt 2)
+      async_status:
+        jid: "{{ docker_pull_job2.ansible_job_id }}"
+      register: docker_pull_result2
+      until: docker_pull_result2.finished
+      retries: 10000
+      delay: 5
+      become: yes
