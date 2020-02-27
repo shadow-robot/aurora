@@ -50,7 +50,7 @@ case ${key} in
 esac
 done
 
-if [[ "${playbook}" = "server_and_nuc_deploy" ] || [ "${playbook}" = "teleop_deploy" ]]; then
+if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
     if [[ -z ${read_secure} ]]; then
         read_secure="sudo_password"
     else
@@ -65,7 +65,7 @@ fi
 
 if [[ -z ${aurora_inventory} ]];
 then
-    if [[ "${playbook}" = "server_and_nuc_deploy" ] || [ "${playbook}" = "teleop_deploy" ]]; then
+    if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
         aurora_inventory=""
     else
         aurora_inventory="local/${playbook}"
