@@ -9,14 +9,14 @@
     url: "https://raw.githubusercontent.com/shadow-robot/sr-config/{{ config_branch }}/sr_ethercat_hand_config/launch/sr_rhand.launch"
     dest: "{{ launch_file_path_right }}"
     mode: '755'
-  force: yes
+    force: yes
 
 - name: Download the left launch file from sr-config branch {{ config_branch }} from Github
   get_url:
     url: "https://raw.githubusercontent.com/shadow-robot/sr-config/{{ config_branch }}/sr_ethercat_hand_config/launch/sr_lhand.launch"
     dest: "{{ launch_file_path_left }}"
     mode: '755'
-  force: yes
+    force: yes
 
 - name: Get the right hand_serial xml_response from the right launch file
   xml:
