@@ -5,7 +5,7 @@
     install_recommends: no
   vars:
     packages:
-      - libusb-1
+      - libusb-1.0-0
       - fxload
   become: yes
 
