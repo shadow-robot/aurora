@@ -50,7 +50,7 @@ case ${key} in
 esac
 done
 
-if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
+if [[ "${playbook}" = "server_and_nuc_deploy" ] || [ "${playbook}" = "teleop_deploy" ]]; then
     if [[ -z ${read_secure} ]]; then
         read_secure="sudo_password"
     else
@@ -65,7 +65,11 @@ fi
 
 if [[ -z ${aurora_inventory} ]];
 then
-    aurora_inventory="local/${playbook}"
+    if [[ "${playbook}" = "server_and_nuc_deploy" ] || [ "${playbook}" = "teleop_deploy" ]]; then
+        aurora_inventory=""
+    else
+        aurora_inventory="local/${playbook}"
+    fi
 fi
 
 
@@ -156,13 +160,18 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     echo " ---------------------------------------------------"
     echo ""
 elif [[ "${playbook}" = "teleop_deploy" ]]; then
-    ansible_flags="${ansible_flags} --ask-become-pass --ask-pass "
-    aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
+    ansible_flags="${ansible_flags} --ask-vault-pass"
+    if [[ "${aurora_inventory}" = "" ]]; then
+        if [[ $extra_vars == *"remote_teleop=true"* ]]; then
+            aurora_inventory="ansible/inventory/teleop/production_remote"
+        else
+            aurora_inventory="ansible/inventory/teleop/production"
+        fi
+    fi
     echo ""
     echo " ---------------------------------------------------"
-    echo " |             SSH and BECOME passwords:           |"
-    echo " | SSH: enter the NUC sudo password                |"
-    echo " | BECOME: just press enter (same as SSH password) |"
+    echo " |                 VAULT password:                 |"
+    echo " | Enter the VAULT password provided by Shadow     |"
     echo " ---------------------------------------------------"
     echo ""
 else

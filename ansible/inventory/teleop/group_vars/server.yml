@@ -1,10 +1,10 @@
 ---
-image: "shadowrobot/shadow-teleop-haptx" # Docker image name
-tag: "kinetic-v0.0.33" # Tag of the exact Docker hub image to pull
+image: "shadowrobot/shadow-teleop-polhemus" # Docker image name
+tag: "melodic-v0.0.7" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 nvidia_docker: true # Define if nvidia docker 2 is used (defaul is false)
-glove: "haptx" # Determines which glove is installed (cyberglove or haptx)
+glove: "polhemus" # Determines which glove is installed (cyberglove, haptx or polhemus)
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-server should be installed
@@ -16,4 +16,9 @@ sim_icon: false # creates an extra icon that runs teleoperation in simulation mo
 save_nuc_logs: true # enables saving ROS logs from control-computer to server
 demo_icons: true # Generates desktop icons to run demos
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
-bimanual: false # Determines if left arm and left hand should be set up
+bimanual: false # Specify if both hands are used or not
+hand_side: "right" # Specify if the hand is right or left (skip for bimanual)
+hand_serial: "1082" # Specify the right hand serial number
+hand_serial_left: "2346" # Specify the left hand serial number
+ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
+remote_teleop: false # Flag to enable/disable remote_teleop software install

@@ -1,10 +1,10 @@
 ---
-image: "shadowrobot/shadow-teleop-haptx"
-tag: "kinetic-v0.0.33"
+image: "shadowrobot/shadow-teleop-polhemus"
+tag: "melodic-v0.0.7"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true
-glove: "haptx"
+glove: "polhemus"
 cyberglove: ""
 use_aws: false
 use_openvpn: false

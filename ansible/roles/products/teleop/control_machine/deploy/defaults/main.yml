@@ -1,6 +1,6 @@
 ---
-image: "shadowrobot/shadow-teleop-haptx"
-tag: "kinetic-v0.0.33"
+image: "shadowrobot/shadow-teleop-polhemus"
+tag: "melodic-v0.0.7"
 reinstall: false
 container_name: "teleop"
 ethercat_interface: "eth0"
@@ -14,7 +14,7 @@ user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 use_aws: false
-glove: "haptx"
+glove: "polhemus"
 use_cyberglove: false
 cyberglove: ""
 launch_hand: false
