@@ -1,0 +1,23 @@
+---
+- name: Install polhemus dependencies
+  apt:
+    name: "{{ packages }}"
+    install_recommends: no
+  vars:
+    packages:
+      - libusb-dev
+      - fxload
+  become: yes
+
+- name: Check out the polhemus driver github repo
+  git:
+    repo: "{{ polhemus_driver_repo }}"
+    dest: "{{ user_folder }}/{{ polhemus_driver_folder }}"
+    version: "{{ polhemus_driver_repo_branch }}"
+  become: yes
+
+- name: Install polhemus
+  shell: ".{{ polhemus_installer_file }}"
+  args:
+    chdir: "{{ user_folder }}/{{ polhemus_driver_folder }}/{{ polhemus_installer_folder }}"
+  become: yes

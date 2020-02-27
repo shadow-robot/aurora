@@ -46,6 +46,11 @@
   include_role:
     name: installation/chrony-server
 
+- name: Include installation/polhemus role
+  include_role:
+    name: installation/polhemus
+  when: glove == "polhemus"
+
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
