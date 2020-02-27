@@ -20,7 +20,7 @@ use_steamvr: false
 use_cyberglove: false
 remote_cyberglove: true
 setup_script: ""
-server_hostname: "TELEOP-DEMO"
+server_hostname: "SERVER"
 openvpn_port: "1196"
 terminator: true
 bimanual: false

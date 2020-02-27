@@ -10,6 +10,7 @@ use_aws: false
 use_openvpn: false
 ethercat_interface: "eth0"
 ethercat_left_hand: "eth0"
+ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
@@ -22,7 +23,8 @@ config_branch: "demohand_A"
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
-nuc_address: "10.9.10.2"
+nuc_address: "10.9.11.2"
+server_ip: "10.9.11.1"
 upgrade_check: false
 terminator: true
 use_steamvr: true
@@ -31,3 +33,11 @@ demo_icons: true
 bimanual: false
 sim_hand: false
 encryption_password: ""
+hand_side: "right"
+hand_serial: "1082"
+hand_serial_left: "2346"
+term_width: 656
+term_height: 400
+term_x: 230
+term_y: 0
+term_y_correction: 58

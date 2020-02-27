@@ -18,7 +18,7 @@ glove: "polhemus"
 use_cyberglove: false
 cyberglove: ""
 launch_hand: false
-server_hostname: "TELEOP-DEMO"
+server_hostname: "SERVER"
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 terminator: false
