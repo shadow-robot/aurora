@@ -17,7 +17,7 @@
   become: yes
 
 - name: Install polhemus
-  shell: ".{{ polhemus_installer_file }}"
+  shell: "./{{ polhemus_installer_file }}"
   args:
     chdir: "{{ user_folder }}/{{ polhemus_driver_folder }}/{{ polhemus_installer_folder }}"
   become: yes
