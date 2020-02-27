@@ -86,10 +86,9 @@
 
 - name: Install Teleop software on Ubuntu teleop client laptop
   hosts: client
-  when: remote_teleop|bool
   pre_tasks:
     - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0
+      when: cyberglove is defined and cyberglove| length > 0 and remote_teleop|bool
       set_fact:
         use_cyberglove: true
 
@@ -99,12 +98,12 @@
         regexp: '^{{ item }}.*$'
         line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
-      when: hostvars[item].ansible_host is defined
+      when: hostvars[item].ansible_host is defined and remote_teleop|bool
       with_items: "{{ groups.all }}"
       become: yes
 
   roles:
-    - { role: products/teleop/client/deploy }
+    - { role: products/teleop/client/deploy , when: remote_teleop|bool }
 
 - name: Inform user for reboot
   hosts: 127.0.0.1
