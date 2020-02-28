@@ -2,7 +2,7 @@
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
-container_name: "teleop-server"
+container_name: "teleop"
 config_branch: "demohand_A"
 hand_serial: ""
 setup_directory: ""
@@ -13,5 +13,8 @@ haptx_type: "right"
 haptx_icon: "haptx_{{ haptx_type }}.png"
 upgrade_script: false
 hand_side_var: right
+ethercat_interface: "eth00"
+ethercat_left_hand: "eth01"
 ethercat_interface_var: "eth0"
-ethercat_interface_modified: "eth0"
+ethercat_interface_value: "eth0"
+server_ip: "10.9.11.1"
