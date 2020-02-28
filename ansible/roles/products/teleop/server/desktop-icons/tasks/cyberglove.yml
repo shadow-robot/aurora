@@ -15,3 +15,13 @@
     desktop_icon_name: "Teleop_GUI"
     project_name_input: "sr_teleop_vive_cyberglove"
     launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true"
+
+- name: Install desktop icon for Teleop server Simulation (Cyberglove)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "cyberglove_teleop.png"
+    launch_script: "shadow_sim_demo.sh"
+    desktop_icon_name: "Teleop_Simulation"
+    project_name_input: "sr_teleop_vive_cyberglove"
+    launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=false sim:=true"
+  when: sim_icon|bool

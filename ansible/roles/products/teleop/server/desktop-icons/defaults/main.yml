@@ -18,3 +18,4 @@ ethercat_left_hand: "eth01"
 ethercat_interface_var: "eth0"
 ethercat_interface_value: "eth0"
 server_ip: "10.9.11.1"
+demohand_icons: false
