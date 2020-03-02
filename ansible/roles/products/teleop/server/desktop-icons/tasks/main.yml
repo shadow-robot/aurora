@@ -54,6 +54,16 @@
     command_to_run: "rqt"
     launch_terminal: "false"
 
+- name: Install the Teleop_Documentation desktop icon
+  import_tasks: default-icon.yml
+  vars:
+    template: templates/scripts/show_documentation.j2
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
+    launch_terminal: "false"
+
 - name: Create Shadow Demos folder
   file:
     path: "{{ user_folder }}/Desktop/Shadow Demos"
@@ -386,15 +396,6 @@
     desktop_icon_name: "Launch NUC Container"
     desktop_icon_path: "Shadow Advanced Launchers/Launch NUC Container"
     launch_terminal: "false"
-
-- name: Install the Teleop_Documentation desktop icon
-  import_tasks: default-icon.yml
-  vars:
-    template: templates/scripts/show_documentation.j2
-    desktop_icon_png: "documentation_icon.png"
-    launch_script: "shadow_launcher_doc_exec.sh"
-    desktop_icon_name: "Teleop Documentation"
-    desktop_icon_path: "Teleop Documentation"
 
 - name: Include products/common/demo-icons role
   include_role:
