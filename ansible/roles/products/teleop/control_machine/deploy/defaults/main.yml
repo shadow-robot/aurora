@@ -26,3 +26,6 @@ use_steamvr: false
 nvidia_docker: false
 ur_interface: "eth0"
 sim_hand: false
+hand_side: "right"
+hand_serial: "1082"
+hand_serial_left: "2346"
