@@ -41,9 +41,9 @@
     name: docker/aws
   when: use_aws|bool
 
-- name: Include common/arm-interfaces role
+- name: Include products/common/arm-interfaces role
   include_role:
-    name: common/arm-interfaces
+    name: products/common/arm-interfaces
 
 - name: Check if the ssh public key has been generated and copied to temp_ssh_keys_path folder on machine running Ansible (teleop server laptop)
   stat:
