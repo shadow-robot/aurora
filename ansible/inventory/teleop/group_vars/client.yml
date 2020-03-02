@@ -13,7 +13,7 @@ setup_directory: "/usr/local/bin" # Where setup scripts should be installed that
 terminator: true # Launch terminator when the Docker starts
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 remote_cyberglove: true # Determines if the cyberglove is run locally (server) or remotely (client)
-use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
+client_use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 bimanual: false # Determines if left arm and left hand should be set up
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 remote_teleop: false # Flag to enable/disable remote_teleop software install

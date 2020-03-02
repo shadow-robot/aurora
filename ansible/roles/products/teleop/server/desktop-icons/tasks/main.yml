@@ -10,35 +10,35 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
-- name: Install desktop icon for launching everything for Shadow Right Teleop
+- name: Install desktop icon for launching Shadow Right Teleop
   import_tasks: default-icon-no-terminator.yml
   vars:
     desktop_icon_png: "hand-e.png"
-    launch_script: "shadow_launch_everything_right_teleop.sh"
+    launch_script: "shadow_launch_right_teleop.sh"
     desktop_icon_name: "Launch Shadow Right Teleop"
-    template: templates/scripts/launch-everything-right.j2
+    template: templates/scripts/launch-teleop-right.j2
     desktop_icon_path: "Launch Shadow Right Teleop"
     launch_terminal: "false"
   when: bimanual|bool or hand_side=="right"
 
-- name: Install desktop icon for launching everything for Shadow Left Teleop
+- name: Install desktop icon for launching Shadow Left Teleop
   import_tasks: default-icon-no-terminator.yml
   vars:
     desktop_icon_png: "hand-e-left.png"
-    launch_script: "shadow_launch_everything_left_teleop.sh"
+    launch_script: "shadow_launch_left_teleop.sh"
     desktop_icon_name: "Launch Shadow Left Teleop"
-    template: templates/scripts/launch-everything-left.j2
+    template: templates/scripts/launch-teleop-left.j2
     desktop_icon_path: "Launch Shadow Left Teleop"
     launch_terminal: "false"
   when: bimanual|bool or hand_side=="left"
 
-- name: Install desktop icon for launching everything for Shadow Bimanual Teleop
+- name: Install desktop icon for launching Shadow Bimanual Teleop
   import_tasks: default-icon-no-terminator.yml
   vars:
     desktop_icon_png: "hand-e-bimanual.png"
-    launch_script: "shadow_launch_everything_bimanual_teleop.sh"
+    launch_script: "shadow_launch_bimanual_teleop.sh"
     desktop_icon_name: "Launch Shadow Bimanual Teleop"
-    template: templates/scripts/launch-everything-bimanual.j2
+    template: templates/scripts/launch-teleop-bimanual.j2
     desktop_icon_path: "Launch Shadow Bimanual Teleop"
     launch_terminal: "false"
   when: bimanual|bool
