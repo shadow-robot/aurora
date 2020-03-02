@@ -113,7 +113,7 @@
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop
-  import_tasks: hand-icon-bimanual.yml
+  import_tasks: nuc-control-loop-icon-bimanual.yml
   vars:
     desktop_icon_png: "bimanual.png"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
