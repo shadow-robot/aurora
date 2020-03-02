@@ -401,3 +401,111 @@
   vars:
     demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
   when: demo_icons|bool
+
+- name: Install local Shadow Right Hand launch if bimanual is true or if hand_side="right"
+  block:
+  - name: Copy Launch Local Shadow Right Hand desktop icon
+    copy:
+      src: files/hand-e.png
+      dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
+      mode: '664'
+
+  - name: Create Launch Local Shadow Right Hand script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_local_right_launcher_exec.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ local_right_setup_script }}"
+
+  - name: Create Shadow Local Right Hand Launch desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Launch Local Shadow Right Hand"
+      comment: "This is application launches the right hand locally without the NUC"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_local_right_launcher_exec.sh
+      icon_file_name: hand-e.png
+      start_terminal: "false"
+
+  - name: Make Shadow Local Right Hand Launch desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+  when: bimanual|bool or hand_side=="right"
+
+- name: Install local Shadow Left Hand launch if bimanual is true or if hand_side="left"
+  block:
+  - name: Copy Launch Local Shadow Left Hand desktop icon
+    copy:
+      src: files/hand-e-left.png
+      dest: "{{ shadow_hand_launcher_folder }}/hand-e-left.png"
+      mode: '664'
+
+  - name: Create Launch Local Shadow Left Hand script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_local_left_launcher_exec.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ local_left_setup_script }}"
+
+  - name: Create Shadow Local Left Hand Launch desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Left Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Launch Local Shadow Left Hand"
+      comment: "This is application launches the left hand locally without the NUC"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_local_left_launcher_exec.sh
+      icon_file_name: hand-e-left.png
+      start_terminal: "false"
+
+  - name: Make Shadow Local Left Hand Launch desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Left Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+  when: bimanual|bool or hand_side=="right"
+
+- name: Install local Shadow Bimanual Hands launch if bimanual is true
+  block:
+  - name: Copy Launch Local Shadow Bimanual Hands desktop icon
+    copy:
+      src: files/hand-e-bimanual.png
+      dest: "{{ shadow_hand_launcher_folder }}/hand-e-bimanual.png"
+      mode: '664'
+
+  - name: Create Launch Local Shadow Bimanual Hands script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_local_bimanual_launcher_exec.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ local_bm_setup_script }}"
+
+  - name: Create Shadow Local Bimanual Hands Launch desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Launch Local Shadow Bimanual Hands"
+      comment: "This is application launches the bimanual hands locally without the NUC"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_local_bimanual_launcher_exec.sh
+      icon_file_name: hand-e-bimanual.png
+      start_terminal: "false"
+
+  - name: Make Shadow Local Bimanual Hands Launch desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+  when: bimanual|bool
