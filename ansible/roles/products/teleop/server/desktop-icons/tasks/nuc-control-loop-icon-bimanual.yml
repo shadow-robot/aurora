@@ -37,7 +37,7 @@
     start_terminal: "false"
 
 - name: Make desktop icon for demohand trusted
-  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop" "metadata::trusted" yes
+  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
