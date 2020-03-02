@@ -87,7 +87,7 @@
     launch_terminal: "false"
 
 - name: Install desktop icon for NUC right hand and arm hardware control loop
-  import_tasks: hand-icon.yml
+  import_tasks: nuc-control-loop-icon.yml
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
@@ -100,7 +100,7 @@
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC right hand and arm hardware control loop
-  import_tasks: hand-icon.yml
+  import_tasks: nuc-control-loop-icon.yml
   vars:
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
