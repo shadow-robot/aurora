@@ -36,8 +36,8 @@ encryption_password: ""
 hand_side: "right"
 hand_serial: "1082"
 hand_serial_left: "2346"
-term_width: 656
+term_width: 500
 term_height: 400
-term_x: 230
+term_x: 200
 term_y: 0
 term_y_correction: 58
