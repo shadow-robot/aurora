@@ -167,7 +167,10 @@ elif [[ "${playbook}" = "teleop_deploy" ]]; then
         else
             aurora_inventory="ansible/inventory/teleop/production"
         fi
+    else
+        aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
     fi
+
     echo ""
     echo " ---------------------------------------------------"
     echo " |                 VAULT password:                 |"
