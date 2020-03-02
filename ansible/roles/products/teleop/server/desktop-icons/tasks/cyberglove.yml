@@ -1,11 +1,4 @@
 ---
-- name: Install desktop icon for Teleop server container (for cyberglove)
-  include_tasks: default-icon.yml
-  vars:
-    template: ../../../common/resources/templates/scripts/start-docker-container.j2
-    desktop_icon_png: "cyberglove_teleop.png"
-    launch_script: "shadow_launcher_exec.sh"
-    desktop_icon_name: "Teleop_Container_Launch"
 
 - name: Install desktop icon for Teleop server GUI (for cyberglove)
   include_tasks: roslaunch-icon.yml
