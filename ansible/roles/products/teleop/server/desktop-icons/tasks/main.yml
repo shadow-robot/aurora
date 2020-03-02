@@ -394,6 +394,7 @@
     desktop_icon_png: "documentation_icon.png"
     launch_script: "shadow_launcher_doc_exec.sh"
     desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
 
 - name: Include products/common/demo-icons role
   include_role:

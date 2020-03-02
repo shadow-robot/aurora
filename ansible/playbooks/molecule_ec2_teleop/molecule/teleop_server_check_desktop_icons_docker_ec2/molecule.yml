@@ -21,6 +21,7 @@ provisioner:
     ANSIBLE_ROLES_PATH: ../../../../roles
   connection_options:
     ansible_python_interpreter: /usr/bin/python3
+    sudo_password: ubuntu
   inventory:
     links:
       group_vars: ../../../../inventory/teleop/group_vars

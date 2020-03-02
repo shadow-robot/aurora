@@ -12,3 +12,4 @@
     customer_key="invalidkey"
     glove="cyberglove"
     sim_icon=true
+    sudo_password="ubuntu"
