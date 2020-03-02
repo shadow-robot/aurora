@@ -10,6 +10,8 @@
     src: templates/scripts/start-docker-container-nuc-haptx-bimanual.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
+  vars:
+    config_branch_var: "{{ config_branch_value }}"
   when: glove=="haptx"
 
 - name: Create executable launch script for bimanual hand and arm control loop (with polhemus)
@@ -17,6 +19,8 @@
     src: templates/scripts/start-docker-container-nuc-polhemus-bimanual.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
+  vars:
+    config_branch_var: "{{ config_branch_value }}"
   when: glove=="polhemus"
 
 - name: Create desktop icon for hand

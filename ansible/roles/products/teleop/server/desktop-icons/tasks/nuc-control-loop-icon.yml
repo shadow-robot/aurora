@@ -14,6 +14,7 @@
     hand_serial_var: "{{ hand_serial_value }}"
     ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
+    config_branch_var: "{{ config_branch_value }}"
   when: glove=="cyberglove"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
@@ -25,6 +26,7 @@
     hand_serial_var: "{{ hand_serial_value }}"
     ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
+    config_branch_var: "{{ config_branch_value }}"
   when: glove=="haptx"
 
 - name: Create executable launch script for hand and arm control loop (with polhemus)
@@ -36,6 +38,7 @@
     hand_serial_var: "{{ hand_serial_value }}"
     ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
+    config_branch_var: "{{ config_branch_value }}"
   when: glove=="polhemus"
 
 - name: Create desktop icon for hand

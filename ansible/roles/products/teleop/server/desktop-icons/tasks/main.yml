@@ -91,7 +91,7 @@
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
-    hand_branch: "{{ config_branch }}"
+    config_branch_value: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Right Side Teleop Hardware Control Loop"
     ethercat_interface_value: "{{ ethercat_interface }}"
@@ -104,7 +104,7 @@
   vars:
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
-    hand_branch: "{{ config_branch }}"
+    config_branch_value: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Left Side Teleop Hardware Control Loop"
     ethercat_interface_value: "{{ ethercat_left_hand }}"
@@ -117,10 +117,14 @@
   vars:
     desktop_icon_png: "bimanual.png"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
-    hand_branch: "{{ config_branch }}"
+    config_branch_value: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Bimanual Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Bimanual Teleop Hardware Control Loop"
   when: bimanual|bool
+
+- name: Setting up icons for demohands A,B,C,D for unimanual teleop
+  include_tasks: demohands-unimanual.yml
+  when: demohand_icons|bool
 
 - name: Install desktop icon for right side teleop GUI (for cyberglove)
   import_tasks: roslaunch-icon.yml
@@ -390,22 +394,6 @@
     desktop_icon_png: "documentation_icon.png"
     launch_script: "shadow_launcher_doc_exec.sh"
     desktop_icon_name: "Teleop Documentation"
-
-- name: Setting up icons for demohands A,B,C,D for unimanual teleop
-  include_tasks: demohands-unimanual.yml
-  when: demohand_icons|bool
-
-- name: Setting up icons for cyberglove teleop
-  include_tasks: cyberglove.yml
-  when: glove=="cyberglove"
-
-- name: Setting up icons for haptx teleop
-  include_tasks: haptx.yml
-  when: glove=="haptx"
-
-- name: Setting up icons for polhemus teleop
-  include_tasks: polhemus.yml
-  when: glove=="polhemus"
 
 - name: Include products/common/demo-icons role
   include_role:
