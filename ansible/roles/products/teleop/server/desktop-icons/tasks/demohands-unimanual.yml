@@ -1,6 +1,6 @@
 ---
 - name: Install desktop icon for hand A
-  import_tasks: demohand-icon.yml
+  import_tasks: nuc-control-loop-icon.yml
   vars:
     desktop_icon_png: "demohand_A_icon.png"
     launch_script: "teleop_exec_A.sh"
@@ -11,7 +11,7 @@
     ethercat_interface_var: "{{ ethercat_interface }}"
 
 - name: Install desktop icon for hand B
-  import_tasks: demohand-icon.yml
+  import_tasks: nuc-control-loop-icon.yml
   vars:
     desktop_icon_png: "demohand_B_icon.png"
     launch_script: "teleop_exec_B.sh"
@@ -22,7 +22,7 @@
     ethercat_interface_var: "{{ ethercat_interface }}"
 
 - name: Install desktop icon for hand C
-  import_tasks: demohand-icon.yml
+  import_tasks: nuc-control-loop-icon.yml
   vars:
     desktop_icon_png: "demohand_C_icon.png"
     launch_script: "teleop_exec_C.sh"
@@ -33,7 +33,7 @@
     ethercat_interface_var: "{{ ethercat_interface }}"
 
 - name: Install desktop icon for hand D
-  import_tasks: demohand-icon.yml
+  import_tasks: nuc-control-loop-icon.yml
   vars:
     desktop_icon_png: "demohand_D_icon.png"
     launch_script: "teleop_exec_D.sh"

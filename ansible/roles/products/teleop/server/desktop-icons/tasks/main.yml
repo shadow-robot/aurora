@@ -394,10 +394,6 @@
 - name: Setting up icons for demohands A,B,C,D for unimanual teleop
   include_tasks: demohands-unimanual.yml
   when: demohand_icons|bool
- 
-- name: Setting up icons for demohands B and D for bimanual teleop
-  include_tasks: demohands-bimanual.yml
-  when: bimanual|bool and demohand_icons|bool
 
 - name: Setting up icons for cyberglove teleop
   include_tasks: cyberglove.yml
