@@ -71,7 +71,7 @@
 
 # Workaround for this bug: https://bugs.launchpad.net/netplan/+bug/1768827
 - name: Enable interface renaming to happen at next boot also
-  command: cp /run/systemd/network/*.link /etc/systemd/network/
+  shell: cp /run/systemd/network/*.link /etc/systemd/network/
   become: true
 
 - name: Update initramfs
