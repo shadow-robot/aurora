@@ -7,6 +7,7 @@ ethercat_interface: "eth0"
 bimanual: false
 ethercat_left_hand: "enx1"
 ethercat_left_arm: "enx2"
+ethercat_right_arm: "enp3s0"
 config_branch: "demohand_A"
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"

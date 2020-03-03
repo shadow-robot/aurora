@@ -11,14 +11,14 @@
     src: templates/netplan-right.j2
     dest: "{{ netplan_file }}"
   become: true
-  when: not bimanual|bool and ethercat_right_arm | length > 0
+  when: not bimanual|bool and hand_side=="right"
 
 - name: Configuring netplan for left arm
   template:
     src: templates/netplan-left.j2
     dest: "{{ netplan_file }}"
   become: true
-  when: not bimanual|bool and ethercat_left_arm | length > 0
+  when: not bimanual|bool and hand_side=="left"
 
 - name: Configuring netplan for bimanual arms
   template:
