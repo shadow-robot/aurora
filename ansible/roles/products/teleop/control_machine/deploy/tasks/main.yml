@@ -121,7 +121,7 @@
 
 - name: Creating control_machine setup script
   template:
-    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    src: ../../../common/resources/templates/scripts/setup-hand-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
