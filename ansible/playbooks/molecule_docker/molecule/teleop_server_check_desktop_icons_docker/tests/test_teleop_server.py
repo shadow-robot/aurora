@@ -36,7 +36,7 @@ def test_icons_in_docker(host):
         'Shadow ROS Logs Saver',
         'Teleop Documentation',
         )
-    scripts = (   
+    scripts = (
         'shadow_launch_right_teleop.sh',
         'nuc_rqt',
         'shadow_server_container',
