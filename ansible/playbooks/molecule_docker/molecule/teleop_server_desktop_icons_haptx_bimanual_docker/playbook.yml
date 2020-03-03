@@ -15,3 +15,4 @@
     ethercat_left_arm="enx0002"
     config_branch="bimanual_demohands_B_D"
     sudo_password="ubuntu"
+    demohand_icons=true
