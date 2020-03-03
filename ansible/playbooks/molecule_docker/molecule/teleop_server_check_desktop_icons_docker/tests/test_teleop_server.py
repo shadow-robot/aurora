@@ -33,7 +33,7 @@ def test_icons_in_docker(host):
         'Shadow Demos/Close Right Hand',
         'Shadow Demos/Demo Right Hand',
         'Shadow Demos/Open Right Hand',
-        'Shadow ROS Logs Saver',
+        'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         )
     scripts = (
