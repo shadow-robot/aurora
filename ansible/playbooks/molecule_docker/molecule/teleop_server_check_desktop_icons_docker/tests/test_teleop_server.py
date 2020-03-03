@@ -37,7 +37,7 @@ def test_icons_in_docker(host):
         'Teleop Documentation',
         )
     scripts = (
-        'shadow_launch_right_teleop.sh',
+        'shadow_launch_right_teleop',
         'nuc_rqt',
         'shadow_server_container',
         'shadow_roscore',
@@ -47,14 +47,14 @@ def test_icons_in_docker(host):
         'teleop_exec_C',
         'teleop_exec_D',
         'shadow_GUI_right',
-        'shadow_polhemus_mapping_launch_right.sh',
-        'shadow_polhemus_driver_right.sh',
+        'shadow_polhemus_mapping_launch_right',
+        'shadow_polhemus_driver_right',
         'shadow_nuc_container',
         'close_right_hand',
         'demo_right_hand',
         'open_right_hand',
-        'shadow_launcher_doc_exec.sh',
-        'shadow_sim_demo.sh'
+        'shadow_launcher_doc_exec',
+        'shadow_sim_demo'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists

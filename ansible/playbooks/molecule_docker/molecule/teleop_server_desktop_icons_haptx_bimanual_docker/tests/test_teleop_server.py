@@ -66,9 +66,9 @@ def test_icons_in_docker(host):
         'Bimanual HaptX Teleop Simulation'
         )
     scripts = (   
-        'shadow_launch_right_teleop.sh',
-        'shadow_launch_left_teleop.sh',
-        'shadow_launch_bimanual_teleop.sh',
+        'shadow_launch_right_teleop',
+        'shadow_launch_left_teleop',
+        'shadow_launch_bimanual_teleop',
         'nuc_rqt',
         'shadow_server_container',
         'shadow_roscore',
@@ -82,9 +82,9 @@ def test_icons_in_docker(host):
         'shadow_GUI_left',
         'shadow_GUI_right',
         'shadow_GUI_bimanual',
-        'shadow_haptx_mapping_launch_right.sh',
-        'shadow_haptx_mapping_launch_left.sh',
-        'shadow_haptx_mapping_launch_bimanual.sh',
+        'shadow_haptx_mapping_launch_right',
+        'shadow_haptx_mapping_launch_left',
+        'shadow_haptx_mapping_launch_bimanual',
         'shadow_nuc_container',
         'close_right_hand',
         'demo_right_hand',
@@ -92,8 +92,8 @@ def test_icons_in_docker(host):
         'close_left_hand',
         'demo_left_hand',
         'open_left_hand',
-        'shadow_launcher_doc_exec.sh',
-        'shadow_sim_demo.sh'
+        'shadow_launcher_doc_exec',
+        'shadow_sim_demo'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
