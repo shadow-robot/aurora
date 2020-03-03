@@ -1,33 +1,37 @@
 ---
-- name: Bring down right arm ethernet interface before renaming
-  command: ifconfig {{ ethercat_right_arm }} down
-  become: true
-  when: bimanual|bool and hand_side=="right"
+- name: Rename {{ ethercat_right_arm }} to right-arm (required for netplan) if not already done
+  block:
+    - name: Bring down right arm ethernet interface before renaming
+      command: ifconfig {{ ethercat_right_arm }} down
+      become: true
 
-- name: Rename right arm interface to right-arm
-  command: ip link set {{ ethercat_right_arm }} name right-arm
-  become: true
-  when: bimanual|bool and hand_side=="right"
+    - name: Rename right arm interface to right-arm
+      command: ip link set {{ ethercat_right_arm }} name right-arm
+      become: true
 
-- name: Bring up right arm ethernet interface after renaming
-  command: ifconfig right-arm up
-  become: true
-  when: bimanual|bool and hand_side=="right"
+    - name: Bring up right arm ethernet interface after renaming
+      command: ifconfig right-arm up
+      become: true
+  when:
+    - "{{ ethercat_right_arm }} in ansible_interfaces"
+    - bimanual|bool or hand_side=="right"
 
-- name: Bring down left arm ethernet interface before renaming
-  command: ifconfig {{ ethercat_left_arm }} down
-  become: true
-  when: bimanual|bool and hand_side=="left"
+- name: Rename {{ ethercat_left_arm }} to left-arm (required for netplan) if not already done
+  block:
+    - name: Bring down left arm ethernet interface before renaming
+      command: ifconfig {{ ethercat_left_arm }} down
+      become: true
 
-- name: Rename left arm interface to left-arm
-  command: ip link set {{ ethercat_left_arm }} name left-arm
-  become: true
-  when: bimanual|bool and hand_side=="left"
+    - name: Rename left arm interface to left-arm
+      command: ip link set {{ ethercat_left_arm }} name left-arm
+      become: true
 
-- name: Bring up left arm ethernet interface after renaming
-  command: ifconfig left-arm up
-  become: true
-  when: bimanual|bool and hand_side=="left"
+    - name: Bring up left arm ethernet interface after renaming
+      command: ifconfig left-arm up
+      become: true
+  when:
+    - "{{ ethercat_left_arm }} in ansible_interfaces"
+    - bimanual|bool or hand_side=="left"
 
 - name: Ensure the {{ netplan_file }} exists
   file:
