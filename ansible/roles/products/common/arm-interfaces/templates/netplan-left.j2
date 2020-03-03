@@ -5,7 +5,7 @@ network:
             addresses: [192.168.2.100/24]
             optional: true
             match:
-                name: left-arm
+                macaddress: {{ ethercat_left_arm_mac }}
             routes:
                 - to: 192.168.2.1/32
                   via: 192.168.2.1
