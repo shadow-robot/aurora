@@ -68,3 +68,12 @@
 - name: Apply netplan config
   command: netplan apply
   become: true
+
+# Workaround for this bug: https://bugs.launchpad.net/netplan/+bug/1768827
+- name: Enable interface renaming to happen at next boot also
+  command: cp /run/systemd/network/*.link /etc/systemd/network/
+  become: true
+
+- name: Update initramfs
+  command: update-initramfs -u
+  become: true
