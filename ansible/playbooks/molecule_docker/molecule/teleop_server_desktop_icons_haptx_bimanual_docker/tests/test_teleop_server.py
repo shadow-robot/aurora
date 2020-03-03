@@ -65,7 +65,7 @@ def test_icons_in_docker(host):
         'Teleop Documentation',
         'Bimanual HaptX Teleop Simulation'
         )
-    scripts = (   
+    scripts = (
         'shadow_launch_right_teleop',
         'shadow_launch_left_teleop',
         'shadow_launch_bimanual_teleop',
