@@ -125,7 +125,7 @@
 - name: Install desktop icon for NUC bimanual teleop hardware control loop
   import_tasks: nuc-control-loop-icon-bimanual.yml
   vars:
-    desktop_icon_png: "bimanual.png"
+    desktop_icon_png: "hand-e-bimanual.png"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
     config_branch_value: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Bimanual Teleop Hardware Control Loop"
@@ -205,7 +205,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
   when:
     - bimanual|bool or hand_side=="left"
-    - glove=="haptx"
+    - glove=="polhemus"
 
 - name: Install desktop icon for bimanual teleop GUI (for haptx)
   import_tasks: roslaunch-icon.yml
