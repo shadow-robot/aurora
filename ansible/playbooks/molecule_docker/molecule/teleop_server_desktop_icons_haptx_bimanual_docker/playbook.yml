@@ -17,3 +17,4 @@
     sudo_password="ubuntu"
     demohand_icons=true
     glove="haptx"
+    sim_icon=true
