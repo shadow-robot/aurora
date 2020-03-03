@@ -78,7 +78,7 @@ def test_icons_in_docker(host):
         'teleop_exec_A',
         'teleop_exec_B',
         'teleop_exec_C',
-        'teleop_exec_D',   
+        'teleop_exec_D',
         'shadow_GUI_left',
         'shadow_GUI_right',
         'shadow_GUI_bimanual',

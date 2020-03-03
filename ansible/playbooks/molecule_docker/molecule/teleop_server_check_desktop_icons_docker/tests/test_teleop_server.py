@@ -45,7 +45,7 @@ def test_icons_in_docker(host):
         'teleop_exec_A',
         'teleop_exec_B',
         'teleop_exec_C',
-        'teleop_exec_D',   
+        'teleop_exec_D',
         'shadow_GUI_right',
         'shadow_polhemus_mapping_launch_right.sh',
         'shadow_polhemus_driver_right.sh',
