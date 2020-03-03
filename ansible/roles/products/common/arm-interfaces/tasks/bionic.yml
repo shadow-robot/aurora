@@ -1,4 +1,14 @@
 ---
+- name: Set default macaddress for right arm if right-arm already exists
+  set_fact:
+    ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+right-arm]['macaddress'] }}"
+  when: 'right-arm' in ansible_interfaces
+
+- name: Set default macaddress for left arm if left-arm already exists
+  set_fact:
+    ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+left-arm]['macaddress'] }}"
+  when: 'left-arm' in ansible_interfaces
+
 - name: Rename {{ ethercat_right_arm }} to right-arm (required for netplan) if not already done
   block:
     - name: Get {{ ethercat_right_arm }} right-arm macaddress
@@ -40,16 +50,6 @@
   when:
     - ethercat_left_arm in ansible_interfaces
     - bimanual|bool or hand_side=="left"
-
-- name: Set default macaddress for right arm if right-arm already exists
-  set_fact:
-    ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+right-arm]['macaddress'] }}"
-  when: right-arm in ansible_interfaces
-
-- name: Set default macaddress for left arm if left-arm already exists
-  set_fact:
-    ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+left-arm]['macaddress'] }}"
-  when: left-arm in ansible_interfaces
 
 - name: Ensure the {{ netplan_file }} exists
   file:
