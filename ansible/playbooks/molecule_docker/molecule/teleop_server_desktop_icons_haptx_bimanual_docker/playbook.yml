@@ -16,3 +16,4 @@
     config_branch="bimanual_demohands_B_D"
     sudo_password="ubuntu"
     demohand_icons=true
+    glove="haptx"

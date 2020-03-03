@@ -1,12 +1,15 @@
 #jinja2: trim_blocks:False
 network:
     ethernets:
-        {{ ethercat_left_arm }}:
+        left-arm:
             addresses: [192.168.2.100/24]
             optional: true
+            match:
+                name: left-arm
             routes:
                 - to: 192.168.2.1/32
                   via: 192.168.2.1
+            set-name: left-arm
         enx-usb-ethernet:
             match:
                 name: enx*
