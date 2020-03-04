@@ -86,3 +86,11 @@
 - name: Apply netplan config
   command: netplan apply
   become: true
+
+- name: Edit root crontab on NUC to ensure all arm interfaces come back up after reboot
+  cron:
+    name: "apply netplan on reboot"
+    special_time: reboot
+    job: "/usr/sbin/netplan apply"
+    user: root
+  become: true
