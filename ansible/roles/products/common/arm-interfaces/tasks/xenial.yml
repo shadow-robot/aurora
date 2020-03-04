@@ -29,7 +29,7 @@
 
 - name: Add network setup to control machine for both arms
   become: yes
-  when: ur_interface | length > 0 and not bimanual | bool
+  when: ur_interface | length > 0 and bimanual | bool
   blockinfile:
     path: /etc/network/interfaces
     backup: yes
