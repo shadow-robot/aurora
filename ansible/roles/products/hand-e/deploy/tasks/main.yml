@@ -1,8 +1,15 @@
 ---
 - name: Setup script name
   set_fact:
-    setup_script: "setup_dexterous_hand.sh"
+	  setup_script: server-setup.sh
+    right_setup_script: right-server-setup.sh
+    left_setup_script: left-server-setup.sh
+    bimanual_setup_script : bimanual-server-setup.sh
     upgrade_script: "upgrade_image.sh"
+
+- name: Include installation/terminator role
+  include_role:
+    name: installation/terminator
 
 - name: Include docker/docker-image role
   include_role:
@@ -22,9 +29,17 @@
   include_role:
     name: products/common/save-logs-icons
 
+- name: Create Shadow Demos folder
+  file:
+    path: "{{ user_folder }}/Desktop/Shadow Demos"
+    mode: '755'
+    state: directory
+
 - name: Include products/common/demo-icons role
   include_role:
     name: products/common/demo-icons
+  vars:
+    demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
   when: demo_icons|bool
 
 - name: Include products/common/cyberglove role
@@ -48,46 +63,159 @@
   include_role:
     name: products/common/hand-serial
 
-- name: Creating hand-e setup script
+- name: Creating hand-e setup script for right hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ right_setup_script }}"
     mode: '755'
   vars:
     launch_file_name: "sr_rhand.launch"
+  when: bimanual|bool or hand_side=="right"
 
-- name: Copying hand setup script into docker container
-  changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
-  become: yes
-
-- name: Copy Shadow_Hand_Launcher desktop icon
-  copy:
-    src: files/hand-e.png
-    dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
-    mode: '664'
-
-- name: Create Shadow_Hand_Launcher executable launch script
+- name: Creating hand-e setup script for left hand
   template:
-    src: ../../../common/resources/templates/scripts/start-docker-container.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
-    mode: '755'
-
-- name: Create Shadow_Hand_Launcher desktop icon
-  template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ left_setup_script }}"
     mode: '755'
   vars:
-    desktop_shortcut_name: Shadow_Hand_Launcher
-    comment: "This is application launches the hand"
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: shadow_launcher_exec.sh
-    icon_file_name: hand-e.png
-    start_terminal: "true"
+    launch_file_name: "sr_lhand.launch"
+  when: bimanual|bool or hand_side=="left"
 
-- name: Make Shadow_Hand_Launcher Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+- name: Creating hand-e setup script for bimanual hands
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ bimanual_setup_script }}"
+    mode: '755'
+  vars:
+    launch_file_name: "sr_bimanual.launch"
+  when: bimanual|bool
+
+- name: Copying the hand setup script for right hand launch into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ right_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ right_setup_script }}"
+  become: yes
+  when: bimanual|bool or hand_side=="right"
+
+- name: Copying the hand setup script for left hand launch into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ left_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ left_setup_script }}"
+  become: yes
+  when: bimanual|bool or hand_side=="left"
+
+- name: Copying the hand setup script for bimanual hand launch into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ bimanual_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ bimanual_setup_script }}"
+  become: yes
+  when: bimanual|bool
+
+- name: Install Shadow Right Hand launch if bimanual is true or if hand_side="right"
+  block:
+  - name: Copy Launch Shadow Right Hand desktop icon
+    copy:
+      src: files/hand-e.png
+      dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
+      mode: '664'
+
+  - name: Create Launch Shadow Right Hand script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_right_launcher_exec.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ right_setup_script }}"
+
+  - name: Create Shadow Right Hand Launch desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Launch Shadow Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Launch Shadow Right Hand"
+      comment: "This is application launches the right hand"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_right_launcher_exec.sh
+      icon_file_name: hand-e.png
+      start_terminal: "false"
+
+  - name: Make Shadow Right Hand Launch desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Launch Shadow Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+
+  when: bimanual|bool or hand_side=="right"
+
+- name: Install Shadow Left Hand launch if bimanual is true or if hand_side="left"
+  block:
+  - name: Copy Launch Shadow Left Hand desktop icon
+    copy:
+      src: files/hand-e-left.png
+      dest: "{{ shadow_hand_launcher_folder }}/hand-e-left.png"
+      mode: '664'
+
+  - name: Create Launch Shadow Left Hand script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_left_launcher_exec.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ left_setup_script }}"
+
+  - name: Create Shadow Left Hand Launch desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Launch Shadow Left Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Launch Shadow Left Hand"
+      comment: "This is application launches the left hand"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_left_launcher_exec.sh
+      icon_file_name: hand-e-left.png
+      start_terminal: "false"
+
+  - name: Make Shadow Left Hand Launch desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Launch Shadow Left Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+
+  when: bimanual|bool or hand_side=="left"
+
+- name: Install Shadow Bimanual Hands launch if bimanual is true"
+  block:
+  - name: Copy Launch Shadow Bimanual Hands desktop icon
+    copy:
+      src: files/hand-e-bimanual.png
+      dest: "{{ shadow_hand_launcher_folder }}/hand-e-bimanual.png"
+      mode: '664'
+
+  - name: Create Launch Shadow Bimanual Hands script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_bimanual_launcher_exec.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ bimanual_setup_script }}"
+
+  - name: Create Shadow Bimanual Hands Launch desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Launch Shadow Bimanual Hands.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Launch Shadow Bimanual Hands"
+      comment: "This is application launches the bimanual hands"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_bimanual_launcher_exec.sh
+      icon_file_name: hand-e-bimanual.png
+      start_terminal: "false"
+
+  - name: Make Shadow Bimanual Hands Launch desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Launch Shadow Bimanual Hands.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+
+  when: bimanual|bool
+  
