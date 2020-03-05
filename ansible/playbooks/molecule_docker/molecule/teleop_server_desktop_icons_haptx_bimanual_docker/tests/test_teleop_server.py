@@ -47,7 +47,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/3 - Demohand C Launch NUC ' +
         'Right Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Demohand D Launch NUC ' +
-        'Right Side Teleop Hardware Control Loop',
+        'Left Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/4 - Launch Right Teleop GUI',
         'Shadow Advanced Launchers/4 - Launch Left Teleop GUI',
         'Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI',
