@@ -16,7 +16,7 @@ nvidia_docker: false # Define if nvidia docker 2 is used (defaul is false)
 optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
 launch_hand: false # Specify if hand driver should start when double clicking desktop icon
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
-hand_side: "right" # Specify if the hand is right or left (skip for bimanual)
+hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both left and right hands are used or not
 hand_serial: "1082" # Specify the right hand serial number
 hand_serial_left: "2346" # Specify the left hand serial number

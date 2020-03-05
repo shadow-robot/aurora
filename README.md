@@ -48,33 +48,47 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/stabl
 
 ## teleop_deploy ##
 
-For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
+For deploying teleop software on multiple machines (server, control-machine, client)
+
+For teleop software deployments on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
+
+To begin with, the teleop_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. Then the specified docker image is pulled and a docker container is initialized. Finally, desktop shortcuts are generated. This shortcuts start the teleop software and run the arm(s) and the hand(s).
 
 **How to run:**
+
+You will be asked for a docker_username and docker_password (for a Docker Hub account that has access to Shadow's private teleop Docker images), then a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-input docker_username --read-secure docker_password  option1=value1 option2=value2 option3=value3
 ```
-name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
+name_of_inventory can be development, staging or production. 
+
+Or if you are using remote_teleop=true, they are development_remote, staging_remote or production_remote.
+
+If no inventory name is provided, and if remote_teleop is not specified or false, then "production" will be automatically selected.
+
+If no inventory name is provided, and if remote_teleop=true, then "production_remote" will be automatically selected.
 
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory staging --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C hand_side=right reinstall=true upgrade_check=true
 ```
 
 Inventories correspond to fixed IP addresses as shown here:
 * [development](ansible/inventory/teleop/development)
+* [development_remote](ansible/inventory/teleop/development_remote)
 * [staging](ansible/inventory/teleop/staging)
+* [staging_remote](ansible/inventory/teleop/staging_remote)
 * [production](ansible/inventory/teleop/production)
+* [production_remote](ansible/inventory/teleop/production_remote)
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
 * [control-machine](ansible/inventory/teleop/group_vars/control_machine.yml)
 * [client](ansible/inventory/teleop/group_vars/client.yml)
-* [windows-machine](ansible/inventory/teleop/group_vars/windows_machine.yml)
 
 Run a playbook against one or more members of that group using the --limit tag:
 
@@ -86,9 +100,9 @@ For assigning input and secure input to playbook variables you can use the tags:
 * --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
 * --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
 
-**SSH and BECOME passwords:**
+**VAULT password:**
 
-If you are prompted for an SSH password, enter the sudo password of the NUC. For the BECOME password (i.e. the sudo password for teleop server), just press Enter, as it will default to the SSH password.
+Shadow will supply you with the Vault password, which is needed to decrypt some credentials to access the NUC.
 
 ## server_and_nuc_deploy ##
 

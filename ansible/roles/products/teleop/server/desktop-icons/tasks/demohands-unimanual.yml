@@ -1,0 +1,48 @@
+---
+- name: Install desktop icon for hand A
+  import_tasks: nuc-control-loop-icon.yml
+  vars:
+    desktop_icon_png: "demohand_A_icon.png"
+    launch_script: "teleop_exec_A.sh"
+    config_branch_value: "demohand_A"
+    desktop_icon_name: "3 - Demohand A Launch NUC Right Side Teleop Hardware Control Loop"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Demohand A Launch NUC Right Side Teleop Hardware Control Loop"
+    ethercat_interface_value: "{{ ethercat_interface }}"
+    hand_serial_value: "634"
+    hand_side_value: "right"
+
+- name: Install desktop icon for hand B
+  import_tasks: nuc-control-loop-icon.yml
+  vars:
+    desktop_icon_png: "demohand_B_icon.png"
+    launch_script: "teleop_exec_B.sh"
+    config_branch_value: "demohand_B"
+    desktop_icon_name: "3 - Demohand B Launch NUC Right Side Teleop Hardware Control Loop"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Demohand B Launch NUC Right Side Teleop Hardware Control Loop"
+    ethercat_interface_value: "{{ ethercat_interface }}"
+    hand_serial_value: "1130"
+    hand_side_value: "right"
+
+- name: Install desktop icon for hand C
+  import_tasks: nuc-control-loop-icon.yml
+  vars:
+    desktop_icon_png: "demohand_C_icon.png"
+    launch_script: "teleop_exec_C.sh"
+    config_branch_value: "demohand_C"
+    desktop_icon_name: "3 - Demohand C Launch NUC Right Side Teleop Hardware Control Loop"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Demohand C Launch NUC Right Side Teleop Hardware Control Loop"
+    ethercat_interface_value: "{{ ethercat_interface }}"
+    hand_serial_value: "1370"
+    hand_side_value: "right"
+
+- name: Install desktop icon for hand D
+  import_tasks: nuc-control-loop-icon.yml
+  vars:
+    desktop_icon_png: "demohand_D_icon.png"
+    launch_script: "teleop_exec_D.sh"
+    config_branch_value: "demohand_D"
+    desktop_icon_name: "3 - Demohand D Launch NUC Left Side Teleop Hardware Control Loop"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Demohand D Launch NUC Left Side Teleop Hardware Control Loop"
+    ethercat_interface_value: "{{ ethercat_left_hand }}"
+    hand_serial_value: "2346"
+    hand_side_value: "left"

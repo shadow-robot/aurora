@@ -1,4 +1,14 @@
 ---
+- name: Set server hostname variable
+  hosts: server
+  connection: local
+  gather_facts: yes
+  tasks:
+    - name: Extract hostname from server
+      set_fact:
+        ansible_host: "{{ ansible_hostname }}"
+      when: skip_molecule_task is not defined
+
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: 127.0.0.1
   connection: local
@@ -40,16 +50,6 @@
       set_fact:
         use_aws: true
 
-    - name: If bimanual is true, set glove to be haptx
-      set_fact:
-        glove: "haptx"
-      when: bimanual|bool and glove!="haptx"
-
-    - name: Set docker image based on glove type
-      set_fact:
-        image: "{{ image }}-{{ glove }}"
-      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
-
     - name: Add IP address of all hosts to all hosts
       lineinfile:
         dest: /etc/hosts
@@ -71,16 +71,6 @@
       set_fact:
         use_cyberglove: true
 
-    - name: If bimanual is true, set glove to be haptx
-      set_fact:
-        glove: "haptx"
-      when: bimanual|bool and glove!="haptx"
-
-    - name: Set docker image based on glove type
-      set_fact:
-        image: "{{ image }}-{{ glove }}"
-      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
-
     - name: Add IP address of all hosts to all hosts
       lineinfile:
         dest: /etc/hosts
@@ -94,39 +84,13 @@
   roles:
     - { role: products/teleop/control_machine/deploy }
 
-- name: Install Teleop software on Windows Machine
-  hosts: windows_machine
-  pre_tasks:
-    - name: Add IP address of all hosts to all hosts
-      lineinfile:
-        dest: c:\Windows\System32\Drivers\etc\hosts
-        regexp: '^{{ item }}.*$'
-        line: "{{ item }} {{ hostvars[item].ansible_host }}"
-        state: present
-      when: hostvars[item].ansible_host is defined
-      with_items: "{{ groups.all }}"
-      become: yes
-
-  roles:
-    - { role: products/teleop/windows_machine/deploy }
-
 - name: Install Teleop software on Ubuntu teleop client laptop
   hosts: client
   pre_tasks:
     - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0
+      when: cyberglove is defined and cyberglove| length > 0 and remote_teleop|bool
       set_fact:
         use_cyberglove: true
-
-    - name: If bimanual is true, set glove to be haptx
-      set_fact:
-        glove: "haptx"
-      when: bimanual|bool and glove!="haptx"
-
-    - name: Set docker image based on glove type
-      set_fact:
-        image: "{{ image }}-{{ glove }}"
-      when: image=="shadowrobot/shadow-teleop" and glove | length > 0
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -134,12 +98,12 @@
         regexp: '^{{ item }}.*$'
         line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
-      when: hostvars[item].ansible_host is defined
+      when: hostvars[item].ansible_host is defined and remote_teleop|bool
       with_items: "{{ groups.all }}"
       become: yes
 
   roles:
-    - { role: products/teleop/client/deploy }
+    - { role: products/teleop/client/deploy , when: remote_teleop|bool }
 
 - name: Inform user for reboot
   hosts: 127.0.0.1

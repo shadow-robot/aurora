@@ -1,22 +1,27 @@
 #jinja2: trim_blocks:False
 network:
     ethernets:
-        {{ ethercat_right_arm }}:
+        right-arm:
             addresses: [192.168.1.100/24]
             optional: true
+            match:
+                macaddress: {{ ethercat_right_arm_mac }}
             routes:
                 - to: 192.168.1.1/32
                   via: 192.168.1.1
-        {{ ethercat_left_arm }}:
+            set-name: right-arm
+        left-arm:
             addresses: [192.168.2.100/24]
             optional: true
+            match:
+                macaddress: {{ ethercat_left_arm_mac }}
             routes:
                 - to: 192.168.2.1/32
                   via: 192.168.2.1
+            set-name: left-arm
         enx-usb-ethernet:
             match:
                 name: enx*
             dhcp4: true
             optional: true
-
     version: 2

@@ -5,7 +5,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Create executable launch script for GUI
+- name: Create executable launch script
   template:
     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
@@ -14,10 +14,10 @@
     project_name: "{{ project_name_input }}"
     launch_file: "{{ launch_file_input }}"
 
-- name: Create desktop icon for GUI
+- name: Create desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop"
+    dest: "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "{{ desktop_icon_name }}"
@@ -25,10 +25,10 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
-    start_terminal: "true"
+    start_terminal: "false"
 
-- name: Make desktop icon for GUI icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_name }}.desktop" "metadata::trusted" yes
+- name: Make desktop icon trusted
+  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'

@@ -10,5 +10,8 @@
     skip_molecule_task=true
     allow_auto_reboot=true
     customer_key="invalidkey"
-    glove="cyberglove"
+    glove="polhemus"
+    hand_side=right
     sim_icon=true
+    sudo_password="ubuntu"
+    demohand_icons=true

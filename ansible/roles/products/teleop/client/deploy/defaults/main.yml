@@ -1,10 +1,10 @@
 ---
-image: "shadowrobot/shadow-teleop-haptx"
-tag: "kinetic-v0.0.33"
+image: "shadowrobot/shadow-teleop-polhemus"
+tag: "melodic-v0.0.9"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true
-glove: "haptx"
+glove: "polhemus"
 cyberglove: ""
 use_aws: false
 use_openvpn: false
@@ -20,7 +20,7 @@ use_steamvr: false
 use_cyberglove: false
 remote_cyberglove: true
 setup_script: ""
-server_hostname: "TELEOP-DEMO"
+server_hostname: "SERVER"
 openvpn_port: "1196"
 terminator: true
 bimanual: false

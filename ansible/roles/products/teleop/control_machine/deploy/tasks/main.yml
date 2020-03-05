@@ -41,57 +41,21 @@
     name: docker/aws
   when: use_aws|bool
 
-- name: Check if there is an interface file
-  stat:
-    path: /etc/network/interfaces
-  register: stat_result
-
-- name: In case enp interface doesn't exist, use enp3s0 (ethernet port of NUC) for right arm
-  set_fact:
-    ur_interface: 'enp3s0'
-  when: "'enp' not in ansible_interfaces"
-
-- name: If an enp interface exists, use the first one for ur_interface for right arm
-  set_fact:
-    ur_interface: "{{ ansible_interfaces | select('match','enp.*') | list | first }}"
-  when: "'enp' in ansible_interfaces"
-
-- name: Add network setup to control machine for right arm
-  become: yes
-  when: ur_interface | length > 0 and not ethercat_left_arm | length > 0
-  blockinfile:
-    path: /etc/network/interfaces
-    backup: yes
-    block: |
-      auto {{ ur_interface }}
-      iface {{ ur_interface }} inet static
-        address 192.168.1.100
-        netmask 255.255.255.0
-  changed_when: false
-
-- name: Add network setup to control machine for both arms
-  become: yes
-  when: ur_interface | length > 0 and ethercat_left_arm | length > 0
-  blockinfile:
-    path: /etc/network/interfaces
-    backup: yes
-    block: |
-      auto {{ ur_interface }}
-      iface {{ ur_interface }} inet static
-        address 192.168.1.100
-        netmask 255.255.255.0
-
-      auto {{ ethercat_left_arm }}
-      iface {{ ethercat_left_arm }} inet static
-        address 192.168.2.100
-        netmask 255.255.255.0
-  changed_when: false
+- name: Include products/common/arm-interfaces role
+  include_role:
+    name: products/common/arm-interfaces
 
 - name: Check if the ssh public key has been generated and copied to temp_ssh_keys_path folder on machine running Ansible (teleop server laptop)
   stat:
     path: "{{ temp_ssh_keys_path }}.pub"
   register: ssh_result
   delegate_to: 127.0.0.1
+
+- name: Ensure the .ssh folder exists
+  file:
+    path: "{{ user_folder }}/.ssh/"
+    mode: '700'
+    state: directory
 
 - name: Copy SSH public key from server to control machine (if it exists in teleop server)
   copy:
@@ -111,14 +75,6 @@
   changed_when: false
   become: yes
 
-- name: Include installation/lxml role
-  include_role:
-    name: installation/lxml
-
-- name: Include products/common/hand-serial role
-  include_role:
-    name: products/common/hand-serial
-
 - name: Creating control_machine setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand-nuc.j2
@@ -127,5 +83,5 @@
 
 - name: Copying control_machine setup script into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/control_machine_setup.sh {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes

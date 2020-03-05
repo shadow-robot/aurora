@@ -5,7 +5,12 @@
     nuc_address: "{{ groups['control_machine'][0] }}"
   when: groups['control_machine'] is defined
 
-- name: Setup script name
+- name: Set server ip
+  set_fact:
+    server_ip: "{{ groups['server'][0] }}"
+  when: groups['server'] is defined
+
+- name: Setup script names
   set_fact:
     setup_script: teleop-server-setup.sh
     upgrade_script: "upgrade_image.sh"
@@ -41,15 +46,39 @@
   include_role:
     name: installation/chrony-server
 
+- name: Include installation/polhemus role
+  include_role:
+    name: installation/polhemus
+  when: glove == "polhemus" and skip_molecule_task is not defined
+
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
+
+- name: Get screen width
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f1"
+  register: xrandr_width
+  changed_when: xrandr_width.rc != 0
+
+- name: Get screen height
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f2"
+  register: xrandr_height
+  changed_when: xrandr_height.rc != 0
+
+- name: Set terminator dimensions and locations
+  set_fact:
+    term_width: "{{ ((xrandr_width.stdout|int)*0.26)|int }}"
+    term_height: "{{ ((xrandr_height.stdout|int)*0.37)|int }}"
+    term_x: "{{ ((xrandr_width.stdout|int)*0.10)|int }}"
+    term_y: 0
+    term_y_correction: 58
 
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
   vars:
     container_terminal_title: "Teleop Server Container"
+    term_args: "--geometry {{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}"
 
 - name: Include docker/aws role
   include_role:
@@ -64,6 +93,10 @@
   include_role:
     name: products/common/cyberglove
   when: use_cyberglove|bool
+
+- name: Include products/common/hand-serial role
+  include_role:
+    name: products/common/hand-serial
 
 - name: Include products/teleop/server/desktop-icons role
   include_role:
@@ -92,7 +125,6 @@
   copy:
     src: "{{ ssh_keys_path }}.pub"
     dest: "{{ temp_ssh_keys_path }}.pub"
-    mode: '644'
   changed_when: false
   when: skip_molecule_task is not defined
 
