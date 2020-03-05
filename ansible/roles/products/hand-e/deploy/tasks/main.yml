@@ -1,6 +1,7 @@
 ---
 - name: Setup script name
   set_fact:
+    setup_script: server-setup.sh
     right_setup_script: right-server-setup.sh
     left_setup_script: left-server-setup.sh
     bimanual_setup_script : bimanual-server-setup.sh
