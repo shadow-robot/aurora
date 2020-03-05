@@ -217,4 +217,3 @@
       - ansible_distribution_release|string == 'bionic'
 
   when: bimanual|bool
-  
