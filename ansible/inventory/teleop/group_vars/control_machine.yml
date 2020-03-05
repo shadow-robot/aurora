@@ -17,7 +17,7 @@ setup_directory: "/usr/local/bin" # Where setup scripts should be installed that
 terminator: false # Launch terminator when the Docker starts
 nvidia_docker: false # Define if nvidia docker 2 is used (defaul is false)
 use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
-hand_side: "right" # Specify if the hand is right or left (skip for bimanual)
+hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 hand_serial: "1082" # Specify the right hand serial number
 hand_serial_left: "2346" # Specify the left hand serial number
 ansible_become_password: !vault |

@@ -50,19 +50,18 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/stabl
 
 For deploying teleop software on multiple machines (server, control-machine, client)
 
-For Hand E teleop software deployments on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
+For teleop software deployments on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
 
-To begin with, the teleop_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. If the required image is private, 
-then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker container is initialized. Finally, desktop shortcuts are generated. This shortcuts start the teleop software and run the arm(s) and the hand(s).
+To begin with, the teleop_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. Then the specified docker image is pulled and a docker container is initialized. Finally, desktop shortcuts are generated. This shortcuts start the teleop software and run the arm(s) and the hand(s).
 
 **How to run:**
 
-You will be asked for a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
+You will be asked for a docker_username and docker_password (for a Docker Hub account that has access to Shadow's private teleop Docker images), then a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-input docker_username --read-secure docker_password  option1=value1 option2=value2 option3=value3
 ```
 name_of_inventory can be development, staging or production. 
 
@@ -75,7 +74,7 @@ If no inventory name is provided, and if remote_teleop=true, then "production_re
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C hand_side=right reinstall=true upgrade_check=true
 ```
 
 Inventories correspond to fixed IP addresses as shown here:
