@@ -7,6 +7,20 @@
     bimanual_setup_script : bimanual-server-setup.sh
     upgrade_script: "upgrade_image.sh"
 
+- name: Set icon picture filenames for hand_lite
+  set_fact:
+    right_hand_picture: files/hand_lite.jpg
+    left_hand_picture: files/hand_lite_left.jpg
+    bimanual_hands_picture: files/hand_lite_bimanual.jpg
+  when: product=='hand_lite'
+
+- name: Set icon picture filenames for hand_extra_lite
+  set_fact:
+    right_hand_picture: files/hand_extra_lite.jpg
+    left_hand_picture: files/hand_extra_lite_left.jpg
+    bimanual_hands_picture: files/hand_extra_lite_bimanual.jpg
+  when: product=='hand_extra_lite'
+
 - name: Include installation/terminator role
   include_role:
     name: installation/terminator
