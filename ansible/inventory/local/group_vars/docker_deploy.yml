@@ -19,7 +19,7 @@ setup_directory: "/usr/local/bin" # Where setup scripts should be installed that
 terminator: true # Launch terminator when the Docker starts
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 sim_hand: false # if set to true it will autolaunch the hand in simulation
-hand_side: "right" # Specify if the hand is right or left (skip for bimanual)
+hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both hands are used or not
 hand_serial: "1082" # Specify the right hand serial number
 hand_serial_left: "2346" # Specify the left hand serial number
