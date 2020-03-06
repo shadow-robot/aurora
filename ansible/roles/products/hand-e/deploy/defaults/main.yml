@@ -22,6 +22,6 @@ bimanual: false
 hand_serial: "1082"
 hand_serial_left: "2346"
 use_cyberglove: false
-right_hand_picture: files/hand-e.png
-left_hand_picture: files/hand-e-left.png
-bimanual_hands_picture: files/hand-e-bimanual.png
+right_hand_picture: hand-e.png
+left_hand_picture: hand-e-left.png
+bimanual_hands_picture: hand-e-bimanual.png

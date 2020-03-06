@@ -9,16 +9,16 @@
 
 - name: Set icon picture filenames for hand_lite
   set_fact:
-    right_hand_picture: files/hand_lite.jpg
-    left_hand_picture: files/hand_lite_left.jpg
-    bimanual_hands_picture: files/hand_lite_bimanual.jpg
+    right_hand_picture: hand_lite.jpg
+    left_hand_picture: hand_lite_left.jpg
+    bimanual_hands_picture: hand_lite_bimanual.jpg
   when: product=='hand_lite'
 
 - name: Set icon picture filenames for hand_extra_lite
   set_fact:
-    right_hand_picture: files/hand_extra_lite.jpg
-    left_hand_picture: files/hand_extra_lite_left.jpg
-    bimanual_hands_picture: files/hand_extra_lite_bimanual.jpg
+    right_hand_picture: hand_extra_lite.jpg
+    left_hand_picture: hand_extra_lite_left.jpg
+    bimanual_hands_picture: hand_extra_lite_bimanual.jpg
   when: product=='hand_extra_lite'
 
 - name: Include installation/terminator role
@@ -126,8 +126,8 @@
   block:
   - name: Copy Launch Shadow Right Hand desktop icon
     copy:
-      src: files/hand-e.png
-      dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
+      src: "files/{{ right_hand_picture }}"
+      dest: "{{ shadow_hand_launcher_folder }}/{{ right_hand_picture }}"
       mode: '664'
 
   - name: Create Launch Shadow Right Hand script
@@ -148,7 +148,7 @@
       comment: "This is application launches the right hand"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_right_launcher_exec.sh
-      icon_file_name: hand-e.png
+      icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
 
   - name: Make Shadow Right Hand Launch desktop icon Trusted
@@ -163,8 +163,8 @@
   block:
   - name: Copy Launch Shadow Left Hand desktop icon
     copy:
-      src: files/hand-e-left.png
-      dest: "{{ shadow_hand_launcher_folder }}/hand-e-left.png"
+      src: "files/{{ left_hand_picture }}"
+      dest: "{{ shadow_hand_launcher_folder }}/{{ left_hand_picture }}"
       mode: '664'
 
   - name: Create Launch Shadow Left Hand script
@@ -185,7 +185,7 @@
       comment: "This is application launches the left hand"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_left_launcher_exec.sh
-      icon_file_name: hand-e-left.png
+      icon_file_name: "{{ left_hand_picture }}"
       start_terminal: "false"
 
   - name: Make Shadow Left Hand Launch desktop icon Trusted
@@ -200,8 +200,8 @@
   block:
   - name: Copy Launch Shadow Bimanual Hands desktop icon
     copy:
-      src: files/hand-e-bimanual.png
-      dest: "{{ shadow_hand_launcher_folder }}/hand-e-bimanual.png"
+      src: "files/{{ bimanual_hands_picture }}"
+      dest: "{{ shadow_hand_launcher_folder }}/{{ bimanual_hands_picture }}"
       mode: '664'
 
   - name: Create Launch Shadow Bimanual Hands script
@@ -222,7 +222,7 @@
       comment: "This is application launches the bimanual hands"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_bimanual_launcher_exec.sh
-      icon_file_name: hand-e-bimanual.png
+      icon_file_name: "{{ bimanual_hands_picture }}"
       start_terminal: "false"
 
   - name: Make Shadow Bimanual Hands Launch desktop icon Trusted
