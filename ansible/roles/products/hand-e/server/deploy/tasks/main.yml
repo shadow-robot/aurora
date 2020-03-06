@@ -87,9 +87,9 @@
   include_role:
     name: products/common/save-logs-icons
 
-- name: Include products/common/hand-serial role
+- name: Include products/common/hand-serial-and-xacro role
   include_role:
-    name: products/common/hand-serial
+    name: products/common/hand-serial-and-xacro
 
 - name: Include products/hand-e/server/desktop-icons role
   include_role:

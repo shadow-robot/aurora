@@ -94,9 +94,9 @@
     name: products/common/cyberglove
   when: use_cyberglove|bool
 
-- name: Include products/common/hand-serial role
+- name: Include products/common/hand-serial-and-xacro role
   include_role:
-    name: products/common/hand-serial
+    name: products/common/hand-serial-and-xacro
 
 - name: Include products/teleop/server/desktop-icons role
   include_role:

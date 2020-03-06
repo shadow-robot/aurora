@@ -59,9 +59,9 @@
     mode: '755'
   when: upgrade_check|bool
 
-- name: Include products/common/hand-serial role
+- name: Include products/common/hand-serial-and-xacro role
   include_role:
-    name: products/common/hand-serial
+    name: products/common/hand-serial-and-xacro
 
 - name: Creating the setup script for right hand
   template:
