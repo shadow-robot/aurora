@@ -111,6 +111,7 @@
     ethercat_interface_value: "{{ ethercat_interface }}"
     hand_serial_value: "{{ hand_serial }}"
     hand_side_value: "right"
+    xacro_value: "{{ xacro_right }}"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for NUC left hand hardware control loop
@@ -124,6 +125,7 @@
     ethercat_interface_value: "{{ ethercat_left_hand }}"
     hand_serial_value: "{{ hand_serial_left }}"
     hand_side_value: "left"
+    xacro_value: "{{ xacro_left }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual hands hardware control loop
@@ -134,6 +136,7 @@
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
+    xacro_value: "{{ xacro_bimanual }}"
   when: bimanual|bool
 
 - name: Install desktop icon for right hand GUI
