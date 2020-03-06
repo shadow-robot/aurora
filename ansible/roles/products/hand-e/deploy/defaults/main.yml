@@ -11,3 +11,14 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 setup_directory: "/usr/local/bin"
 upgrade_check: false
 sim_hand: false
+reinstall: false
+nvidia_docker: false
+use_aws: false
+launch_hand: false
+config_branch: "demohand_A"
+upgrade_check: false
+hand_side: "right"
+bimanual: false
+hand_serial: "1082"
+hand_serial_left: "2346"
+use_cyberglove: false
