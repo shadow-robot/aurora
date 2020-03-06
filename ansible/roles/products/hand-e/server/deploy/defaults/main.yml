@@ -38,3 +38,6 @@ term_height: 400
 term_x: 230
 term_y: 0
 term_y_correction: 58
+xacro_right: "$(find sr_description)/robots/shadowhand_motor_plus.urdf.xacro"
+xacro_left: "$(find sr_description)/robots/shadowhand_left_motor_plus.urdf.xacro"
+xacro_bimanual: "$(find sr_description)/robots/bimanual_shadowhand_motor.urdf.xacro"

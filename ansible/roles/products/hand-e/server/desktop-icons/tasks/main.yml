@@ -10,10 +10,24 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Set icon picture filenames for hand_lite
+  set_fact:
+    right_hand_picture: hand_lite.jpg
+    left_hand_picture: hand_lite_left.jpg
+    bimanual_hands_picture: hand_lite_bimanual.jpg
+  when: product=='hand_lite'
+
+- name: Set icon picture filenames for hand_extra_lite
+  set_fact:
+    right_hand_picture: hand_extra_lite.jpg
+    left_hand_picture: hand_extra_lite_left.jpg
+    bimanual_hands_picture: hand_extra_lite_bimanual.jpg
+  when: product=='hand_extra_lite'
+
 - name: Install desktop icon for launching everything for Shadow Right Hand
   import_tasks: default-icon-no-terminator.yml
   vars:
-    desktop_icon_png: "hand-e.png"
+    desktop_icon_png: "{{ right_hand_picture }}"
     launch_script: "shadow_launch_everything_right.sh"
     desktop_icon_name: "Launch Shadow Right Hand"
     template: templates/scripts/launch-everything-right.j2
@@ -24,7 +38,7 @@
 - name: Install desktop icon for launching everything for Shadow Left Hand
   import_tasks: default-icon-no-terminator.yml
   vars:
-    desktop_icon_png: "hand-e-left.png"
+    desktop_icon_png: "{{ left_hand_picture }}"
     launch_script: "shadow_launch_everything_left.sh"
     desktop_icon_name: "Launch Shadow Left Hand"
     template: templates/scripts/launch-everything-left.j2
@@ -35,7 +49,7 @@
 - name: Install desktop icon for launching everything for Shadow Bimanual Hands
   import_tasks: default-icon-no-terminator.yml
   vars:
-    desktop_icon_png: "hand-e-bimanual.png"
+    desktop_icon_png: "{{ bimanual_hands_picture }}"
     launch_script: "shadow_launch_everything_bimanual.sh"
     desktop_icon_name: "Launch Shadow Bimanual Hands"
     template: templates/scripts/launch-everything-bimanual.j2
@@ -89,7 +103,7 @@
 - name: Install desktop icon for NUC right hand hardware control loop
   import_tasks: hand-icon.yml
   vars:
-    desktop_icon_png: "hand-e.png"
+    desktop_icon_png: "{{ right_hand_picture }}"
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand Hardware Control Loop"
@@ -102,7 +116,7 @@
 - name: Install desktop icon for NUC left hand hardware control loop
   import_tasks: hand-icon.yml
   vars:
-    desktop_icon_png: "hand-e-left.png"
+    desktop_icon_png: "{{ left_hand_picture }}"
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand Hardware Control Loop"
@@ -115,7 +129,7 @@
 - name: Install desktop icon for NUC bimanual hands hardware control loop
   import_tasks: hand-icon-bimanual.yml
   vars:
-    desktop_icon_png: "hand-e-bimanual.png"
+    desktop_icon_png: "{{ bimanual_hands_picture }}"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
@@ -176,8 +190,8 @@
   block:
   - name: Copy Launch Local Shadow Right Hand desktop icon
     copy:
-      src: files/hand-e.png
-      dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
+      src: "files/{{ right_hand_picture }}"
+      dest: "{{ shadow_hand_launcher_folder }}/{{ right_hand_picture }}"
       mode: '664'
 
   - name: Create Launch Local Shadow Right Hand script
@@ -198,7 +212,7 @@
       comment: "This is application launches the right hand locally without the NUC"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_right_launcher_exec.sh
-      icon_file_name: hand-e.png
+      icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
 
   - name: Make Shadow Local Right Hand Launch desktop icon Trusted
@@ -212,8 +226,8 @@
   block:
   - name: Copy Launch Local Shadow Left Hand desktop icon
     copy:
-      src: files/hand-e-left.png
-      dest: "{{ shadow_hand_launcher_folder }}/hand-e-left.png"
+      src: "files/{{ left_hand_picture }}"
+      dest: "{{ shadow_hand_launcher_folder }}/{{ left_hand_picture }}"
       mode: '664'
 
   - name: Create Launch Local Shadow Left Hand script
@@ -234,7 +248,7 @@
       comment: "This is application launches the left hand locally without the NUC"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_left_launcher_exec.sh
-      icon_file_name: hand-e-left.png
+      icon_file_name: "{{ left_hand_picture }}"
       start_terminal: "false"
 
   - name: Make Shadow Local Left Hand Launch desktop icon Trusted
@@ -248,8 +262,8 @@
   block:
   - name: Copy Launch Local Shadow Bimanual Hands desktop icon
     copy:
-      src: files/hand-e-bimanual.png
-      dest: "{{ shadow_hand_launcher_folder }}/hand-e-bimanual.png"
+      src: "files/{{ bimanual_hands_picture }}"
+      dest: "{{ shadow_hand_launcher_folder }}/{{ bimanual_hands_picture }}"
       mode: '664'
 
   - name: Create Launch Local Shadow Bimanual Hands script
@@ -270,7 +284,7 @@
       comment: "This is application launches the bimanual hands locally without the NUC"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_bimanual_launcher_exec.sh
-      icon_file_name: hand-e-bimanual.png
+      icon_file_name: "{{ bimanual_hands_picture }}"
       start_terminal: "false"
 
   - name: Make Shadow Local Bimanual Hands Launch desktop icon Trusted
