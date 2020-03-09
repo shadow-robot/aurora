@@ -5,7 +5,7 @@ tag: "melodic-release"
 full_image_name: "shadowrobot/dexterous-hand:melodic-release"
 ethercat_interface: "eth0"
 launch_hand: true
-config_branch: demohand_A
+config_branch: ""
 use_cyberglove: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
