@@ -10,6 +10,7 @@
     dest: "{{ launch_file_path_right }}"
     mode: '755'
     force: yes
+  when: "config_branch | length > 0"
 
 - name: Download the left launch file from sr-config branch {{ config_branch }} from Github
   get_url:
@@ -17,6 +18,7 @@
     dest: "{{ launch_file_path_left }}"
     mode: '755'
     force: yes
+  when: "config_branch | length > 0"
 
 - name: Get the right hand_serial xml_response from the right launch file
   xml:
@@ -25,11 +27,13 @@
     content: attribute
   register: xml_response_right
   ignore_errors: yes
+  when: "config_branch | length > 0"
 
 - name: Set the right hand_serial from xml_response_right
   set_fact:
     hand_serial: "{{ xml_response_right.matches[0].arg.value }}"
   ignore_errors: yes
+  when: "config_branch | length > 0"
 
 - name: Get the left hand_serial xml_response from the left launch file
   xml:
@@ -38,8 +42,10 @@
     content: attribute
   register: xml_response_left
   ignore_errors: yes
+  when: "config_branch | length > 0"
 
 - name: Set the left hand_serial from xml_response_left
   set_fact:
     hand_serial_left: "{{ xml_response_left.matches[0].arg.value }}"
   ignore_errors: yes
+  when: "config_branch | length > 0"
