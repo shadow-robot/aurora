@@ -77,7 +77,20 @@
   include_role:
     name: products/common/hand-serial-and-xacro
 
-- name: Creating the setup script for right hand
+- name: Creating the default setup script
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
+    mode: '755'
+  vars:
+    launch_file_name: "sr_rhand.launch"
+
+- name: Copying the default setup script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  become: yes
+
+- name: Creating hand-e setup script for right hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ right_setup_script }}"
