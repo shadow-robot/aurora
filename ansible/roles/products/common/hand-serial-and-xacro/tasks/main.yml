@@ -81,7 +81,7 @@
 - name: Get the bimanual xacro xml_response from the bimanual launch file
   xml:
     path: "{{ launch_file_path_bimanual }}"
-    xpath: "//attribute::*[contains(., 'srhand.launch')]/..//attribute::*[contains(., 'robot_description')]/.."
+    xpath: "//attribute::*[contains(., 'sr_bimanual.launch')]/..//attribute::*[contains(., 'robot_description')]/.."
     content: attribute
   register: xml_response_bimanual_xacro
   ignore_errors: yes
