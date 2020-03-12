@@ -36,6 +36,8 @@ encryption_password: ""
 hand_side: "right"
 hand_serial: "1082"
 hand_serial_left: "2346"
+mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
+mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v3.yaml"
 term_width: 500
 term_height: 400
 term_x: 200
