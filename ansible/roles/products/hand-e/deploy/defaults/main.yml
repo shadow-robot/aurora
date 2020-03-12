@@ -15,7 +15,7 @@ reinstall: false
 nvidia_docker: false
 use_aws: false
 launch_hand: false
-config_branch: "demohand_A"
+config_branch: ""
 upgrade_check: false
 hand_side: "right"
 bimanual: false

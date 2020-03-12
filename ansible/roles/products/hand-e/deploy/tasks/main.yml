@@ -76,6 +76,7 @@
 - name: Include products/common/hand-serial-and-xacro role
   include_role:
     name: products/common/hand-serial-and-xacro
+  when: config_branch is defined and config_branch | length > 0
 
 - name: Creating the default setup script
   template:
