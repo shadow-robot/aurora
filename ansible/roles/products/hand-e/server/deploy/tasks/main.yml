@@ -89,7 +89,8 @@
 
 - name: Include products/common/hand-serial-and-xacro role
   include_role:
-    name: products/common/hand-serial-and-xacro
+    name: products/common/hand-serial
+  when: config_branch is defined and config_branch | length > 0
 
 - name: Include products/hand-e/server/desktop-icons role
   include_role:
