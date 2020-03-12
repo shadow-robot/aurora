@@ -4,7 +4,7 @@ NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP={{ server_ip }}
 
-ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} HAND_SERIALN_LEFT={{ hand_serial_left }} ETH_PORT={{ ethercat_interface }} ETH_PORT_LHAND={{ ethercat_left_hand }} XACRO={{ xacro_var }} MAPPING_RIGHT={{ mapping_path_right }} MAPPING_LEFT={{ mapping_path_left }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
+ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} HAND_SERIALN_LEFT={{ hand_serial_left }} ETH_PORT={{ ethercat_interface }} ETH_PORT_LHAND={{ ethercat_left_hand }} XACRO={{ xacro_bimanual }} MAPPING_RIGHT={{ mapping_path_right }} MAPPING_LEFT={{ mapping_path_left }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
 bash $(while [[ $(ss | grep $HOST_IP | grep $NUC_ADDRESS | grep ssh | grep ESTAB | wc -l) -gt 0 ]]; do sleep 1; done ; pkill -INT -f roslaunch) &
 docker stop ${CONTAINER}
 sleep 2
