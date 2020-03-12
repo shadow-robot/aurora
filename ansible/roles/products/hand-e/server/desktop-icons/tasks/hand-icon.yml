@@ -15,6 +15,7 @@
     ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
     xacro_var: "{{ xacro_value }}"
+    mapping_path_var: "{{ mapping_path_value }}"
 
 - name: Create desktop icon for hand
   template:

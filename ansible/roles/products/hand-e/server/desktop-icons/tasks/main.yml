@@ -112,6 +112,7 @@
     hand_serial_value: "{{ hand_serial }}"
     hand_side_value: "right"
     xacro_value: "{{ xacro_right }}"
+    mapping_path_value: "{{ mapping_path_right }}"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for NUC left hand hardware control loop
@@ -126,6 +127,7 @@
     hand_serial_value: "{{ hand_serial_left }}"
     hand_side_value: "left"
     xacro_value: "{{ xacro_left }}"
+    mapping_path_value: "{{ mapping_path_left }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual hands hardware control loop
