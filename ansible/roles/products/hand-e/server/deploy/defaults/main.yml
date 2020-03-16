@@ -14,7 +14,7 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 nuc_username: "user"
 setup_directory: "/usr/local/bin"
 launch_hand: false
-config_branch: "demohand_A"
+config_branch: ""
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
@@ -38,3 +38,9 @@ term_height: 400
 term_x: 230
 term_y: 0
 term_y_correction: 58
+xacro_right: "$(find sr_description)/robots/shadowhand_motor_plus.urdf.xacro"
+xacro_left: "$(find sr_description)/robots/shadowhand_left_motor_plus.urdf.xacro"
+xacro_bimanual: "$(find sr_description)/robots/bimanual_shadowhand_motor.urdf.xacro"
+mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
+mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v3.yaml"
+robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"

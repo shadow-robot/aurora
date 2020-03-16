@@ -21,4 +21,10 @@ hand_side: "right"
 bimanual: false
 hand_serial: "1082"
 hand_serial_left: "2346"
+mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
+mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v3.yaml"
+robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"
 use_cyberglove: false
+right_hand_picture: hand-e.png
+left_hand_picture: hand-e-left.png
+bimanual_hands_picture: hand-e-bimanual.png

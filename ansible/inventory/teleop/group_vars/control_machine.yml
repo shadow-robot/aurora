@@ -8,7 +8,7 @@ bimanual: false # Determines if left arm and left hand should be set up
 ethercat_left_hand: "enx1" # Ethercat interface of the left hand
 ethercat_left_arm: "enx2" # Ethercat interface of the left arm
 ethercat_right_arm: "enp3s0" # Ethercat interface of the right arm
-config_branch: "demohand_A" # Specify the branch for the specific hand E (or for bimanual: branch for both hands)
+config_branch: "" # Specify the branch for the specific hand E (or for bimanual: branch for both hands)
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Boolean to indicate whether ROS logs will be uploaded to AWS S3
 glove: "polhemus" # Determines which glove is installed (cyberglove, haptx or polhemus)

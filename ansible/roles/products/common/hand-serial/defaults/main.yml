@@ -1,7 +1,0 @@
----
-user: "{{ ansible_user_id }}"
-user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
-config_branch: ""
-hand_serial: "1082"
-hand_serial_left: "2346"

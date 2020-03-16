@@ -6,7 +6,7 @@ container_name: "dexterous_hand_real_hw"
 ethercat_interface: "eth0"
 ethercat_left_hand: "enx1"
 ethercat_left_arm: "enx2"
-config_branch: "demohand_A"
+config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"

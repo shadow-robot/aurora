@@ -19,7 +19,7 @@ setup_directory: "/usr/local/bin"
 use_cyberglove: false
 remote_cyberglove: false
 launch_hand: false
-config_branch: "demohand_A"
+config_branch: ""
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
@@ -36,6 +36,8 @@ encryption_password: ""
 hand_side: "right"
 hand_serial: "1082"
 hand_serial_left: "2346"
+mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
+mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v3.yaml"
 term_width: 500
 term_height: 400
 term_x: 200
