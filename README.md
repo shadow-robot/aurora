@@ -712,8 +712,11 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   - name: tutorial_1_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
@@ -728,12 +731,9 @@ provisioner:
   inventory:
     links:
       group_vars: ../../../../inventory/local/group_vars
-  lint:
-    name: ansible-lint
 verifier:
   name: testinfra
-  lint:
-    name: flake8
+
 ```
 13. Edit the playbook.yml so it looks like this:
 ```bash
@@ -779,8 +779,11 @@ dependency:
   name: galaxy
 driver:
   name: ec2
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
   - name: tutorial_1_ec2_${CODEBUILD_BUILD_ID}
@@ -805,13 +808,10 @@ provisioner:
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
     converge: ../../../molecule_docker/molecule/tutorial_1_docker/playbook.yml
-  lint:
-    name: ansible-lint
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/tutorial_1_docker/tests/
-  lint:
-    name: flake8
+
 ```
 17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)
 
