@@ -31,7 +31,7 @@ provisioner:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
-    converge: ../../../molecule_docker/molecule/hand_e_empty_machine_docker/playbook.yml
+    converge: ../../../molecule_docker/molecule/hand_e_empty_machine_docker/converge.yml
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/hand_e_empty_machine_docker/tests/

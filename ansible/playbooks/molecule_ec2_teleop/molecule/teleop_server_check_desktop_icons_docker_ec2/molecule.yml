@@ -32,7 +32,7 @@ provisioner:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
-    converge: ../../../molecule_docker/molecule/teleop_server_check_desktop_icons_docker/playbook.yml
+    converge: ../../../molecule_docker/molecule/teleop_server_check_desktop_icons_docker/converge.yml
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/teleop_server_check_desktop_icons_docker/tests/
