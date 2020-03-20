@@ -19,31 +19,6 @@ def test_docker_installed(host):
     assert package.is_installed
 
 
-def test_docker_container_exists(host):
-    client = docker.from_env()
-    try:
-        client.containers.get('teleop')
-        assert True
-    except docker.errors.NotFound:
-        assert False
-    except docker.errors.APIError:
-        assert False
-
-
-def test_correct_docker_image(host):
-    client = docker.from_env()
-    image = str(client.containers.get('teleop').image)
-    assert image == "<Image: 'shadowrobot/dexterous-hand:melodic-release'>"
-
-
-def test_sr_config_exists_in_docker(host):
-    client = docker.from_env()
-    container = client.containers.get('teleop')
-    bits, stat = container.get_archive(
-        '/home/user/projects/shadow_robot/base/src/sr_config')
-    assert stat['size'] > 0
-
-
 def test_icons_in_docker(host):
     desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
     script_path = '/home/' + str(host.user().name) + \
