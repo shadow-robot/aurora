@@ -45,6 +45,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool or hand_side=="right"
 
@@ -83,6 +84,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool or hand_side=="left"
 
@@ -121,6 +123,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool or hand_side=="right"
 
@@ -159,6 +162,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool or hand_side=="left"
 
@@ -198,6 +202,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
   
   when: bimanual|bool or hand_side=="right"
 
@@ -237,5 +242,6 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool or hand_side=="left"

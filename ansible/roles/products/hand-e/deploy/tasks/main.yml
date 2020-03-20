@@ -25,13 +25,6 @@
   include_role:
     name: installation/terminator
 
-- name: Include installation/libglib2.0-dev role to ensure gio is available for Ubuntu 18.04
-  include_role:
-    name: installation/libglib2.0-dev
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
-
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
@@ -177,6 +170,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool or hand_side=="right"
 
@@ -214,6 +208,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool or hand_side=="left"
 
@@ -251,5 +246,6 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
 
   when: bimanual|bool
