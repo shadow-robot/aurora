@@ -9,3 +9,4 @@
     nvidia_docker=false
     allow_auto_reboot=true
     remote_teleop=true
+    skip_molecule_task=true

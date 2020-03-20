@@ -4,3 +4,4 @@
     product="non_existing_product"
     ethercat_interface="enp0s25"
     allow_auto_reboot=true
+    skip_molecule_task=true
