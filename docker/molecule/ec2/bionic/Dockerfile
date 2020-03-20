@@ -1,4 +1,4 @@
-FROM shadowrobot/aurora-molecule:bionic
+FROM shadowrobot/aurora-molecule:bionic_upgrade
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
