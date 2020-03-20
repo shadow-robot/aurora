@@ -25,6 +25,9 @@ RUN set -x && \
     chmod 755 /tmp/oneliner && \
     /tmp/oneliner install_software --debug-branch $ts_docker_aurora_branch software=[docker] && \
     \
+    echo "Installing libglib2.0-dev to get gio to set desktop icon properties" && \
+    sudo apt-get install -y --no-install-recommends libglib2.0-dev && \
+    \    
     echo "Clean up" && \
     sudo apt-get clean && \
     sudo rm -rf \
