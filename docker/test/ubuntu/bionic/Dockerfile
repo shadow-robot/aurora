@@ -20,6 +20,9 @@ RUN set -x && \
     adduser $USER sudo && \
     echo "$USER ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers && \
     \
+    echo "Installing libglib2.0-dev to get gio to set desktop icon properties" && \
+    sudo apt-get install -y --no-install-recommends libglib2.0-dev && \
+    \  
     echo "Clean up" && \
     apt-get clean && \
     rm -rf \
