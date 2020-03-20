@@ -787,7 +787,7 @@ lint: |
 platforms:
   # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
   - name: tutorial_1_ec2_${CODEBUILD_BUILD_ID}
-    image: ami-04606ba5d5fb731cc
+    image: ami-0ce847e39053291c5
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-0f8cc2cc245d57eb4
