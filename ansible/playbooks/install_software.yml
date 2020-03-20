@@ -24,3 +24,4 @@
     - {role: installation/lxml, when: "'lxml' in software_list"}
     - {role: installation/net-tools, when: "'net-tools' in software_list"}
     - {role: installation/polhemus, when: "'polhemus' in software_list"}
+    - {role: installation/libglib2.0-dev, when: "'libglib2.0-dev' in software_list"}

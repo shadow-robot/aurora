@@ -1,0 +1,7 @@
+---
+- name: Make sure libglib2.0-dev is available (for gio in Ubuntu 18.04)
+  apt:
+    name: 'libglib2.0-dev'
+    state: 'present'
+    update_cache: yes
+  become: yes
