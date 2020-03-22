@@ -42,7 +42,7 @@ For example, it's possible to use Aurora to install Docker, download the specifi
 
 Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.9.6)
 
-Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/usage.html) (Aurora is currently using Molecule 3.02)
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.02)
 
 # How to run #
 
