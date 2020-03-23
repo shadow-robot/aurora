@@ -1,12 +1,12 @@
 ---
-- name: Teleop deploy playbook for teleop server
+- name: Teleop deploy playbook for teleop client
   import_playbook: ../../../teleop_deploy.yml
-    image="shadowrobot/dexterous-hand"
-    tag="melodic-release"
     reinstall=true
     use_openvpn=false
     ethercat_interface="enp0s25"
+    image="shadowrobot/dexterous-hand"
+    tag="melodic-release"
     nvidia_docker=false
-    skip_molecule_task=true
     allow_auto_reboot=true
-    glove=cyberglove
+    remote_teleop=true
+    skip_molecule_task=true

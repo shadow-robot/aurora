@@ -224,6 +224,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
   when: bimanual|bool or hand_side=="right"
 
 - name: Install local Shadow Left Hand launch if bimanual is true or if hand_side="left"
@@ -260,6 +261,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
   when: bimanual|bool or hand_side=="right"
 
 - name: Install local Shadow Bimanual Hands launch if bimanual is true
@@ -296,4 +298,5 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
   when: bimanual|bool

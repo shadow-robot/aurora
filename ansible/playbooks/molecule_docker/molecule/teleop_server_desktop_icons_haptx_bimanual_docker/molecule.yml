@@ -3,11 +3,14 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   - name: teleop_server_desktop_icons_haptx_bimanual_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:xenial
+    image: shadowrobot/aurora-test-ubuntu-docker:bionic
     groups:
       - server
     volumes:
@@ -19,9 +22,5 @@ provisioner:
   inventory:
     links:
       group_vars: ../../../../inventory/teleop/group_vars
-  lint:
-    name: ansible-lint
 verifier:
   name: testinfra
-  lint:
-    name: flake8

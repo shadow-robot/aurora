@@ -1,4 +1,4 @@
-FROM ubuntu:bionic-20190807
+FROM ubuntu:bionic-20200219
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 

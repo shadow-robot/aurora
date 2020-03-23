@@ -1,8 +1,22 @@
 import os
 import testinfra.utils.ansible_runner
+import docker
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+
+
+def test_hosts_file(host):
+    f = host.file('/etc/hosts')
+
+    assert f.exists
+    assert f.user == 'root'
+    assert f.group == 'root'
+
+
+def test_docker_installed(host):
+    package = host.package('docker-ce')
+    assert package.is_installed
 
 
 def test_icons_in_docker(host):
@@ -62,20 +76,3 @@ def test_icons_in_docker(host):
         assert host.file(script_path+script+'.sh').exists
     save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
     assert host.file(save_logs_file).exists
-
-
-def test_openvpn_server_files(host):
-    openvpn_path = '/etc/openvpn/'
-
-    openvpn_files = (
-        'server.key',
-        'server.crt',
-        'ca.crt',
-        'ta.key',
-        'dh2048.pem'
-        )
-    for openvpn_file in openvpn_files:
-        assert host.file(openvpn_path + openvpn_file).exists
-    assert host.file(
-        '/home/' + str(host.user().name) +
-        '/openvpn-ca/teleop-client/teleop-client.ovpn').exists

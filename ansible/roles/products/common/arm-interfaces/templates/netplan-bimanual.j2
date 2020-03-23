@@ -1,7 +1,7 @@
 #jinja2: trim_blocks:False
 network:
     ethernets:
-        right-arm:
+        right_arm:
             addresses: [192.168.1.100/24]
             optional: true
             match:
@@ -9,8 +9,8 @@ network:
             routes:
                 - to: 192.168.1.1/32
                   via: 192.168.1.1
-            set-name: right-arm
-        left-arm:
+            set-name: right_arm
+        left_arm:
             addresses: [192.168.2.100/24]
             optional: true
             match:
@@ -18,7 +18,7 @@ network:
             routes:
                 - to: 192.168.2.1/32
                   via: 192.168.2.1
-            set-name: left-arm
+            set-name: left_arm
         enx-usb-ethernet:
             match:
                 name: enx*

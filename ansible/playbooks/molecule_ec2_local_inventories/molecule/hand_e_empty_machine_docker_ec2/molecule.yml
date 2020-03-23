@@ -3,12 +3,15 @@ dependency:
   name: galaxy
 driver:
   name: ec2
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
   - name: hand_e_empty_machine_docker_ec2_${CODEBUILD_BUILD_ID}
-    image: ami-04606ba5d5fb731cc
+    image: ami-0ce847e39053291c5
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-0f8cc2cc245d57eb4
@@ -28,11 +31,7 @@ provisioner:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
-    converge: ../../../molecule_docker/molecule/hand_e_empty_machine_docker/playbook.yml
-  lint:
-    name: ansible-lint
+    converge: ../../../molecule_docker/molecule/hand_e_empty_machine_docker/converge.yml
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/hand_e_empty_machine_docker/tests/
-  lint:
-    name: flake8

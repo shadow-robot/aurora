@@ -1,4 +1,4 @@
-FROM ubuntu:xenial-20190720
+FROM ubuntu:xenial-20200212
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 

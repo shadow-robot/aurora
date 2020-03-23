@@ -40,9 +40,9 @@ Aurora is an installation automation tool using Ansible. It uses Molecule for te
 
 For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
-Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.8.4)
+Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.9.6)
 
-Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/usage.html) (Aurora is currently using Molecule 2.22)
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.02)
 
 # How to run #
 
@@ -276,7 +276,7 @@ code .
 
 ## Test creation ##
 
-Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the .py, playbook.yml and molecule.yml files in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
+Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the .py, converge.yml and molecule.yml files in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
 ## Unlimited scroll in terminator ##
 
@@ -334,7 +334,7 @@ molecule destroy -s name_of_your_test_case
 
 ## Private docker images ##
 
-At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every converge.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
 
 ## Testing with molecule_ec2 ##
 
@@ -689,6 +689,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
 ```
 9. Download a suitable image (.jpg or .png) (e.g min 64x64 resolution, max 1000x1000 resolution) from the internet to be your tutorial_1_icon.png (or .jpg but then remember to change the extension to .jpg in your Ansible scripts as well). Place this image in the desktop-icons/files folder
 
@@ -712,8 +713,11 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   - name: tutorial_1_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
@@ -728,14 +732,11 @@ provisioner:
   inventory:
     links:
       group_vars: ../../../../inventory/local/group_vars
-  lint:
-    name: ansible-lint
 verifier:
   name: testinfra
-  lint:
-    name: flake8
+
 ```
-13. Edit the playbook.yml so it looks like this:
+13. Edit the converge.yml so it looks like this:
 ```bash
 ---
 - name: Tutorial 1 playbook
@@ -779,12 +780,15 @@ dependency:
   name: galaxy
 driver:
   name: ec2
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
   - name: tutorial_1_ec2_${CODEBUILD_BUILD_ID}
-    image: ami-04606ba5d5fb731cc
+    image: ami-0ce847e39053291c5
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-0f8cc2cc245d57eb4
@@ -804,14 +808,11 @@ provisioner:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
-    converge: ../../../molecule_docker/molecule/tutorial_1_docker/playbook.yml
-  lint:
-    name: ansible-lint
+    converge: ../../../molecule_docker/molecule/tutorial_1_docker/converge.yml
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/tutorial_1_docker/tests/
-  lint:
-    name: flake8
+
 ```
 17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)
 

@@ -42,6 +42,7 @@
     - not use_aws|bool
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
 
 - name: Create ROS Logs Saver and Uploader desktop icon
   when: use_aws|bool
@@ -63,3 +64,4 @@
     - use_aws|bool
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
