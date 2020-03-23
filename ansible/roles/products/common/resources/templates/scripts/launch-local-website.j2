@@ -3,20 +3,20 @@
 HOST='localhost'
 PORT={{ local_website_port }}
 
-docker start {{ container_name }}
-check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
-if [[ $check == 200 ]]
-then
-    echo "{{ local_website_name }} server is online"
-else
-    echo "{{ local_website_name }} server is offline. Starting it"
-    docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch {{ website_project_name }} {{ website_launch }}"
-    sleep 3
-    check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
-    if [[ $check == 200 ]]
-    then
-        echo "{{ local_website_name }} server is online"
-    fi
+if [ ! "$(docker ps -q -f name={{ container_name  }})" ]; then
+  docker start {{ container_name }} &> /dev/null
+  sleep 3
 fi
-xdg-open http://${HOST}:${PORT}/
-sleep 2
+check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+if [[ ! $check == 200 ]]; then
+  docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch {{ website_project_name }} {{ website_launch }}"
+  sleep 3
+  check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+  if [[ ! $check == 200 ]]; then
+    terminator -T '{{ local_website_name }} server launch failure' bash -c 'echo "{{ local_website_name }} server launch failure"; echo "check returns: $check"; echo "tried to launch: roslaunch {{ website_project_name }} {{ website_launch }} inside {{ container_name }}"; sleep infinity'
+  fi
+fi
+if [[ $check == 200 ]]; then
+  xdg-open http://${HOST}:${PORT}/
+  sleep 3
+fi

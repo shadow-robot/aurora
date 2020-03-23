@@ -65,7 +65,7 @@
     website_launch_var: "sr_teleop_documentation_server.launch port:={{ local_website_port_var }}"
     desktop_icon_name: "Teleop Documentation"
     desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "true"
+    launch_terminal: "false"
 
 - name: Install the Watchdog desktop icon
   include_tasks: local-website-icon.yml
@@ -78,7 +78,7 @@
     website_launch_var: "watchdog_web_gui.launch port:={{ local_website_port_var }}"
     desktop_icon_name: "Shadow Watchdog"
     desktop_icon_path: "Shadow Watchdog"
-    launch_terminal: "true"
+    launch_terminal: "false"
 
 - name: Create Shadow Demos folder
   file:
