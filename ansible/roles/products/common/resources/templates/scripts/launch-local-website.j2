@@ -1,0 +1,22 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+HOST='localhost'
+PORT={{ local_website_port }}
+
+docker start {{ container_name }}
+check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+if [[ $check == 200 ]]
+then
+    echo "{{ local_website_name }} server is online"
+else
+    echo "{{ local_website_name }} server is offline. Starting it"
+    docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch {{ website_project_name }} {{ website_launch }}"
+    sleep 3
+    check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+    if [[ $check == 200 ]]
+    then
+        echo "{{ local_website_name }} server is online"
+    fi
+fi
+xdg-open http://${HOST}:${PORT}/
+sleep 2
