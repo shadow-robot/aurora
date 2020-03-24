@@ -13,6 +13,7 @@
       dest: "{{ launch_file_path_right }}"
       mode: '755'
       force: yes
+    ignore_errors: yes
     when: bimanual|bool or hand_side=="right"
 
   - name: Download the left launch file from sr-config branch {{ config_branch }} from Github
@@ -21,6 +22,7 @@
       dest: "{{ launch_file_path_left }}"
       mode: '755'
       force: yes
+    ignore_errors: yes
     when: bimanual|bool or hand_side=="left"
 
   - name: Download the bimanual launch file from sr-config branch {{ config_branch }} from Github
@@ -29,6 +31,7 @@
       dest: "{{ launch_file_path_bimanual }}"
       mode: '755'
       force: yes
+    ignore_errors: yes
     when: bimanual|bool
 
   - name: Get the right hand_serial xml_response from the right launch file
