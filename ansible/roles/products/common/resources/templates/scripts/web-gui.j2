@@ -34,6 +34,7 @@ if [[ ! $check == 200 ]]; then
     echo "Docker container {{ container_name }} is running, but you need to run the {{ preconditions }} first before opening {{ local_website_name }}"
     sleep 10
     exit
+  fi
 fi
 if [[ $check == 200 ]]; then
   echo "{{ local_website_name }} is up! Opening it now in a browser..."
