@@ -11,7 +11,7 @@ if {{ start_container | lower }}; then
   fi
 else
   if [ ! "$(docker ps -q -f name={{ container_name  }})" ]; then
-    echo "Docker container {{ container_name }} is not running. Please run the Shadow Launcher first to run the {{ container_name }} container before opening the {{ local_website_name }} local website"
+    echo "Docker container {{ container_name }} is not running. Please run the Launch Shadow Teleop icon or Launch Server Container in Shadow Advanced Launchers first to run the {{ container_name }} container before opening the {{ local_website_name }} local website"
     sleep 10
     exit
   fi
