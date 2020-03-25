@@ -7,15 +7,15 @@
 
 - name: Create executable launch script
   template:
-    src: ../../../common/resources/templates/scripts/launch-local-website.j2
+    src: ../../../common/resources/templates/scripts/web-gui.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
     local_website_port: "{{ local_website_port_var }}"
-    local_website_name: "{{ local_website_name_var }}"
-    website_project_name: "{{ website_project_name_var }}"
-    website_launch: "{{ website_launch_var }}"
+    local_website_name: "{{ desktop_icon_name }}"
     start_container: "{{ start_container_var }}"
+    start_server_command: "{{ start_server_command_var }}"
+    preconditions: "{{ preconditions_var }}"
 
 - name: Create desktop icon
   template:

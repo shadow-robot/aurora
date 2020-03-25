@@ -63,7 +63,7 @@ def test_icons_in_docker(host):
         'Shadow Demos/Open Left Hand',
         'Shadow ROS Logs Saver',
         'Teleop Documentation',
-        'Shadow Watchdog',
+        'Shadow System Monitor',
         'Bimanual HaptX Teleop Simulation'
         )
     scripts = (
@@ -94,7 +94,7 @@ def test_icons_in_docker(host):
         'demo_left_hand',
         'open_left_hand',
         'shadow_launcher_doc_exec',
-        'shadow_launcher_watchdog_exec',
+        'shadow_launcher_system_monitor_exec',
         'shadow_sim_demo'
         )
     for icon in icons:
