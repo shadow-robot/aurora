@@ -65,20 +65,61 @@
     website_launch_var: "sr_teleop_documentation_server.launch port:={{ local_website_port_var }}"
     desktop_icon_name: "Teleop Documentation"
     desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "false"
+    launch_terminal: "true"
+    start_container_var: "true"
 
-- name: Install the Watchdog desktop icon
+- name: Set common teleop watchdog parameters
+  set_fact:
+    watchdog_desktop_icon_png: "watchdog.jpg"
+    watchdog_launch_script: "shadow_launcher_watchdog_exec.sh"
+    watchdog_local_website_port_var: '8081'
+    watchdog_local_website_name_var: 'Watchdog'
+    watchdog_desktop_icon_name: "Shadow Watchdog"
+    watchdog_desktop_icon_path: "Shadow Watchdog"
+    watchdog_launch_terminal: "true"
+    watchdog_start_container: "false"
+
+- name: Set Polhemus teleop watchdog parameters
+  set_fact:
+    watchdog_website_project_name_var: "sr_teleop_vive_polhemus"
+    watchdog_website_launch_var: "sr_teleop_vive_polhemus_watchdog.launch"
+  when: glove=="polhemus"
+
+- name: Set hands parameter for HaptX bimanual teleop
+  set_fact:
+    hands: "both"
+  when: bimanual|bool and glove=="haptx"
+
+- name: Set hands parameter for HaptX non-bimanual teleop
+  set_fact:
+    hands: "{{ hand_side }}"
+  when: not bimanual|bool and glove=="haptx"
+
+- name: Set HaptX teleop watchdog parameters
+  set_fact:
+    watchdog_website_project_name_var: "sr_teleop_vive_haptx"
+    watchdog_website_launch_var: "teleop_vive_haptx_watchdog.launch side:={{ hand_side }} hands:={{ hands }} bimanual:={{ bimanual }}"
+  when: glove=="haptx"
+
+- name: Set Cyberglove teleop watchdog parameters
+  set_fact:
+    watchdog_website_project_name_var: "sr_teleop_vive_cyberglove"
+    watchdog_website_launch_var: "sr_teleop_vive_cyberglove_watchdog.launch hand_eth_interface:={{ ethercat_interface }}"
+  when: glove=="cyberglove"
+
+- name: Install the Watchdog desktop icon for Teleop
   include_tasks: local-website-icon.yml
   vars:
-    desktop_icon_png: "watchdog.jpg"
-    launch_script: "shadow_launcher_watchdog_exec.sh"
-    local_website_port_var: '8081'
-    local_website_name_var: 'Watchdog'
-    website_project_name_var: "sr_watchdog"
-    website_launch_var: "watchdog_web_gui.launch port:={{ local_website_port_var }}"
-    desktop_icon_name: "Shadow Watchdog"
-    desktop_icon_path: "Shadow Watchdog"
-    launch_terminal: "false"
+    desktop_icon_png: "{{ watchdog_desktop_icon_png }}"
+    launch_script: "{{ watchdog_launch_script }}"
+    local_website_port_var: "{{ watchdog_local_website_port_var }}"
+    local_website_name_var: "{{ watchdog_local_website_name_var }}"
+    website_project_name_var: "{{ watchdog_website_project_name_var }}"
+    website_launch_var: "{{ watchdog_website_launch_var }}"
+    desktop_icon_name: "{{ watchdog_desktop_icon_name }}"
+    desktop_icon_path: "{{ watchdog_desktop_icon_path }}"
+    launch_terminal: "{{ watchdog_launch_terminal }}"
+    start_container_var: "{{ watchdog_start_container }}"
 
 - name: Create Shadow Demos folder
   file:

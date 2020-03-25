@@ -15,6 +15,7 @@
     local_website_name: "{{ local_website_name_var }}"
     website_project_name: "{{ website_project_name_var }}"
     website_launch: "{{ website_launch_var }}"
+    start_container: "{{ start_container_var }}"
 
 - name: Create desktop icon
   template:
