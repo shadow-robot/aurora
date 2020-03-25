@@ -20,7 +20,7 @@ check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
 if [[ ! $check == 200 ]]; then
   echo "{{ local_website_name }} server not running inside the docker container {{ container_name }}. Starting it now..."
   docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch {{ website_project_name }} {{ website_launch }}"
-  sleep 3
+  sleep 5
   check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
   if [[ ! $check == 200 ]]; then
     echo "{{ local_website_name }} server launch failure"
