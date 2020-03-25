@@ -10,6 +10,7 @@
     env:
       verbose: "true"
       interface: "{{ ethercat_interface }}"
+      interface_left: "{{ ethercat_left_hand }}"
       QT_X11_NO_MITSHM: "1"
       LOCAL_USER_ID: "{{ id.stdout }}"
       DISPLAY: "{{ lookup('env','DISPLAY') }}"
