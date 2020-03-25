@@ -8,11 +8,13 @@ if {{ start_container | lower }}; then
     echo "Docker container {{ container_name }} is not running. Starting it now to open the {{ local_website_name }} local website..."
     docker start {{ container_name }} &> /dev/null
     sleep 3
+  fi
 else
   if [ ! "$(docker ps -q -f name={{ container_name  }})" ]; then
     echo "Docker container {{ container_name }} is not running. Please run the Shadow Launcher first to run the {{ container_name }} before opening the {{ local_website_name }} local website"
     sleep 10
     exit
+  fi
 fi
 check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
 if [[ ! $check == 200 ]]; then
