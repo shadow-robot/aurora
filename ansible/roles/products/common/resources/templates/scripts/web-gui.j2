@@ -18,7 +18,7 @@ else
 fi
 check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
 if [[ ! $check == 200 ]]; then
-  if {{ start_server_command is defined and start_server_command | length > 0 }}; then
+  if {{ (start_server_command is defined and start_server_command | length > 0) | lower }}; then
     echo "{{ local_website_name }} is not running in the Docker container {{ container_name }}. Starting it now..."
     docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash; {{ start_server_command }}"
     sleep 5
