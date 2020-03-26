@@ -70,3 +70,9 @@
   when: ssh_result.stat.exists
   changed_when: false
   become: yes
+
+- name: Creating hand-e setup script for right hand
+  template:
+    src: ../../../common/resources/templates/scripts/arm-calibration-loader.j2
+    dest: "{{ shadow_hand_launcher_folder }}"
+    mode: '755'
