@@ -71,7 +71,7 @@
   changed_when: false
   become: yes
 
-- name: Creating hand-e setup script for right hand
+- name: Creating script for automatic arm calibration loader
   template:
     src: ../../../common/resources/templates/scripts/arm-calibration-loader.j2
     dest: "{{ shadow_hand_launcher_folder }}"
