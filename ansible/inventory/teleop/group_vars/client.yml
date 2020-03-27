@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-polhemus" # Docker image name
-tag: "melodic-v0.0.19" # Tag of the exact Docker hub image to pull
+tag: "melodic-v0.0.20" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 nvidia_docker: true # Define if nvidia docker 2 is used (defaul is false)
