@@ -54,7 +54,7 @@
     command_to_run: "rqt"
     launch_terminal: "false"
 
-- name: Install the Teleop Documentation desktop icon
+- name: Install the Teleop Documentation desktop icon for cyberglove
   include_tasks: web-gui-icon.yml
   vars:
     desktop_icon_png: "documentation_icon.png"
@@ -66,6 +66,35 @@
     start_container_var: "true"
     start_server_command_var: "roslaunch sr_teleop_documentation sr_teleop_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
+  when: glove=="cyberglove"
+
+- name: Install the Teleop Documentation desktop icon for HaptX
+  include_tasks: web-gui-icon.yml
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    local_website_port_var: '7070'
+    desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
+    launch_terminal: "true"
+    start_container_var: "true"
+    start_server_command_var: "roslaunch sr_teleop_haptx_documentation sr_teleop_haptx_documentation_server.launch port:={{ local_website_port_var }}"
+    preconditions_var: ""
+  when: glove=="haptx"
+
+- name: Install the Teleop Documentation desktop icon for polhemus
+  include_tasks: web-gui-icon.yml
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    local_website_port_var: '7070'
+    desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
+    launch_terminal: "true"
+    start_container_var: "true"
+    start_server_command_var: "roslaunch sr_teleop_polhemus_documentation sr_teleop_polhemus_documentation_server.launch port:={{ local_website_port_var }}"
+    preconditions_var: ""
+  when: glove=="polhemus"
 
 - name: Install the Shadow System Monitor desktop icon for Teleop
   include_tasks: web-gui-icon.yml
