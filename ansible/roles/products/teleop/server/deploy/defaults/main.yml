@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-polhemus"
-tag: "melodic-v0.0.20"
+tag: "melodic-night-build"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true
