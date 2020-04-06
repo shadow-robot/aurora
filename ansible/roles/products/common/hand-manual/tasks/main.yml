@@ -3,6 +3,7 @@
   pip:
     name: [ "boto3", "botocore"]
     extra_args: "--user"
+  changed_when: false
 
 - name: Connect to Shadow AWS API
   uri:
@@ -37,6 +38,7 @@
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
   when: skip_molecule_task is not defined
+  changed_when: false
 
 - name: Downloading the hand manual from AWS to Desktop (for Molecule in AWS)
   aws_s3:
@@ -47,3 +49,4 @@
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
   when: skip_molecule_task is defined
+  changed_when: false
