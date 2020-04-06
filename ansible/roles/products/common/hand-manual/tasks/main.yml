@@ -23,8 +23,8 @@
 
 - name: Set AWS credentials for accessing necessary files (for Molecule in AWS)
   set_fact:
-    aws_key: "{{ lookup('env','aws_key') }}"
-    aws_secret: "{{ lookup('env','aws_secret') }}"
+    aws_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
+    aws_secret: "{{ lookup('env','AWS_SECRET_KEY') }}"
   when: skip_molecule_task is defined
 
 - name: Downloading the hand manual from AWS to Desktop
