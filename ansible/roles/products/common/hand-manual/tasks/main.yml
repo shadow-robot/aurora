@@ -18,9 +18,10 @@
   set_fact:
     aws_key: "{{ response.content | regex_search('(?<=ACCESS_KEY_ID=)(.*)(?=\\nSECRET_ACCESS_KEY)', multiline=True) }}"
     aws_secret: "{{ response.content | regex_search('(?<=SECRET_ACCESS_KEY=)(.*)(?=\\nSESSION_TOKEN)', multiline=True) }}"
+    aws_security_token: "{{ response.content | regex_search('(?<=SESSION_TOKEN=)(.*)(?=\\nEXPIRATION)', multiline=True) }}"
   when: skip_molecule_task is not defined
 
-- name: Set temporary AWS credentials for accessing necessary files (for Molecule in AWS)
+- name: Set AWS credentials for accessing necessary files (for Molecule in AWS)
   set_fact:
     aws_key: "{{ lookup('env','aws_key') }}"
     aws_secret: "{{ lookup('env','aws_secret') }}"
@@ -30,8 +31,19 @@
   aws_s3:
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
+    security_token: "{{ aws_security_token }}"
     bucket: shadowrobot.aurora.files
-    ignore_nonexistent_bucket: yes
     object: "/server/{{ manual_filename }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
+  when: skip_molecule_task is not defined
+
+- name: Downloading the hand manual from AWS to Desktop (for Molecule in AWS)
+  aws_s3:
+    aws_access_key: "{{ aws_key }}"
+    aws_secret_key: "{{ aws_secret }}"
+    bucket: shadowrobot.aurora.files
+    object: "/server/{{ manual_filename }}"
+    dest: "{{ manual_folder }}/{{ manual_filename }}"
+    mode: get
+  when: skip_molecule_task is defined
