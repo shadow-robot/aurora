@@ -61,7 +61,7 @@ def test_icons_in_docker(host):
         'Shadow Demos/Close Left Hand',
         'Shadow Demos/Demo Left Hand',
         'Shadow Demos/Open Left Hand',
-        'Shadow ROS Logs Saver',
+        'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         'Shadow System Monitor',
         'Bimanual HaptX Teleop Simulation'
@@ -103,3 +103,5 @@ def test_icons_in_docker(host):
         assert host.file(script_path+script+'.sh').exists
     save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
     assert host.file(save_logs_file).exists
+    hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
+    assert host.file(hand_manual_file).exists

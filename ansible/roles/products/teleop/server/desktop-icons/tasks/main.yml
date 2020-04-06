@@ -43,6 +43,11 @@
     launch_terminal: "false"
   when: bimanual|bool
 
+- name: Include hand-manual role
+  include_role:
+    name: products/common/hand-manual
+  when: customer_key is defined and customer_key | length > 0
+
 - name: Install desktop icon for RQT on NUC
   include_tasks: default-icon-no-terminator.yml
   vars:
