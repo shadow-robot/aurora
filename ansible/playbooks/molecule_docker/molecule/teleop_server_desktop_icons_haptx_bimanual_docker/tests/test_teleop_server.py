@@ -61,7 +61,7 @@ def test_icons_in_docker(host):
         'Shadow Demos/Close Left Hand',
         'Shadow Demos/Demo Left Hand',
         'Shadow Demos/Open Left Hand',
-        'Shadow ROS Logs Saver and Uploader'
+        'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         'Shadow System Monitor',
         'Bimanual HaptX Teleop Simulation'
