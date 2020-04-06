@@ -16,8 +16,8 @@
 
 - name: Set temporary AWS credentials for accessing necessary files
   set_fact:
-    aws_key: "{{ response.content | regex_search('ACCESS_KEY_ID=(.*)\nSECRET_ACCESS', multiline=True) }}"
-    aws_secret: "{{ response.content | regex_search('SECRET_ACCESS_KEY=(.*)\nSESSION_TOKEN', multiline=True) }}"
+    aws_key: "{{ response.content | regex_search('(?<=ACCESS_KEY_ID=)(.*)(?=\\nSECRET_ACCESS_KEY)', multiline=True) }}"
+    aws_secret: "{{ response.content | regex_search('(?<=SECRET_ACCESS_KEY=)(.*)(?=\\nSESSION_TOKEN)', multiline=True) }}"
   when: skip_molecule_task is not defined
 
 - name: Set temporary AWS credentials for accessing necessary files (for Molecule in AWS)
