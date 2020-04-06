@@ -42,7 +42,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
-        'Shadow ROS Logs Saver'
+        'Shadow ROS Logs Saver',
         )
     scripts = (
         'shadow_launch_everything_right',
@@ -74,3 +74,5 @@ def test_icons_in_docker(host):
         assert host.file(script_path+script+'.sh').exists
     save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
     assert host.file(save_logs_file).exists
+    hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
+    assert host.file(hand_manual_file).exists

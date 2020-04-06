@@ -12,15 +12,19 @@
     headers:
       x-api-key: "{{ customer_key }}"
   register: response
+  when: skip_molecule_task is not defined
 
 - name: Set temporary AWS credentials for accessing necessary files
   set_fact:
     aws_key: "{{ response }}"
     aws_secret: "{{ response }}"
+  when: skip_molecule_task is not defined
 
-- name: debug
-  debug:
-    msg: "{{ response }}"
+- name: Set temporary AWS credentials for accessing necessary files (for Molecule in AWS)
+  set_fact:
+    aws_key: "{{ lookup('env','aws_key') }}"
+    aws_secret: "{{ lookup('env','aws_secret') }}"
+  when: skip_molecule_task is defined
 
 - name: Downloading the hand manual from AWS to Desktop
   aws_s3:
