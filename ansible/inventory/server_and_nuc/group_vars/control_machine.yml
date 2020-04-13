@@ -20,6 +20,8 @@ hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=t
 bimanual: false # Specify if both left and right hands are used or not
 hand_serial: "1082" # Specify the right hand serial number
 hand_serial_left: "2346" # Specify the left hand serial number
+arm_ip_left: "" # Specify the IP address of left arm
+arm_ip_right: "" # Specify the IP address of right arm
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435

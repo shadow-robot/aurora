@@ -31,6 +31,8 @@
   vars:
     ros_master: "{{ server_hostname }}"
     nvidia_docker: false
+    arm_ip_right: "{{ arm_ip_right }}"
+    arm_ip_left: "{{ arm_ip_left }}"
 
 - name: Include docker/aws role
   include_role:
