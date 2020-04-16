@@ -30,3 +30,5 @@ sim_hand: false
 hand_side: "right"
 hand_serial: "1082"
 hand_serial_left: "2346"
+arm_ip_left: ""
+arm_ip_right: "192.168.1.1"
