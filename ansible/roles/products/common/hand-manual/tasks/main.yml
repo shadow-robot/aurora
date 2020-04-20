@@ -1,7 +1,7 @@
 ---
 - name: Ensure botocore and boto3 modules are installed
   pip:
-    name: [ "boto3", "botocore"]
+    name: [ "boto3==1.12.36", "botocore==1.15.36"]
     extra_args: "--user"
   changed_when: false
 
