@@ -43,4 +43,8 @@ if {{ launch_hand | lower }}; then
     else
         roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
+else
+    if {{ override_launch_hand | lower }}; then
+        roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+    fi
 fi

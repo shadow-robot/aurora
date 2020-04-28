@@ -88,6 +88,7 @@
   vars:
     launch_file_name: "sr_rhand.launch"
     launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
 
 - name: Copying the default setup script into docker container
   changed_when: false
@@ -102,6 +103,7 @@
   vars:
     launch_file_name: "sr_rhand.launch"
     launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
   when: bimanual|bool or hand_side=="right"
 
 - name: Creating the setup script for left hand
@@ -112,6 +114,7 @@
   vars:
     launch_file_name: "sr_lhand.launch"
     launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
   when: bimanual|bool or hand_side=="left"
 
 - name: Creating the setup script for bimanual hands
@@ -122,6 +125,7 @@
   vars:
     launch_file_name: "sr_bimanual.launch"
     launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
   when: bimanual|bool
 
 - name: Creating the setup script for Teach Mode - Right Hand
@@ -132,6 +136,7 @@
   vars:
     launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false arm_ctrl:=false"
     launch_package_name: "sr_robot_launch"
+    override_launch_hand: True
   when: bimanual|bool or hand_side=="right"
 
 - name: Creating the setup script for Teach Mode - Left Hand
@@ -142,6 +147,7 @@
   vars:
     launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial_left }} eth_port:={{ ethercat_left_hand }} side:=left pwm_control:=false arm_ctrl:=false"
     launch_package_name: "sr_robot_launch"
+    override_launch_hand: True
   when: bimanual|bool or hand_side=="left"
 
 - name: Copying the hand setup script for right hand launch into docker container
