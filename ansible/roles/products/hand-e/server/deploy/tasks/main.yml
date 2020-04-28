@@ -140,6 +140,7 @@
     mode: '755'
   vars:
     launch_file_name: "sr_rhand.launch"
+    launch_package_name: "sr_ethercat_hand_config"
   when: bimanual|bool or hand_side=="right"
 
 - name: Creating server setup script for local left hand launch
@@ -149,6 +150,7 @@
     mode: '755'
   vars:
     launch_file_name: "sr_lhand.launch"
+    launch_package_name: "sr_ethercat_hand_config"
   when: bimanual|bool or hand_side=="left"
 
 - name: Creating server setup script for local bimanual hand launch
@@ -158,6 +160,7 @@
     mode: '755'
   vars:
     launch_file_name: "sr_bimanual.launch"
+    launch_package_name: "sr_ethercat_hand_config"
   when: bimanual|bool
 
 - name: Copying the server setup script for local right hand launch into docker container
