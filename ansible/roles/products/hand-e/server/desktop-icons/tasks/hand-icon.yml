@@ -16,6 +16,7 @@
     hand_side_var: "{{ hand_side_value }}"
     xacro_var: "{{ xacro_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
+    pwm_control_var: "{{ pwm_control_value }}"
 
 - name: Create desktop icon for hand
   template:
