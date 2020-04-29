@@ -5,6 +5,8 @@
     right_setup_script: right-server-setup.sh
     left_setup_script: left-server-setup.sh
     bimanual_setup_script : bimanual-server-setup.sh
+    teach_mode_right_hand_script : shadow_teach_mode_right.sh
+    teach_mode_left_hand_script : shadow_teach_mode_left.sh
     upgrade_script: "upgrade_image.sh"
 
 - name: Set icon picture filenames for hand_lite
@@ -85,6 +87,8 @@
     mode: '755'
   vars:
     launch_file_name: "sr_rhand.launch"
+    launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
 
 - name: Copying the default setup script into docker container
   changed_when: false
@@ -98,6 +102,8 @@
     mode: '755'
   vars:
     launch_file_name: "sr_rhand.launch"
+    launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
   when: bimanual|bool or hand_side=="right"
 
 - name: Creating the setup script for left hand
@@ -107,6 +113,8 @@
     mode: '755'
   vars:
     launch_file_name: "sr_lhand.launch"
+    launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
   when: bimanual|bool or hand_side=="left"
 
 - name: Creating the setup script for bimanual hands
@@ -116,11 +124,41 @@
     mode: '755'
   vars:
     launch_file_name: "sr_bimanual.launch"
+    launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
   when: bimanual|bool
+
+- name: Creating the setup script for Teach Mode - Right Hand
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ teach_mode_right_hand_script }}"
+    mode: '755'
+  vars:
+    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false arm_ctrl:=false"
+    launch_package_name: "sr_robot_launch"
+    override_launch_hand: True
+  when: bimanual|bool or hand_side=="right"
+
+- name: Creating the setup script for Teach Mode - Left Hand
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ teach_mode_left_hand_script }}"
+    mode: '755'
+  vars:
+    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial_left }} eth_port:={{ ethercat_left_hand }} side:=left pwm_control:=false arm_ctrl:=false"
+    launch_package_name: "sr_robot_launch"
+    override_launch_hand: True
+  when: bimanual|bool or hand_side=="left"
 
 - name: Copying the hand setup script for right hand launch into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ right_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ right_setup_script }}"
+  become: yes
+  when: bimanual|bool or hand_side=="right"
+
+- name: Copying the teach mode script for right hand into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ teach_mode_right_hand_script }} {{ container_name }}:{{ setup_directory }}/{{ teach_mode_right_hand_script }}"
   become: yes
   when: bimanual|bool or hand_side=="right"
 
@@ -130,13 +168,19 @@
   become: yes
   when: bimanual|bool or hand_side=="left"
 
+- name: Copying the teach mode script for left hand into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ teach_mode_left_hand_script }} {{ container_name }}:{{ setup_directory }}/{{ teach_mode_left_hand_script }}"
+  become: yes
+  when: bimanual|bool or hand_side=="left"
+
 - name: Copying the hand setup script for bimanual hand launch into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ bimanual_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ bimanual_setup_script }}"
   become: yes
   when: bimanual|bool
 
-- name: Install Shadow Right Hand launch if bimanual is true or if hand_side="right"
+- name: Install Shadow Right Hand launch and Teach Mode - Right Hand if bimanual is true or if hand_side="right"
   block:
   - name: Copy Launch Shadow Right Hand desktop icon
     copy:
@@ -172,9 +216,37 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
+  - name: Create Teach Mode - Right Hand script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_teach_mode_right_launcher.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ teach_mode_right_hand_script }}"
+
+  - name: Create Teach Mode - Right Hand desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Teach Mode - Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Teach Mode - Right Hand"
+      comment: "This is application launches the right hand in teach mode"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_teach_mode_right_launcher.sh
+      icon_file_name: "{{ right_hand_picture }}"
+      start_terminal: "false"
+
+  - name: Make Teach Mode - Right Hand desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Teach Mode - Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
   when: bimanual|bool or hand_side=="right"
 
-- name: Install Shadow Left Hand launch if bimanual is true or if hand_side="left"
+- name: Install Shadow Left Hand launch and Teach Mode - Left Hand if bimanual is true or if hand_side="left"
   block:
   - name: Copy Launch Shadow Left Hand desktop icon
     copy:
@@ -205,6 +277,34 @@
 
   - name: Make Shadow Left Hand Launch desktop icon Trusted
     shell: gio set "{{ user_folder }}/Desktop/Launch Shadow Left Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
+  - name: Create Teach Mode - Left Hand script
+    template:
+      src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_teach_mode_left_launcher.sh"
+      mode: '755'
+    vars:
+      local_setup_script_var: "{{ teach_mode_left_hand_script }}"
+
+  - name: Create Teach Mode - Left Hand desktop icon
+    template:
+      src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ user_folder }}/Desktop/Teach Mode - Left Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: "Teach Mode - Left Hand"
+      comment: "This is application launches the left hand in teach mode"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: shadow_teach_mode_left_launcher.sh
+      icon_file_name: "{{ left_hand_picture }}"
+      start_terminal: "false"
+
+  - name: Make Teach Mode - Left Hand desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Teach Mode - Left Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
