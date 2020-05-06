@@ -195,7 +195,7 @@ fi
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
-    if [[ "${aurora_limit}" != "!dhcp" ]]; then
+    if [[ "${aurora_limit}" != "all:!dhcp" ]]; then
         "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$extra_vars"
         echo ""
         echo " ----------------------------------------------------------------------"
