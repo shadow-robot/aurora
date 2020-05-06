@@ -229,7 +229,7 @@
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
+    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false robot_config_file:='{{ robot_config_bimanual }}' robot_description:='{{ xacro_bimanual }}'"
     desktop_icon_name: "4 - Launch Server Bimanual GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual GUI"
   when: bimanual|bool
