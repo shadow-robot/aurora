@@ -23,3 +23,10 @@
 - name: Creating the container which will execute setup script in terminator when started (NVIDIA)
   when: "nvidia_docker|bool and terminator and setup_script | length > 0"
   import_tasks: create-container/nvidia-with-setup-with-terminator.yml
+
+- name: Pull sr-config branch inside the docker container
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "pull_sr_config.sh"
+    modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
+  when: config_branch is defined and config_branch | length > 0

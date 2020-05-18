@@ -73,15 +73,6 @@
     container_terminal_title: "Server Docker Container"
     term_args: "--geometry {{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}"
 
-- name: Pull sr-config branch inside the docker container
-  include_role:
-    name: products/common/docker-container
-    tasks_from: products/common/docker-container/tasks/modify-container.yml
-  vars:
-    modify_script_name: "pull_sr_config_server.sh"
-    modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
-  when: config_branch is defined and config_branch | length > 0
-
 - name: Include products/common/cyberglove role
   include_role:
     name: products/common/cyberglove
