@@ -1,8 +1,5 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
-echo "Starting the container {{ container_name  }} to modify it"
 docker start {{ container_name  }} &> /dev/null
-echo "Modifying the container {{ container_name  }} by running {{ exec_in_container }} inside it"
-docker exec -it --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash; {{ exec_in_container }}"
-echo "Stopping the container"
+docker exec --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;{{ exec_in_container }}"
 docker stop {{ container_name  }} &> /dev/null
