@@ -22,3 +22,5 @@ bimanual: false # Specify if both hands are used or not
 hand_serial: "1082" # Specify the right hand serial number
 hand_serial_left: "2346" # Specify the left hand serial number
 ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
+arm_ip_left: "" # Specify the IP address of left arm
+arm_ip_right: "" # Specify the IP address of right arm

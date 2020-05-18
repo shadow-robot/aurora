@@ -118,6 +118,7 @@
     hand_side_value: "right"
     xacro_value: "{{ xacro_right }}"
     mapping_path_value: "{{ mapping_path_right }}"
+    pwm_control_value: "true"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for NUC left hand hardware control loop
@@ -133,6 +134,7 @@
     hand_side_value: "left"
     xacro_value: "{{ xacro_left }}"
     mapping_path_value: "{{ mapping_path_left }}"
+    pwm_control_value: "true"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual hands hardware control loop
@@ -144,6 +146,60 @@
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
   when: bimanual|bool
+
+- name: Install desktop icon for Teach mode - Right Hand
+  import_tasks: hand-icon.yml
+  vars:
+    desktop_icon_png: "{{ right_hand_picture }}"
+    launch_script: "shadow_teach_mode_right.sh"
+    hand_branch: "{{ config_branch }}"
+    desktop_icon_name: "3 - Teach mode - Right Hand"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Teach mode - Right Hand"
+    ethercat_interface_value: "{{ ethercat_interface }}"
+    hand_serial_value: "{{ hand_serial }}"
+    hand_side_value: "right"
+    xacro_value: "{{ xacro_right }}"
+    mapping_path_value: "{{ mapping_path_right }}"
+    pwm_control_value: "false"
+  when: bimanual|bool or hand_side=="right"
+
+- name: Install desktop icon for Teach mode - Left Hand
+  import_tasks: hand-icon.yml
+  vars:
+    desktop_icon_png: "{{ left_hand_picture }}"
+    launch_script: "shadow_teach_mode_left.sh"
+    hand_branch: "{{ config_branch }}"
+    desktop_icon_name: "3 - Teach mode - Left Hand"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Teach mode - Left Hand"
+    ethercat_interface_value: "{{ ethercat_left_hand }}"
+    hand_serial_value: "{{ hand_serial_left }}"
+    hand_side_value: "left"
+    xacro_value: "{{ xacro_left }}"
+    mapping_path_value: "{{ mapping_path_left }}"
+    pwm_control_value: "false"
+  when: bimanual|bool or hand_side=="left"
+
+- name: Install Local Teach mode - Right Hand desktop icon if bimanual is true or if hand_side="right"
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ right_hand_picture }}"
+    launch_script: "shadow_local_teach_mode_right.sh"
+    project_name_input: "sr_robot_launch"
+    launch_file_input: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false arm_ctrl:=false"
+    desktop_icon_name: "3 - Local Teach mode - Right Hand"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Local Teach mode - Right Hand"
+  when: bimanual|bool or hand_side=="right"
+
+- name: Install Local Teach mode - Left Hand desktop icon if bimanual is true or if hand_side="left"
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ left_hand_picture }}"
+    launch_script: "shadow_local_teach_mode_left.sh"
+    project_name_input: "sr_robot_launch"
+    launch_file_input: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial_left }} eth_port:={{ ethercat_left_hand }} side:=left pwm_control:=false arm_ctrl:=false"
+    desktop_icon_name: "3 - Local Teach mode - Left Hand"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Local Teach mode - Left Hand"
+  when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for right hand GUI
   import_tasks: roslaunch-icon.yml
@@ -173,7 +229,7 @@
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
+    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false robot_config_file:='{{ robot_config_bimanual }}' robot_description:='{{ xacro_bimanual }}'"
     desktop_icon_name: "4 - Launch Server Bimanual GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual GUI"
   when: bimanual|bool
@@ -267,7 +323,7 @@
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
-  when: bimanual|bool or hand_side=="right"
+  when: bimanual|bool or hand_side=="left"
 
 - name: Install local Shadow Bimanual Hands launch if bimanual is true
   block:
