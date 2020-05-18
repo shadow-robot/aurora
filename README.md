@@ -841,6 +841,7 @@ You will have to enter the sudo password for your computer twice (once for the b
 
 2. Unable to connect to a new NUC with SSH (not cloned from Clonezilla image) (in server_and_nuc_deploy and teleop_deploy): the NUC with Ubuntu Server 18.04 needs manual netplan configuration as below in order to recognize and connect the ethernet-USB adapters: edit the file /etc/netplan/50-cloud-init.yaml in the NUC host so it has the following:
 
+```bash
 network:
     version: 2
     ethernets:
@@ -849,6 +850,7 @@ network:
                 name: enx*
             dhcp4: true
             optional: true
+```
 
 3. Unable to launch RQT on NUC (or other graphical programs running on the NUC), due to Xauthority issues (in server_and_nuc_deploy and teleop_deploy): Before running aurora, execute ssh -X user@nuc-control to create a proper .Xauthority file in the NUC host (user home folder). This is required before aurora runs and creates the container.
 
