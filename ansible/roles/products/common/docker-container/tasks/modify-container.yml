@@ -1,5 +1,5 @@
 ---
-- name: Creating the modify container bash script
+- name: Creating the modify container script
   template:
     src: ../../../common/resources/templates/scripts/modify-container.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ modify_script_name }}"
@@ -9,7 +9,7 @@
   become: yes
   changed_when: false
 
-- name: Execute the modify container script with these commands {{ modify_script_commands }}
+- name: Executing the modify container script with these commands {{ modify_script_commands }}
   shell: "{{ shadow_hand_launcher_folder }}/{{ modify_script_name }}"
   become: yes
   changed_when: false
