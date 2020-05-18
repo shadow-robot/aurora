@@ -6,11 +6,6 @@ if [ ! -z {{ config_branch }} ]; then
     git checkout sr_rhand.launch
     git checkout sr_lhand.launch
     git checkout sr_bimanual.launch
-    git remote set-url origin https://github.com/shadow-robot/sr-config.git
-    echo -e Pulling changes from the sr_config repo...
-    git fetch
-    git pull
-    echo -e Latest sr_config has been pulled!
     git checkout {{ config_branch }}
     sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
     sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
