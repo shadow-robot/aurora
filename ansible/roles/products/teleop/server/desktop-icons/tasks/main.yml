@@ -415,7 +415,7 @@
     desktop_icon_name: "Right HaptX Teleop Simulation"
     desktop_icon_path: "Right HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx_right.launch external_control_loop:=false sim:=true"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true"
   when: sim_icon|bool and not bimanual|bool and glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
