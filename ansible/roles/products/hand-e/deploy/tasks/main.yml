@@ -38,7 +38,9 @@
     container_terminal_title: "{{ product }} container"
 
 - name: Pull sr-config branch inside the docker container
-  include_tasks: products/common/docker-container/tasks/modify-container.yml
+  include_role:
+    name: products/common/docker-container
+    tasks_from: products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "pull_sr_config_server.sh"
     modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
