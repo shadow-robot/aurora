@@ -2,7 +2,7 @@
 - name: Creating the modify container script
   template:
     src: ../../../common/resources/templates/scripts/modify-container.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ modify_script_name }}"
+    dest: "/tmp/{{ modify_script_name }}"
     mode: '755'
   vars:
     exec_in_container: "{{ modify_script_commands}}"
@@ -10,6 +10,6 @@
   changed_when: false
 
 - name: Executing the modify container script with these commands {{ modify_script_commands }}
-  shell: "{{ shadow_hand_launcher_folder }}/{{ modify_script_name }}"
+  shell: "/tmp/{{ modify_script_name }}"
   become: yes
   changed_when: false
