@@ -33,6 +33,7 @@
 - [Syntax and rules](#syntax-and-rules)
 - [Special variables](#special-variables)
 - [Tutorial 1 desktop icon](#tutorial-1-desktop-icon)
+- [Troubleshooting](#troubleshooting)
 
 # Introduction #
 
@@ -833,3 +834,25 @@ You will have to enter the sudo password for your computer twice (once for the b
   ![Tutorial 1 icon](docs/images/tutorial_1_icon.png)
  
   ![Tutorial 1 result](docs/images/tutorial_1_result.png)
+
+# Troubleshooting #
+
+1. **SSH warning** when using the same laptops for multiple different NUCs (in server_and_nuc_deploy and teleop_deploy): for a given server laptop, only 1 NUC is supposed to be used. If the NUC is changed, the SSH keys stored on the laptop don't match the NUC, so aurora has to be re-run. In this case, it's required that the user manually deletes the .ssh folder on the server laptop to clear ssh keys.
+
+2. **Unable to connect to a new NUC with SSH** (not cloned from Clonezilla image) (in server_and_nuc_deploy and teleop_deploy): the NUC with Ubuntu Server 18.04 needs manual netplan configuration as below in order to recognize and connect the ethernet-USB adapters: edit the file /etc/netplan/50-cloud-init.yaml in the NUC host so it has the following:
+
+```bash
+network:
+    version: 2
+    ethernets:
+        enx-usb-ethernet:
+            match:
+                name: enx*
+            dhcp4: true
+            optional: true
+```
+
+3. **Unable to launch RQT on NUC** (or other graphical programs running on the NUC), due to Xauthority issues (in server_and_nuc_deploy and teleop_deploy): Before running aurora, execute ssh -X user@nuc-control to create a proper .Xauthority file in the NUC host (user home folder). This is required before aurora runs and creates the container.
+
+4. **Aurora is stuck in getting a MAC address for the NUC** USB-ethernet adapter (in server_and_nuc_deploy):
+Make sure only 1 USB-ethernet adapter is connected to the laptop and it's the one going to the NUC USB-ethernet adapter. Try checking the physical connections and unplugging/replugging the USB-ethernet adapters and the ethernet cable. Also, make sure the USB-ethernet adapter is working (plug it into a laptop, run dmesg -w in the terminal, and see if there are any errors). If there are any errors that say "invalid mac address" or "error -108", the USB-ethernet adapter is faulty, so use another one. Any standard USB3 to Ethernet adapter will do. Finally, try to manually uninstall isc-dhcp-server by running sudo apt purge isc-dhcp-server on the laptop, and re-run aurora.
