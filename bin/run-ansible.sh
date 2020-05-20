@@ -109,7 +109,7 @@ for i in "${securedata[@]}"; do
     printf "\nSecure data input for $i:"
     read -rs secure_data
     while [[ "${i}" = "customer_key" && "${#secure_data}" -ne 40 ]]; do
-        printf "\customer_key not valid. It should be 40 characters long. Your was: ${#secure_data} characters long. Please enter a valid customer_key"
+        printf "\nSecyre data input for customer_key is not valid\nIt should be 40 characters long\nYours was: ${#secure_data} characters long\nPlease enter a valid customer_key\n"
         printf "\nSecure data input for $i:"
         read -rs secure_data
     done
