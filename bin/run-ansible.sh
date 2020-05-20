@@ -108,6 +108,11 @@ IFS=',' read -ra securedata <<< "$read_secure"
 for i in "${securedata[@]}"; do
     printf "\nSecure data input for $i:"
     read -rs secure_data
+    while [[ "${i}" = "customer_key" && "${#secure_data}" -ne 40 ]]; do
+        printf "\nSecure data input for $i is not valid\nIt should be 40 characters long\nYours was: ${#secure_data} characters long\nPlease enter a valid $i\n"
+        printf "\nSecure data input for $i:"
+        read -rs secure_data
+    done
     extra_vars="$extra_vars $i=$secure_data"
 done
 
