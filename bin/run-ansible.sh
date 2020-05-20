@@ -108,6 +108,11 @@ IFS=',' read -ra securedata <<< "$read_secure"
 for i in "${securedata[@]}"; do
     printf "\nSecure data input for $i:"
     read -rs secure_data
+    while [[ "${i}" = "customer_key" && "${#secure_data}" -ne 40 ]]; do
+        printf "\customer_key not valid. It should be 40 characters long. Your was: ${#secure_data} characters long. Please enter a valid customer_key"
+        printf "\nSecure data input for $i:"
+        read -rs secure_data
+    done
     extra_vars="$extra_vars $i=$secure_data"
 done
 
