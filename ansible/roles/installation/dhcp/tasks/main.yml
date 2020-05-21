@@ -202,9 +202,9 @@
     state: restarted
   become: true
 
-- name: Restart networking on DHCP interface (after iptables is set)
+- name: Restart the DHCP interface after configuring the NUC static IP (waiting 10 seconds to get the NUC to reset its IP)
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  command: bash -c "ifdown {{ dhcp_interface_name }} && sleep 10 && ifup {{ dhcp_interface_name }}"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
