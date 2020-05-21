@@ -29,5 +29,5 @@
     - /dev/input:/dev/input[rw]
     - /run/udev/data:/run/udev/data
     - "{{ user_folder }}/.Xauthority:/home/user/.Xauthority"
-    command: "bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
+    command: "bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes

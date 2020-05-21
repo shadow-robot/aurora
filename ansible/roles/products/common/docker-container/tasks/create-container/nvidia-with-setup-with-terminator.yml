@@ -32,5 +32,5 @@
     - /run/udev/data:/run/udev/data
     command: >
       bash -c "echo /usr/local/lib/x86_64-linux-gnu | sudo tee /etc/ld.so.conf.d/glvnd.conf && sudo ldconfig &&
-      terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '{{ setup_directory }}/{{ setup_script }} && bash || bash'"
+      terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes

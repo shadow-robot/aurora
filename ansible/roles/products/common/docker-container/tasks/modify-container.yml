@@ -1,0 +1,16 @@
+---
+- name: Creating the modify container script
+  template:
+    src: ../../../common/resources/templates/scripts/modify-container.j2
+    dest: "/tmp/{{ modify_script_name }}"
+    mode: '755'
+  vars:
+    exec_in_container: "{{ modify_script_commands}}"
+  become: yes
+  changed_when: false
+
+- name: Executing the modify container script with these commands {{ modify_script_commands }}
+  shell: "/tmp/{{ modify_script_name }}"
+  become: yes
+  changed_when: false
+  when: skip_molecule_task is not defined
