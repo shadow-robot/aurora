@@ -1,0 +1,300 @@
+---
+- name: Install desktop icon for launching Shadow Right Teleop Simulation
+  import_tasks: default-icon-no-terminator.yml
+  vars:
+    desktop_icon_png: "hand-e.png"
+    launch_script: "shadow_launch_right_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Right Teleop Simulation"
+    template: templates/scripts/launch-teleop-right.j2
+    desktop_icon_path: "Launch Shadow Right Teleop Simulation"
+    launch_terminal: "false"
+
+- name: Install desktop icon for launching Shadow Left Teleop Simulation
+  import_tasks: default-icon-no-terminator.yml
+  vars:
+    desktop_icon_png: "hand-e-left.png"
+    launch_script: "shadow_launch_left_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Left Teleop Simulation"
+    template: templates/scripts/launch-teleop-left.j2
+    desktop_icon_path: "Launch Shadow Left Teleop Simulation"
+    launch_terminal: "false"
+
+- name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
+  import_tasks: default-icon-no-terminator.yml
+  vars:
+    desktop_icon_png: "hand-e-bimanual.png"
+    launch_script: "shadow_launch_bimanual_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation"
+    template: templates/scripts/launch-teleop-bimanual.j2
+    desktop_icon_path: "Launch Shadow Bimanual Teleop Simulation"
+    launch_terminal: "false"
+
+- name: Include hand-manual role
+  include_role:
+    name: products/common/hand-manual
+  when: customer_key is defined and customer_key | length > 0
+
+- name: Install the Teleop Documentation desktop icon for HaptX
+  include_tasks: web-gui-icon.yml
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    local_website_port_var: '7070'
+    desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
+    launch_terminal: "true"
+    start_container_var: "true"
+    start_server_command_var: "roslaunch sr_teleop_haptx_documentation sr_teleop_haptx_documentation_server.launch port:={{ local_website_port_var }}"
+    preconditions_var: ""
+  when: glove=="haptx"
+
+- name: Install the Teleop Documentation desktop icon for polhemus
+  include_tasks: web-gui-icon.yml
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    local_website_port_var: '7070'
+    desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
+    launch_terminal: "true"
+    start_container_var: "true"
+    start_server_command_var: "roslaunch sr_teleop_polhemus_documentation sr_teleop_polhemus_documentation_server.launch port:={{ local_website_port_var }}"
+    preconditions_var: ""
+  when: glove=="polhemus"
+
+- name: Install the Shadow System Monitor desktop icon for Teleop
+  include_tasks: web-gui-icon.yml
+  vars:
+    desktop_icon_png: "system_monitor.png"
+    launch_script: "shadow_launcher_system_monitor_exec.sh"
+    local_website_port_var: '8081'
+    desktop_icon_name: "Shadow System Monitor"
+    desktop_icon_path: "Shadow System Monitor"
+    launch_terminal: "true"
+    start_container_var: "false"
+    start_server_command_var: ""
+    preconditions_var: "Launch Shadow Teleop icon"
+
+- name: Create Shadow Demos folder
+  file:
+    path: "{{ user_folder }}/Desktop/Shadow Demos"
+    mode: '755'
+    state: directory
+
+- name: Create Shadow Advanced Launchers folder
+  file:
+    path: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
+    mode: '755'
+    state: directory
+
+- name: Install desktop icon for server container
+  include_tasks: default-icon.yml
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.jpg"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "1 - Launch Server Container"
+    desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
+    launch_terminal: "false"
+
+- name: Install desktop icon for launching ROSCORE
+  import_tasks: default-icon.yml
+  vars:
+    template: ../../../common/resources/templates/scripts/start-roscore.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "shadow_roscore.sh"
+    desktop_icon_name: "2 - Launch Server ROSCORE"
+    desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
+    launch_terminal: "false"
+
+- name: Set haptx icon
+  set_fact:
+    haptx_type: "bimanual"
+    haptx_icon: "haptx_{{ haptx_type }}.png"
+  when: bimanual|bool and glove=="haptx"
+  
+- name: Install desktop icon for right side teleop GUI (for haptx)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_GUI_right.sh"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true vive:=false"
+    desktop_icon_name: "4 - Launch Right Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
+  when:
+    - glove=="haptx"
+
+- name: Install desktop icon for right side teleop GUI (for polhemus)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "rviz.png"
+    launch_script: "shadow_GUI_right.sh"
+    project_name_input: "sr_teleop_vive_polhemus"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true"
+    desktop_icon_name: "4 - Launch Right Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
+  when:
+    - glove=="polhemus"
+
+- name: Install desktop icon for left side teleop GUI (for haptx)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_GUI_left.sh"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false"
+    desktop_icon_name: "4 - Launch Left Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
+  when:
+    - glove=="haptx"
+
+- name: Install desktop icon for left side teleop GUI (for polhemus)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "rviz.png"
+    launch_script: "shadow_GUI_left.sh"
+    project_name_input: "sr_teleop_vive_polhemus"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true side:=left vive:=true"
+    desktop_icon_name: "4 - Launch Left Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
+  when:
+    - glove=="polhemus"
+
+- name: Install desktop icon for bimanual teleop GUI (for haptx)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_GUI_bimanual.sh"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=true"
+    desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
+  when:
+    - glove=="haptx"
+
+- name: Install desktop icon for bimanual teleop GUI (for polhemus)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "rviz.png"
+    launch_script: "shadow_GUI_bimanual.sh"
+    project_name_input: "sr_teleop_vive_polhemus"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true"
+    desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
+  when:
+    - glove=="polhemus"
+
+- name: Install desktop icon for running haptx mapping node right
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_haptx_mapping_launch_right.sh"
+    desktop_icon_name: "5 - Launch Right HaptX Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right HaptX Mapping"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "haptx_base.launch"
+  when:
+    - glove=="haptx"
+
+- name: Install desktop icon for running haptx mapping node left
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_haptx_mapping_launch_left.sh"
+    desktop_icon_name: "5 - Launch Left HaptX Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left HaptX Mapping"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "haptx_base.launch hand_side_prefix:=lh"
+  when:
+    - glove=="haptx"
+
+- name: Install desktop icon for running haptx mapping node bimanual
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ haptx_icon }}"
+    launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
+    desktop_icon_name: "5 - Launch Bimanual HaptX Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual HaptX Mapping"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "haptx_base_bimanual.launch"
+  when: bimanual|bool and glove=="haptx"
+
+- name: Install desktop icon for running polhemus mapping node right
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_mapping_launch_right.sh"
+    desktop_icon_name: "5 - Launch Right Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Polhemus Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop.launch"
+  when:
+    - glove=="polhemus"
+
+- name: Install desktop icon for running polhemus mapping node left
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_mapping_launch_left.sh"
+    desktop_icon_name: "5 - Launch Left Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Polhemus Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
+  when:
+    - glove=="polhemus"
+
+- name: Install desktop icon for running polhemus mapping node bimanual
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_mapping_launch_bimanual.sh"
+    desktop_icon_name: "6 - Launch Bimanual Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Polhemus Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop.launch"
+  when:
+    - bimanual|bool and glove=="polhemus"
+
+- name: Install desktop icon for running right polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_right.sh"
+    desktop_icon_name: "6 - Launch Right Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Polhemus Driver"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "polhemus.launch"
+  when:
+    - glove=="polhemus"
+
+- name: Install desktop icon for running left polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_left.sh"
+    desktop_icon_name: "6 - Launch Left Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Polhemus Driver"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "polhemus.launch"
+  when:
+    - glove=="polhemus"
+
+- name: Install desktop icon for running bimanual polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_bimanual.sh"
+    desktop_icon_name: "6 - Launch Left Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Polhemus Driver"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "polhemus.launch"
+  when:
+    - bimanual|bool and glove=="polhemus"
+
+- name: Include products/common/demo-icons role
+  include_role:
+    name: products/common/demo-icons
+  vars:
+    demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
+  when: demo_icons|bool
