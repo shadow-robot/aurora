@@ -10,6 +10,11 @@
     server_ip: "{{ groups['server'][0] }}"
   when: groups['server'] is defined
 
+- name: Include installation/nvidia-driver role
+  include_role:
+    name: installation/nvidia-driver
+  when: install_nvidia_driver | bool
+
 - name: Setup script names
   set_fact:
     setup_script: teleop-server-setup.sh
@@ -45,6 +50,7 @@
 - name: Include installation/chrony-server role
   include_role:
     name: installation/chrony-server
+  when: groups['server'] is defined
 
 - name: Include installation/polhemus role
   include_role:
@@ -108,14 +114,17 @@
     path: "{{ user_folder }}/.ssh/"
     mode: '700'
     state: directory
+  when: groups['server'] is defined
 
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   openssh_keypair:
     path: "{{ ssh_keys_path }}"
+  when: groups['server'] is defined
 
 - name: Evaluating the SSH agent
   shell: "eval $(ssh-agent)"
   changed_when: false
+  when: groups['server'] is defined
 
 - name: Adding the ssh identity
   shell: "ssh-add {{ ssh_keys_path }}"
@@ -127,12 +136,13 @@
     src: "{{ ssh_keys_path }}.pub"
     dest: "{{ temp_ssh_keys_path }}.pub"
   changed_when: false
-  when: skip_molecule_task is not defined
+  when: skip_molecule_task is not defined and groups['server'] is defined
 
 - name: Copying ssh key pair into docker container
   changed_when: false
   shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
   become: yes
+  when: groups['server'] is defined
 
 - name: Creating teleop-server setup script
   template:

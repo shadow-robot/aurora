@@ -1,0 +1,23 @@
+---
+- name: Adding the apt repository for nvidia driver
+  apt_repository:
+    repo: ppa:graphics-drivers/ppa
+    update_cache: yes
+
+- name: Install the recommended nvidia driver
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - nvidia-driver-{{ nvidia_driver_version }}
+      - nvidia-settings
+  become: yes
+  register: nvidia_install_task
+
+- name: Nvidia driver installation finished
+  debug:
+    msg: "Installation of nvidia-driver-{{ nvidia_driver_version }} is finished. Please restart you computer and re-run this script to finalize the installation"
+
+- name: Finishing Nvidia driver installation
+  meta: end_play
+  when: nvidia_install_task.changed
