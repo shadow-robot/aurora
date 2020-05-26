@@ -44,3 +44,5 @@ term_x: 200
 term_y: 0
 term_y_correction: 58
 install_nvidia_driver: false
+real_glove: true
+real_vive: true

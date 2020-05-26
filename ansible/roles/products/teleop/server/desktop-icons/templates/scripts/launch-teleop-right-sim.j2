@@ -5,17 +5,23 @@ terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y
 sleep 3
 terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y|int + term_height|int +term_y_correction|int }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 3
-terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y }}" -T 'NUC right hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_hardware_control_loop.sh" &
-sleep 3
-terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}" -T 'Server right hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right.sh"
+terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y }}" -T 'Server Right Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_right.sh" &
 
-if [[ "{{ glove }}" == "haptx"  ]]; then
-    sleep 3
+if {{ real_glove | lower }}; then
+    if [[ "{{ glove }}" == "haptx"  ]]; then
+        sleep 3
+        terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
+    fi
+    if [[ "{{ glove }}" == "polhemus"  ]]; then
+        sleep 3
+        terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y }}" -T 'Server Polhemus Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_right.sh"
+        sleep 3
+        terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}" -T 'Server Polhemus Driver Right' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_right.sh"
+    fi
+else
+
+rosrun sr_vive_tracking sr_vive_wrist_mock.py -k -t 1
+fi
+
+
     terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
-fi
-if [[ "{{ glove }}" == "polhemus"  ]]; then
-    sleep 3
-    terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y }}" -T 'Server Polhemus Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_right.sh"
-    sleep 3
-    terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}" -T 'Server Polhemus Driver Right' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_right.sh"
-fi
