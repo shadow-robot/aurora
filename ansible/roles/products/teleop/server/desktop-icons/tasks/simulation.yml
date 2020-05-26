@@ -185,17 +185,27 @@
   when:
     - glove=="polhemus"
 
-- name: Install desktop icon for running simulated Vive for wrist tracking
+- name: Install desktop icon for Launch Simulated Right Wrist Tracking
   include_tasks: rosrun-icon.yml
   vars:
-    desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_haptx_mapping_launch_right.sh"
-    desktop_icon_name: "5 - Launch Right HaptX Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right HaptX Mapping"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base.launch"
-  when:
-    - glove=="haptx"
+    desktop_icon_png: "vive_tracker.jpg"
+    launch_script: "shadow_vive_sim_right.sh"
+    desktop_icon_name: "5 - Launch Simulated Right Wrist Tracking"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Simulated Right Wrist Tracking"
+    project_name_input: "sr_vive_tracking"
+    script_name_input: "sr_vive_wrist_mock.py -k -t 1"
+  when: not real_glove
+
+- name: Install desktop icon for Launch Simulated Left Wrist Tracking
+  include_tasks: rosrun-icon.yml
+  vars:
+    desktop_icon_png: "vive_tracker.jpg"
+    launch_script: "shadow_vive_sim_left.sh"
+    desktop_icon_name: "5 - Launch Simulated Left Wrist Tracking"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Simulated Left Wrist Tracking"
+    project_name_input: "sr_vive_tracking"
+    script_name_input: "sr_vive_wrist_mock.py -k -t 0"
+  when: not real_glove
 
 - name: Install desktop icon for running haptx mapping node right
   include_tasks: roslaunch-icon.yml
