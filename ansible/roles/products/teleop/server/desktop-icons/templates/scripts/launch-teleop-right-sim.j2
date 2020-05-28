@@ -6,22 +6,19 @@ sleep 3
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 3
 terminator --geometry "{{ term_3 }}" -T 'Server Right Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_right.sh" &
-
+sleep 3
 if {{ real_glove | lower }}; then
     if [[ "{{ glove }}" == "haptx"  ]]; then
-        sleep 3
         terminator --geometry "{{ term_4 }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
     fi
     if [[ "{{ glove }}" == "polhemus"  ]]; then
+        terminator --geometry "{{ term_4 }}" -T 'Server Polhemus Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_right.sh"
         sleep 3
-        terminator --geometry "{{ term_5 }}" -T 'Server Polhemus Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_right.sh"
-        sleep 3
-        terminator --geometry "{{ term_6 }}" -T 'Server Polhemus Driver Right' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_right.sh"
+        terminator --geometry "{{ term_5 }}" -T 'Server Polhemus Driver Right' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_right.sh"
     fi
-else
-
-rosrun sr_vive_tracking sr_vive_wrist_mock.py -k -t 1
 fi
+sleep 3
 
-
-    terminator --geometry "{{ term_5 }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
+if {{ not real_vive | lower }}; then
+    terminator --geometry "{{ term_6 }}" -T 'Simulated Right Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_right.sh"
+fi

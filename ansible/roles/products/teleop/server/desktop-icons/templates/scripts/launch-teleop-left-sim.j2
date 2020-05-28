@@ -5,17 +5,20 @@ terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ s
 sleep 3
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 3
-terminator --geometry "{{ term_3 }}" -T 'NUC left hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_left_hardware_control_loop.sh" &
+terminator --geometry "{{ term_3 }}" -T 'Server Left Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_left.sh" &
 sleep 3
-terminator --geometry "{{ term_4 }}" -T 'Server left hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_left.sh"
-
-if [[ "{{ glove }}" == "haptx"  ]]; then
-    sleep 3
-    terminator --geometry "{{ term_5 }}" -T 'Server HaptX Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_left.sh"
+if {{ real_glove | lower }}; then
+    if [[ "{{ glove }}" == "haptx"  ]]; then
+        terminator --geometry "{{ term_4 }}" -T 'Server HaptX Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_left.sh"
+    fi
+    if [[ "{{ glove }}" == "polhemus"  ]]; then
+        terminator --geometry "{{ term_4 }}" -T 'Server Polhemus Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_left.sh"
+        sleep 3
+        terminator --geometry "{{ term_5 }}" -T 'Server Polhemus Driver Left' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_left.sh"
+    fi
 fi
-if [[ "{{ glove }}" == "polhemus"  ]]; then
-    sleep 3
-    terminator --geometry "{{ term_5 }}" -T 'Server Polhemus Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_left.sh"
-    sleep 3
-    terminator --geometry "{{ term_6 }}" -T 'Server Polhemus Driver Left' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_left.sh"
+sleep 3
+
+if {{ not real_vive | lower }}; then
+    terminator --geometry "{{ term_6 }}" -T 'Simulated Left Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_left.sh"
 fi
