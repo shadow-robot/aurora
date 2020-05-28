@@ -299,4 +299,5 @@
     name: products/common/demo-icons
   vars:
     demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
+    bimanual: true
   when: demo_icons|bool
