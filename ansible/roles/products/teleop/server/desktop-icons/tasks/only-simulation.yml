@@ -276,7 +276,7 @@
   include_tasks: rosrun-icon.yml
   vars:
     desktop_icon_png: "vive_tracker.jpg"
-    launch_script: "shadow_vive_sim_right.sh"
+    launch_script: "shadow_mock_vive_right.sh"
     desktop_icon_name: "6 - Launch Simulated Right Wrist Tracking"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Wrist Tracking"
     project_name_input: "sr_vive_tracking"
@@ -287,7 +287,7 @@
   include_tasks: rosrun-icon.yml
   vars:
     desktop_icon_png: "vive_tracker.jpg"
-    launch_script: "shadow_vive_sim_left.sh"
+    launch_script: "shadow_mock_vive_left.sh"
     desktop_icon_name: "6 - Launch Simulated Left Wrist Tracking"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Wrist Tracking"
     project_name_input: "sr_vive_tracking"
