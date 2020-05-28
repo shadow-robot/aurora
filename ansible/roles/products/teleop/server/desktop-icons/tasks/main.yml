@@ -15,5 +15,5 @@
   when: groups['simulation'] is not defined
 
 - name: Install desktop icons for simulated robots
-  include_tasks: simulation.yml
+  include_tasks: only-simulation.yml
   when: groups['simulation'] is defined

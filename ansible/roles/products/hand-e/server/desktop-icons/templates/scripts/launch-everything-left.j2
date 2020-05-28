@@ -1,10 +1,10 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
-terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 sleep 3
-terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y|int + term_height|int +term_y_correction|int }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
+terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 3
-terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y }}" -T 'NUC left hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_left_hardware_control_loop.sh" &
+terminator --geometry "{{ term_3 }}" -T 'NUC left hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_left_hardware_control_loop.sh" &
 sleep 3
-terminator --geometry "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}" -T 'Server left hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_left.sh"
+terminator --geometry "{{ term_4 }}" -T 'Server left hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_left.sh"
