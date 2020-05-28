@@ -29,17 +29,6 @@
     desktop_icon_path: "Launch Shadow Bimanual Teleop Simulation"
     launch_terminal: "false"
 
-- name: Install desktop icon for Teleop server Simulation (Unimanual Right HaptX)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "haptx_right.png"
-    launch_script: "shadow_sim_demo.sh"
-    desktop_icon_name: "Right HaptX Teleop Simulation"
-    desktop_icon_path: "Right HaptX Teleop Simulation"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true"
-  when: sim_icon|bool and not bimanual|bool and glove=="haptx"
-
 - name: Include hand-manual role
   include_role:
     name: products/common/hand-manual
@@ -118,91 +107,178 @@
     desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
     launch_terminal: "false"
 
-- name: Set haptx icon
-  set_fact:
-    haptx_type: "bimanual"
-    haptx_icon: "haptx_{{ haptx_type }}.png"
-  when: bimanual|bool and glove=="haptx"
-  
-- name: Install desktop icon for right side teleop GUI (for haptx)
+- name: Install desktop icon for Teleop server Simulation (Unimanual Right HaptX)
   import_tasks: roslaunch-icon.yml
   vars:
-    desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_GUI_right.sh"
+    desktop_icon_png: "haptx_right.png"
+    launch_script: "shadow_sim_right.sh"
+    desktop_icon_name: "3 - Launch Right HaptX Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch sim:=true vive:=false"
-    desktop_icon_name: "4 - Launch Right Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
-  when:
-    - glove=="haptx"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }}"
+  when: glove=="haptx"
 
-- name: Install desktop icon for right side teleop GUI (for polhemus)
+- name: Install desktop icon for Teleop server Simulation (Unimanual Left HaptX)
   import_tasks: roslaunch-icon.yml
   vars:
-    desktop_icon_png: "rviz.png"
-    launch_script: "shadow_GUI_right.sh"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true"
-    desktop_icon_name: "4 - Launch Right Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
-  when:
-    - glove=="polhemus"
-
-- name: Install desktop icon for left side teleop GUI (for haptx)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_GUI_left.sh"
+    desktop_icon_png: "haptx_left.png"
+    launch_script: "shadow_sim_left.sh"
+    desktop_icon_name: "3 - Launch Left HaptX Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false"
-    desktop_icon_name: "4 - Launch Left Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
-  when:
-    - glove=="haptx"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }}"
+  when: glove=="haptx"
 
-- name: Install desktop icon for left side teleop GUI (for polhemus)
+- name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
   import_tasks: roslaunch-icon.yml
   vars:
-    desktop_icon_png: "rviz.png"
-    launch_script: "shadow_GUI_left.sh"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true side:=left vive:=true"
-    desktop_icon_name: "4 - Launch Left Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
-  when:
-    - glove=="polhemus"
-
-- name: Install desktop icon for bimanual teleop GUI (for haptx)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_GUI_bimanual.sh"
+    desktop_icon_png: "haptx_bimanual.png"
+    launch_script: "shadow_sim_bimanual.sh"
+    desktop_icon_name: "3 - Launch Bimanual HaptX Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=true"
-    desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
-  when:
-    - glove=="haptx"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }}"
+  when: glove=="haptx"
 
-- name: Install desktop icon for bimanual teleop GUI (for polhemus)
+- name: Install desktop icon for Teleop server Simulation (Unimanual Right Polhemus)
   import_tasks: roslaunch-icon.yml
   vars:
-    desktop_icon_png: "rviz.png"
-    launch_script: "shadow_GUI_bimanual.sh"
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_sim_right.sh"
+    desktop_icon_name: "3 - Launch Right Polhemus Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true"
-    desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
-  when:
-    - glove=="polhemus"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }}"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for Teleop server Simulation (Unimanual Left Polhemus)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_sim_left.sh"
+    desktop_icon_name: "3 - Launch Left Polhemus Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Polhemus Teleop Simulation"
+    project_name_input: "sr_teleop_vive_polhemus"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }}"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for Teleop server Simulation (Bimanual Polhemus)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_sim_bimanual.sh"
+    desktop_icon_name: "3 - Launch Bimanual Polhemus Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Polhemus Teleop Simulation"
+    project_name_input: "sr_teleop_vive_polhemus"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }}"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for running haptx mapping node right
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "haptx_right.png"
+    launch_script: "shadow_haptx_mapping_launch_right.sh"
+    desktop_icon_name: "4 - Launch Right HaptX Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right HaptX Mapping"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "haptx_base.launch"
+  when: glove=="haptx"
+
+- name: Install desktop icon for running haptx mapping node left
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "haptx_left.png"
+    launch_script: "shadow_haptx_mapping_launch_left.sh"
+    desktop_icon_name: "4 - Launch Left HaptX Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left HaptX Mapping"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "haptx_base.launch hand_side_prefix:=lh"
+  when: glove=="haptx"
+
+- name: Install desktop icon for running haptx mapping node bimanual
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "haptx_bimanual.png"
+    launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
+    desktop_icon_name: "4 - Launch Bimanual HaptX Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual HaptX Mapping"
+    project_name_input: "sr_teleop_vive_haptx"
+    launch_file_input: "haptx_base_bimanual.launch"
+  when: glove=="haptx"
+
+- name: Install desktop icon for running polhemus mapping node right
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_mapping_launch_right.sh"
+    desktop_icon_name: "4 - Launch Right Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Polhemus Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=rh"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for running polhemus mapping node left
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_mapping_launch_left.sh"
+    desktop_icon_name: "4 - Launch Left Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Polhemus Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for running polhemus mapping node bimanual
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_mapping_launch_bimanual.sh"
+    desktop_icon_name: "4 - Launch Bimanual Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Polhemus Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop.launch"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for running right polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_right.sh"
+    desktop_icon_name: "5 - Launch Right Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Polhemus Driver"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "polhemus.launch"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for running left polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_left.sh"
+    desktop_icon_name: "5 - Launch Left Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Polhemus Driver"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "polhemus.launch"
+  when: glove=="polhemus"
+
+- name: Install desktop icon for running bimanual polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_bimanual.sh"
+    desktop_icon_name: "5 - Launch Left Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Polhemus Driver"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "polhemus.launch"
+  when: glove=="polhemus"
 
 - name: Install desktop icon for Launch Simulated Right Wrist Tracking
   include_tasks: rosrun-icon.yml
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_vive_sim_right.sh"
-    desktop_icon_name: "5 - Launch Simulated Right Wrist Tracking"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Simulated Right Wrist Tracking"
+    desktop_icon_name: "6 - Launch Simulated Right Wrist Tracking"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Wrist Tracking"
     project_name_input: "sr_vive_tracking"
     script_name_input: "sr_vive_wrist_mock.py -k -t 1"
   when: not real_glove
@@ -212,118 +288,11 @@
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_vive_sim_left.sh"
-    desktop_icon_name: "5 - Launch Simulated Left Wrist Tracking"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Simulated Left Wrist Tracking"
+    desktop_icon_name: "6 - Launch Simulated Left Wrist Tracking"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Wrist Tracking"
     project_name_input: "sr_vive_tracking"
     script_name_input: "sr_vive_wrist_mock.py -k -t 0"
   when: not real_glove
-
-- name: Install desktop icon for running haptx mapping node right
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_haptx_mapping_launch_right.sh"
-    desktop_icon_name: "5 - Launch Right HaptX Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right HaptX Mapping"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base.launch"
-  when:
-    - glove=="haptx"
-
-- name: Install desktop icon for running haptx mapping node left
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_haptx_mapping_launch_left.sh"
-    desktop_icon_name: "5 - Launch Left HaptX Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left HaptX Mapping"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base.launch hand_side_prefix:=lh"
-  when:
-    - glove=="haptx"
-
-- name: Install desktop icon for running haptx mapping node bimanual
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ haptx_icon }}"
-    launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
-    desktop_icon_name: "5 - Launch Bimanual HaptX Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual HaptX Mapping"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base_bimanual.launch"
-  when: bimanual|bool and glove=="haptx"
-
-- name: Install desktop icon for running polhemus mapping node right
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_mapping_launch_right.sh"
-    desktop_icon_name: "5 - Launch Right Polhemus Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Polhemus Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch"
-  when:
-    - glove=="polhemus"
-
-- name: Install desktop icon for running polhemus mapping node left
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_mapping_launch_left.sh"
-    desktop_icon_name: "5 - Launch Left Polhemus Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Polhemus Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
-  when:
-    - glove=="polhemus"
-
-- name: Install desktop icon for running polhemus mapping node bimanual
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_mapping_launch_bimanual.sh"
-    desktop_icon_name: "6 - Launch Bimanual Polhemus Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Polhemus Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch"
-  when:
-    - bimanual|bool and glove=="polhemus"
-
-- name: Install desktop icon for running right polhemus driver
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_driver_right.sh"
-    desktop_icon_name: "6 - Launch Right Polhemus Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Polhemus Driver"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch"
-  when:
-    - glove=="polhemus"
-
-- name: Install desktop icon for running left polhemus driver
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_driver_left.sh"
-    desktop_icon_name: "6 - Launch Left Polhemus Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Polhemus Driver"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch"
-  when:
-    - glove=="polhemus"
-
-- name: Install desktop icon for running bimanual polhemus driver
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_driver_bimanual.sh"
-    desktop_icon_name: "6 - Launch Left Polhemus Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Polhemus Driver"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch"
-  when:
-    - bimanual|bool and glove=="polhemus"
 
 - name: Include products/common/demo-icons role
   include_role:
