@@ -29,3 +29,4 @@
   vars:
     modify_script_name: "pull_sr_config.sh"
     modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
+  when: groups['simulation'] is not defined
