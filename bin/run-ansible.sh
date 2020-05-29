@@ -6,7 +6,7 @@ set -e # fail on errors
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
 if [[ $# -lt 2 ]]; then
-    command_usage_message="Command usage: ${script_name} <playbook name> [--debug-branch <name>] [--inventory <name>]"
+    command_usage_message="Command usage: ${script_name} <playbook name> [--branch <name>] [--inventory <name>]"
     command_usage_message="${command_usage_message} [--limit <rules>]"
     command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
     echo "${command_usage_message}"
@@ -24,7 +24,7 @@ while [[ $# -gt 1 ]]
 do
 key="$1"
 case ${key} in
-    --debug-branch)
+    --branch)
     aurora_tools_branch="$2"
     shift 2
     ;;
@@ -80,16 +80,16 @@ echo "|                                                               |"
 echo "================================================================="
 echo ""
 echo "possible options: "
-echo "  * --debug-branch      Branch of aurora to use. It is needed for scrip debugging (master by default)"
+echo "  * --branch            Branch or tag of aurora to use. Master by default. Can be a release tag, e.g. v1.0.0"
 echo "  * --inventory         Inventory of servers to use (local by default)"
 echo "  * --limit             Run a playbook against one or more members of that group (all by default)"
 echo "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,github_login)"
 echo "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. sudo_password,docker_password,git_password)"
 echo ""
-echo "example: ${script_name} docker_deploy --debug-branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
+echo "example: ${script_name} docker_deploy --branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
 echo "playbook     = ${playbook}"
-echo "debug-branch = ${aurora_tools_branch}"
+echo "branch       = ${aurora_tools_branch}"
 echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 

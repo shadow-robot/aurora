@@ -15,7 +15,7 @@ RUN set -x && \
     echo "Installing Docker" && \
     wget -O /tmp/oneliner "$( echo "$ml_docker_aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
-    /tmp/oneliner install_software --debug-branch $ml_docker_aurora_branch software=[docker] && \
+    /tmp/oneliner install_software --branch $ml_docker_aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
     apt-get clean && \
