@@ -115,7 +115,7 @@
     desktop_icon_name: "3 - Launch Right HaptX Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=right vive:={{ real_vive | lower }}"
+    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ sim_biotacs | lower }}"
   when: glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left HaptX)
@@ -126,7 +126,7 @@
     desktop_icon_name: "3 - Launch Left HaptX Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=left vive:={{ real_vive | lower }}"
+    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ sim_biotacs | lower }}"
   when: glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
@@ -137,7 +137,7 @@
     desktop_icon_name: "3 - Launch Bimanual HaptX Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch sim:=true vive:={{ real_vive | lower }}"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ sim_biotacs | lower }}"
   when: glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right Polhemus)
@@ -148,7 +148,7 @@
     desktop_icon_name: "3 - Launch Right Polhemus Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }}"
+    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ sim_biotacs | lower }}"
   when: glove=="polhemus"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left Polhemus)
@@ -159,7 +159,7 @@
     desktop_icon_name: "3 - Launch Left Polhemus Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }}"
+    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ sim_biotacs | lower }}"
   when: glove=="polhemus"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual Polhemus)
@@ -170,7 +170,7 @@
     desktop_icon_name: "3 - Launch Bimanual Polhemus Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }}"
+    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ sim_biotacs | lower }}"
   when: glove=="polhemus"
 
 - name: Install desktop icon for running haptx mapping node right
@@ -281,7 +281,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Wrist Tracking"
     project_name_input: "sr_vive_tracking"
     script_name_input: "sr_vive_wrist_mock.py -k -t 1"
-  when: not real_glove
+  when: not real_vive
 
 - name: Install desktop icon for Launch Simulated Left Wrist Tracking
   include_tasks: rosrun-icon.yml
@@ -292,7 +292,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Wrist Tracking"
     project_name_input: "sr_vive_tracking"
     script_name_input: "sr_vive_wrist_mock.py -k -t 0"
-  when: not real_glove
+  when: not real_vive
 
 - name: Include products/common/demo-icons role
   include_role:
