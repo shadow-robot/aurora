@@ -4,7 +4,7 @@
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 sleep 3
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
-sleep 5
+sleep 3
 terminator --geometry "{{ term_3 }}" -T 'Server Left Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_left.sh" &
 sleep 3
 if {{ real_glove | lower }}; then
@@ -20,5 +20,9 @@ fi
 sleep 3
 
 if {{ not real_vive | lower }}; then
-    terminator --geometry "{{ term_6 }}" -T 'Simulated Left Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_left.sh"
+    if {{ real_glove | lower }} && [[ "{{ glove }}" == "polhemus"  ]]; then
+        terminator --geometry "{{ term_6 }}" -T 'Simulated Left Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_left.sh"
+    else
+        terminator --geometry "{{ term_5 }}" -T 'Simulated Left Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_left.sh"
+    fi
 fi
