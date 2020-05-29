@@ -15,7 +15,7 @@ RUN set -x && \
     echo "Installing AWS CLI" && \
     wget -O /tmp/oneliner "$( echo "$ml_ec2_aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
-    /tmp/oneliner install_software --debug-branch $ml_ec2_aurora_branch software=[aws-cli] && \
+    /tmp/oneliner install_software --branch $ml_ec2_aurora_branch software=[aws-cli] && \
     \
     echo "Clean up" && \
     apt-get clean && \
