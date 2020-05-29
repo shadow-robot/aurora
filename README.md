@@ -402,7 +402,7 @@ Note that AWS EC2 tests take about 1 hour to complete a build due to provisionin
 
 For debugging (not using the master branch), you can add the following immediately after playbook name (for example docker_deploy or teleop_deploy):
 
-* --debug-branch name_of_aurora_repo_branch (e.g. --debug-branch F#SRC-2603_add_ansible_bootstrap)
+* --branch name_of_aurora_repo_branch (e.g. --branch F#SRC-2603_add_ansible_bootstrap)
 
 # Structure of files #
 
@@ -823,7 +823,7 @@ verifier:
 
 20. Once your PR is passing (all green), you are ready to test your branch on real hardware. For this tutorial, you will test your branch on your own local machine by opening a terminal window by pressing Ctrl+Alt+T and run this:
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) tutorial_icon_deploy --debug-branch NameOfYourBranch --inventory local/docker_deploy username=YourName
+bash <(curl -Ls bit.ly/run-aurora) tutorial_icon_deploy --branch NameOfYourBranch --inventory local/docker_deploy username=YourName
 ```
 Rememeber to substitute in NameOfYourBranch and YourName
 
