@@ -20,7 +20,7 @@ if {{ real_glove | lower }}; then
         next_term="{{ term_6 }}"
     fi
 fi
-sleep 35
+sleep 40
 
 if {{ (not real_vive) | lower }}; then
     terminator --geometry $next_term -T 'Simulated Right Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_right.sh"
