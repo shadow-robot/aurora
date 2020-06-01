@@ -19,7 +19,7 @@ if {{ real_glove | lower }}; then
 fi
 sleep 3
 
-if {{ not real_vive | lower }}; then
+if {{ (not real_vive) | lower }}; then
     if {{ real_glove | lower }} && [[ "{{ glove }}" == "polhemus"  ]]; then
         terminator --geometry "{{ term_6 }}" -T 'Simulated Right Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_right.sh"
     else
