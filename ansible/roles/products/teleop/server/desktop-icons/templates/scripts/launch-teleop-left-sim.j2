@@ -11,16 +11,16 @@ next_term="{{ term_4 }}"
 if {{ real_glove | lower }}; then
     if [[ "{{ glove }}" == "haptx"  ]]; then
         terminator --geometry "{{ term_4 }}" -T 'Server HaptX Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_left.sh"
-        next_term="{{ term_5 }}
+        next_term="{{ term_5 }}"
     fi
     if [[ "{{ glove }}" == "polhemus"  ]]; then
         terminator --geometry "{{ term_4 }}" -T 'Server Polhemus Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_left.sh"
         sleep 3
         terminator --geometry "{{ term_5 }}" -T 'Server Polhemus Driver Left' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_left.sh"
-        next_term="{{ term_6 }}
+        next_term="{{ term_6 }}"
     fi
 fi
-sleep 10
+sleep 35
 
 if {{ (not real_vive) | lower }}; then
     terminator --geometry $next_term -T 'Simulated Left Arm Wrist Tracker' -e "{{ shadow_hand_launcher_folder}}/shadow_mock_vive_left.sh"
