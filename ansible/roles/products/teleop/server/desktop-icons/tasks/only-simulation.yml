@@ -277,19 +277,19 @@
     launch_file_input: "polhemus.launch"
   when: glove=="polhemus" and real_glove
 
-- name: Set project_name_input based on glove=haptx
+- name: Set mock parameters based on glove=haptx
   set_fact:
     project_name_value: "sr_teleop_vive_haptx"
     launch_file_value: "teleop_mock.launch"
   when: glove=="haptx"
 
-- name: Set project_name_input based on glove=polhemus
+- name: Set mock parameters based on glove=polhemus
   set_fact:
     project_name_value: "sr_teleop_vive_polhemus"
     launch_file_value: "teleop_mock.launch"
   when: glove=="polhemus"
 
-- name: Set project_name_input based on glove if glove is not haptx or polhemus
+- name: Set mock parameters based on glove if glove is not haptx or polhemus
   set_fact:
     project_name_value: "sr_teleop_mock"
     launch_file_value: "sr_teleop_mock.launch"
