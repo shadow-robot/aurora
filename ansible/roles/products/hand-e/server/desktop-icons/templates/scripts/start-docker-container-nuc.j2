@@ -4,6 +4,15 @@ NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP={{ server_ip }}
 
+chrony_status=$(ssh {{ nuc_username }}@{{ nuc_address }} chronyc tracking | grep {{ server_ip }} | wc -l)
+if chrony_status == 0; then
+    echo "NUC lost chrony tracking. Restarting chrony on server and NUC..."
+    systemctl restart chrony.service
+    sleep 3    
+    ssh {{ nuc_username }}@{{ nuc_address }} systemctl restart chrony.service
+    sleep 3
+fi
+
 ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial_var }}  ETH_PORT={{ ethercat_interface_var }} HAND_SIDE={{ hand_side_var }} PWM_CONTROL={{ pwm_control_var }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
 bash $(while [[ $(ss | grep $HOST_IP | grep $NUC_ADDRESS | grep ssh | grep ESTAB | wc -l) -gt 0 ]]; do sleep 1; done ; pkill -INT -f roslaunch) &
 XACRO='{{ xacro_var }}'

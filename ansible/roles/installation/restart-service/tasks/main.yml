@@ -1,0 +1,8 @@
+---
+- name: Allow {{ user }} to restart {{ service_name }} without a password
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    insertafter: EOF
+    line: '%{{ user }} ALL=NOPASSWD: /bin/systemctl restart {{ service_name }}'
+    validate: /usr/sbin/visudo -cf %s

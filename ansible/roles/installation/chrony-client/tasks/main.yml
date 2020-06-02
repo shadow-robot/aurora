@@ -25,3 +25,9 @@
     state: restarted
   become: yes
   changed_when: false
+
+- name: Include installation/restart-service role
+  include_role:
+    name: installation/restart-service
+  vars:
+    service_name: "chrony"
