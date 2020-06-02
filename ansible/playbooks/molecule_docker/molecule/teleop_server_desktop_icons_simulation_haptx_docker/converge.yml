@@ -1,0 +1,16 @@
+---
+- name: Teleop deploy playbook for teleop server with simulation only
+  import_playbook: ../../../teleop_deploy.yml
+    reinstall=true
+    image="shadowrobot/dexterous-hand"
+    tag="melodic-release"
+    nvidia_docker=false
+    skip_molecule_task=true
+    allow_auto_reboot=true
+    demo_icons=true
+    sudo_password="ubuntu"
+    glove="haptx"
+    customer_key="invalidkey"
+    real_glove=false
+    real_vive=false
+    sim_biotacs=true
