@@ -25,3 +25,4 @@ hand_serial: "1082" # Specify the right hand serial number
 hand_serial_left: "2346" # Specify the left hand serial number
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
+ur_robot_type: "ur10" # Specify ur robot type: ur10, ur10e, ur5, ur5e
