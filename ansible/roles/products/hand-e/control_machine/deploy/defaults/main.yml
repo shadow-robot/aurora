@@ -27,3 +27,4 @@ hand_serial: "1082"
 hand_serial_left: "2346"
 use_cyberglove: false
 cyberglove: ""
+ur_robot_type: "ur10"
