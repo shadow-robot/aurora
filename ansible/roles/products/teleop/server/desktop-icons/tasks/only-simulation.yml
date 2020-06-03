@@ -314,7 +314,7 @@
     desktop_icon_name: "6 - Launch Simulated Left Teleop Mock"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
     project_name_input: "{{ project_name_value }}"
-    script_name_input: "{{ launch_file_value }} bimanual:=false side:=left"
+    launch_file_input: "{{ launch_file_value }} bimanual:=false side:=left"
   when: not real_vive
 
 - name: Install desktop icon for Launch Simulated Bimanual Teleop Mock
@@ -325,7 +325,7 @@
     desktop_icon_name: "6 - Launch Simulated Bimanual Teleop Mock"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Bimanual Teleop Mock"
     project_name_input: "{{ project_name_value }}"
-    script_name_input: "{{ launch_file_value }} bimanual:=true"
+    launch_file_input: "{{ launch_file_value }} bimanual:=true"
   when: not real_vive
 
 - name: Include products/common/demo-icons role
