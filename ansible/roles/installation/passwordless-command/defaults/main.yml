@@ -1,0 +1,3 @@
+---
+user: "{{ ansible_user_id }}"
+passwordless_command: "/bin/systemctl restart chrony.service"

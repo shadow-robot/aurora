@@ -1,3 +1,0 @@
----
-user: "{{ ansible_user_id }}"
-service_name: "chrony"

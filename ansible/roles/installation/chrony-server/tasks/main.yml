@@ -33,8 +33,8 @@
   become: yes
   changed_when: false
 
-- name: Include installation/restart-service role
+- name: Include installation/passwordless-command role
   include_role:
-    name: installation/restart-service
+    name: installation/passwordless-command
   vars:
     service_name: "chrony"
