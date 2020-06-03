@@ -11,6 +11,6 @@
     sudo_password="ubuntu"
     glove="haptx"
     customer_key="invalidkey"
-    real_glove=false
+    real_glove=true
     real_vive=false
     sim_biotacs=true

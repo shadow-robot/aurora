@@ -17,7 +17,7 @@ platforms:
     vpc_id: vpc-0f8cc2cc245d57eb4
     vpc_subnet_id: subnet-09c91c82c471613fc
     groups:
-      - server
+      - simulation
 provisioner:
   name: ansible
   env:
