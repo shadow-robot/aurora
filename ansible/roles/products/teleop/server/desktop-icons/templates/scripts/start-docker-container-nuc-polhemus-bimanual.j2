@@ -7,9 +7,9 @@ LOCAL_IP={{ server_ip }}
 chrony_status=$(ssh {{ nuc_username }}@{{ nuc_address }} chronyc tracking | grep {{ server_ip }} | wc -l)
 if chrony_status == 0; then
     echo "NUC lost chrony tracking. Restarting chrony on server and NUC..."
-    systemctl restart chrony.service
+    sudo systemctl restart chrony.service
     sleep 3    
-    ssh {{ nuc_username }}@{{ nuc_address }} systemctl restart chrony.service
+    ssh {{ nuc_username }}@{{ nuc_address }} sudo systemctl restart chrony.service
     sleep 3
 fi
 
