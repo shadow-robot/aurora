@@ -46,3 +46,4 @@ term_y_correction: 58
 install_nvidia_driver: false
 real_glove: false
 real_vive: false
+ur_robot_type: "ur10"
