@@ -10,11 +10,6 @@
     server_ip: "{{ groups['server'][0] }}"
   when: groups['server'] is defined
 
-- name: Include installation/nvidia-driver role
-  include_role:
-    name: installation/nvidia-driver
-  when: install_nvidia_driver | bool
-
 - name: Setup script names
   set_fact:
     setup_script: teleop-server-setup.sh
