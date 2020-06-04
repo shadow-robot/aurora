@@ -4,7 +4,7 @@ NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP={{ server_ip }}
 
-ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch_var }} HAND_SERIALN={{ hand_serial_var }}  ETH_PORT={{ ethercat_interface_var }} HAND_SIDE={{ hand_side_var }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
+ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch_var }} HAND_SERIALN={{ hand_serial_var }}  ETH_PORT={{ ethercat_interface_var }} HAND_SIDE={{ hand_side_var }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS UR_TYPE={{ ur_robot_type }} 'bash -s' <<'ENDSSH'
 bash $(while [[ $(ss | grep $HOST_IP | grep $NUC_ADDRESS | grep ssh | grep ESTAB | wc -l) -gt 0 ]]; do sleep 1; done ; pkill -INT -f roslaunch) &
 docker stop ${CONTAINER}
 sleep 2
@@ -12,6 +12,6 @@ docker start ${CONTAINER}
 echo "Starting the container..."
 sleep 3
 docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;roscd sr_ethercat_hand_config/launch;git checkout sr_rhand.launch;git checkout sr_lhand.launch;git checkout ${SR_BRANCH}"
-docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;roslaunch sr_robot_launch sr_hardware_control_loop.launch hand_serial:=${HAND_SERIALN} hand_eth_interface:=${ETH_PORT} side:=${HAND_SIDE} arm_ctrl:=true hand_ctrl:=true include_wrist_in_arm_controller:=false 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
+docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;roslaunch sr_robot_launch sr_hardware_control_loop.launch hand_serial:=${HAND_SERIALN} hand_eth_interface:=${ETH_PORT} side:=${HAND_SIDE} arm_ctrl:=true hand_ctrl:=true include_wrist_in_arm_controller:=false robot_model:=${UR_TYPE} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
 ENDSSH
 sleep infinity

@@ -43,3 +43,4 @@ term_height: 400
 term_x: 200
 term_y: 0
 term_y_correction: 58
+ur_robot_type: "ur10"
