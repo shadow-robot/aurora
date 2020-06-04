@@ -30,4 +30,4 @@
   include_role:
     name: installation/passwordless-command
   vars:
-    service_name: "chrony"
+    passwordless_command: "/bin/systemctl restart chrony.service"
