@@ -49,9 +49,9 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/lates
 
 ## teleop_deploy ##
 
-For deploying teleop software on multiple machines (server, control-machine, client)
+If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
 
-For teleop software deployments on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
+Teleop_deploy can also be used fully in simulation, in which case only 1 computer is required (called "server" in this playbook)
 
 To begin with, the teleop_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. Then the specified docker image is pulled and a docker container is initialized. Finally, desktop shortcuts are generated. This shortcuts start the teleop software and run the arm(s) and the hand(s).
 
@@ -64,7 +64,7 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-input docker_username --read-secure docker_password  option1=value1 option2=value2 option3=value3
 ```
-name_of_inventory can be development, staging or production. 
+name_of_inventory can be development, staging, production or simulation.
 
 Or if you are using remote_teleop=true, they are development_remote, staging_remote or production_remote.
 
@@ -72,10 +72,16 @@ If no inventory name is provided, and if remote_teleop is not specified or false
 
 If no inventory name is provided, and if remote_teleop=true, then "production_remote" will be automatically selected.
 
-Example:
+Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C hand_side=right reinstall=true upgrade_check=true
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_interface=enx000ec6bfe185 ethercat_left_hand=enx000ec6c042d5 config_branch=bimanual_demohands_B_D reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="192.168.1.1" arm_ip_left="192.168.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
+```
+
+Example for simulated robots without a real vive system or real gloves:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation --read-input docker_username --read-secure docker_password reinstall=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove="haptx" real_glove=false real_vive=false
 ```
 
 Inventories correspond to fixed IP addresses as shown here:
@@ -85,11 +91,13 @@ Inventories correspond to fixed IP addresses as shown here:
 * [staging_remote](ansible/inventory/teleop/staging_remote)
 * [production](ansible/inventory/teleop/production)
 * [production_remote](ansible/inventory/teleop/production_remote)
+* [simulation](ansible/inventory/teleop/simulation)
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
 * [control-machine](ansible/inventory/teleop/group_vars/control_machine.yml)
 * [client](ansible/inventory/teleop/group_vars/client.yml)
+* [simulation](ansible/inventory/teleop/group_vars/simulation.yml)
 
 Run a playbook against one or more members of that group using the --limit tag:
 
