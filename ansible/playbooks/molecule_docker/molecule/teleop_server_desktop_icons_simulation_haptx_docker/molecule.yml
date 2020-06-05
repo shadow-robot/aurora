@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
+platforms:
+  - name: teleop_server_desktop_icons_simulation_haptx_docker
+    image: shadowrobot/aurora-test-ubuntu-docker:bionic
+    groups:
+      - simulation
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../../roles
+  inventory:
+    links:
+      group_vars: ../../../../inventory/teleop/group_vars
+verifier:
+  name: testinfra

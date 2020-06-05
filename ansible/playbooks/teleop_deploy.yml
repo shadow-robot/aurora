@@ -63,6 +63,18 @@
   roles:
     - { role: products/teleop/server/deploy }
 
+- name: Install Teleop simulation software on Ubuntu teleop server laptop
+  hosts: simulation
+  pre_tasks:
+
+    - name: check if customer_key is provided
+      when: customer_key is defined and customer_key | length > 0
+      set_fact:
+        use_aws: true
+
+  roles:
+    - { role: products/teleop/server/deploy }
+
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
