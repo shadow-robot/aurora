@@ -32,3 +32,9 @@
     state: restarted
   become: yes
   changed_when: false
+
+- name: Include installation/passwordless-command role
+  include_role:
+    name: installation/passwordless-command
+  vars:
+    passwordless_command: "/bin/systemctl restart chrony.service"

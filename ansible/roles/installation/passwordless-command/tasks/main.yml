@@ -1,0 +1,9 @@
+---
+- name: Allow {{ user }} to run {{ passwordless_command }} without a password
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    insertafter: EOF
+    line: '%{{ user }} ALL=NOPASSWD: {{ passwordless_command }}'
+    validate: /usr/sbin/visudo -cf %s
+  become: true
