@@ -4,8 +4,6 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
-- name: 
-
 - name: Creating the container which will execute setup script in terminator when started
   when: "not nvidia_docker|bool and terminator and setup_script | length > 0"
   import_tasks: create-container/with-setup-with-terminator.yml
