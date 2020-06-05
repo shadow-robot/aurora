@@ -9,6 +9,10 @@
     ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_left_arm']['macaddress'] }}"
   when: "'left_arm' in ansible_interfaces"
 
+- name: debug
+  debug:
+    msg: "{{ hostvars[groups['control_machine'][0]]}}"
+
 - name: Rename {{ ethercat_right_arm }} to right_arm (required for netplan) if not already done
   block:
     - name: Get {{ ethercat_right_arm }} right_arm macaddress
