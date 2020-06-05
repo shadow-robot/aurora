@@ -393,7 +393,7 @@
     desktop_icon_name: "Cyberglobe Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/Cyberglobe Teleop Simulation"
     project_name_input: "sr_teleop_vive_cyberglove"
-    launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=false sim:=true"
+    launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }}"
   when: sim_icon|bool and glove=="cyberglove"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right HaptX)
@@ -404,7 +404,7 @@
     desktop_icon_name: "Right HaptX Teleop Simulation"
     desktop_icon_path: "Right HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }}"
   when: sim_icon|bool and not bimanual|bool and glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
@@ -415,7 +415,7 @@
     desktop_icon_name: "Bimanual HaptX Teleop Simulation"
     desktop_icon_path: "Bimanual HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }}"
   when: sim_icon|bool and bimanual|bool and glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right Polhemus)
@@ -426,7 +426,7 @@
     desktop_icon_name: "Right Polhemus Teleop Simulation"
     desktop_icon_path: "Right Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }}"
   when: sim_icon|bool and not bimanual|bool and glove=="polhemus"
 
 - name: Install desktop icon for NUC container
