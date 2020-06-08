@@ -55,7 +55,7 @@
       command: ifconfig right_arm up
       become: true
   when:
-    - 'right_arm' not in ansible_interfaces
+    - "'right_arm' not in ansible_interfaces"
     - bimanual|bool or hand_side=="right"
 
 - name: Set left arm interface name to left_arm (required for netplan) if not already done
@@ -72,7 +72,7 @@
       command: ifconfig left_arm up
       become: true
   when:
-    - 'left_arm' not in ansible_interfaces
+    - "'left_arm' not in ansible_interfaces"
     - bimanual|bool or hand_side=="left"
 
 - name: Ensure the {{ netplan_file }} exists
