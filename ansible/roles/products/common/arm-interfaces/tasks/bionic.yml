@@ -1,54 +1,78 @@
 ---
-- name: Set default macaddress for right arm if right-arm already exists
+- name: Set current right arm interface name and mac if the right arm interface hasn't been renamed
   set_fact:
+    current_right_arm_interface: "{{ ethercat_right_arm }}"
+    ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_right_arm]['macaddress'] }}"
+  when:
+    - "ethercat_right_arm in ansible_interfaces"
+    - "ethercat_right_arm != 'right-arm'"
+    - "ethercat_right_arm != 'right_arm'"
+
+- name: Set current right arm interface name and mac if right arm interface has been renamed to right-arm
+  set_fact:
+    current_right_arm_interface: right-arm
     ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_right_arm']['macaddress'] }}"
   when: "'right-arm' in ansible_interfaces"
 
-- name: Set default macaddress for left arm if left-arm already exists
+- name: Set current right arm interface name and mac if right arm interface has been renamed to right_arm
   set_fact:
+    current_right_arm_interface: right_arm
+    ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_right_arm']['macaddress'] }}"
+  when: "'right_arm' in ansible_interfaces"
+
+- name: Set current left arm interface name and mac if the left arm interface hasn't been renamed
+  set_fact:
+    current_left_arm_interface: "{{ ethercat_left_arm }}"
+    ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_left_arm]['macaddress'] }}"
+  when:
+    - "ethercat_left_arm in ansible_interfaces"
+    - "ethercat_left_arm != 'left-arm'"
+    - "ethercat_left_arm != 'left_arm'"
+
+- name: Set current left arm interface name and mac if left arm interface has been renamed to left-arm
+  set_fact:
+    current_left_arm_interface: left-arm
     ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_left_arm']['macaddress'] }}"
   when: "'left-arm' in ansible_interfaces"
 
-- name: Rename {{ ethercat_right_arm }} to right-arm (required for netplan) if not already done
-  block:
-    - name: Get {{ ethercat_right_arm }} right-arm macaddress
-      set_fact:
-        ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_right_arm]['macaddress'] }}"
+- name: Set current left arm interface name and mac if left arm interface has been renamed to left_arm
+  set_fact:
+    current_left_arm_interface: left_arm
+    ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_left_arm']['macaddress'] }}"
+  when: "'left_arm' in ansible_interfaces"
 
+- name: Set right arm interface name to right_arm (required for netplan) if not already done
+  block:
     - name: Bring down right arm ethernet interface before renaming
-      command: ifconfig {{ ethercat_right_arm }} down
+      command: ifconfig {{ current_right_arm_interface }} down
       become: true
 
-    - name: Rename right arm interface to right-arm
-      command: ip link set {{ ethercat_right_arm }} name right-arm
+    - name: Rename right arm interface to right_arm
+      command: ip link set {{ current_right_arm_interface }} name right_arm
       become: true
 
     - name: Bring up right arm ethernet interface after renaming
-      command: ifconfig right-arm up
+      command: ifconfig right_arm up
       become: true
   when:
-    - ethercat_right_arm in ansible_interfaces
+    - "'right_arm' not in ansible_interfaces"
     - bimanual|bool or hand_side=="right"
 
-- name: Rename {{ ethercat_left_arm }} to left-arm (required for netplan) if not already done
+- name: Set left arm interface name to left_arm (required for netplan) if not already done
   block:
-    - name: Get {{ ethercat_left_arm }} left-arm macaddress
-      set_fact:
-        ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_left_arm]['macaddress'] }}"
-
     - name: Bring down left arm ethernet interface before renaming
-      command: ifconfig {{ ethercat_left_arm }} down
+      command: ifconfig {{ current_left_arm_interface }} down
       become: true
 
-    - name: Rename left arm interface to left-arm
-      command: ip link set {{ ethercat_left_arm }} name left-arm
+    - name: Rename left arm interface to left_arm
+      command: ip link set {{ current_left_arm_interface }} name left_arm
       become: true
 
     - name: Bring up left arm ethernet interface after renaming
-      command: ifconfig left-arm up
+      command: ifconfig left_arm up
       become: true
   when:
-    - ethercat_left_arm in ansible_interfaces
+    - "'left_arm' not in ansible_interfaces"
     - bimanual|bool or hand_side=="left"
 
 - name: Ensure the {{ netplan_file }} exists
