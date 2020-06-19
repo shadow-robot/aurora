@@ -354,7 +354,7 @@
     launch_script: "shadow_polhemus_driver_right.sh"
     desktop_icon_name: "6 - Launch Right Polhemus Driver"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Polhemus Driver"
-    project_name_input: "sr_fingertip_hand_teleop"
+    project_name_input: "sr_teleop_vive_polhemus"
     launch_file_input: "polhemus.launch"
   when:
     - bimanual|bool or hand_side=="right"
@@ -367,7 +367,7 @@
     launch_script: "shadow_polhemus_driver_left.sh"
     desktop_icon_name: "6 - Launch Left Polhemus Driver"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Polhemus Driver"
-    project_name_input: "sr_fingertip_hand_teleop"
+    project_name_input: "sr_teleop_vive_polhemus"
     launch_file_input: "polhemus.launch"
   when:
     - bimanual|bool or hand_side=="left"
