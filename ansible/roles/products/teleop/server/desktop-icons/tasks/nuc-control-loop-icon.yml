@@ -7,7 +7,7 @@
 
 - name: Create executable launch script for hand and arm control loop (for cyberglove)
   template:
-    src: templates/scripts/start-docker-container-nuc-cyberglove.j2
+    src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
@@ -15,11 +15,12 @@
     ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
+    teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
   when: glove=="cyberglove"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
   template:
-    src: templates/scripts/start-docker-container-nuc-haptx.j2
+    src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
@@ -27,11 +28,12 @@
     ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
+    teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
   when: glove=="haptx"
 
 - name: Create executable launch script for hand and arm control loop (with polhemus)
   template:
-    src: templates/scripts/start-docker-container-nuc-polhemus.j2
+    src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
@@ -39,6 +41,7 @@
     ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
+    teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
   when: glove=="polhemus"
 
 - name: Create desktop icon for hand
