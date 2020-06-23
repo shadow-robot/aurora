@@ -23,3 +23,4 @@ server_ip: "10.9.11.1"
 demohand_icons: false
 teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
 ur_robot_type: "ur10"
+biotacs: true
