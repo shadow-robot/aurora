@@ -13,4 +13,4 @@
     customer_key="invalidkey"
     real_glove=true
     real_vive=false
-    sim_biotacs=true
+    biotacs=true
