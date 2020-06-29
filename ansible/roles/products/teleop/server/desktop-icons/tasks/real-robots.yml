@@ -200,7 +200,7 @@
     desktop_icon_png: "{{ haptx_icon }}"
     launch_script: "shadow_GUI_right.sh"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true vive:=false"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
     desktop_icon_name: "4 - Launch Right Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
   when:
@@ -226,7 +226,7 @@
     desktop_icon_png: "{{ haptx_icon }}"
     launch_script: "shadow_GUI_left.sh"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
     desktop_icon_name: "4 - Launch Left Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
   when:
@@ -252,7 +252,7 @@
     desktop_icon_png: "{{ haptx_icon }}"
     launch_script: "shadow_GUI_bimanual.sh"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=true"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
     desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
   when:
@@ -404,7 +404,7 @@
     desktop_icon_name: "Right HaptX Teleop Simulation"
     desktop_icon_path: "Right HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true"
+    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }}"
   when: sim_icon|bool and not bimanual|bool and glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
@@ -415,7 +415,7 @@
     desktop_icon_name: "Bimanual HaptX Teleop Simulation"
     desktop_icon_path: "Bimanual HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }}"
   when: sim_icon|bool and bimanual|bool and glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right Polhemus)
@@ -426,7 +426,7 @@
     desktop_icon_name: "Right Polhemus Teleop Simulation"
     desktop_icon_path: "Right Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true require_pedal:=false biotacs:={{ biotacs | lower }}"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }}"
   when: sim_icon|bool and not bimanual|bool and glove=="polhemus"
 
 - name: Install desktop icon for NUC container
