@@ -64,6 +64,9 @@ def test_icons_in_docker(host):
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         'Shadow System Monitor',
+        'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
+        'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
+        'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
         'Bimanual HaptX Teleop Simulation'
         )
     scripts = (
@@ -95,6 +98,9 @@ def test_icons_in_docker(host):
         'open_left_hand',
         'shadow_launcher_doc_exec',
         'shadow_launcher_system_monitor_exec',
+        'shadow_local_right_launcher_exec',
+        'shadow_local_left_launcher_exec',
+        'shadow_local_bimanual_launcher_exec',
         'shadow_sim_demo'
         )
     for icon in icons:

@@ -1,5 +1,21 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
+source /home/user/projects/shadow_robot/base/devel/setup.bash
+if [ ! -z {{ config_branch }} ]; then
+    echo "Checking out the correct sr-config branch"
+    roscd sr_ethercat_hand_config/launch
+    git checkout sr_rhand.launch
+    git checkout sr_lhand.launch
+    git checkout sr_bimanual.launch
+    git checkout {{ config_branch }}
+    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
+    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
+    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}_{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
+    sed -i 's|rh_serial" value=.*|rh_serial" value="{{ hand_serial }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
+    sed -i 's|lh_serial" value=.*|lh_serial" value="{{ hand_serial_left }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
+    sed -i 's|rh_mapping_path" value=.*|rh_mapping_path" value="{{ mapping_path_right }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
+    sed -i 's|lh_mapping_path" value=.*|lh_mapping_path" value="{{ mapping_path_left }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
+fi
 # TODO: FIX so that cyberglove is not mentioned here in docker-container role, and cyberglove setup is handled in cyberglove role
 if {{ use_cyberglove | lower or remote_cyberglove | lower }}; then
     if [ -d "/home/user/projects/shadow_robot/base/src/sr_config/sr_cyberglove_config" ]; then

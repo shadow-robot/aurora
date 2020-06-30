@@ -12,7 +12,7 @@
 
 - name: Copy Cyberglove desktop icon
   copy:
-    src: files/cyberglove.png
+    src: ../../../common/resources/files/cyberglove.png
     dest: "{{ shadow_hand_launcher_folder }}/cyberglove.png"
     mode: '664'
 

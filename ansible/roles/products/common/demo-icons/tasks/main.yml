@@ -14,7 +14,7 @@
   block:
   - name: Copy Close Right Hand desktop icon
     copy:
-      src: files/close-hand-icon-right.png
+      src: ../../../common/resources/files/close-hand-icon-right.png
       dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
       mode: '664'
 
@@ -53,7 +53,7 @@
   block:
   - name: Copy Close Left Hand desktop icon
     copy:
-      src: files/close-hand-icon-left.png
+      src: ../../../common/resources/files/close-hand-icon-left.png
       dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-left.png"
       mode: '664'
 
@@ -92,7 +92,7 @@
   block:
   - name: Copy Open Right Hand desktop icon
     copy:
-      src: files/open-hand-icon-right.png
+      src: ../../../common/resources/files/open-hand-icon-right.png
       dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-right.png"
       mode: '664'
 
@@ -131,7 +131,7 @@
   block:
   - name: Copy Open Left Hand desktop icon
     copy:
-      src: files/open-hand-icon-left.png
+      src: ../../../common/resources/files/open-hand-icon-left.png
       dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-left.png"
       mode: '664'
 
@@ -170,7 +170,7 @@
   block:
   - name: Copy Standard Right Demo desktop icon
     copy:
-      src: files/demo-hand-icon-right.png
+      src: ../../../common/resources/files/demo-hand-icon-right.png
       dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-right.png"
       mode: '664'
 
@@ -212,7 +212,7 @@
   block:
   - name: Copy Standard Left Demo desktop icon
     copy:
-      src: files/demo-hand-icon-left.png
+      src: ../../../common/resources/files/demo-hand-icon-left.png
       dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-left.png"
       mode: '664'
 

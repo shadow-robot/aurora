@@ -1,0 +1,15 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+right_hand_picture: hand-e.png
+left_hand_picture: hand-e-left.png
+bimanual_hands_picture: hand-e-bimanual.png
+product: hand_e
+container_name: "dexterous_hand_real_hw"
+setup_directory: "/usr/local/bin"
+hand_serial: "1082"
+hand_serial_left: "2346"
+ethercat_interface: "eth0"
+ethercat_left_hand: "eth1"
+icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
