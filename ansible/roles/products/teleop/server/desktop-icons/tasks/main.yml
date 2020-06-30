@@ -17,7 +17,3 @@
 - name: Install desktop icons for simulated robots
   include_tasks: only-simulation.yml
   when: groups['simulation'] is defined
-
-- name: Include products/common/local-hand-launch role
-  include_role:
-    name: products/common/local-hand-launch

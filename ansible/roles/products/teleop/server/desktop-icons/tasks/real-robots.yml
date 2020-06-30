@@ -445,3 +445,11 @@
   vars:
     demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
   when: demo_icons|bool
+
+- name: Include products/common/local-hand-launch role
+  include_role:
+    name: products/common/local-hand-launch
+
+- name: Include products/common/local-teach-mode-launch role
+  include_role:
+    name: products/common/local-teach-mode-launch

@@ -67,6 +67,8 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
+        'Shadow Advanced Launchers/3 - Local Teach mode - Left Hand',
+        'Shadow Advanced Launchers/3 - Local Teach mode - Right Hand',
         'Bimanual HaptX Teleop Simulation'
         )
     scripts = (
@@ -101,7 +103,9 @@ def test_icons_in_docker(host):
         'shadow_local_right_launcher_exec',
         'shadow_local_left_launcher_exec',
         'shadow_local_bimanual_launcher_exec',
-        'shadow_sim_demo'
+        'shadow_sim_demo',
+        'shadow_local_teach_mode_left',
+        'shadow_local_teach_mode_right'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
