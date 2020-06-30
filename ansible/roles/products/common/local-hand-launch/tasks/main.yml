@@ -89,7 +89,7 @@
   - name: Create Shadow Local Right Hand Launch desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ icon_folder }}/Shadow Advanced Launchers/Launch Local Shadow Right Hand.desktop"
+      dest: "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop"
       mode: '755'
     vars:
       desktop_shortcut_name: "Launch Local Shadow Right Hand"
@@ -100,7 +100,7 @@
       start_terminal: "false"
 
   - name: Make Shadow Local Right Hand Launch desktop icon Trusted
-    shell: gio set "{{ icon_folder }}/Shadow Advanced Launchers/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
@@ -127,7 +127,7 @@
   - name: Create Shadow Local Left Hand Launch desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ icon_folder }}/Shadow Advanced Launchers/Launch Local Shadow Left Hand.desktop"
+      dest: "{{ icon_folder }}/Launch Local Shadow Left Hand.desktop"
       mode: '755'
     vars:
       desktop_shortcut_name: "Launch Local Shadow Left Hand"
@@ -138,7 +138,7 @@
       start_terminal: "false"
 
   - name: Make Shadow Local Left Hand Launch desktop icon Trusted
-    shell: gio set "{{ icon_folder }}/Shadow Advanced Launchers/Launch Local Shadow Left Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ icon_folder }}/Launch Local Shadow Left Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
@@ -165,7 +165,7 @@
   - name: Create Shadow Local Bimanual Hands Launch desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ icon_folder }}/Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands.desktop"
+      dest: "{{ icon_folder }}/Launch Local Shadow Bimanual Hands.desktop"
       mode: '755'
     vars:
       desktop_shortcut_name: "Launch Local Shadow Bimanual Hands"
@@ -176,7 +176,7 @@
       start_terminal: "false"
 
   - name: Make Shadow Local Bimanual Hands Launch desktop icon Trusted
-    shell: gio set "{{ icon_folder }}/Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands.desktop" "metadata::trusted" yes
+    shell: gio set "{{ icon_folder }}/Launch Local Shadow Bimanual Hands.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
