@@ -5,8 +5,8 @@
     right_setup_script: right-server-setup.sh
     left_setup_script: left-server-setup.sh
     bimanual_setup_script : bimanual-server-setup.sh
-    teach_mode_right_hand_script : shadow_teach_mode_right.sh
-    teach_mode_left_hand_script : shadow_teach_mode_left.sh
+    zero_force_mode_right_hand_script : shadow_zero_force_mode_right.sh
+    zero_force_mode_left_hand_script : shadow_zero_force_mode_left.sh
     upgrade_script: "upgrade_image.sh"
 
 - name: Set icon picture filenames for hand_lite
@@ -131,7 +131,7 @@
 - name: Creating the setup script for Zero Force Mode - Right Hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ teach_mode_right_hand_script }}"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ zero_force_mode_right_hand_script }}"
     mode: '755'
   vars:
     launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
@@ -142,7 +142,7 @@
 - name: Creating the setup script for Zero Force Mode - Left Hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ teach_mode_left_hand_script }}"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ zero_force_mode_left_hand_script }}"
     mode: '755'
   vars:
     launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial_left }} eth_port:={{ ethercat_left_hand }} side:=left pwm_control:=false hand_ctrl:=false arm:=false"
@@ -156,9 +156,9 @@
   become: yes
   when: bimanual|bool or hand_side=="right"
 
-- name: Copying the teach mode script for right hand into docker container
+- name: Copying the zero force mode script for right hand into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ teach_mode_right_hand_script }} {{ container_name }}:{{ setup_directory }}/{{ teach_mode_right_hand_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ zero_forceh_mode_right_hand_script }} {{ container_name }}:{{ setup_directory }}/{{ zero_force_mode_right_hand_script }}"
   become: yes
   when: bimanual|bool or hand_side=="right"
 
@@ -168,9 +168,9 @@
   become: yes
   when: bimanual|bool or hand_side=="left"
 
-- name: Copying the teach mode script for left hand into docker container
+- name: Copying the zero force mode script for left hand into docker container
   changed_when: false
-  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ teach_mode_left_hand_script }} {{ container_name }}:{{ setup_directory }}/{{ teach_mode_left_hand_script }}"
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ zero_force_mode_left_hand_script }} {{ container_name }}:{{ setup_directory }}/{{ zero_force_mode_left_hand_script }}"
   become: yes
   when: bimanual|bool or hand_side=="left"
 
@@ -216,29 +216,29 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  - name: Create Teach Mode - Right Hand script
+  - name: Create Zero Force Mode - Right Hand script
     template:
       src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
-      dest: "{{ shadow_hand_launcher_folder }}/shadow_teach_mode_right_launcher.sh"
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_zero_force_mode_right_launcher.sh"
       mode: '755'
     vars:
-      local_setup_script_var: "{{ teach_mode_right_hand_script }}"
+      local_setup_script_var: "{{ zero_force_mode_right_hand_script }}"
 
   - name: Create Zero Force Mode - Right Hand desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ user_folder }}/Desktop/Teach Mode - Right Hand.desktop"
+      dest: "{{ user_folder }}/Desktop/Zero Force Mode - Right Hand.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: "Teach Mode - Right Hand"
-      comment: "This is application launches the right hand in teach mode"
+      desktop_shortcut_name: "Zero Force Mode - Right Hand"
+      comment: "This is application launches the right hand in zero force mode"
       folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: shadow_teach_mode_right_launcher.sh
+      shell_script_file_name: shadow_zero_force_mode_right_launcher.sh
       icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
 
   - name: Make Zero Force Mode - Right Hand desktop icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Teach Mode - Right Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ user_folder }}/Desktop/Zero Force Mode - Right Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
@@ -282,29 +282,29 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  - name: Create Teach Mode - Left Hand script
+  - name: Create Zero Force Mode - Left Hand script
     template:
       src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
-      dest: "{{ shadow_hand_launcher_folder }}/shadow_teach_mode_left_launcher.sh"
+      dest: "{{ shadow_hand_launcher_folder }}/shadow_zero_force_mode_left_launcher.sh"
       mode: '755'
     vars:
-      local_setup_script_var: "{{ teach_mode_left_hand_script }}"
+      local_setup_script_var: "{{ zero_force_mode_left_hand_script }}"
 
-  - name: Create Teach Mode - Left Hand desktop icon
+  - name: Create Zero Force Mode - Left Hand desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ user_folder }}/Desktop/Teach Mode - Left Hand.desktop"
+      dest: "{{ user_folder }}/Desktop/Zero Force Mode - Left Hand.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: "Teach Mode - Left Hand"
-      comment: "This is application launches the left hand in teach mode"
+      desktop_shortcut_name: "Zero Force Mode - Left Hand"
+      comment: "This is application launches the left hand in Zero Force mode"
       folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: shadow_teach_mode_left_launcher.sh
+      shell_script_file_name: shadow_zero_force_mode_left_launcher.sh
       icon_file_name: "{{ left_hand_picture }}"
       start_terminal: "false"
 
-  - name: Make Teach Mode - Left Hand desktop icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Teach Mode - Left Hand.desktop" "metadata::trusted" yes
+  - name: Make Zero Force Mode - Left Hand desktop icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Zero Force Mode - Left Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
