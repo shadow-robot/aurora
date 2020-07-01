@@ -450,6 +450,6 @@
   include_role:
     name: products/common/local-hand-launch
 
-- name: Include products/common/local-teach-mode-launch role
+- name: Include products/common/local-zero-force-mode-launch role
   include_role:
-    name: products/common/local-teach-mode-launch
+    name: products/common/local-zero-force-mode-launch

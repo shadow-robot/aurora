@@ -29,10 +29,10 @@ def test_icons_in_docker(host):
         'and Left Hand Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
         'and Bimanual Hands Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Teach mode - Left Hand',
-        'Shadow Advanced Launchers/3 - Teach mode - Right Hand',
-        'Shadow Advanced Launchers/3 - Local Teach mode - Left Hand',
-        'Shadow Advanced Launchers/3 - Local Teach mode - Right Hand',
+        'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
+        'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
+        'Shadow Advanced Launchers/3 - Local Zero Force Mode - Left Hand',
+        'Shadow Advanced Launchers/3 - Local Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/4 - Launch Server Left Hand GUI',
         'Shadow Advanced Launchers/4 - Launch Server Right Hand GUI',
         'Shadow Advanced Launchers/4 - Launch Server Bimanual GUI',
@@ -71,10 +71,10 @@ def test_icons_in_docker(host):
         'shadow_local_right_launcher_exec',
         'shadow_local_left_launcher_exec',
         'shadow_local_bimanual_launcher_exec',
-        'shadow_teach_mode_left',
-        'shadow_teach_mode_right',
-        'shadow_local_teach_mode_left',
-        'shadow_local_teach_mode_right'        
+        'shadow_zero_force_mode_left',
+        'shadow_zero_force_mode_right',
+        'shadow_local_zero_force_mode_left',
+        'shadow_local_zero_force_mode_right'        
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists

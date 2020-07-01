@@ -87,8 +87,8 @@
   vars:
     icon_folder: "{{ user_folder }}/Desktop"
 
-- name: Include products/common/local-teach-mode-launch role
+- name: Include products/common/local-zero-force-mode-launch role
   include_role:
-    name: products/common/local-teach-mode-launch
+    name: products/common/local-zero-force-mode-launch
   vars:
     icon_folder: "{{ user_folder }}/Desktop"
