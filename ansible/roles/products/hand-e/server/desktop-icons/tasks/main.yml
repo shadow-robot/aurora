@@ -149,7 +149,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
   when: bimanual|bool
 
-- name: Install desktop icon for Zero Force Mode - Right Hand
+- name: Install desktop icon for Zero Force Mode - Right Hand for NUC
   import_tasks: hand-icon.yml
   vars:
     desktop_icon_png: "{{ right_hand_picture }}"
@@ -166,7 +166,7 @@
     hand_ctrl_value: "false"
   when: bimanual|bool or hand_side=="right"
 
-- name: Install desktop icon for Zero Force Mode - Left Hand
+- name: Install desktop icon for Zero Force Mode - Left Hand for NUC
   import_tasks: hand-icon.yml
   vars:
     desktop_icon_png: "{{ left_hand_picture }}"
@@ -183,27 +183,9 @@
     hand_ctrl_value: "false"
   when: bimanual|bool or hand_side=="left"
 
-- name: Install Local Zero Force Mode - Right Hand desktop icon if bimanual is true or if hand_side="right"
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ right_hand_picture }}"
-    launch_script: "shadow_local_zero_force_mode_right.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
-    desktop_icon_name: "3 - Local Zero Force Mode - Right Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Local Zero Force Mode - Right Hand"
-  when: bimanual|bool or hand_side=="right"
-
-- name: Install Local Zero Force Mode - Left Hand desktop icon if bimanual is true or if hand_side="left"
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ left_hand_picture }}"
-    launch_script: "shadow_local_zero_force_mode_left.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial_left }} eth_port:={{ ethercat_left_hand }} side:=left pwm_control:=false hand_ctrl:=false arm:=false"
-    desktop_icon_name: "3 - Local Zero Force Mode - Left Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Local Zero Force Mode - Left Hand"
-  when: bimanual|bool or hand_side=="left"
+- name: Include products/common/local-zero-force-mode-launch role
+  include_role:
+    name: products/common/local-zero-force-mode-launch
 
 - name: Install desktop icon for right hand GUI
   import_tasks: roslaunch-icon.yml

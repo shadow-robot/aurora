@@ -50,7 +50,7 @@ def test_icons_in_docker(host):
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
-        'Shadow Advanced Launchers/3 - Local Zero Force Mode - Right Hand',
+        'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
         'Shadow System Monitor'
         )
     scripts = (
