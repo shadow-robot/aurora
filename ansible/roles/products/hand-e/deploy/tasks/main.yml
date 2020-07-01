@@ -128,24 +128,24 @@
     override_launch_hand: False
   when: bimanual|bool
 
-- name: Creating the setup script for Teach Mode - Right Hand
+- name: Creating the setup script for Zero Force Mode - Right Hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ teach_mode_right_hand_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false arm:=false"
+    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: True
   when: bimanual|bool or hand_side=="right"
 
-- name: Creating the setup script for Teach Mode - Left Hand
+- name: Creating the setup script for Zero Force Mode - Left Hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ teach_mode_left_hand_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial_left }} eth_port:={{ ethercat_left_hand }} side:=left pwm_control:=false arm:=false"
+    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial_left }} eth_port:={{ ethercat_left_hand }} side:=left pwm_control:=false hand_ctrl:=false arm:=false"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: True
   when: bimanual|bool or hand_side=="left"
@@ -180,7 +180,7 @@
   become: yes
   when: bimanual|bool
 
-- name: Install Shadow Right Hand launch and Teach Mode - Right Hand if bimanual is true or if hand_side="right"
+- name: Install Shadow Right Hand launch and Zero Force Mode - Right Hand if bimanual is true or if hand_side="right"
   block:
   - name: Copy Launch Shadow Right Hand desktop icon
     copy:
@@ -224,7 +224,7 @@
     vars:
       local_setup_script_var: "{{ teach_mode_right_hand_script }}"
 
-  - name: Create Teach Mode - Right Hand desktop icon
+  - name: Create Zero Force Mode - Right Hand desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
       dest: "{{ user_folder }}/Desktop/Teach Mode - Right Hand.desktop"
@@ -237,7 +237,7 @@
       icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
 
-  - name: Make Teach Mode - Right Hand desktop icon Trusted
+  - name: Make Zero Force Mode - Right Hand desktop icon Trusted
     shell: gio set "{{ user_folder }}/Desktop/Teach Mode - Right Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
@@ -246,7 +246,7 @@
 
   when: bimanual|bool or hand_side=="right"
 
-- name: Install Shadow Left Hand launch and Teach Mode - Left Hand if bimanual is true or if hand_side="left"
+- name: Install Shadow Left Hand launch and Zero Force Mode - Left Hand if bimanual is true or if hand_side="left"
   block:
   - name: Copy Launch Shadow Left Hand desktop icon
     copy:
