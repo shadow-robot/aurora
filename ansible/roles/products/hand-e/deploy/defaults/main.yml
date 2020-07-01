@@ -28,3 +28,9 @@ right_hand_picture: hand-e.png
 left_hand_picture: hand-e-left.png
 bimanual_hands_picture: hand-e-bimanual.png
 ur_robot_type: "ur10"
+override_launch_hand: false
+remote_cyberglove: false
+cyberglove: ""
+use_steamvr: false
+launch_package_name: "sr_ethercat_hand_config"
+launch_file_name: "sr_rhand.launch"

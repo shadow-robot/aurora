@@ -46,3 +46,6 @@ term_y_correction: 58
 real_glove: false
 real_vive: false
 ur_robot_type: "ur10"
+override_launch_hand: false
+launch_package_name: "sr_ethercat_hand_config"
+launch_file_name: "sr_rhand.launch"
