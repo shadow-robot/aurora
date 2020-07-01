@@ -13,3 +13,15 @@ hand_serial_left: "2346"
 ethercat_interface: "eth0"
 ethercat_left_hand: "eth1"
 icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
+launch_hand: false
+override_launch_hand: false
+config_branch: ""
+mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
+mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v3.yaml"
+use_cyberglove: false
+remote_cyberglove: false
+cyberglove: ""
+use_steamvr: false
+sim_hand: false
+launch_package_name: "sr_robot_launch"
+launch_file_name: ""sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
