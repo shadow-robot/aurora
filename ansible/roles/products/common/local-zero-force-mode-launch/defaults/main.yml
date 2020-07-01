@@ -24,4 +24,4 @@ cyberglove: ""
 use_steamvr: false
 sim_hand: false
 launch_package_name: "sr_robot_launch"
-launch_file_name: ""sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
+launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
