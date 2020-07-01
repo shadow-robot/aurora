@@ -51,6 +51,7 @@ def test_icons_in_docker(host):
         'Teleop Documentation',
         'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
         'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
+        'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
         'Shadow System Monitor'
         )
     scripts = (
@@ -74,7 +75,9 @@ def test_icons_in_docker(host):
         'shadow_launcher_system_monitor_exec',
         'shadow_local_right_launcher_exec',
         'shadow_sim_demo',
-        'shadow_local_zero_force_mode_right'
+        'shadow_local_zero_force_mode_right',
+        'shadow_local_zero_force_mode_right_launcher',
+        'shadow_zero_force_mode_right'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
