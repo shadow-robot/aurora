@@ -120,7 +120,7 @@
     desktop_icon_name: "3 - Launch Right HaptX Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }}"
+    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false"
   when: glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left HaptX)
@@ -131,7 +131,7 @@
     desktop_icon_name: "3 - Launch Left HaptX Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }}"
+    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false"
   when: glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
@@ -142,7 +142,7 @@
     desktop_icon_name: "3 - Launch Bimanual HaptX Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual HaptX Teleop Simulation"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }}"
+    launch_file_input: "teleop_bimanual_vive_haptx.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false"
   when: glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right Polhemus)
@@ -153,7 +153,7 @@
     desktop_icon_name: "3 - Launch Right Polhemus Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
   when: glove=="polhemus"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left Polhemus)
@@ -164,7 +164,7 @@
     desktop_icon_name: "3 - Launch Left Polhemus Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
   when: glove=="polhemus"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual Polhemus)
@@ -175,7 +175,7 @@
     desktop_icon_name: "3 - Launch Bimanual Polhemus Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Polhemus Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
   when: glove=="polhemus"
 
 - name: Install desktop icon for running haptx mapping node right
