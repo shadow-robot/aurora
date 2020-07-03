@@ -21,11 +21,6 @@
   gather_facts: no
   pre_tasks:
 
-    - name: Get path to Python 3 interpreter
-      raw: 'which python3'
-      register: path_to_python
-      changed_when: path_to_python.rc != 0
-
     - name: Set Python 3 interpreter
       set_fact:
-        ansible_python_interpreter: "{{ path_to_python.stdout_lines | first }}"
+        ansible_python_interpreter: /usr/bin/python3
