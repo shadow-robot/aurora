@@ -50,7 +50,7 @@
 - name: Include installation/polhemus role
   include_role:
     name: installation/polhemus
-  when: glove == "polhemus" and skip_molecule_task is not defined
+  when: glove == "polhemus" and real_glove and skip_molecule_task is not defined
 
 - name: Include docker/docker-image role
   include_role:
