@@ -5,7 +5,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 IMAGE={{ full_image_name }}
-CID=$(docker ps -a | grep $IMAGE | awk '{print $1}')
+CID=$(docker ps -a | grep $IMAGE | awk '{print $1} | head -n 1')
 docker pull $IMAGE
 LATEST=`docker inspect --format {%raw%}"{{.Id}}"{%endraw%} $IMAGE`
 RUNNING=`docker inspect --format {%raw%}"{{.Image}}"{%endraw%} $CID`
