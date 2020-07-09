@@ -178,7 +178,7 @@
     launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
   when: glove=="polhemus"
 
-  - name: Install desktop icon for running right polhemus driver
+- name: Install desktop icon for running right polhemus driver
   include_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "polhemus.png"

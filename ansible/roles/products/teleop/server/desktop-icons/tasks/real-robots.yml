@@ -272,18 +272,6 @@
     - bimanual|bool
     - glove=="polhemus"
 
-- name: Install desktop icon for running polhemus mapping node bimanual
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_mapping_launch_bimanual.sh"
-    desktop_icon_name: "5 - Launch Bimanual Polhemus Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Polhemus Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch"
-  when:
-    - bimanual|bool and glove=="polhemus"
-
 - name: Install desktop icon for running right polhemus driver
   include_tasks: roslaunch-icon.yml
   vars:
@@ -384,6 +372,18 @@
   when:
     - bimanual|bool or hand_side=="left"
     - glove=="polhemus"
+
+- name: Install desktop icon for running polhemus mapping node bimanual
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_mapping_launch_bimanual.sh"
+    desktop_icon_name: "6 - Launch Bimanual Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Polhemus Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop.launch"
+  when:
+    - bimanual|bool and glove=="polhemus"
 
 - name: Install desktop icon for Teleop server Simulation (Cyberglove)
   import_tasks: roslaunch-icon.yml
