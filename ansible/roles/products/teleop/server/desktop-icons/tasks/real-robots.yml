@@ -272,6 +272,44 @@
     - bimanual|bool
     - glove=="polhemus"
 
+- name: Install desktop icon for running right polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_right.sh"
+    desktop_icon_name: "5 - Launch Right Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Polhemus Driver"
+    project_name_input: "sr_teleop_vive_polhemus"
+    launch_file_input: "polhemus.launch"
+  when:
+    - bimanual|bool or hand_side=="right"
+    - glove=="polhemus"
+
+- name: Install desktop icon for running left polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_left.sh"
+    desktop_icon_name: "5 - Launch Left Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Polhemus Driver"
+    project_name_input: "sr_teleop_vive_polhemus"
+    launch_file_input: "polhemus.launch"
+  when:
+    - bimanual|bool or hand_side=="left"
+    - glove=="polhemus"
+
+- name: Install desktop icon for running bimanual polhemus driver
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "polhemus.png"
+    launch_script: "shadow_polhemus_driver_bimanual.sh"
+    desktop_icon_name: "5 - Launch Left Polhemus Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Polhemus Driver"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "polhemus.launch"
+  when:
+    - bimanual|bool and glove=="polhemus"
+
 - name: Install desktop icon for running haptx mapping node right
   include_tasks: roslaunch-icon.yml
   vars:
@@ -314,8 +352,8 @@
   vars:
     desktop_icon_png: "polhemus.png"
     launch_script: "shadow_polhemus_mapping_launch_right.sh"
-    desktop_icon_name: "5 - Launch Right Polhemus Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Polhemus Mapping"
+    desktop_icon_name: "6 - Launch Right Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Polhemus Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch"
   when:
@@ -327,8 +365,8 @@
   vars:
     desktop_icon_png: "polhemus.png"
     launch_script: "shadow_polhemus_mapping_launch_left.sh"
-    desktop_icon_name: "5 - Launch Left Polhemus Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Polhemus Mapping"
+    desktop_icon_name: "6 - Launch Left Polhemus Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Polhemus Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
   when:
@@ -344,44 +382,6 @@
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Polhemus Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch"
-  when:
-    - bimanual|bool and glove=="polhemus"
-
-- name: Install desktop icon for running right polhemus driver
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_driver_right.sh"
-    desktop_icon_name: "6 - Launch Right Polhemus Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Polhemus Driver"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "polhemus.launch"
-  when:
-    - bimanual|bool or hand_side=="right"
-    - glove=="polhemus"
-
-- name: Install desktop icon for running left polhemus driver
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_driver_left.sh"
-    desktop_icon_name: "6 - Launch Left Polhemus Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Polhemus Driver"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "polhemus.launch"
-  when:
-    - bimanual|bool or hand_side=="left"
-    - glove=="polhemus"
-
-- name: Install desktop icon for running bimanual polhemus driver
-  include_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "polhemus.png"
-    launch_script: "shadow_polhemus_driver_bimanual.sh"
-    desktop_icon_name: "6 - Launch Left Polhemus Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Polhemus Driver"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch"
   when:
     - bimanual|bool and glove=="polhemus"
 
