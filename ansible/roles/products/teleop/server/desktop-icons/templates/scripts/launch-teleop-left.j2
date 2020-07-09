@@ -15,7 +15,7 @@ if [[ "{{ glove }}" == "haptx"  ]]; then
 fi
 if [[ "{{ glove }}" == "polhemus"  ]]; then
     sleep 3
-    terminator --geometry "{{ term_5 }}" -T 'Server Polhemus Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_left.sh"
+    terminator --geometry "{{ term_5 }}" -T 'Server Polhemus Driver Left' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_left.sh"
     sleep 3
-    terminator --geometry "{{ term_6 }}" -T 'Server Polhemus Driver Left' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_driver_left.sh"
+    terminator --geometry "{{ term_6 }}" -T 'Server Polhemus Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_polhemus_mapping_launch_left.sh"
 fi
