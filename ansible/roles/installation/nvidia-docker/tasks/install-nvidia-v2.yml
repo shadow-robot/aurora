@@ -23,6 +23,12 @@
   with_items:
     - nvidia-container-runtime
     - nvidia-docker
+
+- name: Add libnvidia-container repository
+  apt_repository:
+    repo: deb https://nvidia.github.io/{{ item }}/stable/ubuntu{{ ubuntu_version }}/amd64 /
+    state: present
+  with_items:
     - libnvidia-container
 
 - name: Install nvidia-docker 2
