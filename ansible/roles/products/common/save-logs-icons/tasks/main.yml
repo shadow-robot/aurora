@@ -12,7 +12,7 @@
 
 - name: Copy ROS Logs Saver desktop icon
   copy:
-    src: files/log-icon.png
+    src: ../../../common/resources/files/log-icon.png
     dest: "{{ save_latest_ros_logs_folder }}/log-icon.png"
     mode: '664'
 

@@ -12,7 +12,7 @@
 
 - name: Copy Teleop desktop icon
   copy: 
-    src: files/cyberglove_teleop.png
+    src: ../../../common/resources/files/cyberglove_teleop.png
     dest: "{{ shadow_hand_launcher_folder }}/cyberglove_teleop.png"
     mode: '664'
 
@@ -44,7 +44,7 @@
 
 - name: Copy Cyberglove desktop icon
   copy:
-    src: files/cyberglove.jpg
+    src: ../../../common/resources/files/cyberglove.jpg
     dest: "{{ shadow_hand_launcher_folder }}/cyberglove.jpg"
     mode: '664'
 

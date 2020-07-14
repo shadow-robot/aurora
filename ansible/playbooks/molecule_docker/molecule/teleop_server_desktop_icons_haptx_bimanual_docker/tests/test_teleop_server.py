@@ -64,6 +64,13 @@ def test_icons_in_docker(host):
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         'Shadow System Monitor',
+        'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
+        'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
+        'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
+        'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
+        'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
+        'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
+        'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
         'Bimanual HaptX Teleop Simulation'
         )
     scripts = (
@@ -95,7 +102,16 @@ def test_icons_in_docker(host):
         'open_left_hand',
         'shadow_launcher_doc_exec',
         'shadow_launcher_system_monitor_exec',
-        'shadow_sim_demo'
+        'shadow_local_right_launcher_exec',
+        'shadow_local_left_launcher_exec',
+        'shadow_local_bimanual_launcher_exec',
+        'shadow_sim_demo',
+        'shadow_local_zero_force_mode_right',
+        'shadow_local_zero_force_mode_left',
+        'shadow_local_zero_force_mode_right_launcher',
+        'shadow_local_zero_force_mode_left_launcher',
+        'shadow_zero_force_mode_right',
+        'shadow_zero_force_mode_left' 
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists

@@ -1,7 +1,7 @@
 ---
 - name: Copy desktop icon
   copy:
-    src: files/{{ desktop_icon_png }}
+    src: ../../../common/resources/files/{{ desktop_icon_png }}
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
@@ -17,6 +17,7 @@
     xacro_var: "{{ xacro_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
     pwm_control_var: "{{ pwm_control_value }}"
+    hand_ctrl_var: "{{ hand_ctrl_value }}"
 
 - name: Create desktop icon for hand
   template:
