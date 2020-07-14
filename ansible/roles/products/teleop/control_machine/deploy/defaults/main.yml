@@ -15,7 +15,7 @@ user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 use_aws: false
-glove: "polhemus"
+glove: "shadow_glove"
 use_cyberglove: false
 cyberglove: ""
 launch_hand: false

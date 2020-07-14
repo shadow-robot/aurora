@@ -4,7 +4,7 @@ tag: "melodic-night-build"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true
-glove: "polhemus"
+glove: "shadow_glove"
 cyberglove: ""
 use_aws: false
 use_openvpn: false

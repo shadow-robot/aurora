@@ -1,0 +1,23 @@
+---
+- name: Install shadow glove driver dependencies
+  apt:
+    name: "{{ packages }}"
+    install_recommends: no
+  vars:
+    packages:
+      - libusb-1.0-0
+      - fxload
+  become: yes
+
+- name: Check out the shadow glove driver github repo
+  git:
+    repo: "{{ shadow_glove_driver_repo }}"
+    dest: "{{ user_folder }}/{{ shadow_glove_driver_folder }}"
+    version: "{{ shadow_glove_driver_repo_branch }}"
+  become: yes
+
+- name: Install shadow glove driver
+  shell: "./{{ shadow_glove_installer_file }}"
+  args:
+    chdir: "{{ user_folder }}/{{ shadow_glove_driver_folder }}/{{ shadow_glove_installer_folder }}"
+  become: yes

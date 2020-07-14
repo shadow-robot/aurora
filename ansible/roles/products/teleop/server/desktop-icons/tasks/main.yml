@@ -10,6 +10,20 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Set teleop main icon picture for HaptX
+  set_fact:
+    teleop_glove_right: "haptx_right.png"
+    teleop_glove_left: "haptx_left.png"
+    teleop_glove_bimanual: "haptx_bimanual.png"
+  when: glove=="haptx"
+
+- name: Set teleop main icon picture for Shadow Glove
+  set_fact:
+    teleop_glove_right: "shadow_glove_right.png"
+    teleop_glove_left: "shadow_glove_left.png"
+    teleop_glove_bimanual: "shadow_glove_bimanual.png"
+  when: glove=="shadow_glove"
+
 - name: Install desktop icons for real robots
   include_tasks: real-robots.yml
   when: groups['simulation'] is not defined
