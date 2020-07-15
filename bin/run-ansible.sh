@@ -165,9 +165,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     echo " ---------------------------------------------------"
     echo ""
 elif [[ "${playbook}" = "teleop_deploy" ]]; then
-    if [[ "${aurora_inventory}" != "simulation" ]]; then
-        ansible_flags="${ansible_flags} --ask-vault-pass"
-    fi
+    ansible_flags="${ansible_flags} --ask-vault-pass"
     if [[ "${aurora_inventory}" = "" ]]; then
         if [[ $extra_vars == *"remote_teleop=true"* ]]; then
             aurora_inventory="ansible/inventory/teleop/production_remote"
