@@ -16,6 +16,7 @@
     start_container: "{{ start_container_var }}"
     start_server_command: "{{ start_server_command_var }}"
     preconditions: "{{ preconditions_var }}"
+    live_website_url: "{{ live_website_url_var }}"
 
 - name: Create desktop icon
   template:

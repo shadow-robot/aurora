@@ -46,6 +46,7 @@
     start_container_var: "true"
     start_server_command_var: "roslaunch sr_teleop_haptx_documentation sr_teleop_haptx_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
+    live_website_url_var: "{{ haptx_teleop_readthedocs_link }}"
   when: glove=="haptx"
 
 - name: Install the Teleop Documentation desktop icon for Shadow Glove Teleop
@@ -60,6 +61,7 @@
     start_container_var: "true"
     start_server_command_var: "roslaunch sr_teleop_polhemus_documentation sr_teleop_polhemus_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
+    live_website_url_var: "{{ shadow_glove_teleop_readthedocs_link }}"
   when: glove=="shadow_glove"
 
 - name: Install the Shadow System Monitor desktop icon for Teleop
@@ -74,6 +76,7 @@
     start_container_var: "false"
     start_server_command_var: ""
     preconditions_var: "Launch Shadow Teleop icon"
+    live_website_url_var: ""
 
 - name: Create Shadow Demos folder
   file:

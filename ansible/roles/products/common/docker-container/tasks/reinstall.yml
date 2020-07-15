@@ -30,3 +30,24 @@
     modify_script_name: "pull_sr_config.sh"
     modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
   when: groups['simulation'] is not defined
+
+- name: Set documentation variables for shadow_glove teleop
+  set_fact:
+    documentatin_repo: sr_teleop_polhemus_documentation
+    readthedocs_token: "{{ shadow_glove_teleop_readthedocs_token }}"
+    documentation_product: teleop-polhemus
+  when: glove == "shadow_glove"
+
+- name: Set documentation variables for haptx teleop
+  set_fact:
+    documentatin_repo: sr_teleop_haptx_documentation
+    readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
+    documentation_product: teleop-haptx
+  when: glove == "haptx"
+
+- name: Update documentation inside the docker container for teleop images
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "update_documentation.sh"
+    modify_script_commands: "roscd {{ documentation_repo }};curl -H \"Authorization: Token {{ readthedocs_token }}\" https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
+  when: glove == "haptx" or glove == "shadow_glove" and skip_molecule_task is not defined
