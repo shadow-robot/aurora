@@ -31,7 +31,7 @@
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
   when: glove=="haptx"
 
-- name: Create executable launch script for hand and arm control loop (with polhemus)
+- name: Create executable launch script for hand and arm control loop (with shadow_glove)
   template:
     src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
@@ -42,7 +42,7 @@
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
-  when: glove=="polhemus"
+  when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand
   template:

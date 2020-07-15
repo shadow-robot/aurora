@@ -4,7 +4,7 @@ tag: "melodic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 nvidia_docker: true # Define if nvidia docker 2 is used (defaul is false)
-glove: "polhemus" # Determines which glove is installed (cyberglove, haptx or polhemus)
+glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
 real_glove: false # Whether a real physical glove is being used for hand control or not
 real_vive: false # Whether a real Vive system is being used for arm control
 biotacs: true # Whether the hands will have biotac fingertips

@@ -1,8 +1,0 @@
----
-polhemus_driver_repo: "https://github.com/shadow-robot/polhemus_ros_driver"
-polhemus_driver_folder: "polhemus_ros_driver"
-polhemus_installer_folder: "etc"
-polhemus_installer_file: "install.bash"
-polhemus_driver_repo_branch: "master"
-user: "{{ ansible_user_id }}"
-user_folder: "/home/{{ user }}"
