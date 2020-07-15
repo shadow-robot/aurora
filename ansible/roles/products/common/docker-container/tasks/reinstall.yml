@@ -33,14 +33,14 @@
 
 - name: Set documentation variables for shadow_glove teleop
   set_fact:
-    documentatin_repo: sr_teleop_polhemus_documentation
+    documentation_repo: sr_teleop_polhemus_documentation
     readthedocs_token: "{{ shadow_glove_teleop_readthedocs_token }}"
     documentation_product: teleop-polhemus
   when: glove == "shadow_glove"
 
 - name: Set documentation variables for haptx teleop
   set_fact:
-    documentatin_repo: sr_teleop_haptx_documentation
+    documentation_repo: sr_teleop_haptx_documentation
     readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
     documentation_product: teleop-haptx
   when: glove == "haptx"
