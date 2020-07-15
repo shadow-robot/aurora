@@ -15,3 +15,5 @@
     sim_icon=true
     sudo_password="ubuntu"
     demohand_icons=true
+    haptx_teleop_readthedocs_link=""
+    shadow_glove_teleop_readthedocs_link=""
