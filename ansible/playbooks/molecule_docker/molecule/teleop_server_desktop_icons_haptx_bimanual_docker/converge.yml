@@ -19,3 +19,5 @@
     glove="haptx"
     sim_icon=true
     customer_key="invalidkey"
+    haptx_teleop_readthedocs_link=""
+    shadow_glove_teleop_readthedocs_link=""

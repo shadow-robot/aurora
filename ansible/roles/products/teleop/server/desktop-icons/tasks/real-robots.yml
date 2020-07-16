@@ -48,20 +48,6 @@
     command_to_run: "rqt"
     launch_terminal: "false"
 
-- name: Install the Teleop Documentation desktop icon for cyberglove
-  include_tasks: web-gui-icon.yml
-  vars:
-    desktop_icon_png: "documentation_icon.png"
-    launch_script: "shadow_launcher_doc_exec.sh"
-    local_website_port_var: '7070'
-    desktop_icon_name: "Teleop Documentation"
-    desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "true"
-    start_container_var: "true"
-    start_server_command_var: "roslaunch sr_teleop_documentation sr_teleop_documentation_server.launch port:={{ local_website_port_var }}"
-    preconditions_var: ""
-  when: glove=="cyberglove"
-
 - name: Install the Teleop Documentation desktop icon for HaptX
   include_tasks: web-gui-icon.yml
   vars:
@@ -70,10 +56,11 @@
     local_website_port_var: '7070'
     desktop_icon_name: "Teleop Documentation"
     desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "true"
+    launch_terminal: "false"
     start_container_var: "true"
     start_server_command_var: "roslaunch sr_teleop_haptx_documentation sr_teleop_haptx_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
+    live_website_url_var: "{{ haptx_teleop_readthedocs_link }}"
   when: glove=="haptx"
 
 - name: Install the Teleop Documentation desktop icon for Shadow Glove Teleop
@@ -84,10 +71,11 @@
     local_website_port_var: '7070'
     desktop_icon_name: "Teleop Documentation"
     desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "true"
+    launch_terminal: "false"
     start_container_var: "true"
     start_server_command_var: "roslaunch sr_teleop_polhemus_documentation sr_teleop_polhemus_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
+    live_website_url_var: "{{ shadow_glove_teleop_readthedocs_link }}"
   when: glove=="shadow_glove"
 
 - name: Install the Shadow System Monitor desktop icon for Teleop
@@ -102,6 +90,7 @@
     start_container_var: "false"
     start_server_command_var: ""
     preconditions_var: "Launch Shadow Teleop icon"
+    live_website_url_var: ""
 
 - name: Create Shadow Demos folder
   file:
