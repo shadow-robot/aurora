@@ -49,5 +49,5 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
-    modify_script_commands: "roscd {{ documentation_repo }};curl -H \"Authorization: Token {{ readthedocs_token }}\" https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
+    modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
   when: glove == "haptx" or glove == "shadow_glove" and skip_molecule_task is not defined
