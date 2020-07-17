@@ -240,6 +240,7 @@
 - name: Include products/common/local-hand-launch role
   include_role:
     name: products/common/local-hand-launch
+  vars:
     override_launch_hand_var: True
 
 - name: Include products/common/local-zero-force-mode-launch role
