@@ -432,6 +432,7 @@
 - name: Include products/common/local-hand-launch role
   include_role:
     name: products/common/local-hand-launch
+    override_launch_hand_var: True
 
 - name: Install desktop icon for Zero Force Mode - Right Hand for NUC
   include_tasks: ../../../hand-e/server/desktop-icons/tasks/hand-icon.yml

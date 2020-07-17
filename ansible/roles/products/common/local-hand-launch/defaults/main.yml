@@ -25,3 +25,4 @@ use_steamvr: false
 sim_hand: false
 launch_package_name: "sr_ethercat_hand_config"
 launch_file_name: "sr_rhand.launch"
+override_launch_hand_var: false
