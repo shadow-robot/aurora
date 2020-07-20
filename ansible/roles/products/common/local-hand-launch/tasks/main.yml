@@ -27,7 +27,7 @@
   vars:
     launch_file_name: "sr_rhand.launch"
     launch_package_name: "sr_ethercat_hand_config"
-    override_launch_hand: True
+    override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool or hand_side=="right"
 
 - name: Creating server setup script for local left hand launch
@@ -38,7 +38,7 @@
   vars:
     launch_file_name: "sr_lhand.launch"
     launch_package_name: "sr_ethercat_hand_config"
-    override_launch_hand: True
+    override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Creating server setup script for local bimanual hand launch
@@ -49,7 +49,7 @@
   vars:
     launch_file_name: "sr_bimanual.launch"
     launch_package_name: "sr_ethercat_hand_config"
-    override_launch_hand: True
+    override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool
 
 - name: Copying the server setup script for local right hand launch into docker container
