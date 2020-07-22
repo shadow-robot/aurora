@@ -80,6 +80,30 @@
     term_5: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y }}"
     term_6: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
 
+- name: Ensures that Desktop folder exists
+  file:
+    path: "{{ user_folder }}/Desktop"
+    mode: '755'
+    state: directory
+
+- name: Custom shared volume for user Shadow Glove calibration
+  block:
+  - name: Set user shadow glove calibration folder name
+    set_fact:
+      user_shadow_glove_calibration_folder: "user_shadow_glove_calibration"
+
+  - name: Ensures user shadow glove calibration folder exists
+    file:
+      path: "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibration_folder }}"
+      mode: '755'
+      state: directory
+
+  - name: Set custom shared folders for docker container
+    set_fact:
+      custom_shared_volumes: 
+        - "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibration_folder }}:/home/user/{{ user_shadow_glove_calibration_folder }}"
+  when: glove == "shadow_glove" and real_glove
+
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
