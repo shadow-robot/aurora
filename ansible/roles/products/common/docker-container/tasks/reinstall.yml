@@ -12,11 +12,11 @@
 
   - name: Create local custom volumes for custom_shared_volumes
     docker_volume:
-      name: "{{ item.split(":")[0].split("/")[-1] }}_local_volume"
+      name: "{{ item.split(':')[0].split('/')[-1] }}_local_volume"
       driver: local
       driver_options:
         type: none
-        device: "{{ item.split(":")[0] }}"
+        device: "{{ item.split(':')[0] }}"
         o: bind
     with_items: "{{ custom_shared_volumes }}"
   when: custom_shared_volumes|length>0
