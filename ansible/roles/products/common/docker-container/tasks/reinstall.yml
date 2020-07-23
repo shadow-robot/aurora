@@ -8,7 +8,7 @@
   block:
   - name: Create local_custom_volume_names for custom_shared_volumes
     set_fact:
-      local_custom_volume_names: "{{ custom_shared_volumes | map(‘regex_search’, ‘.+?(?=:)’) | map(‘regex_search’, ‘([^\/]+$)’) | map('regex_replace','$','_local_volume') | list }}"
+      local_custom_volume_names: "{{ custom_shared_volumes | map('regex_search','.+?(?=:)') | map('regex_search', '([^\/]+$)') | map('regex_replace','$','_local_volume') | list }}"
 
   - name: Create local custom volumes for custom_shared_volumes
     docker_volume:
