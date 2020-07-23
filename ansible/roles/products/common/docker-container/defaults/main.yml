@@ -36,3 +36,4 @@ common_shared_volumes:
   - /run/udev/data:/run/udev/data
 container_type_shared_volumes: []
 custom_shared_volumes: []
+local_custom_volume_names: []
