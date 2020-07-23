@@ -90,7 +90,8 @@
   block:
   - name: Set user shadow glove calibrations folder name
     set_fact:
-      user_shadow_glove_calibrations_folder: "user_shadow_glove_calibrations"
+      user_shadow_glove_calibrations_folder: "shadow_glove_user_calibrations_files"
+      user_shadow_glove_calibrations_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibrations_files"
 
   - name: Ensures user shadow glove calibrations folder exists
     file:
