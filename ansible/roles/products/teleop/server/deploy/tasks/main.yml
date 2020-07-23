@@ -86,23 +86,23 @@
     mode: '755'
     state: directory
 
-- name: Custom shared volume for user Shadow Glove calibrations
+- name: Custom shared volume for user Shadow Glove calibration
   block:
-  - name: Set user shadow glove calibrations folder name
+  - name: Set user shadow glove calibration folder name
     set_fact:
-      user_shadow_glove_calibrations_folder: "shadow_glove_user_calibrations_files"
-      user_shadow_glove_calibrations_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibrations_files"
+      user_shadow_glove_calibration_folder: "shadow_glove_user_calibration_files"
+      user_shadow_glove_calibration_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/scripts"
 
-  - name: Ensures user shadow glove calibrations folder exists
+  - name: Ensures user shadow glove calibration folder exists
     file:
-      path: "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibrations_folder }}"
+      path: "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibration_folder }}"
       mode: '755'
       state: directory
 
   - name: Set custom shared folders for docker container
     set_fact:
       custom_shared_volumes: 
-        - "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibrations_folder }}:{{ user_shadow_glove_calibrations_inside_docker }}"
+        - "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
   when: glove == "shadow_glove" and real_glove
 
 - name: Include products/common/docker-container role
