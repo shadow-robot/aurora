@@ -1,4 +1,13 @@
 ---
+- name: Set container_type_shared_volumes
+  set_fact:
+    container_type_shared_volumes:
+      - "{{ user_folder }}/.Xauthority:/home/user/.Xauthority"
+
+- name: Set shared volumes
+  set_fact:
+    shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
+
 - name: Creating the container which will execute setup script when started and without terminator
   changed_when: false
   docker_container:
@@ -24,10 +33,6 @@
     - "seccomp: unconfined"
     ulimits:
     - "core: -1"
-    volumes:
-    - /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    - /dev/input:/dev/input[rw]
-    - /run/udev/data:/run/udev/data
-    - "{{ user_folder }}/.Xauthority:/home/user/.Xauthority"
+    volumes: "{{ shared_volumes }}"
     command: "bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes
