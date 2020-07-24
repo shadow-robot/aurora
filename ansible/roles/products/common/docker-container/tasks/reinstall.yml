@@ -4,23 +4,6 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
-- name: Enable custom_shared_volumes to get pre-existing data from inside docker container
-  block:
-  - name: Create local_custom_volume_names for custom_shared_volumes
-    set_fact:
-      local_custom_volume_names: "{{ custom_shared_volumes | map('regex_search','.+?(?=:)') | map('regex_search', '([^\\/]+$)') | map('regex_replace','$','_local_volume') | list }}"
-
-  - name: Create local custom volumes for custom_shared_volumes
-    docker_volume:
-      name: "{{ item.split(':')[0].split('/')[-1] }}_local_volume"
-      driver: local
-      driver_options:
-        type: none
-        device: "{{ item.split(':')[0] }}"
-        o: bind
-    with_items: "{{ custom_shared_volumes }}"
-  when: custom_shared_volumes|length>0
-
 - name: Creating the container which will execute setup script in terminator when started
   when: "not nvidia_docker|bool and terminator and setup_script | length > 0"
   include_tasks: create-container/with-setup-with-terminator.yml
