@@ -121,22 +121,22 @@
     become: yes
     ignore_errors: yes
 
-  - name: Check if the current_calibration_file.yaml exists on the host shared volume
+  - name: Check if the current_calibration.yaml exists on the host shared volume
     stat: 
-      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_file.yaml"
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
     register: current_calibration_file
     ignore_errors: yes
 
-  - name: Check if the default_calibration_file.yaml exists on the host shared volume
+  - name: Check if the default_calibration.yaml exists on the host shared volume
     stat: 
-      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_file.yaml"
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
     register: default_calibration_file
     ignore_errors: yes
 
-  - name: if current_calibration_file.yaml doesn't exist but default does, copy default into it
+  - name: if current_calibration.yaml doesn't exist but default does, copy default into it
     copy:
-      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_file.yaml"
-      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_file.yaml"
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
     when: not current_calibration_file.stat.exists and default_calibration_file.stat.exists
   when: glove == "shadow_glove" and real_glove|bool
 
