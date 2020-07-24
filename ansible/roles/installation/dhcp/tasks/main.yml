@@ -70,10 +70,6 @@
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'xenial'
 
-- name: Get dhcp_server_mac
-  set_fact:
-    dhcp_server_mac: "{{ hostvars[groups['dhcp'][0]]['ansible_'+dhcp_interface_name]['macaddress'] }}"
-
 - name: Configure IPv4 forwarding
   become: yes
   blockinfile:
