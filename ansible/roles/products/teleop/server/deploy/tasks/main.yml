@@ -134,19 +134,6 @@
     when: not current_calibration_file.stat.exists
   when: glove == "shadow_glove" and real_glove
 
-- name: Check if Docker is already installed
-  stat: 'path=/etc/init.d/docker'
-  register: docker_check
-  ignore_errors: yes
-
-- name: Install Docker
-  import_tasks: install.yml
-  when: not docker_check.stat.exists
-  become: yes
-
-
-  when: glove == "shadow_glove" and real_glove
-
 - name: Include docker/aws role
   include_role:
     name: docker/aws
