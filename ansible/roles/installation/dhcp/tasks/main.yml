@@ -30,13 +30,7 @@
         address {{ server_ip }}
         netmask {{ dhcp_netmask }}
         network {{ dhcp_network }}
-  changed_when: false
-
-- name: Stop DHCP service
-  service:
-    name: isc-dhcp-server
-    state: stopped
-  become: true
+        up /etc/init.d/isc-dhcp-server restart || true
   changed_when: false
 
 - name: Restart networking on DHCP interface
@@ -45,6 +39,13 @@
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
+
+- name: Stop DHCP service
+  service:
+    name: isc-dhcp-server
+    state: stopped
+  become: true
+  changed_when: false
 
 - name: Configure DHCP interface for Ubuntu Bionic
   become: yes
@@ -95,13 +96,8 @@
       option domain-name-servers 8.8.8.8, 8.8.4.4;
       authoritative;
       subnet {{ dhcp_network }} netmask {{ dhcp_netmask }} {
-        range {{ dhcp_range_start }} {{ dhcp_range_end }};
+        range {{ dhcp_client_ip }} {{ dhcp_client_ip }};
         option routers {{ server_ip }};
-        host server {
-          hardware ethernet {{ dhcp_server_mac }};
-          server-name "server";
-          fixed-address {{ server_ip }};
-        }
       }
   changed_when: false
 
@@ -153,10 +149,3 @@
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
-
-- name: Start DHCP service
-  service:
-    name: isc-dhcp-server
-    state: started
-  become: true
-  changed_when: false

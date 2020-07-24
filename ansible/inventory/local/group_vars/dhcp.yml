@@ -5,7 +5,4 @@ server_ip: "10.9.11.1" # Specify the desired IP of the server laptop
 dhcp_client_ip: "10.9.11.2" # Specify the desired IP of the NUC
 dhcp_netmask: "255.255.255.0" # Specify the netmask
 dhcp_network: "10.9.11.0" # Specify the DHCP network
-dhcp_range_start: "10.9.11.2" # Specify the DHCP IP range start for non-fixed IP devices
-dhcp_range_end: "10.9.11.2" # Specify the DHCP IP range end for non-fixed IP devices
-dhcp_server_mac: "00:0e:c6:c0:46:97" # Specify the MAC address of the server USB-ethernet adapter
 ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
