@@ -148,6 +148,20 @@
     launch_file_input: "teleop_bimanual_vive_haptx.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false"
   when: glove=="haptx"
 
+- name: Set Shadow Glove Simulation Launch file inputs
+  set_fact:
+    launch_file_input_right: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input_left: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input_bimanual: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+  when: glove=="shadow_glove"
+
+- name: Set Shadow Glove Launch file inputs if real_glove = true
+  set_fact:
+    launch_file_input_right: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
+    launch_file_input_left: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
+    launch_file_input_bimanual: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
+  when: glove=="shadow_glove" and real_glove
+
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right Shadow Glove)
   import_tasks: roslaunch-icon.yml
   vars:
@@ -156,7 +170,7 @@
     desktop_icon_name: "3 - Launch Right Shadow Glove Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Shadow Glove Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input: "{{ launch_file_input_right }}"
   when: glove=="shadow_glove"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left Shadow Glove)
@@ -167,7 +181,7 @@
     desktop_icon_name: "3 - Launch Left Shadow Glove Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Shadow Glove Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input: "{{ launch_file_input_left }}"
   when: glove=="shadow_glove"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual Shadow Glove)
@@ -178,8 +192,22 @@
     desktop_icon_name: "3 - Launch Bimanual Shadow Glove Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Shadow Glove Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input: "{{ launch_file_input_bimanual }}"
   when: glove=="shadow_glove"
+
+- name: Set Shadow Glove Launch file inputs
+  set_fact:
+    launch_file_input_right: "polhemus.launch"
+    launch_file_input_left: "polhemus.launch"
+    launch_file_input_bimanual: "polhemus.launch"
+  when: glove=="shadow_glove"
+
+- name: Set Shadow Glove Launch file inputs if real_glove = true
+  set_fact:
+    launch_file_input_right: "polhemus.launch user_calibration_folder_path:=\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
+    launch_file_input_left: "polhemus.launch user_calibration_folder_path:=\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
+    launch_file_input_bimanual: "polhemus.launch user_calibration_folder_path:=\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
+  when: glove=="shadow_glove" and real_glove
 
 - name: Install desktop icon for running right Shadow Glove driver
   include_tasks: roslaunch-icon.yml
@@ -189,7 +217,7 @@
     desktop_icon_name: "4 - Launch Right Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Shadow Glove Driver"
     project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch"
+    launch_file_input: "{{ launch_file_input_right }}"
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running left Shadow Glove driver
@@ -200,7 +228,7 @@
     desktop_icon_name: "4 - Launch Left Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Shadow Glove Driver"
     project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch"
+    launch_file_input: "{{ launch_file_input_left }}
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running bimanual Shadow Glove driver
@@ -211,7 +239,7 @@
     desktop_icon_name: "4 - Launch Bimanual Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Shadow Glove Driver"
     project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch"
+    launch_file_input: "{{ launch_file_input_bimanual }}"
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running haptx mapping node right

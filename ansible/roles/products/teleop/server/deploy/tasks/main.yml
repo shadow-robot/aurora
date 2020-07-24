@@ -120,6 +120,31 @@
     shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker }} {{ user_shadow_glove_calibration_folder }}"
     become: yes
     ignore_errors: yes
+
+  - name: Check if the current_calibration_file.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_file.yaml"
+    register: current_calibration_file
+    ignore_errors: yes
+
+  - name: if current_calibration_file.yaml doesn't exist, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_file.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_file.yaml"
+    when: not current_calibration_file.stat.exists
+  when: glove == "shadow_glove" and real_glove
+
+- name: Check if Docker is already installed
+  stat: 'path=/etc/init.d/docker'
+  register: docker_check
+  ignore_errors: yes
+
+- name: Install Docker
+  import_tasks: install.yml
+  when: not docker_check.stat.exists
+  become: yes
+
+
   when: glove == "shadow_glove" and real_glove
 
 - name: Include docker/aws role
