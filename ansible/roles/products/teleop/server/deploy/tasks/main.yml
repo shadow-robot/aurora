@@ -50,7 +50,7 @@
 - name: Include installation/shadow_glove_driver role
   include_role:
     name: installation/shadow_glove_driver
-  when: glove == "shadow_glove" and real_glove and skip_molecule_task is not defined
+  when: glove == "shadow_glove" and real_glove|bool and skip_molecule_task is not defined
 
 - name: Include docker/docker-image role
   include_role:
@@ -104,7 +104,7 @@
     set_fact:
       custom_shared_volumes: 
         - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
-  when: glove == "shadow_glove" and real_glove
+  when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include products/common/docker-container role
   include_role:
@@ -138,7 +138,7 @@
       src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_file.yaml"
       dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_file.yaml"
     when: not current_calibration_file.stat.exists and default_calibration_file.stat.exists
-  when: glove == "shadow_glove" and real_glove
+  when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include docker/aws role
   include_role:

@@ -160,7 +160,7 @@
     launch_file_input_right: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
     launch_file_input_left: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
     launch_file_input_bimanual: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
-  when: glove=="shadow_glove" and real_glove
+  when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right Shadow Glove)
   import_tasks: roslaunch-icon.yml
@@ -207,7 +207,7 @@
     launch_file_input_right: "polhemus.launch user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
     launch_file_input_left: "polhemus.launch user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
     launch_file_input_bimanual: "polhemus.launch user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration_file.yaml"
-  when: glove=="shadow_glove" and real_glove
+  when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running right Shadow Glove driver
   include_tasks: roslaunch-icon.yml
@@ -228,7 +228,7 @@
     desktop_icon_name: "4 - Launch Left Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Shadow Glove Driver"
     project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "{{ launch_file_input_left }}
+    launch_file_input: "{{ launch_file_input_left }}"
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running bimanual Shadow Glove driver
