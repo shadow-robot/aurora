@@ -6,7 +6,7 @@
 
 - name: Set shared volumes
   set_fact:
-    shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + local_custom_volume_names }}"
+    shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
 
 - name: Creating the container which will execute setup script when started and without terminator
   changed_when: false
