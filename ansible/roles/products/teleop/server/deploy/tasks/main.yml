@@ -50,7 +50,7 @@
 - name: Include installation/shadow_glove_driver role
   include_role:
     name: installation/shadow_glove_driver
-  when: glove == "shadow_glove" and real_glove and skip_molecule_task is not defined
+  when: glove == "shadow_glove" and real_glove|bool and skip_molecule_task is not defined
 
 - name: Include docker/docker-image role
   include_role:
@@ -90,19 +90,21 @@
   block:
   - name: Set user shadow glove calibration folder name
     set_fact:
-      user_shadow_glove_calibration_folder: "user_shadow_glove_calibration"
+      user_shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_user_calibration_files"
+      user_shadow_glove_calibration_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
+      user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
 
-  - name: Ensures user shadow glove calibration folder exists
+  - name: Ensure {{ user_shadow_glove_calibration_folder }} folder exists
     file:
-      path: "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibration_folder }}"
+      path: "{{ user_shadow_glove_calibration_folder }}"
       mode: '755'
       state: directory
 
-  - name: Set custom shared folders for docker container
+  - name: Set custom shared volumes for docker container
     set_fact:
       custom_shared_volumes: 
-        - "{{ user_folder }}/Desktop/{{ user_shadow_glove_calibration_folder }}:/home/user/{{ user_shadow_glove_calibration_folder }}"
-  when: glove == "shadow_glove" and real_glove
+        - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
+  when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include products/common/docker-container role
   include_role:
@@ -110,6 +112,33 @@
   vars:
     container_terminal_title: "Teleop Server Container"
     term_args: "--geometry {{ term_1 }}"
+
+- name: Copy the default shadow glove user calibration files to the host
+  block:
+  - name: Copying default files from docker container path {{ user_shadow_glove_calibration_defaults_inside_docker }} to the host folder {{ user_shadow_glove_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker }} {{ user_shadow_glove_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+
+  - name: Check if the current_calibration.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
+    register: current_calibration_file
+    ignore_errors: yes
+
+  - name: Check if the default_calibration.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
+    register: default_calibration_file
+    ignore_errors: yes
+
+  - name: if current_calibration.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
+    when: not current_calibration_file.stat.exists and default_calibration_file.stat.exists
+  when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include docker/aws role
   include_role:
