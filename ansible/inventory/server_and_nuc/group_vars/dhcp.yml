@@ -1,0 +1,8 @@
+---
+internet_interface_name: "eth0" # Specify which interface the server laptop gets internet from
+dhcp_interface_name: "eth0" # Specify the USB-ethernet adapter name connected to server going to the NUC
+server_ip: "10.9.11.1" # Specify the desired IP of the server laptop
+dhcp_client_ip: "10.9.11.2" # Specify the desired IP of the NUC
+dhcp_netmask: "255.255.255.0" # Specify the netmask
+dhcp_network: "10.9.11.0" # Specify the DHCP network
+ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
