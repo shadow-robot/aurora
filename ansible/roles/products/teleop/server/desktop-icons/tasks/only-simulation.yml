@@ -157,9 +157,9 @@
 
 - name: Set Shadow Glove Launch file inputs if real_glove = true
   set_fact:
-    launch_file_input_right: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration.yaml"
-    launch_file_input_left: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration.yaml"
-    launch_file_input_bimanual: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input_right: "sr_teleop_vive_polhemus.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:='\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input_left: "sr_teleop_vive_polhemus.launch sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:='\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input_bimanual: "sr_teleop_vive_polhemus.launch sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false user_calibration_folder_path:='\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right Shadow Glove)
@@ -204,9 +204,9 @@
 
 - name: Set Shadow Glove Launch file inputs if real_glove = true
   set_fact:
-    launch_file_input_right: "polhemus.launch user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration.yaml"
-    launch_file_input_left: "polhemus.launch user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration.yaml"
-    launch_file_input_bimanual: "polhemus.launch user_calibration_folder_path:=\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input_right: "polhemus.launch user_calibration_folder_path:='\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input_left: "polhemus.launch user_calibration_folder_path:='\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input_bimanual: "polhemus.launch user_calibration_folder_path:='\\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running right Shadow Glove driver
