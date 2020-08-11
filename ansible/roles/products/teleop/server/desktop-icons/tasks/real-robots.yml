@@ -289,7 +289,7 @@
     desktop_icon_name: "5 - Launch Left Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Shadow Glove Driver"
     project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch user_calibration_folder_path:='\$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input: "polhemus.launch user_calibration_folder_path:=\"$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files\" user_calibration_file_name:=current_calibration.yaml"
   when:
     - bimanual|bool and glove=="shadow_glove"
 
