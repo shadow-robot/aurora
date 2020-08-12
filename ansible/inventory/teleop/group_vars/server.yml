@@ -5,6 +5,8 @@ reinstall: false # Flag to know if the docker container should be fully reinstal
 container_name: "teleop" # Name of the docker container
 nvidia_docker: true # Define if nvidia docker 2 is used (defaul is false)
 glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+real_glove: true # Whether a real physical glove is being used for hand control or not
+real_vive: true # Whether a real Vive system is being used for arm control
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-server should be installed
