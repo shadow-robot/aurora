@@ -30,13 +30,7 @@
         address {{ server_ip }}
         netmask {{ dhcp_netmask }}
         network {{ dhcp_network }}
-  changed_when: false
-
-- name: Stop DHCP service
-  service:
-    name: isc-dhcp-server
-    state: stopped
-  become: true
+        up /etc/init.d/isc-dhcp-server restart || true
   changed_when: false
 
 - name: Restart networking on DHCP interface
@@ -45,6 +39,13 @@
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
+
+- name: Stop DHCP service
+  service:
+    name: isc-dhcp-server
+    state: stopped
+  become: true
+  changed_when: false
 
 - name: Configure DHCP interface for Ubuntu Bionic
   become: yes
@@ -69,25 +70,6 @@
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'xenial'
 
-- name: Initial DHCP configuration
-  become: yes
-  blockinfile:
-    path: /etc/dhcp/dhcpd.conf
-    backup: yes
-    block: |
-      option domain-name-servers 8.8.8.8, 8.8.4.4;
-      authoritative;
-      subnet {{ dhcp_network }} netmask {{ dhcp_netmask }} {
-        range {{ dhcp_range_start }} {{ dhcp_range_end }};
-        option routers {{ server_ip }};
-        host server {
-          hardware ethernet {{ dhcp_server_mac }};
-          server-name "server";
-          fixed-address {{ server_ip }};
-        }
-      }
-  changed_when: false
-
 - name: Configure IPv4 forwarding
   become: yes
   blockinfile:
@@ -97,46 +79,11 @@
       net.ipv4.ip_forward=1
   changed_when: false
 
-- name: Get dhcp_server_mac
-  set_fact:
-    dhcp_server_mac: "{{ hostvars[groups['dhcp'][0]]['ansible_'+dhcp_interface_name]['macaddress'] }}"
-
-- name: Start DHCP service to get dhcp_client_mac
-  service:
-    name: isc-dhcp-server
-    state: started
-  become: true
-  changed_when: false
-
-- name: Wait 5 seconds for dhcp_client_mac to be available in arp
-  wait_for: 
-    timeout: 5
-
-- name: Running arp until dhcp_client_mac has been obtained
-  shell: "arp -i {{ dhcp_interface_name }} | awk '{print $3}' | grep -E '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'"
-  register: arp_output
-  until: arp_output.rc == 0
-  retries: 100
-  delay: 5
-  become: true
-
-- name: Get dhcp_client_mac
-  set_fact:
-    dhcp_client_mac: "{{ arp_output.stdout }}"
-  when: arp_output.stdout | length > 0
-
-- name: Stop DHCP service before we configure it properly with dhcp_client_mac
-  service:
-    name: isc-dhcp-server
-    state: stopped
-  become: true
-  changed_when: false
-
 - name: Get internet_interface_name
   set_fact:
     internet_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_default_ipv4']['interface'] }}"
 
-- name: Configure DHCP
+- name: DHCP configuration
   become: yes
   blockinfile:
     path: /etc/dhcp/dhcpd.conf
@@ -145,18 +92,8 @@
       option domain-name-servers 8.8.8.8, 8.8.4.4;
       authoritative;
       subnet {{ dhcp_network }} netmask {{ dhcp_netmask }} {
-        range {{ dhcp_range_start }} {{ dhcp_range_end }};
+        range {{ dhcp_client_ip }} {{ dhcp_client_ip }};
         option routers {{ server_ip }};
-        host server {
-          hardware ethernet {{ dhcp_server_mac }};
-          server-name "server";
-          fixed-address {{ server_ip }};
-        }
-        host nuc-control {
-          hardware ethernet {{ dhcp_client_mac }};
-          server-name "nuc-control";
-          fixed-address {{ dhcp_client_ip }};
-        }
       }
   changed_when: false
 
@@ -202,16 +139,9 @@
     state: restarted
   become: true
 
-- name: Restart the DHCP interface after configuring the NUC static IP (waiting 10 seconds to get the NUC to reset its IP)
+- name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && sleep 10 && ifup {{ dhcp_interface_name }}"
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
-
-- name: Start DHCP service
-  service:
-    name: isc-dhcp-server
-    state: started
-  become: true
-  changed_when: false
