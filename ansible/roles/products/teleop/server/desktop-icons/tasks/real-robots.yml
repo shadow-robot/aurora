@@ -450,6 +450,7 @@
     mapping_path_value: "{{ mapping_path_right }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
+    hand_value: "true"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -467,6 +468,7 @@
     mapping_path_value: "{{ mapping_path_left }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
+    hand_value: "true"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role
