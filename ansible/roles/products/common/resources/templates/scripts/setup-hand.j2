@@ -16,7 +16,6 @@ if [ ! -z {{ config_branch }} ]; then
     sed -i 's|rh_mapping_path" value=.*|rh_mapping_path" value="{{ mapping_path_right }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
     sed -i 's|lh_mapping_path" value=.*|lh_mapping_path" value="{{ mapping_path_left }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
 fi
-rosrun sr_firmware_checker ur_firmware_check
 # TODO: FIX so that cyberglove is not mentioned here in docker-container role, and cyberglove setup is handled in cyberglove role
 if {{ use_cyberglove | lower or remote_cyberglove | lower }}; then
     if [ -d "/home/user/projects/shadow_robot/base/src/sr_config/sr_cyberglove_config" ]; then
