@@ -6,7 +6,7 @@ sleep 3
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 8
 terminator --geometry "{{ term_3 }}" -T 'Server Bimanual Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_bimanual.sh" &
-sleep 3
+sleep 5
 if {{ real_glove | lower }}; then
     if [[ "{{ glove }}" == "haptx"  ]]; then
         terminator --geometry "{{ term_4 }}" -T 'Server HaptX Bimanual Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_bimanual.sh"
