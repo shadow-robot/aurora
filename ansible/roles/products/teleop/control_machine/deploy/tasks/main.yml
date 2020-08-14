@@ -82,8 +82,10 @@
     src: ../../../common/resources/templates/scripts/setup-arm-ips.j2
     dest: "{{ user_folder }}/{{ setup_script }}"
     mode: '755'
+  when: arm_ip_left!="" or arm_ip_right!=""
 
 - name: Copying  NUC arm ip setup script into docker container
   changed_when: false
   shell: "docker cp {{ user_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
+  when: arm_ip_left!="" or arm_ip_right!=""
