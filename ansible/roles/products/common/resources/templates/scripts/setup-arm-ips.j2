@@ -1,0 +1,21 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+source /home/user/projects/shadow_robot/base/devel/setup.bash
+if [ ! -z {{ arm_ip_right }} ]; then
+    echo "Inserting right arm ip {{ arm_ip_right }} into config yaml files"
+    sed -i 's|robot_ip:.*|robot_ip: {{ arm_ip_right }}|' $(rospack find sr_robot_launch)/config/right_ur_arm_robot_hw.yaml
+    sed -i 's|control_pc_ip_address:.*|control_pc_ip_address: {{ arm_ip_right | regex_replace('[^.]+$', '100') }}|' $(rospack find sr_robot_launch)/config/right_ur_arm_robot_hw.yaml
+    sed -i 's|robot_ip:.*|robot_ip: {{ arm_ip_right }}|' $(rospack find sr_robot_launch)/config/right_ur10e_arm_robot_hw.yaml
+    sed -i 's|control_pc_ip_address:.*|control_pc_ip_address: {{ arm_ip_right | regex_replace('[^.]+$', '100') }}|' $(rospack find sr_robot_launch)/config/right_ur10e_arm_robot_hw.yaml
+fi
+if [ ! -z {{ arm_ip_left }} ]; then
+    echo "Inserting left arm ip {{ arm_ip_left }} into config yaml files"
+    sed -i 's|robot_ip:.*|robot_ip: {{ arm_ip_left }}|' $(rospack find sr_robot_launch)/config/left_ur_arm_robot_hw.yaml
+    sed -i 's|control_pc_ip_address:.*|control_pc_ip_address: {{ arm_ip_left | regex_replace('[^.]+$', '100') }}|' $(rospack find sr_robot_launch)/config/left_ur_arm_robot_hw.yaml
+    sed -i 's|robot_ip:.*|robot_ip: {{ arm_ip_left }}|' $(rospack find sr_robot_launch)/config/left_ur10e_arm_robot_hw.yaml
+    sed -i 's|control_pc_ip_address:.*|control_pc_ip_address: {{ arm_ip_left | regex_replace('[^.]+$', '100') }}|' $(rospack find sr_robot_launch)/config/left_ur10e_arm_robot_hw.yaml
+    sed -i 's|robot_ip:.*|robot_ip: {{ arm_ip_left }}|' $(rospack find sr_robot_launch)/config/left_bimanual_ur_arm_robot_hw.yaml
+    sed -i 's|control_pc_ip_address:.*|control_pc_ip_address: {{ arm_ip_left | regex_replace('[^.]+$', '100') }}|' $(rospack find sr_robot_launch)/config/left_bimanual_ur_arm_robot_hw.yaml
+    sed -i 's|robot_ip:.*|robot_ip: {{ arm_ip_left }}|' $(rospack find sr_robot_launch)/config/left_bimanual_ur10e_arm_robot_hw.yaml
+    sed -i 's|control_pc_ip_address:.*|control_pc_ip_address: {{ arm_ip_left | regex_replace('[^.]+$', '100') }}|' $(rospack find sr_robot_launch)/config/left_bimanual_ur10e_arm_robot_hw.yaml
+fi
