@@ -2,22 +2,22 @@
 network:
     ethernets:
         right_arm:
-            addresses: [192.168.1.100/24]
+            addresses: [{{ arm_ip_right | regex_replace('[^.]+$', '100') }}/24]
             optional: true
             match:
                 macaddress: {{ ethercat_right_arm_mac }}
             routes:
-                - to: 192.168.1.1/32
-                  via: 192.168.1.1
+                - to: {{ arm_ip_right}}/32
+                  via: {{ arm_ip_right}}
             set-name: right_arm
         left_arm:
-            addresses: [192.168.2.100/24]
+            addresses: [{{ arm_ip_left | regex_replace('[^.]+$', '100') }}/24]
             optional: true
             match:
                 macaddress: {{ ethercat_left_arm_mac }}
             routes:
-                - to: 192.168.2.1/32
-                  via: 192.168.2.1
+                - to: {{ arm_ip_left}}/32
+                  via: {{ arm_ip_left}}
             set-name: left_arm
         enx-usb-ethernet:
             match:

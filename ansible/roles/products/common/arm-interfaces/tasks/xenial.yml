@@ -23,7 +23,7 @@
     block: |
       auto {{ ur_interface }}
       iface {{ ur_interface }} inet static
-        address 192.168.1.100
+        address {{ arm_ip_right | regex_replace('[^.]+$', '100') }}
         netmask 255.255.255.0
   changed_when: false
 
@@ -36,11 +36,11 @@
     block: |
       auto {{ ur_interface }}
       iface {{ ur_interface }} inet static
-        address 192.168.1.100
+        address {{ arm_ip_right | regex_replace('[^.]+$', '100') }}
         netmask 255.255.255.0
 
       auto {{ ethercat_left_arm }}
       iface {{ ethercat_left_arm }} inet static
-        address 192.168.2.100
+        address {{ arm_ip_left | regex_replace('[^.]+$', '100') }}
         netmask 255.255.255.0
   changed_when: false
