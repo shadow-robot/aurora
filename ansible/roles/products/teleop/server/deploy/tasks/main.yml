@@ -92,9 +92,9 @@
     set_fact:
       user_shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_user_calibration_files"
       user_shadow_glove_calibration_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
-      user_shadow_glove_calibration_inside_docker_binary: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
+      user_shadow_glove_calibration_inside_docker_binary: "/opt/ros/melodic/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
       user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
-      user_shadow_glove_calibration_defaults_inside_docker_binary: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/melodic/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
 
   - name: Ensure {{ user_shadow_glove_calibration_folder }} folder exists
     file:
