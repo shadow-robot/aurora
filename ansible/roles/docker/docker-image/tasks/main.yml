@@ -25,6 +25,8 @@
       docker_image:
         name: "{{ full_image_name }}"
         source: pull
+        state: present
+        force_source: yes
       environment:
         PYTHONPATH: "{{ python_packages_path }}"
       async: 50000
@@ -50,6 +52,8 @@
       docker_image:
         name: "{{ full_image_name }}"
         source: pull
+        state: present
+        force_source: yes
       environment:
         PYTHONPATH: "{{ python_packages_path }}"
       async: 50000
