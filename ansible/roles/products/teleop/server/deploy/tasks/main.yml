@@ -92,7 +92,9 @@
     set_fact:
       user_shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_user_calibration_files"
       user_shadow_glove_calibration_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
+      user_shadow_glove_calibration_inside_docker_binary: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
       user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker_binary: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
 
   - name: Ensure {{ user_shadow_glove_calibration_folder }} folder exists
     file:
@@ -100,10 +102,18 @@
       mode: '755'
       state: directory
 
-  - name: Set custom shared volumes for docker container
+  - name: Set custom shared volumes for docker container for normal image
     set_fact:
       custom_shared_volumes: 
         - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
+    when: "'binary' not in {{ image }}"
+
+  - name: Set custom shared volumes for docker container for binary image
+    set_fact:
+      custom_shared_volumes: 
+        - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker_binary }}"
+    when: "'binary' in {{ image }}"
+
   when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include products/common/docker-container role
@@ -115,11 +125,19 @@
 
 - name: Copy the default shadow glove user calibration files to the host
   block:
-  - name: Copying default files from docker container path {{ user_shadow_glove_calibration_defaults_inside_docker }} to the host folder {{ user_shadow_glove_calibration_folder }}
+  - name: Copying default files from non-binary docker container path {{ user_shadow_glove_calibration_defaults_inside_docker }} to the host folder {{ user_shadow_glove_calibration_folder }}
     changed_when: false
     shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker }} {{ user_shadow_glove_calibration_folder }}"
     become: yes
     ignore_errors: yes
+    when: "'binary' not in {{ image }}"
+
+  - name: Copying default files from binary docker container path {{ user_shadow_glove_calibration_defaults_inside_docker_binary }} to the host folder {{ user_shadow_glove_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker_binary }} {{ user_shadow_glove_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+    when: "'binary' in {{ image }}"
 
   - name: Check if the current_calibration.yaml exists on the host shared volume
     stat: 
