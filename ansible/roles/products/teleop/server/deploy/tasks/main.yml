@@ -102,7 +102,7 @@
       mode: '755'
       state: directory
 
-  - name: Set custom shared volumes for docker container for normal image
+  - name: Set custom shared volumes for docker container for non-binary image
     set_fact:
       custom_shared_volumes: 
         - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
