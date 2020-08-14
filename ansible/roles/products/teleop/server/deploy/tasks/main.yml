@@ -106,13 +106,13 @@
     set_fact:
       custom_shared_volumes: 
         - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
-    when: "'binary' not in {{ image }}"
+    when: "'binary' not in image"
 
   - name: Set custom shared volumes for docker container for binary image
     set_fact:
       custom_shared_volumes: 
         - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker_binary }}"
-    when: "'binary' in {{ image }}"
+    when: "'binary' in image"
 
   when: glove == "shadow_glove" and real_glove|bool
 
@@ -130,14 +130,14 @@
     shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker }} {{ user_shadow_glove_calibration_folder }}"
     become: yes
     ignore_errors: yes
-    when: "'binary' not in {{ image }}"
+    when: "'binary' not in image"
 
   - name: Copying default files from binary docker container path {{ user_shadow_glove_calibration_defaults_inside_docker_binary }} to the host folder {{ user_shadow_glove_calibration_folder }}
     changed_when: false
     shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker_binary }} {{ user_shadow_glove_calibration_folder }}"
     become: yes
     ignore_errors: yes
-    when: "'binary' in {{ image }}"
+    when: "'binary' in image"
 
   - name: Check if the current_calibration.yaml exists on the host shared volume
     stat: 
