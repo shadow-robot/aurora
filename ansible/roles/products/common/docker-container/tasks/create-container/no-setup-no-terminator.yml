@@ -15,7 +15,6 @@
     image: "{{ full_image_name }}"
     state: present
     recreate: yes
-    pull: yes
     env:
       verbose: "true"
       interface: "{{ ethercat_interface }}"
