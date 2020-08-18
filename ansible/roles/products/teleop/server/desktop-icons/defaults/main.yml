@@ -27,3 +27,6 @@ teleop_glove_left: "hand-e-left.png"
 teleop_glove_bimanual: "hand-e-bimanual.png"
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
+initial_z_value: 0.7551
+arm_x_separation_value: 0.0
+arm_y_separation_value: 0.0
