@@ -116,7 +116,7 @@ do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
     valid_value=true
-    if [[ "$variable" == "glove" ]]:
+    if [[ "$variable" == "glove" ]]; then
         allowed_values="haptx shadow_glove cyberglove"
         if ! $value in $allowed_values; then
             echo "Variable $variable has invalid value $value"
