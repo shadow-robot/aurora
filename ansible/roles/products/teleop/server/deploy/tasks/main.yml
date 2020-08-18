@@ -216,10 +216,15 @@
   become: yes
   when: groups['server'] is defined
 
-- name: if glove==shadow_glove and real_vive==true, set use_steamvr=true
+- name: if glove==shadow_glove and real_vive==true, set use_steamvr=true (override simulation scenario with real_vive)
   set_fact:
     use_steamvr: true
   when: glove=="shadow_glove" and real_vive|bool
+
+- name: if glove==haptx and real_vive==true, set use_steamvr=false (override real robots scenario with haptx)
+  set_fact:
+    use_steamvr: false
+  when: glove=="haptx" and real_vive|bool
 
 - name: Creating teleop-server setup script
   template:
