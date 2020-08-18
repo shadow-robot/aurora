@@ -5,10 +5,11 @@ set -e # fail on errors
 
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
+command_usage_message="Command usage: ${script_name} <playbook name> [--branch <name>] [--inventory <name>]"
+command_usage_message="${command_usage_message} [--limit <rules>]"
+command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
+
 if [[ $# -lt 2 ]]; then
-    command_usage_message="Command usage: ${script_name} <playbook name> [--branch <name>] [--inventory <name>]"
-    command_usage_message="${command_usage_message} [--limit <rules>]"
-    command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
     echo "${command_usage_message}"
     exit 1
 fi
@@ -98,6 +99,21 @@ export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/shar
 export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 extra_vars=$*
+if [[ $extra_vars == *":="* ]]; then
+    echo "All aurora variable assignments should be done with just = not :="
+    echo "You entered: $extra_vars"
+    echo "Please fix the syntax and try again"
+    echo "${command_usage_message}"
+    exit 1
+fi
+
+for extra_var in $extra_vars
+do
+    variable="${extra_var%=*}"
+    value="${extra_var#*=}"
+    echo "set variable $variable to value $value"
+done
+
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
     printf "Data input for $i:"
