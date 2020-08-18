@@ -121,11 +121,11 @@ do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
     allowed_values=$value
-    if [[ "$variable" in "$boolean_variables" ]]; then
+    if [[ $boolean_variables == *"$variable"* ]]; then
         allowed_values="true false"
     fi
-    if [[ "$variable" in "$ip_variables" ]]; then
-        if ! [[ $value =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    if [[ $ip_variables == *"$variable"* ]]; then
+        if [[ $value !=~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Variable $variable has invalid value: $value"
             echo ""
             echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
@@ -148,7 +148,7 @@ do
     if [[ "$variable" == "product" ]]; then
         allowed_values="hand_e hand_lite hand_extra_lite hand_h"
     fi
-    if ! [[ "$value" in "$allowed_values" ]]; then
+    if [[ $allowed_values != *"$value"*  ]]; then
         echo "Variable $variable has invalid value: $value"
         echo ""
         echo "The allowed values for $variable are: $allowed_values"
