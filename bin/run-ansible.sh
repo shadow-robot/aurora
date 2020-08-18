@@ -100,9 +100,13 @@ export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 extra_vars=$*
 if [[ $extra_vars == *":="* ]]; then
+    echo ""
     echo "All aurora variable assignments should be done with just = not :="
+    echo ""
     echo "You entered: $extra_vars"
+    echo ""
     echo "Please fix the syntax and try again"
+    echo ""
     echo "${command_usage_message}"
     exit 1
 fi
@@ -111,7 +115,13 @@ for extra_var in $extra_vars
 do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
-    echo "set variable $variable to value $value"
+    valid_value=true
+    if [[ $variable == "glove" ]]:
+        allowed_values="haptx shadow_glove cyberglove"
+        if ! $value in $allowed_values; then
+            echo "Variable $variable has invalid value $value"
+            echo "The allowed values for $variable are $allowed_values"
+        fi
 done
 
 IFS=',' read -ra inputdata <<< "$read_input"
