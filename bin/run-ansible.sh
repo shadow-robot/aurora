@@ -126,6 +126,7 @@ do
     fi
     if [[ $ip_variables == *"$variable"* ]]; then
         if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo ""
             echo "Variable $variable has invalid value: $value"
             echo ""
             echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
@@ -149,6 +150,7 @@ do
         allowed_values="hand_e hand_lite hand_extra_lite hand_h"
     fi
     if [[ $allowed_values != *"$value"*  ]]; then
+        echo ""
         echo "Variable $variable has invalid value: $value"
         echo ""
         echo "The allowed values for $variable are: $allowed_values"
