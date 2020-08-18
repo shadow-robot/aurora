@@ -111,22 +111,52 @@ if [[ $extra_vars == *":="* ]]; then
     exit 1
 fi
 
+boolean_variables="reinstall nvidia_docker real_glove real_vive use_aws use_openvpn terminator remote_cyberglove launch_hand"
+boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_icons upgrade_check bimanual remote_teleop"
+boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce"
+ip_variables="arm_ip_left arm_ip_right"
+
 for extra_var in $extra_vars
 do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
-    if [[ "$variable" == "glove" ]]; then
-        allowed_values="haptx shadow_glove cyberglove"
-        if ! [[ "$value" in "$allowed_values" ]]; then
-            echo "Variable $variable has invalid value $value"
+    allowed_values=$value
+    if [[ "$variable" in "$boolean_variables" ]]; then
+        allowed_values="true false"
+    fi
+    if [[ "$variable" in "$ip_variables" ]]; then
+        if ! [[ $value =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Variable $variable has invalid value: $value"
             echo ""
-            echo "The allowed values for $variable are: $allowed_values"
+            echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
             echo ""
             echo "Please fix the syntax and try again."
             echo ""
             echo "${command_usage_message}"
             exit 1
         fi
+    fi
+    if [[ "$variable" == "glove" ]]; then
+        allowed_values="haptx shadow_glove cyberglove"
+    fi
+    if [[ "$variable" == "ur_robot_type" ]]; then
+        allowed_values="ur10 ur10e ur5 ur5e"
+    fi
+    if [[ "$variable" == "hand_side" ]]; then
+        allowed_values="left right"
+    fi
+    if [[ "$variable" == "product" ]]; then
+        allowed_values="hand_e hand_lite hand_extra_lite hand_h"
+    fi
+    if ! [[ "$value" in "$allowed_values" ]]; then
+        echo "Variable $variable has invalid value: $value"
+        echo ""
+        echo "The allowed values for $variable are: $allowed_values"
+        echo ""
+        echo "Please fix the syntax and try again."
+        echo ""
+        echo "${command_usage_message}"
+        exit 1
     fi
 done
 
