@@ -436,7 +436,7 @@
     override_launch_hand_var: True
 
 - name: Install desktop icon for Zero Force Mode - Right Hand for NUC
-  include_tasks: ../../../hand-e/server/desktop-icons/tasks/hand-icon.yml
+  import_tasks: ../../../hand-e/server/desktop-icons/tasks/hand-icon.yml
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_zero_force_mode_right.sh"
@@ -453,7 +453,7 @@
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
-  include_tasks: ../../../hand-e/server/desktop-icons/tasks/hand-icon.yml
+  import_tasks: ../../../hand-e/server/desktop-icons/tasks/hand-icon.yml
   vars:
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_zero_force_mode_left.sh"
