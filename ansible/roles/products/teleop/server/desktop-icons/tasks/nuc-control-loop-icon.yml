@@ -16,6 +16,7 @@
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
+    mapping_path_var: "{{ mapping_path_value }}"
   when: glove=="cyberglove"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
@@ -29,6 +30,7 @@
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
+    mapping_path_var: "{{ mapping_path_value }}"
   when: glove=="haptx"
 
 - name: Create executable launch script for hand and arm control loop (with shadow_glove)
@@ -42,6 +44,7 @@
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
+    mapping_path_var: "{{ mapping_path_value }}"
   when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand

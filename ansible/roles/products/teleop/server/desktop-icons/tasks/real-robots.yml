@@ -135,6 +135,7 @@
     ethercat_interface_value: "{{ ethercat_interface }}"
     hand_serial_value: "{{ hand_serial }}"
     hand_side_value: "right"
+    mapping_path_value: "{{ mapping_path_right }}"
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC left hand and arm hardware control loop
@@ -148,6 +149,7 @@
     ethercat_interface_value: "{{ ethercat_left_hand }}"
     hand_serial_value: "{{ hand_serial_left }}"
     hand_side_value: "left"
+    mapping_path_value: "{{ mapping_path_left }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop
@@ -436,7 +438,7 @@
     override_launch_hand_var: True
 
 - name: Install desktop icon for Zero Force Mode - Right Hand for NUC
-  include_tasks: ../../../hand-e/server/desktop-icons/tasks/hand-icon.yml
+  include_tasks: hand-icon.yml
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_zero_force_mode_right.sh"
@@ -454,7 +456,7 @@
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
-  include_tasks: ../../../hand-e/server/desktop-icons/tasks/hand-icon.yml
+  include_tasks: hand-icon.yml
   vars:
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_zero_force_mode_left.sh"

@@ -10,6 +10,7 @@
     ethercat_interface_value: "{{ ethercat_interface }}"
     hand_serial_value: "634"
     hand_side_value: "right"
+    mapping_path_value: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
 
 - name: Install desktop icon for hand B
   import_tasks: nuc-control-loop-icon.yml
@@ -22,6 +23,7 @@
     ethercat_interface_value: "{{ ethercat_interface }}"
     hand_serial_value: "1130"
     hand_side_value: "right"
+    mapping_path_value: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
 
 - name: Install desktop icon for hand C
   import_tasks: nuc-control-loop-icon.yml
@@ -34,6 +36,7 @@
     ethercat_interface_value: "{{ ethercat_interface }}"
     hand_serial_value: "1370"
     hand_side_value: "right"
+    mapping_path_value: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v3.yaml"
 
 - name: Install desktop icon for hand D
   import_tasks: nuc-control-loop-icon.yml
@@ -46,3 +49,4 @@
     ethercat_interface_value: "{{ ethercat_left_hand }}"
     hand_serial_value: "2346"
     hand_side_value: "left"
+    mapping_path_value: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v3.yaml"
