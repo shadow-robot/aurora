@@ -5,10 +5,11 @@ set -e # fail on errors
 
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
+command_usage_message="Command usage: ${script_name} <playbook name> [--branch <name>] [--inventory <name>]"
+command_usage_message="${command_usage_message} [--limit <rules>]"
+command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
+
 if [[ $# -lt 2 ]]; then
-    command_usage_message="Command usage: ${script_name} <playbook name> [--branch <name>] [--inventory <name>]"
-    command_usage_message="${command_usage_message} [--limit <rules>]"
-    command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
     echo "${command_usage_message}"
     exit 1
 fi
@@ -98,6 +99,69 @@ export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/shar
 export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 extra_vars=$*
+if [[ $extra_vars == *":="* ]]; then
+    echo ""
+    echo "All aurora variable assignments should be done with just = not :="
+    echo ""
+    echo "You entered: $extra_vars"
+    echo ""
+    echo "Please fix the syntax and try again"
+    echo ""
+    echo "${command_usage_message}"
+    exit 1
+fi
+
+boolean_variables="reinstall nvidia_docker real_glove real_vive use_aws use_openvpn terminator remote_cyberglove launch_hand"
+boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_icons upgrade_check bimanual remote_teleop"
+boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce"
+ip_variables="arm_ip_left arm_ip_right"
+
+for extra_var in $extra_vars
+do
+    variable="${extra_var%=*}"
+    value="${extra_var#*=}"
+    allowed_values=$value
+    if [[ $boolean_variables == *"$variable"* ]]; then
+        allowed_values="true false"
+    fi
+    if [[ $ip_variables == *"$variable"* ]]; then
+        if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo ""
+            echo "Variable $variable has invalid value: $value"
+            echo ""
+            echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
+            echo ""
+            echo "Please fix the syntax and try again."
+            echo ""
+            echo "${command_usage_message}"
+            exit 1
+        fi
+    fi
+    if [[ "$variable" == "glove" ]]; then
+        allowed_values="haptx shadow_glove cyberglove"
+    fi
+    if [[ "$variable" == "ur_robot_type" ]]; then
+        allowed_values="ur10 ur10e ur5 ur5e"
+    fi
+    if [[ "$variable" == "hand_side" ]]; then
+        allowed_values="left right"
+    fi
+    if [[ "$variable" == "product" ]]; then
+        allowed_values="hand_e hand_lite hand_extra_lite hand_h"
+    fi
+    if [[ $allowed_values != *"$value"*  ]]; then
+        echo ""
+        echo "Variable $variable has invalid value: $value"
+        echo ""
+        echo "The allowed values for $variable are: $allowed_values"
+        echo ""
+        echo "Please fix the syntax and try again."
+        echo ""
+        echo "${command_usage_message}"
+        exit 1
+    fi
+done
+
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
     printf "Data input for $i:"
