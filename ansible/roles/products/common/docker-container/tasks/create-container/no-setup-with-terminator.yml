@@ -19,7 +19,7 @@
       LOCAL_USER_ID: "{{ id.stdout }}"
       DISPLAY: "{{ lookup('env','DISPLAY') }}"
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
-      arm_ips: "{{ arm_ip_right }}\n{{ arm_ip_left }}"
+      arm_ips: "{{ arm_ip_right }}_{{ arm_ip_left }}"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
