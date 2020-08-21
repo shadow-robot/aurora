@@ -20,10 +20,13 @@ ethercat_interface_value: "eth0"
 server_ip: "10.9.11.1"
 demohand_icons: false
 teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
-ur_robot_type: "ur10"
+ur_robot_type: "ur10e"
 biotacs: true
 teleop_glove_right: "hand-e.png"
 teleop_glove_left: "hand-e-left.png"
 teleop_glove_bimanual: "hand-e-bimanual.png"
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
+initial_z_value: 0.7551
+arm_x_separation_value: 0.0
+arm_y_separation_value: 0.0

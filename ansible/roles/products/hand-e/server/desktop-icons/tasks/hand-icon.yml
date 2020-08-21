@@ -19,6 +19,9 @@
     pwm_control_var: "{{ pwm_control_value }}"
     hand_ctrl_var: "{{ hand_ctrl_value }}"
     hand_var: "{{ hand_value }}"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
 
 - name: Create desktop icon for hand
   template:
