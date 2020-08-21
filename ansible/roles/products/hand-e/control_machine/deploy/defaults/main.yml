@@ -28,6 +28,6 @@ hand_serial: "1082"
 hand_serial_left: "2346"
 use_cyberglove: false
 cyberglove: ""
-ur_robot_type: "ur10"
+ur_robot_type: "ur10e"
 arm_ip_left: ""
 arm_ip_right: ""

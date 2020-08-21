@@ -5,6 +5,11 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
+- name: Set arm y separation if bimanual=true
+  set_fact:
+    arm_y_separation_value: 1.5
+  when: bimanual|bool and hand_side_value=="left"
+
 - name: Create executable launch script for hand and arm control loop (for cyberglove)
   template:
     src: templates/scripts/start-docker-container-nuc.j2
@@ -16,6 +21,9 @@
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
   when: glove=="cyberglove"
 
@@ -30,6 +38,9 @@
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
   when: glove=="haptx"
 
@@ -44,6 +55,9 @@
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
   when: glove=="shadow_glove"
 
