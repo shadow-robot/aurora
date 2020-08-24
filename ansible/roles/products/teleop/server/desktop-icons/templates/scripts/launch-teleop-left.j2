@@ -6,7 +6,7 @@ sleep 4
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 10
 terminator --geometry "{{ term_3 }}" -T 'NUC left hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_left_hardware_control_loop.sh" &
-sleep 12
+sleep 18
 terminator --geometry "{{ term_4 }}" -T 'Server left hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_left.sh"
 
 if [[ "{{ glove }}" == "haptx"  ]]; then
