@@ -15,7 +15,7 @@ platforms:
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-0f8cc2cc245d57eb4
-    vpc_subnet_id: subnet-062061bd4cbfd0aef
+    vpc_subnet_id: subnet-0c8cfe80927f04845
     groups:
       - simulation
 provisioner:
