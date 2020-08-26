@@ -91,8 +91,7 @@
   - name: Set user shadow glove calibration folder name
     set_fact:
       user_shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_user_calibration_files"
-      user_shadow_glove_calibration_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
-      user_shadow_glove_calibration_inside_docker_binary: "/opt/ros/melodic/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_files"
+      user_shadow_glove_calibration_inside_docker: "/home/user/shadow_glove_user_calibration_files"
       user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
       user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/melodic/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
 
@@ -102,17 +101,10 @@
       mode: '755'
       state: directory
 
-  - name: Set custom shared volumes for docker container for non-binary image
+  - name: Set custom shared volumes for docker container
     set_fact:
       custom_shared_volumes: 
         - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
-    when: "'binary' not in image"
-
-  - name: Set custom shared volumes for docker container for binary image
-    set_fact:
-      custom_shared_volumes: 
-        - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker_binary }}"
-    when: "'binary' in image"
 
   when: glove == "shadow_glove" and real_glove|bool
 
