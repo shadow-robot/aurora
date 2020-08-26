@@ -198,7 +198,7 @@
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_GUI_right.sh"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
     desktop_icon_name: "4 - Launch Right Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
   when:
@@ -224,7 +224,7 @@
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_GUI_left.sh"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true side:=left vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true side:=left vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
     desktop_icon_name: "4 - Launch Left Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
   when:
@@ -265,7 +265,7 @@
     desktop_icon_name: "5 - Launch Right Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Driver"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "polhemus.launch user_calibration_folder_path:='$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input: "polhemus.launch user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
   when:
     - bimanual|bool or hand_side=="right"
     - glove=="shadow_glove"
@@ -278,7 +278,7 @@
     desktop_icon_name: "5 - Launch Left Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Shadow Glove Driver"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "polhemus.launch user_calibration_folder_path:='$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input: "polhemus.launch user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
   when:
     - bimanual|bool or hand_side=="left"
     - glove=="shadow_glove"
@@ -291,7 +291,7 @@
     desktop_icon_name: "5 - Launch Left Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Shadow Glove Driver"
     project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "polhemus.launch user_calibration_folder_path:='$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input: "polhemus.launch user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
   when:
     - bimanual|bool and glove=="shadow_glove"
 
@@ -430,7 +430,7 @@
     desktop_icon_name: "Right Shadow Glove Teleop Simulation"
     desktop_icon_path: "Right Shadow Glove Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} user_calibration_folder_path:='$(find sr_teleop_vive_polhemus)/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
+    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' user_calibration_file_name:=current_calibration.yaml"
   when: sim_icon|bool and not bimanual|bool and glove=="shadow_glove"
 
 - name: Install desktop icon for NUC container
