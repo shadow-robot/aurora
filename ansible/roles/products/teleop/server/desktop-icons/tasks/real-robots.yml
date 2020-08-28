@@ -178,7 +178,7 @@
   when:
     - bimanual|bool or hand_side=="right"
     - glove=="cyberglove"
-  
+
 - name: Install desktop icon for right side teleop GUI (for haptx)
   import_tasks: roslaunch-icon.yml
   vars:
@@ -295,6 +295,25 @@
   when:
     - bimanual|bool and glove=="shadow_glove"
 
+- name: Set launch file input for HaptX mapping (overriding right mapping only)
+  set_fact:
+    launch_file_input_haptx_mapping_right: "haptx_base.launch biotac_mapping_script_type:={{ rh_biotac_mapping }}"
+    launch_file_input_haptx_mapping_bimanual: "haptx_base_bimanual.launch rh_biotac_mapping_script_type:={{ rh_biotac_mapping }}"
+  when: lh_biotac_mapping|length == 0 and rh_biotac_mapping|length > 0 
+
+- name: Set launch file input for HaptX mapping (overriding left mapping only)
+  set_fact:
+    launch_file_input_haptx_mapping_left: "haptx_base.launch hand_side_prefix:=lh biotac_mapping_script_type:={{ lh_biotac_mapping }}"
+    launch_file_input_haptx_mapping_bimanual: "haptx_base_bimanual.launch lh_biotac_mapping_script_type:={{ lh_biotac_mapping }}"
+  when: lh_biotac_mapping|length > 0 and rh_biotac_mapping|length == 0
+
+- name: Set launch file input for HaptX mapping (overriding both left and right mappings)
+  set_fact:
+    launch_file_input_haptx_mapping_right: "haptx_base.launch biotac_mapping_script_type:={{ rh_biotac_mapping }}"
+    launch_file_input_haptx_mapping_left: "haptx_base.launch hand_side_prefix:=lh biotac_mapping_script_type:={{ lh_biotac_mapping }}"
+    launch_file_input_haptx_mapping_bimanual: "haptx_base_bimanual.launch rh_biotac_mapping_script_type:={{ rh_biotac_mapping }} lh_biotac_mapping_script_type:={{ lh_biotac_mapping }}"
+  when: lh_biotac_mapping|length > 0 and rh_biotac_mapping|length > 0
+
 - name: Install desktop icon for running haptx mapping node right
   include_tasks: roslaunch-icon.yml
   vars:
@@ -303,7 +322,7 @@
     desktop_icon_name: "5 - Launch Right HaptX Mapping"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right HaptX Mapping"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base.launch"
+    launch_file_input: "{{ launch_file_input_haptx_mapping_right }}"
   when:
     - bimanual|bool or hand_side=="right"
     - glove=="haptx"
@@ -316,7 +335,7 @@
     desktop_icon_name: "5 - Launch Left HaptX Mapping"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left HaptX Mapping"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base.launch hand_side_prefix:=lh"
+    launch_file_input: "{{ launch_file_input_haptx_mapping_left }}"
   when:
     - bimanual|bool or hand_side=="left"
     - glove=="haptx"
@@ -329,7 +348,7 @@
     desktop_icon_name: "5 - Launch Bimanual HaptX Mapping"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual HaptX Mapping"
     project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base_bimanual.launch"
+    launch_file_input: "{{ launch_file_input_haptx_mapping_bimanual }}"
   when: bimanual|bool and glove=="haptx"
 
 - name: Install desktop icon for running Shadow Glove mapping node right
