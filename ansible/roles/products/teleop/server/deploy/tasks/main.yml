@@ -88,12 +88,22 @@
 
 - name: Custom shared volume for user Shadow Glove calibration
   block:
-  - name: Set user shadow glove calibration folder name
+  - name: Set user shadow glove calibration and boresight calibration folder names
     set_fact:
-      user_shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_user_calibration_files"
-      user_shadow_glove_calibration_inside_docker: "/home/user/shadow_glove_user_calibration_files"
+      shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_calibration"
+      shadow_glove_calibration_inside_docker: "/home/user/shadow_glove_calibration"
+      user_shadow_glove_calibration_folder: "{{ shadow_glove_calibration_folder }}/user_calibration"
+      user_shadow_glove_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/user_calibration"
       user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
       user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/melodic/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      boresight_calibration_folder: "{{ shadow_glove_calibration_folder }}/glove_boresight_calibration"
+      boresight_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/glove_boresight_calibration"
+
+  - name: Ensure {{ shadow_glove_calibration_folder }} folder exists
+    file:
+      path: "{{ shadow_glove_calibration_folder }}"
+      mode: '755'
+      state: directory
 
   - name: Ensure {{ user_shadow_glove_calibration_folder }} folder exists
     file:
@@ -101,10 +111,16 @@
       mode: '755'
       state: directory
 
+  - name: Ensure {{ boresight_calibration_folder }} folder exists
+    file:
+      path: "{{ boresight_calibration_folder }}"
+      mode: '755'
+      state: directory
+
   - name: Set custom shared volumes for docker container
     set_fact:
       custom_shared_volumes: 
-        - "{{ user_shadow_glove_calibration_folder }}:{{ user_shadow_glove_calibration_inside_docker }}"
+        - "{{ shadow_glove_calibration_folder }}:{{ shadow_glove_calibration_inside_docker }}"
 
   when: glove == "shadow_glove" and real_glove|bool
 
