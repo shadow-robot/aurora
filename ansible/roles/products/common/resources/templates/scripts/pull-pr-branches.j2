@@ -1,0 +1,11 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+PR_BRANCHES={{ pr_branches_value }}
+for i in $PR_BRANCHES; do
+    if "/pull/" in $i; then
+        echo "this is a PR"
+    fi
+    if "/tree/" in $i; then
+        echo "this is a branch"
+    fi
+done

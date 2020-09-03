@@ -24,6 +24,28 @@
   when: "nvidia_docker|bool and terminator and setup_script | length > 0"
   include_tasks: create-container/nvidia-with-setup-with-terminator.yml
 
+- name: Creating the pull pr_branches bash script
+  template:
+    src: ../../../common/resources/templates/scripts/pull-pr-branches.j2
+    dest: "{{ shadow_hand_launcher_folder }}/pull_pr_branches.sh"
+    mode: '755'
+  vars:
+    pr_branches_value: "{{ pr_branches }}"
+  when: pr_branches defined and pr_branches | length > 0
+
+- name: Copying the pull pr_branches bash script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/pull_pr_branches.sh {{ container_name }}:/home/user/pull_pr_branches.sh"
+  become: yes
+  when: pr_branches defined and pr_branches | length > 0
+
+- name: Check-out any branches inside docker container for testing
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "execute_pull_pr_branches.sh"
+    modify_script_commands: "./pull_pr_branches.sh"
+  when: pr_branches defined and pr_branches | length > 0
+
 - name: Pull sr-config branch inside the docker container
   import_tasks: modify-container.yml
   vars:
