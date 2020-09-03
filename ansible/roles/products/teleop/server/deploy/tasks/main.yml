@@ -88,10 +88,13 @@
 
 - name: Custom shared volume for user Shadow Glove calibration
   block:
-  - name: Set user shadow glove calibration and boresight calibration folder names
+  - name: Set shadow_glove_calibration_folder folder names
     set_fact:
       shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_calibration"
       shadow_glove_calibration_inside_docker: "/home/user/shadow_glove_calibration"
+
+  - name: Set shadow glove user calibration and boresight calibration folder names
+    set_fact:
       user_shadow_glove_calibration_folder: "{{ shadow_glove_calibration_folder }}/user_calibration"
       user_shadow_glove_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/user_calibration"
       user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
