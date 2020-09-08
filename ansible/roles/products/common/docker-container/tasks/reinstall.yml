@@ -31,20 +31,20 @@
     mode: '755'
   vars:
     pr_branches_value: "{{ pr_branches }}"
-  when: pr_branches defined and pr_branches | length > 0
+  when: pr_branches is defined and pr_branches | length > 0
 
 - name: Copying the pull pr_branches bash script into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/pull_pr_branches.sh {{ container_name }}:/home/user/pull_pr_branches.sh"
   become: yes
-  when: pr_branches defined and pr_branches | length > 0
+  when: pr_branches is defined and pr_branches | length > 0
 
 - name: Check-out any branches inside docker container for testing
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "execute_pull_pr_branches.sh"
     modify_script_commands: "./pull_pr_branches.sh"
-  when: pr_branches defined and pr_branches | length > 0
+  when: pr_branches is defined and pr_branches | length > 0
 
 - name: Pull sr-config branch inside the docker container
   import_tasks: modify-container.yml
