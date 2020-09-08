@@ -1,35 +1,42 @@
-#jinja2: trim_blocks:False
 #! /bin/bash
-PR_BRANCHES={{ pr_branches_value }}
-echo "You have specified PRs and/or branches to be tested"
-echo "pr_branches=$PR_BRANCHES"
+set -x
+source /home/user/projects/shadow_robot/base_deps/devel/setup.bash
+source /home/user/projects/shadow_robot/base/devel/setup.bash
+PR_BRANCHES="https://github.com/shadow-robot/sr-visualization/pull/214 https://github.com/shadow-robot/sr_interface/pull/538 https://github.com/shadow-robot/jog_arm_internal/tree/F%23SRC-3386_dynamic_collision_scene"
+echo "Enter git_username for pulling pr_branches"
 read -p 'git_username: ' git_username
 git config --global user.name "$git_username"
 git config --global user.email "${git_username}@shadowrobot.com"
 git config --global credential.helper store
 git config --global alias.unsshify '!f() { git remote set-url origin $(git remote get-url origin | sed -En "s/git@github.com:/https:\/\/github.com\//p") ; }; f'
 for i in $PR_BRANCHES; do
-    repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/pull\/.*/\1/')
-    branch="" 
-    if "/pull/" in $i; then
+    ros_repo=$repo
+    branch=""
+    if [[ "$i" == *"/pull/"* ]]; then
+        repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/pull\/.*/\1/')
         pull=$(echo "$i" | sed -e 's/.*\/pull\/\(.*\).*/\1/')
         branch=$(curl -s "https://api.github.com/repos/shadow-robot/$repo/pulls/$pull" | sed -e '/head"/,/"/!d' | tr -d '\n' | sed -e 's/.*shadow-robot:\(.*\)",.*/\1/')
     fi
-    if "/tree/" in $i; then
+    if [[ "$i" == *"/tree/"* ]]; then
+        repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/tree\/.*/\1/')
         branch=$(echo $i | sed -e 's/.*\/tree\/\(.*\).*/\1/')
     fi
-    echo "Started pulling branch: $branch in repo: $repo"
-    roscd $repo
+    echo "Started pulling branch: $branch in $repo"
+    attempt=$(roscd "$ros_repo")
+    if [[ "$attempt" == *"roscd: No such package"* ]]; then
+        ros_repo=$(echo "$repo" | tr '-' '_')
+    fi
+    roscd $ros_repo
     git unsshify
     git fetch
     git checkout $branch
     git pull
-    echo "Completed pulling branch: $branch in repo: $repo"
+    echo "Completed pulling branch: $branch in $repo"
 done
 echo "Branches pulled, executing catkin_make"
-cd /home/user/projects/shadow_robot/base_deps
-catkin_make
-cd /home/user/projects/shadow_robot/base_deps
-catkin_make
-echo "Branches for testing have been pulled and compiled"
-echo "You are now ready for testing"
+#cd /home/user/projects/shadow_robot/base_deps
+#catkin_make
+#cd /home/user/projects/shadow_robot/base_deps
+#catkin_make
+#echo "Branches for testing have been pulled and compiled"
+#echo "You are now ready for testing"

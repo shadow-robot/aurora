@@ -39,11 +39,11 @@
   become: yes
   when: pr_branches is defined and pr_branches | length > 0
 
-- name: Check-out any branches inside docker container for testing
+- name: Check-out any branches inside docker container for testing for these branches {{ pr_branches }}
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "execute_pull_pr_branches.sh"
-    modify_script_commands: "./pull_pr_branches.sh"
+    modify_script_commands: "/home/user/pull_pr_branches.sh"
   when: pr_branches is defined and pr_branches | length > 0
 
 - name: Pull sr-config branch inside the docker container
