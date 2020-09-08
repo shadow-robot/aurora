@@ -1,0 +1,10 @@
+#jinja2: trim_blocks:False
+#!/bin/bash
+
+terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+sleep 4
+terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
+sleep 10
+terminator --geometry "{{ term_3 }}" -T 'Shadow Glove Driver' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_driver_right.sh" &
+sleep 10
+terminator --geometry "{{ term_4 }}" -T 'Shadow Glove Calibration' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_calibration_rqt.sh"
