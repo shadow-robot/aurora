@@ -14,6 +14,6 @@ for i in $PR_BRANCHES; do
         echo "this is a PR"
     fi
     if "/tree/" in $i; then
-        echo "this is a branch"
+        branch=$(echo $i | sed -e 's/.*\/tree\/\(.*\).*/\1/')
     fi
 done
