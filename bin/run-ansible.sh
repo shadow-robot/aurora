@@ -179,15 +179,14 @@ for i in "${inputdata[@]}"; do
     printf "Data input for $i:"
     read -r input_data
     if [[ "${i}" = "github_email" ]]; then
-        # creates id_rsa and id_rsa.pub (only if they don't exist, not overwriting) in /home/$USER/.ssh
         ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
         if [[ ! -f "$ssh_public_key_path" ]]; then
             ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
         fi    
         eval "$(ssh-agent -s)"
-        ssh-add /home/$USER/.ssh/id_rsa
+        sudo ssh-add /home/$USER/.ssh/id_rsa
         github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
-        apt-get install xclip
+        sudo apt-get install xclip
         xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
         echo " ----------------------------------------------------------------------------------------------------"
         echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
@@ -214,9 +213,9 @@ for i in "${inputdata[@]}"; do
                     ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
                 fi    
                 eval "$(ssh-agent -s)"
-                ssh-add /home/$USER/.ssh/id_rsa
+                sudo ssh-add /home/$USER/.ssh/id_rsa
                 github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
-                apt-get install xclip
+                sudo apt-get install xclip
                 xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
                 echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
                 echo "xclip is installed and public ssh key is copied into clipboard"
