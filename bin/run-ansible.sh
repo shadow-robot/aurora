@@ -169,6 +169,7 @@ github_ssh_public_key=""
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
+    echo " -------------------------------------------------------------------------------------"
     echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
     echo "Using SSH key from $github_ssh_private_key_path"
     ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
