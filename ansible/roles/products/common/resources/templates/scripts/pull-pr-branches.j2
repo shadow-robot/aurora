@@ -20,16 +20,14 @@ for i in $PR_BRANCHES; do
     if [[ "$attempt" == *"roscd: No such package"* ]]; then
         ros_repo=$(echo "$repo" | tr '-' '_')
     fi
-    roscd $ros_repo
+    cd /home/user/projects/shadow_robot/base/$repo
     git fetch
     git checkout $branch
     git pull
     echo "Completed pulling branch: $branch in $repo"
 done
 echo "Branches pulled, executing catkin_make"
-cd /home/user/projects/shadow_robot/base_deps
-catkin_make
-cd /home/user/projects/shadow_robot/base_deps
+cd /home/user/projects/shadow_robot/base
 catkin_make
 echo "Branches for testing have been pulled and compiled"
 echo "You are now ready for testing"

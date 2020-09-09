@@ -165,21 +165,29 @@ do
     fi
 done
 
+github_ssh_public_key=""
 if [[ $extra_vars == *"pr_branches="* ]]; then
-    if [[ -z ${read_input} ]]; then
-        read_input="github_email"
+    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
+    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+        echo " ---------------------------------"
+        echo "Github SSH key successfully added!"
+        echo " ---------------------------------"
+        github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
     else
-        read_input=$read_input",github_email"
+        if [[ -z ${read_input} ]]; then
+            read_input="github_email"
+        else
+            read_input=$read_input",github_email"
+        fi
+        # Wait for apt-get install lock file to be released
+        while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
+            echo "Waiting for apt-get install file lock..."
+            sleep 1
+        done
+        sudo apt-get install -y xclip
     fi
-    # Wait for apt-get install lock file to be released
-    while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
-        echo "Waiting for apt-get install file lock..."
-        sleep 1
-    done
-    sudo apt-get install -y xclip
 fi
 
-github_ssh_public_key=""
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
     printf "Data input for $i:"
@@ -200,10 +208,9 @@ for i in "${inputdata[@]}"; do
         echo "Select Open Link and follow the steps from number 2 onwards:"
         echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
         echo " ----------------------------------------------------------------------------------------------------"
-        printf "Confirm with y if you have added the SSH key to your Github account:"
+        printf "Confirm if you have added the SSH key to your Github account (y/n):"
         read -r ssh_key_added
         while [[ "$ssh_key_added" != "y" ]]; do
-            ssh -oStrictHostKeyChecking=no -T git@github.com
             ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
             if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
                 echo " ---------------------------------"
@@ -226,7 +233,7 @@ for i in "${inputdata[@]}"; do
                 echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key), select Open Link and follow the steps from number 2 onwards:"
                 echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
                 echo " ----------------------------------------------------------------------------------------------------"
-                printf "Confirm with y if you have added the SSH key to your Github account:"
+                printf "Confirm if you have added the SSH key to your Github account (y/n):"
                 read -r ssh_key_added
             fi
         done
