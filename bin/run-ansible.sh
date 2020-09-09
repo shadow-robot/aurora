@@ -171,6 +171,12 @@ if [[ $extra_vars == *"pr_branches="* ]]; then
     else
         read_input=$read_input",github_email"
     fi
+    # Wait for apt-get install lock file to be released
+    while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
+        echo "Waiting for apt-get install file lock..."
+        sleep 1
+    done
+    sudo apt-get install -y xclip
 fi
 
 github_ssh_public_key=""
@@ -186,7 +192,6 @@ for i in "${inputdata[@]}"; do
         eval "$(ssh-agent -s)"
         ssh-add /home/$USER/.ssh/id_rsa
         github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
-        sudo apt-get install xclip
         xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
         echo " ----------------------------------------------------------------------------------------------------"
         echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
@@ -215,7 +220,6 @@ for i in "${inputdata[@]}"; do
                 eval "$(ssh-agent -s)"
                 ssh-add /home/$USER/.ssh/id_rsa
                 github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
-                sudo apt-get install xclip
                 xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
                 echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
                 echo "xclip is installed and public ssh key is copied into clipboard"
