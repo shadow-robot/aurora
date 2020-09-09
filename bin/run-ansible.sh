@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e # fail on errors
-#set -x # echo commands run
+set -x # echo commands run
 
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
@@ -166,17 +166,17 @@ do
 done
 
 github_ssh_public_key=""
+github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
+github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
-    echo "Testing SSH connection to Github"
-    eval "$(ssh-agent -s)"
-    ssh-add /home/$USER/.ssh/id_rsa
-    #ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
-    ssh_test="You've successfully authenticated"
+    echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
+    echo "Using SSH key from $github_ssh_private_key_path"
+    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
     if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
         echo " ---------------------------------"
         echo "Github SSH key successfully added!"
         echo " ---------------------------------"
-        github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
+        github_ssh_public_key=$(cat $github_ssh_public_key_path)
     else
         if [[ -z ${read_input} ]]; then
             read_input="github_email"
@@ -197,16 +197,15 @@ for i in "${inputdata[@]}"; do
     printf "Data input for $i:"
     read -r input_data
     if [[ "${i}" = "github_email" ]]; then
-        ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
-        if [[ ! -f "$ssh_public_key_path" ]]; then
+        if [[ ! -f "$github_ssh_public_key_path" ]]; then
             ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
         fi    
         eval "$(ssh-agent -s)"
-        ssh-add /home/$USER/.ssh/id_rsa
-        github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
-        xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
+        ssh-add $github_ssh_private_key_path
+        github_ssh_public_key=$(cat $github_ssh_public_key_path)
+        xclip -sel clip < $github_ssh_public_key_path
         echo " ----------------------------------------------------------------------------------------------------"
-        echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
+        echo "There is an ssh public key in $github_ssh_public_key_path"
         echo "xclip is installed and public ssh key is copied into clipboard"
         echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key)"
         echo "Select Open Link and follow the steps from number 2 onwards:"
@@ -229,10 +228,10 @@ for i in "${inputdata[@]}"; do
                     ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
                 fi    
                 eval "$(ssh-agent -s)"
-                ssh-add /home/$USER/.ssh/id_rsa
-                github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
-                xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
-                echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
+                ssh-add $github_ssh_private_key_path
+                github_ssh_public_key=$(cat $github_ssh_public_key_path)
+                xclip -sel clip < $github_ssh_public_key_path
+                echo "There is an ssh public key in $github_ssh_public_key_path"
                 echo "xclip is installed and public ssh key is copied into clipboard"
                 echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key), select Open Link and follow the steps from number 2 onwards:"
                 echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
