@@ -167,8 +167,9 @@ done
 
 github_ssh_public_key=""
 if [[ $extra_vars == *"pr_branches="* ]]; then
-    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
-    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+    echo "Testing SSH connection to Github"
+    ssh -oStrictHostKeyChecking=no -T git@github.com 2>ssh_test
+    if [[ "$(cat ssh_test)" == *"You've successfully authenticated"* ]]; then
         echo " ---------------------------------"
         echo "Github SSH key successfully added!"
         echo " ---------------------------------"
@@ -211,8 +212,8 @@ for i in "${inputdata[@]}"; do
         printf "Confirm if you have added the SSH key to your Github account (y/n):"
         read -r ssh_key_added
         while [[ "$ssh_key_added" != "y" ]]; do
-            ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
-            if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+            ssh -oStrictHostKeyChecking=no -T git@github.com 2>ssh_test
+            if [[ "$(cat ssh_test)" == *"You've successfully authenticated"* ]]; then
                 echo " ---------------------------------"
                 echo "Github SSH key successfully added!"
                 echo " ---------------------------------"
