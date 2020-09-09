@@ -149,6 +149,9 @@ do
     if [[ "$variable" == "product" ]]; then
         allowed_values="hand_e hand_lite hand_extra_lite hand_h"
     fi
+    if [[ "$variable" == "polhemus_type" ]]; then
+        allowed_values="liberty viper"
+    fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
         echo "Variable $variable has invalid value: $value"
@@ -162,10 +165,65 @@ do
     fi
 done
 
+if [[ $extra_vars == *"pr_branches="* ]]; then
+    if [[ -z ${read_input} ]]; then
+        read_input="github_email"
+    else
+        read_input=$read_input",github_email"
+    fi
+fi
+
+github_ssh_public_key=""
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
     printf "Data input for $i:"
     read -r input_data
+    if [[ "${i}" = "github_email" ]]; then
+        # creates id_rsa and id_rsa.pub (only if they don't exist, not overwriting) in /home/$USER/.ssh
+        cat /dev/zero | ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""      
+        eval "$(ssh-agent -s)"
+        ssh-add /home/$USER/.ssh/id_rsa
+        github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
+        apt-get install xclip
+        xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
+        echo " ----------------------------------------------------------------------------------------------------"
+        echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
+        echo "xclip is installed and public ssh key is copied into clipboard"
+        echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key)"
+        echo "Select Open Link and follow the steps from number 2 onwards:"
+        echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+        echo " ----------------------------------------------------------------------------------------------------"
+        printf "Confirm with y if you have added the SSH key to your Github account:"
+        read -r ssh_key_added
+        while [[ "$ssh_key_added" != "y" ]]; do
+            ssh -oStrictHostKeyChecking=no -T git@github.com
+            ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
+            if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+                echo " ---------------------------------"
+                echo "Github SSH key successfully added!"
+                echo " ---------------------------------"
+            else
+                echo " ----------------------------------------------------------------------------------------------------"
+                echo "Github SSH authentication failed with message: $ssh_test"
+                echo " ----------------------------------------------------------------------------------------------------"
+                ssh_key_added="n"
+                cat /dev/zero | ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""      
+                eval "$(ssh-agent -s)"
+                ssh-add /home/$USER/.ssh/id_rsa
+                github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
+                apt-get install xclip
+                xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
+                echo "There is an ssh public key in /home/$USER/.ssh/id_rsa.pub"
+                echo "xclip is installed and public ssh key is copied into clipboard"
+                echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key), select Open Link and follow the steps from number 2 onwards:"
+                echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+                echo " ----------------------------------------------------------------------------------------------------"
+                printf "Confirm with y if you have added the SSH key to your Github account:"
+                read -r ssh_key_added
+            fi
+        done
+        extra_vars="$extra_vars github_ssh_public_key=$github_ssh_public_key"
+    fi
     extra_vars="$extra_vars $i=$input_data"
 done
 IFS=',' read -ra securedata <<< "$read_secure"

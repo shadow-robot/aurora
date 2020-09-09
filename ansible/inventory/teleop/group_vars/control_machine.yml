@@ -24,7 +24,8 @@ arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
 biotacs: true # Whether the hands will have biotac fingertips
-pr_branches: "" # Space-separated list of PRs (https://github.com/shadow-robot/repo/pull/266) or branches (https://github.com/shadow-robot/repo/tree/custom_branch) to check out on NUC and catkin_make if C++ has been updated
+pr_branches: "" # Space-separated list of PRs (https://github.com/shadow-robot/repo/pull/266) or branches (https://github.com/shadow-robot/repo/tree/custom_branch) to check out on NUC and catkin_make
+github_ssh_public_key: "" # Allows advanced users to specify the ssh public key for authenticating to Shadow's Github account
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435

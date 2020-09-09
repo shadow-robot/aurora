@@ -35,3 +35,4 @@ use_steamvr: false
 launch_package_name: "sr_ethercat_hand_config"
 launch_file_name: "sr_rhand.launch"
 pr_branches: ""
+github_ssh_public_key: ""

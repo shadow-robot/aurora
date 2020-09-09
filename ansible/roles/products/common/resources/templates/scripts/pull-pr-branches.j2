@@ -1,14 +1,8 @@
 #! /bin/bash
-set -x
 source /home/user/projects/shadow_robot/base_deps/devel/setup.bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
-PR_BRANCHES="https://github.com/shadow-robot/sr-visualization/pull/214 https://github.com/shadow-robot/sr_interface/pull/538 https://github.com/shadow-robot/jog_arm_internal/tree/F%23SRC-3386_dynamic_collision_scene"
-echo "Enter git_username for pulling pr_branches"
-read -p 'git_username: ' git_username
-git config --global user.name "$git_username"
-git config --global user.email "${git_username}@shadowrobot.com"
-git config --global credential.helper store
-git config --global alias.unsshify '!f() { git remote set-url origin $(git remote get-url origin | sed -En "s/git@github.com:/https:\/\/github.com\//p") ; }; f'
+PR_BRANCHES="{{ pr_branches_value }}"
+eval $(ssh-agent)
 for i in $PR_BRANCHES; do
     ros_repo=$repo
     branch=""
@@ -27,16 +21,15 @@ for i in $PR_BRANCHES; do
         ros_repo=$(echo "$repo" | tr '-' '_')
     fi
     roscd $ros_repo
-    git unsshify
     git fetch
     git checkout $branch
     git pull
     echo "Completed pulling branch: $branch in $repo"
 done
 echo "Branches pulled, executing catkin_make"
-#cd /home/user/projects/shadow_robot/base_deps
-#catkin_make
-#cd /home/user/projects/shadow_robot/base_deps
-#catkin_make
-#echo "Branches for testing have been pulled and compiled"
-#echo "You are now ready for testing"
+cd /home/user/projects/shadow_robot/base_deps
+catkin_make
+cd /home/user/projects/shadow_robot/base_deps
+catkin_make
+echo "Branches for testing have been pulled and compiled"
+echo "You are now ready for testing"
