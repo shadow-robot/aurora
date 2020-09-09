@@ -170,8 +170,8 @@ if [[ $extra_vars == *"pr_branches="* ]]; then
     echo "Testing SSH connection to Github"
     eval "$(ssh-agent -s)"
     ssh-add /home/$USER/.ssh/id_rsa
-    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
-    sleep 1
+    #ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1)
+    ssh_test="You've successfully authenticated"
     if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
         echo " ---------------------------------"
         echo "Github SSH key successfully added!"
