@@ -184,7 +184,7 @@ for i in "${inputdata[@]}"; do
             ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
         fi    
         eval "$(ssh-agent -s)"
-        sudo ssh-add /home/$USER/.ssh/id_rsa
+        ssh-add /home/$USER/.ssh/id_rsa
         github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
         sudo apt-get install xclip
         xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
@@ -213,7 +213,7 @@ for i in "${inputdata[@]}"; do
                     ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
                 fi    
                 eval "$(ssh-agent -s)"
-                sudo ssh-add /home/$USER/.ssh/id_rsa
+                ssh-add /home/$USER/.ssh/id_rsa
                 github_ssh_public_key=$(cat /home/$USER/.ssh/id_rsa.pub)
                 sudo apt-get install xclip
                 xclip -sel clip < /home/$USER/.ssh/id_rsa.pub
