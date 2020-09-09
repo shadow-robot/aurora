@@ -178,6 +178,7 @@ if [[ $extra_vars == *"pr_branches="* ]]; then
         echo "Github SSH key successfully added!"
         echo " ---------------------------------"
         github_ssh_public_key=$(cat $github_ssh_public_key_path)
+        extra_vars="$extra_vars github_ssh_public_key=\"$github_ssh_public_key\""
     else
         if [[ -z ${read_input} ]]; then
             read_input="github_email"
@@ -241,7 +242,7 @@ for i in "${inputdata[@]}"; do
                 read -r ssh_key_added
             fi
         done
-        extra_vars="$extra_vars github_ssh_public_key=$github_ssh_public_key"
+        extra_vars="$extra_vars github_ssh_public_key=\"$github_ssh_public_key\""
     fi
     extra_vars="$extra_vars $i=$input_data"
 done

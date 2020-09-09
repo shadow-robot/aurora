@@ -26,8 +26,9 @@ for i in $PR_BRANCHES; do
     git pull
     echo "Completed pulling branch: $branch in $repo"
 done
-echo "Branches pulled, executing catkin_make"
+echo "Branches pulled, executing catkin_make (apart from moveit)
+excluded_packages=$(rospack list | grep /home/user/projects/shadow_robot/base/src/moveit | awk '{print $1}' | paste -s -d ';')
 cd /home/user/projects/shadow_robot/base
-catkin_make
+catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages"
 echo "Branches for testing have been pulled and compiled"
 echo "You are now ready for testing"
