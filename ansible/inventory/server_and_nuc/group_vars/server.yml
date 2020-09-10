@@ -25,4 +25,5 @@ ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for t
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
-pr_branches: "" # Space-separated list (inside double-quotes) of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_makegithub_ssh_public_key: "" # Allows advanced users to specify the ssh public key for authenticating to Shadow's Github account
+pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
+github_ssh_public_key: "" # Allows advanced users to specify the ssh public key for authenticating to Shadow's Github account
