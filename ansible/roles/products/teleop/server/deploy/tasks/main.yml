@@ -170,6 +170,7 @@
       mode: '766'
       state: file
     become: true
+    ignore_errors: yes
 
   - name: Check if the current_calibration.yaml exists on the host shared volume
     stat: 
