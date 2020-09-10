@@ -211,7 +211,7 @@ for i in "${inputdata[@]}"; do
             ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f /home/$USER/.ssh/id_rsa
         fi    
         eval "$(ssh-agent -s)"
-        ssh-add $github_ssh_private_key_path &
+        ssh-add $github_ssh_private_key_path
         github_ssh_public_key=$(cat $github_ssh_public_key_path)
         xclip -sel clip < $github_ssh_public_key_path
         echo " ----------------------------------------------------------------------------------------------------"
@@ -238,7 +238,7 @@ for i in "${inputdata[@]}"; do
                     ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f /home/$USER/.ssh/id_rsa
                 fi    
                 eval "$(ssh-agent -s)"
-                ssh-add $github_ssh_private_key_path &
+                ssh-add $github_ssh_private_key_path
                 github_ssh_public_key=$(cat $github_ssh_public_key_path)
                 xclip -sel clip < $github_ssh_public_key_path
                 echo "There is an ssh public key in $github_ssh_public_key_path"
