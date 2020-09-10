@@ -208,7 +208,7 @@ for i in "${inputdata[@]}"; do
     read -r input_data
     if [[ "${i}" = "github_email" ]]; then
         if [[ ! -f "$github_ssh_public_key_path" ]]; then
-            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
+            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f /home/$USER/.ssh/id_rsa
         fi    
         eval "$(ssh-agent -s)"
         ssh-add $github_ssh_private_key_path
@@ -359,6 +359,9 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
         echo ""
     fi
 fi
+echo ""
+echo "$extra_vars"
+echo ""
 "${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$extra_vars"
 
 popd
