@@ -39,9 +39,9 @@
   become: yes
   when: pr_branches is defined and pr_branches | length > 0
 
-- name: Copying the pull github_ssh_public_key into docker container
+- name: Copying the pull github_ssh_private_key into docker container
   changed_when: false
-  shell: "docker cp /home/{{ user }}/.ssh/id_rsa.pub {{ container_name }}:/home/user/.ssh/id_rsa.pub"
+  shell: "docker cp /home/{{ user }}/.ssh/id_rsa {{ container_name }}:/home/user/.ssh/id_rsa"
   become: yes
   when: github_ssh_public_key is defined and github_ssh_public_key | length > 0
 
