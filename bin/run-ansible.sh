@@ -110,6 +110,17 @@ if [[ $extra_vars == *":="* ]]; then
     echo "${command_usage_message}"
     exit 1
 fi
+if [[ $extra_vars == *"pr_branches="* && $extra_vars != *"pr_branches='"* ]]; then
+    echo ""
+    echo "You have entered pr_branches incorrectly"
+    echo "pr_branches should be a single-quoted space-separated list of PRs and branches like this:"
+    echo ""
+    echo "pr_branches='https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch'"
+    echo ""
+    echo "Please fix the syntax and try again"
+    echo ""
+    exit 1
+fi
 
 boolean_variables="reinstall nvidia_docker real_glove real_vive use_aws use_openvpn terminator remote_cyberglove launch_hand"
 boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_icons upgrade_check bimanual remote_teleop"
