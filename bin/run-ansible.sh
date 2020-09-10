@@ -110,12 +110,12 @@ if [[ $extra_vars == *":="* ]]; then
     echo "${command_usage_message}"
     exit 1
 fi
-if [[ $extra_vars == *"pr_branches="* && $extra_vars != *"pr_branches='"* ]]; then
+if [[ $extra_vars == *"pr_branches="* && $extra_vars != *"pr_branches=\""* ]]; then
     echo ""
     echo "You have entered pr_branches incorrectly"
-    echo "pr_branches should be a single-quoted space-separated list of PRs and branches like this:"
+    echo "pr_branches should be a double-quoted space-separated list of PRs and branches like this:"
     echo ""
-    echo "pr_branches='https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch'"
+    echo "pr_branches=\"https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch\""
     echo ""
     echo "Please fix the syntax and try again"
     echo ""
@@ -127,6 +127,7 @@ boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_
 boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce"
 ip_variables="arm_ip_left arm_ip_right"
 
+pr_branches=""
 for extra_var in $extra_vars
 do
     variable="${extra_var%=*}"
@@ -163,6 +164,9 @@ do
     if [[ "$variable" == "polhemus_type" ]]; then
         allowed_values="liberty viper"
     fi
+    if [[ "$variable" == "pr_branches" ]]; then
+        pr_branches="$value"
+    fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
         echo "Variable $variable has invalid value: $value"
@@ -175,6 +179,10 @@ do
         exit 1
     fi
 done
+
+if [ ! -z "$pr_branches" ]; then
+    extra_vars="$extra_vars pr_branches=\"$pr_branches\""
+fi
 
 github_ssh_public_key=""
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
