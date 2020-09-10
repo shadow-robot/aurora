@@ -164,6 +164,22 @@
     ignore_errors: yes
     when: not boresight_calibration_file.stat.exists
 
+  - name: Ensure {{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml has the right permissions
+    file:
+      path: "{{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
   - name: Check if the current_calibration.yaml exists on the host shared volume
     stat: 
       path: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
@@ -180,6 +196,7 @@
     copy:
       src: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
       dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
+      mode: '666'
     when: not current_calibration_file.stat.exists and default_calibration_file.stat.exists
   when: glove == "shadow_glove" and real_glove|bool
 
