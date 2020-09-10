@@ -170,7 +170,7 @@ do
 done
 
 if [ ! -z "$pr_branches" ]; then
-    extra_vars="$extra_vars pr_branches=\"$pr_branches\""
+    extra_vars="$extra_vars pr_branches=\\"$pr_branches\\""
 fi
 
 github_ssh_public_key=""
