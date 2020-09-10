@@ -235,7 +235,7 @@ for i in "${inputdata[@]}"; do
                 echo " ----------------------------------------------------------------------------------------------------"
                 ssh_key_added="n"
                 if [[ ! -f "$ssh_public_key_path" ]]; then
-                    ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N ""
+                    ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" &
                 fi    
                 eval "$(ssh-agent -s)"
                 ssh-add $github_ssh_private_key_path
