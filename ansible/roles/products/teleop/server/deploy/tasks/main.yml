@@ -167,9 +167,18 @@
   - name: Ensure {{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml has the right permissions
     file:
       path: "{{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml"
-      mode: '766'
+      mode: '666'
       state: file
     become: true
+    ignore_errors: yes
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
 
   - name: Check if the current_calibration.yaml exists on the host shared volume
     stat: 
