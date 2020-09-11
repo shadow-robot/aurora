@@ -173,10 +173,6 @@ do
     fi
 done
 
-echo "test"
-echo $pr_branches
-echo "test"
-
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
