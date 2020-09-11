@@ -158,7 +158,7 @@ do
     fi
     if [[ "$variable" == "https://github.com/shadow-robot"* ]]; then
         pr_branches=$(echo "$pr_branches"| tr -d '\"')
-        pr_branches="\\"$pr_branches $value\\""
+        pr_branches="\\\"$pr_branches $value\\\""
     fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
