@@ -223,7 +223,7 @@ for i in "${inputdata[@]}"; do
         echo " ----------------------------------------------------------------------------------------------------"
         printf "Confirm if you have added the SSH key to your Github account (y/n):"
         read -r ssh_key_added
-        while [[ "$ssh_key_added" != "y" ]]; do
+        if [[ "$ssh_key_added" == "y" ]]; then
             ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
             if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
                 echo " ---------------------------------"
@@ -233,20 +233,7 @@ for i in "${inputdata[@]}"; do
                 echo " ----------------------------------------------------------------------------------------------------"
                 echo "Github SSH authentication failed with message: $ssh_test"
                 echo " ----------------------------------------------------------------------------------------------------"
-                ssh_key_added="n"
-                if [[ ! -f "$ssh_public_key_path" ]]; then
-                    ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f /home/$USER/.ssh/id_rsa
-                fi    
-                eval "$(ssh-agent -s)"
-                ssh-add $github_ssh_private_key_path
-                xclip -sel clip < $github_ssh_public_key_path
-                echo "There is an ssh public key in $github_ssh_public_key_path"
-                echo "xclip is installed and public ssh key is copied into clipboard"
-                echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key), select Open Link and follow the steps from number 2 onwards:"
-                echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
-                echo " ----------------------------------------------------------------------------------------------------"
-                printf "Confirm if you have added the SSH key to your Github account (y/n):"
-                read -r ssh_key_added
+                exit 1
             fi
         done
     fi
