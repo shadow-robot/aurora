@@ -154,11 +154,11 @@ do
         allowed_values="liberty viper"
     fi
     if [[ "$variable" == "pr_branches" ]]; then
-        pr_branches="\"$value\""
+        pr_branches="\\\"$value\\\""
     fi
     if [[ "$variable" == "https://github.com/shadow-robot"* ]]; then
-        pr_branches=$(echo $pr_branches| tr -d '"')
-        pr_branches="\"$pr_branches $value\""
+        pr_branches=$(echo "$pr_branches"| tr -d '\"')
+        pr_branches="\\"$pr_branches $value\\""
     fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
@@ -353,6 +353,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
         echo ""
     fi
 fi
+echo "$extra_vars"
 "${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$extra_vars"
 
 popd
