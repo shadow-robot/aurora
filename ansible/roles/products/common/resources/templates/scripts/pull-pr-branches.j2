@@ -18,29 +18,30 @@ for i in $PR_BRANCHES; do
     repo=""
     ros_repo=""
     branch=""
+    cd /home/user/projects/shadow_robot/base/src
     if [[ "$i" == *"/pull/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/pull\/.*/\1/')
         pull=$(echo "$i" | sed -e 's/.*\/pull\/\(.*\).*/\1/')
-        ros_repo=$(find -type f -name "config" -exec grep -q "url = https://github.com/shadow-robot/$repo" {} \; -exec readlink -f {} \;)
-        cd /home/user/projects/shadow_robot/base/src/$ros_repo
+        ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
+        cd $ros_repo
         git fetch
         commit_id=$(git ls-remote origin 'pull/*/head' | grep refs/pull/"$pull"/head | awk '{print $1}')
-        branch=$(git branch -a --contains "$commit_id" | awk -F'/' '{print $3}')
+        branch=$(git branch -a --contains "$commit_id" | awk -F'/' '{print $3}' | tr -d '\n')
     fi
     if [[ "$i" == *"/tree/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/tree\/.*/\1/')
-        ros_repo=$(find -type f -name "config" -exec grep -q "url = https://github.com/shadow-robot/$repo" {} \; -exec readlink -f {} \;)
-        branch=$(echo $i | sed -e 's/.*\/tree\/\(.*\).*/\1/')
+        ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
+        branch=$(echo $i | sed -e 's/.*\/tree\/\(.*\).*/\1/' | sed 's/%23/#/g')
     fi
     echo "Started pulling branch: $branch in $repo"
-    cd /home/user/projects/shadow_robot/base/src/$ros_repo
+    cd $ros_repo
     git fetch
     git checkout $branch
     git pull
     echo "Completed pulling branch: $branch in $repo"
-    results+="$repo -> $branch \n"
+    results+="$repo ---> $branch \n"
 done
-echo "Branches pulled, executing catkin_make (apart from moveit)
+echo "Branches pulled, executing catkin_make (apart from moveit)"
 excluded_packages=$(rospack list | grep /home/user/projects/shadow_robot/base/src/moveit | awk '{print $1}' | paste -s -d ';')
 cd /home/user/projects/shadow_robot/base
 catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages"
