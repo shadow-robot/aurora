@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e # fail on errors
-#set -x # echo commands run
+set -x # echo commands run
 
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
@@ -153,6 +153,8 @@ do
     if [[ "$variable" == "polhemus_type" ]]; then
         allowed_values="liberty viper"
     fi
+    echo $variable
+    echo $value
     if [[ "$variable" == "pr_branches" ]]; then
         pr_branches="$value"
     fi
