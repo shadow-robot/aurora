@@ -169,8 +169,8 @@ do
     fi
 done
 
-if [ ! -z "$pr_branches" ]; then
-    extra_vars="$extra_vars pr_branches=\"$pr_branches\""
+if [[ "$pr_branches" != "" ]]; then
+    extra_vars="$extra_vars pr_branches='$pr_branches'"
     echo $extra_vars
 fi
 
