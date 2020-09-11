@@ -235,7 +235,7 @@ for i in "${inputdata[@]}"; do
                 echo " ----------------------------------------------------------------------------------------------------"
                 exit 1
             fi
-        done
+        fi
     fi
     extra_vars="$extra_vars $i=$input_data"
 done
