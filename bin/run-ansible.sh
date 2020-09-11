@@ -117,7 +117,7 @@ boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot
 ip_variables="arm_ip_left arm_ip_right"
 
 pr_branches=""
-for extra_var in "$extra_vars"
+for extra_var in $extra_vars
 do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
@@ -153,10 +153,12 @@ do
     if [[ "$variable" == "polhemus_type" ]]; then
         allowed_values="liberty viper"
     fi
-    echo $variable
-    echo $value
     if [[ "$variable" == "pr_branches" ]]; then
-        pr_branches="$value"
+        pr_branches="\"$value\""
+    fi
+    if [[ "$variable" == "https://github.com/shadow-robot"* ]]; then
+        pr_branches=$(echo $pr_branches| tr -d '"')
+        pr_branches="\"$pr_branches $value\""
     fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
@@ -171,10 +173,9 @@ do
     fi
 done
 
-if [[ "$pr_branches" != "" ]]; then
-    extra_vars="$extra_vars pr_branches='$pr_branches'"
-    echo $extra_vars
-fi
+echo "test"
+echo $pr_branches
+echo "test"
 
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
