@@ -57,4 +57,4 @@ haptx_teleop_readthedocs_token: ""
 shadow_glove_teleop_readthedocs_token: ""
 pr_branches: ""
 polhemus_type: "liberty"
-github_ssh_public_key: ""
+

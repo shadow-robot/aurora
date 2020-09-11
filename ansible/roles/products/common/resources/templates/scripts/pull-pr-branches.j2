@@ -4,6 +4,7 @@ source /home/user/projects/shadow_robot/base/devel/setup.bash
 PR_BRANCHES="{{ pr_branches_value }}"
 eval $(ssh-agent)
 ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+results=""
 if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
     echo " ---------------------------------"
     echo "Github SSH key successfully added!"
@@ -14,34 +15,37 @@ else
     echo " -------------------------------------------------------"
 fi
 for i in $PR_BRANCHES; do
-    ros_repo=$repo
+    repo=""
+    ros_repo=""
     branch=""
     if [[ "$i" == *"/pull/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/pull\/.*/\1/')
         pull=$(echo "$i" | sed -e 's/.*\/pull\/\(.*\).*/\1/')
-        cd /home/user/projects/shadow_robot/base/src/$repo
+        ros_repo=$(find -type f -name "config" -exec grep -q "url = https://github.com/shadow-robot/$repo" {} \; -exec readlink -f {} \;)
+        cd /home/user/projects/shadow_robot/base/src/$ros_repo
         git fetch
         commit_id=$(git ls-remote origin 'pull/*/head' | grep refs/pull/"$pull"/head | awk '{print $1}')
         branch=$(git branch -a --contains "$commit_id" | awk -F'/' '{print $3}')
     fi
     if [[ "$i" == *"/tree/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/tree\/.*/\1/')
+        ros_repo=$(find -type f -name "config" -exec grep -q "url = https://github.com/shadow-robot/$repo" {} \; -exec readlink -f {} \;)
         branch=$(echo $i | sed -e 's/.*\/tree\/\(.*\).*/\1/')
     fi
     echo "Started pulling branch: $branch in $repo"
-    attempt=$(roscd "$ros_repo")
-    if [[ "$attempt" == *"roscd: No such package"* ]]; then
-        ros_repo=$(echo "$repo" | tr '-' '_')
-    fi
-    cd /home/user/projects/shadow_robot/base/src/$repo
+    cd /home/user/projects/shadow_robot/base/src/$ros_repo
     git fetch
     git checkout $branch
     git pull
     echo "Completed pulling branch: $branch in $repo"
+    results+="$repo -> $branch \n"
 done
 echo "Branches pulled, executing catkin_make (apart from moveit)
 excluded_packages=$(rospack list | grep /home/user/projects/shadow_robot/base/src/moveit | awk '{print $1}' | paste -s -d ';')
 cd /home/user/projects/shadow_robot/base
 catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages"
 echo "Branches for testing have been pulled and compiled"
+echo "--------------------------------------------------"
+echo -e "$results"
+echo "--------------------------------------------------"
 echo "You are now ready for testing"

@@ -32,4 +32,4 @@ ur_robot_type: "ur10e"
 arm_ip_left: ""
 arm_ip_right: ""
 pr_branches: ""
-github_ssh_public_key: ""
+

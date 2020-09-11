@@ -170,10 +170,10 @@ do
 done
 
 if [ ! -z "$pr_branches" ]; then
-    extra_vars="$extra_vars pr_branches=\\"$pr_branches\\""
+    extra_vars="$extra_vars pr_branches=\'$pr_branches\'"
+    echo $extra_vars
 fi
 
-github_ssh_public_key=""
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
@@ -185,8 +185,6 @@ if [[ $extra_vars == *"pr_branches="* ]]; then
         echo " ---------------------------------"
         echo "Github SSH key successfully added!"
         echo " ---------------------------------"
-        github_ssh_public_key=$(cat $github_ssh_public_key_path)
-        extra_vars="$extra_vars github_ssh_public_key=\"$github_ssh_public_key\""
     else
         if [[ -z ${read_input} ]]; then
             read_input="github_email"
@@ -212,7 +210,6 @@ for i in "${inputdata[@]}"; do
         fi    
         eval "$(ssh-agent -s)"
         ssh-add $github_ssh_private_key_path
-        github_ssh_public_key=$(cat $github_ssh_public_key_path)
         xclip -sel clip < $github_ssh_public_key_path
         echo " ----------------------------------------------------------------------------------------------------"
         echo "There is an ssh public key in $github_ssh_public_key_path"
@@ -239,7 +236,6 @@ for i in "${inputdata[@]}"; do
                 fi    
                 eval "$(ssh-agent -s)"
                 ssh-add $github_ssh_private_key_path
-                github_ssh_public_key=$(cat $github_ssh_public_key_path)
                 xclip -sel clip < $github_ssh_public_key_path
                 echo "There is an ssh public key in $github_ssh_public_key_path"
                 echo "xclip is installed and public ssh key is copied into clipboard"
@@ -250,7 +246,6 @@ for i in "${inputdata[@]}"; do
                 read -r ssh_key_added
             fi
         done
-        extra_vars="$extra_vars github_ssh_public_key=\"$github_ssh_public_key\""
     fi
     extra_vars="$extra_vars $i=$input_data"
 done

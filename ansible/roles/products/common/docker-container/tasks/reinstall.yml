@@ -43,7 +43,7 @@
   changed_when: false
   shell: "docker cp /home/{{ user }}/.ssh/id_rsa {{ container_name }}:/home/user/.ssh/id_rsa"
   become: yes
-  when: github_ssh_public_key is defined and github_ssh_public_key | length > 0
+  when: pr_branches is defined and pr_branches | length > 0
 
 - name: Check-out any branches inside docker container for testing for these branches {{ pr_branches }}
   import_tasks: modify-container.yml

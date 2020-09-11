@@ -34,4 +34,4 @@ arm_ip_left: ""
 arm_ip_right: ""
 ur_robot_type: "ur10e"
 pr_branches: ""
-github_ssh_public_key: ""
+
