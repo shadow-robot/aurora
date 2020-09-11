@@ -117,7 +117,7 @@ boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot
 ip_variables="arm_ip_left arm_ip_right"
 
 pr_branches=""
-for extra_var in $extra_vars
+for extra_var in "$extra_vars"
 do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
@@ -170,7 +170,7 @@ do
 done
 
 if [ ! -z "$pr_branches" ]; then
-    extra_vars="$extra_vars pr_branches=\'$pr_branches\'"
+    extra_vars="$extra_vars pr_branches=\"$pr_branches\""
     echo $extra_vars
 fi
 

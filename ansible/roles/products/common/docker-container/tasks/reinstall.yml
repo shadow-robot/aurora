@@ -26,7 +26,7 @@
 
 - name: Checking out PRs and branches if pr_branches list has been specified
   block:
-  - name: Creating the pull pr_branches bash script
+  - name: Creating the pull pr_branches bash script for testing for these branches {{ pr_branches }}
     template:
       src: ../../../common/resources/templates/scripts/pull-pr-branches.j2
       dest: "{{ shadow_hand_launcher_folder }}/pull_pr_branches.sh"
@@ -44,7 +44,7 @@
     shell: "docker cp /home/{{ user }}/.ssh/id_rsa {{ container_name }}:/home/user/.ssh/id_rsa"
     become: yes
 
-  - name: Check-out any branches inside docker container for testing for these branches {{ pr_branches }}
+  - name: Check-out any branches inside docker container
     import_tasks: modify-container.yml
     vars:
       modify_script_name: "execute_pull_pr_branches.sh"
