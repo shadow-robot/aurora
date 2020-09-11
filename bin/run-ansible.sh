@@ -235,6 +235,11 @@ for i in "${inputdata[@]}"; do
                 echo " ----------------------------------------------------------------------------------------------------"
                 exit 1
             fi
+        else
+            echo "You have specified pr_branches but haven't added a Github SSH key"
+            echo "Unable to proceed. See the link below"
+            echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+            exit 1
         fi
     fi
     extra_vars="$extra_vars $i=$input_data"
