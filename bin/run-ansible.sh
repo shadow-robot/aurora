@@ -154,11 +154,11 @@ do
         allowed_values="liberty viper"
     fi
     if [[ "$variable" == "pr_branches" ]]; then
-        pr_branches="\\\"$value\\\""
+        pr_branches="'$value'"
     fi
     if [[ "$variable" == "https://github.com/shadow-robot"* ]]; then
-        pr_branches=$(echo "$pr_branches"| tr -d '\"')
-        pr_branches="\\\"$pr_branches $value\\\""
+        pr_branches=$(echo "$pr_branches"| tr -d "'")
+        pr_branches="'$pr_branches $value'"
     fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
@@ -172,6 +172,12 @@ do
         exit 1
     fi
 done
+
+if [[ "$pr_branches" != "" ]]; then
+    extra_vars="$extra_vars pr_branches=$pr_branches"
+fi
+
+echo $extra_vars
 
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
