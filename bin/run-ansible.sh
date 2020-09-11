@@ -177,8 +177,6 @@ if [[ "$pr_branches" != "" ]]; then
     extra_vars="$extra_vars pr_branches=$pr_branches"
 fi
 
-echo $extra_vars
-
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
@@ -359,7 +357,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
         echo ""
     fi
 fi
-echo "$extra_vars"
+
 "${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$extra_vars"
 
 popd
