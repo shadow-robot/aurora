@@ -117,6 +117,7 @@ boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot
 ip_variables="arm_ip_left arm_ip_right"
 
 pr_branches=""
+scene_file=""
 for extra_var in $extra_vars
 do
     variable="${extra_var%=*}"
@@ -156,9 +157,16 @@ do
     if [[ "$variable" == "pr_branches" ]]; then
         pr_branches="'$value'"
     fi
+    if [[ "$variable" == "scene_file" ]]; then
+        scene_file="'$value'"
+    fi
     if [[ "$variable" == "https://github.com/shadow-robot"* ]]; then
         pr_branches=$(echo "$pr_branches"| tr -d "'")
         pr_branches="'$pr_branches $value'"
+    fi
+    if [[ "$variable" == *")"* ]]; then
+        scene_file=$(echo "$scene_file"| tr -d "'")
+        scene_file="'$scene_file $value'"
     fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
@@ -175,6 +183,10 @@ done
 
 if [[ "$pr_branches" != "" ]]; then
     extra_vars="$extra_vars pr_branches=$pr_branches"
+fi
+
+if [[ "$scene_file" != "" ]]; then
+    extra_vars="$extra_vars scene_file=\\$scene_file"
 fi
 
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
