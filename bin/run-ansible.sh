@@ -116,27 +116,16 @@ boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_
 boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce"
 ip_variables="arm_ip_left arm_ip_right"
 
-pr_branches=""
-for extra_var in $extra_vars
-do
+old_IFS=$IFS
+IFS=";"
+extra_vars=$*
+formatted_extra_vars=""
+for extra_var in $extra_vars; do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
     allowed_values=$value
     if [[ $boolean_variables == *"$variable"* ]]; then
         allowed_values="true false"
-    fi
-    if [[ $ip_variables == *"$variable"* ]]; then
-        if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo ""
-            echo "Variable $variable has invalid value: $value"
-            echo ""
-            echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
-            echo ""
-            echo "Please fix the syntax and try again."
-            echo ""
-            echo "${command_usage_message}"
-            exit 1
-        fi
     fi
     if [[ "$variable" == "glove" ]]; then
         allowed_values="haptx shadow_glove cyberglove"
@@ -153,12 +142,18 @@ do
     if [[ "$variable" == "polhemus_type" ]]; then
         allowed_values="liberty viper"
     fi
-    if [[ "$variable" == "pr_branches" ]]; then
-        pr_branches="'$value'"
-    fi
-    if [[ "$variable" == "https://github.com/shadow-robot"* ]]; then
-        pr_branches=$(echo "$pr_branches"| tr -d "'")
-        pr_branches="'$pr_branches $value'"
+    if [[ $ip_variables == *"$variable"* ]]; then
+        if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo ""
+            echo "Variable $variable has invalid value: $value"
+            echo ""
+            echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
+            echo ""
+            echo "Please fix the syntax and try again."
+            echo ""
+            echo "${command_usage_message}"
+            exit 1
+        fi
     fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
@@ -171,11 +166,16 @@ do
         echo "${command_usage_message}"
         exit 1
     fi
+    if [[ "$value" == *' '* ]]; then
+        value="'$value'"
+    fi
+    if [[ $formatted_extra_vars == "" ]]; then
+        formatted_extra_vars="$variable=$value"
+    else
+        formatted_extra_vars="$formatted_extra_vars $variable=$value"
+    fi
 done
-
-if [[ "$pr_branches" != "" ]]; then
-    extra_vars="$extra_vars pr_branches=$pr_branches"
-fi
+IFS=${old_IFS}
 
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
@@ -242,7 +242,7 @@ for i in "${inputdata[@]}"; do
             exit 1
         fi
     fi
-    extra_vars="$extra_vars $i=$input_data"
+    formatted_extra_vars="$formatted_extra_vars $i=$input_data"
 done
 IFS=',' read -ra securedata <<< "$read_secure"
 for i in "${securedata[@]}"; do
@@ -253,7 +253,7 @@ for i in "${securedata[@]}"; do
         printf "\nSecure data input for $i:"
         read -rs secure_data
     done
-    extra_vars="$extra_vars $i=$secure_data"
+    formatted_extra_vars="$formatted_extra_vars $i=$secure_data"
 done
 
 echo ""
@@ -341,7 +341,7 @@ fi
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     if [[ "${aurora_limit}" != "all:!dhcp" ]]; then
-        "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$extra_vars"
+        "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
         echo ""
         echo " ----------------------------------------------------------------------"
         echo " |    DHCP network ready! Proceeding with server and nuc playbook      |"
@@ -350,7 +350,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     fi
 fi
 
-"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$extra_vars"
+"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
 popd
 
