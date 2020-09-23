@@ -1,5 +1,4 @@
 #! /bin/bash
-set -e
 source /home/user/projects/shadow_robot/base_deps/devel/setup.bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
 PR_BRANCHES="{{ pr_branches_value }}"
@@ -93,3 +92,4 @@ echo "--------------------------------------------------"
 echo -e "$results"
 echo "--------------------------------------------------"
 echo "You are now ready for testing"
+exit 0
