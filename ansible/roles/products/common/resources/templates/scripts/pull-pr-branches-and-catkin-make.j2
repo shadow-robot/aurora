@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 source /home/user/projects/shadow_robot/base_deps/devel/setup.bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
 PR_BRANCHES="{{ pr_branches_value }}"
@@ -19,11 +20,23 @@ for i in $PR_BRANCHES; do
     repo=""
     ros_repo=""
     branch=""
-    cd /home/user/projects/shadow_robot/base/src
+    cd /home/user/projects/shadow_robot
     if [[ "$i" == *"/pull/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/pull\/.*/\1/')
         pull=$(echo "$i" | sed -e 's/.*\/pull\/\(.*\).*/\1/')
         ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
+        if [[ -z ${ros_repo} ]]; then
+            echo " --------------------------------------------------------------------------------------------------"
+            echo "Error while trying to cd to the package of the repo (from a PR)"
+            echo "pr_branches=$PR_BRANCHES"
+            echo "While processing item=$i"
+            echo "Found repo=$repo"
+            echo "Unable to find a package in base or base_deps with .git/config with a url containing repo=$repo"
+            echo "Check that the pr_branches variable is entered correctly and repo's packages are installed correctly"
+            echo "Aborting aurora run because not all pr_branches have been pulled!"
+            echo " ---------------------------------------------------------------------------------------------------"
+            exit 1
+        fi
         cd $ros_repo
         git fetch
         commit_id=$(git ls-remote origin 'pull/*/head' | grep refs/pull/"$pull"/head | awk '{print $1}')
@@ -32,22 +45,52 @@ for i in $PR_BRANCHES; do
     if [[ "$i" == *"/tree/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/tree\/.*/\1/')
         ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
+        if [[ -z ${ros_repo} ]]; then
+            echo " --------------------------------------------------------------------------------------------------"
+            echo "Error while trying to cd to the package of the repo (from a branch)"
+            echo "pr_branches=$PR_BRANCHES"
+            echo "While processing item=$i"
+            echo "Found repo=$repo"
+            echo "Unable to find a package in base or base_deps with .git/config with a url containing repo=$repo"
+            echo "Check that the pr_branches variable is entered correctly and repo's packages are installed correctly"
+            echo "Aborting aurora run because not all pr_branches have been pulled!"
+            echo " ---------------------------------------------------------------------------------------------------"
+            exit 1
+        fi
         branch=$(echo $i | sed -e 's/.*\/tree\/\(.*\).*/\1/' | sed 's/%23/#/g')
     fi
     echo "Started pulling branch: $branch in $repo"
     cd $ros_repo
     git fetch
+    checkout_test=$(git checkout $branch 2>&1 &)
+    if [[ "$checkout_test" == *"error:"* ]]; then
+        echo " --------------------------------------------------------------------------------------------------"
+        echo "Error while trying to check out a branch=$branch in $ros_repo"
+        echo "pr_branches=$PR_BRANCHES"
+        echo "While processing item=$i"
+        echo "Found repo=$repo"
+        echo "Found ros_repo=$ros_repo"
+        echo "Checkout error=$checkout_test"
+        echo "Check that the pr_branches variable is entered correctly and the branch exists in Github"
+        echo "Aborting aurora run because not all pr_branches have been pulled!"
+        echo " --------------------------------------------------------------------------------------------------"
+        exit 1
+    fi
     git checkout $branch
     git pull
     echo "Completed pulling branch: $branch in $repo"
     results+="$repo ---> $branch \n"
 done
-echo "Branches pulled, executing catkin_make (apart from moveit)"
-excluded_packages=$(rospack list | grep /home/user/projects/shadow_robot/base/src/moveit | awk '{print $1}' | paste -s -d ';')
+echo "Branches pulled, executing catkin_make in base_deps and then base (apart from moveit)"
+excluded_packages_base_deps=$(rospack list | grep /home/user/projects/shadow_robot/base_deps/src/moveit | awk '{print $1}' | paste -s -d ';')
+cd /home/user/projects/shadow_robot/base_deps
+catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages_base_deps" &> /dev/null
+excluded_packages_base=$(rospack list | grep /home/user/projects/shadow_robot/base/src/moveit | awk '{print $1}' | paste -s -d ';')
 cd /home/user/projects/shadow_robot/base
-catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages"
+catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages_base" &> /dev/null
 echo "Branches for testing have been pulled and compiled"
 echo "--------------------------------------------------"
 echo -e "$results"
 echo "--------------------------------------------------"
 echo "You are now ready for testing"
+exit 0
