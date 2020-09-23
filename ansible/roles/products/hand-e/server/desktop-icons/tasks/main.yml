@@ -73,6 +73,22 @@
     command_to_run: "rqt"
     launch_terminal: "false"
 
+- name: Install the Documentation desktop icon for Dexterous Hand
+  include_role:
+    name: products/common/web-gui-icon
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    local_website_port_var: '7070'
+    desktop_icon_name: "Dexterous Hand Documentation"
+    desktop_icon_path: "Dexterous Hand Documentation"
+    launch_terminal: "false"
+    start_container_var: "true"
+    start_server_command_var: "roslaunch sr_dexterous_hand_documentation sr_dexterous_hand_documentation_server.launch port:={{ local_website_port_var }}"
+    preconditions_var: ""
+    live_website_url_var: "{{ shadow_glove_teleop_readthedocs_link }}"
+  when: glove=="shadow_glove"
+
 - name: Create Shadow Demos folder
   file:
     path: "{{ user_folder }}/Desktop/Shadow Demos"
