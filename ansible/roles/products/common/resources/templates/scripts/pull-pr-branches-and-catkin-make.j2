@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 source /home/user/projects/shadow_robot/base_deps/devel/setup.bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
 PR_BRANCHES="{{ pr_branches_value }}"
@@ -83,10 +84,10 @@ done
 echo "Branches pulled, executing catkin_make in base_deps and then base (apart from moveit)"
 excluded_packages_base_deps=$(rospack list | grep /home/user/projects/shadow_robot/base_deps/src/moveit | awk '{print $1}' | paste -s -d ';')
 cd /home/user/projects/shadow_robot/base_deps
-catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages_base_deps"
+catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages_base_deps" &> /dev/null
 excluded_packages_base=$(rospack list | grep /home/user/projects/shadow_robot/base/src/moveit | awk '{print $1}' | paste -s -d ';')
 cd /home/user/projects/shadow_robot/base
-catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages_base"
+catkin_make -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages_base" &> /dev/null
 echo "Branches for testing have been pulled and compiled"
 echo "--------------------------------------------------"
 echo -e "$results"
