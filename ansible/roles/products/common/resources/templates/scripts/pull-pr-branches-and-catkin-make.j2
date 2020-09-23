@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 source /home/user/projects/shadow_robot/base_deps/devel/setup.bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
 PR_BRANCHES="{{ pr_branches_value }}"
@@ -19,6 +20,7 @@ for i in $PR_BRANCHES; do
     repo=""
     ros_repo=""
     branch=""
+    cd /home/user/projects/shadow_robot
     if [[ "$i" == *"/pull/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/pull\/.*/\1/')
         pull=$(echo "$i" | sed -e 's/.*\/pull\/\(.*\).*/\1/')
