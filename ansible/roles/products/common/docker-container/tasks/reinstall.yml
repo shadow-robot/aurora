@@ -36,7 +36,7 @@
 
   - name: Copying the pull pull_pr_branches_and_catkin_make bash script into docker container
     changed_when: false
-    shell: "docker cp {{ shadow_hand_launcher_folder }}/pull_pr_branches_and_catkin_make.sh {{ container_name }}:/home/user/pull_pr_branches_and_catkin_make.sh"
+    shell: "docker cp {{ shadow_hand_launcher_folder }}/pull_pr_branches_and_catkin_make.sh {{ container_name }}:/tmp/pull_pr_branches_and_catkin_make.sh"
     become: yes
 
   - name: Copying the pull github_ssh_private_key into docker container
@@ -48,7 +48,7 @@
     import_tasks: modify-container.yml
     vars:
       modify_script_name: "pull_pr_branches_and_catkin_make.sh"
-      modify_script_commands: "/home/user/pull_pr_branches_and_catkin_make.sh"
+      modify_script_commands: "/tmp/pull_pr_branches_and_catkin_make.sh"
   when: pr_branches is defined and pr_branches | length > 0
 
 - name: Pull sr-config branch inside the docker container
