@@ -166,101 +166,85 @@
   include_tasks: demohands-unimanual.yml
   when: demohand_icons|bool
 
+- name: Set GUI icon variables to standard values for cyberglove
+  set_fact:
+    launch_file_input_gui_right: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
+    launch_file_input_gui_bimanual: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
+    project_name_input_value: "sr_teleop_vive_cyberglove"
+  when: glove=="cyberglove"
+
+- name: Set GUI icon variables to standard values for haptx
+  set_fact:
+    launch_file_input_gui_right: "teleop_vive_haptx.launch robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
+    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
+    project_name_input_value: "sr_teleop_vive_haptx"
+  when: glove=="haptx"
+
+- name: Set GUI icon variables to standard values for shadow glove
+  set_fact:
+    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+    launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus.launch vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+    project_name_input_value: "sr_teleop_vive_polhemus"
+  when: glove=="shadow_glove"
+
+- name: Set launch file input for left hand GUI
+  set_fact:
+    launch_file_input_gui_left: "{{ launch_file_input_gui_right }} side:=left"
+
 - name: Set launch file input for custom scene_file
   set_fact:
-    launch_file_input_gui_right_cyberglove: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true scene_file:=\"{{ scene_file}}\""
-  when: scene_file|length > 0 
+    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:={{ scene_file }}"
+    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:={{ scene_file }}"
+    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:={{ scene_file }}"
+  when: scene_file|length > 0
 
-- name: Install desktop icon for right side teleop GUI (for cyberglove)
+- name: Set GUI launch file inputs for external control loop = true
+  set_fact:
+    launch_file_input_gui_right_external: "{{ launch_file_input_gui_right }} external_control_loop:=true"
+    launch_file_input_gui_left_external: "{{ launch_file_input_gui_left }} external_control_loop:=true"
+    launch_file_input_gui_bimanual_external: "{{ launch_file_input_gui_bimanual }} external_control_loop:=true"
+
+- name: Set sim launch files inputs
+  set_fact:
+    launch_file_input_gui_right_sim: "{{ launch_file_input_gui_right }} external_control_loop:=false sim:=true"
+    launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left }} external_control_loop:=false sim:=true"
+    launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual }} external_control_loop:=false sim:=true"
+
+- name: Install desktop icon for right side teleop GUI
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_GUI_right.sh"
-    project_name_input: "sr_teleop_vive_cyberglove"
-    launch_file_input: "{{ launch_file_input_gui_right_cyberglove }}"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_right_external }}"
     desktop_icon_name: "4 - Launch Right Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
   when:
     - bimanual|bool or hand_side=="right"
-    - glove=="cyberglove"
 
-- name: Install desktop icon for right side teleop GUI (for haptx)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_GUI_right.sh"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
-    desktop_icon_name: "4 - Launch Right Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
-  when:
-    - bimanual|bool or hand_side=="right"
-    - glove=="haptx"
-
-- name: Install desktop icon for right side teleop GUI (for Shadow Glove)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_GUI_right.sh"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-    desktop_icon_name: "4 - Launch Right Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
-  when:
-    - bimanual|bool or hand_side=="right"
-    - glove=="shadow_glove"
-
-- name: Install desktop icon for left side teleop GUI (for haptx)
+- name: Install desktop icon for left side teleop GUI
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_GUI_left.sh"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=true side:=left vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_left_external }}"
     desktop_icon_name: "4 - Launch Left Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
   when:
     - bimanual|bool or hand_side=="left"
-    - glove=="haptx"
 
-- name: Install desktop icon for left side teleop GUI (for Shadow Glove)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ teleop_glove_left }}"
-    launch_script: "shadow_GUI_left.sh"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true side:=left vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-    desktop_icon_name: "4 - Launch Left Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
-  when:
-    - bimanual|bool or hand_side=="left"
-    - glove=="shadow_glove"
-
-- name: Install desktop icon for bimanual teleop GUI (for haptx)
+- name: Install desktop icon for bimanual teleop GUI
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_GUI_bimanual.sh"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_bimanual_external }}"
     desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
   when:
     - bimanual|bool
-    - glove=="haptx"
-
-- name: Install desktop icon for bimanual teleop GUI (for Shadow Glove)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "{{ teleop_glove_bimanual }}"
-    launch_script: "shadow_GUI_bimanual.sh"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=true vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
-    desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
-  when:
-    - bimanual|bool
-    - glove=="shadow_glove"
 
 - name: Install desktop icon for running right Shadow Glove driver
   include_tasks: roslaunch-icon.yml
@@ -394,49 +378,31 @@
   when:
     - bimanual|bool and glove=="shadow_glove"
 
-- name: Install desktop icon for Teleop server Simulation (Cyberglove)
+- name: Install desktop icon for Teleop Right Simulation
   import_tasks: roslaunch-icon.yml
   vars:
-    desktop_icon_png: "cyberglove_teleop.png"
+    desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_sim_demo.sh"
-    desktop_icon_name: "Cyberglobe Teleop Simulation"
-    desktop_icon_path: "Shadow Advanced Launchers/Cyberglobe Teleop Simulation"
-    project_name_input: "sr_teleop_vive_cyberglove"
-    launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=false sim:=true"
-  when: sim_icon|bool and glove=="cyberglove"
+    desktop_icon_name: "Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/Teleop Simulation"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_right_sim }}"
+  when:
+    - sim_icon|bool
+    - not bimanual|bool
 
-- name: Install desktop icon for Teleop server Simulation (Unimanual Right HaptX)
+- name: Install desktop icon for Teleop Bimanual Simulation
   import_tasks: roslaunch-icon.yml
   vars:
-    desktop_icon_png: "haptx_right.png"
+    desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_sim_demo.sh"
-    desktop_icon_name: "Right HaptX Teleop Simulation"
-    desktop_icon_path: "Right HaptX Teleop Simulation"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }}"
-  when: sim_icon|bool and not bimanual|bool and glove=="haptx"
-
-- name: Install desktop icon for Teleop server Simulation (Bimanual HaptX)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "haptx_bimanual.png"
-    launch_script: "shadow_sim_demo.sh"
-    desktop_icon_name: "Bimanual HaptX Teleop Simulation"
-    desktop_icon_path: "Bimanual HaptX Teleop Simulation"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }}"
-  when: sim_icon|bool and bimanual|bool and glove=="haptx"
-
-- name: Install desktop icon for Teleop server Simulation (Unimanual Right Shadow Glove)
-  import_tasks: roslaunch-icon.yml
-  vars:
-    desktop_icon_png: "shadow_glove_right.png"
-    launch_script: "shadow_sim_demo.sh"
-    desktop_icon_name: "Right Shadow Glove Teleop Simulation"
-    desktop_icon_path: "Right Shadow Glove Teleop Simulation"
-    project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-  when: sim_icon|bool and not bimanual|bool and glove=="shadow_glove"
+    desktop_icon_name: "Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/Teleop Simulation"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_bimanual_sim }}"
+  when:
+    - sim_icon|bool
+    - bimanual|bool
 
 - name: Install desktop icon for NUC container
   include_tasks: default-icon.yml

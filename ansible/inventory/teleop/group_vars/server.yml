@@ -33,8 +33,7 @@ rh_biotac_mapping: "" # Allows the user to override the rh_biotac_mapping_script
 lh_biotac_mapping: "" # Allows the user to override the lh_biotac_mapping_script_type (if empty, default in Github will be used)
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
 polhemus_type: "liberty" # Allows the user to specify the polhemus type used (liberty or viper)
-scene_file: "" # Allows the user to override the scene_file used in GUI launch e.g. $(find sr_description_common)/scenes/custom.scene (if empty, default in Github will be used)
-haptx_teleop_readthedocs_token: !vault |
+scene_file: "" # Allows the user to override the scene_file used in GUI launch e.g. "$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)haptx_teleop_readthedocs_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           36316332326334323634393864353132323038333837636264356466353263353038313930383932
           6666316239376263656534343065383131363836636630650a366662353765636538633063636564
