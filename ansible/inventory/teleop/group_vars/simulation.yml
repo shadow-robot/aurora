@@ -19,6 +19,7 @@ remote_teleop: false # Flag to enable/disable remote_teleop software install
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
+pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
 haptx_teleop_readthedocs_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           36316332326334323634393864353132323038333837636264356466353263353038313930383932

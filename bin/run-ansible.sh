@@ -116,13 +116,31 @@ boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_
 boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce"
 ip_variables="arm_ip_left arm_ip_right"
 
-for extra_var in $extra_vars
-do
+old_IFS=$IFS
+IFS=";"
+extra_vars=$*
+formatted_extra_vars=""
+for extra_var in $extra_vars; do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
     allowed_values=$value
     if [[ $boolean_variables == *"$variable"* ]]; then
         allowed_values="true false"
+    fi
+    if [[ "$variable" == "glove" ]]; then
+        allowed_values="haptx shadow_glove cyberglove"
+    fi
+    if [[ "$variable" == "ur_robot_type" ]]; then
+        allowed_values="ur10 ur10e ur5 ur5e"
+    fi
+    if [[ "$variable" == "hand_side" ]]; then
+        allowed_values="left right"
+    fi
+    if [[ "$variable" == "product" ]]; then
+        allowed_values="hand_e hand_lite hand_extra_lite hand_h"
+    fi
+    if [[ "$variable" == "polhemus_type" ]]; then
+        allowed_values="liberty viper"
     fi
     if [[ $ip_variables == *"$variable"* ]]; then
         if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -137,18 +155,6 @@ do
             exit 1
         fi
     fi
-    if [[ "$variable" == "glove" ]]; then
-        allowed_values="haptx shadow_glove cyberglove"
-    fi
-    if [[ "$variable" == "ur_robot_type" ]]; then
-        allowed_values="ur10 ur10e ur5 ur5e"
-    fi
-    if [[ "$variable" == "hand_side" ]]; then
-        allowed_values="left right"
-    fi
-    if [[ "$variable" == "product" ]]; then
-        allowed_values="hand_e hand_lite hand_extra_lite hand_h"
-    fi
     if [[ $allowed_values != *"$value"*  ]]; then
         echo ""
         echo "Variable $variable has invalid value: $value"
@@ -160,13 +166,83 @@ do
         echo "${command_usage_message}"
         exit 1
     fi
+    if [[ "$value" == *' '* ]]; then
+        value="'$value'"
+    fi
+    if [[ $formatted_extra_vars == "" ]]; then
+        formatted_extra_vars="$variable=$value"
+    else
+        formatted_extra_vars="$formatted_extra_vars $variable=$value"
+    fi
 done
+IFS=${old_IFS}
+
+github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
+github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
+if [[ $extra_vars == *"pr_branches="* ]]; then
+    echo " -------------------------------------------------------------------------------------"
+    echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
+    echo "Using SSH key from $github_ssh_private_key_path"
+    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+        echo " ---------------------------------"
+        echo "Github SSH key successfully added!"
+        echo " ---------------------------------"
+    else
+        if [[ -z ${read_input} ]]; then
+            read_input="github_email"
+        else
+            read_input=$read_input",github_email"
+        fi
+        # Wait for apt-get install lock file to be released
+        while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
+            echo "Waiting for apt-get install file lock..."
+            sleep 1
+        done
+        sudo apt-get install -y xclip
+    fi
+fi
 
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
     printf "Data input for $i:"
     read -r input_data
-    extra_vars="$extra_vars $i=$input_data"
+    if [[ "${i}" = "github_email" ]]; then
+        if [[ ! -f "$github_ssh_public_key_path" ]]; then
+            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f /home/$USER/.ssh/id_rsa
+        fi    
+        eval "$(ssh-agent -s)"
+        ssh-add $github_ssh_private_key_path
+        xclip -sel clip < $github_ssh_public_key_path
+        echo " ----------------------------------------------------------------------------------------------------"
+        echo "There is an ssh public key in $github_ssh_public_key_path"
+        echo "xclip is installed and public ssh key is copied into clipboard"
+        echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key)"
+        echo "Select Open Link and follow the steps from number 2 onwards:"
+        echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+        echo " ----------------------------------------------------------------------------------------------------"
+        printf "Confirm if you have added the SSH key to your Github account (y/n):"
+        read -r ssh_key_added
+        if [[ "$ssh_key_added" == "y" ]]; then
+            ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+            if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+                echo " ---------------------------------"
+                echo "Github SSH key successfully added!"
+                echo " ---------------------------------"
+            else
+                echo " ----------------------------------------------------------------------------------------------------"
+                echo "Github SSH authentication failed with message: $ssh_test"
+                echo " ----------------------------------------------------------------------------------------------------"
+                exit 1
+            fi
+        else
+            echo "You have specified pr_branches but haven't added a Github SSH key"
+            echo "Unable to proceed. See the link below"
+            echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+            exit 1
+        fi
+    fi
+    formatted_extra_vars="$formatted_extra_vars $i=$input_data"
 done
 IFS=',' read -ra securedata <<< "$read_secure"
 for i in "${securedata[@]}"; do
@@ -177,7 +253,7 @@ for i in "${securedata[@]}"; do
         printf "\nSecure data input for $i:"
         read -rs secure_data
     done
-    extra_vars="$extra_vars $i=$secure_data"
+    formatted_extra_vars="$formatted_extra_vars $i=$secure_data"
 done
 
 echo ""
@@ -265,7 +341,7 @@ fi
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     if [[ "${aurora_limit}" != "all:!dhcp" ]]; then
-        "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$extra_vars"
+        "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
         echo ""
         echo " ----------------------------------------------------------------------"
         echo " |    DHCP network ready! Proceeding with server and nuc playbook      |"
@@ -273,7 +349,8 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
         echo ""
     fi
 fi
-"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$extra_vars"
+
+"${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
 popd
 
