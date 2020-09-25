@@ -198,7 +198,29 @@
     mapping_path_value: "{{ mapping_path_right }}"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
+    arm_ctrl_value: "false"
   when: bimanual|bool or hand_side=="right"
+
+- name: Create executable launch script for hand+arm (Right)
+  template:
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
+    mode: '755'
+  vars:
+    hand_serial_var: "{{ hand_serial }}"
+    ethercat_interface_var: "{{ ethercat_interface }}"
+    hand_side_var: "right"
+    xacro_var: "{{ xacro_system }}"
+    mapping_path_var: "{{ mapping_path_right }}"
+    pwm_control_var: "true"
+    hand_ctrl_var: "true"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    arm_ctrl_var: "true"
+  when: 
+    - "'arm_' in product"
+    - bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for NUC left hand hardware control loop
   import_tasks: hand-icon.yml
@@ -215,7 +237,29 @@
     mapping_path_value: "{{ mapping_path_left }}"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
+    arm_ctrl_value: "false"
   when: bimanual|bool or hand_side=="left"
+
+- name: Create executable launch script for hand+arm (Left)
+  template:
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_left_arm_hand_hardware_control_loop.sh"
+    mode: '755'
+  vars:
+    hand_serial_var: "{{ hand_serial_left }}"
+    ethercat_interface_var: "{{ ethercat_left_hand }}"
+    hand_side_var: "left"
+    xacro_var: "{{ xacro_system }}"
+    mapping_path_var: "{{ mapping_path_left }}"
+    pwm_control_var: "true"
+    hand_ctrl_var: "true"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    arm_ctrl_var: "true"
+  when: 
+    - "'arm_' in product"
+    - bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual hands hardware control loop
   import_tasks: hand-icon-bimanual.yml
@@ -226,6 +270,15 @@
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
   when: bimanual|bool
+
+- name: Create executable launch script for hand+arm (Bimanual)
+  template:
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
+    mode: '755'
+  when: 
+    - "'arm_' in product"
+    - bimanual|bool"
 
 - name: Install desktop icon for Zero Force Mode - Right Hand for NUC
   import_tasks: hand-icon.yml
@@ -242,6 +295,7 @@
     mapping_path_value: "{{ mapping_path_right }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
+    arm_ctrl_value: "false"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -259,6 +313,7 @@
     mapping_path_value: "{{ mapping_path_left }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
+    arm_ctrl_value: "false"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role
