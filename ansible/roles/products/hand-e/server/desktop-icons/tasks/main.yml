@@ -87,7 +87,7 @@
     start_server_command_var: "roslaunch sr_dexterous_hand_documentation sr_dexterous_hand_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
     live_website_url_var: "https://dexterous-hand.readthedocs.io/en/latest/"
-  when: 'arm_' not in product
+  when: "'arm_' not in product"
 
 - name: Install the Documentation desktop icon for Dexterous Hand and Arm
   include_role:
@@ -103,7 +103,7 @@
     start_server_command_var: "roslaunch sr_dexterous_hand_and_arm_documentation sr_dexterous_hand_and_arm_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
     live_website_url_var: "{{ arm_hand_readthedocs_link }}"
-  when: 'arm_' in product
+  when: "'arm_' in product"
 
 - name: Create Shadow Demos folder
   file:

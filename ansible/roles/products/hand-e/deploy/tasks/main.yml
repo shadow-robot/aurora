@@ -52,7 +52,7 @@
 - name: Include products/common/arm-interfaces role
   include_role:
     name: products/common/arm-interfaces
-  when: 'arm_' in product
+  when: "'arm_' in product"
 
 - name: Creating upgrade script
   template:
