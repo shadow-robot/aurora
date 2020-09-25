@@ -137,7 +137,7 @@ for extra_var in $extra_vars; do
         allowed_values="left right"
     fi
     if [[ "$variable" == "product" ]]; then
-        allowed_values="hand_e hand_lite hand_extra_lite hand_h"
+        allowed_values="hand_e hand_lite hand_extra_lite hand_h arm_hand_e arm_hand_lite arm_hand_extra_lite"
     fi
     if [[ "$variable" == "polhemus_type" ]]; then
         allowed_values="liberty viper"
