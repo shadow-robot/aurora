@@ -15,14 +15,14 @@
     right_hand_picture: hand_lite.jpg
     left_hand_picture: hand_lite_left.jpg
     bimanual_hands_picture: hand_lite_bimanual.jpg
-  when: product=='hand_lite'
+  when: "'lite' in product"
 
 - name: Set icon picture filenames for hand_extra_lite
   set_fact:
     right_hand_picture: hand_extra_lite.jpg
     left_hand_picture: hand_extra_lite_left.jpg
     bimanual_hands_picture: hand_extra_lite_bimanual.jpg
-  when: product=='hand_extra_lite'
+  when: "'extra_lite' in product"
 
 - name: Install desktop icon for launching everything for Shadow Right Hand
   import_tasks: default-icon-no-terminator.yml
@@ -56,6 +56,52 @@
     desktop_icon_path: "Launch Shadow Bimanual Hands"
     launch_terminal: "false"
   when: bimanual|bool
+
+- name: Set Shadow Arm+hand icon pictures
+  set_fact:
+    right_arm_hand_picture: arm_hand_right.jpeg
+    left_arm_hand_picture: arm_hand_left.jpg
+    bimanual_arm_hand_picture: arm_hand_bimanual.jpg
+  when: "'arm_' in product"
+
+- name: Install desktop icon for launching everything for Shadow Arm+hand system (Right)
+  import_tasks: default-icon-no-terminator.yml
+  vars:
+    desktop_icon_png: "{{ right_arm_hand_picture }}"
+    launch_script: "shadow_launch_everything_right_arm_hand.sh"
+    desktop_icon_name: "Launch Shadow Right Arm and Hand"
+    template: templates/scripts/launch-everything-right-arm-hand.j2
+    desktop_icon_path: "Launch Shadow Right Arm and Hand"
+    launch_terminal: "false"
+  when:
+    - "'arm_' in product"
+    - bimanual|bool or hand_side=="right"
+
+- name: Install desktop icon for launching everything for Shadow Arm+hand system (Left)
+  import_tasks: default-icon-no-terminator.yml
+  vars:
+    desktop_icon_png: "{{ left_arm_hand_picture }}"
+    launch_script: "shadow_launch_everything_left_arm_hand.sh"
+    desktop_icon_name: "Launch Shadow Left Arm and Hand"
+    template: templates/scripts/launch-everything-left-arm-hand.j2
+    desktop_icon_path: "Launch Shadow Left Arm and Hand"
+    launch_terminal: "false"
+  when:
+    - "'arm_' in product"
+    - bimanual|bool or hand_side=="left"
+
+- name: Install desktop icon for launching everything for Shadow Arm+hand system (Bimanual)
+  import_tasks: default-icon-no-terminator.yml
+  vars:
+    desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
+    launch_script: "shadow_launch_everything_bimanual_arm_hand.sh"
+    desktop_icon_name: "Launch Shadow Bimanual Arms and Hands"
+    template: templates/scripts/launch-everything-bimanual-arm-hand.j2
+    desktop_icon_path: "Launch Shadow Bimanual Arms and Hands"
+    launch_terminal: "false"
+  when:
+    - "'arm_' in product"
+    - bimanual|bool
 
 - name: Include hand-manual role
   include_role:
