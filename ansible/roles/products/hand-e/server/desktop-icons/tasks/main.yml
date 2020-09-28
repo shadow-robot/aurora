@@ -333,6 +333,7 @@
 
 - name: Set arm+hand GUI launch file names for UR10/UR10e
   set_fact:
+    project_name_input: "sr_robot_launch"
     launch_file_input_arm_hand_right: "sr_right_ur10arm_hand.launch"
     launch_file_input_arm_hand_left: "sr_left_ur10arm_hand.launch"
     launch_file_input_arm_hand_bimanual: "sr_bimanual_ur10arms_hands.launch"
@@ -342,6 +343,7 @@
 
 - name: Set arm+hand GUI launch file names for UR5/UR5e
   set_fact:
+    project_name_input: "sr_robot_launch"
     launch_file_input_arm_hand_right: "sr_right_ur5arm_hand.launch"
     launch_file_input_arm_hand_left: "sr_left_ur5arm_hand.launch"
     launch_file_input_arm_hand_bimanual: "sr_bimanual_ur5arms_hands.launch"
