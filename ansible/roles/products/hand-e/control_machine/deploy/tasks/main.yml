@@ -45,7 +45,7 @@
 - name: Include products/common/arm-interfaces role
   include_role:
     name: products/common/arm-interfaces
-  when: arm_ip_left!="" or arm_ip_right!=""
+  when: "'arm_' in product"
 
 - name: Check if the ssh public key has been generated and copied to temp_ssh_keys_path folder on machine running Ansible (server laptop)
   stat:

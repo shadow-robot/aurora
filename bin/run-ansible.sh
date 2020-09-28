@@ -137,7 +137,7 @@ for extra_var in $extra_vars; do
         allowed_values="left right"
     fi
     if [[ "$variable" == "product" ]]; then
-        allowed_values="hand_e hand_lite hand_extra_lite hand_h"
+        allowed_values="hand_e hand_lite hand_extra_lite hand_h arm_hand_e arm_hand_lite arm_hand_extra_lite"
     fi
     if [[ "$variable" == "polhemus_type" ]]; then
         allowed_values="liberty viper"
@@ -336,18 +336,6 @@ fi
 ansible_executable=~/.local/bin/ansible-playbook
 if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
-fi
-
-#configure DHCP before running the actual playbook
-if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
-    if [[ "${aurora_limit}" != "all:!dhcp" ]]; then
-        "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
-        echo ""
-        echo " ----------------------------------------------------------------------"
-        echo " |    DHCP network ready! Proceeding with server and nuc playbook      |"
-        echo " ----------------------------------------------------------------------"
-        echo ""
-    fi
 fi
 
 "${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"

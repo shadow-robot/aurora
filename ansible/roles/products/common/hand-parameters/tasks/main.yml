@@ -6,6 +6,7 @@
       launch_file_path_right: "{{ shadow_hand_launcher_folder }}/sr_rhand.launch"
       launch_file_path_left: "{{ shadow_hand_launcher_folder }}/sr_lhand.launch"
       launch_file_path_bimanual: "{{ shadow_hand_launcher_folder }}/sr_bimanual.launch"
+      launch_file_path_system: "{{ shadow_hand_launcher_folder }}/sr_system.launch"
 
   - name: Download the right launch file from sr-config branch {{ config_branch }} from Github
     get_url:
@@ -33,6 +34,15 @@
       force: yes
     ignore_errors: yes
     when: bimanual|bool
+
+  - name: Download the system launch file from sr-config branch {{ config_branch }} from Github
+    get_url:
+      url: "https://raw.githubusercontent.com/shadow-robot/sr-config/{{ config_branch }}/sr_ethercat_hand_config/launch/sr_system.launch"
+      dest: "{{ launch_file_path_system }}"
+      mode: '755'
+      force: yes
+    ignore_errors: yes
+    when: "product is defined and 'arm_' in product"
 
   - name: Get the right hand_serial xml_response from the right launch file
     xml:
@@ -109,6 +119,21 @@
     ignore_errors: yes
     when: bimanual|bool
 
+  - name: Get the system xacro xml_response from the system launch file
+    xml:
+      path: "{{ launch_file_path_system }}"
+      xpath: "//attribute::*[contains(., '_hand')]/..//attribute::*[contains(., 'robot_description')]/.."
+      content: attribute
+    register: xml_response_system_xacro
+    ignore_errors: yes
+    when: "product is defined and 'arm_' in product"
+
+  - name: Set the system xacro from xml_response_system_xacro
+    set_fact:
+      xacro_system: "{{ xml_response_system_xacro.matches[0].arg.value }}"
+    ignore_errors: yes
+    when: "product is defined and 'arm_' in product"
+
   - name: Get the mapping_path_right xml_response from the right launch file
     xml:
       path: "{{ launch_file_path_right }}"
@@ -153,5 +178,20 @@
       robot_config_bimanual: "{{ xml_response_bimanual_robot_config.matches[0].arg.value }}"
     ignore_errors: yes
     when: bimanual|bool
+
+  - name: Get the system robot_config xml_response from the system launch file
+    xml:
+      path: "{{ launch_file_path_system }}"
+      xpath: "//attribute::*[contains(., '_hand')]/..//attribute::*[contains(., 'robot_config_file')]/.."
+      content: attribute
+    register: xml_response_system_robot_config
+    ignore_errors: yes
+    when: "product is defined and 'arm_' in product"
+
+  - name: Set the system robot_config from xml_response_system_robot_config
+    set_fact:
+      robot_config_system: "{{ xml_response_system_robot_config.matches[0].arg.value }}"
+    ignore_errors: yes
+    when: "product is defined and 'arm_' in product"
 
   when: config_branch is defined and config_branch | length > 0

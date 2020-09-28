@@ -140,7 +140,6 @@ bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat
 ```
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
-* [dhcp_installation_on_server](ansible/inventory/local/group_vars/dhcp.yml)
 * [server](ansible/inventory/server_and_nuc/group_vars/server.yml)
 * [control-machine](ansible/inventory/server_and_nuc/group_vars/control_machine.yml)
 
@@ -861,6 +860,3 @@ network:
 ```
 
 3. **Unable to launch RQT on NUC** (or other graphical programs running on the NUC), due to Xauthority issues (in server_and_nuc_deploy and teleop_deploy): Before running aurora, execute ssh -X user@nuc-control to create a proper .Xauthority file in the NUC host (user home folder). This is required before aurora runs and creates the container.
-
-4. **Aurora is stuck in getting a MAC address for the NUC** USB-ethernet adapter (in server_and_nuc_deploy):
-Make sure only 1 USB-ethernet adapter is connected to the laptop and it's the one going to the NUC USB-ethernet adapter. Try checking the physical connections and unplugging/replugging the USB-ethernet adapters and the ethernet cable. Also, make sure the USB-ethernet adapter is working (plug it into a laptop, run dmesg -w in the terminal, and see if there are any errors). If there are any errors that say "invalid mac address" or "error -108", the USB-ethernet adapter is faulty, so use another one. Any standard USB3 to Ethernet adapter will do. Finally, try to manually uninstall isc-dhcp-server by running sudo apt purge isc-dhcp-server on the laptop, and re-run aurora.
