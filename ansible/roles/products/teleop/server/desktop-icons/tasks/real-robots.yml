@@ -166,18 +166,13 @@
   include_tasks: demohands-unimanual.yml
   when: demohand_icons|bool
 
-- name: Set launch file input for custom scene_file
-  set_fact:
-    launch_file_input_gui_right_cyberglove: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true scene_file:=\"{{ scene_file}}\""
-  when: scene_file|length > 0 
-
 - name: Install desktop icon for right side teleop GUI (for cyberglove)
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_GUI_right.sh"
     project_name_input: "sr_teleop_vive_cyberglove"
-    launch_file_input: "{{ launch_file_input_gui_right_cyberglove }}"
+    launch_file_input: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }} external_control_loop:=true"
     desktop_icon_name: "4 - Launch Right Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
   when:

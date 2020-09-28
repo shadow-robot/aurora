@@ -6,5 +6,5 @@ sleep 4
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 10
 terminator --geometry "{{ term_3 }}" -T 'NUC right arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_arm_hand_hardware_control_loop.sh" &
-sleep 12
+sleep 18
 terminator --geometry "{{ term_4 }}" -T 'Server right arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right_arm_hand.sh"
