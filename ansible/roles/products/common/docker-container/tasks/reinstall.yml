@@ -85,6 +85,6 @@
     modify_script_name: "update_documentation.sh"
     modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
   when:
-    - glove == "haptx" or glove == "shadow_glove"
+    - glove == "haptx" or glove == "shadow_glove" or "'arm_' in product"
     - skip_molecule_task is not defined
     - inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
