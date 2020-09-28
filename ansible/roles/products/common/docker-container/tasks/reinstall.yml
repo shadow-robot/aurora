@@ -70,7 +70,7 @@
     documentation_repo: sr_teleop_haptx_documentation
     readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
     documentation_product: teleop-haptx
-  when: glove == "haptx" and skip_molecule_task is not defined and inventory_hostname=="{{ hostvars[groups['server'][0]] }}"
+  when: glove == "haptx" and skip_molecule_task is not defined and inventory_hostname=="{{ hostvars[groups['server'][0]]['inventory_hostname'] }}"
 
 - name: Set documentation variables for arm and hand
   set_fact:
@@ -90,4 +90,4 @@
   when:
     - glove == "haptx" or glove == "shadow_glove"
     - skip_molecule_task is not defined
-    - inventory_hostname=="{{ hostvars[groups['server'][0]] }}"
+    - inventory_hostname=="{{ hostvars[groups['server'][0]]['inventory_hostname'] }}"
