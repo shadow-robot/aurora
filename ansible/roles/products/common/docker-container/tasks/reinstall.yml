@@ -70,11 +70,14 @@
     documentation_repo: sr_teleop_haptx_documentation
     readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
     documentation_product: teleop-haptx
-  when: glove == "haptx" and skip_molecule_task is not defined
+  when: glove == "haptx" and skip_molecule_task is not defined and inventory_hostname=='server'
 
 - name: Update documentation inside the docker container for teleop images
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
     modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
-  when: glove == "haptx" or glove == "shadow_glove" and skip_molecule_task is not defined
+  when:
+    - glove == "haptx" or glove == "shadow_glove"
+    - skip_molecule_task is not defined
+    - inventory_hostname=='server'
