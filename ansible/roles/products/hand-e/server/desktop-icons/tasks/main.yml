@@ -278,7 +278,7 @@
     mode: '755'
   when: 
     - "'arm_' in product"
-    - bimanual|bool"
+    - bimanual|bool
 
 - name: Install desktop icon for Zero Force Mode - Right Hand for NUC
   import_tasks: hand-icon.yml
@@ -330,6 +330,60 @@
     desktop_icon_name: "4 - Launch Server Right Hand GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand GUI"
   when: bimanual|bool or hand_side=="right"
+
+- name: Set arm+hand GUI launch file names for UR10/UR10e
+  set_fact:
+    launch_file_input_arm_hand_right: "sr_right_ur10arm_hand.launch"
+    launch_file_input_arm_hand_left: "sr_left_ur10arm_hand.launch"
+    launch_file_input_arm_hand_bimanual: "sr_bimanual_ur10arms_hands.launch"
+  when:
+    - "'arm_' in product"
+    - ur_robot_type == 'ur10e' or ur_robot_type == 'ur10'
+
+- name: Set arm+hand GUI launch file names for UR5/UR5e
+  set_fact:
+    launch_file_input_arm_hand_right: "sr_right_ur5arm_hand.launch"
+    launch_file_input_arm_hand_left: "sr_left_ur5arm_hand.launch"
+    launch_file_input_arm_hand_bimanual: "sr_bimanual_ur5arms_hands.launch"
+  when:
+    - "'arm_' in product"
+    - ur_robot_type == 'ur5e' or ur_robot_type == 'ur5'
+
+- name: Create executable launch script for hand+arm (Right) GUI
+  template:
+    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_arm_hand.sh"
+    mode: '755'
+  vars:
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
+  when:
+    - "'arm_' in product"
+    - bimanual|bool or hand_side=="right"
+
+- name: Create executable launch script for hand+arm (Left) GUI
+  template:
+    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_arm_hand.sh"
+    mode: '755'
+  vars:
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
+  when:
+    - "'arm_' in product"
+    - bimanual|bool or hand_side=="left"
+
+- name: Create executable launch script for hand+arm (Bimanual) GUI
+  template:
+    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_arm_hand.sh"
+    mode: '755'
+  vars:
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
+  when:
+    - "'arm_' in product"
+    - bimanual|bool
 
 - name: Install desktop icon for left hand GUI
   import_tasks: roslaunch-icon.yml
