@@ -77,7 +77,9 @@
     documentation_repo: sr_dexterous_hand_and_arm_documentation
     readthedocs_token: "{{ arm_hand_readthedocs_token }}"
     documentation_product: hand-and-arm
-  when: "'arm_' in product" and skip_molecule_task is not defined
+  when:
+    - "'arm_' in product"
+    - skip_molecule_task is not defined
 
 - name: Update documentation inside the docker container for teleop images
   import_tasks: modify-container.yml
