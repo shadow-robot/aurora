@@ -82,11 +82,6 @@
     ros_master: "{{ server_hostname }}"
     nvidia_docker: false
 
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
-
 - name: Include products/common/arm-interfaces role
   include_role:
     name: products/common/arm-interfaces
