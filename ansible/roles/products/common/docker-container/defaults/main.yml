@@ -29,6 +29,7 @@ readthedocs_token: ""
 documentation_product: ""
 shadow_glove_teleop_readthedocs_token: ""
 haptx_teleop_readthedocs_token: ""
+arm_hand_readthedocs_token: ""
 glove: ""
 common_shared_volumes:
   - /tmp/.X11-unix:/tmp/.X11-unix[rw]
