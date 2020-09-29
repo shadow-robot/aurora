@@ -358,7 +358,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true"
+    launch_file: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -370,7 +370,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true"
+    launch_file: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
@@ -382,7 +382,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true"
+    launch_file: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
   when:
     - "'arm_' in product"
     - bimanual|bool
