@@ -39,3 +39,4 @@ container_type_shared_volumes: []
 custom_shared_volumes: []
 real_glove: true
 pr_branches: ""
+product: ""
