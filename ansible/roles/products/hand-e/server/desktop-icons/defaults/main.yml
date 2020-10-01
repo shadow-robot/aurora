@@ -23,3 +23,4 @@ bimanual_hands_picture: hand-e-bimanual.png
 initial_z_value: 0.7551
 arm_x_separation_value: 0.0
 arm_y_separation_value: 0.0
+arm_hand_readthedocs_link: ""
