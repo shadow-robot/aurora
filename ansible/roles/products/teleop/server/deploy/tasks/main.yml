@@ -246,10 +246,17 @@
   changed_when: false
   when: skip_molecule_task is not defined
 
-- name: Make a copy of SSH keys to a /tmp/ folder for copying to other machines
+- name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
   copy:
     src: "{{ ssh_keys_path }}.pub"
     dest: "{{ temp_ssh_keys_path }}.pub"
+  changed_when: false
+  when: skip_molecule_task is not defined and groups['server'] is defined
+
+- name: Make a copy of SSH private key to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}"
+    dest: "{{ temp_ssh_keys_path }}"
   changed_when: false
   when: skip_molecule_task is not defined and groups['server'] is defined
 
