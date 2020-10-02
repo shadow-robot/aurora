@@ -180,25 +180,54 @@
     become: true
     ignore_errors: yes
 
-  - name: Check if the current_calibration.yaml exists on the host shared volume
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_right.yaml exists on the host shared volume
     stat: 
-      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
-    register: current_calibration_file
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
+    register: current_calibration_file_right
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+    register: current_calibration_file_left
     ignore_errors: yes
 
   - name: Check if the default_calibration_right.yaml exists on the host shared volume
     stat: 
       path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
-    register: default_calibration_file
+    register: default_calibration_file_right
     ignore_errors: yes
 
-  - name: if current_calibration.yaml doesn't exist but default does, copy default into it
+  - name: Check if the default_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+    register: default_calibration_file_left
+    ignore_errors: yes
+
+  - name: if current_calibration_right.yaml doesn't exist but default does, copy default into it
     copy:
       src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
-      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
       mode: '666'
-    when: not current_calibration_file.stat.exists and default_calibration_file.stat.exists
+    when: not current_calibration_file_right.stat.exists and default_calibration_file_right.stat.exists
     ignore_errors: yes
+
+  - name: if current_calibration_left.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+      mode: '666'
+    when: not current_calibration_file_left.stat.exists and default_calibration_file_left.stat.exists
+    ignore_errors: yes
+
   when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include docker/aws role
