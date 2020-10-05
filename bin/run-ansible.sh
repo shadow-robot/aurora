@@ -113,7 +113,7 @@ fi
 
 boolean_variables="reinstall nvidia_docker real_glove real_vive use_aws use_openvpn terminator remote_cyberglove launch_hand"
 boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_icons upgrade_check bimanual remote_teleop"
-boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce"
+boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce router"
 ip_variables="arm_ip_left arm_ip_right"
 
 old_IFS=$IFS
@@ -336,6 +336,19 @@ fi
 ansible_executable=~/.local/bin/ansible-playbook
 if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
+fi
+
+#configure DHCP before running the actual playbook
+if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
+# router = false is default group_var
+    if [[ $extra_vars != *"router=true"* ]]; then
+        "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
+        echo ""
+        echo " ----------------------------------------------------------------------"
+        echo " |    DHCP network ready! Proceeding with server and nuc playbook      |"
+        echo " ----------------------------------------------------------------------"
+        echo ""
+    fi
 fi
 
 "${ansible_executable}" ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
