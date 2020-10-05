@@ -341,7 +341,7 @@ fi
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
 # router = false is default group_var, only install dhcp server on laptop if product is not arm+hand and user has not overridden router=true
-    if [[ $extra_vars != *"router=true"* && $extra_vars != *"product=arm_"* }]]; then
+    if [[ $extra_vars != *"router=true"* && $extra_vars != *"product=arm_"* ]]; then
         "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
         echo ""
         echo " ----------------------------------------------------------------------"
