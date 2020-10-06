@@ -1,0 +1,4 @@
+---
+netplan_file: "/etc/netplan/50-cloud-init.yaml"
+server_usb_ethernet_adapter: "enx000123"
+router_ip: "10.9.1.11"

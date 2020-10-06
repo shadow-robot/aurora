@@ -1,0 +1,41 @@
+---
+- name: Get server_usb_ethernet_adapter name
+  set_fact:
+    server_usb_ethernet_adapter: "{{ hostvars[groups['server'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
+
+- name: Get router_ip
+  set_fact:
+    router_ip: "{{ server_usb_ethernet_adapter.split(".")[0]+'.'+server_usb_ethernet_adapter.split(".")[1]+'.'+server_usb_ethernet_adapter.split(".")[3]+'.'+server_usb_ethernet_adapter.split(".")[2] }}"
+
+- name: Getting netplan file name
+  shell: echo $(ls /etc/netplan) 
+  register: netplan_file_location
+  changed_when: netplan_file_location.rc != 0
+
+- name: Setting the netplan file name
+  set_fact:
+    netplan_file: "{{ netplan_file_location.stdout_lines | first }}"
+
+  changed_when: netplan_file_location.rc != 0
+
+- name: Configuring netplan for correct routing with a router
+  template:
+    src: templates/netplan-server.j2
+    dest: "{{ netplan_file }}"
+  become: true
+
+- name: Generate netplan config
+  command: netplan generate
+  become: true
+
+- name: Apply netplan config
+  command: netplan apply
+  become: true
+
+- name: Edit root crontab on laptop to ensure all interfaces come back up after reboot
+  cron:
+    name: "apply netplan on reboot"
+    special_time: reboot
+    job: "/usr/sbin/netplan apply"
+    user: root
+  become: true
