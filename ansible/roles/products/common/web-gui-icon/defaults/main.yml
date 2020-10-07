@@ -1,0 +1,14 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+desktop_icon_png: "documentation_icon.png"
+launch_script: "shadow_launcher_doc_exec.sh"
+local_website_port_var: '7070'
+desktop_icon_name: "Documentation"
+desktop_icon_path: "Documentation"
+launch_terminal: "false"
+start_container_var: "true"
+start_server_command_var: ""
+preconditions_var: ""
+live_website_url_var: ""

@@ -113,7 +113,7 @@ fi
 
 boolean_variables="reinstall nvidia_docker real_glove real_vive use_aws use_openvpn terminator remote_cyberglove launch_hand"
 boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_icons upgrade_check bimanual remote_teleop"
-boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce"
+boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce router"
 ip_variables="arm_ip_left arm_ip_right"
 
 old_IFS=$IFS
@@ -137,7 +137,7 @@ for extra_var in $extra_vars; do
         allowed_values="left right"
     fi
     if [[ "$variable" == "product" ]]; then
-        allowed_values="hand_e hand_lite hand_extra_lite hand_h"
+        allowed_values="hand_e hand_lite hand_extra_lite hand_h arm_hand_e arm_hand_lite arm_hand_extra_lite"
     fi
     if [[ "$variable" == "polhemus_type" ]]; then
         allowed_values="liberty viper"
@@ -340,7 +340,8 @@ fi
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
-    if [[ "${aurora_limit}" != "all:!dhcp" ]]; then
+# router = false is default group_var, only install dhcp server on laptop if product is not arm+hand and user has not overridden router=true
+    if [[ $extra_vars != *"router=true"* && $extra_vars != *"product=arm_"* ]]; then
         "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
         echo ""
         echo " ----------------------------------------------------------------------"

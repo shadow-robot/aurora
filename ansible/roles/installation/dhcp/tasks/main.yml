@@ -111,7 +111,7 @@
   become: true
   command: bash -c "iptables -t nat -F POSTROUTING"
   changed_when: false
-  
+
 - name: Configure IP forwarding and routing part 4
   become: true
   command: bash -c "iptables -t nat -A POSTROUTING -o {{ internet_interface_name }} -j MASQUERADE"
