@@ -20,7 +20,7 @@
 - name: Configuring netplan for correct routing with a router
   template:
     src: templates/netplan-server.j2
-    dest: "{{ netplan_file }}"
+    dest: "/etc/netplan/{{ netplan_file }}"
   become: true
 
 - name: Generate netplan config
