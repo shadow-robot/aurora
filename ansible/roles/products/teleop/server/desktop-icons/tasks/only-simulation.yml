@@ -118,6 +118,23 @@
     biotacs: false
   when: glove=="shadow_glove"
 
+- name: Set GUI icon variables to standard values for haptx
+  set_fact:
+    launch_file_input_gui_right: "teleop_vive_haptx.launch sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    launch_file_input_gui_left: "teleop_vive_haptx.launch sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    project_name_input_value: "sr_teleop_vive_haptx"
+  when: glove=="haptx"
+
+- name: Set GUI icon variables to standard values for shadow_glove
+  set_fact:
+    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    project_name_input_value: "sr_teleop_vive_haptx"
+  when: glove=="haptx"
+
+
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right HaptX)
   import_tasks: roslaunch-icon.yml
   vars:
@@ -125,8 +142,8 @@
     launch_script: "shadow_sim_right.sh"
     desktop_icon_name: "3 - Launch Right HaptX Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right HaptX Teleop Simulation"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "teleop_vive_haptx.launch sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_right }}"
   when: glove=="haptx"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left HaptX)
