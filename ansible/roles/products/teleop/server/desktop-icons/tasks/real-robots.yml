@@ -253,7 +253,7 @@
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_GUI_bimanual.sh"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus_bimanual.launch external_control_loop:=true vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
+    launch_file_input: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=true vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
     desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
   when:
@@ -432,7 +432,7 @@
     desktop_icon_name: "Bimanual Shadow Glove Teleop Simulation"
     desktop_icon_path: "Bimanual Shadow Glove Teleop Simulation"
     project_name_input: "sr_teleop_vive_polhemus"
-    launch_file_input: "sr_teleop_vive_polhemus_bimanual.launch external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+    launch_file_input: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
   when: sim_icon|bool and bimanual|bool and glove=="shadow_glove"
 
 - name: Install desktop icon for NUC container
