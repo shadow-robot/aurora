@@ -5,7 +5,7 @@ network:
             dhcp4: yes
             gateway4: {{ router_ip }}
             routes:
-            - to: {{ router_ip | regex_replace('[^.]+$', '0') }}/24
+            - to: {{ server_ip | regex_replace('[^.]+$', '0') }}/24
               via: {{ router_ip }}
             optional: true
     version: 2
