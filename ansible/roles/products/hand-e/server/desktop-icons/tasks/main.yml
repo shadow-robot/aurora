@@ -351,6 +351,22 @@
     - "'arm_' in product"
     - ur_robot_type == 'ur5e' or ur_robot_type == 'ur5'
 
+- name: Set arm+hand GUI launch file content
+  set_fact:
+    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+  when:
+    - "'arm_' in product"
+
+- name: Set arm+hand GUI launch file content for custom scene
+    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene_file:={{ scene_file }}"
+    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene_file:={{ scene_file }}"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene_file:={{ scene_file }}"
+  when:
+    - "'arm_' in product"
+    - scene_file|length > 0
+
 - name: Create executable launch script for hand+arm (Right) GUI
   template:
     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
@@ -358,7 +374,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_right }}"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -370,7 +386,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_left }}"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
@@ -382,7 +398,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
   when:
     - "'arm_' in product"
     - bimanual|bool
