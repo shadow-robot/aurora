@@ -3,9 +3,10 @@ network:
     ethernets:
         {{ server_usb_ethernet_adapter }}:
             dhcp4: yes
+            gateway4: {{ router_ip }}
             routes:
             - to: {{ server_ip | regex_replace('[^.]+$', '0') }}/24
               via: {{ router_ip }}
-            optional: true
+              metric 50
     version: 2
     renderer: NetworkManager
