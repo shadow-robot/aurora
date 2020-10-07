@@ -5,7 +5,7 @@
 
 - name: Get router_ip
   set_fact:
-    router_ip: "{{ server_usb_ethernet_adapter.split(".")[0]+'.'+server_usb_ethernet_adapter.split(".")[1]+'.'+server_usb_ethernet_adapter.split(".")[3]+'.'+server_usb_ethernet_adapter.split(".")[2] }}"
+    router_ip: "{{ server_usb_ethernet_adapter.split('.')[0]+'.'+server_usb_ethernet_adapter.split('.')[1]+'.'+server_usb_ethernet_adapter.split('.')[3]+'.'+server_usb_ethernet_adapter.split('.')[2] }}"
 
 - name: Getting netplan file name
   shell: echo $(ls /etc/netplan) 
