@@ -10,6 +10,13 @@
     server_ip: "{{ groups['server'][0] }}"
   when: groups['server'] is defined
 
+- name: Include products/common/modify-routes role
+  include_role:
+    name: products/common/modify-routes
+  when:
+    - groups['control_machine'] is defined
+    - 'arm_' in product or router|bool
+
 - name: Setup script names
   set_fact:
     setup_script: server-setup.sh

@@ -10,6 +10,12 @@
     server_ip: "{{ groups['server'][0] }}"
   when: groups['server'] is defined
 
+- name: Include products/common/modify-routes role
+  include_role:
+    name: products/common/modify-routes
+  when:
+    - groups['control_machine'] is defined
+
 - name: Setup script names
   set_fact:
     setup_script: teleop-server-setup.sh

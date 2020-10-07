@@ -15,7 +15,6 @@
 - name: Setting the netplan file name
   set_fact:
     netplan_file: "{{ netplan_file_location.stdout_lines | first }}"
-
   changed_when: netplan_file_location.rc != 0
 
 - name: Configuring netplan for correct routing with a router
