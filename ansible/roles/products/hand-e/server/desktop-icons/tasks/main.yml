@@ -320,42 +320,13 @@
   include_role:
     name: products/common/local-zero-force-mode-launch
 
-- name: Set GUI icon variables to standard values
-  set_fact:
-    launch_file_input_gui_right: "srhand.launch external_control_loop:=true"
-    launch_file_input_gui_bimanual: "sr_bimanual.launch external_control_loop:=true robot_config_file:='{{ robot_config_bimanual }}' robot_description:='{{ xacro_bimanual }}'"
-    project_name_input_value: "sr_robot_launch"
-
-- name: Set launch file input for left hand GUI
-  set_fact:
-    launch_file_input_gui_left: "{{ launch_file_input_gui_right }} side:=left"
-
-- name: Set launch file input for custom scene_file
-  set_fact:
-    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:={{ scene_file }}"
-    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:={{ scene_file }}"
-    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:={{ scene_file }}"
-  when: scene_file|length > 0
-
-- name: Set GUI launch file inputs for external control loop = true
-  set_fact:
-    launch_file_input_gui_right_external: "{{ launch_file_input_gui_right }} external_control_loop:=true"
-    launch_file_input_gui_left_external: "{{ launch_file_input_gui_left }} external_control_loop:=true"
-    launch_file_input_gui_bimanual_external: "{{ launch_file_input_gui_bimanual }} external_control_loop:=true"
-
-- name: Set sim launch files inputs
-  set_fact:
-    launch_file_input_gui_right_sim: "{{ launch_file_input_gui_right }} external_control_loop:=false sim:=true"
-    launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left }} external_control_loop:=false sim:=true"
-    launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual }} external_control_loop:=false sim:=true"
-
 - name: Install desktop icon for right hand GUI
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: ""
+    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_id:=rh"
     desktop_icon_name: "4 - Launch Server Right Hand GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand GUI"
   when: bimanual|bool or hand_side=="right"
@@ -380,6 +351,22 @@
     - "'arm_' in product"
     - ur_robot_type == 'ur5e' or ur_robot_type == 'ur5'
 
+- name: Set arm+hand GUI launch file content
+  set_fact:
+    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+  when:
+    - "'arm_' in product"
+
+- name: Set arm+hand GUI launch file content for custom scene
+    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene_file:={{ scene_file }}"
+    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene_file:={{ scene_file }}"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene_file:={{ scene_file }}"
+  when:
+    - "'arm_' in product"
+    - scene_file|length > 0
+
 - name: Create executable launch script for hand+arm (Right) GUI
   template:
     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
@@ -387,7 +374,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_right }}"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -399,7 +386,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: " {{ launch_file_content_arm_hand_left }}"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
@@ -411,7 +398,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
   when:
     - "'arm_' in product"
     - bimanual|bool
@@ -433,7 +420,7 @@
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: ""
+    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false robot_config_file:='{{ robot_config_bimanual }}' robot_description:='{{ xacro_bimanual }}'"
     desktop_icon_name: "4 - Launch Server Bimanual GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual GUI"
   when: bimanual|bool

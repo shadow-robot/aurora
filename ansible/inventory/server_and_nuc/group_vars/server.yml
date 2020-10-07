@@ -26,7 +26,7 @@ arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
-scene_file: "" # Allows the user to override the scene_file used in GUI launch e.g. "$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
+scene_file: "" # Allows the user to override the scene_file used in GUI launch (only for arm+hand product) e.g. "$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
 router: false # Specify if a router is used between server and NUC
 arm_hand_readthedocs_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256
