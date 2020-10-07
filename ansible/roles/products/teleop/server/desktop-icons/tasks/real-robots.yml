@@ -195,9 +195,9 @@
 
 - name: Set GUI icon variables for custom scene
   set_fact:
-    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:={{ scene_file }}"
-    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:={{ scene_file }}"
-    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:={{ scene_file }}"
+    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='{{ scene_file }}'"
+    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='{{ scene_file }}'"
+    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}'"
   when: scene_file|length > 0
 
 - name: Set GUI icon variables for sim
