@@ -206,6 +206,12 @@
     launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left }} external_control_loop:=false sim:=true"
     launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual }} external_control_loop:=false sim:=true"
 
+- name: Set GUI icon variables for sim and custom scene
+  set_fact:
+    launch_file_input_gui_right_sim: "{{ launch_file_input_gui_right_sim }} world:='{{ scene_file | replace('.scene','.world') }}'"
+    launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left_sim }} world:='{{ scene_file | replace('.scene','.world') }}'"
+    launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual_sim }} world:='{{ scene_file | replace('.scene','.world') }}'"
+
 - name: Set GUI icon variables for real hardware
   set_fact:
     launch_file_input_gui_right_realhw: "{{ launch_file_input_gui_right }} external_control_loop:=true"
