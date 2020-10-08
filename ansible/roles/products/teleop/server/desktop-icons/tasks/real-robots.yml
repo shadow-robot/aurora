@@ -208,9 +208,9 @@
 
 - name: Set GUI icon variables for sim and custom scene
   set_fact:
-    launch_file_input_gui_right_sim: "{{ launch_file_input_gui_right_sim }} world:='{{ scene_file | replace('.scene','.world') }}'"
-    launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left_sim }} world:='{{ scene_file | replace('.scene','.world') }}'"
-    launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual_sim }} world:='{{ scene_file | replace('.scene','.world') }}'"
+    launch_file_input_gui_right_sim: "{{ launch_file_input_gui_right_sim }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
+    launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left_sim }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
+    launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual_sim }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
 
 - name: Set GUI icon variables for real hardware
   set_fact:
