@@ -144,8 +144,8 @@
 - name: Set GUI icon variables for custom scene
   set_fact:
     launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') }}'"
-    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world')"
-    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world')"
+    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') }}'"
+    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') }}'"
   when: scene_file|length > 0
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right)
