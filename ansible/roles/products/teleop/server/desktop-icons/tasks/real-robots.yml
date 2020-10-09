@@ -505,13 +505,29 @@
     command: "rqt -s sr_gui_shadow_glove_calibration.shadow_glove_calibration.SrGuiShadowGloveCalibration"
   when: glove=="shadow_glove"
 
+- name: Set Shadow Glove driver name (if right)
+  set_fact:
+    glove_driver_type: "right"
+  when: hand_side=="right"
+
+- name: Set Shadow Glove driver name (if left)
+  set_fact:
+    glove_driver_type: "left"
+  when: hand_side=="left"
+
+- name: Set Shadow Glove driver name (if bimanual)
+  set_fact:
+    glove_driver_type: "bimanual"
+  when: bimanual|bool
+
 - name: Install desktop icon for Shadow Glove Calibration
   import_tasks: default-icon-no-terminator.yml
   vars:
-    desktop_icon_png: "shadow_glove_right.png"
+    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
     launch_script: "shadow_glove_calibration.sh"
-    desktop_icon_name: "Launch Shadow Glove Calibration"
+    desktop_icon_name: "Launch Shadow {{ glove_driver_type }} Glove Calibration"
     template: templates/scripts/launch-shadow-glove-calibration.j2
-    desktop_icon_path: "Shadow Advanced Launchers/Launch Shadow Glove Calibration"
+    desktop_icon_path: "Shadow Advanced Launchers/Launch Shadow {{ glove_driver_type }} Glove Calibration"
     launch_terminal: "false"
+    glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove"
