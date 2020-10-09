@@ -291,7 +291,7 @@
   vars:
     desktop_icon_png: "shadow_glove_bimanual.png"
     launch_script: "shadow_glove_driver_bimanual.sh"
-    desktop_icon_name: "5 - Launch Left Shadow Glove Driver"
+    desktop_icon_name: "5 - Launch Bimanual Shadow Glove Driver"
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Shadow Glove Driver"
     project_name_input: "sr_teleop_vive_polhemus"
     launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
