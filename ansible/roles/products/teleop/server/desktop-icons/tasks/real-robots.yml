@@ -380,6 +380,19 @@
     - bimanual|bool or hand_side=="left"
     - glove=="shadow_glove"
 
+- name: Install desktop icon for running Shadow Glove mapping node bimanual
+  include_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "shadow_glove_bimanual.png"
+    launch_script: "shadow_glove_mapping_launch_bimanual.sh"
+    desktop_icon_name: "6 - Launch Bimanual Shadow Glove Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Shadow Glove Mapping"
+    project_name_input: "sr_fingertip_hand_teleop"
+    launch_file_input: "sr_fingertip_hand_teleop_bimanual.launch"
+  when:
+    - bimanual|bool
+    - glove=="shadow_glove"
+
 - name: Install desktop icon for Teleop server Simulation (Cyberglove)
   import_tasks: roslaunch-icon.yml
   vars:
