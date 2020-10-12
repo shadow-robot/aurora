@@ -5,6 +5,6 @@ terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ s
 sleep 4
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
 sleep 10
-terminator --geometry "{{ term_3 }}" -T 'Shadow Glove Driver' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_driver_right.sh" &
+terminator --geometry "{{ term_3 }}" -T 'Shadow Glove {{ glove_driver_value }} Driver' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_driver_{{ glove_driver_value }}.sh" &
 sleep 10
-terminator --geometry "{{ term_4 }}" -T 'Shadow Glove Calibration' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_calibration_rqt.sh"
+terminator --geometry "{{ term_4 }}" -T 'Shadow Glove {{ glove_driver_value }} Calibration' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_calibration_rqt.sh"
