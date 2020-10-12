@@ -128,9 +128,30 @@
     path: /etc/rc.local
     backup: yes
     block: |
+      #!bin/bash
       iptables-restore < /etc/iptables.sav
+      ifdown {{ dhcp_interface_name }}
+      ifup {{ dhcp_interface_name }}
     insertbefore: "exit 0"
     create: yes
+  changed_when: false
+
+- name: Ensure the {{ rc_local_service_path }} exists
+  file:
+    path: "{{ rc_local_service_path }}"
+    mode: '700'
+    state: touch
+  become: yes
+
+- name: Configuring {{ rc_local_service_path }}
+  template:
+    src: templates/rc-local-service.j2
+    dest: "{{ rc_local_service_path }}"
+  become: true
+
+- name: Enable rc-local.service
+  become: true
+  command: bash -c "systemctl enable rc-local.service"
   changed_when: false
 
 - name: Restart networking service
