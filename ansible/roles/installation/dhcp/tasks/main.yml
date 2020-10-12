@@ -136,18 +136,27 @@
     create: yes
   changed_when: false
 
+- name: Making rc.local executable
+  file:
+    path: /etc/rc.local
+    mode: a+x
+  become: yes
+  changed_when: false
+
 - name: Ensure the {{ rc_local_service_path }} exists
   file:
     path: "{{ rc_local_service_path }}"
     mode: '700'
     state: touch
   become: yes
+  changed_when: false
 
 - name: Configuring {{ rc_local_service_path }}
   template:
     src: templates/rc-local-service.j2
     dest: "{{ rc_local_service_path }}"
   become: true
+  changed_when: false
 
 - name: Enable rc-local.service
   become: true
