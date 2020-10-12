@@ -360,6 +360,7 @@
     - "'arm_' in product"
 
 - name: Set arm+hand GUI launch file content for custom scene
+  set_fact:
     launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene_file:='{{ scene_file }}'"
     launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene_file:='{{ scene_file }}'"
     launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene_file:='{{ scene_file }}'"
