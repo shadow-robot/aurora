@@ -77,7 +77,7 @@
 
   - name: Get private github ssh key
     set_fact:
-      private_github_ssh_key: "{{ response.content | regex_search('(?<=GITHUB_KEY=)(.*)(?=\\CUSTOMER_NAME)', multiline=True) }}"
+      private_github_ssh_key: "{{ response.content | regex_search('(?<=GITHUB_KEY=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
     changed_when: false
   
   - name: Customer_key is not authorized to use product={{ product }}
