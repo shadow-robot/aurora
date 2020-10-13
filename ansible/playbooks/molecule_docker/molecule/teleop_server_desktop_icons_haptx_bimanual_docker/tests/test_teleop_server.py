@@ -71,7 +71,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
         'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
-        'Bimanual HaptX Teleop Simulation'
+        'Shadow Advanced Launchers/Bimanual Teleop Simulation'
         )
     scripts = (
         'shadow_launch_right_teleop',
@@ -105,7 +105,7 @@ def test_icons_in_docker(host):
         'shadow_local_right_launcher_exec',
         'shadow_local_left_launcher_exec',
         'shadow_local_bimanual_launcher_exec',
-        'shadow_sim_demo',
+        'shadow_sim_demo_bimanual',
         'shadow_local_zero_force_mode_right',
         'shadow_local_zero_force_mode_left',
         'shadow_local_zero_force_mode_right_launcher',
