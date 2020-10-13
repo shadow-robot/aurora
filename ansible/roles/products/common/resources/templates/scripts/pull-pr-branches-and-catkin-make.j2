@@ -40,7 +40,7 @@ for i in $PR_BRANCHES; do
         cd $ros_repo
         git fetch
         commit_id=$(git ls-remote origin 'pull/*/head' | grep refs/pull/"$pull"/head | awk '{print $1}')
-        branch=$(git branch -a --contains "$commit_id" | awk -F'/' '{print $3}' | tr -d '\n')
+        branch=$(git branch -a --contains "$commit_id" | head -n 1 | awk -F'/' '{print $3}' | tr -d '\n')
     fi
     if [[ "$i" == *"/tree/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/tree\/.*/\1/')
