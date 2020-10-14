@@ -22,7 +22,6 @@
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "all"
       arm_ips: "{{ arm_ip_right }}_{{ arm_ip_left }}"
-      XDG_RUNTIME_DIR: "/run/user/1000"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
