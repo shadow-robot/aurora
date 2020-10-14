@@ -128,13 +128,19 @@
     path: /etc/rc.local
     backup: yes
     block: |
-      #!bin/bash
       iptables-restore < /etc/iptables.sav
       ifdown {{ dhcp_interface_name }}
       ifup {{ dhcp_interface_name }}
     insertbefore: "exit 0"
     create: yes
   changed_when: false
+
+- name: Include bin/bash in rc.local first line
+  lineinfile:
+    path: /etc/rc.local
+    insertbefore: BOF
+    line: "#!bin/bash"
+    state: present
 
 - name: Making rc.local executable
   file:
