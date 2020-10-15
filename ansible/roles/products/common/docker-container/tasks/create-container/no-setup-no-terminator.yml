@@ -25,7 +25,6 @@
       DISPLAY: "{{ lookup('env','DISPLAY') }}"
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
       arm_ips: "{{ arm_ip_right }}_{{ arm_ip_left }}"
-      XDG_RUNTIME_DIR: "/run/user/1000"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
