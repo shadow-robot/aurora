@@ -5,7 +5,7 @@
     state: directory
 
 - name: Check if /run/user/1000 folder exists in the docker image
-  shell: "docker image history --no-trunc {{ full_image_name }} | grep "XDG_RUNTIME_DIR" | wc -l"
+  shell: "docker image history --no-trunc {{ full_image_name }} | grep XDG_RUNTIME_DIR | wc -l"
   register: xdg_check
 
 - name: Creating the container which will execute setup script in terminator when started
