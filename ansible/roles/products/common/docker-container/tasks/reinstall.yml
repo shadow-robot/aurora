@@ -89,5 +89,5 @@
   when:
     - glove == "haptx" or glove == "shadow_glove" or "'arm_' in product"
     - skip_molecule_task is not defined
-    - inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
+    - "'server' in groups" and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
   ignore_errors: yes
