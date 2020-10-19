@@ -17,7 +17,7 @@ else
 fi
 for i in $PRIVATE_REPOS; do
     repo_url="ssh://git@github.com/shadow-robot/$i.git"
-    cd /home/user/projects/shadow_robot
+    cd /home/user/projects/shadow_robot/base
     git clone $repo_url
 done
 echo "Private repos: $PRIVATE_REPOS cloned, executing catkin_make in base (apart from moveit)"
