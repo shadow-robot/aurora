@@ -1,6 +1,5 @@
 #! /bin/bash
 set -e
-source /home/user/projects/shadow_robot/base_deps/devel/setup.bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
 PRIVATE_REPOS="{{ private_repos_value }}"
 eval $(ssh-agent)
@@ -8,11 +7,11 @@ ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
 results=""
 if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
     echo " ---------------------------------"
-    echo "You have access to private repos: $PRIVATE_REPOS"
+    echo "You have access to private repo(s): $PRIVATE_REPOS"
     echo " ---------------------------------"
 else
     echo " -------------------------------------------------------"
-    echo "You don't have access to private repos: $PRIVATE_REPOS. Github SSH authentication failed with message: $ssh_test"
+    echo "You don't have access to private repo(s): $PRIVATE_REPOS. Github SSH authentication failed with message: $ssh_test"
     echo " -------------------------------------------------------"
     exit 1
 fi

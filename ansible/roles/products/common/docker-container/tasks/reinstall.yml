@@ -90,7 +90,8 @@
   - name: Get private github ssh key
     set_fact:
       private_github_ssh_key: "{{ response_private.content | regex_search('(?<=GITHUB_KEY=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
-  
+      aws_key: "{{ response_private.content | regex_search('(?<=ACCESS_KEY_ID=)(.*)(?=\\nSECRET_ACCESS_KEY)', multiline=True) }}"
+
   - name: Customer_key is not authorized to use product={{ product }}
     fail:
       msg: "Invalid customer_key for product={{ product }}. Please contact Shadow Robot Company with your customer_key and check that you have been authorized to use product={{ product }}"
