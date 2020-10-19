@@ -16,14 +16,13 @@ else
     exit 1
 fi
 for i in $PRIVATE_REPOS; do
-    repo_url=https://github.com/shadow-robot/$i
-    ros_repo=""
+    repo_url="ssh://git@github.com/shadow-robot/$i.git"
     cd /home/user/projects/shadow_robot
     git clone $repo_url
 done
-echo "Private repos cloned, executing catkin_make in base (apart from moveit)"
+echo "Private repos: $PRIVATE_REPOS cloned, executing catkin_make in base (apart from moveit)"
 excluded_packages_base=$(rospack list | grep /home/user/projects/shadow_robot/base/src/moveit | awk '{print $1}' | paste -s -d ';')
 cd /home/user/projects/shadow_robot/base
 catkin_make -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCATKIN_BLACKLIST_PACKAGES="$excluded_packages_base" &> /dev/null
-echo "Private repos installed"
+echo "Private repos: $PRIVATE_REPOS installed"
 exit 0
