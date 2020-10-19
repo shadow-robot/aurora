@@ -100,7 +100,7 @@
     copy:
       content: "{{ private_github_ssh_key }}"
       dest: "{{ private_ssh_keys_path }}"
-      mode: '404'
+      mode: '600'
     become: yes
     changed_when: false
 
