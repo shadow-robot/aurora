@@ -148,7 +148,7 @@
   set_fact:
     documentation_repo: sr_dexterous_hand_and_arm_documentation
     readthedocs_token: "{{ arm_hand_readthedocs_token }}"
-    documentation_product: hand-and-arm
+    documentation_product: dexterous-hand-and-arm
   when:
     - "'arm_' in product"
     - skip_molecule_task is not defined
