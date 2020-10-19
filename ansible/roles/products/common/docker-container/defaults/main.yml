@@ -40,5 +40,5 @@ custom_shared_volumes: []
 real_glove: true
 pr_branches: ""
 product: ""
-private_github_ssh_key: ""
+private_github_ssh_key_base64: ""
 private_ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa_private"
