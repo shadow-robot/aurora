@@ -70,6 +70,66 @@
     modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
   when: groups['simulation'] is not defined
 
+- name: Installing private repositories for arm and hand product
+  block:
+  - name: Ensure botocore and boto3 modules are installed
+    pip:
+      name: [ "boto3", "botocore"]
+      extra_args: "--user"
+    changed_when: false
+
+  - name: Connect to Shadow AWS API
+    uri:
+      url: https://5vv2z6j3a7.execute-api.eu-west-2.amazonaws.com/prod
+      method: GET
+      return_content: yes
+      headers:
+        x-api-key: "{{ customer_key }}"
+    register: response_private
+
+  - name: Get private github ssh key
+    set_fact:
+      private_github_ssh_key_base64: "{{ response_private.content | regex_search('(?<=GITHUB_KEY=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
+
+  - name: Customer_key is not authorized to use product={{ product }}
+    fail:
+      msg: "Invalid customer_key for product={{ product }}. Please contact Shadow Robot Company with your customer_key and check that you have been authorized to use product={{ product }}"
+    when: private_github_ssh_key_base64==""
+
+  - name: Write private github ssh key to file
+    copy:
+      content: "{{ private_github_ssh_key_base64 | b64decode }}"
+      dest: "{{ private_ssh_keys_path }}"
+      mode: '600'
+    changed_when: false
+
+  - name: Creating the clone_private_repos bash script
+    template:
+      src: ../../../common/resources/templates/scripts/clone-private-repos.j2
+      dest: "{{ shadow_hand_launcher_folder }}/clone_private_repos.sh"
+      mode: '755'
+    vars:
+      private_repos_value: "sr_dexterous_hand_and_arm_documentation"
+
+  - name: Copying the pull clone_private_repos bash script into docker container
+    changed_when: false
+    shell: "docker cp {{ shadow_hand_launcher_folder }}/clone_private_repos.sh {{ container_name }}:/tmp/clone_private_repos.sh"
+    become: yes
+
+  - name: Copying the private_ssh_keys into docker container
+    changed_when: false
+    shell: "docker cp {{ private_ssh_keys_path }} {{ container_name }}:/home/user/.ssh/id_rsa"
+    become: yes
+
+  - name: Install private repos
+    import_tasks: modify-container.yml
+    vars:
+      modify_script_name: "clone_private_repos.sh"
+      modify_script_commands: "/tmp/clone_private_repos.sh"
+  when:
+    - "'arm_' in product"
+    - skip_molecule_task is not defined
+
 - name: Set documentation variables for shadow_glove teleop
   set_fact:
     documentation_repo: sr_teleop_polhemus_documentation
@@ -88,7 +148,7 @@
   set_fact:
     documentation_repo: sr_dexterous_hand_and_arm_documentation
     readthedocs_token: "{{ arm_hand_readthedocs_token }}"
-    documentation_product: hand-and-arm
+    documentation_product: dexterous-hand-and-arm
   when:
     - "'arm_' in product"
     - skip_molecule_task is not defined
