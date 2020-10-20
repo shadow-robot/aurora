@@ -57,20 +57,13 @@
     launch_terminal: "false"
   when: bimanual|bool
 
-- name: Set Shadow Arm+hand icon pictures and set include_wrist_in_arm_controller = true
+- name: Set Shadow Arm+hand icon pictures and set include_wrist_in_arm_controller = false
   set_fact:
     right_arm_hand_picture: arm_hand_right.jpeg
     left_arm_hand_picture: arm_hand_left.jpg
     bimanual_arm_hand_picture: arm_hand_bimanual.jpg
-    include_wrist_in_arm_controller: "true"
-  when: "'arm_' in product"
-
-- name: Set include_wrist_in_arm_controller_value to false if hand = lite or extra_lite
-  set_fact:
     include_wrist_in_arm_controller: "false"
-  when:
-    - "'arm_' in product"
-    - "'lite' in product"
+  when: "'arm_' in product"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Right)
   import_tasks: default-icon-no-terminator.yml
