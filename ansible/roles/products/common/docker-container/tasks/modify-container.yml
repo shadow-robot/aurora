@@ -13,4 +13,3 @@
   shell: "/tmp/{{ modify_script_name }}"
   become: yes
   changed_when: false
-  when: skip_molecule_task is not defined
