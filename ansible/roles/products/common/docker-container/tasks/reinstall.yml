@@ -153,7 +153,11 @@
     - "'arm_' in product"
     - skip_molecule_task is not defined
 
-- name: Update documentation inside the docker container for teleop or arm+hand glove={{ glove }} and product={{ product }}
+- name: debug1
+  debug:
+    msg: "glove={{ glove }} and product={{ product }}"
+
+- name: Update documentation inside the docker container for teleop or arm+hand
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
