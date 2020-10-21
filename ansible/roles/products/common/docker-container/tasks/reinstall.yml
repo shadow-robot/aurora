@@ -154,7 +154,7 @@
     - skip_molecule_task is not defined
 
 - name: Update documentation inside the docker container for teleop or arm+hand
-  import_tasks: modify-container.yml
+  include_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
     modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
@@ -165,7 +165,7 @@
   ignore_errors: yes
 
 - name: Update documentation inside the docker container for hand only
-  import_tasks: modify-container.yml
+  include_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
     modify_script_commands: "cd /home/user/projects/shadow_robot/base/src;git clone https://github.com/shadow-robot/sr_dexterous_hand_documentation;catkin_make --pkg sr_dexterous_hand_documentation;curl https://dexterous-hand.readthedocs.io/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv dexterous-hand-latest html/"
