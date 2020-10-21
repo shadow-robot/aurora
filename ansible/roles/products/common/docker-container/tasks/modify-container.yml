@@ -1,4 +1,16 @@
 ---
+- name: debug
+  debug:
+    msg: glove == 'haptx' or glove == 'shadow_glove' or "'arm_' in product"
+
+- name: debug1
+  debug:
+    msg: glove
+
+- name: debug2
+  debug:
+    msg: "'arm_' in product"
+
 - name: Creating the modify container script
   template:
     src: ../../../common/resources/templates/scripts/modify-container.j2
