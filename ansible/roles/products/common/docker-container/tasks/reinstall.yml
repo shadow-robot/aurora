@@ -168,7 +168,7 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
-    modify_script_commands: "cd /home/user/projects/shadow_robot/base/src;git clone https://github.com/shadow-robot/sr_dexterous_hand_documentation;catkin_make --pkg sr_dexterous_hand_documentation;curl https://dexterous-hand.readthedocs.io/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv dexterous-hand-latest html/"
+    modify_script_commands: "cd /home/user/projects/shadow_robot/base/src;git clone https://github.com/shadow-robot/sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base;catkin_make --only-pkg-with-deps sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base/src/sr_dexterous_hand_documentation;curl https://dexterous-hand.readthedocs.io/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv dexterous-hand-latest html/"
   when:
     - "'arm_' not in product"
     - "'hand' in product"
