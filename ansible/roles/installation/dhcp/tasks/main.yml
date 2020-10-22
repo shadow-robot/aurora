@@ -136,6 +136,7 @@
   changed_when: false
 
 - name: Include bin/bash in rc.local first line
+  become: yes
   lineinfile:
     path: /etc/rc.local
     insertbefore: BOF
