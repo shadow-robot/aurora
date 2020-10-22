@@ -20,7 +20,7 @@
 
 - name: Create desktop icon
   template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    src: ../../../common/resources/templates/desktop-icons/standard-icon-no-terminator.j2
     dest: "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop"
     mode: '755'
   vars:
