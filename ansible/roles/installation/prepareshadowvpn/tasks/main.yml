@@ -1,4 +1,4 @@
 ---
 - name: Install shadowvpn_prerequisites
-  script: /ansible/roles/installation/prepareshadowvpn/files/prepareshadowvpn.sh
+  script: files/prepareshadowvpn.sh
   become: yes
