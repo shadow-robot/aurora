@@ -1,0 +1,4 @@
+---
+- name: Install dexteroushand_local_deployment
+  script: files/deploydexterouslocal.sh
+  become: yes
