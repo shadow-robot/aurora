@@ -1,5 +1,0 @@
----
-- name: Install standard-notes
-  community.general.snap:
-    name:
-      - "{{ packages }}"
