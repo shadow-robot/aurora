@@ -1,6 +1,6 @@
 ---
-- name: Install Snap Package Standard-Notes
+- name: Install snap package standard-notes
   community.general.snap:
     name:
-      - standard-notes
+      - "{{ packages }}"
   become: yes
