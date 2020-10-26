@@ -5,7 +5,7 @@ wget https://ww1.microchip.com/downloads/en/DeviceDoc/MPLABX-v5.45-linux-install
 echo "where does it download the file"
 pwd
 echo "where does it download the file"
-tar -xvf MPLABX-v5.45-linux-installer.tar -C $HOME/Desktop/
-sudo chmod +x $HOME/Desktop/MPLABX-v5.45-linux-installer.sh
-sudo $HOME/Desktop/MPLABX-v5.45-linux-installer.sh
+tar -xvf MPLABX-v5.45-linux-installer.tar -C .
+sudo chmod +x MPLABX-v5.45-linux-installer.sh
+sudo ./MPLABX-v5.45-linux-installer.sh
 echo "MPLABX IDE and MPLABX IPE staging is done. Installer will continue in a new window."
