@@ -1,4 +1,4 @@
 ---
 - name: Prepare shadowvpn
-  shell: files/prepareshadowvpn.sh
+  shell: prepareshadowvpn.sh
   become: yes
