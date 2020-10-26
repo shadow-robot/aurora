@@ -1,4 +1,4 @@
 ---
 - name: Prepare shadowvpn
-  shell: /ansible/roles/installation/prepareshadowvpn/tasks/prepareshadowvpn.sh
+  shell: files/prepareshadowvpn.sh
   become: yes
