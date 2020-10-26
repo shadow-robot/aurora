@@ -27,3 +27,4 @@
     - {role: installation/passwordless-command, when: "'passwordless-command' in software_list"}
     - {role: installation/rabbitvcs, when: "'rabbitvcs' in software_list"}
     - {role: installation/prepareshadowvpn, when: "'prepareshadowvpn' in software_list"}
+    - {role: installation/standard-notes, when: "'standard-notes' in software_list"}

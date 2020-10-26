@@ -1,0 +1,4 @@
+---
+- name: Install snap package standard notes
+  script: files/standard-notes.sh
+  become: yes
