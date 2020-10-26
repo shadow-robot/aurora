@@ -1,0 +1,6 @@
+---
+- name: Install Snap Package Standard-Notes
+  community.general.snap:
+    name:
+      - standard-notes
+  become: yes
