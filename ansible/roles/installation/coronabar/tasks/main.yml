@@ -1,0 +1,4 @@
+---
+- name: Deploy Coronabar Snap App
+  script: files/coronabar.sh
+  become: yes
