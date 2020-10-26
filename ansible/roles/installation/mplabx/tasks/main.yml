@@ -1,0 +1,4 @@
+---
+- name: Deploy MPLABX IDE and MPLABX IPE and Go Through the Installer
+  script: files/mplabx.sh
+  become: yes

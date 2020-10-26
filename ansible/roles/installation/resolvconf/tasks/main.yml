@@ -1,4 +1,4 @@
 ---
-- name: Deploy MPLABX IDE and MPLABX IPE and Go Through the Installer
-  script: files/mplabx.sh
+- name: Deploy Resolvconf to fix network connectivity issue in Ubuntu 18.04.5 LTS
+  script: files/resolvconf.sh
   become: yes
