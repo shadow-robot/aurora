@@ -1,9 +1,4 @@
 ---
 - name: Install shadowvpn_prerequisites
-  tasks:
-    name: Copy Script to RemoteHost
-    copy: src=/home/user/aurora/ansible/roles/installation/prepareshadowvpn/files/prepareshadowvpn.sh dest=/tmp/ mode=0777
-    
-    name: Execute script
-    command: sh /tmp/prepareshadowvpn.sh
+  script: /ansible/roles/installation/prepareshadowvpn/files/prepareshadowvpn.sh
   become: yes
