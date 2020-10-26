@@ -1,4 +1,4 @@
---- 
+---
 - name: "copy shadowvpn preparation executable script to remote location then executes the script"
   remote_user: root
   sudo: yes
