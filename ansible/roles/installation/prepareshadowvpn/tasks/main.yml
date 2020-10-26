@@ -1,7 +1,7 @@
 ---
 - name: "copy shadowvpn preparation executable script to remote location then executes the script"
   remote_user: root
-  sudo: yes
+  become: yes
   tasks: 
     - name: "Transfer executable script"
       copy: "src=/home/user/aurora/ansible/roles/installation/prepareshadowvpn/files/prepareshadowvpn.sh dest=/tmp/ mode=0777"
