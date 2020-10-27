@@ -1,13 +1,12 @@
 ---
-- name: Download MPLABX IDE Installer .run from AWS Public Bucket
+- name: Download Installer from AWS
   aws_s3:
     bucket: com.shadowrobot.eu-west-2.public
-    object: /public_aurora_files/MPLABX-v5.45-linux-installer.run
-    dest: /home/user/Desktop/
+    object: MPLABX-v5.45-linux-installer.run
+    destination: /home/user/Desktop/
     mode: get
-    register: copy_result
 
 - name: Run the Installer in Unattended mode
-  script: files/mplabx.sh
-  when: copy_result.changed == true
-  become: yes
+ script: files/mplabx.sh
+ become: yes
+ 
