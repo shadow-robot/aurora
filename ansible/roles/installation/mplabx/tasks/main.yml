@@ -1,5 +1,5 @@
 ---
-- name: Deploy MPLABX IDE and MPLABX IPE and Go Through the Installer
+- name: Deploy MPLABX IDE and MPLABX IPE and Install in Unattended mode
   aws_s3:
     bucket: com.shadowrobot.eu-west-2.public
     object: /public_aurora_files/MPLABX-v5.45-linux-installer.run
