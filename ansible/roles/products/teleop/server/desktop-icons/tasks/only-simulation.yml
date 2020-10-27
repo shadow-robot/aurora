@@ -1,33 +1,33 @@
 ---
 - name: Install desktop icon for launching Shadow Right Teleop Simulation
-  import_tasks: default-icon-no-terminator.yml
+  import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_launch_right_teleop_sim.sh"
     desktop_icon_name: "Launch Shadow Right Teleop Simulation"
     template: templates/scripts/launch-teleop-right-sim.j2
     desktop_icon_path: "Launch Shadow Right Teleop Simulation"
-    launch_terminal: "true"
+    launch_terminal: "false"
 
 - name: Install desktop icon for launching Shadow Left Teleop Simulation
-  import_tasks: default-icon-no-terminator.yml
+  import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_launch_left_teleop_sim.sh"
     desktop_icon_name: "Launch Shadow Left Teleop Simulation"
     template: templates/scripts/launch-teleop-left-sim.j2
     desktop_icon_path: "Launch Shadow Left Teleop Simulation"
-    launch_terminal: "true"
+    launch_terminal: "false"
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
-  import_tasks: default-icon-no-terminator.yml
+  import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_launch_bimanual_teleop_sim.sh"
     desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation"
     template: templates/scripts/launch-teleop-bimanual-sim.j2
     desktop_icon_path: "Launch Shadow Bimanual Teleop Simulation"
-    launch_terminal: "true"
+    launch_terminal: "false"
 
 - name: Include hand-manual role
   include_role:
@@ -59,7 +59,7 @@
     local_website_port_var: '7070'
     desktop_icon_name: "Teleop Documentation"
     desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "true"
+    launch_terminal: "false"
     start_container_var: "true"
     start_server_command_var: "roslaunch sr_teleop_polhemus_documentation sr_teleop_polhemus_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
