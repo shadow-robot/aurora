@@ -1,10 +1,35 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
+NEXT_WAIT_TIME=0
+TIMEOUT=20
+START_TIME=$SECONDS
+
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
-sleep 4
-terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
-sleep 10
-terminator --geometry "{{ term_3 }}" -T 'NUC right arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_arm_hand_hardware_control_loop.sh" &
-sleep 18
-terminator --geometry "{{ term_4 }}" -T 'Server right arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right_arm_hand.sh"
+
+while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
+  NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
+  if [ "$(docker ps -q -f name={{ container_name }})" ]; then
+    terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
+    while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
+      NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
+      if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
+        terminator --geometry "{{ term_3 }}" -T 'NUC right arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
+        break;
+      else
+        if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
+     	    zenity --error --text="Roscore not running, execution stopped"
+          docker stop {{ container_name }}
+          exit 1
+        fi
+       fi
+    done
+    terminator --geometry "{{ term_4 }}" -T 'Server right arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right_arm_hand.sh"
+    break;
+  fi
+done
+if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
+  zenity --error --text="Teleop server container not running, execution stopped"
+  docker stop {{ container_name }}
+  exit 1
+fi
