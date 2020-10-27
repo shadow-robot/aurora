@@ -1,4 +1,10 @@
 ---
+- name: Ensure botocore and boto3 modules are installed
+  pip:
+    name: [ "boto3", "botocore"]
+    extra_args: "--user"
+  changed_when: false
+
 - name: Download Installer from AWS
   aws_s3:
     bucket: com.shadowrobot.eu-west-2.public
