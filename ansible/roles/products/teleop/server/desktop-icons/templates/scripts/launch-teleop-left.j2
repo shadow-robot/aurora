@@ -18,7 +18,7 @@ while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
         break;
       else
         if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
-     	    zenity --error --text="Roscore not running, execution stopped"
+     	  zenity --error --text="Roscore not running, execution stopped"
           docker stop {{ container_name }}
           exit 1
         fi
