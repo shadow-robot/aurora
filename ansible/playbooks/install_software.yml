@@ -28,7 +28,6 @@
     - {role: installation/rabbitvcs, when: "'rabbitvcs' in software_list"}
     - {role: installation/prepareshadowvpn, when: "'prepareshadowvpn' in software_list"}
     - {role: installation/standard-notes, when: "'standard-notes' in software_list"}
-    - {role: installation/deploydexterouslocal, when: "'deploydexterouslocal' in software_list"}
     - {role: installation/notepadpp, when: "'notepadpp' in software_list"}
     - {role: installation/resolvconf, when: "'resolvconf' in software_list"}
     - {role: installation/mplabx, when: "'mplabx' in software_list"}
