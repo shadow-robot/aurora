@@ -5,6 +5,9 @@
     object: /public_aurora_files/MPLABX-v5.45-linux-installer.run
     dest: /home/user/Desktop/
     mode: get
+    register: copy_result
+
 - name: Run the Installer in Unattended mode
   script: files/mplabx.sh
+  when: copy_result.changed == true
   become: yes
