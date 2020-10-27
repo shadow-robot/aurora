@@ -98,7 +98,7 @@
       user_shadow_glove_calibration_folder: "{{ shadow_glove_calibration_folder }}/user_calibration"
       user_shadow_glove_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/user_calibration"
       user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
-      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/melodic/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/shadow/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
       boresight_calibration_folder: "{{ shadow_glove_calibration_folder }}/glove_boresight_calibration"
       boresight_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/glove_boresight_calibration"
       boresight_calibration_default_file_inside_docker: "/home/user/projects/shadow_robot/base/src/polhemus_ros_driver/config/{{ polhemus_type }}_calibration.yaml"
@@ -172,32 +172,62 @@
     become: true
     ignore_errors: yes
 
-  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration.yaml has the right permissions
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml has the right permissions
     file:
-      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
       mode: '666'
       state: file
     become: true
     ignore_errors: yes
 
-  - name: Check if the current_calibration.yaml exists on the host shared volume
-    stat: 
-      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
-    register: current_calibration_file
-    ignore_errors: yes
-
-  - name: Check if the default_calibration.yaml exists on the host shared volume
-    stat: 
-      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
-    register: default_calibration_file
-    ignore_errors: yes
-
-  - name: if current_calibration.yaml doesn't exist but default does, copy default into it
-    copy:
-      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration.yaml"
-      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration.yaml"
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
       mode: '666'
-    when: not current_calibration_file.stat.exists and default_calibration_file.stat.exists
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_right.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
+    register: current_calibration_file_right
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+    register: current_calibration_file_left
+    ignore_errors: yes
+
+  - name: Check if the default_calibration_right.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+    register: default_calibration_file_right
+    ignore_errors: yes
+
+  - name: Check if the default_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+    register: default_calibration_file_left
+    ignore_errors: yes
+
+  - name: if current_calibration_right.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
+      mode: '666'
+    when: not current_calibration_file_right.stat.exists and default_calibration_file_right.stat.exists
+    ignore_errors: yes
+
+  - name: if current_calibration_left.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+      mode: '666'
+    when: not current_calibration_file_left.stat.exists and default_calibration_file_left.stat.exists
+    ignore_errors: yes
+
   when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include docker/aws role
@@ -245,10 +275,17 @@
   changed_when: false
   when: skip_molecule_task is not defined
 
-- name: Make a copy of SSH keys to a /tmp/ folder for copying to other machines
+- name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
   copy:
     src: "{{ ssh_keys_path }}.pub"
     dest: "{{ temp_ssh_keys_path }}.pub"
+  changed_when: false
+  when: skip_molecule_task is not defined and groups['server'] is defined
+
+- name: Make a copy of SSH private key to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}"
+    dest: "{{ temp_ssh_keys_path }}"
   changed_when: false
   when: skip_molecule_task is not defined and groups['server'] is defined
 

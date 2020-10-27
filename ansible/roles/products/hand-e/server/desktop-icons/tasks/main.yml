@@ -57,11 +57,12 @@
     launch_terminal: "false"
   when: bimanual|bool
 
-- name: Set Shadow Arm+hand icon pictures
+- name: Set Shadow Arm+hand icon pictures and set include_wrist_in_arm_controller = false
   set_fact:
     right_arm_hand_picture: arm_hand_right.jpeg
     left_arm_hand_picture: arm_hand_left.jpg
     bimanual_arm_hand_picture: arm_hand_bimanual.jpg
+    include_wrist_in_arm_controller: "false"
   when: "'arm_' in product"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Right)
@@ -199,6 +200,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
+    include_wrist_in_arm_controller_value: "false"
   when: bimanual|bool or hand_side=="right"
 
 - name: Create executable launch script for hand+arm (Right)
@@ -218,6 +220,7 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
+    include_wrist_in_arm_controller_var: "{{ include_wrist_in_arm_controller }}"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -238,6 +241,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
+    include_wrist_in_arm_controller_value: "false"
   when: bimanual|bool or hand_side=="left"
 
 - name: Create executable launch script for hand+arm (Left)
@@ -257,6 +261,7 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
+    include_wrist_in_arm_controller_var: "{{ include_wrist_in_arm_controller }}"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
@@ -276,6 +281,8 @@
     src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     mode: '755'
+  vars:
+    include_wrist_in_arm_controller_var: "{{ include_wrist_in_arm_controller }}"
   when: 
     - "'arm_' in product"
     - bimanual|bool
@@ -296,6 +303,7 @@
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
+    include_wrist_in_arm_controller_value: "false"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -314,6 +322,7 @@
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
+    include_wrist_in_arm_controller_value: "false"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role
@@ -351,6 +360,23 @@
     - "'arm_' in product"
     - ur_robot_type == 'ur5e' or ur_robot_type == 'ur5'
 
+- name: Set arm+hand GUI launch file content
+  set_fact:
+    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
+    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
+  when:
+    - "'arm_' in product"
+
+- name: Set arm+hand GUI launch file content for custom scene
+  set_fact:
+    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene_file:='{{ scene_file }}'"
+  when:
+    - "'arm_' in product"
+    - scene_file|length > 0
+
 - name: Create executable launch script for hand+arm (Right) GUI
   template:
     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
@@ -358,7 +384,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_right }}"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -370,7 +396,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_left }}"
   when:
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
@@ -382,7 +408,7 @@
     mode: '755'
   vars:
     project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:=true"
+    launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
   when:
     - "'arm_' in product"
     - bimanual|bool

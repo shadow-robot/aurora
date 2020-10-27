@@ -14,7 +14,7 @@ while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
     while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
       NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
       if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
-        terminator --geometry "{{ term_3 }}" -T 'Shadow Glove Driver' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_driver_right.sh"
+        terminator --geometry "{{ term_3 }}" -T 'Shadow Glove {{ glove_driver_value }} Driver' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_driver_{{ glove_driver_value }}.sh"
         break;
       else
         if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
@@ -24,7 +24,7 @@ while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
         fi
        fi
      done
-     terminator --geometry "{{ term_4 }}" -T 'Shadow Glove Calibration' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_calibration_rqt.sh"
+     terminator --geometry "{{ term_4 }}" -T 'Shadow Glove {{ glove_driver_value }} Calibration' -e "{{ shadow_hand_launcher_folder}}/shadow_glove_calibration_rqt.sh"
      break;
   fi
 done
