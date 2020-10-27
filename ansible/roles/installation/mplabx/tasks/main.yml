@@ -7,6 +7,5 @@
     mode: get
 
 - name: Run the Installer in Unattended mode
- script: files/mplabx.sh
- become: yes
- 
+  script: files/mplabx.sh
+  become: yes
