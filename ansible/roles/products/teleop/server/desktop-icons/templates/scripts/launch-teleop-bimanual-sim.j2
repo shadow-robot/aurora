@@ -9,16 +9,16 @@ terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ s
 
 while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
   NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
-  if [ "$(docker ps -q -f name=teleop)" ]; then
+  if [ "$(docker ps -q -f name={{ container_name }})" ]; then
     terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
     while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
       NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
-      if [[ "$(docker exec -ti teleop bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
+      if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
         terminator --geometry "{{ term_3 }}" -T 'Server Bimanual Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_bimanual.sh"
         if {{ real_glove | lower }}; then
-            if [[ "{{ glove }}" == "haptx"  ]]; then
-              terminator --geometry "{{ term_4 }}" -T 'Server HaptX Bimanual Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_bimanual.sh"
-            fi
+          if [[ "{{ glove }}" == "haptx"  ]]; then
+            terminator --geometry "{{ term_4 }}" -T 'Server HaptX Bimanual Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_bimanual.sh"
+          fi
         fi
         break;
       else
@@ -34,4 +34,6 @@ while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
 done
 if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
   zenity --error --text="Teleop server container not running, execution stopped"
+  docker stop {{ container_name }}
+  exit 1
 fi

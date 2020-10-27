@@ -16,12 +16,12 @@ while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
       if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
         terminator --geometry "{{ term_3 }}" -T 'Server Right Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_right.sh"
         if {{ real_glove | lower }}; then
-            if [[ "{{ glove }}" == "haptx"  ]]; then
-               terminator --geometry "{{ term_4 }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
-            fi
+          if [[ "{{ glove }}" == "haptx"  ]]; then
+            terminator --geometry "{{ term_4 }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
+          fi
         fi
         break;
-        else
+      else
         if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
      	    zenity --error --text="Roscore not running, execution stopped"
           docker stop {{ container_name }}

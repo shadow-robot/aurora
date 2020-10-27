@@ -7,7 +7,7 @@
     desktop_icon_name: "Launch Shadow Right Teleop Simulation"
     template: templates/scripts/launch-teleop-right-sim.j2
     desktop_icon_path: "Launch Shadow Right Teleop Simulation"
-    launch_terminal: "false"
+    launch_terminal: "true"
 
 - name: Install desktop icon for launching Shadow Left Teleop Simulation
   import_tasks: default-icon-no-terminator.yml
@@ -17,7 +17,7 @@
     desktop_icon_name: "Launch Shadow Left Teleop Simulation"
     template: templates/scripts/launch-teleop-left-sim.j2
     desktop_icon_path: "Launch Shadow Left Teleop Simulation"
-    launch_terminal: "false"
+    launch_terminal: "true"
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
   import_tasks: default-icon-no-terminator.yml
@@ -27,7 +27,7 @@
     desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation"
     template: templates/scripts/launch-teleop-bimanual-sim.j2
     desktop_icon_path: "Launch Shadow Bimanual Teleop Simulation"
-    launch_terminal: "false"
+    launch_terminal: "true"
 
 - name: Include hand-manual role
   include_role:
@@ -59,7 +59,7 @@
     local_website_port_var: '7070'
     desktop_icon_name: "Teleop Documentation"
     desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "false"
+    launch_terminal: "true"
     start_container_var: "true"
     start_server_command_var: "roslaunch sr_teleop_polhemus_documentation sr_teleop_polhemus_documentation_server.launch port:={{ local_website_port_var }}"
     preconditions_var: ""
