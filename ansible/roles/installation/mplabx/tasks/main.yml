@@ -2,8 +2,8 @@
 - name: Download Installer from AWS
   aws_s3:
     bucket: com.shadowrobot.eu-west-2.public
-    object: MPLABX-v5.45-linux-installer.run
-    destination: /home/user/Desktop/
+    object: /public_aurora_files/MPLABX-v5.45-linux-installer.run
+    dest: /home/user/Desktop/
     mode: get
 
 - name: Run the Installer in Unattended mode
