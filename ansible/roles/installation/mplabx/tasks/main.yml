@@ -1,17 +1,16 @@
 ---
-- name: Ensure botocore and boto3 modules are installed
-  pip:
-    name: [ "boto3", "botocore"]
-    extra_args: "--user"
-  changed_when: false
-
-- name: Download Installer from AWS
-  aws_s3:
-    bucket: com.shadowrobot.eu-west-2.public
-    object: /public_aurora_files/MPLABX-v5.45-linux-installer.run
-    dest: /home/user/Desktop/
-    mode: get
-
 - name: Run the Installer in Unattended mode
   script: files/mplabx.sh
   become: yes
+#- name: Ensure botocore and boto3 modules are installed
+#  pip:
+#    name: [ "boto3", "botocore"]
+#    extra_args: "--user"
+#  changed_when: false
+#
+#- name: Download Installer from AWS  (missing creds and auth keys so went to wget route...)
+#  aws_s3:
+#    bucket: com.shadowrobot.eu-west-2.public
+#    object: /public_aurora_files/MPLABX-v5.45-linux-installer.run
+#    dest: /home/user/Desktop
+#    mode: get
