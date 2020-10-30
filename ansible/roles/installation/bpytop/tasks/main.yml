@@ -1,0 +1,4 @@
+---
+- name: Install snap package bpytop and grant access to it to be able to do monitoring
+  script: files/bpytop.sh
+  become: yes
