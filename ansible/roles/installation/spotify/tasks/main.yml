@@ -1,6 +1,5 @@
 ---
 - name: Deploy Spotify Step 1
-  become: yes
   command: curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | apt-key add -
 - name: Deploy Google Chrome Step 2
   become: yes
