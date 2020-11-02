@@ -1,9 +1,15 @@
 ---
 - name: Deploy Spotify Step 1
-  command: curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | apt-key add -
-- name: Deploy Google Chrome Step 2
+  command: curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg
+- name: Deploy Spotify Step 2
   become: yes
-  command: echo "deb http://repository.spotify.com stable non-free" | tee /etc/apt/sources.list.d/spotify.list
+  command: apt-key add -
 - name: Deploy Google Chrome Step 3
+  become: yes
+  command: echo "deb http://repository.spotify.com stable non-free"
+- name: Deploy Google Chrome Step 4
+  become: yes
+  command: tee /etc/apt/sources.list.d/spotify.list  
+- name: Deploy Google Chrome Step 5
   become: yes
   command: apt-get update && apt-get install spotify-client
