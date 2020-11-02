@@ -1,4 +1,8 @@
 ---
-- name: Install shadowvpn_prerequisites
-  script: files/prepareshadowvpn.sh
-  become: yes
+- name: Install Prerequisites for Shadow Robot VPN
+  become: yes 
+  command: add-apt-repository -y ppa:nm-l2tp/network-manager-l2tp
+  command: apt-get -y update
+  command: apt-get -y install network-manager-l2tp-gnome
+  command: service xl2tpd stop
+  command: update-rc.d xl2tpd disable
