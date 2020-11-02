@@ -1,5 +1,5 @@
 ---
 - name: Install snap package standard notes
   snap: Install standard-notes package
-  name: 
+    name: 
       - standard-notes
