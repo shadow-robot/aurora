@@ -1,6 +1,6 @@
 ---
 - name: Install MPLabX in Unattended Mode
   become: yes 
-  command: wget -P /tmp/aurora https://s3.eu-west-2.amazonaws.com/com.shadowrobot.eu-west-2.public/public_aurora_files/MPLABX-v5.45-linux-installer.run
-  command: chmod +x /tmp/aurora/MPLABX-v5.45-linux-installer.run
-  command: /tmp/aurora/MPLABX-v5.45-linux-installer.run --mode unattended
+  command: sudo wget -P /tmp/aurora https://s3.eu-west-2.amazonaws.com/com.shadowrobot.eu-west-2.public/public_aurora_files/MPLABX-v5.45-linux-installer.run
+  command: sudo chmod +x /tmp/aurora/MPLABX-v5.45-linux-installer.run
+  command: sudo /tmp/aurora/MPLABX-v5.45-linux-installer.run --mode unattended
