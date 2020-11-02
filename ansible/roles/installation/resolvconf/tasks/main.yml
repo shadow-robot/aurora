@@ -1,4 +1,4 @@
 ---
 - name: Deploy Resolvconf to fix network connectivity issue in Ubuntu 18.04.5 LTS
-  script: files/resolvconf.sh
   become: yes
+  command: apt-get -y install resolvconf
