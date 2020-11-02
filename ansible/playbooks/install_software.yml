@@ -34,3 +34,4 @@
     - {role: installation/coronabar, when: "'coronabar' in software_list"}
     - {role: installation/bpytop, when: "'bpytop' in software_list"}
     - {role: installation/chrome, when: "'chrome' in software_list"}
+    - {role: installation/spotify, when: "'spotify' in software_list"}
