@@ -3,7 +3,7 @@
   command: curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg
 - name: Deploy Spotify Step 2
   become: yes
-  command: apt-key add -
+  command: apt-key add - 
 - name: Deploy Google Chrome Step 3
   become: yes
   command: echo "deb http://repository.spotify.com stable non-free"
