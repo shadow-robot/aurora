@@ -4,6 +4,7 @@
   snap:
     name:
      - bpytop
+- name: connect bpytop to be able to monitor resources on system     
   command: sudo snap connect bpytop:mount-observe
   command: sudo snap connect bpytop:network-control
   command: sudo snap connect bpytop:hardware-observe
