@@ -33,3 +33,4 @@
     - {role: installation/mplabx, when: "'mplabx' in software_list"}
     - {role: installation/coronabar, when: "'coronabar' in software_list"}
     - {role: installation/bpytop, when: "'bpytop' in software_list"}
+    - {role: installation/chrome, when: "'chrome' in software_list"}
