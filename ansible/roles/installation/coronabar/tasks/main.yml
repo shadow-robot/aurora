@@ -1,4 +1,6 @@
 ---
-- name: Deploy Coronabar Snap App
-  script: files/coronabar.sh
+- name: Install snap package coronabar
   become: yes
+  snap:
+    name:
+     - coronabar

@@ -1,4 +1,6 @@
 ---
 - name: Install snap package notepad-plus-plus
-  script: files/notepadpp.sh
   become: yes
+  snap:
+    name:
+     - notepad-plus-plus

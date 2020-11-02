@@ -1,4 +1,12 @@
 ---
-- name: Install snap package bpytop and grant access to it to be able to do monitoring
-  script: files/bpytop.sh
+- name: Install snap package bpytop
   become: yes
+  snap:
+    name:
+     - bpytop
+  command: sudo snap connect bpytop:mount-observe
+  command: sudo snap connect bpytop:network-control
+  command: sudo snap connect bpytop:hardware-observe
+  command: sudo snap connect bpytop:system-observe
+  command: sudo snap connect bpytop:process-control
+  command: sudo snap connect bpytop:physical-memory-observe
