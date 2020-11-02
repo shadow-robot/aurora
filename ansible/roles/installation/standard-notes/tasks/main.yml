@@ -3,4 +3,3 @@
   snap:
     name:
      - standard-notes
-    become: yes
