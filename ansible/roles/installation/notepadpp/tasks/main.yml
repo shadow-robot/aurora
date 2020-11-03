@@ -1,6 +1,0 @@
----
-- name: Install snap package notepad-plus-plus
-  become: yes
-  snap:
-    name:
-     - notepad-plus-plus

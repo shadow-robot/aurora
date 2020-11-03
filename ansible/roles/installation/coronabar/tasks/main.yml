@@ -1,6 +1,0 @@
----
-- name: Install snap package coronabar
-  become: yes
-  snap:
-    name:
-     - coronabar
