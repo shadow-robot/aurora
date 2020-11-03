@@ -1,15 +1,16 @@
 ---
-- name: Deploy Spotify Step 1
+- name: Download Spotify gpg key
+  become: yes
   command: curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg
-- name: Deploy Spotify Step 2
+- name: Add Downloaded key to Trusted on Host
   become: yes
   command: apt-key add - 
-- name: Deploy Google Chrome Step 3
+- name: Define Spotify Repository on Host
   become: yes
   command: echo "deb http://repository.spotify.com stable non-free"
-- name: Deploy Google Chrome Step 4
+- name: Add Spotify Repository to Sources.list.d on Host
   become: yes
   command: tee /etc/apt/sources.list.d/spotify.list  
-- name: Deploy Google Chrome Step 5
+- name: Update Repos and Install Spotify Client
   become: yes
   command: apt-get update && apt-get install spotify-client
