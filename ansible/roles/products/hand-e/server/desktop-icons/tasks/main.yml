@@ -460,7 +460,7 @@
             launch_file: "srhand.launch external_control_loop:=false sim:=true hand_id:=rh"
 
         - name: Install desktop icon for launching everything for Shadow Right Hand Simulation
-          import_tasks: default-icon-no-terminator-server.yml
+          import_tasks: default-icon-server.yml
           vars:
             desktop_icon_png: "{{ right_hand_picture }}"
             launch_script: "shadow_launch_everything_hand_right_sim.sh"
@@ -483,7 +483,7 @@
             launch_file: "srhand.launch external_control_loop:=false sim:=true hand_id:=lh"
 
         - name: Install desktop icon for launching everything for Shadow Left Hand Simulation
-          import_tasks: default-icon-no-terminator-server.yml
+          import_tasks: default-icon-server.yml
           vars:
             desktop_icon_png: "{{ left_hand_picture }}"
             launch_script: "shadow_launch_everything_hand_left_sim.sh"
@@ -506,7 +506,7 @@
             launch_file: "sr_bimanual.launch external_control_loop:=false sim:=true robot_config_file:='{{ robot_config_bimanual }}' robot_description:='{{ xacro_bimanual }}'"
 
         - name: Install desktop icon for launching everything for Shadow Bimanual Hands Simulation
-          import_tasks: default-icon-no-terminator-server.yml
+          import_tasks: default-icon-server.yml
           vars:
             desktop_icon_png: "{{ bimanual_hands_picture }}"
             launch_script: "shadow_launch_everything_hand_bimanual_sim.sh"
@@ -529,7 +529,7 @@
             launch_file: "{{ launch_file_content_arm_hand_right_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Right Arm+Hand Simulation
-          import_tasks: default-icon-no-terminator-server.yml
+          import_tasks: default-icon-server.yml
           vars:
             desktop_icon_png: "{{ right_arm_hand_picture }}"
             launch_script: "shadow_launch_everything_arm_hand_right_sim.sh"
@@ -554,7 +554,7 @@
             launch_file: "{{ launch_file_content_arm_hand_left_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Left Arm+Hand Simulation
-          import_tasks: default-icon-no-terminator-server.yml
+          import_tasks: default-icon-server.yml
           vars:
             desktop_icon_png: "{{ left_arm_hand_picture }}"
             launch_script: "shadow_launch_everything_arm_hand_left_sim.sh"
@@ -579,7 +579,7 @@
             launch_file: "{{ launch_file_content_arm_hand_bimanual_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Bimanual Arm+Hand Simulation
-          import_tasks: default-icon-no-terminator-server.yml
+          import_tasks: default-icon-server.yml
           vars:
             desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
             launch_script: "shadow_launch_everything_arm_hand_bimanual_sim.sh"
