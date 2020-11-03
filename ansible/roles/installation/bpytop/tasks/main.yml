@@ -9,7 +9,7 @@
   become: yes 
   shell: 'snap connect {{ item.app }}:{{ item.plug }}'
   loop:
-  - plug:mount-observe
+  - plug: mount-observe
     app: bpytop
   - plug:network-control
     app: bpytop
