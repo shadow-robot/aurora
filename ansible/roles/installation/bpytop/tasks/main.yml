@@ -8,7 +8,7 @@
 - name: Setup Plugs for bpytop to be able to monitor resources on system
   become: yes 
   shell: 'snap connect {{ item.app }}:{{ item.plug }}'
-  with_items:
+  loop:
   - plug:mount-observe
     app: bpytop
   - plug:network-control
