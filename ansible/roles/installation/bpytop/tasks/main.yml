@@ -11,13 +11,13 @@
   loop:
   - plug: mount-observe
     app: bpytop
-  - plug:network-control
+  - plug: network-control
     app: bpytop
-  - plug:hardware-observe
+  - plug: hardware-observe
     app: bpytop
-  - plug:system-observe
+  - plug: system-observe
     app: bpytop
-  - plug:process-control
+  - plug: process-control
     app: bpytop
-  - plug:physical-memory-observe
+  - plug: physical-memory-observe
     app: bpytop
