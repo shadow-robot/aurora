@@ -278,7 +278,7 @@
 
 - name: Create executable launch script for hand+arm (Bimanual)
   template:
-    src: templates/scripts/start-docker-container-nuc.j2
+    src: templates/scripts/start-docker-container-nuc-bimanual-arm-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     mode: '755'
   vars:
