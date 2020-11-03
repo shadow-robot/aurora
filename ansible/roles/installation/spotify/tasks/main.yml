@@ -1,10 +1,7 @@
 ---
-- name: Download Spotify gpg key
+- name: Download Spotify gpg key and add it on Host
   become: yes
-  command: curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg
-- name: Add Downloaded key to Trusted on Host
-  become: yes
-  command: apt-key add -
+  command: curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | apt-key add -
 - name: Define Spotify Repository on Host
   become: yes
   command: echo "deb http://repository.spotify.com stable non-free"
