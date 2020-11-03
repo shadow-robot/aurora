@@ -509,7 +509,7 @@
   when: bimanual|bool
 
 - name: Install desktop icon for Shadow Glove Calibration
-  import_tasks: default-icon-no-terminator.yml
+  import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
     launch_script: "shadow_glove_calibration.sh"

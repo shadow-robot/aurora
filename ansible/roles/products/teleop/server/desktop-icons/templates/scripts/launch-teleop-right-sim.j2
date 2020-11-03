@@ -4,6 +4,7 @@
 NEXT_WAIT_TIME=0
 TIMEOUT=20
 START_TIME=$SECONDS
+PROCEED=false
 
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 
@@ -11,29 +12,35 @@ while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
   NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
   if [ "$(docker ps -q -f name={{ container_name }})" ]; then
     terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
-    while [ $NEXT_WAIT_TIME -ne $TIMEOUT ]; do
-      NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
-      if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
-        terminator --geometry "{{ term_3 }}" -T 'Server Right Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_right.sh"
-        if {{ real_glove | lower }}; then
+    PROCEED=true
+    break;
+  fi
+done
+if [ "$PROCEED" == true ]; then
+  NEXT_WAIT_TIME=0
+  START_TIME=$SECONDS
+  while [ $NEXT_WAIT_TIME -lt $TIMEOUT ]; do
+    NEXT_WAIT_TIME=$(( SECONDS - START_TIME ))
+    if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
+      terminator --geometry "{{ term_3 }}" -T 'Server Right Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_right.sh"
+      if {{ real_glove | lower }}; then
           if [[ "{{ glove }}" == "haptx"  ]]; then
             terminator --geometry "{{ term_4 }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
           fi
-        fi
-        break;
-      else
+      fi
+      break;
+    else
         if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
      	    zenity --error --text="Roscore not running, execution stopped"
           docker stop {{ container_name }}
           exit 1
         fi
-      fi
-    done
-    break;
+    fi
+  done
+else
+  if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
+    zenity --error --text="Teleop server container not running, execution stopped"
+    docker stop {{ container_name }}
+    exit 1
   fi
-done
-if [ $NEXT_WAIT_TIME -eq $TIMEOUT ]; then
-  zenity --error --text="Teleop server container not running, execution stopped"
-  docker stop {{ container_name }}
-  exit 1
 fi
