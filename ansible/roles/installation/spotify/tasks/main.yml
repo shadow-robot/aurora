@@ -17,4 +17,4 @@
   command: apt-get update
 - name: Install Spotify-client
   become: yes
-  command: apt-get install spotify-client
+  command: apt-get -y install spotify-client
