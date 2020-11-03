@@ -11,6 +11,9 @@
 - name: Add Spotify Repository to Sources.list.d on Host
   become: yes
   command: tee /etc/apt/sources.list.d/spotify.list  
-- name: Update Repos and Install Spotify Client
+- name: Update Repositories after all the changes done
   become: yes
-  command: apt-get update && apt-get install spotify-client
+  command: apt-get update
+- name: Install Spotify-client
+  become: yes
+  command: apt-get install spotify-client
