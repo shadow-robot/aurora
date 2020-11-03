@@ -5,12 +5,12 @@
 - name: Add Downloaded GPG Key to Host
   become: yes  
   command: apt-key add /tmp/aurora/pubkey_0D811D58.gpg
-- name: Define Spotify Repository on Host
-  become: yes
-  command: echo "deb http://repository.spotify.com stable non-free"
 - name: Add Spotify Repository to Sources.list.d on Host
   become: yes
-  command: tee /etc/apt/sources.list.d/spotify.list  
+  command: tee /etc/apt/sources.list.d/spotify.list
+- name: Define Spotify Repository on Host
+  become: yes
+  command: echo "deb http://repository.spotify.com stable non-free" >> /etc/apt/sources.list.d/spotify.list
 - name: Update Repositories after all the changes done
   become: yes
   command: apt-get update
