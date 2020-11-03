@@ -362,9 +362,9 @@
 
 - name: Set arm+hand GUI launch file content for sim
   set_fact:
-    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
-    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
-    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='$(find sr_multi_description)/urdf/right_srhand_{{ ur_robot_type }}.urdf.xacro' robot_config_file:='$(find sr_multi_moveit_config)/config/robot_configs/right_sh_{{ ur_robot_type }}.yaml' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='$(find sr_multi_description)/urdf/left_srhand_{{ ur_robot_type }}.urdf.xacro' robot_config_file:='$(find sr_multi_moveit_config)/config/robot_configs/left_sh_{{ ur_robot_type }}.yaml' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_content_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='$(find sr_multi_description)/urdf/bimanual_srhand_{{ ur_robot_type }}.urdf.xacro' robot_config_file:='$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh_{{ ur_robot_type }}.yaml' scene:=true include_wrist_in_arm_controller:={{ include_wrist_in_arm_controller | lower }}"
   when:
     - "'arm_' in product"
 
