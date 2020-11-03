@@ -10,7 +10,8 @@
   command: tee /etc/apt/sources.list.d/spotify.list
 - name: Define Spotify Repository on Host
   become: yes
-  command: echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list
+  shell: |
+    echo "deb http://repository.spotify.com stable non-free" >> /etc/apt/sources.list.d/spotify.list
 - name: Update Repositories after all the changes done
   become: yes
   command: apt-get update
