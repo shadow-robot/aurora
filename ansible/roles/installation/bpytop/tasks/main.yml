@@ -4,11 +4,19 @@
   snap:
     name:
      - bpytop
-- name: connect bpytop to be able to monitor resources on system
+- name: Setup Plugs for bpytop to be able to monitor resources on system
   become: yes 
-  command: snap connect bpytop:mount-observe
-  command: snap connect bpytop:network-control
-  command: snap connect bpytop:hardware-observe
-  command: snap connect bpytop:system-observe
-  command: snap connect bpytop:process-control
-  command: snap connect bpytop:physical-memory-observe
+  shell: 'snap connect {{ item.app }}:{{ item.plug }}'
+  with_items:
+   - plug:mount-observe
+     app: bpytop
+- plug:network-control
+     app: bpytop
+- plug:hardware-observe
+     app: bpytop
+- plug:system-observe
+     app: bpytop
+- plug:process-control
+     app: bpytop
+- plug:physical-memory-observe
+     app: bpytop
