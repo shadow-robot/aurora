@@ -463,7 +463,7 @@
           import_tasks: default-icon-no-terminator-server.yml
           vars:
             desktop_icon_png: "{{ right_hand_picture }}"
-            launch_script: "shadow_launch_everything_sim.sh"
+            launch_script: "shadow_launch_everything_hand_right_sim.sh"
             server_launch_script_var: "shadow_launch_right_hand_sim.sh"
             desktop_icon_name: "Launch Shadow Right Hand Simulation"
             template: templates/scripts/launch-everything-server.j2
@@ -486,7 +486,7 @@
           import_tasks: default-icon-no-terminator-server.yml
           vars:
             desktop_icon_png: "{{ left_hand_picture }}"
-            launch_script: "shadow_launch_everything_sim.sh"
+            launch_script: "shadow_launch_everything_hand_left_sim.sh"
             server_launch_script_var: "shadow_launch_left_hand_sim.sh"
             desktop_icon_name: "Launch Shadow Left Hand Simulation"
             template: templates/scripts/launch-everything-server.j2
@@ -509,7 +509,7 @@
           import_tasks: default-icon-no-terminator-server.yml
           vars:
             desktop_icon_png: "{{ bimanual_hands_picture }}"
-            launch_script: "shadow_launch_everything_sim.sh"
+            launch_script: "shadow_launch_everything_hand_bimanual_sim.sh"
             server_launch_script_var: "shadow_launch_bimanual_hands_sim.sh"
             desktop_icon_name: "Launch Shadow Bimanual Hands Simulation"
             template: templates/scripts/launch-everything-server.j2
@@ -532,7 +532,7 @@
           import_tasks: default-icon-no-terminator-server.yml
           vars:
             desktop_icon_png: "{{ right_arm_hand_picture }}"
-            launch_script: "shadow_launch_everything_sim.sh"
+            launch_script: "shadow_launch_everything_arm_hand_right_sim.sh"
             server_launch_script_var: "shadow_launch_right_arm_hand_sim.sh"
             desktop_icon_name: "Launch Shadow Right Arm+Hand Simulation"
             template: templates/scripts/launch-everything-server.j2
@@ -557,7 +557,7 @@
           import_tasks: default-icon-no-terminator-server.yml
           vars:
             desktop_icon_png: "{{ left_arm_hand_picture }}"
-            launch_script: "shadow_launch_everything_sim.sh"
+            launch_script: "shadow_launch_everything_arm_hand_left_sim.sh"
             server_launch_script_var: "shadow_launch_left_arm_hand_sim.sh"
             desktop_icon_name: "Launch Shadow Left Arm+Hand Simulation"
             template: templates/scripts/launch-everything-server.j2
@@ -582,7 +582,7 @@
           import_tasks: default-icon-no-terminator-server.yml
           vars:
             desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
-            launch_script: "shadow_launch_everything_sim.sh"
+            launch_script: "shadow_launch_everything_arm_hand_bimanual_sim.sh"
             server_launch_script_var: "shadow_launch_bimanual_arm_hand_sim.sh"
             desktop_icon_name: "Launch Shadow Bimanual Arm+Hand Simulation"
             template: templates/scripts/launch-everything-server.j2
