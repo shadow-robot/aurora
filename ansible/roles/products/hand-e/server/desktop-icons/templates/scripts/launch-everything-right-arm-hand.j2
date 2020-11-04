@@ -1,10 +1,45 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
+CONST_TIMEOUT=20
+
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
-sleep 4
-terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh" &
-sleep 10
-terminator --geometry "{{ term_3 }}" -T 'NUC right arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_arm_hand_hardware_control_loop.sh" &
-sleep 18
+
+elapsed_time=0
+start_time=$SECONDS
+proceed=false
+while [ $elapsed_time -lt $CONST_TIMEOUT ]; do
+  elapsed_time=$(( SECONDS - start_time ))
+  if [ "$(docker ps -q -f name={{ container_name }})" ]; then
+    proceed=true
+    break;
+  fi
+done
+
+if [ "$proceed" == false ]; then
+    zenity --error --text="Teleop server container not running, execution stopped"
+    docker stop {{ container_name }}
+    exit 1
+fi
+
+terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
+
+elapsed_time=0
+start_time=$SECONDS
+proceed=false
+while [ $elapsed_time -lt $CONST_TIMEOUT ]; do
+  elapsed_time=$(( SECONDS - start_time ))
+  if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
+    proceed=true
+    break;
+  fi
+done
+
+if [ "$proceed" == false ]; then
+    zenity --error --text="Roscore not running, execution stopped"
+    docker stop {{ container_name }}
+    exit 1
+fi
+
+terminator --geometry "{{ term_3 }}" -T 'NUC right arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
 terminator --geometry "{{ term_4 }}" -T 'Server right arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right_arm_hand.sh"
