@@ -3,7 +3,7 @@
   import_playbook: ../../../teleop_deploy.yml
     reinstall=true
     use_openvpn=false
-    ethercat_interface="enp0s25"
+    ethercat_right_hand="enp0s25"
     image="shadowrobot/dexterous-hand"
     tag="melodic-release"
     nvidia_docker=false

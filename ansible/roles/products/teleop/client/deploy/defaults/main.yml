@@ -9,7 +9,7 @@ cyberglove: ""
 use_aws: false
 use_openvpn: false
 setup_directory: "/usr/local/bin"
-ethercat_interface: "eth0"
+ethercat_right_hand: "eth0"
 config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"

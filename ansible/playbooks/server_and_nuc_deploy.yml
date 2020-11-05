@@ -41,7 +41,13 @@
   hosts: server
   pre_tasks:
     - name: No product is defined
-      when: product != 'hand_e' and product != 'arm_hand_e' and product != 'hand_lite' and product != 'arm_hand_lite' and product != 'hand_extra_lite' and product != 'arm_hand_extra_lite' and product != 'hand_h'
+      when: (product != 'hand_e') and
+            (product != 'arm_hand_e') and
+            (product != 'hand_lite') and
+            (product != 'arm_hand_lite') and
+            (product != 'hand_extra_lite') and
+            (product != 'arm_hand_extra_lite') and
+            (product != 'hand_h')
       meta: end_play
 
     - name: check if customer_key is provided and not false
@@ -65,13 +71,24 @@
       become: yes
 
   roles:
-    - { role: products/hand-e/server/deploy, when: product == 'hand_e' or product == 'arm_hand_e' or product == 'hand_lite' or product == 'arm_hand_lite' or product == 'hand_extra_lite' or product == 'arm_hand_extra_lite' }
+    - { role: products/hand-e/server/deploy, when: (product == 'hand_e') or
+                                                   (product == 'arm_hand_e') or
+                                                   (product == 'hand_lite') or
+                                                   (product == 'arm_hand_lite') or
+                                                   (product == 'hand_extra_lite') or
+                                                   (product == 'arm_hand_extra_lite') }
 
 - name: Install Hand software on control machine
   hosts: control_machine
   pre_tasks:
     - name: No product is defined
-      when: product != 'hand_e' and product != 'arm_hand_e' and product != 'hand_lite' and product != 'arm_hand_lite' and product != 'hand_extra_lite' and product != 'arm_hand_extra_lite' and product != 'hand_h'
+      when: (product != 'hand_e') and
+            (product != 'arm_hand_e') and
+            (product != 'hand_lite') and
+            (product != 'arm_hand_lite') and
+            (product != 'hand_extra_lite') and
+            (product != 'arm_hand_extra_lite') and
+            (product != 'hand_h')
       meta: end_play
 
     - name: check if customer_key is provided and not false
@@ -95,7 +112,12 @@
       become: yes
 
   roles:
-    - { role: products/hand-e/control_machine/deploy, when: product == 'hand_e' or product == 'arm_hand_e' or product == 'hand_lite' or product == 'arm_hand_lite' or product == 'hand_extra_lite' or product == 'arm_hand_extra_lite' }
+    - { role: products/hand-e/control_machine/deploy, when: (product == 'hand_e') or
+                                                            (product == 'arm_hand_e') or
+                                                            (product == 'hand_lite') or
+                                                            (product == 'arm_hand_lite') or
+                                                            (product == 'hand_extra_lite') or
+                                                            (product == 'arm_hand_extra_lite') }
 
 - name: Inform user for reboot
   hosts: 127.0.0.1

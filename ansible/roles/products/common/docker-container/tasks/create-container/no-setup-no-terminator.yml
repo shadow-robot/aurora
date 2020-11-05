@@ -18,7 +18,7 @@
     pull: yes
     env:
       verbose: "true"
-      interface: "{{ ethercat_interface }}"
+      interface: "{{ ethercat_right_hand }}"
       interface_left: "{{ ethercat_left_hand }}"
       QT_X11_NO_MITSHM: "1"
       LOCAL_USER_ID: "{{ id.stdout }}"

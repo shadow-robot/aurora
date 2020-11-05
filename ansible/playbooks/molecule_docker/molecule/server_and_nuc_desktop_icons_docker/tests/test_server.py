@@ -76,7 +76,7 @@ def test_icons_in_docker(host):
         'shadow_local_zero_force_mode_right_launcher',
         'shadow_local_zero_force_mode_left_launcher',
         'shadow_zero_force_mode_right',
-        'shadow_zero_force_mode_left' 
+        'shadow_zero_force_mode_left'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
