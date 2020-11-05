@@ -9,4 +9,3 @@
       - rabbitvcs-core
       - rabbitvcs-nautilus
   become: yes
-  
