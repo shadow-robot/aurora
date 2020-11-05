@@ -117,7 +117,7 @@
                                                             (product == 'hand_lite') or
                                                             (product == 'arm_hand_lite') or
                                                             (product == 'hand_extra_lite') or
-                                                            (product == 'arm_hand_extra_lite') }
+                                                            (product == 'arm_hand_extra_lite')}
 
 - name: Inform user for reboot
   hosts: 127.0.0.1
