@@ -1,0 +1,11 @@
+---
+- name: Install rabbitvcs
+  apt:
+    name: "{{ packages }}"
+    install_recommends: no
+  vars:
+    packages:
+      - rabbitvcs-cli
+      - rabbitvcs-core
+      - rabbitvcs-nautilus
+  become: yes

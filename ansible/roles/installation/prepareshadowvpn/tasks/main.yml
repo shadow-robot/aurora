@@ -1,0 +1,20 @@
+---
+- name: Add Repository for Network-Manager-l2tp
+  become: yes 
+  command: add-apt-repository -y ppa:nm-l2tp/network-manager-l2tp
+
+- name: Run apt-update
+  become: yes 
+  command: apt-get -y update
+
+- name: Install network-manager-l2tp-gnome package
+  become: yes 
+  command: apt-get -y install network-manager-l2tp-gnome
+
+- name: Stop xl2tpd service
+  become: yes 
+  command: service xl2tpd stop
+
+- name: Update rc.d file to set xl2tpd to disable
+  become: yes 
+  command: update-rc.d xl2tpd disable
