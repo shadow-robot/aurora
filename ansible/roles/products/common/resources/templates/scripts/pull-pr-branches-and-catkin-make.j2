@@ -24,7 +24,7 @@ for i in $PR_BRANCHES; do
     if [[ "$i" == *"/pull/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/pull\/.*/\1/')
         pull=$(echo "$i" | sed -e 's/.*\/pull\/\(.*\).*/\1/')
-        ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
+        ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo.git" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
         if [[ -z ${ros_repo} ]]; then
             echo " --------------------------------------------------------------------------------------------------"
             echo "Error while trying to cd to the package of the repo (from a PR)"
@@ -44,7 +44,7 @@ for i in $PR_BRANCHES; do
     fi
     if [[ "$i" == *"/tree/"* ]]; then
         repo=$(echo "$i" | sed -e 's/.*\/shadow-robot\/\(.*\)\/tree\/.*/\1/')
-        ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
+        ros_repo=$(find -type f -name "config" -exec grep -q "shadow-robot/$repo.git" {} \; -exec readlink -f {} \; | sed 's/\/.git\/config//g')
         if [[ -z ${ros_repo} ]]; then
             echo " --------------------------------------------------------------------------------------------------"
             echo "Error while trying to cd to the package of the repo (from a branch)"
