@@ -6,3 +6,4 @@
 - name: Install Downloaded Package of google-chrome-stable latest
   become: yes
   command: dpkg -i /tmp/aurora/google-chrome-stable_current_amd64.deb
+  

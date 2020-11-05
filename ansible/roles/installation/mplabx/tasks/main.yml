@@ -10,3 +10,4 @@
 - name: Install MPLabX in Unattended Mode
   become: yes
   command: /tmp/aurora/MPLABX-v5.45-linux-installer.run --mode unattended
+  
