@@ -129,6 +129,7 @@
   when:
     - "'arm_' in product"
     - skip_molecule_task is not defined
+    - customer_key is defined and customer_key | length > 0
 
 - name: Set documentation variables for shadow_glove teleop
   set_fact:
