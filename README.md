@@ -294,6 +294,12 @@ Before executing any tests, it is very useful to make sure you have unlimited sc
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
 
+There are some molecule_docker tests which require connecting to AWS to download files (such as downloading the hand manual). For this reason, before running any Molecule tests, ask the system administrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
+```
+export AWS_ACCESS_KEY=your_key
+export AWS_SECRET_KEY=your_secret
+```
+
 1. In the docker container terminal execute the following command:
 
 ```
@@ -737,6 +743,8 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../../roles
+    AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+    AWS_SECRET_KEY: ${AWS_SECRET_KEY}
   inventory:
     links:
       group_vars: ../../../../inventory/local/group_vars
