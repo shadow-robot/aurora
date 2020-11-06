@@ -10,3 +10,5 @@
     allow_auto_reboot=true
     remote_teleop=true
     skip_molecule_task=true
+    ansible_become_password=ubuntu
+    ansible_ssh_pass=ubuntu
