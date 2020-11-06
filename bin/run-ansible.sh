@@ -111,72 +111,6 @@ if [[ $extra_vars == *":="* ]]; then
     exit 1
 fi
 
-boolean_variables="reinstall nvidia_docker real_glove real_vive use_aws use_openvpn terminator remote_cyberglove launch_hand"
-boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_icons upgrade_check bimanual remote_teleop"
-boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce router"
-ip_variables="arm_ip_left arm_ip_right"
-
-old_IFS=$IFS
-IFS=";"
-extra_vars=$*
-formatted_extra_vars=""
-for extra_var in $extra_vars; do
-    variable="${extra_var%=*}"
-    value="${extra_var#*=}"
-    allowed_values=$value
-    if [[ $boolean_variables == *"$variable"* ]]; then
-        allowed_values="true false"
-    fi
-    if [[ "$variable" == "glove" ]]; then
-        allowed_values="haptx shadow_glove cyberglove"
-    fi
-    if [[ "$variable" == "ur_robot_type" ]]; then
-        allowed_values="ur10 ur10e ur5 ur5e"
-    fi
-    if [[ "$variable" == "hand_side" ]]; then
-        allowed_values="left right"
-    fi
-    if [[ "$variable" == "product" ]]; then
-        allowed_values="hand_e hand_lite hand_extra_lite hand_h arm_hand_e arm_hand_lite arm_hand_extra_lite"
-    fi
-    if [[ "$variable" == "polhemus_type" ]]; then
-        allowed_values="liberty viper"
-    fi
-    if [[ $ip_variables == *"$variable"* ]]; then
-        if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo ""
-            echo "Variable $variable has invalid value: $value"
-            echo ""
-            echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
-            echo ""
-            echo "Please fix the syntax and try again."
-            echo ""
-            echo "${command_usage_message}"
-            exit 1
-        fi
-    fi
-    if [[ $allowed_values != *"$value"*  ]]; then
-        echo ""
-        echo "Variable $variable has invalid value: $value"
-        echo ""
-        echo "The allowed values for $variable are: $allowed_values"
-        echo ""
-        echo "Please fix the syntax and try again."
-        echo ""
-        echo "${command_usage_message}"
-        exit 1
-    fi
-    if [[ "$value" == *' '* ]]; then
-        value="'$value'"
-    fi
-    if [[ $formatted_extra_vars == "" ]]; then
-        formatted_extra_vars="$variable=$value"
-    else
-        formatted_extra_vars="$formatted_extra_vars $variable=$value"
-    fi
-done
-IFS=${old_IFS}
-
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
@@ -296,7 +230,11 @@ if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
 fi
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
-    aurora_inventory="ansible/inventory/server_and_nuc/production"
+    if [[ "${aurora_inventory}" = "" ]]; then
+        aurora_inventory="ansible/inventory/server_and_nuc/production"
+    else
+        aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
+    fi
     ansible_flags="${ansible_flags} --ask-vault-pass"
     echo ""
     echo " ---------------------------------------------------"

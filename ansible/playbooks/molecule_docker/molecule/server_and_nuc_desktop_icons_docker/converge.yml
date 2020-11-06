@@ -11,6 +11,5 @@
     config_branch="demohand_A"
     product="hand_e"
     upgrade_check=true
-    launch_hand=true
     bimanual=true
     customer_key="invalidkey"

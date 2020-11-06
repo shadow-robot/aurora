@@ -15,7 +15,6 @@ setup_directory: "/usr/local/bin" # Where setup scripts should be installed that
 terminator: false # Launch terminator when the Docker starts
 nvidia_docker: false # Define if nvidia docker 2 is used (defaul is false)
 optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
-launch_hand: false # Specify if hand driver should start when double clicking desktop icon
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both left and right hands are used or not
