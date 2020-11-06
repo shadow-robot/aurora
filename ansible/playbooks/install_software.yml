@@ -25,3 +25,8 @@
     - {role: installation/net-tools, when: "'net-tools' in software_list"}
     - {role: installation/shadow_glove_driver, when: "'shadow_glove_driver' in software_list"}
     - {role: installation/passwordless-command, when: "'passwordless-command' in software_list"}
+    - {role: installation/rabbitvcs, when: "'rabbitvcs' in software_list"}
+    - {role: installation/prepareshadowvpn, when: "'prepareshadowvpn' in software_list"}
+    - {role: installation/resolvconf, when: "'resolvconf' in software_list"}
+    - {role: installation/mplabx, when: "'mplabx' in software_list"}
+    - {role: installation/chrome, when: "'chrome' in software_list"}

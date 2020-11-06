@@ -1,0 +1,8 @@
+---
+- name: Download google-chrome-stable latest version
+  become: yes
+  command: wget -P /tmp/aurora https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  
+- name: Install Downloaded Package of google-chrome-stable latest
+  become: yes
+  command: dpkg -i /tmp/aurora/google-chrome-stable_current_amd64.deb
