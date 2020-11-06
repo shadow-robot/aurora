@@ -14,3 +14,5 @@
     ethercat_left_arm="enx0002"
     config_branch="bimanual_demohands_B_D"
     skip_molecule_task=true
+    ansible_become_password=ubuntu
+    ansible_ssh_pass=ubuntu

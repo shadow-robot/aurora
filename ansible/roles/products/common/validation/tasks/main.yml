@@ -1,0 +1,74 @@
+
+    - name: validate extra vars parameter
+      fail: msg="Param1 is not passed or blank"
+      when: param1 is not defined or ( param1 is defined and param1 == "" )
+    - name: No product is defined
+      when: product != 'hand_e' and product != 'arm_hand_e' and product != 'hand_lite' and product != 'arm_hand_lite' and product != 'hand_extra_lite' and product != 'arm_hand_extra_lite' and product != 'hand_h'
+      meta: end_play
+
+
+
+
+
+
+
+old_IFS=$IFS
+IFS=";"
+extra_vars=$*
+formatted_extra_vars=""
+for extra_var in $extra_vars; do
+    variable="${extra_var%=*}"
+    value="${extra_var#*=}"
+    allowed_values=$value
+    if [[ $boolean_variables == *"$variable"* ]]; then
+        allowed_values="true false"
+    fi
+    if [[ "$variable" == "glove" ]]; then
+        allowed_values="haptx shadow_glove cyberglove"
+    fi
+    if [[ "$variable" == "ur_robot_type" ]]; then
+        allowed_values="ur10 ur10e ur5 ur5e"
+    fi
+    if [[ "$variable" == "hand_side" ]]; then
+        allowed_values="left right"
+    fi
+    if [[ "$variable" == "product" ]]; then
+        allowed_values="hand_e hand_lite hand_extra_lite hand_h arm_hand_e arm_hand_lite arm_hand_extra_lite"
+    fi
+    if [[ "$variable" == "polhemus_type" ]]; then
+        allowed_values="liberty viper"
+    fi
+    if [[ $ip_variables == *"$variable"* ]]; then
+        if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo ""
+            echo "Variable $variable has invalid value: $value"
+            echo ""
+            echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
+            echo ""
+            echo "Please fix the syntax and try again."
+            echo ""
+            echo "${command_usage_message}"
+            exit 1
+        fi
+    fi
+    if [[ $allowed_values != *"$value"*  ]]; then
+        echo ""
+        echo "Variable $variable has invalid value: $value"
+        echo ""
+        echo "The allowed values for $variable are: $allowed_values"
+        echo ""
+        echo "Please fix the syntax and try again."
+        echo ""
+        echo "${command_usage_message}"
+        exit 1
+    fi
+    if [[ "$value" == *' '* ]]; then
+        value="'$value'"
+    fi
+    if [[ $formatted_extra_vars == "" ]]; then
+        formatted_extra_vars="$variable=$value"
+    else
+        formatted_extra_vars="$formatted_extra_vars $variable=$value"
+    fi
+done
+IFS=${old_IFS}
