@@ -29,6 +29,7 @@ allowed_values_for_boolean:
 ip_variables:
   - arm_ip_left
   - arm_ip_right
+ip_regex: "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
 side_variable: ""
 side_value: ""
 required_for_left_hand:
@@ -50,4 +51,26 @@ not_allowed_for_local: ""
 required_for_teleop: ""
 not_allowed_for_teleop:
   - product
-
+glove_allowed_values:
+  - haptx
+  - shadow_glove
+  - cyberglove
+ur_robot_type_allowed_values:
+  - ur10
+  - ur10e
+  - ur5
+  - ur5e
+hand_side_allowed_values:
+  - left
+  - right
+product_allowed_values:
+  - hand_e
+  - hand_lite
+  - hand_extra_lite
+  - hand_h
+  - arm_hand_e
+  - arm_hand_lite
+  - arm_hand_extra_lite
+polhemus_type_allowed_values:
+  - liberty
+  - viper

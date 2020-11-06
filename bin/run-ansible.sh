@@ -19,8 +19,6 @@ playbook=$1
 aurora_limit=all
 shift
 
-
-
 while [[ $# -gt 1 ]]
 do
 key="$1"
@@ -98,6 +96,7 @@ export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
 export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
+# check for := (ROS style) variable assignments (just = should be used)
 extra_vars=$*
 if [[ $extra_vars == *":="* ]]; then
     echo ""
@@ -110,6 +109,25 @@ if [[ $extra_vars == *":="* ]]; then
     echo "${command_usage_message}"
     exit 1
 fi
+
+# create a copy of extra_vars with values containing spaces surrounded by single quotes
+old_IFS=$IFS
+IFS=";"
+formatted_extra_vars=""
+for extra_var in $extra_vars; do
+    variable="${extra_var%=*}"
+    value="${extra_var#*=}"
+    # enclose values containing spaces with single quotes
+    if [[ "$value" == *' '* ]]; then
+        value="'$value'"
+    fi
+    if [[ $formatted_extra_vars == "" ]]; then
+        formatted_extra_vars="$variable=$value"
+    else
+        formatted_extra_vars="$formatted_extra_vars $variable=$value"
+    fi
+done
+IFS=${old_IFS}
 
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
