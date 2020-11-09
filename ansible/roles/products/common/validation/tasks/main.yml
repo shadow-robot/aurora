@@ -2,6 +2,6 @@
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
-      - "lookup('vars', '{{ item }}') is not defined or ( lookup('vars', '{{ item }}') is defined and lookup('vars', '{{ item }}') | type_debug == 'bool' )"
+      - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
     with_items: "{{ boolean_variables }}"
-    fail_msg: "lookup('vars', '{{ item }}') can only be true or false"
+    fail_msg: "{{ item }} can only be true or false"
