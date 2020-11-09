@@ -8,7 +8,7 @@
       include_role:
         name: products/common/validation
       vars:
-        playbook: "server_and_nuc_deploy"
+        playbook: "teleop_deploy"
   tasks:
     - name: Extract hostname from server
       set_fact:
