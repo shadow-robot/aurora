@@ -8,7 +8,7 @@ nvidia_docker: false # Define if nvidia docker 2 is used (default is false)
 desktop_icon: true # Generates a desktop icon to launch the hand
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
-ethercat_interface: "eth0" # Ethercat interface of the right hand
+ethercat_right_hand: "eth0" # Ethercat interface of the right hand
 ethercat_left_hand: "enx1" # Ethercat interface of the left hand
 config_branch: "" # Specify the branch for the specific hand (Only for dexterous hand)
 shortcut_name: "Shadow_Hand_Launcher" # Specify the name for the desktop icon (default: Shadow_Hand_Launcher)

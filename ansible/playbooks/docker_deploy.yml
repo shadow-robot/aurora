@@ -24,5 +24,10 @@
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
-    - {role: products/hand-e/deploy, when: product == 'hand_e' or product == 'arm_hand_e' or product == 'hand_lite' or product == 'arm_hand_lite' or product == 'hand_extra_lite' or product == 'arm_hand_extra_lite' }
+    - {role: products/hand-e/deploy, when: (product == 'hand_e') or
+                                           (product == 'arm_hand_e') or
+                                           (product == 'hand_lite') or
+                                           (product == 'arm_hand_lite') or
+                                           (product == 'hand_extra_lite') or
+                                           (product == 'arm_hand_extra_lite')}
     - {role: docker/aws, when: use_aws|bool}

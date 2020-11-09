@@ -2,7 +2,7 @@
 - name: Docker deploy playbook for Hand E
   import_playbook: ../../../docker_deploy.yml
     product="hand_e"
-    ethercat_interface="enp0s25"
+    ethercat_right_hand="enp0s25"
     container_name="test_hand_e_empty_machine_container"
     allow_auto_reboot=true
     skip_molecule_task=true

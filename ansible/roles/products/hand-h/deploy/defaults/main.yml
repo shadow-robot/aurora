@@ -2,7 +2,7 @@
 container_name: "flexible_hand_real_hw"
 user: "user"
 password: "password"
-ethercat_interface: "eth0"
+ethercat_right_hand: "eth0"
 image: "shadowrobot/flexible-hand"
 tag: "melodic-release"
 full_image_name: "shadowrobot/flexible-hand:melodic-release"

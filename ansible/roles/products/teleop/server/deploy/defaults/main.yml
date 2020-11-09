@@ -8,7 +8,7 @@ glove: "shadow_glove"
 cyberglove: ""
 use_aws: false
 use_openvpn: false
-ethercat_interface: "eth0"
+ethercat_right_hand: "eth0"
 ethercat_left_hand: "eth0"
 ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"

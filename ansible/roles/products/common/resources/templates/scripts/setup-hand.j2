@@ -8,9 +8,9 @@ if [ ! -z {{ config_branch }} ]; then
     git checkout sr_lhand.launch
     git checkout sr_bimanual.launch
     git checkout {{ config_branch }}
-    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
+    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_right_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
     sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
-    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_interface }}_{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
+    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_right_hand }}_{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
     sed -i 's|rh_serial" value=.*|rh_serial" value="{{ hand_serial }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
     sed -i 's|lh_serial" value=.*|lh_serial" value="{{ hand_serial_left }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
     sed -i 's|rh_mapping_path" value=.*|rh_mapping_path" value="{{ mapping_path_right }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch

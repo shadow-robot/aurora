@@ -5,7 +5,7 @@
     skip_molecule_task=true
     allow_auto_reboot=true
     reinstall=true
-    ethercat_interface="enp0s25"
+    ethercat_right_hand="enp0s25"
     ethercat_left_hand="enx1"
     nvidia_docker=false
     config_branch="demohand_A"

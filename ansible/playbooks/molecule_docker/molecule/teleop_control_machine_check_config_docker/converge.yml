@@ -5,7 +5,7 @@
     tag="melodic-release"
     reinstall=true
     use_openvpn=false
-    ethercat_interface="enp0s25"
+    ethercat_right_hand="enp0s25"
     nvidia_docker=false
     allow_auto_reboot=true
     bimanual=true
@@ -14,3 +14,5 @@
     ethercat_left_arm="enx0002"
     config_branch="bimanual_demohands_B_D"
     skip_molecule_task=true
+    ansible_become_password=ubuntu
+    ansible_ssh_pass=ubuntu
