@@ -1,7 +1,11 @@
 ---
+- name: debug
+  debug:
+    msg: "{{ boolean_variables }}"
+
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
     fail_msg: "{{ item }} can only be true or false"
-  with_items: boolean_variables
+  with_items: "{{ boolean_variables }}"
