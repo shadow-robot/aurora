@@ -1,8 +1,14 @@
 ---
-- name: Set server hostname variable
+- name: Set server hostname variable and validate input variables
   hosts: server
   connection: local
   gather_facts: yes
+  pre_tasks:
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
+      vars:
+        playbook: "server_and_nuc_deploy"
   tasks:
     - name: Extract hostname from server
       set_fact:
@@ -40,16 +46,6 @@
 - name: Install Hand software on Ubuntu server laptop
   hosts: server
   pre_tasks:
-    - name: No product is defined
-      when: (product != 'hand_e') and
-            (product != 'arm_hand_e') and
-            (product != 'hand_lite') and
-            (product != 'arm_hand_lite') and
-            (product != 'hand_extra_lite') and
-            (product != 'arm_hand_extra_lite') and
-            (product != 'hand_h')
-      meta: end_play
-
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
       set_fact:
@@ -71,26 +67,11 @@
       become: yes
 
   roles:
-    - { role: products/hand-e/server/deploy, when: (product == 'hand_e') or
-                                                   (product == 'arm_hand_e') or
-                                                   (product == 'hand_lite') or
-                                                   (product == 'arm_hand_lite') or
-                                                   (product == 'hand_extra_lite') or
-                                                   (product == 'arm_hand_extra_lite') }
+    - { role: products/hand-e/server/deploy }
 
 - name: Install Hand software on control machine
   hosts: control_machine
   pre_tasks:
-    - name: No product is defined
-      when: (product != 'hand_e') and
-            (product != 'arm_hand_e') and
-            (product != 'hand_lite') and
-            (product != 'arm_hand_lite') and
-            (product != 'hand_extra_lite') and
-            (product != 'arm_hand_extra_lite') and
-            (product != 'hand_h')
-      meta: end_play
-
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
       set_fact:
@@ -112,12 +93,7 @@
       become: yes
 
   roles:
-    - { role: products/hand-e/control_machine/deploy, when: (product == 'hand_e') or
-                                                            (product == 'arm_hand_e') or
-                                                            (product == 'hand_lite') or
-                                                            (product == 'arm_hand_lite') or
-                                                            (product == 'hand_extra_lite') or
-                                                            (product == 'arm_hand_extra_lite')}
+    - { role: products/hand-e/control_machine/deploy }
 
 - name: Inform user for reboot
   hosts: 127.0.0.1
