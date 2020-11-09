@@ -1,4 +1,5 @@
 ---
+playbook: "docker_deploy"
 boolean_variables:
   - reinstall
   - nvidia_docker

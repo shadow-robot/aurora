@@ -10,6 +10,8 @@
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
+      vars:
+        playbook: "docker_deploy"
 
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0

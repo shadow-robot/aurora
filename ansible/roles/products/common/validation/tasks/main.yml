@@ -1,7 +1,7 @@
 ---
 - name: debug
   debug:
-    msg: "{{ hostvars[groups['docker_deploy'][0]] }}"
+    msg: "{{ hostvars[groups[playbook][0]] }}"
 
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
