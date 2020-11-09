@@ -24,9 +24,6 @@ boolean_variables:
   - desktop_icon
   - optoforce
   - router
-allowed_values_for_boolean:
-  - "true"
-  - "false"
 ip_variables:
   - arm_ip_left
   - arm_ip_right
