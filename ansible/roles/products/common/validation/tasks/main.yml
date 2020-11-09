@@ -1,8 +1,12 @@
 ---
+- name: debug
+  debug:
+    msg: "{{ lookup('vars','router') }}"
+
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
-    fail_msg: "{{ item }} can only be true or false. In aurora one liner you had {{ item }}={{ lookup('vars','router')._value }}"
+    fail_msg: "{{ item }} can only be true or false. In aurora one liner you had {{ item }}<=>{{ lookup('vars','router') }}"
     quiet: yes
   with_items: "{{ boolean_variables }}"
