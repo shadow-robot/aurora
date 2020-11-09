@@ -7,8 +7,9 @@
   hosts: docker_deploy
   pre_tasks:
 
-    - name: Validate extra_vars
-      include_tasks: ../roles/products/common/validation/tasks/main.yml
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
 
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
