@@ -1,24 +1,17 @@
 ---
-- name: debug called from {{ playbook }}
-  debug:
-    msg: "{{ lookup('vars','upgrade_check') }}"
-
-- name: debug called from {{ playbook }} 2
-  debug:
-    msg: "{{ lookup('vars','product') }}"
-
-- name: debug called from {{ playbook }} 3
-  debug:
-    msg: "{{ product }}"
-
-- name: debug called from {{ playbook }} 4
-  debug:
-    msg: "{{ upgrade_check }}"
+- name: Check product is defined (for server_and_nuc_deploy and docker_deploy)
+  assert:
+    that:
+      - product is defined
+      - product in product_allowed_values
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you didn't specify one of the allowed values of product (required). The allowed values are {{ product_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    quiet: yes
+  when: playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
 
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
-    fail_msg: "In aurora one liner you had {{ item }}={{ lookup('vars','upgrade_check') }}. {{ item }} can only be true or false. Please correct it and re-run aurora "
+    fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars','upgrade_check') }}. {{ item }} can only be true or false. Please correct it and re-run aurora"
     quiet: yes
   with_items: "{{ boolean_variables }}"
