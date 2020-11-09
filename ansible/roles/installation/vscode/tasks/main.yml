@@ -13,6 +13,7 @@
     packages:
       - libxkbfile1
       - libsecret-1-0
+      - libgbm1
   become: yes
 
 - name: Install VSCode .deb package from the internet.
