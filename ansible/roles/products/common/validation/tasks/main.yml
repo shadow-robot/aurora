@@ -3,6 +3,6 @@
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
-    fail_msg: "{{ item }} can only be true or false"
+    fail_msg: "{{ item }} can only be true or false. In aurora one liner you had {{ item }} = lookup('vars',{{ item }})"
     quiet: yes
   with_items: "{{ boolean_variables }}"
