@@ -1,7 +1,7 @@
 ---
-- name: debug
+- name: debug called from {{ playbook }}
   debug:
-    msg: "{{ hostvars[groups[playbook][0]] }}"
+    msg: "{{ lookup('vars','hostvars') }}"
 
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
