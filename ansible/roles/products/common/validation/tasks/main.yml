@@ -19,6 +19,6 @@
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
-    fail_msg: "{{ item }} can only be true or false. In aurora one liner you had {{ item }}<=>{{ lookup('vars','upgrade_check') }}"
+    fail_msg: "In aurora one liner you had {{ item }}={{ lookup('vars','upgrade_check') }}. {{ item }} can only be true or false. Please correct it and re-run aurora "
     quiet: yes
   with_items: "{{ boolean_variables }}"
