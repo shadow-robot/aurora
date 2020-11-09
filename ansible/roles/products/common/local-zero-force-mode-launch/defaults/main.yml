@@ -10,7 +10,7 @@ container_name: "dexterous_hand_real_hw"
 setup_directory: "/usr/local/bin"
 hand_serial: "1082"
 hand_serial_left: "2346"
-ethercat_interface: "eth0"
+ethercat_right_hand: "eth0"
 ethercat_left_hand: "eth1"
 icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
 launch_hand: false

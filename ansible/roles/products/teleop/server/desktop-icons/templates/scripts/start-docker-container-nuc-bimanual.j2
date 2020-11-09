@@ -13,7 +13,7 @@ if [ $chrony_status -eq 0 ]; then
     sleep 3
 fi
 
-ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch_var }} HAND_SERIALN={{ hand_serial }} HAND_SERIALN_LEFT={{ hand_serial_left }} ETH_PORT={{ ethercat_interface }} ETH_PORT_LHAND={{ ethercat_left_hand }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS UR_TYPE={{ ur_robot_type }} BIOTACS={{ biotacs | lower }} 'bash -s' <<'ENDSSH'
+ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch_var }} HAND_SERIALN={{ hand_serial }} HAND_SERIALN_LEFT={{ hand_serial_left }} ETH_PORT={{ ethercat_right_hand }} ETH_PORT_LHAND={{ ethercat_left_hand }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS UR_TYPE={{ ur_robot_type }} BIOTACS={{ biotacs | lower }} 'bash -s' <<'ENDSSH'
 bash $(while [[ $(ss | grep $HOST_IP | grep $NUC_ADDRESS | grep ssh | grep ESTAB | wc -l) -gt 0 ]]; do sleep 1; done ; pkill -INT -f roslaunch) &
 MAPPING_RIGHT='{{ mapping_path_right }}'
 MAPPING_LEFT='{{ mapping_path_left }}'

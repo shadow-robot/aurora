@@ -12,7 +12,7 @@ icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
 launch_hand: false
 override_launch_hand: false
 config_branch: ""
-ethercat_interface: "enx0"
+ethercat_right_hand: "enx0"
 ethercat_left_hand: "enx1"
 hand_serial: "1082"
 hand_serial_left: "2346"

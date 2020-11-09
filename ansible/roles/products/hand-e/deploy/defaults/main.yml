@@ -2,7 +2,7 @@
 container_name: "dexterous_hand_real_hw"
 image: "shadowrobot/dexterous-hand"
 tag: "melodic-release"
-ethercat_interface: "eth0"
+ethercat_right_hand: "eth0"
 ethercat_left_hand: "eth1"
 demo_icons: false
 user: "{{ ansible_user_id }}"

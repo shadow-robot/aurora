@@ -8,7 +8,13 @@
   pre_tasks:
 
     - name: No product is defined
-      when: product != 'hand_e' and product != 'arm_hand_e' and product != 'hand_lite' and product != 'arm_hand_lite' and product != 'hand_extra_lite' and product != 'arm_hand_extra_lite' and product != 'hand_h'
+      when: (product != 'hand_e') and
+            (product != 'arm_hand_e') and
+            (product != 'hand_lite') and
+            (product != 'arm_hand_lite') and
+            (product != 'hand_extra_lite') and
+            (product != 'arm_hand_extra_lite') and
+            (product != 'hand_h')
       meta: end_play
 
     - name: check if customer_key is provided and not false
@@ -25,5 +31,10 @@
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
-    - {role: products/hand-e/deploy, when: product == 'hand_e' or product == 'arm_hand_e' or product == 'hand_lite' or product == 'arm_hand_lite' or product == 'hand_extra_lite' or product == 'arm_hand_extra_lite' }
+    - {role: products/hand-e/deploy, when: (product == 'hand_e') or
+                                           (product == 'arm_hand_e') or
+                                           (product == 'hand_lite') or
+                                           (product == 'arm_hand_lite') or
+                                           (product == 'hand_extra_lite') or
+                                           (product == 'arm_hand_extra_lite')}
     - {role: docker/aws, when: use_aws|bool}

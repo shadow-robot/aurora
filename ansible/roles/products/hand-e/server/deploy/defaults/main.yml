@@ -5,7 +5,7 @@ reinstall: false
 container_name: "dexterous_hand_real_hw"
 nvidia_docker: true
 use_aws: false
-ethercat_interface: "eth0"
+ethercat_right_hand: "eth0"
 ethercat_left_hand: "eth0"
 ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"

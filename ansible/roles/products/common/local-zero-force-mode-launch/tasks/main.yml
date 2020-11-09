@@ -26,7 +26,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_zero_force_mode_right_hand_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_interface }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
+    launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_right_hand }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: True
   when: bimanual|bool or hand_side=="right"

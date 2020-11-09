@@ -75,7 +75,7 @@ If no inventory name is provided, and if remote_teleop=true, then "production_re
 Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_interface=enx000ec6bfe185 ethercat_left_hand=enx000ec6c042d5 config_branch=bimanual_demohands_B_D reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_right_hand=enx000ec6bfe185 ethercat_left_hand=enx000ec6c042d5 config_branch=bimanual_demohands_B_D reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
 ```
 
 Example for simulated robots without a real vive system or real gloves:
@@ -136,7 +136,7 @@ bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy option1=value1 option2=
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat_interface=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat_right_hand=enx5647929203 config_branch=demohand_C
 ```
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
@@ -169,7 +169,7 @@ launches the hand.
 
 **Ethercat interface**
 
-Before running the docker_deploy playbook, the ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
+Before running the docker_deploy playbook, the ethercat_right_hand parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
 ```shell
 sudo dmesg
 ```
@@ -177,20 +177,20 @@ command in the console. At the bottom, there will be information similar to the 
 ```shell
 [490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
 ```
-In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
+In the above example, ‘enp0s25’ is the ethercat_right_hand that is needed.
 
 **How to run:**
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy ethercat_interface=enp0s25 option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy ethercat_right_hand=enp0s25 option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_right_hand=enp0s25 config_branch=demohand_C
 ```
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
@@ -293,6 +293,12 @@ Before executing any tests, it is very useful to make sure you have unlimited sc
 ## Testing with molecule_docker ##
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
+
+There are some molecule_docker tests which require connecting to AWS to download files (such as downloading the hand manual). For this reason, before running any Molecule tests, ask the system administrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
+```
+export AWS_ACCESS_KEY=your_key
+export AWS_SECRET_KEY=your_secret
+```
 
 1. In the docker container terminal execute the following command:
 
@@ -737,6 +743,8 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../../roles
+    AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+    AWS_SECRET_KEY: ${AWS_SECRET_KEY}
   inventory:
     links:
       group_vars: ../../../../inventory/local/group_vars

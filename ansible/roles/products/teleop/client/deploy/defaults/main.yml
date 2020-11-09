@@ -9,7 +9,7 @@ cyberglove: ""
 use_aws: false
 use_openvpn: false
 setup_directory: "/usr/local/bin"
-ethercat_interface: "eth0"
+ethercat_right_hand: "eth0"
 config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
@@ -33,3 +33,5 @@ mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml
 sim_hand: false
 launch_package_name: "sr_ethercat_hand_config"
 launch_file_name: "sr_rhand.launch"
+hand_serial: "1082"
+hand_serial_left: "2346"
