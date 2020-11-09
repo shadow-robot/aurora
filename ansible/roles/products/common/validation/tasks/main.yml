@@ -3,5 +3,5 @@
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
-    with_items: "{{ boolean_variables }}"
     fail_msg: "{{ item }} can only be true or false"
+  with_items: "{{ boolean_variables }}"
