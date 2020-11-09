@@ -113,6 +113,8 @@ fi
 # create a copy of extra_vars with values containing spaces surrounded by single quotes
 old_IFS=$IFS
 IFS=";"
+# read extra_vars again inside new IFS
+extra_vars=$*
 formatted_extra_vars=""
 for extra_var in $extra_vars; do
     variable="${extra_var%=*}"
