@@ -1,7 +1,7 @@
 ---
 - name: debug
   debug:
-    msg: "{{ hostvars }}"
+    msg: "{{ hostvars[docker_deploy] }}"
 
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
