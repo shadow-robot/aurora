@@ -1,7 +1,7 @@
 ---
 - name: debug called from {{ playbook }}
   debug:
-    msg: "{{ lookup('vars','router') }}"
+    msg: "{{ lookup('vars','upgrade_check') }}"
 
 - name: debug called from {{ playbook }} 2
   debug:
@@ -13,12 +13,12 @@
 
 - name: debug called from {{ playbook }} 4
   debug:
-    msg: "{{ router }}"
+    msg: "{{ upgrade_check }}"
 
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
-    fail_msg: "{{ item }} can only be true or false. In aurora one liner you had {{ item }}<=>{{ vars[inventory_hostname]. }}"
+    fail_msg: "{{ item }} can only be true or false. In aurora one liner you had {{ item }}<=>{{ lookup('vars','upgrade_check') }}"
     quiet: yes
   with_items: "{{ boolean_variables }}"
