@@ -29,7 +29,7 @@ allowed_values_for_boolean:
 ip_variables:
   - arm_ip_left
   - arm_ip_right
-ip_regex: "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$"
+ip_regex: '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
 side_variable: ""
 side_value: ""
 required_for_left_hand:
