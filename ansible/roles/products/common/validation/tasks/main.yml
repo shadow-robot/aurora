@@ -1,7 +1,19 @@
 ---
 - name: debug called from {{ playbook }}
   debug:
-    msg: "{{ lookup('vars','hostvars') }}"
+    msg: "{{ lookup('vars','router') }}"
+
+- name: debug called from {{ playbook }} 2
+  debug:
+    msg: "{{ lookup('vars','product') }}"
+
+- name: debug called from {{ playbook }} 3
+  debug:
+    msg: "{{ product }}"
+
+- name: debug called from {{ playbook }} 4
+  debug:
+    msg: "{{ router }}"
 
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
