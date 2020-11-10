@@ -7,7 +7,6 @@
     reinstall=true
     ethercat_right_hand="enp0s25"
     ethercat_left_hand="enp0s26"
-    ethercat_left_hand="enx1"
     nvidia_docker=false
     config_branch="demohand_A"
     product="hand_e"

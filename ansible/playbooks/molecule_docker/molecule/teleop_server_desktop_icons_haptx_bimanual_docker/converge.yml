@@ -13,6 +13,7 @@
     bimanual=true
     ethercat_left_hand="enx0001"
     ethercat_left_arm="enx0002"
+    ethercat_right_arm=eno1
     arm_ip_right=10.8.1.1
     arm_ip_left=10.8.2.1
     config_branch="bimanual_demohands_B_D"
