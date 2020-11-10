@@ -1,8 +1,14 @@
 ---
-- name: Set server hostname variable
+- name: Set server hostname variable and validate input variables
   hosts: server
   connection: local
   gather_facts: yes
+  pre_tasks:
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
+      vars:
+        playbook: "teleop_deploy"
   tasks:
     - name: Extract hostname from server
       set_fact:

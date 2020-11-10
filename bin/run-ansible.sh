@@ -19,8 +19,6 @@ playbook=$1
 aurora_limit=all
 shift
 
-
-
 while [[ $# -gt 1 ]]
 do
 key="$1"
@@ -98,6 +96,7 @@ export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
 export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
+# check for := (ROS style) variable assignments (just = should be used)
 extra_vars=$*
 if [[ $extra_vars == *":="* ]]; then
     echo ""
@@ -111,61 +110,16 @@ if [[ $extra_vars == *":="* ]]; then
     exit 1
 fi
 
-boolean_variables="reinstall nvidia_docker real_glove real_vive use_aws use_openvpn terminator remote_cyberglove launch_hand"
-boolean_variables="${boolean_variables} use_steamvr sim_icon save_nuc_logs demo_icons upgrade_check bimanual remote_teleop"
-boolean_variables="${boolean_variables} demohand_icons biotacs allow_auto_reboot client_use_steamvr desktop_icon optoforce router"
-ip_variables="arm_ip_left arm_ip_right"
-
+# create a copy of extra_vars with values containing spaces surrounded by single quotes
 old_IFS=$IFS
 IFS=";"
+# read extra_vars again inside new IFS
 extra_vars=$*
 formatted_extra_vars=""
 for extra_var in $extra_vars; do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"
-    allowed_values=$value
-    if [[ $boolean_variables == *"$variable"* ]]; then
-        allowed_values="true false"
-    fi
-    if [[ "$variable" == "glove" ]]; then
-        allowed_values="haptx shadow_glove cyberglove"
-    fi
-    if [[ "$variable" == "ur_robot_type" ]]; then
-        allowed_values="ur10 ur10e ur5 ur5e"
-    fi
-    if [[ "$variable" == "hand_side" ]]; then
-        allowed_values="left right"
-    fi
-    if [[ "$variable" == "product" ]]; then
-        allowed_values="hand_e hand_lite hand_extra_lite hand_h arm_hand_e arm_hand_lite arm_hand_extra_lite"
-    fi
-    if [[ "$variable" == "polhemus_type" ]]; then
-        allowed_values="liberty viper"
-    fi
-    if [[ $ip_variables == *"$variable"* ]]; then
-        if ! [[ "$value" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo ""
-            echo "Variable $variable has invalid value: $value"
-            echo ""
-            echo "The allowed values for $variable are: a valid ip address, e.g. 10.8.1.1"
-            echo ""
-            echo "Please fix the syntax and try again."
-            echo ""
-            echo "${command_usage_message}"
-            exit 1
-        fi
-    fi
-    if [[ $allowed_values != *"$value"*  ]]; then
-        echo ""
-        echo "Variable $variable has invalid value: $value"
-        echo ""
-        echo "The allowed values for $variable are: $allowed_values"
-        echo ""
-        echo "Please fix the syntax and try again."
-        echo ""
-        echo "${command_usage_message}"
-        exit 1
-    fi
+    # enclose values containing spaces with single quotes
     if [[ "$value" == *' '* ]]; then
         value="'$value'"
     fi
@@ -296,7 +250,11 @@ if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
 fi
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
-    aurora_inventory="ansible/inventory/server_and_nuc/production"
+    if [[ "${aurora_inventory}" = "" ]]; then
+        aurora_inventory="ansible/inventory/server_and_nuc/production"
+    else
+        aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
+    fi
     ansible_flags="${ansible_flags} --ask-vault-pass"
     echo ""
     echo " ---------------------------------------------------"
