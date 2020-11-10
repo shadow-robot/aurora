@@ -25,6 +25,8 @@ boolean_variables:
   - optoforce
   - router
 boolean_allowed_values:
+  - true
+  - false
   - 'true'
   - 'false'
 ip_variables:
