@@ -91,26 +91,26 @@
   assert:
     that:
       - "glove is not defined or glove in glove_allowed_values"
-    fail_msg: "In aurora oneliner you had glove={{ glove }}. The allowed values are {{ glove_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    fail_msg: "In aurora oneliner you had glove={{ glove | default('') }}. The allowed values are {{ glove_allowed_values|join(', ') }}. Please correct it and re-run aurora"
     quiet: yes
 
 - name: Check all ur_robot_type extra vars are valid (if defined)
   assert:
     that:
       - "ur_robot_type is not defined or ur_robot_type in ur_robot_type_allowed_values"
-    fail_msg: "In aurora oneliner you had ur_robot_type={{ ur_robot_type }}. The allowed values are {{ ur_robot_type_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    fail_msg: "In aurora oneliner you had ur_robot_type={{ ur_robot_type | default('') }}. The allowed values are {{ ur_robot_type_allowed_values|join(', ') }}. Please correct it and re-run aurora"
     quiet: yes
 
 - name: Check all hand_side extra vars are valid (if defined)
   assert:
     that:
       - "hand_side is not defined or hand_side in hand_side_allowed_values"
-    fail_msg: "In aurora oneliner you had hand_side={{ hand_side }}. The allowed values are {{ hand_side_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    fail_msg: "In aurora oneliner you had hand_side={{ hand_side | default('') }}. The allowed values are {{ hand_side_allowed_values|join(', ') }}. Please correct it and re-run aurora"
     quiet: yes
 
 - name: Check all polhemus_type extra vars are valid (if defined)
   assert:
     that:
       - "polhemus_type is not defined or polhemus_type in polhemus_type_allowed_values"
-    fail_msg: "In aurora oneliner you had polhemus_type={{ polhemus_type }}. The allowed values are {{ polhemus_type_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    fail_msg: "In aurora oneliner you had polhemus_type={{ polhemus_type | default('') }}. The allowed values are {{ polhemus_type_allowed_values|join(', ') }}. Please correct it and re-run aurora"
     quiet: yes
