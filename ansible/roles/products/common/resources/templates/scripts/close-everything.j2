@@ -1,3 +1,6 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
+docker kill --signal=SIGINT {{ container_name }}
+sleep 10
 docker stop {{ container_name }}
+zenity --info --text="Docker container stopped gracefully (first SIGINT, then SIGTERM) on laptop"

@@ -1,4 +1,7 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
-ssh {{ nuc_username }}@{{ nuc_address }} docker stop {{ container_name }}
+ssh -o ConnectTimeout=10 {{ nuc_username }}@{{ nuc_address }} docker kill --signal=SIGINT {{ container_name }} && sleep 10 && docker stop {{ container_name }}
+docker kill --signal=SIGINT {{ container_name }}
+sleep 10
 docker stop {{ container_name }}
+zenity --info --text="Docker containers stopped gracefully (first SIGINT, then SIGTERM) on NUC and laptop"
