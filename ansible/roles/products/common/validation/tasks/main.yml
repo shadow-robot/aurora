@@ -8,15 +8,10 @@
     quiet: yes
   when: playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
 
-- name: list all boolean variables
-  debug:
-    msg: "{{ lookup('vars',item,default='') }}"
-  with_items: "{{ boolean_variables }}"
-
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
-      - "{{ item }} is not defined or ( {{ item }} is defined and {{ lookup('vars',item,default='') in boolean_allowed_values }} )"
+      - "{{ item }} is not defined or {{ lookup('vars',item,default='') in boolean_allowed_values }}"
     fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars',item,default='') }}. {{ item }} can only be true or false. Please correct it and re-run aurora"
     quiet: yes
   with_items: "{{ boolean_variables }}"
@@ -24,7 +19,7 @@
 - name: Check all ip extra vars are proper ip addresses
   assert:
     that:
-      - "{{ item }} is not defined or ( {{ item }} is defined and {{ lookup('vars',item,default='') is regex(ip_regex) }}  )"
+      - "{{ item }} is not defined or {{ lookup('vars',item,default='') }}='' or {{ lookup('vars',item,default='') is regex(ip_regex) }}"
     fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars',item,default='') }}. {{ item }} can only be an IP address e.g. 10.8.1.1 Please correct it and re-run aurora"
     quiet: yes
   with_items: "{{ ip_variables }}"
