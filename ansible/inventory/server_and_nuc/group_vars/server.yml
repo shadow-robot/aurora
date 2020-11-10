@@ -16,7 +16,6 @@ sim_icon: false # creates an extra icon that runs hand in simulation mode
 save_nuc_logs: true # enables saving ROS logs from control-computer to server
 demo_icons: true # Generates desktop icons to run demos
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
-launch_hand: false # Specify if hand driver should start when double clicking desktop icon
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both hands are used or not
 hand_serial: "1082" # Specify the right hand serial number

@@ -520,7 +520,7 @@ Create your playbook in ansible/playbooks folder. It has be a .yml file with no 
 
 You can read more about playbooks [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
 
-It has to have a similar structure to this:
+It has to have a similar structure to this (let's say your playbook is called "my_playbook")
 
 ```bash
 ---
@@ -532,9 +532,11 @@ It has to have a similar structure to this:
   hosts: docker_deploy
   pre_tasks:
 
-    - name: No product is defined
-      when: product != 'hand_e' and product != 'hand_h'
-      meta: end_play
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
+      vars:
+        playbook: "my_playbook"
 
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key| length > 0
