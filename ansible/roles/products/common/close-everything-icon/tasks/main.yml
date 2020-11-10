@@ -1,0 +1,34 @@
+---
+- name: Creating the local close everything script
+  template:
+    src: ../../../common/resources/templates/scripts/close-everything.j2
+    dest: "{{ shadow_hand_launcher_folder }}/close_everything.sh"
+    mode: '755'
+  when: groups['control_machine'] is not defined
+
+- name: Creating the local+NUC close everything script
+  template:
+    src: ../../../common/resources/templates/scripts/close-everything-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/close_everything.sh"
+    mode: '755'
+  when: groups['control_machine'] is defined
+
+- name: Create Close Everything icon
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Shadow Close Everything.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "Shadow Close Everything"
+    comment: "This is application closes all Shadow programs on this laptop and NUC (if used)"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: close_everything.sh
+    icon_file_name: "close-icon.png"
+    start_terminal: "false"
+
+- name: Make Create Close Everything desktop icon Trusted
+  shell: gio set "{{ icon_folder }}/Shadow Close Everything.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined

@@ -1,0 +1,4 @@
+#jinja2: trim_blocks:False
+#!/bin/bash
+ssh {{ nuc_username }}@{{ nuc_address }} docker stop {{ container_name }}
+docker stop {{ container_name }}

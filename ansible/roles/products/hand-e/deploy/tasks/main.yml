@@ -98,3 +98,7 @@
     name: products/common/local-zero-force-mode-launch
   vars:
     icon_folder: "{{ user_folder }}/Desktop"
+
+- name: Include products/common/close-everything-icon role
+  include_role:
+    name: products/common/close-everything-icon
