@@ -12,7 +12,7 @@
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} | type_debug == 'bool' )"
-    fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars',item) }}. {{ item }} can only be true or false. Please correct it and re-run aurora"
+    fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars',item,default='') }}. {{ item }} can only be true or false. Please correct it and re-run aurora"
     quiet: yes
   with_items: "{{ boolean_variables }}"
 
@@ -20,6 +20,6 @@
   assert:
     that:
       - "{{ item }} is not defined or ( {{ item }} is defined and {{ item }} is regex({{ ip_regex }}) )"
-    fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars',item) }}. {{ item }} can only be an IP address e.g. 10.8.1.1 Please correct it and re-run aurora"
+    fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars',item,default='') }}. {{ item }} can only be an IP address e.g. 10.8.1.1 Please correct it and re-run aurora"
     quiet: yes
   with_items: "{{ ip_variables }}"
