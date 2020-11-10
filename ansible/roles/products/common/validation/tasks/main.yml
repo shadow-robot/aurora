@@ -8,6 +8,11 @@
     quiet: yes
   when: playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
 
+- name: list all boolean variables
+  debug:
+    msg: "{{ lookup('vars',item,default='') }}"
+  with_items: "{{ boolean_variables }}"
+
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
