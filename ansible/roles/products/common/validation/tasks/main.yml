@@ -1,4 +1,11 @@
 ---
+- name: Check ethercat_interface is not defined (it was changed to ethercat_right_hand)
+  assert:
+    that:
+      - ethercat_interface is not defined
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you specified a value for ethercat_interface. This variable is called ethercat_right_hand in this version of aurora. Please correct it and re-run aurora"
+    quiet: yes
+
 - name: Check product is defined (for server_and_nuc_deploy and docker_deploy)
   assert:
     that:
@@ -8,6 +15,70 @@
     quiet: yes
   when: playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
 
+- name: Make sure product is not defined for teleop
+  assert:
+    that:
+      - product is not defined
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you are not allowed to specify a product. Please remove it and re-run aurora"
+    quiet: yes
+  when: playbook=="teleop_deploy"
+
+- name: Make sure arm_ip_right is specified if using teleop or server_and_nuc_deploy with arm, non-sim inventory
+  assert:
+    that:
+      - arm_ip_right is defined
+      - arm_ip_right != ""
+      - arm_ip is regex(ip_regex)
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified a correctly formatted IP address for arm_ip_right (e.g. 10.8.1.1). Please fix it and re-run aurora"
+    quiet: yes
+  when: (playbook=="teleop_deploy" or 'arm_' in product) and groups['simulation'] is not defined and (hand_side=="right" or bimanual|bool)
+
+- name: Make sure arm_ip_left is specified if using teleop or server_and_nuc_deploy with arm, non-sim inventory
+  assert:
+    that:
+      - arm_ip_left is defined
+      - arm_ip_left != ""
+      - arm_ip_left is regex(ip_regex)
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified a correctly formatted IP address for arm_ip_left (e.g. 10.8.2.1). Please fix it and re-run aurora"
+    quiet: yes
+  when: (playbook=="teleop_deploy" or 'arm_' in product) and groups['simulation'] is not defined and (hand_side=="left" or bimanual|bool)
+
+- name: Make sure ethercat_right_hand is specified for non-sim inventory
+  assert:
+    that:
+      - ethercat_right_hand is defined
+      - ethercat_right_hand not in invalid_eth_values
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified ethercat_right_hand. Please specify it and re-run aurora"
+    quiet: yes
+  when: groups['simulation'] is not defined and (hand_side=="right" or bimanual|bool)
+
+- name: Make sure ethercat_left_hand is specified for non-sim inventory
+  assert:
+    that:
+      - ethercat_left_hand is defined
+      - ethercat_left_hand not in invalid_eth_values
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified ethercat_left_hand. Please specify it and re-run aurora"
+    quiet: yes
+  when: groups['simulation'] is not defined and (hand_side=="left" or bimanual|bool)
+
+- name: Make sure ethercat_right_arm is specified for non-sim inventory (for teleop and arm-related server_and_nuc_deploy)
+  assert:
+    that:
+      - ethercat_right_arm is defined
+      - ethercat_right_arm not in invalid_eth_values
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified ethercat_right_arm. Please specify it and re-run aurora"
+    quiet: yes
+  when: (playbook=="teleop_deploy" or 'arm_' in product) and groups['simulation'] is not defined and (hand_side=="right" or bimanual|bool)
+
+- name: Make sure ethercat_left_arm is specified for non-sim inventory (for teleop and arm-related server_and_nuc_deploy)
+  assert:
+    that:
+      - ethercat_left_arm is defined
+      - ethercat_left_arm not in invalid_eth_values
+    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified ethercat_left_arm. Please specify it and re-run aurora"
+    quiet: yes
+  when: (playbook=="teleop_deploy" or 'arm_' in product) and groups['simulation'] is not defined and (hand_side=="left" or bimanual|bool)
+
 - name: Check all boolean extra vars are either true or false (if defined)
   assert:
     that:
@@ -16,10 +87,30 @@
     quiet: yes
   with_items: "{{ boolean_variables }}"
 
-- name: Check all ip extra vars are proper ip addresses
+- name: Check all glove extra vars are valid (if defined)
   assert:
     that:
-      - "{{ item }} is not defined or '{{ lookup('vars',item,default='') }}'=='' or {{ lookup('vars',item,default='') is regex(ip_regex) }}"
-    fail_msg: "In aurora oneliner you had {{ item }}={{ lookup('vars',item,default='') }}. {{ item }} can only be an IP address e.g. 10.8.1.1 Please correct it and re-run aurora"
+      - "glove is not defined or glove in glove_allowed_values"
+    fail_msg: "In aurora oneliner you had glove={{ glove }}. The allowed values are {{ glove_allowed_values|join(', ') }}. Please correct it and re-run aurora"
     quiet: yes
-  with_items: "{{ ip_variables }}"
+
+- name: Check all ur_robot_type extra vars are valid (if defined)
+  assert:
+    that:
+      - "ur_robot_type is not defined or ur_robot_type in ur_robot_type_allowed_values"
+    fail_msg: "In aurora oneliner you had ur_robot_type={{ ur_robot_type) }}. The allowed values are {{ ur_robot_type_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    quiet: yes
+
+- name: Check all hand_side extra vars are valid (if defined)
+  assert:
+    that:
+      - "hand_side is not defined or hand_side in hand_side_allowed_values"
+    fail_msg: "In aurora oneliner you had hand_side={{ hand_side }}. The allowed values are {{ hand_side_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    quiet: yes
+
+- name: Check all polhemus_type extra vars are valid (if defined)
+  assert:
+    that:
+      - "polhemus_type is not defined or polhemus_type in polhemus_type_allowed_values"
+    fail_msg: "In aurora oneliner you had polhemus_type={{ polhemus_type }}. The allowed values are {{ polhemus_type_allowed_values|join(', ') }}. Please correct it and re-run aurora"
+    quiet: yes

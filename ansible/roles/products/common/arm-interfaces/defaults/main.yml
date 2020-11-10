@@ -1,7 +1,7 @@
 ---
 ethercat_left_arm: "enx2"
 netplan_file: "/etc/netplan/50-cloud-init.yaml"
-ethercat_right_arm: "enp3s0"
+ethercat_right_arm: "eth1"
 bimanual: false
 hand_side: "right"
 ethercat_right_arm_mac: ""

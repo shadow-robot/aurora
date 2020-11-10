@@ -29,31 +29,7 @@ boolean_allowed_values:
   - false
   - 'true'
   - 'false'
-ip_variables:
-  - arm_ip_left
-  - arm_ip_right
 ip_regex: '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
-side_variable: ""
-side_value: ""
-required_for_left_hand:
-  - ethercat_left_hand
-required_for_right_hand:
-  - ethercat_interface
-required_for_left_arm:
-  - ethercat_left_arm
-  - arm_ip_left
-required_for_right_arm:
-  - ethercat_right_arm
-  - arm_ip_right
-required_for_server_and_nuc:
-  - product
-not_allowed_for_server_and_nuc: ""
-required_for_local:
-  - product
-not_allowed_for_local: ""
-required_for_teleop: ""
-not_allowed_for_teleop:
-  - product
 glove_allowed_values:
   - haptx
   - shadow_glove
@@ -77,3 +53,14 @@ product_allowed_values:
 polhemus_type_allowed_values:
   - liberty
   - viper
+invalid_eth_values:
+  - eth0
+  - eth1
+  - eth2
+  - eth01
+  - eth00
+  - enx0
+  - enx1
+  - enx2
+  - enx01
+  - enx00
