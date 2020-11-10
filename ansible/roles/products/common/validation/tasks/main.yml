@@ -28,7 +28,7 @@
     that:
       - arm_ip_right is defined
       - arm_ip_right != ""
-      - arm_ip is regex(ip_regex)
+      - arm_ip_right is regex(ip_regex)
     fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified a correctly formatted IP address for arm_ip_right (e.g. 10.8.1.1). Please fix it and re-run aurora"
     quiet: yes
   when: (playbook=="teleop_deploy" or 'arm_' in product) and groups['simulation'] is not defined and (hand_side=="right" or bimanual|bool)
