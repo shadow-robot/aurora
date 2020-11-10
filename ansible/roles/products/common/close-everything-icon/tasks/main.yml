@@ -27,7 +27,7 @@
     start_terminal: "false"
 
 - name: Make Create Close Everything desktop icon Trusted
-  shell: gio set "{{ icon_folder }}/Shadow Close Everything.desktop" "metadata::trusted" yes
+  shell: gio set "{{ user_folder }}/Desktop/Shadow Close Everything.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
