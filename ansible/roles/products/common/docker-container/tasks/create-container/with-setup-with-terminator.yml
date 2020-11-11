@@ -30,5 +30,5 @@
     ulimits:
     - "core: -1"
     volumes: "{{ shared_volumes }}"
-    command: "terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
+    command: "exec -a shadow_terminator terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
   become: yes

@@ -30,5 +30,5 @@
     ulimits:
     - "core: -1"
     volumes: "{{ shared_volumes }}"
-    command: terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash
+    command: exec -a shadow_terminator terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash
   become: yes
