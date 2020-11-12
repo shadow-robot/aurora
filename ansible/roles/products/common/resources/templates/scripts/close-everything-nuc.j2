@@ -3,7 +3,7 @@
 (
   echo 0
   echo "# Finding all Shadow Robot terminator windows"
-  pids=$(pgrep -f '\-T {{ terminator_prefix_for_closing }}')
+  pids=$(pgrep -f '\-T {{ terminator_prefix_for_closing }}|shadow_robot|shadow_launcher_app')
   echo 20
   echo "# Sending Ctrl+C to all Shadow Robot terminator windows"
   echo $pids | xargs kill -2
@@ -19,11 +19,13 @@
   echo 70
   sleep 2
   echo 80
-  echo "# Executing docker stop on Shadow Robot containers"
+  echo "# Executing docker stop on Shadow Robot NUC container (ssh timeout after 10 seconds)"
   ssh -o ConnectTimeout=10 {{ nuc_username }}@{{ nuc_address }} docker stop {{ container_name }}
+  echo 90
+  echo "# Executing docker stop on Shadow Robot server container"
   docker stop {{ container_name }}
   sleep 2
-  echo 90
+  echo 95
   echo "# Closing Shadow Robot terminator windows"
   echo $pids | xargs kill -9
   echo 100

@@ -3,7 +3,7 @@
 (
   echo 0
   echo "# Finding all Shadow Robot terminator windows"
-  pids=$(pgrep -f '\-T {{ terminator_prefix_for_closing }}')
+  pids=$(pgrep -f '\-T {{ terminator_prefix_for_closing }}|shadow_robot|shadow_launcher_app')
   echo 20
   echo "# Sending Ctrl+C to all Shadow Robot terminator windows"
   echo $pids | xargs kill -2
