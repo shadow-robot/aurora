@@ -1,8 +1,8 @@
 ---
 - name: Copy Close Everything desktop icon
   copy:
-    src: "../../../common/resources/files/close-icon.png"
-    dest: "{{ shadow_hand_launcher_folder }}/close-icon.png"
+    src: "../../../common/resources/files/close_icon.png"
+    dest: "{{ shadow_hand_launcher_folder }}/close_icon.png"
     mode: '664'
 
 - name: Creating the local close everything script
@@ -29,7 +29,7 @@
     comment: "This is application closes all Shadow programs on this laptop and NUC (if used)"
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: close_everything.sh
-    icon_file_name: close-icon.png
+    icon_file_name: close_icon.png
     start_terminal: "false"
 
 - name: Make Create Close Everything desktop icon Trusted
