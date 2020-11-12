@@ -39,7 +39,6 @@
       shell_script_file_name: close_right_hand.sh
       icon_file_name: close-hand-icon-right.png
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Close Right Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Right Hand.desktop" "metadata::trusted" yes
@@ -79,7 +78,6 @@
       shell_script_file_name: close_left_hand.sh
       icon_file_name: close-hand-icon-left.png
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Close Left Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Left Hand.desktop" "metadata::trusted" yes
@@ -119,7 +117,6 @@
       shell_script_file_name: open_right_hand.sh
       icon_file_name: open-hand-icon-right.png
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Open Right Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Open Right Hand.desktop" "metadata::trusted" yes
@@ -159,7 +156,6 @@
       shell_script_file_name: open_left_hand.sh
       icon_file_name: open-hand-icon-left.png
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Open Left Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Open Left Hand.desktop" "metadata::trusted" yes
@@ -200,7 +196,6 @@
       shell_script_file_name: demo_right_hand.sh
       icon_file_name: demo-hand-icon-right.png
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Standard Right Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
@@ -243,7 +238,6 @@
       shell_script_file_name: demo_left_hand.sh
       icon_file_name: demo-hand-icon-left.png
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Standard Left Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Left Hand.desktop" "metadata::trusted" yes

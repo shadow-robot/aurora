@@ -82,7 +82,6 @@
       shell_script_file_name: "{{ local_zero_force_mode_right_hand_launcher_script }}"
       icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Local Zero Force Mode - Right Hand desktop icon Trusted
     shell: gio set "{{ icon_folder }}/Local Zero Force Mode - Right Hand.desktop" "metadata::trusted" yes
@@ -121,7 +120,6 @@
       shell_script_file_name: "{{ local_zero_force_mode_left_hand_launcher_script }}"
       icon_file_name: "{{ left_hand_picture }}"
       start_terminal: "false"
-      terminator_prefix_for_closing: "SR: "
 
   - name: Make Local Zero Force Mode - Left Hand desktop icon Trusted
     shell: gio set "{{ icon_folder }}/Local Zero Force Mode - Left Hand.desktop" "metadata::trusted" yes

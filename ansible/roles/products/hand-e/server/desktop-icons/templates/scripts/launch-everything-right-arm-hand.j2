@@ -3,7 +3,7 @@
 
 CONST_TIMEOUT=20
 
-terminator --geometry "{{ term_1 }}" -T '{{ terminator_prefix_for_closing }}Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 
 elapsed_time=0
 start_time=$SECONDS
@@ -22,7 +22,7 @@ if [ "$proceed" == false ]; then
     exit 1
 fi
 
-terminator --geometry "{{ term_2 }}" -T '{{ terminator_prefix_for_closing }}Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
+terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
 
 elapsed_time=0
 start_time=$SECONDS
@@ -41,5 +41,5 @@ if [ "$proceed" == false ]; then
     exit 1
 fi
 
-terminator --geometry "{{ term_3 }}" -T '{{ terminator_prefix_for_closing }}NUC right arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
-terminator --geometry "{{ term_4 }}" -T '{{ terminator_prefix_for_closing }}Server right arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right_arm_hand.sh"
+terminator --geometry "{{ term_3 }}" -T 'NUC right arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
+terminator --geometry "{{ term_4 }}" -T 'Server right arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right_arm_hand.sh"

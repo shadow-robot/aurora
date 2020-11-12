@@ -3,7 +3,7 @@
 
 CONST_TIMEOUT=20
 
-terminator --geometry "{{ term_1 }}" -T '{{ terminator_prefix_for_closing }}Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
+terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 
 elapsed_time=0
 start_time=$SECONDS
@@ -22,7 +22,7 @@ if [ "$proceed" == false ]; then
     exit 1
 fi
 
-terminator --geometry "{{ term_2 }}" -T '{{ terminator_prefix_for_closing }}Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
+terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
 
 elapsed_time=0
 start_time=$SECONDS
@@ -41,4 +41,4 @@ if [ "$proceed" == false ]; then
     exit 1
 fi
 
-terminator --geometry "{{ term_3 }}" -T '{{ terminator_prefix_for_closing }}Server {{ server_launch_description }}' -e "{{ shadow_hand_launcher_folder}}/{{ server_launch_script}}"
+terminator --geometry "{{ term_3 }}" -T 'Server {{ server_launch_description }}' -e "{{ shadow_hand_launcher_folder}}/{{ server_launch_script}}"
