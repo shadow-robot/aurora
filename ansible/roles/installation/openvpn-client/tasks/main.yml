@@ -61,3 +61,4 @@
     shell_script_file_name: openvpn.sh
     icon_file_name: openvpn.png
     start_terminal: "true"
+    terminator_prefix_for_closing: "SR: "

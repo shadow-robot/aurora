@@ -36,6 +36,7 @@
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
     start_terminal: "false"
+    terminator_prefix_for_closing: "SR: "
 
 - name: Make desktop icon for hand trusted
   shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes

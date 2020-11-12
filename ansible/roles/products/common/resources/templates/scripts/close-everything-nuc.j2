@@ -1,7 +1,31 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
-ssh -o ConnectTimeout=10 {{ nuc_username }}@{{ nuc_address }} docker kill --signal=SIGINT {{ container_name }} && sleep 10 && docker stop {{ container_name }}
-docker kill --signal=SIGINT {{ container_name }}
-sleep 10
-docker stop {{ container_name }}
-zenity --info --text="Docker containers stopped gracefully (first SIGINT, then SIGTERM) on NUC and laptop"
+(
+  echo 0
+  echo "# Finding all Shadow Robot terminator windows"
+  pids=$(pgrep -f '\-T {{ terminator_prefix_for_closing }}')
+  echo 20
+  echo "# Sending Ctrl+C to all Shadow Robot terminator windows"
+  echo $pids | xargs kill -2
+  echo 30
+  echo "# Waiting for Shadow Robot processes to stop gracefully (after Ctrl+C)"
+  sleep 2
+  echo 40
+  sleep 2
+  echo 50
+  sleep 2
+  echo 60
+  sleep 2
+  echo 70
+  sleep 2
+  echo 80
+  echo "# Executing docker stop on Shadow Robot containers"
+  ssh -o ConnectTimeout=10 {{ nuc_username }}@{{ nuc_address }} docker stop {{ container_name }}
+  docker stop {{ container_name }}
+  sleep 2
+  echo 90
+  echo "# Closing Shadow Robot terminator windows"
+  echo $pids | xargs kill -9
+  echo 100
+  echo "# Done!"
+) | zenity --title "Closing all Shadow Robot processes" --progress --auto-kill

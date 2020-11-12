@@ -34,3 +34,4 @@
     shell_script_file_name: launch-cyberglove.sh
     icon_file_name: cyberglove.png
     start_terminal: "true"
+    terminator_prefix_for_closing: "SR: "

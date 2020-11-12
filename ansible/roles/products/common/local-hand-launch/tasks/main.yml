@@ -98,6 +98,7 @@
       shell_script_file_name: shadow_local_right_launcher_exec.sh
       icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
+      terminator_prefix_for_closing: "SR: "
 
   - name: Make Shadow Local Right Hand Launch desktop icon Trusted
     shell: gio set "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
@@ -136,6 +137,7 @@
       shell_script_file_name: shadow_local_left_launcher_exec.sh
       icon_file_name: "{{ left_hand_picture }}"
       start_terminal: "false"
+      terminator_prefix_for_closing: "SR: "
 
   - name: Make Shadow Local Left Hand Launch desktop icon Trusted
     shell: gio set "{{ icon_folder }}/Launch Local Shadow Left Hand.desktop" "metadata::trusted" yes
@@ -174,6 +176,7 @@
       shell_script_file_name: shadow_local_bimanual_launcher_exec.sh
       icon_file_name: "{{ bimanual_hands_picture }}"
       start_terminal: "false"
+      terminator_prefix_for_closing: "SR: "
 
   - name: Make Shadow Local Bimanual Hands Launch desktop icon Trusted
     shell: gio set "{{ icon_folder }}/Launch Local Shadow Bimanual Hands.desktop" "metadata::trusted" yes
