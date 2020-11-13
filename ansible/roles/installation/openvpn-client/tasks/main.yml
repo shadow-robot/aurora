@@ -1,14 +1,13 @@
 ---
 - name: Install OpenVPN dependencies
   apt:
-    name: ["easy-rsa"]
+    name: ["apt-transport-https"]
     state: "present"
   become: yes
 
 - name: Add OpenVPN repo apt key
   apt_key:
-    url: "https://swupdate.openvpn.net/repos/repo-public.gpg"
-    id: "30EBF4E73CCE63EEE124DD278E6DA8B4E158C569"
+    url: "https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub"
     state: "present"
   become: yes
 
@@ -21,17 +20,9 @@
 
 - name: Install OpenVPN
   apt:
-    name: openvpn
+    name: openvpn3
     state: "present"
   become: yes
-
-- name: Copy client configurations
-  copy:
-    src: "{{ user_folder }}/openvpn-ca/{{ client_name }}/{{ item|basename }}"
-    dest: "{{ shadow_hand_launcher_folder }}/"
-    mode: '664'
-  with_items:
-    - "{{ client_name }}.ovpn"
 
 - name: Copy OpenVPN desktop icon
   copy: 

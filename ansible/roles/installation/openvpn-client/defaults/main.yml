@@ -1,7 +1,8 @@
 ---
-openvpn_apt_repository: 'deb [arch=amd64] http://build.openvpn.net/debian/openvpn/release/2.4/ {{ ansible_distribution_release }} stable'
+openvpn_apt_repository: 'deb [arch=amd64] https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-{{ ansible_distribution_release }} stable'
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 client_name: "teleop-client"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
 openvpn_port: "1196"
+shadow_openvpn_access_server_url: "https://teleop.shadowrobot.com/"

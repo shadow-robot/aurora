@@ -37,11 +37,6 @@
     name: installation/openvpn-server
   when: use_openvpn|bool
 
-- name: Include installation/ccrypt role
-  include_role:
-    name: installation/ccrypt
-  when: use_openvpn|bool
-
 - name: Include installation/zoom role
   include_role:
     name: installation/zoom

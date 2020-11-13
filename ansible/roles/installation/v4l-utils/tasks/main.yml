@@ -18,12 +18,7 @@
   blockinfile:
     dest: "{{ ansible_env.HOME }}"/.bashrc
     block: |
-      if [[ ! -z ${v4l2-ctl --list-devices | grep /dev/video1} ]]; then
-        v4l2-ctl -d /dev/video1 --set-ctrl power_line_frequency=1
-      fi
-      if [[ ! -z ${v4l2-ctl --list-devices | grep /dev/video2} ]]; then
-        v4l2-ctl -d /dev/video2 --set-ctrl power_line_frequency=1
-      fi
-      if [[ ! -z ${v4l2-ctl --list-devices | grep /dev/video3} ]]; then
-        v4l2-ctl -d /dev/video3 --set-ctrl power_line_frequency=1
-      fi
+      for i in {0..9}
+      do
+        v4l2-ctl -d /dev/video$i --set-ctrl power_line_frequency=1 2>/dev/null
+      done
