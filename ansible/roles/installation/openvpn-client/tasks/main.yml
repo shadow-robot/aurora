@@ -35,7 +35,7 @@
 
 - name: Copy OpenVPN desktop icon
   copy: 
-    src: files/openvpn.png
+    src: ../../products/common/resources/files/openvpn.png
     dest: "{{ shadow_hand_launcher_folder }}/openvpn.png"
     mode: '664'
 
@@ -60,3 +60,4 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: openvpn.sh
     icon_file_name: openvpn.png
+    start_terminal: "true"

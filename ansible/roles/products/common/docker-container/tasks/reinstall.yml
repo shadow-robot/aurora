@@ -4,22 +4,175 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Check if /run/user/1000 folder exists in the docker image
+  shell: "docker image history --no-trunc {{ full_image_name }} | grep XDG_RUNTIME_DIR | wc -l"
+  register: xdg_check
+  changed_when: false
+
 - name: Creating the container which will execute setup script in terminator when started
-  when: "nvidia_docker|int == 0 and terminator and setup_script | length > 0"
-  import_tasks: create-container/with-setup-with-terminator.yml
+  when: "not nvidia_docker|bool and terminator and setup_script | length > 0"
+  include_tasks: create-container/with-setup-with-terminator.yml
 
 - name: Creating the container which will execute setup script when started without terminator
-  when: "nvidia_docker|int == 0 and not terminator and setup_script | length > 0"
-  import_tasks: create-container/with-setup-no-terminator.yml
+  when: "not nvidia_docker|bool and not terminator and setup_script | length > 0"
+  include_tasks: create-container/with-setup-no-terminator.yml
 
 - name: Creating the container which will just start a terminator (no setup script)
-  when: "nvidia_docker|int == 0 and terminator and setup_script | length == 0"
-  import_tasks: create-container/no-setup-with-terminator.yml
+  when: "not nvidia_docker|bool and terminator and setup_script | length == 0"
+  include_tasks: create-container/no-setup-with-terminator.yml
 
 - name: Creating the container which will not even start terminator (no setup script)
-  when: "nvidia_docker|int == 0 and not terminator and setup_script | length == 0"
-  import_tasks: create-container/no-setup-no-terminator.yml
+  when: "not nvidia_docker|bool and not terminator and setup_script | length == 0"
+  include_tasks: create-container/no-setup-no-terminator.yml
 
 - name: Creating the container which will execute setup script in terminator when started (NVIDIA)
-  when: "nvidia_docker|int !=0 and terminator and setup_script | length > 0"
-  import_tasks: create-container/nvidia-with-setup-with-terminator.yml
+  when: "nvidia_docker|bool and terminator and setup_script | length > 0"
+  include_tasks: create-container/nvidia-with-setup-with-terminator.yml
+
+- name: if run/user/1000 doesn't exist, then create it inside the container
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "create_run_user_1000.sh"
+    modify_script_commands: "sudo mkdir -p /run/user/1000;sudo chmod 0700 /run/user/1000;sudo chown 1000:1000 /run/user/1000;export XDG_RUNTIME_DIR=/run/user/1000"
+  when: xdg_check.stdout=="0"
+
+- name: Checking out PRs and branches if pr_branches list has been specified
+  block:
+  - name: Creating the pull_pr_branches_and_catkin_make bash script for testing for these branches {{ pr_branches }}
+    template:
+      src: ../../../common/resources/templates/scripts/pull-pr-branches-and-catkin-make.j2
+      dest: "{{ shadow_hand_launcher_folder }}/pull_pr_branches_and_catkin_make.sh"
+      mode: '755'
+    vars:
+      pr_branches_value: "{{ pr_branches }}"
+
+  - name: Copying the pull pull_pr_branches_and_catkin_make bash script into docker container
+    changed_when: false
+    shell: "docker cp {{ shadow_hand_launcher_folder }}/pull_pr_branches_and_catkin_make.sh {{ container_name }}:/tmp/pull_pr_branches_and_catkin_make.sh"
+    become: yes
+
+  - name: Copying the pull github_ssh_private_key into docker container
+    changed_when: false
+    shell: "docker cp /home/{{ user }}/.ssh/id_rsa {{ container_name }}:/home/user/.ssh/id_rsa"
+    become: yes
+
+  - name: Check-out any branches inside docker container and catkin_make
+    import_tasks: modify-container.yml
+    vars:
+      modify_script_name: "pull_pr_branches_and_catkin_make.sh"
+      modify_script_commands: "/tmp/pull_pr_branches_and_catkin_make.sh"
+  when: pr_branches is defined and pr_branches | length > 0
+
+- name: Pull sr-config branch inside the docker container
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "pull_sr_config.sh"
+    modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
+  when: groups['simulation'] is not defined
+
+- name: Installing private repositories for arm and hand product
+  block:
+  - name: Ensure botocore and boto3 modules are installed
+    pip:
+      name: [ "boto3", "botocore"]
+      extra_args: "--user"
+    changed_when: false
+
+  - name: Connect to Shadow AWS API
+    uri:
+      url: https://5vv2z6j3a7.execute-api.eu-west-2.amazonaws.com/prod
+      method: GET
+      return_content: yes
+      headers:
+        x-api-key: "{{ customer_key }}"
+    register: response_private
+
+  - name: Get private github ssh key
+    set_fact:
+      private_github_ssh_key_base64: "{{ response_private.content | regex_search('(?<=GITHUB_KEY=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
+
+  - name: Customer_key is not authorized to use product={{ product }}
+    fail:
+      msg: "Invalid customer_key for product={{ product }}. Please contact Shadow Robot Company with your customer_key and check that you have been authorized to use product={{ product }}"
+    when: private_github_ssh_key_base64==""
+
+  - name: Write private github ssh key to file
+    copy:
+      content: "{{ private_github_ssh_key_base64 | b64decode }}"
+      dest: "{{ private_ssh_keys_path }}"
+      mode: '600'
+    changed_when: false
+
+  - name: Creating the clone_private_repos bash script
+    template:
+      src: ../../../common/resources/templates/scripts/clone-private-repos.j2
+      dest: "{{ shadow_hand_launcher_folder }}/clone_private_repos.sh"
+      mode: '755'
+    vars:
+      private_repos_value: "sr_dexterous_hand_and_arm_documentation"
+
+  - name: Copying the pull clone_private_repos bash script into docker container
+    changed_when: false
+    shell: "docker cp {{ shadow_hand_launcher_folder }}/clone_private_repos.sh {{ container_name }}:/tmp/clone_private_repos.sh"
+    become: yes
+
+  - name: Copying the private_ssh_keys into docker container
+    changed_when: false
+    shell: "docker cp {{ private_ssh_keys_path }} {{ container_name }}:/home/user/.ssh/id_rsa"
+    become: yes
+
+  - name: Install private repos
+    import_tasks: modify-container.yml
+    vars:
+      modify_script_name: "clone_private_repos.sh"
+      modify_script_commands: "/tmp/clone_private_repos.sh"
+  when:
+    - "'arm_' in product"
+    - skip_molecule_task is not defined
+    - customer_key is defined and customer_key | length > 0
+
+- name: Set documentation variables for shadow_glove teleop
+  set_fact:
+    documentation_repo: sr_teleop_polhemus_documentation
+    readthedocs_token: "{{ shadow_glove_teleop_readthedocs_token }}"
+    documentation_product: teleop-polhemus
+  when: glove == "shadow_glove" and skip_molecule_task is not defined
+
+- name: Set documentation variables for haptx teleop
+  set_fact:
+    documentation_repo: sr_teleop_haptx_documentation
+    readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
+    documentation_product: teleop-haptx
+  when: glove == "haptx" and skip_molecule_task is not defined
+
+- name: Set documentation variables for arm and hand
+  set_fact:
+    documentation_repo: sr_dexterous_hand_and_arm_documentation
+    readthedocs_token: "{{ arm_hand_readthedocs_token }}"
+    documentation_product: dexterous-hand-and-arm
+  when:
+    - "'arm_' in product"
+    - skip_molecule_task is not defined
+
+- name: Update documentation inside the docker container for teleop or arm+hand
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "update_documentation.sh"
+    modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
+  when:
+    - "glove == 'haptx' or glove == 'shadow_glove' or 'arm_' in product"
+    - skip_molecule_task is not defined
+    - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
+  ignore_errors: yes
+
+- name: Update documentation inside the docker container for hand only
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "update_documentation.sh"
+    modify_script_commands: "cd /home/user/projects/shadow_robot/base/src;git clone https://github.com/shadow-robot/sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base;catkin_make --only-pkg-with-deps sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base/src/sr_dexterous_hand_documentation;curl https://dexterous-hand.readthedocs.io/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv dexterous-hand-latest html/"
+  when:
+    - "'arm_' not in product"
+    - "'hand' in product"
+    - skip_molecule_task is not defined
+    - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
+  ignore_errors: yes

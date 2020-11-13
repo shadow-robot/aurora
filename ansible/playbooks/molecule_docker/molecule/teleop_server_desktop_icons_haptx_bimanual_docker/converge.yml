@@ -1,0 +1,26 @@
+---
+- name: Teleop deploy playbook for teleop server with haptx bimanual
+  import_playbook: ../../../teleop_deploy.yml
+    reinstall=true
+    use_openvpn=false
+    ethercat_right_hand="enp0s25"
+    image="shadowrobot/dexterous-hand"
+    tag="melodic-release"
+    nvidia_docker=false
+    skip_molecule_task=true
+    allow_auto_reboot=true
+    demo_icons=true
+    bimanual=true
+    ethercat_left_hand="enx0001"
+    ethercat_left_arm="enx0002"
+    ethercat_right_arm=eno1
+    arm_ip_right=10.8.1.1
+    arm_ip_left=10.8.2.1
+    config_branch="bimanual_demohands_B_D"
+    sudo_password="ubuntu"
+    demohand_icons=true
+    glove="haptx"
+    sim_icon=true
+    customer_key="invalidkey"
+    haptx_teleop_readthedocs_link=""
+    shadow_glove_teleop_readthedocs_link=""

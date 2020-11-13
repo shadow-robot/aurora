@@ -2,15 +2,28 @@
 #!/bin/bash
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
-LOCAL_IP=$(for ip_addr in $(hostname -I) ; do if [[ $ip_addr =~ "10.".*"10.".* ]] ;then echo $ip_addr; fi; done)
+LOCAL_IP={{ server_ip }}
 
-ssh $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch }} HAND_SERIALN={{ hand_serial }} ETH_PORT={{ ethercat_interface }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS 'bash -s' <<'ENDSSH'
-bash $(while [[ $(lsof -n -w | grep $HOST_IP | grep $NUC_ADDRESS | grep ESTABLISHED | wc -l) == 1 ]]; do sleep 1; done ; pkill -f ros) &
+chrony_status=$(ssh {{ nuc_username }}@{{ nuc_address }} chronyc -n tracking | grep {{ server_ip }} | wc -l)
+if [ $chrony_status -eq 0 ]; then
+    echo "NUC lost chrony tracking. Restarting chrony on server and NUC..."
+    sudo systemctl restart chrony.service
+    sleep 3    
+    ssh {{ nuc_username }}@{{ nuc_address }} sudo systemctl restart chrony.service
+    sleep 3
+fi
+
+ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} SR_BRANCH={{ config_branch_var }} HAND_SERIALN={{ hand_serial_var }}  ETH_PORT={{ ethercat_interface_var }} HAND_SIDE={{ hand_side_var }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS UR_TYPE={{ ur_robot_type }} BIOTACS={{ biotacs | lower }} INITIAL_Z={{ initial_z_var }} ARM_X_SEPARATION={{ arm_x_separation_var }} ARM_Y_SEPARATION={{ arm_y_separation_var }} 'bash -s' <<'ENDSSH'
+bash $(while [[ $(ss | grep $HOST_IP | grep $NUC_ADDRESS | grep ssh | grep ESTAB | wc -l) -gt 0 ]]; do sleep 1; done ; pkill -INT -f roslaunch) &
+MAPPING='{{ mapping_path_var }}'
 docker stop ${CONTAINER}
+sleep 2
 docker start ${CONTAINER}
 echo "Starting the container..."
-sleep 3
+sleep 2
+docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;rosrun sr_firmware_checker ur_firmware_check"
+sleep 1
 docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;roscd sr_ethercat_hand_config/launch;git checkout sr_rhand.launch;git checkout sr_lhand.launch;git checkout ${SR_BRANCH}"
-docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch sr_teleop_vive_cyberglove sr_hardware_control_loop.launch hand_serial:=${HAND_SERIALN} eth_port:=${ETH_PORT} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
+docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;roslaunch {{ teleop_control_launch }} hand_serial:=${HAND_SERIALN} eth_port:=${ETH_PORT} side:=${HAND_SIDE} robot_model:=${UR_TYPE} biotacs:=${BIOTACS} mapping_path:='${MAPPING}' initial_z:=${INITIAL_Z} arm_x_separation:=${ARM_X_SEPARATION} arm_y_separation:=${ARM_Y_SEPARATION} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
 ENDSSH
 sleep infinity

@@ -12,7 +12,7 @@
 
 - name: Copy ROS Logs Saver desktop icon
   copy:
-    src: files/log-icon.png
+    src: ../../../common/resources/files/log-icon.png
     dest: "{{ save_latest_ros_logs_folder }}/log-icon.png"
     mode: '664'
 
@@ -26,37 +26,42 @@
   when: not use_aws|bool
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop"
+    dest: "{{ user_folder }}/Desktop/Shadow ROS Logs Saver.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: ROS_Logs_Saver
+    desktop_shortcut_name: "Shadow ROS Logs Saver"
     comment: "This application saves latest ros logs file from running docker container"
     folder: "{{ save_latest_ros_logs_folder }}"
     shell_script_file_name: save-latest-ros-logs.sh
     icon_file_name: log-icon.png
+    start_terminal: "false"
 
 - name: Make ROS Logs Saver desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/ROS_Logs_Saver.desktop" "metadata::trusted" yes
+  shell: gio set "{{ user_folder }}/Desktop/Shadow ROS Logs Saver.desktop" "metadata::trusted" yes
   when:
+    - not use_aws|bool
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
 
 - name: Create ROS Logs Saver and Uploader desktop icon
   when: use_aws|bool
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop"
+    dest: "{{ user_folder }}/Desktop/Shadow ROS Logs Saver and Uploader.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: ROS_Logs_Saver_And_Uploader
+    desktop_shortcut_name: "Shadow ROS Logs Saver and Uploader"
     comment: "This application saves and uploads to AWS latest ros logs file from running docker container"
     folder: "{{ save_latest_ros_logs_folder }}"
     shell_script_file_name: save-latest-ros-logs.sh
     icon_file_name: log-icon.png
+    start_terminal: "false"
 
 - name: Make ROS Logs Saver and Uploader desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/ROS_Logs_Saver_And_Uploader.desktop" "metadata::trusted" yes
+  shell: gio set "{{ user_folder }}/Desktop/Shadow ROS Logs Saver and Uploader.desktop" "metadata::trusted" yes
   when:
     - use_aws|bool
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined

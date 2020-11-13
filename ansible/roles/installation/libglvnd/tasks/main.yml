@@ -1,0 +1,47 @@
+---
+- name: Update package lists
+  apt:
+    update_cache: yes
+  become: yes
+  changed_when: false
+
+- name: Install libglvnd for CUDA support and better OpenGL support. Installing dependencies
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - git
+      - ca-certificates
+      - make
+      - automake
+      - autoconf
+      - libtool
+      - pkg-config
+      - python
+      - libxext-dev
+      - libx11-dev
+      - x11proto-gl-dev
+  become: yes
+
+- name: Check out libglvnd from GitHub
+  git:
+    repo: 'https://github.com/NVIDIA/libglvnd.git'
+    dest: /opt/libglvnd
+    version: "{{ libglvnd_version }}"
+  become: yes
+
+- name: Change the working directory to /opt/libglvnd and running autogen and configure
+  shell: ./autogen.sh && ./configure --prefix=/usr/local --libdir=/usr/local/lib/x86_64-linux-gnu
+  args:
+    chdir: /opt/libglvnd/
+  become: yes
+
+- name: Building libglvnd
+  shell: make -j $(nproc) install-strip
+  args:
+    chdir: /opt/libglvnd/
+  become: yes
+
+- name: Deleting unnecessary files as per libglvnd install instructions
+  shell: find /usr/local/lib/x86_64-linux-gnu -type f -name 'lib*.la' -delete
+  become: yes

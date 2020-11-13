@@ -5,7 +5,12 @@
     nuc_address: "{{ groups['control_machine'][0] }}"
   when: groups['control_machine'] is defined
 
-- name: Setup script name
+- name: Set server ip
+  set_fact:
+    server_ip: "{{ groups['server'][0] }}"
+  when: groups['server'] is defined
+
+- name: Setup script names
   set_fact:
     setup_script: teleop-server-setup.sh
     upgrade_script: "upgrade_image.sh"
@@ -14,10 +19,18 @@
   include_role:
     name: installation/docker
 
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
+
+- name: Include installation/terminator role
+  include_role:
+    name: installation/terminator
+
 - name: Include installation/nvidia-docker role
   include_role:
     name: installation/nvidia-docker
-  when: nvidia_docker | int !=0
+  when: nvidia_docker | bool
 
 - name: Include installation/openvpn-server role
   include_role:
@@ -41,20 +54,196 @@
 
 - name: Set chrony allowed network
   set_fact:
-    chrony_allowed_network: "{{ groups['server'][0].split('.')[0:3] | join('.') }}"
+    chrony_allowed_network: "0/0"
   when: groups['server'] is defined
 
 - name: Include installation/chrony-server role
   include_role:
     name: installation/chrony-server
+  when: groups['server'] is defined
+
+- name: Include installation/shadow_glove_driver role
+  include_role:
+    name: installation/shadow_glove_driver
+  when: glove == "shadow_glove" and real_glove|bool and skip_molecule_task is not defined
 
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
 
+- name: Get screen width
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f1"
+  register: xrandr_width
+  changed_when: xrandr_width.rc != 0
+
+- name: Get screen height
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f2"
+  register: xrandr_height
+  changed_when: xrandr_height.rc != 0
+
+- name: Set terminator dimensions and locations
+  set_fact:
+    term_width: "{{ ((xrandr_width.stdout|int)*0.26)|int }}"
+    term_height: "{{ ((xrandr_height.stdout|int)*0.37)|int }}"
+    term_x: "{{ ((xrandr_width.stdout|int)*0.10)|int }}"
+    term_y: 0
+    term_y_correction: 58
+    term_1: "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}"
+    term_2: "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
+    term_3: "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y }}"
+    term_4: "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
+    term_5: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y }}"
+    term_6: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
+
+- name: Ensures that Desktop folder exists
+  file:
+    path: "{{ user_folder }}/Desktop"
+    mode: '755'
+    state: directory
+
+- name: Custom shared volume for user Shadow Glove calibration
+  block:
+  - name: Set shadow_glove_calibration_folder folder names
+    set_fact:
+      shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_calibration"
+      shadow_glove_calibration_inside_docker: "/home/user/shadow_glove_calibration"
+
+  - name: Set shadow glove user calibration and boresight calibration folder names
+    set_fact:
+      user_shadow_glove_calibration_folder: "{{ shadow_glove_calibration_folder }}/user_calibration"
+      user_shadow_glove_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/user_calibration"
+      user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/shadow/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      boresight_calibration_folder: "{{ shadow_glove_calibration_folder }}/glove_boresight_calibration"
+      boresight_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/glove_boresight_calibration"
+      boresight_calibration_default_file_inside_docker: "/home/user/projects/shadow_robot/base/src/polhemus_ros_driver/config/{{ polhemus_type }}_calibration.yaml"
+
+  - name: Ensure {{ shadow_glove_calibration_folder }} folder exists
+    file:
+      path: "{{ shadow_glove_calibration_folder }}"
+      mode: '755'
+      state: directory
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }} folder exists
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}"
+      mode: '755'
+      state: directory
+
+  - name: Ensure {{ boresight_calibration_folder }} folder exists
+    file:
+      path: "{{ boresight_calibration_folder }}"
+      mode: '755'
+      state: directory
+
+  - name: Set custom shared volumes for docker container
+    set_fact:
+      custom_shared_volumes: 
+        - "{{ shadow_glove_calibration_folder }}:{{ shadow_glove_calibration_inside_docker }}"
+
+  when: glove == "shadow_glove" and real_glove|bool
+
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "Teleop Server Container"
+    term_args: "--geometry {{ term_1 }}"
+
+- name: Copy the default shadow glove user and boresight calibration files to the host
+  block:
+  - name: Copying default files from non-binary docker container path {{ user_shadow_glove_calibration_defaults_inside_docker }} to the host folder {{ user_shadow_glove_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker }} {{ user_shadow_glove_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+    when: "'binary' not in image"
+
+  - name: Copying default files from binary docker container path {{ user_shadow_glove_calibration_defaults_inside_docker_binary }} to the host folder {{ user_shadow_glove_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker_binary }} {{ user_shadow_glove_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+    when: "'binary' in image"
+
+  - name: Check if the {{ polhemus_type }}_calibration.yaml exists on the host shared volume
+    stat: 
+      path: "{{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml"
+    register: boresight_calibration_file
+    ignore_errors: yes
+
+  - name: If the default calibration doesn't exist, copy the default boresight calibration file from docker container path {{ boresight_calibration_default_file_inside_docker }} to the host folder {{ boresight_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ boresight_calibration_default_file_inside_docker }} {{ boresight_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+    when: not boresight_calibration_file.stat.exists
+
+  - name: Ensure {{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml has the right permissions
+    file:
+      path: "{{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_right.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
+    register: current_calibration_file_right
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+    register: current_calibration_file_left
+    ignore_errors: yes
+
+  - name: Check if the default_calibration_right.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+    register: default_calibration_file_right
+    ignore_errors: yes
+
+  - name: Check if the default_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+    register: default_calibration_file_left
+    ignore_errors: yes
+
+  - name: if current_calibration_right.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
+      mode: '666'
+    when: not current_calibration_file_right.stat.exists and default_calibration_file_right.stat.exists
+    ignore_errors: yes
+
+  - name: if current_calibration_left.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+      mode: '666'
+    when: not current_calibration_file_left.stat.exists and default_calibration_file_left.stat.exists
+    ignore_errors: yes
+
+  when: glove == "shadow_glove" and real_glove|bool
 
 - name: Include docker/aws role
   include_role:
@@ -70,26 +259,70 @@
     name: products/common/cyberglove
   when: use_cyberglove|bool
 
+- name: Include products/common/hand-parameters role
+  include_role:
+    name: products/common/hand-parameters
+  when: config_branch is defined and config_branch | length > 0
+
 - name: Include products/teleop/server/desktop-icons role
   include_role:
     name: products/teleop/server/desktop-icons
 
+- name: Ensure the .ssh folder exists
+  file:
+    path: "{{ user_folder }}/.ssh/"
+    mode: '700'
+    state: directory
+  when: groups['server'] is defined
+
 - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
   openssh_keypair:
     path: "{{ ssh_keys_path }}"
+  when: groups['server'] is defined
 
 - name: Evaluating the SSH agent
   shell: "eval $(ssh-agent)"
   changed_when: false
+  when: groups['server'] is defined
 
 - name: Adding the ssh identity
   shell: "ssh-add {{ ssh_keys_path }}"
   changed_when: false
   when: skip_molecule_task is not defined
 
+- name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}.pub"
+    dest: "{{ temp_ssh_keys_path }}.pub"
+  changed_when: false
+  when: skip_molecule_task is not defined and groups['server'] is defined
+
+- name: Make a copy of SSH private key to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}"
+    dest: "{{ temp_ssh_keys_path }}"
+  changed_when: false
+  when: skip_molecule_task is not defined and groups['server'] is defined
+
+- name: Copying ssh key pair into docker container
+  changed_when: false
+  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
+  become: yes
+  when: groups['server'] is defined
+
+- name: if glove==shadow_glove and real_vive==true, set use_steamvr=true (override simulation scenario with real_vive)
+  set_fact:
+    use_steamvr: true
+  when: glove=="shadow_glove" and real_vive|bool
+
+- name: if glove==haptx and real_vive==true, set use_steamvr=false (override real robots scenario with haptx)
+  set_fact:
+    use_steamvr: false
+  when: glove=="haptx" and real_vive|bool
+
 - name: Creating teleop-server setup script
   template:
-    src: ../../../common/resources/templates/scripts/teleop-setup.j2
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
@@ -118,6 +351,12 @@
     dest: /lib/udev/rules.d/90-VEC-USB-Footpedal.rules
     mode: '0644'
   become: yes
+
+- name: Reload udev rules
+  shell: udevadm control --reload-rules && udevadm trigger
+  changed_when: false
+  become: yes
+  when: skip_molecule_task is not defined
 
 - name: Creating upgrade script
   template:

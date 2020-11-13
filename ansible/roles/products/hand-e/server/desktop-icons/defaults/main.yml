@@ -1,0 +1,28 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+container_name: "dexterous_hand_real_hw"
+config_branch: ""
+hand_serial: ""
+setup_directory: ""
+nuc_username: "user"
+sim_icon: false
+upgrade_script: false
+hand_side_var: right
+ethercat_interface_var: "eth0"
+ethercat_interface_value: "eth0"
+ethercat_right_hand: "eth00"
+ethercat_left_hand: "eth01"
+cyberglove: ""
+use_cyberglove: false
+server_ip: "10.9.11.1"
+right_hand_picture: hand-e.png
+left_hand_picture: hand-e-left.png
+bimanual_hands_picture: hand-e-bimanual.png
+initial_z_value: 0.7551
+arm_x_separation_value: 0.0
+arm_y_separation_value: 0.0
+arm_hand_readthedocs_link: ""
+scene_file: ""
+include_wrist_in_arm_controller: "false"

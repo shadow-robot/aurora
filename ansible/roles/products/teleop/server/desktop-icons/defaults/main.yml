@@ -2,13 +2,40 @@
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
-container_name: "teleop-server"
-config_branch: "demohand_A"
+container_name: "teleop"
+config_branch: ""
+config_branch_var: ""
+config_branch_value: ""
 hand_serial: ""
 setup_directory: ""
 nuc_username: "user"
 remote_cyberglove: false
 sim_icon: false
-haptx_type: "right"
-haptx_icon: "haptx_{{ haptx_type }}.png"
 upgrade_script: false
+hand_side_var: right
+ethercat_right_hand: "eth00"
+ethercat_left_hand: "eth01"
+ethercat_interface_var: "eth0"
+ethercat_interface_value: "eth0"
+server_ip: "10.9.11.1"
+demohand_icons: false
+teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
+ur_robot_type: "ur10e"
+biotacs: true
+teleop_glove_right: "hand-e.png"
+teleop_glove_left: "hand-e-left.png"
+teleop_glove_bimanual: "hand-e-bimanual.png"
+shadow_glove_teleop_readthedocs_link: ""
+haptx_teleop_readthedocs_link: ""
+initial_z_value: 0.7551
+arm_x_separation_value: 0.0
+arm_y_separation_value: 0.0
+rh_biotac_mapping: ""
+lh_biotac_mapping: ""
+launch_file_input_haptx_mapping_left: "haptx_base.launch hand_side_prefix:=lh"
+launch_file_input_haptx_mapping_right: "haptx_base.launch"
+launch_file_input_haptx_mapping_bimanual: "haptx_base_bimanual.launch"
+polhemus_type: "viper"
+scene_file: ""
+glove_driver_type: "right"
+glove_driver_value: "right"

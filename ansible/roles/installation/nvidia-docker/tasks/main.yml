@@ -1,21 +1,15 @@
 ---
-- name: remove packages
+- name: remove nvidia-docker1 before installing nvidia-docker2
   apt:
     name:
       - nvidia-docker
-      - nvidia-docker2
     state: absent
     autoremove: yes
     purge: yes
   become: yes
   changed_when: false
 
-- import_tasks: install-nvidia-v1.yml
-  when: nvidia_docker | int == 1 and not skip_nvidia|bool
-  become: yes
-  changed_when: false
-
 - import_tasks: install-nvidia-v2.yml
-  when: nvidia_docker | int == 2 and not skip_nvidia|bool
+  when: nvidia_docker | bool and not skip_nvidia|bool
   become: yes
   changed_when: false

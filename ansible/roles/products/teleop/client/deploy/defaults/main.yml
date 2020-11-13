@@ -1,16 +1,16 @@
 ---
-image: "shadowrobot/shadow-teleop"
-tag: "kinetic-v0.0.21"
+image: "shadowrobot/shadow-teleop-polhemus"
+tag: "melodic-night-build"
 reinstall: false
 container_name: "teleop"
-nvidia_docker: 2
-glove: "haptx"
+nvidia_docker: true
+glove: "shadow_glove"
 cyberglove: ""
 use_aws: false
 use_openvpn: false
 setup_directory: "/usr/local/bin"
-ethercat_interface: "eth0"
-config_branch: "demohand_A"
+ethercat_right_hand: "eth0"
+config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -20,9 +20,18 @@ use_steamvr: false
 use_cyberglove: false
 remote_cyberglove: true
 setup_script: ""
-server_hostname: "TELEOP-DEMO"
+server_hostname: "SERVER"
 openvpn_port: "1196"
 terminator: true
 bimanual: false
 upgrade_check: false
-encryption_password: ""
+container_terminal_title: "Teleop Container"
+override_launch_hand: false
+ethercat_left_hand: "enx1"
+mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
+mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
+sim_hand: false
+launch_package_name: "sr_ethercat_hand_config"
+launch_file_name: "sr_rhand.launch"
+hand_serial: "1082"
+hand_serial_left: "2346"

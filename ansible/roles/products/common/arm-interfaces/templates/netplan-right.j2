@@ -1,0 +1,18 @@
+#jinja2: trim_blocks:False
+network:
+    ethernets:
+        right_arm:
+            addresses: [{{ arm_ip_right | regex_replace('[^.]+$', '100') }}/24]
+            optional: true
+            match:
+                macaddress: {{ ethercat_right_arm_mac }}
+            routes:
+                - to: {{ arm_ip_right}}/32
+                  via: {{ arm_ip_right}}
+            set-name: right_arm
+        enx-usb-ethernet:
+            match:
+                name: enx*
+            dhcp4: true
+            optional: true
+    version: 2

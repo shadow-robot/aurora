@@ -34,7 +34,7 @@ def test_docker_container_exists(host):
 def test_correct_docker_image(host):
     client = docker.from_env()
     image = str(client.containers.get('teleop').image)
-    assert image == "<Image: 'shadowrobot/dexterous-hand:kinetic-release'>"
+    assert image == "<Image: 'shadowrobot/dexterous-hand:melodic-release'>"
 
 
 def test_sr_config_exists_in_docker(host):
@@ -43,10 +43,3 @@ def test_sr_config_exists_in_docker(host):
     path = '/home/user/projects/shadow_robot/base/src/sr_config'
     bits, stat = container.get_archive(path)
     assert stat['size'] > 0
-
-
-def test_ur_network_setup(host):
-    f = host.file('/etc/network/interfaces')
-    assert f.exists
-    assert f.contains('address 192.168.1.100')
-    assert f.contains('address 192.168.2.100')

@@ -9,7 +9,14 @@
   lineinfile:
     dest: /etc/chrony/chrony.conf
     state: present
-    line: "server {{ chrony_server_ip }} iburst prefer"
+    line: "server {{ chrony_server_ip }} minpoll 1 maxpoll 3 iburst prefer"
+  become: yes
+
+- name: Prevent chrony client from syncing time with internet
+  lineinfile:
+    dest: /etc/chrony/chrony.conf
+    state: absent
+    line: "pool 2.debian.pool.ntp.org offline iburst"
   become: yes
 
 - name: Restart chrony service
@@ -18,3 +25,9 @@
     state: restarted
   become: yes
   changed_when: false
+
+- name: Include installation/passwordless-command role
+  include_role:
+    name: installation/passwordless-command
+  vars:
+    passwordless_command: "/bin/systemctl restart chrony.service"

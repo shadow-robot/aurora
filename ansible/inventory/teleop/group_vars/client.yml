@@ -1,10 +1,10 @@
 ---
-image: "shadowrobot/shadow-teleop" # Docker image name
-tag: "kinetic-v0.0.21" # Tag of the exact Docker hub image to pull
+image: "shadowrobot/shadow-teleop-polhemus" # Docker image name
+tag: "melodic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
-nvidia_docker: 2 # Which version of nvidia-docker is enabled (0 means it is disabled)
-glove: "haptx" # Determines which glove is installed (cyberglove or haptx)
+nvidia_docker: true # Define if nvidia docker 2 is used (defaul is false)
+glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-client should be installed
@@ -13,7 +13,21 @@ setup_directory: "/usr/local/bin" # Where setup scripts should be installed that
 terminator: true # Launch terminator when the Docker starts
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 remote_cyberglove: true # Determines if the cyberglove is run locally (server) or remotely (client)
-use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
-server_hostname: "TELEOP-DEMO" # Specifies the host name for ROS master (teleop server)
+client_use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 bimanual: false # Determines if left arm and left hand should be set up
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
+remote_teleop: false # Flag to enable/disable remote_teleop software install
+ansible_become_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30323661313462306461396462346166313730356132356465343230363761613466656266366432
+          6334393039326538316634323765373831393938306237350a353634356463326133376435316135
+          63313438643638633238336438303266373336306534323538366334333934656362303238383664
+          3331396665383034380a313030333236333436613832306432623635643665643233306132616562
+          3334
+ansible_ssh_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30323661313462306461396462346166313730356132356465343230363761613466656266366432
+          6334393039326538316634323765373831393938306237350a353634356463326133376435316135
+          63313438643638633238336438303266373336306534323538366334333934656362303238383664
+          3331396665383034380a313030333236333436613832306432623635643665643233306132616562
+          3334

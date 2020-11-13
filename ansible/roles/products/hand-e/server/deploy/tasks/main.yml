@@ -1,0 +1,151 @@
+---
+- name: Set NUC IP address and username for SSH
+  set_fact:
+    nuc_username: "{{ hostvars[groups['control_machine'][0]]['ansible_user'] }}"
+    nuc_address: "{{ groups['control_machine'][0] }}"
+  when: groups['control_machine'] is defined
+
+- name: Set server ip
+  set_fact:
+    server_ip: "{{ groups['server'][0] }}"
+  when: groups['server'] is defined
+
+- name: Setup script names
+  set_fact:
+    setup_script: server-setup.sh
+    upgrade_script: "upgrade_image.sh"
+
+- name: Include installation/docker role
+  include_role:
+    name: installation/docker
+
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
+
+- name: Include installation/terminator role
+  include_role:
+    name: installation/terminator
+
+- name: Include installation/nvidia-docker role
+  include_role:
+    name: installation/nvidia-docker
+  when: nvidia_docker | bool
+
+- name: Set chrony allowed network
+  set_fact:
+    chrony_allowed_network: "0/0"
+  when: groups['server'] is defined
+
+- name: Include installation/chrony-server role
+  include_role:
+    name: installation/chrony-server
+
+- name: Include docker/docker-image role
+  include_role:
+    name: docker/docker-image
+
+- name: Get screen width
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f1"
+  register: xrandr_width
+  changed_when: xrandr_width.rc != 0
+
+- name: Get screen height
+  shell: "xrandr --current | grep '*' | awk '{print $1}' | uniq | cut -d 'x' -f2"
+  register: xrandr_height
+  changed_when: xrandr_height.rc != 0
+
+- name: Set terminator dimensions and locations
+  set_fact:
+    term_width: "{{ ((xrandr_width.stdout|int)*0.34)|int }}"
+    term_height: "{{ ((xrandr_height.stdout|int)*0.37)|int }}"
+    term_x: "{{ ((xrandr_width.stdout|int)*0.12)|int }}"
+    term_y: 0
+    term_y_correction: 58
+    term_1: "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y }}"
+    term_2: "{{ term_width }}x{{ term_height }}+{{ term_x }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
+    term_3: "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y }}"
+    term_4: "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
+    term_5: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y }}"
+    term_6: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
+
+- name: Include products/common/docker-container role
+  include_role:
+    name: products/common/docker-container
+  vars:
+    container_terminal_title: "Server Docker Container"
+    term_args: "--geometry {{ term_1 }}"
+
+- name: Include products/common/cyberglove role
+  include_role:
+    name: products/common/cyberglove
+  when: use_cyberglove|bool
+
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
+- name: Include products/common/save-logs-icons role
+  include_role:
+    name: products/common/save-logs-icons
+
+- name: Include products/common/hand-parameters role
+  include_role:
+    name: products/common/hand-parameters
+  when: config_branch is defined and config_branch | length > 0
+
+- name: Include products/hand-e/server/desktop-icons role
+  include_role:
+    name: products/hand-e/server/desktop-icons
+
+- name: Ensure the .ssh folder exists
+  file:
+    path: "{{ user_folder }}/.ssh/"
+    mode: '700'
+    state: directory
+
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  openssh_keypair:
+    path: "{{ ssh_keys_path }}"
+
+- name: Evaluating the SSH agent
+  shell: "eval $(ssh-agent)"
+  changed_when: false
+
+- name: Adding the ssh identity
+  shell: "ssh-add {{ ssh_keys_path }}"
+  changed_when: false
+  when: skip_molecule_task is not defined
+
+- name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}.pub"
+    dest: "{{ temp_ssh_keys_path }}.pub"
+  changed_when: false
+  when: skip_molecule_task is not defined
+
+- name: Make a copy of SSH private key to a /tmp/ folder for copying to other machines
+  copy:
+    src: "{{ ssh_keys_path }}"
+    dest: "{{ temp_ssh_keys_path }}"
+  changed_when: false
+  when: skip_molecule_task is not defined
+
+- name: Creating server setup script
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
+    mode: '755'
+
+- name: Copying the server setup script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  become: yes
+
+- name: Creating upgrade script
+  template:
+    src: ../../../common/resources/templates/scripts/upgrade_image.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ upgrade_script }}"
+    mode: '755'
+  when: upgrade_check|bool

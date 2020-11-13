@@ -1,0 +1,18 @@
+---
+- name: Teleop Nuc machine playbook for config check
+  import_playbook: ../../../teleop_deploy.yml
+    image="shadowrobot/dexterous-hand"
+    tag="melodic-release"
+    reinstall=true
+    use_openvpn=false
+    ethercat_right_hand="enp0s25"
+    nvidia_docker=false
+    allow_auto_reboot=true
+    bimanual=true
+    glove="haptx"
+    ethercat_left_hand="enx0001"
+    ethercat_left_arm="enx0002"
+    config_branch="bimanual_demohands_B_D"
+    skip_molecule_task=true
+    ansible_become_password=ubuntu
+    ansible_ssh_pass=ubuntu

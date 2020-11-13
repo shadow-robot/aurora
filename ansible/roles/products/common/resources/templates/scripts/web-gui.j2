@@ -1,0 +1,58 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+HOST='localhost'
+PORT={{ local_website_port }}
+LIVE_URL={{ live_website_url }}
+live_url_available=false
+
+if [[ -n ${LIVE_URL} ]];
+then
+  check=$(curl -s -w "%{http_code}\n" -L "${LIVE_URL}" -o /dev/null)
+  if [[ $check == 200 ]]; then
+    live_url_available=true
+    echo "{{ local_website_name }}'s live url is available on the internet! Opening it now in a browser..."
+    xdg-open {{ live_website_url }}
+    sleep 3
+  fi
+fi
+if ! $live_url_available;
+then
+  if {{ start_container | lower }}; then
+    if [ ! "$(docker ps -q -f name={{ container_name  }})" ]; then
+      echo "Docker container {{ container_name }} is not running. Starting it now to open {{ local_website_name }} ..."
+      docker start {{ container_name }} &> /dev/null
+      sleep 3
+    fi
+  else
+    if [ ! "$(docker ps -q -f name={{ container_name  }})" ]; then
+      echo "Docker container {{ container_name }} is not running. Please run the {{ preconditions }} first before opening {{ local_website_name }}"
+      sleep 10
+      exit
+    fi
+  fi
+  check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+  if [[ ! $check == 200 ]]; then
+    if {{ (start_server_command is defined and start_server_command | length > 0) | lower }}; then
+      echo "{{ local_website_name }} is not running in the Docker container {{ container_name }}. Starting it now..."
+      docker exec -d --user user {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash; {{ start_server_command }}"
+      sleep 5
+      check=$(curl -s -w "%{http_code}\n" -L "${HOST}:${PORT}/" -o /dev/null)
+      if [[ ! $check == 200 ]]; then
+        echo "{{ local_website_name }} could not open due to an error connecting to $HOST:$PORT"
+        echo "HTTP code returned: $check"
+        echo "After attempting to launch: {{ start_server_command }} inside {{ container_name }} Docker container"
+        sleep 10
+        exit
+      fi
+    else
+      echo "Docker container {{ container_name }} is running, but you need to run the {{ preconditions }} first before opening {{ local_website_name }}"
+      sleep 10
+      exit
+    fi
+  fi
+  if [[ $check == 200 ]]; then
+    echo "{{ local_website_name }} is up! Opening it now in a browser..."
+    xdg-open http://${HOST}:${PORT}/
+    sleep 3
+  fi
+fi

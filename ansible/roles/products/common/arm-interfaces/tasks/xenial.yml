@@ -1,0 +1,46 @@
+---
+- name: Check if there is an interface file
+  stat:
+    path: /etc/network/interfaces
+  register: stat_result
+
+- name: In case enp interface doesn't exist, use enp3s0 (ethernet port of NUC) for right arm
+  set_fact:
+    ur_interface: 'enp3s0'
+  when: "'enp' not in ansible_interfaces"
+
+- name: If an enp interface exists, use the first one for ur_interface for right arm
+  set_fact:
+    ur_interface: "{{ ansible_interfaces | select('match','enp.*') | list | first }}"
+  when: "'enp' in ansible_interfaces"
+
+- name: Add network setup to control machine for right arm
+  become: yes
+  when: ur_interface | length > 0 and not bimanual | bool
+  blockinfile:
+    path: /etc/network/interfaces
+    backup: yes
+    block: |
+      auto {{ ur_interface }}
+      iface {{ ur_interface }} inet static
+        address {{ arm_ip_right | regex_replace('[^.]+$', '100') }}
+        netmask 255.255.255.0
+  changed_when: false
+
+- name: Add network setup to control machine for both arms
+  become: yes
+  when: ur_interface | length > 0 and bimanual | bool
+  blockinfile:
+    path: /etc/network/interfaces
+    backup: yes
+    block: |
+      auto {{ ur_interface }}
+      iface {{ ur_interface }} inet static
+        address {{ arm_ip_right | regex_replace('[^.]+$', '100') }}
+        netmask 255.255.255.0
+
+      auto {{ ethercat_left_arm }}
+      iface {{ ethercat_left_arm }} inet static
+        address {{ arm_ip_left | regex_replace('[^.]+$', '100') }}
+        netmask 255.255.255.0
+  changed_when: false

@@ -1,4 +1,8 @@
 ---
+- name: Set shared volumes
+  set_fact:
+    shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
+
 - name: Creating the container with terminator and no setup
   changed_when: false
   docker_container:
@@ -9,20 +13,22 @@
     pull: yes
     env:
       verbose: "true"
-      interface: "{{ ethercat_interface }}"
+      interface: "{{ ethercat_right_hand }}"
+      interface_left: "{{ ethercat_left_hand }}"
       QT_X11_NO_MITSHM: "1"
       LOCAL_USER_ID: "{{ id.stdout }}"
-      DISPLAY: :0
+      DISPLAY: "{{ lookup('env','DISPLAY') }}"
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
+      arm_ips: "{{ arm_ip_right }}_{{ arm_ip_left }}"
+      XDG_RUNTIME_DIR: "/run/user/1000"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
     interactive: yes
     security_opts:
     - "seccomp: unconfined"
-    volumes:
-    - /tmp/.X11-unix:/tmp/.X11-unix[rw]
-    - /dev/input:/dev/input[rw]
-    - /run/udev/data:/run/udev/data
-    command: terminator -x bash
+    ulimits:
+    - "core: -1"
+    volumes: "{{ shared_volumes }}"
+    command: terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash
   become: yes

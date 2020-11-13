@@ -1,0 +1,7 @@
+---
+- name: Make sure net-tools are available (arp, ifconfig, netstat, rarp, nameif, route)
+  apt:
+    name: 'net-tools'
+    state: 'present'
+    update_cache: yes
+  become: yes

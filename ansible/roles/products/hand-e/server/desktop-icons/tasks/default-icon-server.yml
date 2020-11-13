@@ -1,0 +1,35 @@
+---
+- name: Copy desktop icon
+  copy:
+    src: ../../../common/resources/files/{{ desktop_icon_png }}
+    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
+    mode: '664'
+
+- name: Create executable launch script
+  template:
+    src: "{{ template }}"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+    mode: '755'
+  vars:
+    server_launch_description: "{{ desktop_icon_name }}"
+    server_launch_script: "{{ server_launch_script_var }}"
+
+- name: Create desktop icon
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "{{ desktop_icon_name }}"
+    comment: "{{ desktop_icon_name }}"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: "{{ launch_script }}"
+    icon_file_name: "{{ desktop_icon_png }}"
+    start_terminal: "{{ launch_terminal }}"
+
+- name: Make Desktop icon trusted
+  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined

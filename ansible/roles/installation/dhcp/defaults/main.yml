@@ -1,0 +1,8 @@
+---
+dhcp_interface_name: "eth0"
+server_ip: "10.9.11.1"
+dhcp_client_ip: "10.9.11.2"
+dhcp_netmask: "255.255.255.0"
+dhcp_network: "10.9.11.0"
+internet_interface_name: "eth0"
+rc_local_service_path: "/etc/systemd/system/rc-local.service"

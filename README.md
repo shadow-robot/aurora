@@ -2,6 +2,7 @@
 - [Introduction](#introduction)
 - [How to run](#how-to-run)
   * [teleop_deploy](#teleop_deploy)
+  * [server_and_nuc_deploy](#server_and_nuc_deploy)
   * [docker_deploy](#docker_deploy)
   * [configure_software](#configure_software)
   * [install_software](#install_software)
@@ -32,6 +33,7 @@
 - [Syntax and rules](#syntax-and-rules)
 - [Special variables](#special-variables)
 - [Tutorial 1 desktop icon](#tutorial-1-desktop-icon)
+- [Troubleshooting](#troubleshooting)
 
 # Introduction #
 
@@ -39,41 +41,63 @@ Aurora is an installation automation tool using Ansible. It uses Molecule for te
 
 For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
-Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.8.4)
+Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.9.6)
 
-Molecule user guide is available [here](https://molecule.readthedocs.io/en/stable/usage.html) (Aurora is currently using Molecule 2.22)
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.02)
 
 # How to run #
 
 ## teleop_deploy ##
 
-For deploying teleop software on multiple machines (server, control-machine, client, windows-machine)
+If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
+
+Teleop_deploy can also be used fully in simulation, in which case only 1 computer is required (called "server" in this playbook)
+
+To begin with, the teleop_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. Then the specified docker image is pulled and a docker container is initialized. Finally, desktop shortcuts are generated. This shortcuts start the teleop software and run the arm(s) and the hand(s).
 
 **How to run:**
+
+You will be asked for a docker_username and docker_password (for a Docker Hub account that has access to Shadow's private teleop Docker images), then a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-input docker_username --read-secure docker_password  option1=value1 option2=value2 option3=value3
 ```
-name_of_inventory can be development, staging or production. If you are not sure which to use, use staging.
+name_of_inventory can be development, staging, production or simulation.
 
-Example:
+Or if you are using remote_teleop=true, they are development_remote, staging_remote or production_remote.
+
+If no inventory name is provided, and if remote_teleop is not specified or false, then "production" will be automatically selected.
+
+If no inventory name is provided, and if remote_teleop=true, then "production_remote" will be automatically selected.
+
+Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory staging --read-input docker_username --read-secure docker_password ethercat_interface=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_right_hand=enx000ec6bfe185 ethercat_left_hand=enx000ec6c042d5 config_branch=bimanual_demohands_B_D reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
+```
+
+Example for simulated robots without a real vive system or real gloves:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation --read-input docker_username --read-secure docker_password reinstall=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove="haptx" real_glove=false real_vive=false
 ```
 
 Inventories correspond to fixed IP addresses as shown here:
 * [development](ansible/inventory/teleop/development)
+* [development_remote](ansible/inventory/teleop/development_remote)
 * [staging](ansible/inventory/teleop/staging)
+* [staging_remote](ansible/inventory/teleop/staging_remote)
 * [production](ansible/inventory/teleop/production)
+* [production_remote](ansible/inventory/teleop/production_remote)
+* [simulation](ansible/inventory/teleop/simulation)
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
 * [control-machine](ansible/inventory/teleop/group_vars/control_machine.yml)
 * [client](ansible/inventory/teleop/group_vars/client.yml)
-* [windows-machine](ansible/inventory/teleop/group_vars/windows_machine.yml)
+* [simulation](ansible/inventory/teleop/group_vars/simulation.yml)
 
 Run a playbook against one or more members of that group using the --limit tag:
 
@@ -85,9 +109,53 @@ For assigning input and secure input to playbook variables you can use the tags:
 * --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
 * --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
 
-**SSH and BECOME passwords:**
+**VAULT password:**
 
-If you are prompted for an SSH password, enter the sudo password of the NUC. For the BECOME password (i.e. the sudo password for teleop server), just press Enter, as it will default to the SSH password.
+Shadow will supply you with the Vault password, which is needed to decrypt some credentials to access the NUC.
+
+## server_and_nuc_deploy ##
+
+For Hand E/G/H software deployments on a laptop (called "server" in this playbook) and a control machine (NUC)
+
+To begin with, the server_and_nuc_deploy playbook checks the installation status of docker. If docker is not installed then a 
+new clean installation is performed. If the required image is private, 
+then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
+container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
+launches the hand.
+
+**How to run:**
+
+You will be asked for a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
+
+Open a terminal with Ctrl+Alt+T and run:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy option1=value1 option2=value2 option3=value3
+```
+
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat_right_hand=enx5647929203 config_branch=demohand_C
+```
+
+Options for server_and_nuc_deploy playbook are here for the following machines:
+* [server](ansible/inventory/server_and_nuc/group_vars/server.yml)
+* [control-machine](ansible/inventory/server_and_nuc/group_vars/control_machine.yml)
+
+Run a playbook against one or more members of that group using the --limit tag:
+
+* --limit rules (e.g. --limit 'all:!server' please use single quotes. More details could be found 
+[here](https://ansible-tips-and-tricks.readthedocs.io/en/latest/ansible/commands/#limit-to-one-or-more-hosts))
+
+For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
+
+* --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
+* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for the docker hub password and the ROS logs upload key)
+
+**VAULT password:**
+
+Shadow will supply you with the Vault password, which is needed to decrypt some credentials to access the NUC.
 
 ## docker_deploy ##
 
@@ -101,7 +169,7 @@ launches the hand.
 
 **Ethercat interface**
 
-Before running the docker_deploy playbook, the ethercat_interface parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
+Before running the docker_deploy playbook, the ethercat_right_hand parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
 ```shell
 sudo dmesg
 ```
@@ -109,20 +177,20 @@ command in the console. At the bottom, there will be information similar to the 
 ```shell
 [490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
 ```
-In the above example, ‘enp0s25’ is the ethercat_interface that is needed.
+In the above example, ‘enp0s25’ is the ethercat_right_hand that is needed.
 
 **How to run:**
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy ethercat_interface=enp0s25 option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy ethercat_right_hand=enp0s25 option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_interface=enp0s25 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_right_hand=enp0s25 config_branch=demohand_C
 ```
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
@@ -216,7 +284,7 @@ code .
 
 ## Test creation ##
 
-Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the .py, playbook.yml and molecule.yml files in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
+Create test case for both docker in ansible/playbooks/molecule_docker/molecule folder and for AWS EC2 in ansible/playbooks/molecule_ec2/molecule folder. For additional molecule_docker tests, copy the folder structure from other tests and modify the .py, converge.yml and molecule.yml files in tests folder.For additional molecule_ec2 tests, copy the folder structure of another EC2 test and modify the molecule.yml file inside. The EC2 tests just run the same tests as the Docker tests, but they do it in AWS EC2, using virtual machines, not Docker.
 
 ## Unlimited scroll in terminator ##
 
@@ -225,6 +293,12 @@ Before executing any tests, it is very useful to make sure you have unlimited sc
 ## Testing with molecule_docker ##
 
 Once you have written your code for aurora in your branch, test it locally with Molecule first before pushing to GitHub.
+
+There are some molecule_docker tests which require connecting to AWS to download files (such as downloading the hand manual). For this reason, before running any Molecule tests, ask the system administrator for your AWS access key and secret access key. Then, in the docker container terminal, type:
+```
+export AWS_ACCESS_KEY=your_key
+export AWS_SECRET_KEY=your_secret
+```
 
 1. In the docker container terminal execute the following command:
 
@@ -274,7 +348,7 @@ molecule destroy -s name_of_your_test_case
 
 ## Private docker images ##
 
-At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every playbook.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every converge.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
 
 ## Testing with molecule_ec2 ##
 
@@ -341,7 +415,7 @@ Note that AWS EC2 tests take about 1 hour to complete a build due to provisionin
 
 For debugging (not using the master branch), you can add the following immediately after playbook name (for example docker_deploy or teleop_deploy):
 
-* --debug-branch name_of_aurora_repo_branch (e.g. --debug-branch F#SRC-2603_add_ansible_bootstrap)
+* --branch name_of_aurora_repo_branch (e.g. --branch F#SRC-2603_add_ansible_bootstrap)
 
 # Structure of files #
 
@@ -364,7 +438,7 @@ The docker folder contains some general roles that are used after docker install
 
  - aws: this is used for installing our shadow-upload.sh script and AWS customer key which uploads ROS logs to AWS. It has a dependency of installation/aws-cli
 
- - docker-image: this is used for pulling the docker image (and if nvidia_docker is not 0, it will append -nvidia to the docker image before it is pulled)(nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) specifies the version of nvidia-docker that should be used: 1 or 2. 0 means nvidia-docker is not installed, only normal docker.
+ - docker-image: this is used for pulling the docker image (nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) is a boolean which specifies whether nvidia docker 2 should be used)
 
  - setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, etc., to create the /usr/local/bin/entrypoint.sh file and setting up a new Docker user
 
@@ -446,7 +520,7 @@ Create your playbook in ansible/playbooks folder. It has be a .yml file with no 
 
 You can read more about playbooks [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html)
 
-It has to have a similar structure to this:
+It has to have a similar structure to this (let's say your playbook is called "my_playbook")
 
 ```bash
 ---
@@ -458,9 +532,11 @@ It has to have a similar structure to this:
   hosts: docker_deploy
   pre_tasks:
 
-    - name: No product is defined
-      when: product != 'hand_e' and product != 'hand_h'
-      meta: end_play
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
+      vars:
+        playbook: "my_playbook"
 
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key| length > 0
@@ -474,7 +550,7 @@ It has to have a similar structure to this:
 
   roles:
     - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
+    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
@@ -507,7 +583,7 @@ An example of a role section:
 ```bash
   roles:
     - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
+    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
@@ -629,6 +705,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
 ```
 9. Download a suitable image (.jpg or .png) (e.g min 64x64 resolution, max 1000x1000 resolution) from the internet to be your tutorial_1_icon.png (or .jpg but then remember to change the extension to .jpg in your Ansible scripts as well). Place this image in the desktop-icons/files folder
 
@@ -652,8 +729,11 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   - name: tutorial_1_docker
     image: shadowrobot/aurora-test-ubuntu-docker:xenial
@@ -665,17 +745,16 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../../roles
+    AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+    AWS_SECRET_KEY: ${AWS_SECRET_KEY}
   inventory:
     links:
       group_vars: ../../../../inventory/local/group_vars
-  lint:
-    name: ansible-lint
 verifier:
   name: testinfra
-  lint:
-    name: flake8
+
 ```
-13. Edit the playbook.yml so it looks like this:
+13. Edit the converge.yml so it looks like this:
 ```bash
 ---
 - name: Tutorial 1 playbook
@@ -719,16 +798,19 @@ dependency:
   name: galaxy
 driver:
   name: ec2
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
   - name: tutorial_1_ec2_${CODEBUILD_BUILD_ID}
-    image: ami-04606ba5d5fb731cc
+    image: ami-0ce847e39053291c5
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-0f8cc2cc245d57eb4
-    vpc_subnet_id: subnet-09c91c82c471613fc
+    vpc_subnet_id: subnet-0c8cfe80927f04845
     groups:
       - docker_deploy
 provisioner:
@@ -744,14 +826,11 @@ provisioner:
     create: ../resources/ec2/create.yml
     destroy: ../resources/ec2/destroy.yml
     prepare: ../../../install_python3.yml
-    converge: ../../../molecule_docker/molecule/tutorial_1_docker/playbook.yml
-  lint:
-    name: ansible-lint
+    converge: ../../../molecule_docker/molecule/tutorial_1_docker/converge.yml
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/tutorial_1_docker/tests/
-  lint:
-    name: flake8
+
 ```
 17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)
 
@@ -761,7 +840,7 @@ verifier:
 
 20. Once your PR is passing (all green), you are ready to test your branch on real hardware. For this tutorial, you will test your branch on your own local machine by opening a terminal window by pressing Ctrl+Alt+T and run this:
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) tutorial_icon_deploy --debug-branch NameOfYourBranch --inventory local/docker_deploy username=YourName
+bash <(curl -Ls bit.ly/run-aurora) tutorial_icon_deploy --branch NameOfYourBranch --inventory local/docker_deploy username=YourName
 ```
 Rememeber to substitute in NameOfYourBranch and YourName
 
@@ -772,3 +851,22 @@ You will have to enter the sudo password for your computer twice (once for the b
   ![Tutorial 1 icon](docs/images/tutorial_1_icon.png)
  
   ![Tutorial 1 result](docs/images/tutorial_1_result.png)
+
+# Troubleshooting #
+
+1. **SSH warning** when using the same laptops for multiple different NUCs (in server_and_nuc_deploy and teleop_deploy): for a given server laptop, only 1 NUC is supposed to be used. If the NUC is changed, the SSH keys stored on the laptop don't match the NUC, so aurora has to be re-run. In this case, it's required that the user manually deletes the .ssh folder on the server laptop to clear ssh keys.
+
+2. **Unable to connect to a new NUC with SSH** (not cloned from Clonezilla image) (in server_and_nuc_deploy and teleop_deploy): the NUC with Ubuntu Server 18.04 needs manual netplan configuration as below in order to recognize and connect the ethernet-USB adapters: edit the file /etc/netplan/50-cloud-init.yaml in the NUC host so it has the following:
+
+```bash
+network:
+    version: 2
+    ethernets:
+        enx-usb-ethernet:
+            match:
+                name: enx*
+            dhcp4: true
+            optional: true
+```
+
+3. **Unable to launch RQT on NUC** (or other graphical programs running on the NUC), due to Xauthority issues (in server_and_nuc_deploy and teleop_deploy): Before running aurora, execute ssh -X user@nuc-control to create a proper .Xauthority file in the NUC host (user home folder). This is required before aurora runs and creates the container.

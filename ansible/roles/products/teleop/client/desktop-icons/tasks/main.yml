@@ -12,7 +12,7 @@
 
 - name: Copy Teleop desktop icon
   copy: 
-    src: files/cyberglove_teleop.png
+    src: ../../../common/resources/files/cyberglove_teleop.png
     dest: "{{ shadow_hand_launcher_folder }}/cyberglove_teleop.png"
     mode: '664'
 
@@ -33,16 +33,18 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: teleop_exec.sh
     icon_file_name: cyberglove_teleop.png
+    start_terminal: "true"
 
 - name: Make Desktop icon trusted
   shell: gio set "{{ user_folder }}/Desktop/Teleop_Container_Launch.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
 
 - name: Copy Cyberglove desktop icon
   copy:
-    src: files/cyberglove.jpg
+    src: ../../../common/resources/files/cyberglove.jpg
     dest: "{{ shadow_hand_launcher_folder }}/cyberglove.jpg"
     mode: '664'
 
@@ -66,9 +68,11 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "roslaunch-cyberglove.sh"
     icon_file_name: "cyberglove.jpg"
+    start_terminal: "true"
 
 - name: Make desktop icon for Cyberglove icon trusted
   shell: gio set "{{ user_folder }}/Desktop/Cyberglove_Launch.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined

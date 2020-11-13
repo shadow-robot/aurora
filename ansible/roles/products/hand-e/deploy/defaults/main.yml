@@ -1,8 +1,9 @@
 ---
 container_name: "dexterous_hand_real_hw"
 image: "shadowrobot/dexterous-hand"
-tag: "kinetic-release"
-ethercat_interface: "eth0"
+tag: "melodic-release"
+ethercat_right_hand: "eth0"
+ethercat_left_hand: "eth1"
 demo_icons: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -10,3 +11,27 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 setup_directory: "/usr/local/bin"
 upgrade_check: false
 sim_hand: false
+reinstall: false
+nvidia_docker: false
+use_aws: false
+launch_hand: false
+config_branch: ""
+hand_side: "right"
+bimanual: false
+hand_serial: "1082"
+hand_serial_left: "2346"
+mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
+mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
+robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"
+use_cyberglove: false
+right_hand_picture: hand-e.png
+left_hand_picture: hand-e-left.png
+bimanual_hands_picture: hand-e-bimanual.png
+ur_robot_type: "ur10e"
+override_launch_hand: false
+remote_cyberglove: false
+cyberglove: ""
+use_steamvr: false
+launch_package_name: "sr_ethercat_hand_config"
+launch_file_name: "sr_rhand.launch"
+pr_branches: ""

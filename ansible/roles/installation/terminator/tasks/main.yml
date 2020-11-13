@@ -1,0 +1,19 @@
+---
+- name: Install terminator
+  apt:
+    name: "{{ packages }}"
+    install_recommends: no
+  vars:
+    packages:
+      - terminator
+  become: yes
+
+- name: Ensure terminator config directory exist
+  file:
+    path: "{{ user_folder }}/.config/terminator"
+    state: directory
+
+- name: Copy Terminator config
+  copy:
+    src: files/config
+    dest: "{{ user_folder }}/.config/terminator/config"

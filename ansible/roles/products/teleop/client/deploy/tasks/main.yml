@@ -13,10 +13,14 @@
   include_role:
     name: installation/docker
 
+- name: Include installation/terminator role
+  include_role:
+    name: installation/terminator
+
 - name: Include installation/nvidia-docker role
   include_role:
     name: installation/nvidia-docker
-  when: nvidia_docker | int !=0
+  when: nvidia_docker | bool
 
 - name: Include installation/openvpn-client role
   include_role:
@@ -41,6 +45,12 @@
     name: products/common/docker-container
   vars:
     ros_master: "{{ server_hostname }}"
+    container_terminal_title: "Teleop Client Container"
+
+- name: Include products/common/hand-parameters role
+  include_role:
+    name: products/common/hand-parameters
+  when: config_branch is defined and config_branch | length > 0
 
 - name: Include docker/aws role
   include_role:
@@ -57,7 +67,7 @@
 
 - name: Creating teleop-client setup script
   template:
-    src: ../../../common/resources/templates/scripts/teleop-setup.j2
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 

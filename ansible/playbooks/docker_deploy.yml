@@ -7,9 +7,11 @@
   hosts: docker_deploy
   pre_tasks:
 
-    - name: No product is defined
-      when: product != 'hand_e' and product != 'hand_h'
-      meta: end_play
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
+      vars:
+        playbook: "docker_deploy"
 
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
@@ -23,7 +25,7 @@
 
   roles:
     - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | int != 0}
+    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
-    - {role: products/hand-e/deploy, when: product == 'hand_e'}
+    - {role: products/hand-e/deploy, when: product != 'hand_h'}
     - {role: docker/aws, when: use_aws|bool}

@@ -1,0 +1,120 @@
+---
+- name: Set current right arm interface name and mac if the right arm interface hasn't been renamed
+  set_fact:
+    current_right_arm_interface: "{{ ethercat_right_arm }}"
+    ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_right_arm]['macaddress'] }}"
+  when:
+    - "ethercat_right_arm in ansible_interfaces"
+    - "ethercat_right_arm != 'right-arm'"
+    - "ethercat_right_arm != 'right_arm'"
+
+- name: Set current right arm interface name and mac if right arm interface has been renamed to right-arm
+  set_fact:
+    current_right_arm_interface: right-arm
+    ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_right_arm']['macaddress'] }}"
+  when: "'right-arm' in ansible_interfaces"
+
+- name: Set current right arm interface name and mac if right arm interface has been renamed to right_arm
+  set_fact:
+    current_right_arm_interface: right_arm
+    ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_right_arm']['macaddress'] }}"
+  when: "'right_arm' in ansible_interfaces"
+
+- name: Set current left arm interface name and mac if the left arm interface hasn't been renamed
+  set_fact:
+    current_left_arm_interface: "{{ ethercat_left_arm }}"
+    ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_left_arm]['macaddress'] }}"
+  when:
+    - "ethercat_left_arm in ansible_interfaces"
+    - "ethercat_left_arm != 'left-arm'"
+    - "ethercat_left_arm != 'left_arm'"
+
+- name: Set current left arm interface name and mac if left arm interface has been renamed to left-arm
+  set_fact:
+    current_left_arm_interface: left-arm
+    ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_left_arm']['macaddress'] }}"
+  when: "'left-arm' in ansible_interfaces"
+
+- name: Set current left arm interface name and mac if left arm interface has been renamed to left_arm
+  set_fact:
+    current_left_arm_interface: left_arm
+    ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_left_arm']['macaddress'] }}"
+  when: "'left_arm' in ansible_interfaces"
+
+- name: Set right arm interface name to right_arm (required for netplan) if not already done
+  block:
+    - name: Bring down right arm ethernet interface before renaming
+      command: ifconfig {{ current_right_arm_interface }} down
+      become: true
+
+    - name: Rename right arm interface to right_arm
+      command: ip link set {{ current_right_arm_interface }} name right_arm
+      become: true
+
+    - name: Bring up right arm ethernet interface after renaming
+      command: ifconfig right_arm up
+      become: true
+  when:
+    - "'right_arm' not in ansible_interfaces"
+    - bimanual|bool or hand_side=="right"
+
+- name: Set left arm interface name to left_arm (required for netplan) if not already done
+  block:
+    - name: Bring down left arm ethernet interface before renaming
+      command: ifconfig {{ current_left_arm_interface }} down
+      become: true
+
+    - name: Rename left arm interface to left_arm
+      command: ip link set {{ current_left_arm_interface }} name left_arm
+      become: true
+
+    - name: Bring up left arm ethernet interface after renaming
+      command: ifconfig left_arm up
+      become: true
+  when:
+    - "'left_arm' not in ansible_interfaces"
+    - bimanual|bool or hand_side=="left"
+
+- name: Ensure the {{ netplan_file }} exists
+  file:
+    path: "{{ netplan_file }}"
+    mode: '700'
+    state: touch
+  become: yes
+
+- name: Configuring netplan for right arm
+  template:
+    src: templates/netplan-right.j2
+    dest: "{{ netplan_file }}"
+  become: true
+  when: not bimanual|bool and hand_side=="right"
+
+- name: Configuring netplan for left arm
+  template:
+    src: templates/netplan-left.j2
+    dest: "{{ netplan_file }}"
+  become: true
+  when: not bimanual|bool and hand_side=="left"
+
+- name: Configuring netplan for bimanual arms
+  template:
+    src: templates/netplan-bimanual.j2
+    dest: "{{ netplan_file }}"
+  become: true
+  when: bimanual|bool
+
+- name: Generate netplan config
+  command: netplan generate
+  become: true
+
+- name: Apply netplan config
+  command: netplan apply
+  become: true
+
+- name: Edit root crontab on NUC to ensure all arm interfaces come back up after reboot
+  cron:
+    name: "apply netplan on reboot"
+    special_time: reboot
+    job: "/usr/sbin/netplan apply"
+    user: root
+  become: true

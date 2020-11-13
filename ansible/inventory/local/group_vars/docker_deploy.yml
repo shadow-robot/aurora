@@ -1,15 +1,16 @@
 ---
 image: "shadowrobot/dexterous-hand" # Docker image name
-tag: "kinetic-release" # Tag of the exact Docker hub image to pull
-product: '' # Name of the product (hand_e or hand_h)
+tag: "melodic-release" # Tag of the exact Docker hub image to pull
+product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite, hand_h)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "dexterous_hand_real_hw" # Name of the docker container
-nvidia_docker: 0 # Define the version of nvidia docker (defaul is 0 = disabled)
+nvidia_docker: false # Define if nvidia docker 2 is used (default is false)
 desktop_icon: true # Generates a desktop icon to launch the hand
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
-ethercat_interface: "eth0" # Ethercat interface of the hand
-config_branch: "demohand_A" # Specify the branch for the specific hand (Only for dexterous hand)
+ethercat_right_hand: "eth0" # Ethercat interface of the right hand
+ethercat_left_hand: "enx1" # Ethercat interface of the left hand
+config_branch: "" # Specify the branch for the specific hand (Only for dexterous hand)
 shortcut_name: "Shadow_Hand_Launcher" # Specify the name for the desktop icon (default: Shadow_Hand_Launcher)
 optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
 launch_hand: false # Specify if hand driver should start when double clicking desktop icon
@@ -18,3 +19,29 @@ setup_directory: "/usr/local/bin" # Where setup scripts should be installed that
 terminator: true # Launch terminator when the Docker starts
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 sim_hand: false # if set to true it will autolaunch the hand in simulation
+hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
+bimanual: false # Specify if both hands are used or not
+hand_serial: "1082" # Specify the right hand serial number
+hand_serial_left: "2346" # Specify the left hand serial number
+arm_ip_left: "" # Specify the IP address of left arm
+arm_ip_right: "" # Specify the IP address of right arm
+ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
+pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
+arm_hand_readthedocs_token: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66353963666432383265393835616638613636366135663330383339323666636139653535386338
+          3862393133333033323961633735643131306134366135300a393435356162343863326530333131
+          39646636663333653732643033353838343237623834383434373533653465366463623165386565
+          6135376565363933620a386561666563666431343931626239613761663537366239643063626236
+          66626266333436366434376536636537626262343161633535663935666561383136
+arm_hand_readthedocs_link: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          31623630373232366166373666356539656630386162326538646438353337653339663732616431
+          3935333632376636646531366134313330393432623635630a303261643832666333306233323137
+          37663964623362323033643761346631393865343135366532323838356339616337656131383539
+          6332373031303762610a383937353839383733393933373464646561343438316630346630643037
+          62346633306166366430343736653636323336646530353831626438383530316437363033333432
+          38656232336165393139666433343264303366626665363034646436633337646231666432643065
+          39313833323339356637643766663930653339363436343435326434373235353433343930616239
+          64323530626430653233613363646239613233653235663161353531613764653966353838613066
+          37646437323237353030316465303937633537646330373366363766653962393237

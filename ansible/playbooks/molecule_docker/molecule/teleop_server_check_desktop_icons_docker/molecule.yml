@@ -3,25 +3,30 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   - name: teleop_desktop_icons_server_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:xenial
+    image: shadowrobot/aurora-test-ubuntu-docker:bionic
     groups:
       - server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
+    privileged: true
+    capabilities:
+      - NET_ADMIN
+      - NET_RAW
 provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../../roles
+    AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+    AWS_SECRET_KEY: ${AWS_SECRET_KEY}
   inventory:
     links:
       group_vars: ../../../../inventory/teleop/group_vars
-  lint:
-    name: ansible-lint
 verifier:
   name: testinfra
-  lint:
-    name: flake8

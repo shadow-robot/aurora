@@ -1,8 +1,12 @@
 ---
 - name: Setup script name
   set_fact:
-    setup_script: "setup_dexterous_hand.sh"
+    setup_script: server-setup.sh
     upgrade_script: "upgrade_image.sh"
+
+- name: Include installation/terminator role
+  include_role:
+    name: installation/terminator
 
 - name: Include docker/docker-image role
   include_role:
@@ -11,14 +15,28 @@
 - name: Include products/common/docker-container role
   include_role:
     name: products/common/docker-container
+  vars:
+    container_terminal_title: "{{ product }} container"
+
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
 
 - name: Include products/common/save-logs-icons role
   include_role:
     name: products/common/save-logs-icons
 
+- name: Create Shadow Demos folder
+  file:
+    path: "{{ user_folder }}/Desktop/Shadow Demos"
+    mode: '755'
+    state: directory
+
 - name: Include products/common/demo-icons role
   include_role:
     name: products/common/demo-icons
+  vars:
+    demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
   when: demo_icons|bool
 
 - name: Include products/common/cyberglove role
@@ -31,6 +49,11 @@
     name: docker/aws
   when: use_aws|bool
 
+- name: Include products/common/arm-interfaces role
+  include_role:
+    name: products/common/arm-interfaces
+  when: "'arm_' in product"
+
 - name: Creating upgrade script
   template:
     src: ../../../common/resources/templates/scripts/upgrade_image.j2
@@ -38,43 +61,40 @@
     mode: '755'
   when: upgrade_check|bool
 
-- name: Creating hand-e setup script
+- name: Include products/common/hand-parameters role
+  include_role:
+    name: products/common/hand-parameters
+  when: config_branch is defined and config_branch | length > 0
+
+- name: Creating the default setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
+  vars:
+    launch_file_name: "sr_rhand.launch"
+    launch_package_name: "sr_ethercat_hand_config"
+    override_launch_hand: False
 
-- name: Copying hand setup script into docker container
+- name: Copying the default setup script into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
 
-- name: Copy Shadow_Hand_Launcher desktop icon
-  copy:
-    src: files/hand-e.png
-    dest: "{{ shadow_hand_launcher_folder }}/hand-e.png"
-    mode: '664'
+- name: Include hand-manual role
+  include_role:
+    name: products/common/hand-manual
+  when: customer_key is defined and customer_key | length > 0
 
-- name: Create Shadow_Hand_Launcher executable launch script
-  template:
-    src: ../../../common/resources/templates/scripts/start-docker-container.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_launcher_exec.sh"
-    mode: '755'
-
-- name: Create Shadow_Hand_Launcher desktop icon
-  template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop"
-    mode: '755'
+- name: Include products/common/local-hand-launch role
+  include_role:
+    name: products/common/local-hand-launch
   vars:
-    desktop_shortcut_name: Shadow_Hand_Launcher
-    comment: "This is application launches the hand"
-    folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: shadow_launcher_exec.sh
-    icon_file_name: hand-e.png
+    icon_folder: "{{ user_folder }}/Desktop"
+    override_launch_hand_var: False
 
-- name: Make Shadow_Hand_Launcher Trusted
-  shell: gio set "{{ user_folder }}/Desktop/Shadow_Hand_Launcher.desktop" "metadata::trusted" yes
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+- name: Include products/common/local-zero-force-mode-launch role
+  include_role:
+    name: products/common/local-zero-force-mode-launch
+  vars:
+    icon_folder: "{{ user_folder }}/Desktop"

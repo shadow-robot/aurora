@@ -4,21 +4,9 @@
   register: id
   changed_when: id.rc != 0
 
-- name: set docker_executable if nvidia_docker is 0
-  when: nvidia_docker | int == 0
+- name: set docker_runtime if nvidia_docker is true
+  when: nvidia_docker | bool
   set_fact:
-    docker_executable: docker
-
-- name: set docker_executable and docker_runtime if nvidia_docker is 1
-  when: nvidia_docker | int == 1
-  set_fact:
-    docker_executable: nvidia-docker
-    docker_runtime: nvidia
-
-- name: set docker_executable and docker_runtime if nvidia_docker is 2
-  when: nvidia_docker | int == 2
-  set_fact:
-    docker_executable: docker
     docker_runtime: nvidia
 
 - name: Reinstall docker container

@@ -1,0 +1,34 @@
+---
+image: "shadowrobot/dexterous-hand"
+tag: "melodic-release"
+reinstall: false
+container_name: "dexterous_hand_real_hw"
+ethercat_right_hand: "eth0"
+ethercat_left_hand: "enx1"
+ethercat_left_arm: "enx2"
+ethercat_right_arm: "eth1"
+config_branch: ""
+allow_auto_reboot: true
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+setup_directory: "/usr/local/bin"
+use_aws: false
+launch_hand: false
+server_hostname: "SERVER"
+ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
+temp_ssh_keys_path: "/tmp/id_ssh_rsa"
+terminator: false
+use_steamvr: false
+nvidia_docker: false
+sim_hand: false
+bimanual: false
+hand_side: "right"
+hand_serial: "1082"
+hand_serial_left: "2346"
+use_cyberglove: false
+cyberglove: ""
+ur_robot_type: "ur10e"
+arm_ip_left: ""
+arm_ip_right: ""
+pr_branches: ""
