@@ -1,5 +1,8 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
+NUC_USERNAME={{ nuc_username }}
+NUC_ADDRESS={{ nuc_address }}
+CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
 (
   echo 0
   echo "# Finding all Shadow Robot terminator windows"
@@ -19,12 +22,18 @@
   echo 70
   sleep 2
   echo 80
-  echo "# Executing docker stop on Shadow Robot containers"
+  if $CLOSE_NUC_PROCESSES;
+  then
+    echo "# Executing docker stop on Shadow Robot NUC container (ssh timeout after 10 seconds)"
+    ssh -o ConnectTimeout=10 $NUC_USERNAME@$NUC_ADDRESS docker stop {{ container_name }}
+  fi
+  echo 90
+  echo "# Executing docker stop on Shadow Robot server container"
   docker stop {{ container_name }}
   sleep 2
-  echo 90
+  echo 95
   echo "# Closing Shadow Robot terminator windows"
   echo $pids | xargs kill -9
   echo 100
-  echo "# Done!"
+  echo "# All Shadow Robot processes closed!"
 ) | zenity --title "Closing all Shadow Robot processes" --progress --auto-kill

@@ -6,3 +6,4 @@ container_name: "dexterous_hand_real_hw"
 nuc_username: "user"
 nuc_address: "10.9.11.2"
 terminator_prefix_for_closing: "SR: "
+close_nuc_processes: false

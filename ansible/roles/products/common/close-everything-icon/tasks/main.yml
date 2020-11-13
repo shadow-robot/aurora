@@ -5,19 +5,16 @@
     dest: "{{ shadow_hand_launcher_folder }}/close_icon.png"
     mode: '664'
 
+- name: Set close_nuc_processes variable
+  set_fact:
+    close_nuc_processes: true
+  when: groups['control_machine'] is defined
+
 - name: Creating the local close everything script
   template:
     src: ../../../common/resources/templates/scripts/close-everything.j2
     dest: "{{ shadow_hand_launcher_folder }}/close_everything.sh"
     mode: '755'
-  when: groups['control_machine'] is not defined
-
-- name: Creating the local+NUC close everything script
-  template:
-    src: ../../../common/resources/templates/scripts/close-everything-nuc.j2
-    dest: "{{ shadow_hand_launcher_folder }}/close_everything.sh"
-    mode: '755'
-  when: groups['control_machine'] is defined
 
 - name: Create Close Everything icon
   template:
