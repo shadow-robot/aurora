@@ -4,36 +4,33 @@ NUC_USERNAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
 (
-  echo 0
-  echo "# Finding all Shadow Robot terminator windows"
-  pids=$(pgrep -f '\-T {{ terminator_prefix_for_closing }}|shadow_robot|shadow_launcher_app')
-  echo 20
-  echo "# Sending Ctrl+C to all Shadow Robot terminator windows"
-  echo $pids | xargs kill -2
-  echo 30
-  echo "# Waiting for Shadow Robot processes to stop gracefully (after Ctrl+C)"
-  sleep 2
-  echo 40
-  sleep 2
-  echo 50
-  sleep 2
-  echo 60
-  sleep 2
-  echo 70
-  sleep 2
-  echo 80
+  echo "# Finding all Shadow Robot processes"
+  pids=$(pgrep -f 'shadow_')
+  echo 10
   if $CLOSE_NUC_PROCESSES;
   then
-    echo "# Executing docker stop on Shadow Robot NUC container (ssh timeout after 10 seconds)"
-    ssh -o ConnectTimeout=10 $NUC_USERNAME@$NUC_ADDRESS docker stop {{ container_name }}
+    echo "# Using rosnode kill --all on the NUC container"
+    ssh -o ConnectTimeout=10 $NUC_USERNAME@$NUC_ADDRESS docker exec {{ container_name }} /ros_entrypoint.sh bash -c "rosnode kill --all" || true
+    sleep 1
   fi
-  echo 90
-  echo "# Executing docker stop on Shadow Robot server container"
+  echo 30
+  echo "# Using rosnode kill --all on the server container"
+  docker exec {{ container_name }} /ros_entrypoint.sh bash -c "rosnode kill --all" || true
+  sleep 1
+  echo 50
+  if $CLOSE_NUC_PROCESSES;
+  then
+    echo "# Executing docker stop on Shadow Robot NUC"
+    ssh -o ConnectTimeout=10 $NUC_USERNAME@$NUC_ADDRESS docker stop {{ container_name }}
+    sleep 1
+  fi
+  echo 70
+  echo "# Executing docker stop on Shadow Robot server"
   docker stop {{ container_name }}
-  sleep 2
-  echo 95
-  echo "# Closing Shadow Robot terminator windows"
-  echo $pids | xargs kill -9
-  echo 100
+  sleep 1
+  echo 90
+  echo "# Closing Shadow Robot processes using SIGTERM"
+  echo $pids | xargs kill -15
   echo "# All Shadow Robot processes closed!"
+  echo 100
 ) | zenity --title "Closing all Shadow Robot processes" --progress --auto-kill
