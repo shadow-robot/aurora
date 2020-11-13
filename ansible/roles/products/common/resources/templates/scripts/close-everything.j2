@@ -6,18 +6,26 @@ CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
 (
   echo "# Finding all Shadow Robot processes"
   pids=$(pgrep -f 'shadow_')
-  echo 10
+  echo 5
   if $CLOSE_NUC_PROCESSES;
   then
     echo "# Using rosnode kill --all on the NUC container"
     ssh -o ConnectTimeout=10 $NUC_USERNAME@$NUC_ADDRESS docker exec {{ container_name }} /ros_entrypoint.sh bash -c "rosnode kill --all" || true
     sleep 1
   fi
-  echo 30
+  echo 10
   echo "# Using rosnode kill --all on the server container"
-  docker exec {{ container_name }} /ros_entrypoint.sh bash -c "rosnode kill --all" || true
-  sleep 1
+  docker exec {{ container_name }} /ros_entrypoint.sh bash -c "rosnode kill --all" || true &
+  sleep 2
+  echo 20
+  sleep 2
+  echo 30
+  sleep 2
+  echo 40
+  sleep 2
   echo 50
+  sleep 2
+  echo 60
   if $CLOSE_NUC_PROCESSES;
   then
     echo "# Executing docker stop on Shadow Robot NUC"
