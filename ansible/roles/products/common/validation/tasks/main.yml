@@ -93,6 +93,7 @@
       - "glove is not defined or glove in glove_allowed_values"
     fail_msg: "In aurora oneliner you had glove={{ glove | default('') }}. The allowed values are {{ glove_allowed_values|join(', ') }}. Please correct it and re-run aurora"
     quiet: yes
+  when: playbook=="teleop_deploy"
 
 - name: Check all ur_robot_type extra vars are valid (if defined)
   assert:
@@ -114,3 +115,4 @@
       - "polhemus_type is not defined or polhemus_type in polhemus_type_allowed_values"
     fail_msg: "In aurora oneliner you had polhemus_type={{ polhemus_type | default('') }}. The allowed values are {{ polhemus_type_allowed_values|join(', ') }}. Please correct it and re-run aurora"
     quiet: yes
+  when: playbook=="teleop_deploy"
