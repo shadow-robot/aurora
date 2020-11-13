@@ -36,9 +36,13 @@ CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
   echo "# Executing docker stop on Shadow Robot server"
   docker stop {{ container_name }}
   sleep 1
-  echo 90
-  echo "# Closing Shadow Robot processes"
-  echo $pids | xargs kill -9
+  echo 80
+  echo "# Closing Shadow Robot processes with SIGTERM"
+  echo $pids | xargs kill -15 &
+  sleep 1
+  echo "# Closing Shadow Robot processes with SIGKILL"
+  echo $pids | xargs kill -9 &
+  sleep 1
   echo "# All Shadow Robot processes closed!"
   echo 100
 ) | zenity --title "Closing all Shadow Robot processes" --progress --auto-kill
