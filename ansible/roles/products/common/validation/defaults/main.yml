@@ -12,6 +12,7 @@ boolean_variables:
   - launch_hand
   - use_steamvr
   - sim_icon
+  - sim_hand
   - save_nuc_logs
   - demo_icons
   - upgrade_check
