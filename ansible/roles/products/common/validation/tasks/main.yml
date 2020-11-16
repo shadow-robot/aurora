@@ -58,7 +58,7 @@
     quiet: yes
   when:
     - groups['simulation'] is not defined
-    - not sim_hand|bool
+    - sim_hand is not defined or not sim_hand|bool
     - hand_side=="right" or bimanual|bool
 
 - name: Make sure ethercat_left_hand is specified for non-sim inventory
@@ -70,7 +70,7 @@
     quiet: yes
   when:
     - groups['simulation'] is not defined
-    - not sim_hand|bool
+    - sim_hand is not defined or not sim_hand|bool
     - hand_side=="left" or bimanual|bool
 
 - name: Make sure ethercat_right_arm is specified for non-sim inventory (for teleop and arm-related server_and_nuc_deploy)
