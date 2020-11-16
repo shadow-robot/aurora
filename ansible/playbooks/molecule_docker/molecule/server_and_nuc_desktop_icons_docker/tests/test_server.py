@@ -46,7 +46,8 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
-        'Shadow ROS Logs Saver and Uploader'
+        'Shadow ROS Logs Saver and Uploader',
+        'Shadow Close Everything'
         )
     scripts = (
         'shadow_launch_everything_right',
@@ -76,7 +77,8 @@ def test_icons_in_docker(host):
         'shadow_local_zero_force_mode_right_launcher',
         'shadow_local_zero_force_mode_left_launcher',
         'shadow_zero_force_mode_right',
-        'shadow_zero_force_mode_left'
+        'shadow_zero_force_mode_left',
+        'close_everything'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists

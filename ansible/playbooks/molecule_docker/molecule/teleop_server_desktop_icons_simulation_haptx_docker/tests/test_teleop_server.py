@@ -35,7 +35,8 @@ def test_icons_in_docker(host):
         'Shadow Demos/Open Left Hand',
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
-        'Shadow System Monitor'
+        'Shadow System Monitor',
+        'Shadow Close Everything'
         )
     scripts = (
         'shadow_launch_right_teleop_sim',
@@ -57,7 +58,8 @@ def test_icons_in_docker(host):
         'close_left_hand',
         'open_left_hand',
         'shadow_launcher_doc_exec',
-        'shadow_launcher_system_monitor_exec'
+        'shadow_launcher_system_monitor_exec',
+        'close_everything'
         )
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists

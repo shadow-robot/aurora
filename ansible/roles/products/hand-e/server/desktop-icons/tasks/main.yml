@@ -619,3 +619,7 @@
 - name: Include products/common/local-zero-force-mode-launch role
   include_role:
     name: products/common/local-zero-force-mode-launch
+
+- name: Include products/common/close-everything-icon role
+  include_role:
+    name: products/common/close-everything-icon
