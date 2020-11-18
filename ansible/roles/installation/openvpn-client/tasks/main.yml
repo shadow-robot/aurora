@@ -35,12 +35,12 @@
 
 - name: Get vpn client credentials for teleop server
   set_fact:
-    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_CRED=)(.*)(?=\\TELEOP_CLIENT_VPN_CRED)', multiline=True) }}"
+    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_CRED=)(.*)(?=\\nTELEOP_CLIENT_VPN_CRED)', multiline=True) }}"
   when: inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
 
 - name: Get vpn client credentials for teleop client
   set_fact:
-    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_CRED=)(.*)(?=\\CUSTOMER_NAME)', multiline=True) }}"
+    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_CRED=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
   when: inventory_hostname==hostvars[groups['client'][0]]['inventory_hostname']
 
 - name: Customer_key is not authorized to remote teleop
