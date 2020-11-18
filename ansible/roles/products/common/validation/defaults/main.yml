@@ -6,7 +6,6 @@ boolean_variables:
   - real_glove
   - real_vive
   - use_aws
-  - use_openvpn
   - terminator
   - remote_cyberglove
   - launch_hand

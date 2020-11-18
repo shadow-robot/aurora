@@ -13,7 +13,7 @@
   roles:
     - {role: installation/docker, when: "'docker' in software_list" }
     - {role: installation/nvidia-docker, when: "'nvidia-docker' in software_list"}
-    - {role: installation/openvpn-server, when: "'openvpn-server' in software_list"}
+    - {role: installation/openvpn-client, when: "'openvpn-client' in software_list"}
     - {role: installation/aws-cli, when: "'aws-cli' in software_list"}
     - {role: installation/pycharm, when: "'pycharm' in software_list"}
     - {role: installation/qtcreator, when: "'qtcreator' in software_list"}

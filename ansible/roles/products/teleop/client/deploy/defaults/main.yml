@@ -7,7 +7,6 @@ nvidia_docker: true
 glove: "shadow_glove"
 cyberglove: ""
 use_aws: false
-use_openvpn: false
 setup_directory: "/usr/local/bin"
 ethercat_right_hand: "eth0"
 config_branch: ""
@@ -21,7 +20,6 @@ use_cyberglove: false
 remote_cyberglove: true
 setup_script: ""
 server_hostname: "SERVER"
-openvpn_port: "1196"
 terminator: true
 bimanual: false
 upgrade_check: false

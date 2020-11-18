@@ -4,7 +4,6 @@
     image="shadowrobot/dexterous-hand"
     tag="melodic-release"
     reinstall=true
-    use_openvpn=false
     ethercat_right_hand="enp0s25"
     nvidia_docker=false
     allow_auto_reboot=true

@@ -32,20 +32,20 @@
     name: installation/nvidia-docker
   when: nvidia_docker | bool
 
-- name: Include installation/openvpn-server role
+- name: Include installation/openvpn-client role
   include_role:
-    name: installation/openvpn-server
-  when: use_openvpn|bool
+    name: installation/openvpn-client
+  when: groups['client'] is defined
 
 - name: Include installation/zoom role
   include_role:
     name: installation/zoom
-  when: use_openvpn|bool
+  when: groups['client'] is defined
 
 - name: Include installation/v4l-utils role
   include_role:
     name: installation/v4l-utils
-  when: use_openvpn|bool
+  when: groups['client'] is defined
 
 - name: Set chrony allowed network
   set_fact:

@@ -452,7 +452,6 @@ Any programs that need to be installed are placed in the installation role. It h
  - docker
  - nvidia-docker
  - openvpn-client
- - openvpn-server
  - pycharm
  - qtcreator
  - steamvr

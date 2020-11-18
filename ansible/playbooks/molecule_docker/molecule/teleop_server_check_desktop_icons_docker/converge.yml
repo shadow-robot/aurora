@@ -2,7 +2,6 @@
 - name: Teleop deploy playbook for teleop server
   import_playbook: ../../../teleop_deploy.yml
     reinstall=true
-    use_openvpn=false
     ethercat_right_hand="enp0s25"
     image="shadowrobot/dexterous-hand"
     tag="melodic-release"
