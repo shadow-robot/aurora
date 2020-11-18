@@ -35,7 +35,7 @@
   when: '"libudev0" not in ansible_facts.packages'
   become: yes
 
-- name: Ensure botocore and boto3 modules are installed
+- name: Ensure botocore and boto3 modules are installed (needed for aws_s3 ansible module)
   pip:
     name: [ "boto3", "botocore"]
     extra_args: "--user"

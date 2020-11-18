@@ -72,12 +72,6 @@
 
 - name: Installing private repositories for arm and hand product
   block:
-  - name: Ensure botocore and boto3 modules are installed
-    pip:
-      name: [ "boto3", "botocore"]
-      extra_args: "--user"
-    changed_when: false
-
   - name: Connect to Shadow AWS API
     uri:
       url: https://5vv2z6j3a7.execute-api.eu-west-2.amazonaws.com/prod
