@@ -25,3 +25,7 @@
 - name: Install desktop icons for simulated robots
   include_tasks: only-simulation.yml
   when: groups['simulation'] is defined
+
+- name: Include products/common/close-everything-icon role
+  include_role:
+    name: products/common/close-everything-icon

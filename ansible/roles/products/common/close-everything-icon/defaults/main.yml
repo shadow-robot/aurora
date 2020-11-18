@@ -1,0 +1,8 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+container_name: "dexterous_hand_real_hw"
+nuc_username: "user"
+nuc_address: "10.9.11.2"
+close_nuc_processes: false

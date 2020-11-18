@@ -1,0 +1,48 @@
+#jinja2: trim_blocks:False
+#!/bin/bash
+NUC_USERNAME={{ nuc_username }}
+NUC_ADDRESS={{ nuc_address }}
+CONTAINER_NAME={{ container_name }}
+CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
+NUC_RECORD="/control_box/record"
+SERVER_RECORD="/server_record"
+COMMON_ROSNODE_KILL_COMMAND="rosnode list | grep /bag_rotate | xargs -I{} rosnode kill {}; rosnode kill -all"
+(
+  if $CLOSE_NUC_PROCESSES;
+  then
+    echo "# Stopping Shadow Robot processes in the NUC container"
+    ssh -o ConnectTimeout=10 $NUC_USERNAME@$NUC_ADDRESS docker exec $CONTAINER_NAME /ros_entrypoint.sh bash -c "rosnode kill $NUC_RECORD; $COMMON_ROSNODE_KILL_COMMAND" || true
+    echo 5
+    sleep 1
+  fi
+  echo 10
+  echo "# Stopping Shadow Robot processes in the server container"
+  docker exec $CONTAINER_NAME /ros_entrypoint.sh bash -c "rosnode kill $SERVER_RECORD; $COMMON_ROSNODE_KILL_COMMAND" || true &
+  sleep 2
+  echo 20
+  sleep 2
+  echo 30
+  sleep 2
+  echo 40
+  sleep 2
+  echo 50
+  sleep 2
+  echo 60
+  if $CLOSE_NUC_PROCESSES;
+  then
+    echo "# Stopping NUC container"
+    ssh -o ConnectTimeout=10 $NUC_USERNAME@$NUC_ADDRESS docker stop $CONTAINER_NAME
+    sleep 1
+  fi
+  echo 70
+  echo "# Stopping server container"
+  docker stop $CONTAINER_NAME
+  sleep 1
+  echo "# Stopping all Shadow Robot processes server host"
+  pids=$(pgrep -f 'shadow_')
+  sleep 1
+  echo 90
+  echo "# All Shadow Robot processes closed!"
+  echo 100
+  echo $pids | xargs kill -15
+) | zenity --title "Closing all Shadow Robot processes" --progress --auto-kill
