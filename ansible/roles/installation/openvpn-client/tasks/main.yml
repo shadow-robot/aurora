@@ -68,7 +68,7 @@
   template:
     src: templates/autostart.j2
     dest: "{{ openvpn_config_folder }}/{{ autoload_filename }}"
-    mode: '700'
+    mode: '775'
   become: yes
 
 - name: Copy OpenVPN desktop icon
@@ -85,9 +85,7 @@
     block: | 
       #!/bin/bash
       openvpn3-autoload --directory {{ openvpn_config_folder }}
-      openvpn3 sessions-list
-      echo "Connected to Shadow VPN. Your inside-VPN IP:"
-      ip addr show tun0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1
+      watch -n 1 'openvpn3 sessions-list && echo "Assigned IP,subnet and mask\n$(ip addr show tun0 | grep tun0 | grep inet)"'
 
 - name: Create openVPN desktop icon
   template:

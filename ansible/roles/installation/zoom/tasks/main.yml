@@ -12,7 +12,8 @@
   vars:
     packages:
       - libglib2.0-0
-      - libgstreamer-plugins-base0.10-0
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-base1.0-dev
       - libxcb-shape0
       - libxcb-shm0
       - libxcb-xfixes0
