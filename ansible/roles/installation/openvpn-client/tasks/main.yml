@@ -35,12 +35,16 @@
 
 - name: Get vpn client credentials for teleop server
   set_fact:
-    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_CRED=)(.*)(?=\\nTELEOP_CLIENT_VPN_CRED)', multiline=True) }}"
+    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_CRED=)(.*)(?=\\nTELEOP_SERVER_VPN_USERNAME)', multiline=True) }}"
+    vpn_username: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_USERNAME=)(.*)(?=\\nTELEOP_SERVER_VPN_PASSWORD)', multiline=True) }}"
+    vpn_password: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_PASSWORD=)(.*)(?=\\nTELEOP_CLIENT_VPN_CRED)', multiline=True) }}"
   when: inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
 
 - name: Get vpn client credentials for teleop client
   set_fact:
-    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_CRED=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
+    vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_CRED=)(.*)(?=\\nTELEOP_CLIENT_VPN_USERNAME)', multiline=True) }}"
+    vpn_username: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_USERNAME=)(.*)(?=\\nTELEOP_CLIENT_VPN_PASSWORD)', multiline=True) }}"
+    vpn_password: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_PASSWORD=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
   when: inventory_hostname==hostvars[groups['client'][0]]['inventory_hostname']
 
 - name: Customer_key is not authorized to remote teleop
@@ -48,12 +52,23 @@
     msg: "Invalid customer_key for remote teleop. Please contact Shadow Robot Company with your customer_key and check that you have been authorized to use remote teleop"
   when: vpn_client_credentials_base64==""
 
+- name: Ensures that openvpn3 config directory exists
+  file:
+    path: "{{ openvpn_config_folder }}"
+    state: directory
+
 - name: Write vpn credentials to .ovpn file
   copy:
     content: "{{ vpn_client_credentials_base64 | b64decode }}"
-    dest: "{{ shadow_hand_launcher_folder }}/{{ ovpn_filename }}"
+    dest: "{{ openvpn_config_folder }}/{{ ovpn_filename }}"
     mode: '775'
   changed_when: false
+
+- name: Creating the .autoload file
+  template:
+    src: templates/autostart.j2
+    dest: "{{ openvpn_config_folder }}/{{ autoload_filename }}"
+    mode: '700'
 
 - name: Copy OpenVPN desktop icon
   copy: 
@@ -68,8 +83,10 @@
     create: true
     block: | 
       #!/bin/bash
-      sudo killall openvpn
-      sudo openvpn --config "{{ shadow_hand_launcher_folder }}/{{ ovpn_filename }}.ovpn"
+      openvpn3-autoload --directory {{ openvpn_config_folder }}
+      openvpn3 sessions-list
+      echo "Connected to Shadow VPN. Your inside-VPN IP:"
+      ip addr show tun0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1
 
 - name: Create openVPN desktop icon
   template:
@@ -83,3 +100,10 @@
     shell_script_file_name: openvpn.sh
     icon_file_name: openvpn.png
     start_terminal: "false"
+
+  - name: Make Shadow OpenVPN desktop icon Trusted
+    shell: gio set "{{ icon_folder }}/Shadow OpenVPN.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
