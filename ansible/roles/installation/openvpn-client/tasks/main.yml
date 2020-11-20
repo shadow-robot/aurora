@@ -69,6 +69,7 @@
     src: templates/autostart.j2
     dest: "{{ openvpn_config_folder }}/{{ autoload_filename }}"
     mode: '700'
+  become: yes
 
 - name: Copy OpenVPN desktop icon
   copy: 
