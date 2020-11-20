@@ -16,7 +16,7 @@
 
 - name: Add a block to .bashrc to set the powerline frequency of USB cameras
   blockinfile:
-    dest: "{{ ansible_env.HOME }}"/.bashrc
+    dest: "{{ user_folder }}/.bashrc"
     block: |
       for i in {0..9}
       do
