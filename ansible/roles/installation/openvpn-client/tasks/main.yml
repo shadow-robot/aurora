@@ -101,9 +101,9 @@
     icon_file_name: openvpn.png
     start_terminal: "false"
 
-  - name: Make Shadow OpenVPN desktop icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Shadow OpenVPN.desktop" "metadata::trusted" yes
-    when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+- name: Make Shadow OpenVPN desktop icon Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Shadow OpenVPN.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
