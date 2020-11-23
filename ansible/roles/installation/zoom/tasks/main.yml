@@ -36,3 +36,72 @@
   apt:
     deb: https://zoom.us/client/latest/zoom_amd64.deb
   become: yes
+
+- name: Include installation/passwordless-command role
+  include_role:
+    name: installation/passwordless-command
+  vars:
+    passwordless_command: "/opt/zoom/ZoomLauncher"
+
+- name: Copy the Zoom icon
+  copy:
+    src: "../../../common/resources/files/{{ zoom_icon }}"
+    dest: "{{ shadow_hand_launcher_folder }}/{{ zoom_icon }}"
+    mode: '664'
+
+- name: Create Zoom with 1 camera script
+  blockinfile:
+    path: "{{ shadow_hand_launcher_folder }}/zoom1.sh"
+    mode: '755'
+    create: true
+    block: | 
+      #!/bin/bash
+      zoom
+
+- name: Create Zoom with 2 cameras script
+  blockinfile:
+    path: "{{ shadow_hand_launcher_folder }}/zoom2.sh"
+    mode: '755'
+    create: true
+    block: | 
+      #!/bin/bash
+      zoom
+      cd /opt/zoom && sudo ./ZoomLauncher
+
+- name: Create Launch Zoom with 1 camera icon
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Zoom with 1 camera.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "Zoom with 1 camera"
+    comment: "This is application launches Zoom with 1 camera"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: "zoom1.sh"
+    icon_file_name: "{{ zoom_icon }}"
+    start_terminal: "false"
+
+  - name: Make Launch Zoom with 1 camera icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Zoom with 1 camera.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
+- name: Create Launch Zoom with 2 camera icon
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ user_folder }}/Desktop/Zoom with 2 cameras.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "Zoom with 2 cameras"
+    comment: "This is application launches Zoom with 2 cameras"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: "zoom2.sh"
+    icon_file_name: "{{ zoom_icon }}"
+    start_terminal: "false"
+
+  - name: Make Launch Zoom with 2 camera icon Trusted
+    shell: gio set "{{ user_folder }}/Desktop/Zoom with 2 cameras.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
