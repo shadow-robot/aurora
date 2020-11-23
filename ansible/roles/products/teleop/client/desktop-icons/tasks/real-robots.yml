@@ -1,34 +1,34 @@
 ---
-- name: Install desktop icon for launching Shadow Right Teleop
+- name: Install desktop icon for launching Shadow Remote Right Teleop
   import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_launch_right_teleop.sh"
-    desktop_icon_name: "Launch Shadow Right Teleop"
-    template: templates/scripts/launch-teleop-right.j2
-    desktop_icon_path: "Launch Shadow Right Teleop"
+    launch_script: "shadow_launch_remote_right_teleop.sh"
+    desktop_icon_name: "Launch Shadow Remote Right Teleop"
+    template: templates/scripts/launch-remote-teleop-right.j2
+    desktop_icon_path: "Launch Shadow Remote Right Teleop"
     launch_terminal: "false"
   when: bimanual|bool or hand_side=="right"
 
-- name: Install desktop icon for launching Shadow Left Teleop
+- name: Install desktop icon for launching Shadow Remote Left Teleop
   import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
-    launch_script: "shadow_launch_left_teleop.sh"
-    desktop_icon_name: "Launch Shadow Left Teleop"
-    template: templates/scripts/launch-teleop-left.j2
-    desktop_icon_path: "Launch Shadow Left Teleop"
+    launch_script: "shadow_launch_remote_left_teleop.sh"
+    desktop_icon_name: "Launch Shadow Remote Left Teleop"
+    template: templates/scripts/launch-remote-teleop-left.j2
+    desktop_icon_path: "Launch Shadow Remote Left Teleop"
     launch_terminal: "false"
   when: bimanual|bool or hand_side=="left"
 
-- name: Install desktop icon for launching Shadow Bimanual Teleop
+- name: Install desktop icon for launching Shadow Remote Bimanual Teleop
   import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
-    launch_script: "shadow_launch_bimanual_teleop.sh"
-    desktop_icon_name: "Launch Shadow Bimanual Teleop"
-    template: templates/scripts/launch-teleop-bimanual.j2
-    desktop_icon_path: "Launch Shadow Bimanual Teleop"
+    launch_script: "shadow_launch_remote_bimanual_teleop.sh"
+    desktop_icon_name: "Launch Shadow Remote Bimanual Teleop"
+    template: templates/scripts/launch-remote-teleop-bimanual.j2
+    desktop_icon_path: "Launch Shadow Remote Bimanual Teleop"
     launch_terminal: "false"
   when: bimanual|bool
 
@@ -36,17 +36,6 @@
   include_role:
     name: products/common/hand-manual
   when: customer_key is defined and customer_key | length > 0
-
-- name: Install desktop icon for RQT on NUC
-  include_tasks: default-icon-no-terminator.yml
-  vars:
-    template: templates/scripts/start-docker-container-nuc-command.j2
-    desktop_icon_png: "ROS_logo.png"
-    launch_script: "nuc_rqt.sh"
-    desktop_icon_name: "Shadow NUC RQT"
-    desktop_icon_path: "Shadow NUC RQT"
-    command_to_run: "rqt"
-    launch_terminal: "false"
 
 - name: Install the Teleop Documentation desktop icon for HaptX
   include_role:
