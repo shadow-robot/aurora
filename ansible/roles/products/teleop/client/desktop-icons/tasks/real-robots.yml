@@ -96,67 +96,15 @@
     mode: '755'
     state: directory
 
-- name: Install desktop icon for server container
+- name: Install desktop icon for client container
   include_tasks: default-icon.yml
   vars:
     template: ../../../common/resources/templates/scripts/start-docker-container.j2
     desktop_icon_png: "laptop.jpg"
-    launch_script: "shadow_server_container.sh"
-    desktop_icon_name: "1 - Launch Server Container"
-    desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
+    launch_script: "shadow_client_container.sh"
+    desktop_icon_name: "1 - Launch Client Container"
+    desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Client Container"
     launch_terminal: "false"
-
-- name: Install desktop icon for launching ROSCORE
-  import_tasks: default-icon.yml
-  vars:
-    template: ../../../common/resources/templates/scripts/start-roscore.j2
-    desktop_icon_png: "ROS_logo.png"
-    launch_script: "shadow_roscore.sh"
-    desktop_icon_name: "2 - Launch Server ROSCORE"
-    desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
-    launch_terminal: "false"
-
-- name: Install desktop icon for NUC right hand and arm hardware control loop
-  import_tasks: nuc-control-loop-icon.yml
-  vars:
-    desktop_icon_png: "hand-e.png"
-    launch_script: "shadow_nuc_right_hardware_control_loop.sh"
-    config_branch_value: "{{ config_branch }}"
-    desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Right Side Teleop Hardware Control Loop"
-    ethercat_interface_value: "{{ ethercat_right_hand }}"
-    hand_serial_value: "{{ hand_serial }}"
-    hand_side_value: "right"
-    mapping_path_value: "{{ mapping_path_right }}"
-  when: bimanual|bool or hand_side=="right"
-
-- name:  Install desktop icon for NUC left hand and arm hardware control loop
-  import_tasks: nuc-control-loop-icon.yml
-  vars:
-    desktop_icon_png: "hand-e-left.png"
-    launch_script: "shadow_nuc_left_hardware_control_loop.sh"
-    config_branch_value: "{{ config_branch }}"
-    desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Left Side Teleop Hardware Control Loop"
-    ethercat_interface_value: "{{ ethercat_left_hand }}"
-    hand_serial_value: "{{ hand_serial_left }}"
-    hand_side_value: "left"
-    mapping_path_value: "{{ mapping_path_left }}"
-  when: bimanual|bool or hand_side=="left"
-
-- name: Install desktop icon for NUC bimanual teleop hardware control loop
-  import_tasks: nuc-control-loop-icon-bimanual.yml
-  vars:
-    desktop_icon_png: "hand-e-bimanual.png"
-    launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
-    config_branch_value: "{{ config_branch }}"
-    desktop_icon_name: "3 - Launch NUC Bimanual Teleop Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Bimanual Teleop Hardware Control Loop"
-  when: bimanual|bool
-
-- name: Setting up icons for demohands A,B,C,D for unimanual teleop
-  include_tasks: demohands-unimanual.yml
-  when: demohand_icons|bool
 
 - name: Set GUI icon variables to standard values for cyberglove
   set_fact:
@@ -412,66 +360,12 @@
     - sim_icon|bool
     - bimanual|bool
 
-- name: Install desktop icon for NUC container
-  include_tasks: default-icon.yml
-  vars:
-    template: templates/scripts/start-docker-container-nuc-interactive-terminal.j2
-    desktop_icon_png: "nuc.png"
-    launch_script: "shadow_nuc_container.sh"
-    desktop_icon_name: "Launch NUC Container"
-    desktop_icon_path: "Shadow Advanced Launchers/Launch NUC Container"
-    launch_terminal: "false"
-
 - name: Include products/common/demo-icons role
   include_role:
     name: products/common/demo-icons
   vars:
     demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
   when: demo_icons|bool
-
-- name: Include products/common/local-hand-launch role
-  include_role:
-    name: products/common/local-hand-launch
-  vars:
-    override_launch_hand_var: True
-
-- name: Install desktop icon for Zero Force Mode - Right Hand for NUC
-  include_tasks: hand-icon.yml
-  vars:
-    desktop_icon_png: "hand-e.png"
-    launch_script: "shadow_zero_force_mode_right.sh"
-    hand_branch: "{{ config_branch }}"
-    desktop_icon_name: "3 - Zero Force Mode - Right Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
-    ethercat_interface_value: "{{ ethercat_right_hand }}"
-    hand_serial_value: "{{ hand_serial }}"
-    hand_side_value: "right"
-    xacro_value: "{{ xacro_right }}"
-    mapping_path_value: "{{ mapping_path_right }}"
-    pwm_control_value: "false"
-    hand_ctrl_value: "false"
-  when: bimanual|bool or hand_side=="right"
-
-- name: Install desktop icon for Zero Force Mode - Left Hand for NUC
-  include_tasks: hand-icon.yml
-  vars:
-    desktop_icon_png: "hand-e-left.png"
-    launch_script: "shadow_zero_force_mode_left.sh"
-    hand_branch: "{{ config_branch }}"
-    desktop_icon_name: "3 - Zero Force Mode - Left Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
-    ethercat_interface_value: "{{ ethercat_left_hand }}"
-    hand_serial_value: "{{ hand_serial_left }}"
-    hand_side_value: "left"
-    xacro_value: "{{ xacro_left }}"
-    mapping_path_value: "{{ mapping_path_left }}"
-    pwm_control_value: "false"
-    hand_ctrl_value: "false"
-  when: bimanual|bool or hand_side=="left"
-
-- name: Include products/common/local-zero-force-mode-launch role
-  include_role:
-    name: products/common/local-zero-force-mode-launch
 
 - name: Create executable launch script for RQT Shadow Glove Calibration plugin
   template:

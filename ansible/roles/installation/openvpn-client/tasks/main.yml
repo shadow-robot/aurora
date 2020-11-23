@@ -38,13 +38,15 @@
     vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_CRED=)(.*)(?=\\nTELEOP_SERVER_VPN_USERNAME)', multiline=True) }}"
     vpn_username: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_USERNAME=)(.*)(?=\\nTELEOP_SERVER_VPN_PASSWORD)', multiline=True) }}"
     vpn_password: "{{ response_private.content | regex_search('(?<=TELEOP_SERVER_VPN_PASSWORD=)(.*)(?=\\nTELEOP_CLIENT_VPN_CRED)', multiline=True) }}"
+    vpn_ip_range: "{{ response_private.content | regex_search('(?<=TELEOP_VPN_IP_RANGE=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
   when: inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
 
 - name: Get vpn client credentials for teleop client
   set_fact:
     vpn_client_credentials_base64: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_CRED=)(.*)(?=\\nTELEOP_CLIENT_VPN_USERNAME)', multiline=True) }}"
     vpn_username: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_USERNAME=)(.*)(?=\\nTELEOP_CLIENT_VPN_PASSWORD)', multiline=True) }}"
-    vpn_password: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_PASSWORD=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
+    vpn_password: "{{ response_private.content | regex_search('(?<=TELEOP_CLIENT_VPN_PASSWORD=)(.*)(?=\\nTELEOP_VPN_IP_RANGE)', multiline=True) }}"
+    vpn_ip_range: "{{ response_private.content | regex_search('(?<=TELEOP_VPN_IP_RANGE=)(.*)(?=\\nCUSTOMER_NAME)', multiline=True) }}"
   when: inventory_hostname==hostvars[groups['client'][0]]['inventory_hostname']
 
 - name: Customer_key is not authorized to remote teleop
@@ -85,7 +87,7 @@
     block: | 
       #!/bin/bash
       openvpn3-autoload --directory {{ openvpn_config_folder }}
-      watch -n 1 'openvpn3 sessions-list && echo "Assigned IP,subnet and mask\n$(ip addr show tun0 | grep tun0 | grep inet)"'
+      watch -n 1 'openvpn3 sessions-list && echo "Assigned IP and subnet\n$(ip addr show tun0 | grep tun0 | grep inet)"'
 
 - name: Create openVPN desktop icon
   template:

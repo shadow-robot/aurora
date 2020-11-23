@@ -13,7 +13,7 @@ remote_cyberglove: false
 sim_icon: false
 upgrade_script: false
 hand_side_var: right
-server_ip: "10.9.11.1"
+server_ip: "10.10.0.2"
 demohand_icons: false
 teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
 ur_robot_type: "ur10e"

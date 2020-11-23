@@ -44,8 +44,7 @@
 
 - name: Set chrony server ip
   set_fact:
-    chrony_server_ip: "{{ groups['server'][0] }}"
-  when: groups['server'] is defined
+    chrony_server_ip: "{{ vpn_ip_range | regex_replace('[^.]+$', '2') }}"
 
 - name: Include installation/chrony-client role
   include_role:
@@ -181,7 +180,7 @@
   include_role:
     name: products/common/docker-container
   vars:
-    ros_master: "{{ server_hostname }}"
+    ros_master: "{{ vpn_ip_range | regex_replace('[^.]+$', '3') }}"
     container_terminal_title: "Teleop Client Container"
     term_args: "--geometry {{ term_1 }}"
 
