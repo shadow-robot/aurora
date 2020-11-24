@@ -62,7 +62,7 @@
     right_arm_hand_picture: arm_hand_right.jpeg
     left_arm_hand_picture: arm_hand_left.jpg
     bimanual_arm_hand_picture: arm_hand_bimanual.jpg
-    include_wrist_in_arm_controller: "false"
+    include_wrist_in_arm_controller: "true"
   when: "'arm_' in product"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Right)
@@ -200,7 +200,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
-    include_wrist_in_arm_controller_value: "false"
+    include_wrist_in_arm_controller_value: "true"
   when: bimanual|bool or hand_side=="right"
 
 - name: Create executable launch script for hand+arm (Right)
@@ -241,7 +241,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
-    include_wrist_in_arm_controller_value: "false"
+    include_wrist_in_arm_controller_value: "true"
   when: bimanual|bool or hand_side=="left"
 
 - name: Create executable launch script for hand+arm (Left)
