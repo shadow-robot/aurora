@@ -1,4 +1,8 @@
 ---
+- name: Include products/common/clear-icons role
+  include_role:
+    name: products/common/clear-icons
+
 - name: Set server hostname
   set_fact:
     server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"

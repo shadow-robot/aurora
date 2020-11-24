@@ -1,4 +1,8 @@
 ---
+- name: Include products/common/clear-icons role
+  include_role:
+    name: products/common/clear-icons
+
 - name: Setup script name
   set_fact:
     setup_script: server-setup.sh
