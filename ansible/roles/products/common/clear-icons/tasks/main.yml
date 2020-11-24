@@ -24,4 +24,14 @@
   find:
     paths: "{{ desktop_path }}"
     patterns: '*.desktop'
-    contains: 'Shadow:'
+    contains: "^.*Comment=Shadow:"
+  register: file_list
+
+- name: Delete all .desktop files with Shadow in the comment
+  file:
+    path: "{{ item }}"
+    state: absent
+  become: yes
+  changed_when: false
+  with_items: "{{ file_list }}"
+
