@@ -29,9 +29,8 @@
 
 - name: Delete all .desktop files with Shadow in the comment
   file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     state: absent
   become: yes
   changed_when: false
-  with_items: "{{ file_list }}"
-
+  with_items: "{{ file_list.files }}"
