@@ -69,6 +69,7 @@
       cd /opt/zoom && sudo ./ZoomLauncher
 
 - name: Create Launch Zoom with 1 camera icon
+  template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/Zoom with 1 camera.desktop"
     mode: '755'
@@ -80,14 +81,15 @@
     icon_file_name: "{{ zoom_icon }}"
     start_terminal: "false"
 
-  - name: Make Launch Zoom with 1 camera icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Zoom with 1 camera.desktop" "metadata::trusted" yes
-    when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+- name: Make Launch Zoom with 1 camera icon Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Zoom with 1 camera.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
 
 - name: Create Launch Zoom with 2 camera icon
+  template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ user_folder }}/Desktop/Zoom with 2 cameras.desktop"
     mode: '755'
@@ -99,9 +101,9 @@
     icon_file_name: "{{ zoom_icon }}"
     start_terminal: "false"
 
-  - name: Make Launch Zoom with 2 camera icon Trusted
-    shell: gio set "{{ user_folder }}/Desktop/Zoom with 2 cameras.desktop" "metadata::trusted" yes
-    when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+- name: Make Launch Zoom with 2 camera icon Trusted
+  shell: gio set "{{ user_folder }}/Desktop/Zoom with 2 cameras.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - skip_molecule_task is not defined
