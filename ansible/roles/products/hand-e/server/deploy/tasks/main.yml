@@ -141,6 +141,7 @@
   shell: ssh-keygen -f "/{{ user_folder }}/.ssh/known_hosts" -R {{ nuc_address }} 2>/dev/null
   become: yes
   changed_when: false
+  ignore_errors: true
 
 - name: Creating server setup script
   template:
