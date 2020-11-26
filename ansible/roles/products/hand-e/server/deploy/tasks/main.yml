@@ -138,7 +138,7 @@
   when: skip_molecule_task is not defined
 
 - name: Delete previously known hosts for NUC to avoid an ssh error
-  shell: ssh-keygen -f "{{ user_folder }}/.ssh/known_hosts" -R {{ nuc_address }}
+  shell: ssh-keygen -f "/{{ user_folder }}/.ssh/known_hosts" -R {{ nuc_address }} 2>/dev/null
   become: yes
   changed_when: false
 
