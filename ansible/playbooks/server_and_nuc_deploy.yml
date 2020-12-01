@@ -35,13 +35,10 @@
 
     - name: Delete previously known hosts to avoid an ssh error
       shell: ssh-keygen -q -f "/home/{{ ansible_user_id }}/.ssh/known_hosts" -R {{ hostvars[item].ansible_host }}
-      become: yes
       changed_when: false
       ignore_errors: true
-      when:
-        - hostvars[item].ansible_host is defined
-        - hostvars[item].ansible_host!=hostvars[groups['server'][0]]['inventory_hostname']
-      with_items: "{{ groups.all }}"
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all | difference([inventory_hostname]) }}"
 
 - name: Install Python 3
   import_playbook: ./install_python3.yml
