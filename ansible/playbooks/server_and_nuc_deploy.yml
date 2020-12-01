@@ -16,9 +16,9 @@
       when: skip_molecule_task is not defined
 
 - name: Add IP address of all hosts to computer that is running Ansible
-  hosts: 127.0.0.1
+  hosts: server
   connection: local
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: Add lines in /etc/hosts in computer that is running Ansible
       blockinfile:
