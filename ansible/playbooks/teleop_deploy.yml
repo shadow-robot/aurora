@@ -25,7 +25,7 @@
         dest: /etc/hosts
         state: present
         block: |
-          "{{ item }} {{ hostvars[item].ansible_host }}"
+          {{ item }} {{ hostvars[item].ansible_host }}
         marker: "# {mark} ANSIBLE MANAGED BLOCK {{ hostvars[item].ansible_host }}"
         # Allowing Ansible to modify /etc/hosts inside Docker containers
         unsafe_writes: yes
@@ -34,7 +34,7 @@
       become: yes
 
     - name: Delete previously known hosts to avoid an ssh error
-      shell: ssh-keygen -f -q "/{{ user_folder }}/.ssh/known_hosts" -R {{ hostvars[item].ansible_host }}
+      shell: ssh-keygen -f -q "/home/{{ ansible_user_id }}/.ssh/known_hosts" -R {{ hostvars[item].ansible_host }}
       become: yes
       changed_when: false
       ignore_errors: true
