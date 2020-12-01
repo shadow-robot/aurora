@@ -300,12 +300,6 @@
   become: yes
   when: groups['server'] is defined
 
-- name: Delete previously known hosts for NUC to avoid an ssh error
-  shell: ssh-keygen -f "/{{ user_folder }}/.ssh/known_hosts" -R {{ nuc_address }} 2>/dev/null
-  become: yes
-  changed_when: false
-  ignore_errors: true
-
 - name: if glove==shadow_glove and real_vive==true, set use_steamvr=true (override simulation scenario with real_vive)
   set_fact:
     use_steamvr: true

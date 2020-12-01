@@ -21,16 +21,25 @@
   gather_facts: no
   tasks:
     - name: Add lines in /etc/hosts in computer that is running Ansible
-      lineinfile:
+      blockinfile:
         dest: /etc/hosts
-        regexp: '^{{ item }}.*$'
-        line: "{{ item }} {{ hostvars[item].ansible_host }}"
         state: present
+        block: |
+          "{{ item }} {{ hostvars[item].ansible_host }}"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ hostvars[item].ansible_host }}"
         # Allowing Ansible to modify /etc/hosts inside Docker containers
         unsafe_writes: yes
+      with_items: "{{ groups.all }}"
+      when: hostvars[item].ansible_host is defined
+      become: yes
+
+    - name: Delete previously known hosts to avoid an ssh error
+      shell: ssh-keygen -f -q "/{{ user_folder }}/.ssh/known_hosts" -R {{ hostvars[item].ansible_host }}
+      become: yes
+      changed_when: false
+      ignore_errors: true
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all }}"
-      become: yes
 
 - name: Install Python 3
   import_playbook: ./install_python3.yml
