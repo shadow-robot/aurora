@@ -34,7 +34,9 @@
       become: yes
 
     - name: Delete previously known hosts to avoid an ssh error
-      shell: ssh-keygen -q -f "/home/{{ ansible_user_id }}/.ssh/known_hosts" -R {{ hostvars[item].ansible_host }}
+      shell: |
+        ssh-keygen -q -f "/home/{{ ansible_user_id }}/.ssh/known_hosts" -R {{ hostvars[item].ansible_host }}
+        ssh-keygen -q -f "/home/{{ ansible_user_id }}/.ssh/known_hosts" -R '{{ item }}'
       changed_when: false
       ignore_errors: true
       when: hostvars[item].ansible_host is defined
