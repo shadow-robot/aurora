@@ -287,7 +287,9 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  when: 'arm_' in product and hand_side=="right"
+  when:
+    - "'arm_' in product"
+    - hand_side=="right"
 
 - name: Install right arm and hand waypoints example if arm and hand_side="right"
   block:
@@ -326,7 +328,9 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  when: 'arm_' in product and hand_side=="right"
+  when:
+    - "'arm_' in product"
+    - hand_side=="right"
 
 - name: Install right arm and hand End Effector example if arm and hand_side="right"
   block:
@@ -365,7 +369,9 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  when: 'arm_' in product and hand_side=="right"
+  when:
+    - "'arm_' in product"
+    - hand_side=="right"
 
 - name: Install right arm and hand Plan Quality Evaluation example if arm and hand_side="right"
   block:
@@ -404,4 +410,6 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  when: 'arm_' in product and hand_side=="right"
+  when:
+    - "'arm_' in product"
+    - hand_side=="right"
