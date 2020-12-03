@@ -391,7 +391,7 @@
       mode: '755'
     vars:
       desktop_shortcut_name: Right Hand and Arm Plan Quality Evaluation Example
-      comment: "This runs arm and hand plan and move to Plan Quality Evaluation example"
+      comment: "This runs arm and hand Plan Quality Evaluation example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: right_arm_hand_evaluate_plan_quality.sh
       icon_file_name: arm_hand_right.jpeg
