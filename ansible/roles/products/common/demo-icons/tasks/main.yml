@@ -264,7 +264,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/right_arm_hand_joint_pos.sh"
       mode: '755'
     vars:
-      project_name: sr_examples
+      project_name: sr_example
       script_name: sr_right_hand_arm_joint_pos.py
 
   - name: Create Right Hand and Arm Joint Positions desktop icon
@@ -305,7 +305,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/right_arm_hand_waypoints.sh"
       mode: '755'
     vars:
-      project_name: sr_examples
+      project_name: sr_example
       script_name: sr_right_hand_arm_waypoints.py
 
   - name: Create Right Hand and Arm Waypoints desktop icon
@@ -346,7 +346,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/right_arm_hand_end_effector.sh"
       mode: '755'
     vars:
-      project_name: sr_examples
+      project_name: sr_example
       script_name: sr_right_hand_arm_ef_pos.py
 
   - name: Create Right Hand and Arm End Effector desktop icon
@@ -387,7 +387,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/right_arm_hand_evaluate_plan_quality.sh"
       mode: '755'
     vars:
-      project_name: sr_examples
+      project_name: sr_example
       script_name: sr_right_evaluate_plan_quality.py
 
   - name: Create Right Hand and Arm Plan Quality Evaluation desktop icon
