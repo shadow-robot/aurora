@@ -6,14 +6,14 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 IMAGE={{ full_image_name }}
 CID=$(docker ps -a | grep $IMAGE | awk '{print $1}' | head -n 1)
-docker pull $IMAGE
+# docker pull $IMAGE
 LATEST=`docker inspect --format {%raw%}"{{.Id}}"{%endraw%} $IMAGE`
 RUNNING=`docker inspect --format {%raw%}"{{.Image}}"{%endraw%} $CID`
 NAME=`docker inspect --format {%raw%}"{{.Name}}"{%endraw%} $CID | sed "s/\///g"`
 echo "Latest:" $LATEST
 echo "Running:" $RUNNING
 if [ "$RUNNING" != "$LATEST" ];then
-    echo -e "A new image has been released and pulled from Shadow Robot. Please re-run the one-liner with the additional argument: ${GREEN}reinstall=true${NC} to upgrade your container.\n${RED}Note that you will lose all your data! ${NC}"
+    echo -e "A new image has been released from Shadow Robot. Please re-run the one-liner with the additional argument: ${GREEN}reinstall=true${NC} to upgrade your container.\n${RED}Note that you will lose all your data! ${NC}"
     read -p "Press enter to continue"
 else
     echo "$NAME up to date"
