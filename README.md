@@ -64,9 +64,9 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-input docker_username --read-secure docker_password  option1=value1 option2=value2 option3=value3
 ```
-name_of_inventory can be development, staging, production or simulation.
+name_of_inventory can be staging_a, staging_b, production or simulation.
 
-Or if you are using remote_teleop=true, they are development_remote, staging_remote or production_remote.
+Or if you are using remote_teleop=true, they are staging_a_remote, staging_b_remote or production_remote.
 
 If no inventory name is provided, and if remote_teleop is not specified or false, then "production" will be automatically selected.
 
@@ -85,10 +85,10 @@ bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation --read-i
 ```
 
 Inventories correspond to fixed IP addresses as shown here:
-* [development](ansible/inventory/teleop/development)
-* [development_remote](ansible/inventory/teleop/development_remote)
-* [staging](ansible/inventory/teleop/staging)
-* [staging_remote](ansible/inventory/teleop/staging_remote)
+* [staging_b](ansible/inventory/teleop/staging_b)
+* [staging_b_remote](ansible/inventory/teleop/staging_b_remote)
+* [staging_a](ansible/inventory/teleop/staging_a)
+* [staging_a_remote](ansible/inventory/teleop/staging_a_remote)
 * [production](ansible/inventory/teleop/production)
 * [production_remote](ansible/inventory/teleop/production_remote)
 * [simulation](ansible/inventory/teleop/simulation)
@@ -138,6 +138,10 @@ Example:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat_right_hand=enx5647929203 config_branch=demohand_C
 ```
+Inventories correspond to fixed IP addresses as shown here:
+* [staging_b](ansible/inventory/server_and_nuc/staging_b)
+* [staging_a](ansible/inventory/server_and_nuc/staging_a)
+* [production](ansible/inventory/server_and_nuc/production)
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
 * [server](ansible/inventory/server_and_nuc/group_vars/server.yml)
@@ -594,9 +598,10 @@ An example of a role section:
 An inventory is a file with group names and fixed IP addresses and some limited connection-related variables of the machines where we want the playbook to run. The inventory group names are required in playbooks in the hosts parameter (e.g. hosts: all). You can read more about hosts in playbooks [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#hosts-and-users)
 
 Inventories for teleop correspond to fixed IP addresses as shown here:
-* [development](ansible/inventory/teleop/development)
-* [staging](ansible/inventory/teleop/staging)
+* [staging_b](ansible/inventory/teleop/staging_b)
+* [staging_a](ansible/inventory/teleop/staging_a)
 * [production](ansible/inventory/teleop/production)
+* [simulation](ansible/inventory/teleop/simulation)
 
 More information available [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html)
 
