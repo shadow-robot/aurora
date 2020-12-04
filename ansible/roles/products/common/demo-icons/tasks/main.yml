@@ -288,6 +288,7 @@
       - skip_molecule_task is not defined
 
   when:
+    - product is defined
     - "'arm_' in product"
     - hand_side=="right"
 
@@ -329,6 +330,7 @@
       - skip_molecule_task is not defined
 
   when:
+    - product is defined
     - "'arm_' in product"
     - hand_side=="right"
 
@@ -370,6 +372,7 @@
       - skip_molecule_task is not defined
 
   when:
+    - product is defined
     - "'arm_' in product"
     - hand_side=="right"
 
@@ -411,5 +414,6 @@
       - skip_molecule_task is not defined
 
   when:
+    - product is defined
     - "'arm_' in product"
     - hand_side=="right"
