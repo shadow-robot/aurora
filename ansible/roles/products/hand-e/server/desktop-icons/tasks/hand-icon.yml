@@ -22,7 +22,6 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "{{ arm_ctrl_value }}"
-    include_wrist_in_arm_controller_var: "{{ include_wrist_in_arm_controller_value }}"
 
 - name: Create desktop icon for hand
   template:
