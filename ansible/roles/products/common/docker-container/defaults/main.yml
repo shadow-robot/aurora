@@ -32,6 +32,7 @@ haptx_teleop_readthedocs_token: ""
 arm_hand_readthedocs_token: ""
 glove: ""
 common_shared_volumes:
+  - /dev/bus/usb:/dev/bus/usb
   - /tmp/.X11-unix:/tmp/.X11-unix[rw]
   - /dev/input:/dev/input[rw]
   - /run/udev/data:/run/udev/data
