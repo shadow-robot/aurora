@@ -278,7 +278,7 @@
 - name: Adding the ssh identity
   shell: "ssh-add {{ ssh_keys_path }}"
   changed_when: false
-  when: skip_molecule_task is not defined
+  when: skip_molecule_task is not defined and groups['server'] is defined
 
 - name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
   copy:
