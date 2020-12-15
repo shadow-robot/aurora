@@ -25,7 +25,6 @@
 
   roles:
     - {role: installation/docker}
-    - {role: installation/aws-cli}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
     - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product != 'hand_h'}
