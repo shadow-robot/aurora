@@ -39,3 +39,4 @@ polhemus_type: "viper"
 scene_file: ""
 glove_driver_type: "right"
 glove_driver_value: "right"
+arm_payload_mass: 5.0

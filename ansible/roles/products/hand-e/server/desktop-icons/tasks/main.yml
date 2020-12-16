@@ -10,6 +10,16 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Set arm_payload_mass for hand_lite
+  set_fact:
+    arm_payload_mass: 2.7
+  when: "'lite' in product"
+
+- name: Set arm_payload_mass for hand_extra_lite
+  set_fact:
+    arm_payload_mass: 2.5
+  when: "'extra_lite' in product"
+
 - name: Set icon picture filenames for hand_lite
   set_fact:
     right_hand_picture: hand_lite.jpg
@@ -218,6 +228,7 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
+    arm_payload_mass: "{{ arm_payload_mass }}"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -257,6 +268,7 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
+    arm_payload_mass: "{{ arm_payload_mass }}"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"

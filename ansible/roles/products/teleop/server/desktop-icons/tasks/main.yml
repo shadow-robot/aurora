@@ -4,6 +4,16 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Set arm_payload_mass for hand_lite
+  set_fact:
+    arm_payload_mass: 2.7
+  when: "'lite' in product"
+
+- name: Set arm_payload_mass for hand_extra_lite
+  set_fact:
+    arm_payload_mass: 2.5
+  when: "'extra_lite' in product"
+
 - name: Set teleop main icon picture for HaptX
   set_fact:
     teleop_glove_right: "haptx_right.png"

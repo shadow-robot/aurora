@@ -25,6 +25,7 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
+    arm_payload_mass: "{{ arm_payload_mass }}"
   when: glove=="cyberglove"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
@@ -42,6 +43,7 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
+    arm_payload_mass: "{{ arm_payload_mass }}"
   when: glove=="haptx"
 
 - name: Create executable launch script for hand and arm control loop (with shadow_glove)
@@ -59,6 +61,7 @@
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     mapping_path_var: "{{ mapping_path_value }}"
+    arm_payload_mass: "{{ arm_payload_mass }}"
   when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand
