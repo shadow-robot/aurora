@@ -1,6 +1,6 @@
 ansible==2.10.5
 ansible-base==2.10.4
-ansible-lint==4.2.0
+ansible-lint==4.3.7
 appdirs==1.4.3
 arrow==0.17.0
 asn1crypto==1.3.0
@@ -49,8 +49,9 @@ lxml==4.5.0
 MarkupSafe==1.1.1
 mccabe==0.6.1
 molecule==3.2.1
-packaging==20.8
+molecule-docker==0.3.3
 molecule-ec2==0.1
+molecule-podman==0.3.0
 monotonic==1.5
 more-itertools==8.2.0
 nodeenv==1.3.5

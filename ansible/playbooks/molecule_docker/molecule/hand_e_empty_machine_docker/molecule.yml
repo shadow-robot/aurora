@@ -19,8 +19,8 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../../roles
-    AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
-    AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+    AWS_ACCESS_KEY: ${AWS_ACCESS_KEY:-default}
+    AWS_SECRET_KEY: ${AWS_SECRET_KEY:-default}
   playbooks:
     cleanup: cleanup.yml
   inventory:
