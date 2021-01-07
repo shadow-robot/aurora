@@ -49,6 +49,7 @@ lxml==4.5.0
 MarkupSafe==1.1.1
 mccabe==0.6.1
 molecule==3.2.1
+packaging==20.8
 molecule-ec2==0.1
 monotonic==1.5
 more-itertools==8.2.0
