@@ -29,7 +29,7 @@
   when: skip_molecule_task is defined
 
 - name: Downloading the hand manual from AWS to Desktop
-  aws_s3:
+  amazon.aws.aws_s3:
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
     security_token: "{{ aws_security_token }}"
@@ -41,7 +41,7 @@
   changed_when: false
 
 - name: Downloading the hand manual from AWS to Desktop (for Molecule in AWS)
-  aws_s3:
+  amazon.aws.aws_s3:
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
     bucket: shadowrobot.aurora.files

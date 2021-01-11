@@ -22,7 +22,7 @@
 - name: Pull Docker image in progress
   block:
     - name: Pull Docker image
-      docker_image:
+      community.general.docker_image:
         name: "{{ full_image_name }}"
         source: pull
       environment:
@@ -47,7 +47,7 @@
         timeout: 10
 
     - name: Pull Docker image (attempt 2)
-      docker_image:
+      community.general.docker_image:
         name: "{{ full_image_name }}"
         source: pull
       environment:
