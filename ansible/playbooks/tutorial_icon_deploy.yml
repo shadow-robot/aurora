@@ -1,0 +1,33 @@
+---
+
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
+- name: Install product Docker container and icons
+  hosts: docker_deploy
+  pre_tasks:
+
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
+      vars:
+        playbook: "tutorial_icon_deploy"
+
+    - name: check if customer_key is provided and not false
+      when: customer_key is defined and customer_key| length > 0
+      set_fact:
+        use_aws: true
+
+    - name: check if cyberglove branch is provided
+      when: cyberglove is defined and cyberglove| length > 0
+      set_fact:
+        use_cyberglove: true
+
+  roles:
+    - {role: installation/docker}
+    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
+    - {role: products/hand-h/deploy, when: product == 'hand_h'}
+    - {role: products/hand-e/deploy, when: product == 'hand_e'}
+    - {role: docker/aws, when: use_aws|bool}
+    - {role: products/tutorial/deploy}
+    - {role: products/tutorial/desktop-icons}
