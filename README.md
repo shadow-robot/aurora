@@ -757,38 +757,26 @@ verifier:
   name: testinfra
 scenario:
   create_sequence:
-    - dependency
     - create
-    - prepare
   check_sequence:
-    - dependency
-    - cleanup
     - destroy
     - create
-    - prepare
     - converge
     - check
     - destroy
   converge_sequence:
-    - dependency
     - create
-    - prepare
     - converge
   destroy_sequence:
-    - dependency
-    - cleanup
     - destroy
   test_sequence:
     - lint
     - destroy
     - syntax
     - create
-    - prepare
     - converge
     - idempotence
-    - side_effect
     - verify
-    - cleanup
     - destroy
 ```
 13. Edit the converge.yml so it looks like this:
@@ -865,6 +853,33 @@ provisioner:
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/tutorial_1_docker/tests/
+scenario:
+  create_sequence:
+    - create
+    - prepare
+  check_sequence:
+    - destroy
+    - create
+    - prepare
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - create
+    - prepare
+    - converge
+  destroy_sequence:
+    - destroy
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - verify
+    - destroy
 
 ```
 17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)

@@ -5,7 +5,7 @@
 
 - name: Creating the container with terminator and no setup
   changed_when: false
-  docker_container:
+  community.general.docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
     state: present
@@ -31,4 +31,5 @@
     - "core: -1"
     volumes: "{{ shared_volumes }}"
     command: terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash
+    container_default_behavior: compatibility
   become: yes

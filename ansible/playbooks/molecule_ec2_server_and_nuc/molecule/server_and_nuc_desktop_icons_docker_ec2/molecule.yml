@@ -36,12 +36,9 @@ verifier:
   directory: ../../../molecule_docker/molecule/server_and_nuc_desktop_icons_docker/tests/
 scenario:
   create_sequence:
-    - dependency
     - create
     - prepare
   check_sequence:
-    - dependency
-    - cleanup
     - destroy
     - create
     - prepare
@@ -49,13 +46,10 @@ scenario:
     - check
     - destroy
   converge_sequence:
-    - dependency
     - create
     - prepare
     - converge
   destroy_sequence:
-    - dependency
-    - cleanup
     - destroy
   test_sequence:
     - lint
@@ -65,7 +59,5 @@ scenario:
     - prepare
     - converge
     - idempotence
-    - side_effect
     - verify
-    - cleanup
     - destroy

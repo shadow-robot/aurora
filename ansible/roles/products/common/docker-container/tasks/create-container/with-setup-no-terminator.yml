@@ -10,7 +10,7 @@
 
 - name: Creating the container which will execute setup script when started and without terminator
   changed_when: false
-  docker_container:
+  community.general.docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
     state: present
@@ -36,4 +36,5 @@
     - "core: -1"
     volumes: "{{ shared_volumes }}"
     command: "bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
+    container_default_behavior: compatibility
   become: yes
