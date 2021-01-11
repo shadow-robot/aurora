@@ -45,7 +45,7 @@ importlib-resources==1.4.0
 Jinja2==2.11.2
 jinja2-time==0.2.0
 jmespath==0.9.5
-lxml==4.5.0
+lxml==4.6.2
 MarkupSafe==1.1.1
 mccabe==0.6.1
 molecule==3.2.1
