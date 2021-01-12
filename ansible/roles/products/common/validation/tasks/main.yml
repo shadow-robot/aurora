@@ -58,6 +58,7 @@
     quiet: yes
   when:
     - groups['simulation'] is not defined
+    - playbook=="teleop_deploy" or playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
     - sim_hand is not defined or not sim_hand|bool
     - hand_side=="right" or bimanual|bool
 
@@ -70,6 +71,7 @@
     quiet: yes
   when:
     - groups['simulation'] is not defined
+    - playbook=="teleop_deploy" or playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
     - sim_hand is not defined or not sim_hand|bool
     - hand_side=="left" or bimanual|bool
 
