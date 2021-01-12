@@ -1,4 +1,8 @@
 ---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
 driver:
   name: ec2
 lint: |
@@ -36,9 +40,11 @@ verifier:
   directory: ../../../molecule_docker/molecule/teleop_server_desktop_icons_simulation_haptx_docker/tests/
 scenario:
   create_sequence:
+    - dependency
     - create
     - prepare
   check_sequence:
+    - dependency
     - destroy
     - create
     - prepare
@@ -46,12 +52,15 @@ scenario:
     - check
     - destroy
   converge_sequence:
+    - dependency
     - create
     - prepare
     - converge
   destroy_sequence:
+    - dependency
     - destroy
   test_sequence:
+    - dependency
     - lint
     - destroy
     - syntax

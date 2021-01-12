@@ -730,6 +730,10 @@ sleep infinity
 12. You don't need to edit the Dockerfile.j2. Just edit the molecule.yml so it looks like this:
 ```bash
 ---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
 driver:
   name: docker
 lint: |
@@ -757,19 +761,24 @@ verifier:
   name: testinfra
 scenario:
   create_sequence:
+    - dependency
     - create
   check_sequence:
+    - dependency
     - destroy
     - create
     - converge
     - check
     - destroy
   converge_sequence:
+    - dependency
     - create
     - converge
   destroy_sequence:
+    - dependency
     - destroy
   test_sequence:
+    - dependency
     - lint
     - destroy
     - syntax
@@ -819,6 +828,10 @@ def test_icons_in_docker(host):
 16. Edit the molecule.yml so it looks like this:
 ```bash
 ---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
 driver:
   name: ec2
 lint: |
@@ -855,9 +868,11 @@ verifier:
   directory: ../../../molecule_docker/molecule/tutorial_1_docker/tests/
 scenario:
   create_sequence:
+    - dependency
     - create
     - prepare
   check_sequence:
+    - dependency
     - destroy
     - create
     - prepare
@@ -865,12 +880,15 @@ scenario:
     - check
     - destroy
   converge_sequence:
+    - dependency
     - create
     - prepare
     - converge
   destroy_sequence:
+    - dependency
     - destroy
   test_sequence:
+    - dependency
     - lint
     - destroy
     - syntax
