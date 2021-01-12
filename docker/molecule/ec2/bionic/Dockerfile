@@ -1,4 +1,4 @@
-FROM shadowrobot/aurora-molecule:bionic
+FROM shadowrobot/aurora-molecule:bionic-upgrade
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
@@ -6,7 +6,7 @@ LABEL Description="Ubuntu Bionic image contains Ansible, Molecule and EC2 driver
 
 ARG ml_ec2_aurora_branch
 
-ENV ml_ec2_aurora_branch ${ml_ec2_aurora_branch:-"master"}
+ENV ml_ec2_aurora_branch ${ml_ec2_aurora_branch:-"F_ansible_and_molecule_upgrade"}
 
 ENV ml_ec2_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_ec2_aurora_branch/bin/run-ansible.sh"
 
