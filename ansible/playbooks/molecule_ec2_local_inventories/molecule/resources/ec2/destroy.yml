@@ -8,7 +8,7 @@
     - block:
         - name: Populate instance config
           set_fact:
-            instance_conf: "{{ lookup('file', molecule_instance_config) | molecule_from_yaml }}"
+            instance_conf: "{{ lookup('file', molecule_instance_config) | from_yaml }}"
             skip_instances: false
       rescue:
         - name: Populate instance config when file missing
