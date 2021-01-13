@@ -243,7 +243,7 @@ echo ""
 
 pushd $aurora_home
 
-pip3 uninstall -y ansible
+pip3 uninstall -y ansible 2>/dev/null
 pip3 install --user -r ansible/data/ansible/requirements.txt
 ansible_flags="-v "
 
