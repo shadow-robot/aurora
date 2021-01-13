@@ -1,6 +1,6 @@
 ---
 - name: Docker login
-  docker_login:
+  community.general.docker_login:
     username: "{{ docker_username }}"
     password: "{{ docker_password }}"
   when: docker_username is defined and docker_password is defined

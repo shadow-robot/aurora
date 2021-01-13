@@ -8,7 +8,7 @@ lint: |
   flake8
 platforms:
   - name: server_and_nuc_desktop_icons_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:bionic
+    image: shadowrobot/aurora-test-ubuntu-docker:bionic-upgrade
     groups:
       - server
     volumes:

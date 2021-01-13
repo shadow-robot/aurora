@@ -1,4 +1,4 @@
-FROM shadowrobot/aurora-test-ubuntu:bionic
+FROM shadowrobot/aurora-test-ubuntu:bionic-upgrade
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
@@ -10,7 +10,7 @@ ENV USER testuser
 
 ARG ts_docker_aurora_branch
 
-ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"master"}
+ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"F_ansible_and_molecule_upgrade"}
 
 ENV ts_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ts_docker_aurora_branch/bin/run-ansible.sh"
 
