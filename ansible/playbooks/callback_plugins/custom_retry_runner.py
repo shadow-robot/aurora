@@ -3,28 +3,20 @@ __metaclass__ = type
 from ansible import constants as C
 from ansible.plugins.callback.default import CallbackModule as CallbackModule_default
 
+DOCUMENTATION = '''
+name: default
+type: stdout
+short_description: default Ansible screen output
+version_added: historical
+description:
+    - This is the default output callback for ansible-playbook.
+extends_documentation_fragment:
+    - default_callback
+requirements:
+    - set as stdout in configuration
+'''
 
 class CallbackModule_custom_retry_runner(CallbackModule_default):
-
-    DOCUMENTATION = '''
-    name: default
-    type: stdout
-    short_description: default Ansible screen output
-    version_added: historical
-    description:
-        - This is the default output callback for ansible-playbook.
-    extends_documentation_fragment:
-      - default_callback
-    requirements:
-      - set as stdout in configuration
-    '''
-
-    COMPAT_OPTIONS = (('display_skipped_hosts', C.DISPLAY_SKIPPED_HOSTS),
-                  ('display_ok_hosts', True),
-                  ('show_custom_stats', C.SHOW_CUSTOM_STATS),
-                  ('display_failed_stderr', False),
-                  ('check_mode_markers', True),
-                  ('show_per_host_start', False))
 
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'stdout'
@@ -35,6 +27,9 @@ class CallbackModule_custom_retry_runner(CallbackModule_default):
         self._play = None
         self._last_task_banner = None
         super(CallbackModule, self).__init__()
+
+    def v2_runner_on_start(self, host, task):
+        pass
 
     def v2_runner_retry(self, result):
         task_name = result.task_name or result._task
