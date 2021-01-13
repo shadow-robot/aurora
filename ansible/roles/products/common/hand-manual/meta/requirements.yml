@@ -1,3 +1,3 @@
 ---
 collections:
--amazon.aws
+  - amazon.aws

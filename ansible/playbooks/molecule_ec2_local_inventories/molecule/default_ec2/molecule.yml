@@ -1,9 +1,7 @@
 ---
 dependency:
   name: shell
-  command: >
-    bash -c "
-    ansible-galaxy collection install -p '${MOLECULE_EPHEMERAL_DIRECTORY}/collections' amazon.aws"
+  command: bash -c "ansible-galaxy collection install amazon.aws"
 driver:
   name: ec2
 lint: |
