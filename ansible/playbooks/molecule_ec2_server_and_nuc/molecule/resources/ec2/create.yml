@@ -75,7 +75,7 @@
       when: keypair.changed
 
     - name: Create molecule instance(s)
-      amazon.aws.aws_ec2:
+      amazon.aws.ec2:
         key_name: "{{ keypair_name }}"
         image: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
