@@ -243,7 +243,10 @@ echo ""
 
 pushd $aurora_home
 
-pip3 uninstall -y ansible 2>/dev/null
+ansible_version=$(ansible --version | head -n 1 | cut -f2 -d' ')
+if [[ "${ansible_version}" != *"2.10"* ]]; then
+    pip3 uninstall -y ansible 2>/dev/null
+fi
 pip3 install --user -r ansible/data/ansible/requirements.txt
 ansible_flags="-v "
 
