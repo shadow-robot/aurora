@@ -1,4 +1,4 @@
-FROM shadowrobot/aurora-molecule-docker:xenial
+FROM shadowrobot/aurora-molecule-docker:xenial-upgrade
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 

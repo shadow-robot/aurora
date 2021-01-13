@@ -1,4 +1,4 @@
-FROM ubuntu:xenial-20200212
+FROM ubuntu:xenial-20201030
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
@@ -12,7 +12,7 @@ ENV LANG C.UTF-8
 
 ARG ml_base_aurora_branch
 
-ENV ml_base_aurora_branch ${ml_base_aurora_branch:-"master"}
+ENV ml_base_aurora_branch ${ml_base_aurora_branch:-"F_ansible_and_molecule_upgrade"}
 
 RUN set -x && \
     apt-get update && \
