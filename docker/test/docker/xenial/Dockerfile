@@ -17,8 +17,8 @@ ENV ts_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/auro
 RUN set -x && \
     sudo apt-get update && \
     \
-    echo "Installing wget" && \
-    sudo apt-get install -y --no-install-recommends ca-certificates wget && \
+    echo "Installing wget and cryptography dependencies" && \
+    sudo apt-get install -y --no-install-recommends ca-certificates wget build-essential libssl-dev libffi-dev python-dev && \
     \
     echo "Installing Docker" && \
     wget -O /tmp/oneliner "$( echo "$ts_docker_aurora_script" | sed 's/#/%23/g' )" && \
