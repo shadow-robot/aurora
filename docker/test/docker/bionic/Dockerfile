@@ -4,8 +4,6 @@ MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
 LABEL Description="This image is used for testing Ubuntu Bionic with Docker deployment" Vendor="Shadow Robot" Version="1.0"
 
-ENV DEBIAN_FRONTEND noninteractive
-
 ENV USER testuser
 
 ARG ts_docker_aurora_branch
@@ -23,7 +21,7 @@ RUN set -x && \
     echo "Installing Docker" && \
     wget -O /tmp/oneliner "$( echo "$ts_docker_aurora_script" | sed 's/#/%23/g' )" && \
     chmod 755 /tmp/oneliner && \
-    /tmp/oneliner install_software --branch $ts_docker_aurora_branch software=[docker] --extra-vars "ansible_become_pass=ubuntu" && \
+    /tmp/oneliner install_software --branch $ts_docker_aurora_branch software=[docker] && \
     \
     echo "Clean up" && \
     sudo apt-get clean && \

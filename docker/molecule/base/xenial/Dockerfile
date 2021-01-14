@@ -27,6 +27,8 @@ RUN set -x && \
          libffi-dev \
          sshpass \
          sudo && \
+         build-essential && \
+         python3-dev && \
     \
     echo "Installing wget" && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
