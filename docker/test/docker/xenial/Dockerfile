@@ -27,7 +27,7 @@ RUN set -x && \
     cd Python-3.6.9 && \
     echo "Installing dependencies for python3.6, SSL, pip3" && \
     sudo apt-get install -y build-essential zlib1g-dev libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev && \
-    ./configure && \
+    sudo ./configure && \
     sudo make && \
     sudo make install && \
     sudo update-alternatives --install /usr/bin/python3 python3 /opt/Python-3.6.9/python 1 && \
