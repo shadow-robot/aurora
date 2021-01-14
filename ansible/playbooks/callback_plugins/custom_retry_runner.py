@@ -3,20 +3,13 @@ __metaclass__ = type
 from ansible import constants as C
 from ansible.plugins.callback.default import CallbackModule as CallbackModule_default
 
-DOCUMENTATION = '''
-name: default
-type: stdout
-short_description: default Ansible screen output
-version_added: historical
-description:
-    - This is the default output callback for ansible-playbook.
-extends_documentation_fragment:
-    - default_callback
-requirements:
-    - set as stdout in configuration
-'''
 
 class CallbackModule_custom_retry_runner(CallbackModule_default):
+
+    ''''
+    This is the default callback interface, which simply prints messages
+    to stdout when new callback events are received.
+    '''
 
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'stdout'
