@@ -41,7 +41,7 @@
     extra_args: "--user"
 
 - name: Downloading steamvr 1.5.15
-  aws_s3:
+  amazon.aws.aws_s3:
     aws_access_key: "{{ lookup('env','aws_key') }}"
     aws_secret_key: "{{ lookup('env','aws_secret') }}"
     bucket: shadowrobot.aurora.files

@@ -41,9 +41,9 @@ Aurora is an installation automation tool using Ansible. It uses Molecule for te
 
 For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
-Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.9.6)
+Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.10.4)
 
-Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.02)
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.2.1)
 
 # How to run #
 
@@ -730,8 +730,6 @@ sleep infinity
 12. You don't need to edit the Dockerfile.j2. Just edit the molecule.yml so it looks like this:
 ```bash
 ---
-dependency:
-  name: galaxy
 driver:
   name: docker
 lint: |
@@ -741,7 +739,7 @@ lint: |
   flake8
 platforms:
   - name: tutorial_1_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:xenial
+    image: shadowrobot/aurora-test-ubuntu-docker:bionic
     groups:
       - docker_deploy
     volumes:
@@ -757,7 +755,29 @@ provisioner:
       group_vars: ../../../../inventory/local/group_vars
 verifier:
   name: testinfra
-
+scenario:
+  create_sequence:
+    - create
+  check_sequence:
+    - destroy
+    - create
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - create
+    - converge
+  destroy_sequence:
+    - destroy
+  test_sequence:
+    - lint
+    - destroy
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify
+    - destroy
 ```
 13. Edit the converge.yml so it looks like this:
 ```bash
@@ -811,7 +831,7 @@ lint: |
 platforms:
   # Adding CODEBUILD_BUILD_ID to instance name in order to allow parallel EC2 execution of tests from CodeBuild
   - name: tutorial_1_ec2_${CODEBUILD_BUILD_ID}
-    image: ami-0ce847e39053291c5
+    image: ami-0820357ff5cf2333d
     instance_type: t2.micro
     region: eu-west-2
     vpc_id: vpc-0f8cc2cc245d57eb4
@@ -835,6 +855,38 @@ provisioner:
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/tutorial_1_docker/tests/
+scenario:
+  create_sequence:
+    - dependency
+    - create
+    - prepare
+  check_sequence:
+    - dependency
+    - destroy
+    - create
+    - prepare
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - dependency
+    - create
+    - prepare
+    - converge
+  destroy_sequence:
+    - dependency
+    - destroy
+  test_sequence:
+    - dependency
+    - lint
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - verify
+    - destroy
 
 ```
 17. Now all the Ansible code is done and both Docker and EC2 tests added. Next step is to execute the Docker test locally: follow the steps here: [Testing with molecule_docker](#testing-with-molecule_docker) (you may want to use the -s flag to limit the test to your tutorial_1 test only. Normally we want to re-test everything for every introduced change, but it's pretty safe to say tutorial_1 hasn't broken other parts of Aurora)
