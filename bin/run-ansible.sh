@@ -248,7 +248,7 @@ if [[ "${ansible_version}" != "" && "${ansible_version}" != *"2.10"* ]]; then
     pip3 uninstall -y ansible 2>/dev/null
 fi
 pip3 install --user -r ansible/data/ansible/requirements.txt
-ansible_flags="-v "
+ansible_flags="-vvv "
 
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
