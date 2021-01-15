@@ -39,5 +39,5 @@
       - driver: nvidia
         count: -1
         capabilities: 
-          - ['all']
+          - [['all']]
   become: yes
