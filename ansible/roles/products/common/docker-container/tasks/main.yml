@@ -4,11 +4,6 @@
   register: id
   changed_when: id.rc != 0
 
-- name: set docker_runtime if nvidia_docker is true
-  when: nvidia_docker | bool
-  set_fact:
-    docker_runtime: nvidia
-
 - name: Reinstall docker container
   when: reinstall|bool
   import_tasks: reinstall.yml

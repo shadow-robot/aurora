@@ -442,7 +442,7 @@ The docker folder contains some general roles that are used after docker install
 
  - aws: this is used for installing our shadow-upload.sh script and AWS customer key which uploads ROS logs to AWS. It has a dependency of installation/aws-cli
 
- - docker-image: this is used for pulling the docker image (nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) is a boolean which specifies whether nvidia docker 2 should be used)
+ - docker-image: this is used for pulling the docker image (nvidia_docker [group_var](ansible/inventory/teleop/group_vars/server.yml) is a boolean which specifies whether nvidia-container-toolkit should be used)
 
  - setup-ui: this is used to install various UI libraries, terminator, vim, git, subversion, bash-completion, etc., to create the /usr/local/bin/entrypoint.sh file and setting up a new Docker user
 
