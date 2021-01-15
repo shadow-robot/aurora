@@ -36,8 +36,13 @@
       terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
     device_requests:
-      - driver: nvidia
-        count: -1
-        capabilities: 
-          - [['all']]
+      - # Add nVidia GPUs to this container
+        driver: nvidia
+        count: -1  # this means we want all
+        capabilities:
+          # We have one OR condition: 'gpu' AND 'utility'
+          - - gpu
+            - utility
+          # See https://github.com/NVIDIA/nvidia-container-runtime#supported-driver-capabilities
+          # for a list of capabilities supported by the nvidia driver
   become: yes
