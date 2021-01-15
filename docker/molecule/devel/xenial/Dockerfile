@@ -1,4 +1,4 @@
-FROM shadowrobot/aurora-molecule-docker:xenial-upgrade
+FROM shadowrobot/aurora-molecule-docker:xenial
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
@@ -10,7 +10,7 @@ ENV PULSE_SERVER /run/pulse/native
 
 ARG ml_devel_aurora_branch
 
-ENV ml_devel_aurora_branch ${ml_devel_aurora_branch:-"F_ansible_and_molecule_upgrade"}
+ENV ml_devel_aurora_branch ${ml_devel_aurora_branch:-"master"}
 
 ENV ml_devel_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_devel_aurora_branch/bin/run-ansible.sh"
 
