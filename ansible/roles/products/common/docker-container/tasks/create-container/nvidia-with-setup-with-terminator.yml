@@ -38,6 +38,6 @@
     device_requests:
       - driver: nvidia
         count: -1
-        capabilities:
-          - - all
+        capabilities: 
+          - ['all']
   become: yes
