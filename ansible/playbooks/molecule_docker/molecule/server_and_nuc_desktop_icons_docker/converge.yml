@@ -1,15 +1,16 @@
 ---
 - name: Server_and_nuc playbook server desktop icons
   import_playbook: ../../../server_and_nuc_deploy.yml
-    sudo_password="ubuntu"
-    skip_molecule_task=true
-    allow_auto_reboot=true
-    reinstall=true
-    ethercat_right_hand="enp0s25"
-    ethercat_left_hand="enp0s26"
-    nvidia_docker=false
-    config_branch="demohand_A"
-    product="hand_e"
-    upgrade_check=true
-    bimanual=true
-    customer_key="invalidkey"
+  vars:
+    sudo_password: ubuntu
+    skip_molecule_task: true
+    allow_auto_reboot: true
+    reinstall: true
+    ethercat_right_hand: enp0s25
+    ethercat_left_hand: enp0s26
+    nvidia_docker: false
+    config_branch: demohand_A
+    product: hand_e
+    upgrade_check: true
+    bimanual: true
+    customer_key: invalidkey

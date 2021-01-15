@@ -32,14 +32,14 @@
         ec2_region: "{{ molecule_yml.platforms|selectattr('region','defined')|map(attribute='region')|list|first }}"
 
     - name: Create security group default VPC
-      ec2_group:
+      amazon.aws.ec2_group:
         name: "{{ security_group_name }}"
         description: "{{ security_group_name }}"
         rules: "{{ security_group_rules }}"
         rules_egress: "{{ security_group_rules_egress }}"
 
     - name: Create security group for all platforms with VPC
-      ec2_group:
+      amazon.aws.ec2_group:
         name: "{{ security_group_name }}"
         description: "{{ security_group_name }}"
         rules: "{{ security_group_rules }}"
@@ -55,14 +55,14 @@
       register: keypair_local
 
     - name: Delete remote keypair
-      ec2_key:
+      amazon.aws.ec2_key:
         name: "{{ keypair_name }}"
         state: absent
         region: "{{ ec2_region }}"
       when: not keypair_local.stat.exists|bool
 
     - name: Create keypair
-      ec2_key:
+      amazon.aws.ec2_key:
         name: "{{ keypair_name }}"
         region: "{{ ec2_region }}"
       register: keypair
@@ -75,7 +75,7 @@
       when: keypair.changed
 
     - name: Create molecule instance(s)
-      ec2:
+      amazon.aws.ec2:
         key_name: "{{ keypair_name }}"
         image: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
@@ -129,8 +129,9 @@
 
     - name: Dump instance config
       copy:
-        content: "{{ instance_conf | to_json | from_json | molecule_to_yaml | molecule_header }}"
+        content: "{{ instance_conf | to_json | from_json | to_yaml }}"
         dest: "{{ molecule_instance_config }}"
+        mode: '777'
       when: server.changed | bool
 
     - name: Wait for SSH
@@ -140,7 +141,7 @@
         search_regex: SSH
         delay: 10
         timeout: 320
-      with_items: "{{ lookup('file', molecule_instance_config) | molecule_from_yaml }}"
+      with_items: "{{ lookup('file', molecule_instance_config) | from_yaml }}"
 
     - name: Wait for boot process to finish
       pause:

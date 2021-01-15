@@ -10,7 +10,7 @@
 
 - name: Creating the container with no terminator and no setup
   changed_when: false
-  docker_container:
+  community.general.docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
     state: present
@@ -36,4 +36,5 @@
     - "core: -1"
     volumes: "{{ shared_volumes }}"
     command: bash
+    container_default_behavior: compatibility
   become: yes

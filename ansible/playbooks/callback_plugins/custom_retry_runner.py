@@ -21,6 +21,9 @@ class CallbackModule_custom_retry_runner(CallbackModule_default):
         self._last_task_banner = None
         super(CallbackModule, self).__init__()
 
+    def v2_runner_on_start(self, host, task):
+        pass
+
     def v2_runner_retry(self, result):
         task_name = result.task_name or result._task
         if "pull" in result.task_name.lower() and "docker" in result.task_name.lower():
