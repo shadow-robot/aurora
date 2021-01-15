@@ -1,15 +1,16 @@
 ---
-- name: remove nvidia-docker1 before installing nvidia-docker2
+- name: remove nvidia-docker1 and nvidia-docker2 before installing nvidia-container-toolkit
   apt:
     name:
       - nvidia-docker
+      - nvidia-docker2
     state: absent
     autoremove: yes
     purge: yes
   become: yes
   changed_when: false
 
-- import_tasks: install-nvidia-v2.yml
+- import_tasks: nvidia-container-toolkit.yml
   when: nvidia_docker | bool and not skip_nvidia|bool
   become: yes
   changed_when: false
