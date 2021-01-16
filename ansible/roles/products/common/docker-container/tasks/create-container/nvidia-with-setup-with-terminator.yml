@@ -36,6 +36,7 @@
       terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
     device_requests:
+      - # Add nVidia GPUs to this container
         driver: nvidia
         count: -1 
         capabilities:
