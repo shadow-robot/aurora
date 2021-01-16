@@ -7,7 +7,7 @@
     test_container_name: "test_hand_e_empty_machine_container"
   tasks:
     - name: Stop test Docker container
-      community.general.docker_container:
+      community.docker.docker_container:
         name: "{{ test_container_name }}"
         state: stopped
         container_default_behavior: compatibility
@@ -15,7 +15,7 @@
       become: yes
 
     - name: Remove Docker container
-      community.general.docker_container:
+      community.docker.docker_container:
         name: "{{ test_container_name }}"
         state: absent
         container_default_behavior: compatibility
