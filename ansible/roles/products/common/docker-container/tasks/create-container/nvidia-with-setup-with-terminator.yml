@@ -9,19 +9,13 @@
     image: "{{ full_image_name }}"
     state: started
     device_requests:
-      - # Add some specific devices to this container
-        device_ids:
-          - '0'
-          - 'GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a'
       - # Add nVidia GPUs to this container
         driver: nvidia
-        count: -1  # this means we want all
+        device_ids: 
+          - '0'
+          - '1'
         capabilities:
-          # We have one OR condition: 'gpu' AND 'utility'
-          - - gpu
-            - utility
-          # See https://github.com/NVIDIA/nvidia-container-runtime#supported-driver-capabilities
-          # for a list of capabilities supported by the nvidia driver
+          - ['gpu','nvidia']
 
 - name: Creating the Nvidia container which will execute setup script when started inside a terminator window
   changed_when: false
@@ -56,18 +50,11 @@
       terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
     device_requests:
-      - # Add some specific devices to this container
-        device_ids:
-          - '0'
-          - 'GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a'
       - # Add nVidia GPUs to this container
         driver: nvidia
-        count: -1  # this means we want all
+        device_ids: 
+          - '0'
+          - '1'
         capabilities:
-          # We have one OR condition: 'gpu' AND 'utility'
-          - - gpu
-            - utility
-          # See https://github.com/NVIDIA/nvidia-container-runtime#supported-driver-capabilities
-          # for a list of capabilities supported by the nvidia driver
-
+          - ['gpu','nvidia']
   become: yes
