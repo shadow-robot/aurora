@@ -3,20 +3,6 @@
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
 
-- name: Start container with GPUs
-  community.docker.docker_container:
-    name: test
-    image: "{{ full_image_name }}"
-    state: started
-    device_requests:
-      - # Add nVidia GPUs to this container
-        driver: nvidia
-        device_ids: 
-          - '0'
-          - '1'
-        capabilities:
-          - ['gpu','nvidia']
-
 - name: Creating the Nvidia container which will execute setup script when started inside a terminator window
   changed_when: false
   community.docker.docker_container:
@@ -50,11 +36,8 @@
       terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
     device_requests:
-      - # Add nVidia GPUs to this container
         driver: nvidia
-        device_ids: 
-          - '0'
-          - '1'
+        count: -1 
         capabilities:
           - ['gpu','nvidia']
   become: yes
