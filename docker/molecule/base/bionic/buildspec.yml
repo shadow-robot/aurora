@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-     branch: master
+     branch: F_aws_ecr
      image: shadowrobot/aurora-molecule
      tag: melodic
      dockerfile_folder: docker/molecule/base/bionic/
