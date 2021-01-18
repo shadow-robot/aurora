@@ -27,4 +27,4 @@ phases:
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot
       - docker build -t $image .
       - docker tag $image:latest public.ecr.aws/shadowrobot/$image:$tag
-      - docker push public.ecr.aws/shadowrobot/shadowrobot/$image:$tag
+      - docker push public.ecr.aws/shadowrobot/$image:$tag
