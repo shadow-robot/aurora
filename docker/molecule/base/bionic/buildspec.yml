@@ -17,9 +17,7 @@ phases:
       docker: 19
   build:
     commands:
-      - aws_v1_executable=$(which aws)
-      - which aws
-      - rm -rf /usr/local/aws
+      - awscli_v1_executable=$(which aws)
       - rm $aws_v1_executable
       - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       - unzip awscliv2.zip
