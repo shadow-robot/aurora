@@ -5,7 +5,7 @@ env:
      branch: master
      image: shadowrobot/aurora-molecule
      tag: melodic
-     dockerfile_folder: aurora/docker/molecule/base/bionic/
+     dockerfile_folder: docker/molecule/base/bionic/
   exported-variables:
      - branch
      - image
