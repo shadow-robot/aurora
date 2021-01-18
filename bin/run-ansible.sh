@@ -300,6 +300,9 @@ if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
 fi
 
+# install ansible galaxy docker and aws collections
+ansible-galaxy collection install community.docker amazon.aws
+
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
 # router = false is default group_var, only install dhcp server on laptop if product is not arm+hand and user has not overridden router=true
