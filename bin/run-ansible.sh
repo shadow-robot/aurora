@@ -246,7 +246,7 @@ pushd $aurora_home
 ansible_version=$(ansible --version 2>/dev/null | head -n 1 | cut -f2 -d' ')
 if [[ "${ansible_version}" != "" && "${ansible_version}" != *"2.10"* ]]; then
     echo "Uninstalling pre-existing old Ansible version <2.10, if prompted for sudo password, please enter it"
-    sudo pip3 uninstall -y ansible
+    sudo -H pip3 uninstall -y ansible
 fi
 pip3 install --user -r ansible/data/ansible/requirements.txt
 ansible_flags="-v "
