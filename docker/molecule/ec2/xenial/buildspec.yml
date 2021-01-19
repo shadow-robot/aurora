@@ -1,6 +1,7 @@
 version: 0.2
 
 env:
+  shell: bash
   variables:
      branch: F_aws_ecr
      image: aurora-molecule-ec2
