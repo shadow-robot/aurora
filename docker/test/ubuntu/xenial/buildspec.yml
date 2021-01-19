@@ -2,7 +2,6 @@ version: 0.2
 
 env:
   shell: bash
-  shell: bash
   variables:
      branch: F_aws_ecr
      image: aurora-test-ubuntu
