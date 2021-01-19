@@ -10,7 +10,7 @@
 
 - name: Creating the container which will execute setup script when started and without terminator
   changed_when: false
-  community.general.docker_container:
+  community.docker.docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
     state: present

@@ -5,12 +5,11 @@
 
 - name: Creating the Nvidia container which will execute setup script when started inside a terminator window
   changed_when: false
-  community.general.docker_container:
+  community.docker.docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
     state: present
     recreate: yes
-    runtime: "{{ docker_runtime }}"
     env:
       verbose: "true"
       interface: "{{ ethercat_right_hand }}"
@@ -36,4 +35,10 @@
       bash -c "echo /usr/local/lib/x86_64-linux-gnu | sudo tee /etc/ld.so.conf.d/glvnd.conf && sudo ldconfig &&
       terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
+    device_requests:
+      - # Add nVidia GPUs to this container
+        driver: nvidia
+        count: -1 
+        capabilities:
+          - ['gpu','nvidia']
   become: yes

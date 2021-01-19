@@ -5,7 +5,7 @@
 
 - name: Creating the container which will execute setup script when started inside a terminator window
   changed_when: false
-  community.general.docker_container:
+  community.docker.docker_container:
     name: "{{ container_name }}"
     image: "{{ full_image_name }}"
     state: present
