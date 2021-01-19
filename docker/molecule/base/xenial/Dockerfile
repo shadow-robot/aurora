@@ -1,4 +1,4 @@
-FROM ubuntu:xenial-20201030
+FROM public.ecr.aws/shadowrobot/ubuntu:xenial-20201030
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 

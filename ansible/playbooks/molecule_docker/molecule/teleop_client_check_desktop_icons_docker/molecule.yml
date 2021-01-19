@@ -8,7 +8,7 @@ lint: |
   flake8
 platforms:
   - name: teleop_desktop_icons_client_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:bionic
+    image: public.ecr.aws/shadowrobot/aurora-test-ubuntu-docker:bionic
     groups:
       - client
     volumes:

@@ -37,7 +37,7 @@
 
 # Introduction #
 
-Aurora is an installation automation tool using Ansible. It uses Molecule for testing Ansible scripts and it has automated builds in AWS EC2/CodeBuild and DockerHub. It can be used to develop, test and deploy complicated, multi-machine, multi-operating-system automated installs of software. Aurora's purpose is to unify one-liners approaches based on Ansible best practices.
+Aurora is an installation automation tool using Ansible. It uses Molecule for testing Ansible scripts and it has automated builds in AWS EC2/CodeBuild/ECR. It can be used to develop, test and deploy complicated, multi-machine, multi-operating-system automated installs of software. Aurora's purpose is to unify one-liners approaches based on Ansible best practices.
 
 For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
@@ -209,7 +209,7 @@ If you are prompted for a BECOME password, enter the sudo password of the comput
 
 ## configure_software ##
 
-This runs the docker/setup-ui role (details are [here](ansible/roles/docker/setup-ui/tasks/main.yml) when it is passed a list of software which includes 'setup-docker'. This is used in the DockerHub Docker image builds for Aurora
+This runs the docker/setup-ui role (details are [here](ansible/roles/docker/setup-ui/tasks/main.yml) when it is passed a list of software which includes 'setup-docker'. This is used in the AWS ECR Docker image builds for Aurora
 
 **How to run:**
 
@@ -221,7 +221,7 @@ bash <(curl -Ls bit.ly/run-aurora) configure_software software=['setup-docker']
 
 ## install_software ##
 
-This installs software based on external parameters (details are [here](https://github.com/shadow-robot/aurora/blob/master/ansible/playbooks/install_software.yml) when it is passed a list of software. This is used in the DockerHub Docker image builds for Aurora and also builds of shadow-teleop Docker images
+This installs software based on external parameters (details are [here](https://github.com/shadow-robot/aurora/blob/master/ansible/playbooks/install_software.yml) when it is passed a list of software. This is used in the AWS ECR Docker image builds for Aurora and also builds of shadow-teleop Docker images
 
 **How to run:**
 
@@ -253,7 +253,7 @@ The recommended way to develop code for this project is to pull a certain docker
 
 ## Development Docker ##
 
-The docker images used for aurora development are [here](https://cloud.docker.com/u/shadowrobot/repository/docker/shadowrobot/aurora-molecule-devel).
+The docker images used for aurora development are [here](https://gallery.ecr.aws/shadowrobot/aurora-molecule-devel).
 
 Currently both xenial and bionic tags are working well.
 
@@ -269,7 +269,7 @@ Instructions on how to use this:
 3. Run the following command in terminal to create a container for aurora development:
 
 ```
-docker run -it --name aurora_dev -e DISPLAY -e QT_X11_NO_MITSHM=1 -e LOCAL_USER_ID=$(id -u) -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix:rw shadowrobot/aurora-molecule-devel:bionic
+docker run -it --name aurora_dev -e DISPLAY -e QT_X11_NO_MITSHM=1 -e LOCAL_USER_ID=$(id -u) -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix:rw public.ecr.aws/shadowrobot/aurora-molecule-devel:bionic
 ```
 4. Once the container has launched, clone aurora to home directory:
 ```
@@ -352,7 +352,7 @@ molecule destroy -s name_of_your_test_case
 
 ## Private docker images ##
 
-At the moment, we don't want to give Molecule access to private docker hub credentials for private docker images (e.g. shadow-teleop). That is why, in every converge.yml inside the test cases in the molecule_docker folder, we override the image with image="shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
+At the moment, we don't want to give Molecule access to private docker hub / AWS private ECR credentials for private docker images (e.g. shadow-teleop). That is why, in every converge.yml inside the test cases in the molecule_docker folder, we override the image with image="public.ecr.aws/shadowrobot/dexterous-hand" for any teleop-related test cases. When we actually deploy Aurora, the user will be asked to fill in their private Docker hub credentials.
 
 ## Testing with molecule_ec2 ##
 
@@ -739,7 +739,7 @@ lint: |
   flake8
 platforms:
   - name: tutorial_1_docker
-    image: shadowrobot/aurora-test-ubuntu-docker:bionic
+    image: public.ecr.aws/shadowrobot/aurora-test-ubuntu-docker:bionic
     groups:
       - docker_deploy
     volumes:
@@ -893,7 +893,7 @@ scenario:
 
 18. After local Docker tests are complete, you can optionally run the EC2 triggered locally as well by following the steps here: [Testing with molecule_ec2](#testing-with-molecule_ec2) (However, you need to contact the System Administrator for credentials as explained here: [Credentials](#credentials))
 
-19. When all tests are passing (initiated locally), create a PR of your branch and see the AWS automatic build activate as well as the DockerHub tests (building aurora Docker images). All tests must pass before even thinking about merging to master (and in this exercise, please DO NOT MERGE to master!). More information available here: [Automatic tests](#automatic-tests)
+19. When all tests are passing (initiated locally), create a PR of your branch and see the AWS automatic build activate as well as the AWS ECR tests (building aurora Docker images). All tests must pass before even thinking about merging to master (and in this exercise, please DO NOT MERGE to master!). More information available here: [Automatic tests](#automatic-tests)
 
 20. Once your PR is passing (all green), you are ready to test your branch on real hardware. For this tutorial, you will test your branch on your own local machine by opening a terminal window by pressing Ctrl+Alt+T and run this:
 ```bash

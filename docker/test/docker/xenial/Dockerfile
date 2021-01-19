@@ -1,4 +1,4 @@
-FROM shadowrobot/aurora-test-ubuntu:xenial
+FROM public.ecr.aws/shadowrobot/aurora-test-ubuntu:xenial
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
