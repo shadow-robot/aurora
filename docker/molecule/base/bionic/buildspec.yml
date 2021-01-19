@@ -4,7 +4,7 @@ env:
   variables:
      branch: F_aws_ecr
      image: aurora-molecule
-     tag: melodic
+     tag: bionic
      dockerfile_folder: docker/molecule/base/bionic/
   exported-variables:
      - branch
