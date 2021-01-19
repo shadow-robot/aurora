@@ -32,17 +32,18 @@
       - docker-ce-cli
       - containerd.io
 
-- name: Add users to docker group
-  user:
-    name: "{{ user }}"
-    groups: 'docker'
-    append: 'yes'
-
 - name: Enable Docker systemd service
   service:
     name: 'docker'
     state: 'started'
     enabled: 'yes'
+  ignore_errors: yes
+
+- name: Add users to docker group
+  user:
+    name: "{{ user }}"
+    groups: 'docker'
+    append: 'yes'
 
 - name: Docker installation finished
   debug:
