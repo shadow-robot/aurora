@@ -18,7 +18,6 @@ setup_directory: ""
 setup_script: ""
 use_steamvr: false
 ros_master: "localhost"
-docker_runtime: "runc"
 upgrade_script: "upgrade_image.sh"
 container_terminal_title: "Docker Container"
 term_args: ""

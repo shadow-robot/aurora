@@ -13,9 +13,9 @@
   when: pip_status.rc != 0
   become: yes
 
-- name: Install Docker pip module
+- name: Install Docker pip module (and up to date versions of chardet and urllib3)
   pip:
-    name: docker
+    name: [ "docker >=4.4.1" ]
     state: present
   become: yes
   changed_when: pip_status.rc != 0
