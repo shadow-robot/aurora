@@ -254,7 +254,6 @@ if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"2.10"* ]
     sudo pip2 uninstall -y ansible
 fi
 pip3 install --user -r ansible/data/ansible/requirements.txt
-export PATH=$PATH:/home/$USER/.local/bin
 ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
@@ -306,10 +305,18 @@ ansible_executable=~/.local/bin/ansible-playbook
 if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
 fi
+ansible_basic_executable=~/.local/bin/ansible
+if [[ ! -f "${ansible_basic_executable}" ]]; then
+    ansible_basic_executable=ansible
+fi
+ansible_galaxy_executable=~/.local/bin/ansible-galaxy
+if [[ ! -f "${ansible_galaxy_executable}" ]]; then
+    ansible_galaxy_executable=ansible-galaxy
+fi
 
 # install ansible galaxy docker and aws collections
-ansible --version
-ansible-galaxy collection install community.docker amazon.aws
+"${ansible_basic_executable}" --version
+"${ansible_galaxy_executable}" collection install community.docker amazon.aws
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
