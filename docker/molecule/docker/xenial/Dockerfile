@@ -6,7 +6,7 @@ LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and Docker dri
 
 ARG ml_docker_aurora_branch
 
-ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"F_aws_ecr"}
+ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"master"}
 
 ENV ml_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_docker_aurora_branch/bin/run-ansible.sh"
 
