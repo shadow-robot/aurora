@@ -3,7 +3,7 @@ version: 0.2
 env:
   shell: bash
   variables:
-     branch: F_aws_ecr
+     branch: master
      image: aurora-test-ubuntu
      tag: xenial
      dockerfile_folder: docker/test/ubuntu/xenial/
