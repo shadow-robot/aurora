@@ -3,7 +3,7 @@
   import_playbook: ../../../teleop_deploy.yml
   vars:
     reinstall: true
-    image: shadowrobot/dexterous-hand
+    image: public.ecr.aws/shadowrobot/dexterous-hand
     tag: melodic-release
     nvidia_docker: false
     skip_molecule_task: true

@@ -1,4 +1,4 @@
-FROM shadowrobot/aurora-molecule:xenial
+FROM public.ecr.aws/shadowrobot/aurora-molecule:xenial
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
