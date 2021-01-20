@@ -243,10 +243,15 @@ echo ""
 
 pushd $aurora_home
 
-ansible_version=$(pip3 freeze | grep ansible== | tr -d "ansible==")
-if [[ "${ansible_version}" != "" && "${ansible_version}" != *"2.10"* ]]; then
-    echo "Uninstalling pre-existing Ansible version which is not supported by aurora, if prompted for sudo password, please enter it"
+ansible_version_pip3=$(pip3 freeze | grep ansible== | tr -d "ansible==")
+if [[ "${ansible_version_pip3}" != "" && "${ansible_version_pip3}" != *"2.10"* ]]; then
+    echo "Uninstalling pre-existing pip3 Ansible version $ansible_version_pip3 which is not supported by aurora, if prompted for sudo password, please enter it"
     sudo pip3 uninstall -y ansible
+fi
+ansible_version_pip2=$(pip2 freeze | grep ansible== | tr -d "ansible==")
+if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"2.10"* ]]; then
+    echo "Uninstalling pre-existing pip2 Ansible version $ansible_version_pip2 which is not supported by aurora, if prompted for sudo password, please enter it"
+    sudo pip2 uninstall -y ansible
 fi
 pip3 install --user -r ansible/data/ansible/requirements.txt
 ansible_flags="-v "
@@ -300,9 +305,18 @@ ansible_executable=~/.local/bin/ansible-playbook
 if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
 fi
+ansible_basic_executable=~/.local/bin/ansible
+if [[ ! -f "${ansible_basic_executable}" ]]; then
+    ansible_basic_executable=ansible
+fi
+ansible_galaxy_executable=~/.local/bin/ansible-galaxy
+if [[ ! -f "${ansible_galaxy_executable}" ]]; then
+    ansible_galaxy_executable=ansible-galaxy
+fi
 
 # install ansible galaxy docker and aws collections
-ansible-galaxy collection install community.docker amazon.aws
+"${ansible_basic_executable}" --version
+"${ansible_galaxy_executable}" collection install community.docker amazon.aws
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
