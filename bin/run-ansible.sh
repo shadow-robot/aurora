@@ -254,6 +254,7 @@ if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"2.10"* ]
     sudo pip2 uninstall -y ansible
 fi
 pip3 install --user -r ansible/data/ansible/requirements.txt
+export PATH=$PATH:/home/$USER/.local/bin
 ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
