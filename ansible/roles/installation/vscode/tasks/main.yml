@@ -18,5 +18,5 @@
 
 - name: Install VSCode .deb package from the internet.
   apt:
-    deb: https://go.microsoft.com/fwlink/?LinkID=760868
+    deb: https://update.code.visualstudio.com/1.35.1/linux-deb-x64/stable
   become: yes
