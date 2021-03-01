@@ -279,6 +279,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
         aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
     fi
     if [[ "${test_machine}" = "true" ]]; then
+
         ansible_flags="${ansible_flags} --vault-password-file /home/$USER/vault.sh"
     else
         ansible_flags="${ansible_flags} --ask-vault-pass"
