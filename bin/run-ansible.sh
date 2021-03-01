@@ -226,6 +226,7 @@ echo ""
 if [[ "${test_machine}" = "true" ]]; then
     echo $test_password | sudo -S echo "Running on testing machine. Retrieving passwords from ENV..."
     formatted_extra_vars="$formatted_extra_vars sudo_password=$test_password"
+    echo $formatted_extra_vars
 fi
 
 # Wait for apt-get update lock file to be released
