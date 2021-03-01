@@ -17,6 +17,7 @@ fi
 aurora_home=/tmp/aurora
 playbook=$1
 aurora_limit=all
+test_machine=false
 shift
 
 while [[ $# -gt 1 ]]
@@ -43,13 +44,17 @@ case ${key} in
     read_secure="$2"
     shift 2
     ;;
+    --test-machine)
+    test_machine="$2"
+    shift 2
+    ;;
     *)
     break
     ;;
 esac
 done
 
-if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
+if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" && "${test_machine}" = "false" ]]; then
     if [[ -z ${read_secure} ]]; then
         read_secure="sudo_password"
     else
@@ -216,6 +221,10 @@ echo " |   Installing needed packages  |"
 echo " ---------------------------------"
 echo ""
 
+if [[ ${test_machine} = "true" ]]; then
+    echo $test_password | sudo -S echo "Running on testing machine. Retrieving passwords from ENV..."
+fi
+
 # Wait for apt-get update lock file to be released
 while (sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1) || (sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1) do
     echo "Waiting for apt-get update file lock..."
@@ -265,7 +274,11 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     else
         aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
     fi
-    ansible_flags="${ansible_flags} --ask-vault-pass"
+    if [[ ${test_machine} = "true" ]]; then
+        ansible_flags="${ansible_flags} --vault-password-file /home/$USER/vault.sh"
+    else
+        ansible_flags="${ansible_flags} --ask-vault-pass"
+    fi
     echo ""
     echo " ---------------------------------------------------"
     echo " |                 VAULT password:                 |"
