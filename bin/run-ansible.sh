@@ -96,6 +96,8 @@ echo "playbook     = ${playbook}"
 echo "branch       = ${aurora_tools_branch}"
 echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
+echo "Testing setup= ${test_machine}"
+
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
