@@ -57,3 +57,4 @@ haptx_teleop_readthedocs_token: ""
 shadow_glove_teleop_readthedocs_token: ""
 pr_branches: ""
 polhemus_type: "viper"
+bag_all_data_from: ["phantomhand_A", "phantomhand_B"]
