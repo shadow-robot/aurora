@@ -17,4 +17,3 @@
       custom_shared_volumes: 
         - "{{ shadow_bag_storage_folder }}:{{ shadow_bag_storage_inside_docker }}"
 
-
