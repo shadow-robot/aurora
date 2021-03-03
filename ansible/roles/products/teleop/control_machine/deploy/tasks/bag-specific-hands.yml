@@ -27,3 +27,4 @@
     user: root
     job: "rsync {{ shadow_bag_storage_folder }}/* {{ shadow_remote_bag_user }}@{{ shadow_remote_bag_IP }}:{{ shadow_remote_bag_storage_folder }}"
     cron_file: sr_sync_hand_data_to_nas
+    become: true
