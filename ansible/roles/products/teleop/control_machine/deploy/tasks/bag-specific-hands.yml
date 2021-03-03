@@ -24,7 +24,7 @@
 - cron:
     name: sync hand data to NAS
     hour: "20"
-    user: root
-    job: "rsync -azP {{ shadow_bag_storage_folder }}/ {{ shadow_remote_bag_user }}@{{ shadow_remote_bag_IP }}:{{ shadow_remote_bag_storage_folder }} >> /home/user/hand_cron_log 2>&1"
+    user: user
+    job: "rsync -azP  --remove-source-files --exclude '*active*' {{ shadow_bag_storage_folder }}/ {{ shadow_remote_bag_user }}@{{ shadow_remote_bag_IP }}:{{ shadow_remote_bag_storage_folder }} >> /home/user/hand_cron_log 2>&1"
     cron_file: sr_sync_hand_data_to_nas
   become: true
