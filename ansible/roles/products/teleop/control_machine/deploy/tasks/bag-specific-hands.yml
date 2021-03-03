@@ -3,7 +3,7 @@
   block:
   - name: Set shadow_bag_storage folder names
     set_fact:
-      shadow_bag_storage_folder: "{{ user_folder }}/Desktop/shadow_bag_storage"
+      shadow_bag_storage_folder: "{{ user_folder }}/shadow_bag_storage"
       shadow_bag_storage_inside_docker: "/home/user/shadow_bag_storage"
 
   - name: Ensure {{ shadow_bag_storage_folder }} folder exists
