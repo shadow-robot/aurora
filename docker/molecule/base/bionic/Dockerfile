@@ -2,7 +2,7 @@ FROM public.ecr.aws/shadowrobot/ubuntu:bionic-20201119
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
-LABEL Description="This Ubuntu Bionic image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="This Ubuntu Bionic image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0.0"
 
 ENV DEBIAN_FRONTEND noninteractive
 
