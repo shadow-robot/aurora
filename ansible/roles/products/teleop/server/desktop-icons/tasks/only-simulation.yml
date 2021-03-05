@@ -267,7 +267,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=rh"
-  when: glove=="shadow_glove" and real_glove|bool
+  when: glove=="shadow_glove"
 
 - name: Install desktop icon for running Shadow Glove mapping node left
   include_tasks: roslaunch-icon.yml
@@ -278,7 +278,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Shadow Glove Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
-  when: glove=="shadow_glove" and real_glove|bool
+  when: glove=="shadow_glove"
 
 - name: Install desktop icon for running Shadow Glove mapping node bimanual
   include_tasks: roslaunch-icon.yml
