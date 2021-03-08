@@ -5,9 +5,9 @@
     set_fact:
       shadow_bag_storage_folder: "{{ user_folder }}/shadow_bag_storage"
       shadow_bag_storage_inside_docker: "/home/user/shadow_bag_storage"
-      shadow_remote_bag_storage_folder: "/mnt/usb-TOSHIBA_External/storage/test_bags"
-      shadow_remote_bag_user: "shadowop"
-      shadow_remote_bag_IP: "10.6.10.7"
+      shadow_remote_bag_storage_folder: "{{ remote_bag_storage_location }}"
+      shadow_remote_bag_user: "{{ remote_bag_user }}"
+      shadow_remote_bag_IP: "{{ remote_bag_storage_IP }}"
 
   - name: Ensure {{ shadow_bag_storage_folder }} folder exists
     file:
