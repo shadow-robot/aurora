@@ -5,9 +5,6 @@
     set_fact:
       shadow_bag_storage_folder: "{{ user_folder }}/shadow_bag_storage"
       shadow_bag_storage_inside_docker: "/home/user/shadow_bag_storage"
-      shadow_remote_bag_storage_folder: "{{ remote_bag_storage_location }}"
-      shadow_remote_bag_user: "{{ remote_bag_user }}"
-      shadow_remote_bag_IP: "{{ remote_bag_storage_IP }}"
 
   - name: Ensure {{ shadow_bag_storage_folder }} folder exists
     file:
@@ -25,6 +22,6 @@
     name: sync hand data to NAS
     hour: "20"
     user: user
-    job: "rsync -azP  --remove-source-files --exclude '*active*' {{ shadow_bag_storage_folder }}/ {{ shadow_remote_bag_user }}@{{ shadow_remote_bag_IP }}:{{ shadow_remote_bag_storage_folder }} >> /home/user/hand_cron_log 2>&1"
+    job: "rsync -azP  --remove-source-files --exclude '*active*' {{ shadow_bag_storage_folder }}/ {{ remote_bag_user }}@{{ remote_bag_storage_IP }}:{{ remote_bag_storage_location }} >> /home/user/hand_cron_log 2>&1"
     cron_file: sr_sync_hand_data_to_nas
   become: true
