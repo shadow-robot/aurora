@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   parameter-store:
-     AWS_ACCESS_KEY : CODE_BUILD_EC2_ACCESS_KEY
-     AWS_SECRET_KEY : CODE_BUILD_EC2_SECRET_KEY
+     AWS_ACCESS_KEY : AKIARFR2MFHY7BRLYNLN
+     AWS_SECRET_KEY : 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
 phases:
   pre_build:
     commands:
