@@ -9,13 +9,20 @@
     url: https://nvidia.github.io/nvidia-docker/gpgkey
     state: present
 
-- name: Set ubuntu_version for nvidia-container-toolkit install
+- name: Set ubuntu_version to 18.04 for nvidia-container-toolkit install
   set_fact:
     ubuntu_version: "18.04"
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
 
+- name: Set ubuntu_version to 20.04 for nvidia-container-toolkit install
+  set_fact:
+    ubuntu_version: "20.04"
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'focal'
+    
 - name: Add nvidia-docker repository
   apt_repository:
     repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
