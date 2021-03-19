@@ -1,7 +1,6 @@
 ---
 dependency:
   name: shell
-  command: bash -c "ansible-galaxy collection install amazon.aws ansible.netcommon:1.5.0 --force"
   command: bash -c "aws iam get-user"
 driver:
   name: ec2
