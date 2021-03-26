@@ -31,3 +31,4 @@
     - {role: installation/mplabx, when: "'mplabx' in software_list"}
     - {role: installation/chrome, when: "'chrome' in software_list"}
     - {role: installation/mongodb, when: "'mongodb' in software_list"}
+    - {role: installation/warehouse_ros, when: "'warehouse_ros' in software_list"}
