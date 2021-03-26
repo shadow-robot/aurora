@@ -1,0 +1,18 @@
+---
+# Warehouse_ros installation
+
+- name: Update package lists
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install warehouse_ros packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - mongodb-server-core
+      - ros-noetic-warehouse-ros
+      - ros-noetic-warehouse-ros-mongo
+  become: yes
+
