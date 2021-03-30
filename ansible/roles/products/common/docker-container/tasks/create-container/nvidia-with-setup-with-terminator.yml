@@ -3,11 +3,6 @@
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
 
-- name: Find out if we should record all data from these hands
-  set_fact:
-    record_hand_data: "enabled"
-  when: config_branch in bag_all_data_from
-
 - name: Creating the Nvidia container which will execute setup script when started inside a terminator window
   changed_when: false
   community.docker.docker_container:
