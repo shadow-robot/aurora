@@ -332,7 +332,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     fi
 fi
 
-"${ansible_executable}" -vvv ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
+"${ansible_executable}" -v ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
 popd
 
