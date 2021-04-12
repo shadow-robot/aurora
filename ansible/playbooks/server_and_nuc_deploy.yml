@@ -42,8 +42,7 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all | difference([inventory_hostname]) }}"
 
-- name: Install Python 3
-  import_playbook: ./install_python3.yml
+
 
 - name: Check which hosts are available for server and control machine system Install
   hosts: all
