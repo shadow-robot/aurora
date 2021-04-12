@@ -15,7 +15,7 @@
 
 - name: Install Docker pip module (and up to date versions of chardet and urllib3)
   pip:
-    name: [ "docker >=4.4.1" ]
+    name: [ "docker" ]
     state: present
   become: yes
   changed_when: pip_status.rc != 0
