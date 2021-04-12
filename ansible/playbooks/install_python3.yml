@@ -1,6 +1,7 @@
 ---
 
 - name: Install Python 3
+  hosts: all
   become: yes
   gather_facts: no
   pre_tasks:
