@@ -23,7 +23,8 @@
   block:
     - name: Pull Docker image
       community.docker.docker_image:
-        name: "{{ full_image_name }}"
+        name: "{{ image }}"
+        tag: "{{ tag }}"
         source: pull
       environment:
         PYTHONPATH: "{{ python_packages_path }}"
