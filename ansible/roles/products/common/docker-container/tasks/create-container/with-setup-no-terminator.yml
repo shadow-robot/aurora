@@ -4,6 +4,11 @@
     container_type_shared_volumes:
       - "{{ user_folder }}/.Xauthority:/home/user/.Xauthority"
 
+- name: Find out if we should record all data from these hands
+  set_fact:
+    record_hand_data: "enabled"
+  when: config_branch in bag_all_data_from
+
 - name: Set shared volumes
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
@@ -26,6 +31,7 @@
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
       arm_ips: "{{ arm_ip_right }}_{{ arm_ip_left }}"
       XDG_RUNTIME_DIR: "/run/user/1000"
+      SR_RECORD_HAND_DATA: "{{ record_hand_data }}"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
