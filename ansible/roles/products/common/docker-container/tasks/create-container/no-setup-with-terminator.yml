@@ -21,6 +21,7 @@
       ROS_MASTER_URI: "http://{{ ros_master }}:11311"
       arm_ips: "{{ arm_ip_right }}_{{ arm_ip_left }}"
       XDG_RUNTIME_DIR: "/run/user/1000"
+      SR_RECORD_HAND_DATA: "{{ record_hand_data }}"
     network_mode: "host"
     pid_mode: "host"
     privileged: yes
