@@ -6,6 +6,15 @@
 - name: Try upgrading pip3 docker
   ansible.builtin.shell: python3 -m pip install --upgrade docker
 
+- name: Try upgrading pip3 docker2
+  ansible.builtin.shell: pip3 install --upgrade docker
+
+  - name: Try upgrading pip3 docker3
+  ansible.builtin.shell: pip install --upgrade docker
+
+  - name: Try upgrading pip3 docker4
+  ansible.builtin.shell: pip2 install --upgrade docker
+
 - name: Creating the Nvidia container which will execute setup script when started inside a terminator window
   changed_when: false
   community.docker.docker_container:
