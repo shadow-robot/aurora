@@ -2,6 +2,9 @@
 - name: Set shared volumes
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
+    
+- name: Try upgrading pip3 docker
+  ansible.builtin.shell: python3 -m pip install --upgrade docker
 
 - name: Creating the Nvidia container which will execute setup script when started inside a terminator window
   changed_when: false
