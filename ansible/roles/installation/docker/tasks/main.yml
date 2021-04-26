@@ -21,6 +21,9 @@
   changed_when: pip_status.rc != 0
   # Hack because of not idempotent behavior of pip module
   # Check this issue for details https://github.com/ansible/ansible/issues/28952
+  
+- name: Try upgrading pip3 docker
+  ansible.builtin.shell: python3 -m install --upgrade docker
 
 - name: Check if Docker is already installed
   stat: 'path=/etc/init.d/docker'
