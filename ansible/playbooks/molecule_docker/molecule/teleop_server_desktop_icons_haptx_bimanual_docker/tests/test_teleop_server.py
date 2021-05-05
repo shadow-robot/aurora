@@ -11,7 +11,7 @@ def test_chrony_server_installed(host):
 
 
 def test_udev_files(host):
-    udev_path = '/lib/udev/rules.d/'
+    udev_path = '/etc/udev/rules.d/'
 
     udev_rules = (
         '60-HTC-Vive-perms-Ubuntu.rules',
