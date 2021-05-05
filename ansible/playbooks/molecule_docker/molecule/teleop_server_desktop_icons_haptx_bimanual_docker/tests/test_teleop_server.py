@@ -11,11 +11,12 @@ def test_chrony_server_installed(host):
 
 
 def test_udev_files(host):
-    udev_path = '/lib/udev/rules.d/'
+    udev_path = '/etc/udev/rules.d/'
 
     udev_rules = (
         '60-HTC-Vive-perms-Ubuntu.rules',
-        '99-steam-perms.rules'
+        '99-steam-perms.rules',
+        '90-VEC-USB-Footpedal.rules'
         )
     for udev_rule in udev_rules:
         assert host.file(udev_path + udev_rule).exists
