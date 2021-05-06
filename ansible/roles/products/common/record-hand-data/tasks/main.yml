@@ -25,3 +25,11 @@
     job: "rsync -azP  --remove-source-files --exclude '*active*' {{ shadow_bag_storage_folder }}/ {{ remote_bag_user }}@{{ remote_bag_storage_IP }}:{{ remote_bag_storage_location }} >> /home/user/hand_cron_log 2>&1"
     cron_file: sr_sync_hand_data_to_nas
   become: true
+  
+- cron:
+    name: cleanup old active bags
+    user: user
+    special_time: weekly
+    job: "for file in $(ls | grep active); do if [[ $(expr $(date '+%Y%m%d') - 7) > $(echo $file | sed -r 's/sr_record_all_hand_data_//g' | awk -F- '{print $1 $2 $3}') ]]; then echo \"$file is more than one week old, deleting...\"; rm $file; fi; done >> /home/user/hand_cron_log 2>&1"
+    cron_file: sr_clean_old_active_bags
+  become: true
