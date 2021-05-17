@@ -342,6 +342,13 @@
     mode: '0644'
   become: yes
 
+- name: Udev rules for hazard light
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr_teleop_devices/noetic-devel/sr_hazard_light/90-hazard-light.rules
+    dest: /etc/udev/rules.d/90-hazard-light.rules
+    mode: '0644'
+  become: yes
+
 - name: Reload udev rules
   shell: udevadm control --reload-rules && udevadm trigger
   changed_when: false
