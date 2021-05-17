@@ -16,7 +16,7 @@ def test_udev_files(host):
     udev_rules = (
         '60-HTC-Vive-perms-Ubuntu.rules',
         '99-steam-perms.rules',
-        '90-VEC-USB-Footpedal.rules'
+        '90-VEC-USB-Footpedal.rules',
         '90-hazard-light.rules'
         )
     for udev_rule in udev_rules:
