@@ -17,6 +17,7 @@
   copy:
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+    directory_mode: yes
   become: yes    
   changed_when: false
 
@@ -31,6 +32,7 @@
   copy:
     src: "{{ shadow_advanched_launchers_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+    directory_mode: yes
   become: yes  
   changed_when: false
 
