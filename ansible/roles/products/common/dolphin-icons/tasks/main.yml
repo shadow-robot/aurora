@@ -83,7 +83,7 @@
   vars:
     desktop_shortcut_name: "Shadow Launcher"
     comment: "Shadow Launcher"
-    exec_command: "dolphin {{ shadow_hand_launcher_folder }}/Shadow Icons"
+    exec_command: "dolphin {{ shadow_hand_launcher_folder }}/Shadow\ Icons"
     icon_file_name: "{{ shadow_hand_launcher_folder }}/demo_icon.png"
     folder: "{{ shadow_hand_launcher_folder }}/demo_icon.png"
-    start_terminal: "true"
+    start_terminal: "false"
