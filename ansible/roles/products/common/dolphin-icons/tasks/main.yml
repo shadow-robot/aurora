@@ -9,7 +9,7 @@
 - name: Create Dolphin Folder
   file:
     path: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
-    state: present
+    state: directory
   become: yes
   changed_when: false
 
