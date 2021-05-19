@@ -16,7 +16,7 @@
 - name: Copy Shadow Demos folder
   copy:
     src: "{{ shadow_demos_folder }}"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/"
     directory_mode: yes
   become: yes    
   changed_when: false
@@ -32,7 +32,7 @@
 - name: Copy Shadow Advanced Launchers folder
   copy:
     src: "{{ shadow_advanched_launchers_folder }}"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/"
     directory_mode: yes
   become: yes  
   changed_when: false
@@ -78,7 +78,7 @@
 - name: Create desktop icon for Dolphin file manager
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon-command.j2
-    dest: "{{ user_folder }}/Desktop/Shadow Launcher.desktop"
+    dest: "{{ desktop_path }}/Shadow Launcher.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "Shadow Launcher"
