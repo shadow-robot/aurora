@@ -61,14 +61,6 @@
       set_fact:
         use_cyberglove: true
 
-    - name: Dolphin file manager installation for Icons handling
-      apt:
-        name: "dolphin"
-      become: yes
-      when:
-        - ansible_distribution|string == 'Ubuntu'
-        - ansible_distribution_release|string == 'focal'
-
     - name: check if customer_key is provided
       when: customer_key is defined and customer_key | length > 0
       set_fact:
@@ -86,6 +78,7 @@
 
   roles:
     - { role: products/teleop/server/deploy }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
 
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation

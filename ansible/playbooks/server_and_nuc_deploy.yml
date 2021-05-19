@@ -61,14 +61,6 @@
       set_fact:
         use_aws: true
     
-    - name: Dolphin file manager installation for Icons handling
-      apt:
-        name: "dolphin"
-      become: yes
-      when:
-        - ansible_distribution|string == 'Ubuntu'
-        - ansible_distribution_release|string == 'focal'
-
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove | length > 0
       set_fact:
@@ -86,6 +78,7 @@
 
   roles:
     - { role: products/hand-e/server/deploy }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
 
 - name: Install Hand software on control machine
   hosts: control_machine
