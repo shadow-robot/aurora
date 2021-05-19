@@ -17,6 +17,7 @@
   copy:
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+  become: yes    
   changed_when: false
 
 - name: Remove Shadow Demos Folder
@@ -30,6 +31,7 @@
   copy:
     src: "{{ shadow_advanched_launchers_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+  become: yes  
   changed_when: false
 
 - name: Ensure Shadow Advanced Launchers folder and contents are deleted
@@ -51,6 +53,7 @@
     src: "{{ item.path }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
   changed_when: false
+  become: yes  
   with_items: "{{ file_list.files }}"
 
 - name: Delete all .desktop files with Shadow in the comment
