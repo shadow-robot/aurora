@@ -14,10 +14,9 @@
   changed_when: false
 
 - name: Copy Shadow Demos folder
-  file:
+  copy:
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
-    mode: '755'
   changed_when: false
 
 - name: Remove Shadow Demos Folder
@@ -28,7 +27,7 @@
   changed_when: false
 
 - name: Copy Shadow Advanced Launchers folder
-  file:
+  copy:
     src: "{{ shadow_advanched_launchers_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
   changed_when: false
@@ -48,10 +47,9 @@
   register: file_list
 
 - name: Copy all .desktop files with Shadow in the comment
-  file:
+  copy:
     src: "{{ item.path }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
-    mode: '755'
   changed_when: false
   with_items: "{{ file_list.files }}"
 
