@@ -3,6 +3,14 @@
 - name: Install Python 3
   import_playbook: ./install_python3.yml
 
+- name: Dolphin file manager installation for Icons handling
+  apt:
+    name: "dolphin"
+  become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'focal'
+
 - name: Install product Docker container and icons
   hosts: docker_deploy
   pre_tasks:
