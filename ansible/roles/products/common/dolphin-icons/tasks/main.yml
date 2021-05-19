@@ -20,6 +20,7 @@
     directory_mode: yes
   become: yes    
   changed_when: false
+  failed_when: false
 
 - name: Remove Shadow Demos Folder
   file:
@@ -35,6 +36,7 @@
     directory_mode: yes
   become: yes  
   changed_when: false
+  failed_when: false
 
 - name: Ensure Shadow Advanced Launchers folder and contents are deleted
   file:
@@ -57,6 +59,7 @@
   changed_when: false
   become: yes  
   with_items: "{{ file_list.files }}"
+  failed_when: false
 
 - name: Delete all .desktop files with Shadow in the comment
   file:
