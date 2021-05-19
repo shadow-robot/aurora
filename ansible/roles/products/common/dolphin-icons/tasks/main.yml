@@ -1,7 +1,12 @@
 ---
-- name: Create Desktop Folder
+- name: Install Dolphin file manager
+  apt:
+    name: "dolphin"
+  become: yes
+
+- name: Create Dolphin Folder
   copy:
-    path: "{{ desktop_path }}/Shadow Icons"
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
     state: present
   become: yes
   changed_when: false
@@ -9,7 +14,7 @@
 - name: Move Shadow Demos folder
   file:
     src: "{{ shadow_demos_folder }}"
-    dest: "{{ desktop_path }}/Shadow Icons"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
   become: yes
   changed_when: false
 
@@ -23,7 +28,7 @@
 - name: Move Shadow Advanced Launchers folder
   file:
     src: "{{ shadow_advanched_launchers_folder }}"
-    dest: "{{ desktop_path }}/Shadow Icons"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
   become: yes
   changed_when: false
 
@@ -44,7 +49,7 @@
 - name: Move all .desktop files with Shadow in the comment
   file:
     src: "{{ item.path }}"
-    dest: "{{ desktop_path }}/Shadow Icons"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
   become: yes
   changed_when: false
   with_items: "{{ file_list.files }}"
@@ -56,3 +61,21 @@
   become: yes
   changed_when: false
   with_items: "{{ file_list.files }}"
+
+- name: Create Single Icon for Dolphin file manager
+  copy:
+    src: ../../../common/resources/files/demo_icon.png
+    dest: "{{ shadow_hand_launcher_folder }}/demo_icon.png"
+    mode: '664'
+
+- name: Create desktop icon for Dolphin file manager
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon-command.j2
+    dest: "{{ user_folder }}/Desktop/Shadow Launcher.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "Shadow Launcher"
+    comment: "Shadow Launcher"
+    exec_command: "dolphin {{ shadow_hand_launcher_folder }}/Shadow Icons"
+    icon_file_name: "{{ shadow_hand_launcher_folder }}/demo_icon.png"
+    start_terminal: "true"
