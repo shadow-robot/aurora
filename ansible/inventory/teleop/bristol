@@ -1,2 +1,2 @@
-[fotios-ThinkPad-W540]
+[server]
 10.6.10.8 ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
