@@ -12,14 +12,26 @@
     state: directory
   changed_when: false
 
+- name: Check if Demos folder exist
+  stat:
+    path: "{{ shadow_demos_folder }}"
+  register: demo_path
+
+- name: Create Demos Folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
+    state: directory
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
 - name: Copy Shadow Demos folder
   copy:
-    src: "{{ shadow_demos_folder }}/"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos/"
+    src: "{{ shadow_demos_folder }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
     directory_mode: yes
     mode: 0755
   changed_when: false
-  failed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
 
 - name: Remove Shadow Demos Folder
   file:
@@ -27,6 +39,18 @@
     state: absent
   become: yes
   changed_when: false
+
+- name: Check if Advanced Launchers folder exist
+  stat:
+    path: "{{ shadow_advanched_launchers_folder }}"
+  register: demo_path
+
+- name: Create Advanced Launchers Folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers"
+    state: directory
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
 
 - name: Copy Shadow Advanced Launchers folder
   copy:
