@@ -17,6 +17,7 @@
     src: "{{ shadow_demos_folder }}/"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos/"
     directory_mode: yes
+    mode: '755'
   changed_when: false
   failed_when: false
 
@@ -32,6 +33,7 @@
     src: "{{ shadow_advanched_launchers_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers"
     directory_mode: yes
+    mode: '755'    
   changed_when: false
   failed_when: false
 
