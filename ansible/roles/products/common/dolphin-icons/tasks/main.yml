@@ -16,7 +16,7 @@
 - name: Copy Shadow Demos folder
   copy:
     src: "{{ shadow_demos_folder }}"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
     directory_mode: yes
   become: yes    
   changed_when: false
