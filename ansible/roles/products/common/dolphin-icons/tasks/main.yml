@@ -94,8 +94,8 @@
 
 - name: Create Single Icon for Dolphin file manager
   copy:
-    src: ../../../common/resources/files/demo_icon.png
-    dest: "{{ shadow_hand_launcher_folder }}/demo_icon.png"
+    src: ../../../common/resources/files/shadowlogo.jpg
+    dest: "{{ shadow_hand_launcher_folder }}/{{ shadow_hand_launcher_folder }}/shadowlogo.jpg"
     mode: '664'
 
 - name: Create desktop icon for Dolphin file manager
@@ -107,6 +107,6 @@
     desktop_shortcut_name: "Shadow Launcher"
     comment: "Shadow Launcher"
     exec_command: "dolphin '{{ shadow_hand_launcher_folder }}/Shadow Icons'"
-    icon_file_name: "demo_icon.png"
-    folder: "{{ shadow_hand_launcher_folder }}"
+    icon_file_name: "shadowlogo.jpg"
+    folder: "{{ shadow_hand_launcher_folder }}/{{ shadow_hand_launcher_folder }}"
     start_terminal: "false"
