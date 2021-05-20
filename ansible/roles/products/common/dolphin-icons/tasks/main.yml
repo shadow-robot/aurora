@@ -79,6 +79,7 @@
   copy:
     src: "{{ item.path }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+    mode: 0755 
   changed_when: false
   with_items: "{{ file_list.files }}"
   failed_when: false
