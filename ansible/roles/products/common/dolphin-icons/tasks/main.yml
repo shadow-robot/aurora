@@ -18,7 +18,6 @@
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
     directory_mode: yes
-  become: yes    
   changed_when: false
   failed_when: false
 
@@ -32,9 +31,8 @@
 - name: Copy Shadow Advanced Launchers folder
   copy:
     src: "{{ shadow_advanched_launchers_folder }}"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers"
     directory_mode: yes
-  become: yes  
   changed_when: false
   failed_when: false
 
@@ -57,7 +55,6 @@
     src: "{{ item.path }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
   changed_when: false
-  become: yes  
   with_items: "{{ file_list.files }}"
   failed_when: false
 
@@ -83,7 +80,7 @@
   vars:
     desktop_shortcut_name: "Shadow Launcher"
     comment: "Shadow Launcher"
-    exec_command: "dolphin {{ shadow_hand_launcher_folder }}/Shadow\ Icons"
-    icon_file_name: "{{ shadow_hand_launcher_folder }}/demo_icon.png"
-    folder: "{{ shadow_hand_launcher_folder }}/demo_icon.png"
+    exec_command: "dolphin '{{ shadow_hand_launcher_folder }}/Shadow Icons'"
+    icon_file_name: "demo_icon.png"
+    folder: "{{ shadow_hand_launcher_folder }}"
     start_terminal: "false"
