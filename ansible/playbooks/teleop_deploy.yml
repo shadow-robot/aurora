@@ -78,6 +78,7 @@
 
   roles:
     - { role: products/teleop/server/deploy }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
 
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
