@@ -30,8 +30,14 @@
     name: Repair old active bags
     user: user
     special_time: weekly
-    job: "for file in $(ls {{ shadow_bag_storage_folder }} | grep active); do if [[ $(expr $(date '+%Y%m%d') - 7) > $(echo $file | sed -r 's/sr_record_all_hand_data_//g' | awk -F- '{print $1 $2 $3}') ]]; 
-    echo $file then echo \"$file is more than one week old, reindexing.. \"; 
-    rosbag reindex $file mv $PWD/$file $PWD/${file%.*} rm *orig* fi; done  >> /home/user/hand_cron_log 2>&1"
+    job: "for file in $(ls | grep active);
+          do if [[ $(expr $(date '+%Y%m%d') - 1) > $(echo $file | sed -r 's/sr_record_all_hand_data_//g' | awk -F- '{print $1 $2 $3}') ]]; 
+          echo $file;
+          then echo \"$file is more than one week old, reindexing.. \"; 
+          rosbag reindex $file;
+          mv $PWD/$file $PWD/${file%.*}; 
+          rm *orig*;
+          fi;
+          done  >> /home/user/hand_cron_log 2>&1"
     cron_file: sr_repair_old_active_bags
   become: true
