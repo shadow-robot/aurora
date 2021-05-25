@@ -5,3 +5,10 @@
     state: 'present'
     update_cache: yes
   become: yes
+
+- name: Make sure ifupdown is available
+  apt:
+    name: 'ifupdown'
+    state: 'present'
+    update_cache: yes
+  become: yes
