@@ -26,6 +26,7 @@
 - name: Install AWS CLI
   pip:
     requirements: "/tmp/aws-cli-requirements.txt"
+    extra_args: "--ignore-installed"
   become: yes
   changed_when: false
 
