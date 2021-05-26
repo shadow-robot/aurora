@@ -22,7 +22,7 @@
 - name: Configure static IP for DHCP for Ubuntu Focal 
   become: yes
   blockinfile:
-    path: /etc/network/netplan/01-network-manager-all.yaml
+    path: /etc/netplan/01-network-manager-all.yaml
     backup: yes
     block: |
       test conditions
