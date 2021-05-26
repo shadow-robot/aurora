@@ -6,9 +6,9 @@
     update_cache: yes
   become: yes
 
-- name: Make sure ifupdown is available
+- name: Make sure netaddr is available
   apt:
-    name: 'ifupdown'
+    name: 'netaddr'
     state: 'present'
     update_cache: yes
   become: yes
