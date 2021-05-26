@@ -22,7 +22,7 @@
 - name: Configure static IP for DHCP for Ubuntu Focal 
   become: yes
   blockinfile:
-    path: /etc/network/interfaces/01-network-manager-all.yaml
+    path: /etc/network/netplan/01-network-manager-all.yaml
     backup: yes
     block: |
       test conditions
@@ -40,7 +40,7 @@
 - name: Configure static IP for DHCP for Ubuntu Focal 
   become: yes
   blockinfile:
-    path: /etc/network/interfaces/01-network-manager-all.yaml
+    path: /etc/network/interfaces
     backup: yes
     block: |
       allow-hotplug {{ dhcp_interface_name }}
