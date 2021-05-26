@@ -43,6 +43,6 @@ fi
 
 terminator --geometry "{{ term_3 }}" -T 'NUC bimanual hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_bimanual_hardware_control_loop.sh"
 terminator --geometry "{{ term_4 }}" -T 'Server bimanual GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_bimanual.sh"
-if [[ "shadow_glove" == "haptx"  ]]; then
+if [[ "{{ glove }}" == "haptx"  ]]; then
   terminator --geometry "{{ term_5 }}" -T 'Server HaptX Bimanual Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_bimanual.sh"
 fi
