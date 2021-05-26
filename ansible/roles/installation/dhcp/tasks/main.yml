@@ -19,7 +19,7 @@
   set_fact:
     dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
 
-- name: Configure static IP for DHCP for Bionic and lower 
+- name: Configure static IP for DHCP for Ubuntu Focal 
   become: yes
   blockinfile:
     path: /etc/network/interfaces/01-network-manager-all.yaml
