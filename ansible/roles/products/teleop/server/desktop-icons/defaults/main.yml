@@ -39,3 +39,5 @@ polhemus_type: "viper"
 scene_file: ""
 glove_driver_type: "right"
 glove_driver_value: "right"
+ra_tracker_id: 0
+la_tracker_id: 1
