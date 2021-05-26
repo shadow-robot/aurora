@@ -25,13 +25,13 @@
     path: /etc/netplan/01-network-manager-all.yaml
     backup: yes
     block: |
-      test conditions
-      allow-hotplug {{ dhcp_interface_name }}
-      iface {{ dhcp_interface_name }} inet static
-        address {{ server_ip }}
-        netmask {{ dhcp_netmask }}
-        network {{ dhcp_network }}
-        up /etc/init.d/isc-dhcp-server restart || true
+      network:
+          version: 2
+          renderer: NetworkManager
+          ethernets:
+             enx:
+                addresses: [ 10.9.10.164/24]
+                dhcp4: no
   changed_when: false
   when:
     - ansible_distribution_release|string == 'focal'
