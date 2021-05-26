@@ -30,7 +30,7 @@
           renderer: NetworkManager
           ethernets:
              enx:
-                addresses: [ {{ server_ip }} | {{ ipaddr(‘netmask’) }} ]
+                addresses: [ {{ server_ip }} | {{ dhcp_netmask }} ]
                 dhcp4: no
   changed_when: false
   when:
