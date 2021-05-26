@@ -6,7 +6,7 @@
     update_cache: yes
   become: yes
 
-- name: Make sure netaddr is available
+- name: Make sure ipaddress (python3) is available
   pip:
-    name: 'netaddr'
+    name: 'ipaddress'
   become: yes
