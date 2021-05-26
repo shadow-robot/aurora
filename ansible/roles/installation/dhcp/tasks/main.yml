@@ -197,7 +197,7 @@
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  command: bash -c "netplan apply"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
