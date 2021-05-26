@@ -36,7 +36,7 @@
   when:
     - ansible_distribution_release|string == 'focal'
     
-- name: Configure static IP for DHCP for Ubuntu Focal 
+- name: Configure static IP for DHCP for Ubuntu Bionic and Xenial
   become: yes
   blockinfile:
     path: /etc/network/interfaces
