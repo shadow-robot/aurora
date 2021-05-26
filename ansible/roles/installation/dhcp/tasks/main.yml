@@ -30,9 +30,10 @@
           renderer: NetworkManager
           ethernets:
              enx:
-                addresses: [ {{ server_ip }} | {{ netcommon.ipaddr('network/prefix')}}  ]
+                addresses: [ {{ server_ip }}/24  ]
                 dhcp4: no
   changed_when: false
+  command: netplan apply
   when:
     - ansible_distribution_release|string == 'focal'
     
