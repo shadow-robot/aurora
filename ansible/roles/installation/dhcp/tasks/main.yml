@@ -19,10 +19,10 @@
   set_fact:
     dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
 
-- name: Configure static IP for DHCP
+- name: Configure static IP for DHCP for Bionic and lower 
   become: yes
   blockinfile:
-    path: /etc/network/interfaces
+    path: /etc/network/interfaces/01-network-manager-all.yaml
     backup: yes
     block: |
       allow-hotplug {{ dhcp_interface_name }}
@@ -32,6 +32,9 @@
         network {{ dhcp_network }}
         up /etc/init.d/isc-dhcp-server restart || true
   changed_when: false
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'focal'
 
 - name: Restart networking on DHCP interface
   become: true
