@@ -7,8 +7,6 @@
   become: yes
 
 - name: Make sure netaddr is available
-  apt:
+  pip:
     name: 'netaddr'
-    state: 'present'
-    update_cache: yes
   become: yes
