@@ -25,6 +25,7 @@
     path: /etc/network/interfaces/01-network-manager-all.yaml
     backup: yes
     block: |
+      test conditions
       allow-hotplug {{ dhcp_interface_name }}
       iface {{ dhcp_interface_name }} inet static
         address {{ server_ip }}
@@ -35,6 +36,23 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'focal'
+    
+- name: Configure static IP for DHCP for Ubuntu Focal 
+  become: yes
+  blockinfile:
+    path: /etc/network/interfaces/01-network-manager-all.yaml
+    backup: yes
+    block: |
+      allow-hotplug {{ dhcp_interface_name }}
+      iface {{ dhcp_interface_name }} inet static
+        address {{ server_ip }}
+        netmask {{ dhcp_netmask }}
+        network {{ dhcp_network }}
+        up /etc/init.d/isc-dhcp-server restart || true
+  changed_when: false
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'xenial'
 
 - name: Restart networking on DHCP interface
   become: true
