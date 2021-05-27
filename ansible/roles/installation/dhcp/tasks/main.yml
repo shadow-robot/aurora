@@ -55,6 +55,7 @@
 - name: Restart networking on DHCP interface
   become: true
   command: bash -c "netplan apply"
+  command: bash -c "systemctl restart network-manager"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
