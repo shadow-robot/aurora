@@ -49,8 +49,8 @@
         network {{ dhcp_network }}
         up /etc/init.d/isc-dhcp-server restart || true
   changed_when: false
-  when:
-    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'xenial'
+  #when:
+    #- ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'xenial'
 
 - name: Restart networking on DHCP interface
   become: true
