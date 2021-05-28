@@ -32,7 +32,6 @@
               enx:
                   addresses: [ 10.9.11.4/24 ]
                   dhcp4: yes
-  command: bash -c "netplan apply"
   changed_when: false
   when:
     - ansible_distribution_release|string == 'focal'
