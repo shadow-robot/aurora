@@ -25,6 +25,8 @@
     path: /etc/network/interfaces
     state: touch
     mode: u=rw,g=r,o=r
+ when:
+    - ansible_distribution_release|string == 'focal'
     
 - name: Configure static IP for DHCP
   become: yes
