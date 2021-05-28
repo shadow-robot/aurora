@@ -32,6 +32,14 @@
               enx:
                   addresses: [ 10.9.11.4/24 ]
                   dhcp4: yes
+  command: bash -c "netplan apply"
+  changed_when: false
+  when:
+    - ansible_distribution_release|string == 'focal'
+    
+- name: Apply netplan config
+  become: true
+  command: bash -c "netplan apply"
   changed_when: false
   when:
     - ansible_distribution_release|string == 'focal'
@@ -54,7 +62,6 @@
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "netplan apply"
   command: bash -c "systemctl restart network-manager"
   changed_when: false
   register: command_result
