@@ -43,6 +43,12 @@
   when:
     - ansible_distribution_release|string == 'focal'
     
+- name: Create network/interfaces
+  ansible.builtin.file:
+    path: /etc/network/interfaces
+    state: touch
+    mode: u=rw,g=r,o=r
+    
 - name: Configure static IP for DHCP for Ubuntu Bionic and Xenial
   become: yes
   blockinfile:
@@ -56,8 +62,8 @@
         network {{ dhcp_network }}
         up /etc/init.d/isc-dhcp-server restart || true
   changed_when: false
-  when:
-    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'xenial'
+  #when:
+    #- ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'xenial'
 
 - name: Restart networking on DHCP interface
   become: true
