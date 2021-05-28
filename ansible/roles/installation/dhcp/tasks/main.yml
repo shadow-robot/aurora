@@ -44,6 +44,7 @@
     - ansible_distribution_release|string == 'focal'
     
 - name: Create network/interfaces
+  become: true
   ansible.builtin.file:
     path: /etc/network/interfaces
     state: touch
