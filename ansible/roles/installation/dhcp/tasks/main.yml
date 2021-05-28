@@ -30,7 +30,7 @@
           renderer: NetworkManager
           ethernets:
              enx:
-                addresses: [ {{ server_ip }}/24  ]
+                addresses: [ {{ server_ip }}/24 ]
                 dhcp4: yes
   changed_when: false
   when:
