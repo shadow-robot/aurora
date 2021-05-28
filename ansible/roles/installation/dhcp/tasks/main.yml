@@ -19,30 +19,6 @@
   set_fact:
     dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
 
-- name: Configure static IP for DHCP for Ubuntu Focal 
-  become: yes
-  blockinfile:
-    path: /etc/netplan/01-network-manager-all.yaml
-    backup: yes
-    block: |
-      network:
-          version: 2
-          renderer: NetworkManager
-          ethernets:
-              enx:
-                  addresses: [ 10.9.11.4/24 ]
-                  dhcp4: yes
-  changed_when: false
-  when:
-    - ansible_distribution_release|string == 'focal'
-    
-- name: Apply netplan config
-  become: true
-  command: bash -c "netplan apply"
-  changed_when: false
-  when:
-    - ansible_distribution_release|string == 'focal'
-    
 - name: Create network/interfaces
   become: true
   ansible.builtin.file:
@@ -50,7 +26,7 @@
     state: touch
     mode: u=rw,g=r,o=r
     
-- name: Configure static IP for DHCP for Ubuntu Bionic and Xenial
+- name: Configure static IP for DHCP
   become: yes
   blockinfile:
     path: /etc/network/interfaces
@@ -63,12 +39,10 @@
         network {{ dhcp_network }}
         up /etc/init.d/isc-dhcp-server restart || true
   changed_when: false
-  #when:
-    #- ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'xenial'
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "systemctl restart network-manager"
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
@@ -80,7 +54,7 @@
   become: true
   changed_when: false
 
-- name: Configure DHCP interface for Ubuntu Bionic and Focal
+- name: Configure DHCP interface for Ubuntu Bionic
   become: yes
   lineinfile:
     path: /etc/default/isc-dhcp-server
@@ -89,7 +63,7 @@
   changed_when: false
   when:
     - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'focal'
+    - ansible_distribution_release|string == 'bionic'
 
 - name: Configure DHCP interface for Ubuntu Xenial
   become: yes
@@ -211,7 +185,7 @@
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "netplan apply"
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
