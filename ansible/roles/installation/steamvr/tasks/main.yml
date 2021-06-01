@@ -30,7 +30,7 @@
 
 - name: Install libudev0_175 from the internet if absent
   apt:
-    deb: http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
+    deb: http://old-releases.ubuntu.com/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
     state: present
   when: '"libudev0" not in ansible_facts.packages'
   become: yes
