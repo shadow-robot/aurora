@@ -184,7 +184,18 @@
     name: networking
     state: restarted
   become: true
-
+  when:
+    - ansible_distribution_release|string == 'bionic'
+    - ansible_distribution_release|string == 'xenial'
+    
+- name: Restart networking service
+  service:
+    name: network-manager
+    state: restarted
+  become: true
+  when:
+    - ansible_distribution_release|string == 'focal'
+    
 - name: Restart networking on DHCP interface
   become: true
   command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
