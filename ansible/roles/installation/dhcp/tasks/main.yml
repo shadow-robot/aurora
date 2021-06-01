@@ -2,6 +2,14 @@
 - name: Include installation/net-tools role
   include_role:
     name: installation/net-tools
+    
+- name: Install ifupdown
+  apt:
+    name: ifupdown
+    state: present
+  become: yes
+  when:
+    - ansible_distribution_release|string == 'focal'
 
 - name: Install isc-dhcp-server
   apt:
