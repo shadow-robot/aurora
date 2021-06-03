@@ -28,13 +28,35 @@
   package_facts:
     manager: apt
 
-- name: Install libudev0_175 from the internet if absent
+- name: Install libudev0_175 from the internet if absent (18.04)
   apt:
     deb: http://old-releases.ubuntu.com/ubuntu/pool/main/u/udev/libudev0_175-0ubuntu9_amd64.deb
     state: present
   when: '"libudev0" not in ansible_facts.packages'
   become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    
+- name: Install multiarch-support from the internet 
+  apt:
+    deb: http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.2_amd64.deb
+    state: present
+  become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'focal'
 
+- name: Install libudev0_175 from the internet if absent (20.04)
+  apt:
+    deb: http://launchpadlibrarian.net/119461136/libudev0_175-0ubuntu13_amd64.deb
+    state: present
+  when: '"libudev0" not in ansible_facts.packages'
+  become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'focal'
+    
 - name: Ensure botocore and boto3 modules are installed
   pip:
     name: [ "boto3", "botocore"]
