@@ -91,6 +91,7 @@
 
   roles:
     - { role: products/teleop/server/deploy }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
 
 - name: Install Teleop software on control machine
   hosts: control_machine
