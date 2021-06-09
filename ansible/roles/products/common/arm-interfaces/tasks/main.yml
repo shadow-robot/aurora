@@ -5,6 +5,12 @@
     - ansible_distribution_release|string == 'bionic'
     - skip_molecule_task is not defined
 
+- import_tasks: bionic.yml
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'focal'
+    - skip_molecule_task is not defined
+    
 - import_tasks: xenial.yml
   when:
     - ansible_distribution|string == 'Ubuntu'
