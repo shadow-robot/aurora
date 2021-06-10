@@ -2,14 +2,6 @@
 - name: Include installation/net-tools role
   include_role:
     name: installation/net-tools
- 
-- name: Install ifupdown
-  apt:
-    name: ifupdown
-    state: present
-  become: yes
-  when:
-    - ansible_distribution_release|string == 'focal'
     
 - name: Install isc-dhcp-server
   apt:
@@ -52,7 +44,7 @@
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  command: bash -c "ifconfig {{ dhcp_interface_name }} down && ifconfig {{ dhcp_interface_name }} up"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
@@ -74,7 +66,6 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'focal'
-    
 
 - name: Configure DHCP interface for Ubuntu Xenial
   become: yes
@@ -147,8 +138,8 @@
     backup: yes
     block: |
       iptables-restore < /etc/iptables.sav
-      ifdown {{ dhcp_interface_name }}
-      ifup {{ dhcp_interface_name }}
+      ifconfig {{ dhcp_interface_name }} down
+      ifconfig {{ dhcp_interface_name }} up
     insertbefore: "exit 0"
     create: yes
   changed_when: false
@@ -196,7 +187,7 @@
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  command: bash -c "ifconfig {{ dhcp_interface_name }} down && ifconfig {{ dhcp_interface_name }} up"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
