@@ -73,7 +73,7 @@
   changed_when: false
   when:
     - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic' or - ansible_distribution_release|string == 'focal'
+    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'focal'
     
 
 - name: Configure DHCP interface for Ubuntu Xenial
