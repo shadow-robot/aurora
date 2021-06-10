@@ -138,8 +138,8 @@
     backup: yes
     block: |
       iptables-restore < /etc/iptables.sav
-      ifdown {{ dhcp_interface_name }}
-      ifup {{ dhcp_interface_name }}
+      ifconfig {{ dhcp_interface_name }} down
+      ifconfig {{ dhcp_interface_name }} up
     insertbefore: "exit 0"
     create: yes
   changed_when: false
