@@ -52,7 +52,7 @@
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifconfig {{ dhcp_interface_name }} down && ifconfig {{ dhcp_interface_name }} up"
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
@@ -64,7 +64,7 @@
   become: true
   changed_when: false
 
-- name: Configure DHCP interface for Ubuntu Bionic
+- name: Configure DHCP interface for Ubuntu Bionic or Focal
   become: yes
   lineinfile:
     path: /etc/default/isc-dhcp-server
@@ -73,7 +73,8 @@
   changed_when: false
   when:
     - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+    - ansible_distribution_release|string == 'bionic' or - ansible_distribution_release|string == 'focal'
+    
 
 - name: Configure DHCP interface for Ubuntu Xenial
   become: yes
@@ -146,8 +147,8 @@
     backup: yes
     block: |
       iptables-restore < /etc/iptables.sav
-      ifconfig {{ dhcp_interface_name }} down
-      ifconfig {{ dhcp_interface_name }} up
+      ifdown {{ dhcp_interface_name }}
+      ifup {{ dhcp_interface_name }}
     insertbefore: "exit 0"
     create: yes
   changed_when: false
@@ -192,21 +193,10 @@
     name: networking
     state: restarted
   become: true
-  when:
-    - ansible_distribution_release|string == 'bionic'
-    - ansible_distribution_release|string == 'xenial'
-    
-- name: Restart networking service
-  service:
-    name: network-manager
-    state: restarted
-  become: true
-  when:
-    - ansible_distribution_release|string == 'focal'
-    
+
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifconfig {{ dhcp_interface_name }} down && ifconfig {{ dhcp_interface_name }} up"
+  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
