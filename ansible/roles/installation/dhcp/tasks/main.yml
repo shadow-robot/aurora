@@ -2,15 +2,7 @@
 - name: Include installation/net-tools role
   include_role:
     name: installation/net-tools
-    
-- name: Install ifupdown
-  apt:
-    name: ifupdown
-    state: present
-  become: yes
-  when:
-    - ansible_distribution_release|string == 'focal'
-
+ 
 - name: Install isc-dhcp-server
   apt:
     name: isc-dhcp-server
@@ -52,7 +44,7 @@
 
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  command: bash -c "ifconfig {{ dhcp_interface_name }} down && ifconfig {{ dhcp_interface_name }} up"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
@@ -206,7 +198,7 @@
     
 - name: Restart networking on DHCP interface
   become: true
-  command: bash -c "ifdown {{ dhcp_interface_name }} && ifup {{ dhcp_interface_name }}"
+  command: bash -c "ifconfig {{ dhcp_interface_name }} down && ifconfig {{ dhcp_interface_name }} up"
   changed_when: false
   register: command_result
   failed_when: "'Unknown' in command_result.stderr"
