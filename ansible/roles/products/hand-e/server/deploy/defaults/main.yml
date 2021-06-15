@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/dexterous-hand"
-tag: "melodic-release"
+tag: "noetic-release"
 reinstall: false
 container_name: "dexterous_hand_real_hw"
 nvidia_docker: true
