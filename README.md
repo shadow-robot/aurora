@@ -425,7 +425,7 @@ For debugging (not using the master branch), you can add the following immediate
 
 # Roles #
 
-Everything you need to do in Ansible is achieved using roles. Roles basically mean: "execute this set of tasks" (defined in the role's tasks/main.yml file). The roles folder is very important and contains roles and tasks for teleop, hand_e, hand_h and a common role section. It is very important that you re-use existing roles whenever possible to avoid code duplication. Please read about roles [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html) 
+Everything you need to do in Ansible is achieved using roles. Roles basically mean: "execute this set of tasks" (defined in the role's tasks/main.yml file). The roles folder is very important and contains roles and tasks for teleop, hand_e and a common role section. It is very important that you re-use existing roles whenever possible to avoid code duplication. Please read about roles [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html) 
 
 The roles folder contains the following sub-folders:
 
@@ -468,7 +468,6 @@ The Products folder (/ansible/roles/products) contains groupings of roles under 
 
  - common
  - hand-e
- - hand-h
  - teleop
 
 The logic is: everything to do with hand-e is in the hand-e folder, everything to do with teleop is in the teleop folder.
@@ -555,7 +554,6 @@ It has to have a similar structure to this (let's say your playbook is called "m
   roles:
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
 ```
@@ -588,7 +586,6 @@ An example of a role section:
   roles:
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - {role: products/hand-h/deploy, when: product == 'hand_h'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
 ```
