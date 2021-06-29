@@ -111,7 +111,7 @@
   include_tasks: default-icon.yml
   vars:
     template: ../../../common/resources/templates/scripts/start-docker-container.j2
-    desktop_icon_png: "laptop.jpg"
+    desktop_icon_png: "laptop.png"
     launch_script: "shadow_server_container.sh"
     desktop_icon_name: "1 - Launch Server Container"
     desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
@@ -179,9 +179,9 @@
 
 - name: Set GUI icon variables to standard values for haptx
   set_fact:
-    launch_file_input_gui_right: "teleop_vive_haptx.launch vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
-    launch_file_input_gui_left: "teleop_vive_haptx.launch side:=left vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
-    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }}"
+    launch_file_input_gui_right: "teleop_vive_haptx.launch vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} tracker_id:={{ ra_tracker_id }}"
+    launch_file_input_gui_left: "teleop_vive_haptx.launch side:=left vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} tracker_id:={{ la_tracker_id }}"
+    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} ra_tracker_id:={{ ra_tracker_id }} la_tracker_id:={{ la_tracker_id }}"
     project_name_input_value: "sr_teleop_vive_haptx"
   when: glove=="haptx"
 

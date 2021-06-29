@@ -1,7 +1,7 @@
 ---
 image: "shadowrobot/dexterous-hand" # Docker image name
 tag: "melodic-release" # Tag of the exact Docker hub image to pull
-product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite, hand_h)
+product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "dexterous_hand_real_hw" # Name of the docker container
 nvidia_docker: false # Define if nvidia-container-toolkit is used (default is false)

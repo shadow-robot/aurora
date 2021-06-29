@@ -32,10 +32,12 @@ arm_x_separation_value: 0.0
 arm_y_separation_value: 0.0
 rh_biotac_mapping: ""
 lh_biotac_mapping: ""
-launch_file_input_haptx_mapping_left: "haptx_base.launch hand_side_prefix:=lh"
+launch_file_input_haptx_mapping_left: "haptx_base.launch side:=left"
 launch_file_input_haptx_mapping_right: "haptx_base.launch"
 launch_file_input_haptx_mapping_bimanual: "haptx_base_bimanual.launch"
 polhemus_type: "viper"
 scene_file: ""
 glove_driver_type: "right"
 glove_driver_value: "right"
+ra_tracker_id: 0
+la_tracker_id: 1
