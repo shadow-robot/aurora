@@ -43,4 +43,5 @@ if [ "$proceed" == false ]; then
 fi
 
 terminator --geometry "{{ term_3 }}" -T 'NUC bimanual arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
+sleep 30 # temporary workaround until arm controllers starting on time is fixed
 terminator --geometry "{{ term_4 }}" -T 'Server bimanual arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_bimanual_arm_hand.sh"
