@@ -2,7 +2,15 @@
 - name: Include installation/net-tools role
   include_role:
     name: installation/net-tools
-
+ 
+- name: Install ifupdown
+  apt:
+    name: ifupdown
+    state: present
+  become: yes
+  when:
+    - ansible_distribution_release|string == 'focal'
+    
 - name: Install isc-dhcp-server
   apt:
     name: isc-dhcp-server
@@ -19,6 +27,15 @@
   set_fact:
     dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
 
+- name: Create network/interfaces
+  become: true
+  ansible.builtin.file:
+    path: /etc/network/interfaces
+    state: touch
+    mode: u=rw,g=r,o=r
+  when:
+    - ansible_distribution_release|string == 'focal'
+    
 - name: Configure static IP for DHCP
   become: yes
   blockinfile:
@@ -47,7 +64,7 @@
   become: true
   changed_when: false
 
-- name: Configure DHCP interface for Ubuntu Bionic
+- name: Configure DHCP interface for Ubuntu Bionic or Focal
   become: yes
   lineinfile:
     path: /etc/default/isc-dhcp-server
@@ -56,7 +73,8 @@
   changed_when: false
   when:
     - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'focal'
+    
 
 - name: Configure DHCP interface for Ubuntu Xenial
   become: yes

@@ -47,7 +47,6 @@ product_allowed_values:
   - hand_e
   - hand_lite
   - hand_extra_lite
-  - hand_h
   - arm_hand_e
   - arm_hand_lite
   - arm_hand_extra_lite
@@ -55,9 +54,6 @@ polhemus_type_allowed_values:
   - liberty
   - viper
 invalid_eth_values:
-  - eth0
-  - eth1
-  - eth2
   - eth01
   - eth00
   - enx0
