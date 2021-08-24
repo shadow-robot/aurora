@@ -333,7 +333,7 @@ fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
-"${ansible_galaxy_executable}" collection install community.docker amazon.aws
+#"${ansible_galaxy_executable}" collection install community.docker amazon.aws
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
