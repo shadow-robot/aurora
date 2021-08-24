@@ -117,9 +117,9 @@
     become: yes
 
   - name: Add .ssh folder
-    shell: "mkdir /home/user/.ssh"
+    shell: "mkdir -p /home/user/.ssh"
     become: yes
-    
+
   - name: Copying the private_ssh_keys into docker container
     changed_when: false
     shell: "docker cp {{ private_ssh_keys_path }} {{ container_name }}:/home/user/.ssh/id_rsa"
