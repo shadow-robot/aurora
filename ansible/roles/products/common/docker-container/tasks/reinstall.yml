@@ -116,6 +116,9 @@
     shell: "docker cp {{ shadow_hand_launcher_folder }}/clone_private_repos.sh {{ container_name }}:/tmp/clone_private_repos.sh"
     become: yes
 
+  - name: Add .ssh folder
+    shell: "mkdir /home/user/.ssh"
+
   - name: Copying the private_ssh_keys into docker container
     changed_when: false
     shell: "docker cp {{ private_ssh_keys_path }} {{ container_name }}:/home/user/.ssh/id_rsa"
