@@ -33,7 +33,7 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "create_run_user_1000.sh"
-    modify_script_commands: "mkdir -p /home/user/.ssh;sudo mkdir -p /run/user/1000;sudo chmod 0700 /run/user/1000;sudo chown 1000:1000 /run/user/1000;export XDG_RUNTIME_DIR=/run/user/1000"
+    modify_script_commands: "sudo mkdir -p /home/user/.ssh;sudo mkdir -p /run/user/1000;sudo chmod 0700 /run/user/1000;sudo chown 1000:1000 /run/user/1000;export XDG_RUNTIME_DIR=/run/user/1000"
   when: xdg_check.stdout=="0"
 
 - name: Checking out PRs and branches if pr_branches list has been specified
