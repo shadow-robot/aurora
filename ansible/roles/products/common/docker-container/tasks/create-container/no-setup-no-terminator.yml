@@ -44,3 +44,6 @@
     command: bash
     container_default_behavior: compatibility
   become: yes
+
+- name: Add .ssh folder
+  shell: "docker exec {{ container_name }} mkdir -p /home/user/.ssh"
