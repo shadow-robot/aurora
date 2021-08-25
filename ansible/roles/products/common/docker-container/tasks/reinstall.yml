@@ -116,22 +116,10 @@
     shell: "docker cp {{ shadow_hand_launcher_folder }}/clone_private_repos.sh {{ container_name }}:/tmp/clone_private_repos.sh"
     become: yes
 
-  - name: Create .ssh folder
-    import_tasks: modify-container.yml
-    vars:
-      modify_script_name: "create_ssh_folder.sh"
-      modify_script_commands: ""
-
   - name: Copying the private_ssh_keys into docker container
     changed_when: false
     shell: "docker cp {{ private_ssh_keys_path }} {{ container_name }}:/home/user/.ssh/id_rsa"
     become: yes
-
-  - name: Enable private_key
-    import_tasks: modify-container.yml
-    vars:
-      modify_script_name: "enable_priv_key.sh"
-      modify_script_commands: "sudo ssh-keyscan -H 140.82.121.3 >> /home/user/known_hosts;sudo ssh-keyscan -H github.com >> /home/user/known_hosts"
 
   - name: Install private repos
     import_tasks: modify-container.yml
