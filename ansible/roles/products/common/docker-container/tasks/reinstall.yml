@@ -121,6 +121,12 @@
     shell: "docker cp {{ private_ssh_keys_path }} {{ container_name }}:/home/user/.ssh/id_rsa"
     become: yes
 
+  - name: Set up known_hosts
+    import_tasks: modify-container.yml
+    vars:
+      modify_script_name: "setup_known_hosts.sh"
+      modify_script_commands: "ssh-keyscan github.com >> /home/user/known_hosts; sudo mv /home/user/known_hosts /home/user/.ssh/"
+
   - name: Install private repos
     import_tasks: modify-container.yml
     vars:
