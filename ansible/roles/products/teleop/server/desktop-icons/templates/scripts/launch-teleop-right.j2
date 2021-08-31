@@ -32,7 +32,7 @@ wait_for_topic () {
   proceed=false
   while [ $elapsed_time -lt $CONST_TIMEOUT ]; do
     elapsed_time=$(( SECONDS - start_time ))
-    if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = "*${1}*" ]]; then
+    if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = *"${1}"* ]]; then
       proceed=true
       break;
     fi
