@@ -1,7 +1,7 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
-CONST_TIMEOUT=60
+CONST_TIMEOUT=20
 
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 
@@ -24,32 +24,25 @@ fi
 
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
 
-# Arg1: Topic name to wait for
-# Arg2: Error message to display if topic doesn't appear until timeout
-wait_for_topic () {
-  elapsed_time=0
-  start_time=$SECONDS
-  proceed=false
-  while [ $elapsed_time -lt $CONST_TIMEOUT ]; do
-    elapsed_time=$(( SECONDS - start_time ))
-    if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = *"${1}"* ]]; then
-      proceed=true
-      break;
-    fi
-  done
-  if [ "$proceed" == false ]; then
-    zenity --error --text="${2}"
+elapsed_time=0
+start_time=$SECONDS
+proceed=false
+while [ $elapsed_time -lt $CONST_TIMEOUT ]; do
+  elapsed_time=$(( SECONDS - start_time ))
+  if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = */rosout* ]]; then
+    proceed=true
+    break;
+  fi
+done
+
+if [ "$proceed" == false ]; then
+    zenity --error --text="Roscore not running, execution stopped"
     docker stop {{ container_name }}
     exit 1
-  fi
-}
-
-wait_for_topic "/rosout" "Roscore not running, execution stopped"
+fi
 
 terminator --geometry "{{ term_3 }}" -T 'NUC left hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_left_hardware_control_loop.sh"
-
-wait_for_topic "/la_trajectory_controller/state" "Couldn't find left arm trajectory topic"
-
+sleep 30 # temporary workaround until arm controllers starting on time is fixed
 terminator --geometry "{{ term_4 }}" -T 'Server left hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_left.sh"
 if [[ "{{ glove }}" == "haptx"  ]]; then
   terminator --geometry "{{ term_5 }}" -T 'Server HaptX Left Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_left.sh"
