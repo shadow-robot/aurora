@@ -3,20 +3,15 @@
 
 # Arg1: Topic name to wait for
 # Arg2: Error message to display if topic doesn't appear until timeout
-wait_for_topic () {
-  elapsed_time=0
-  start_time=$SECONDS
-  proceed=false
-  while [ $elapsed_time -lt 60 ]; do
-    elapsed_time=$(( SECONDS - start_time ))
-    if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = *"${1}"* ]]; then
-      proceed=true
-      break;
-    fi
-  done
-  if [ "$proceed" == false ]; then
-    zenity --error --text="${2}"
-    docker stop {{ container_name }}
-    exit 1
+elapsed_time=0
+start_time=$SECONDS
+while [ $elapsed_time -lt 60 ]; do
+  elapsed_time=$(( SECONDS - start_time ))
+  if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = *"${1}"* ]]; then
+    # Success
+    exit 0
   fi
-}
+done
+zenity --error --text="${2}"
+docker stop {{ container_name }}
+exit 1
