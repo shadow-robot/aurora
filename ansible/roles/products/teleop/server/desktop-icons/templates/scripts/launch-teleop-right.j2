@@ -1,7 +1,7 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
-CONST_TIMEOUT=30
+CONST_TIMEOUT=20
 
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 
