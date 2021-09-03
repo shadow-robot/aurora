@@ -1,4 +1,10 @@
 ---
+- name: Creating wait_for_topic.sh script
+  template:
+    src: templates/scripts/wait_for_topic.j2
+    dest: "{{ shadow_hand_launcher_folder }}/wait_for_topic.sh"
+    mode: '755'
+
 - name: Install desktop icon for launching Shadow Right Teleop
   import_tasks: default-icon.yml
   vars:
