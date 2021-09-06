@@ -3,7 +3,7 @@
   import_playbook: ../../../teleop_deploy.yml
   vars:
     image: public.ecr.aws/shadowrobot/dexterous-hand
-    tag: melodic-release
+    tag: noetic-release
     reinstall: true
     use_openvpn: false
     ethercat_right_hand: enp0s25
