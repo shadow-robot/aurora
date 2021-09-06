@@ -5,7 +5,8 @@
 # Arg2: Error message to display if topic doesn't appear until timeout
 elapsed_time=0
 start_time=$SECONDS
-while [ $elapsed_time -lt 60 ]; do
+CONST_TIMEOUT=60
+while [ $elapsed_time -lt $CONST_TIMEOUT ]; do
   elapsed_time=$(( SECONDS - start_time ))
   if [[ "$(docker exec -ti {{ container_name }} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rostopic list")" = *"${1}"* ]]; then
     # Success
