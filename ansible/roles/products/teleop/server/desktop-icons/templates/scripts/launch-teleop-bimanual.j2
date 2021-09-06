@@ -24,7 +24,7 @@ fi
 
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
 
-if ! { shadow_hand_launcher_folder }}/wait_for_topic.sh "/rosout"; then
+if ! {{ shadow_hand_launcher_folder }}/wait_for_topic.sh "/rosout"; then
   zenity --error --text="Roscore not running, execution stopped"
   docker stop {{ container_name }}
   exit 1
@@ -32,12 +32,12 @@ fi
 
 terminator --geometry "{{ term_3 }}" -T 'NUC bimanual hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_bimanual_hardware_control_loop.sh"
 
-if ! { shadow_hand_launcher_folder }}/wait_for_topic.sh "/la_trajectory_controller/state"; then
+if ! {{ shadow_hand_launcher_folder }}/wait_for_topic.sh "/la_trajectory_controller/state"; then
   zenity --error --text="Couldn't find left arm trajectory topic"
   docker stop {{ container_name }}
   exit 1
 fi
-if ! { shadow_hand_launcher_folder }}/wait_for_topic.sh "/ra_trajectory_controller/state"; then
+if ! {{ shadow_hand_launcher_folder }}/wait_for_topic.sh "/ra_trajectory_controller/state"; then
   zenity --error --text="Couldn't find right arm trajectory topic"
   docker stop {{ container_name }}
   exit 1
