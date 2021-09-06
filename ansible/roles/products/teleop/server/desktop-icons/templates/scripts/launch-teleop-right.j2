@@ -24,11 +24,19 @@ fi
 
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
 
-{{ shadow_hand_launcher_folder }}/wait_for_topic.sh "/rosout" "Roscore not running, execution stopped"
+if ! { shadow_hand_launcher_folder }}/wait_for_topic.sh "/rosout"; then
+  zenity --error --text="Roscore not running, execution stopped"
+  docker stop {{ container_name }}
+  exit 1
+fi
 
 terminator --geometry "{{ term_3 }}" -T 'NUC right hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_hardware_control_loop.sh"
 
-{{ shadow_hand_launcher_folder }}/wait_for_topic.sh "/ra_trajectory_controller/state" "Couldn't find right arm trajectory topic"
+if ! { shadow_hand_launcher_folder }}/wait_for_topic.sh "/ra_trajectory_controller/state"; then
+  zenity --error --text="Couldn't find right arm trajectory topic"
+  docker stop {{ container_name }}
+  exit 1
+fi
 
 terminator --geometry "{{ term_4 }}" -T 'Server right hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right.sh"
 if [[ "{{ glove }}" == "haptx"  ]]; then

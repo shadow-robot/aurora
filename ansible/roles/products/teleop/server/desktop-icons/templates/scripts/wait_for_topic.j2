@@ -1,8 +1,7 @@
 #jinja2: trim_blocks:False
 #!/bin/bash
 
-# Arg1: Topic name to wait for
-# Arg2: Error message to display if topic doesn't appear until timeout
+# Script expect one argument: a topic name to wait for
 elapsed_time=0
 start_time=$SECONDS
 CONST_TIMEOUT=60
@@ -13,6 +12,5 @@ while [ $elapsed_time -lt $CONST_TIMEOUT ]; do
     exit 0
   fi
 done
-zenity --error --text="${2}"
-docker stop {{ container_name }}
+# Timeout
 exit 1
