@@ -5,7 +5,7 @@ MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 LABEL Description="This image is used for testing empty Ubuntu Bionic deployment" Vendor="Shadow Robot" Version="1.0"
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV LANG C.UTF-8
+ENV PYTHONIOENCODING=utf-8
 ENV USER testuser
 
 RUN set -x && \
