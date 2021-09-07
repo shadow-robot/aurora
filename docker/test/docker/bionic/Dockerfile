@@ -7,7 +7,7 @@ LABEL Description="This image is used for testing Ubuntu Bionic with Docker depl
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV USER testuser
-
+ENV LANG C.UTF-8
 ARG ts_docker_aurora_branch
 
 ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"master"}
