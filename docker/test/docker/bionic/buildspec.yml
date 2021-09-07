@@ -25,6 +25,7 @@ phases:
       - ./aws/install
       - git checkout $branch
       - cd $dockerfile_folder
+      - export LANG=en_US.UTF-8
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot
       - docker build -t $image .
       - docker tag $image:latest public.ecr.aws/shadowrobot/$image:$tag
