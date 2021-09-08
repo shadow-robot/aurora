@@ -1,8 +1,8 @@
-FROM public.ecr.aws/shadowrobot/ubuntu:xenial-20201030
+FROM public.ecr.aws/shadowrobot/ubuntu:focal
 
 MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
 
-LABEL Description="Ubuntu Xenial image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="Ubuntu Focal image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -60,3 +60,5 @@ RUN set -x && \
         /root/.ansible \
         /root/.gitconfig \
         /root/.cache
+
+VOLUME /var/lib/docker

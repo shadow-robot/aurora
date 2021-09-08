@@ -1,7 +1,5 @@
 FROM public.ecr.aws/shadowrobot/aurora-molecule:bionic
 
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
-
 LABEL Description="Ubuntu Bionic image contains Ansible, Molecule and EC2 driver" Vendor="Shadow Robot" Version="1.0"
 
 ARG ml_ec2_aurora_branch
@@ -26,3 +24,5 @@ RUN set -x && \
         /root/.ansible \
         /root/.gitconfig \
         /root/.cache
+
+VOLUME /var/lib/docker

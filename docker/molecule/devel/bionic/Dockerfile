@@ -1,7 +1,5 @@
 FROM public.ecr.aws/shadowrobot/aurora-molecule-docker:bionic
 
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
-
 LABEL Description="Ubuntu Bionic image contains Ansible, Molecule, Docker and EC2 driver and Development tools with GUI" Vendor="Shadow Robot" Version="1.0"
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -34,5 +32,5 @@ RUN set -x && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.ansible /root/.gitconfig /root/.cache
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
+VOLUME /var/lib/docker
 CMD ["/usr/bin/terminator"]
