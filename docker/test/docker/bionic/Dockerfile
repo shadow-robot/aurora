@@ -6,6 +6,10 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV USER testuser
 
+ENV LC_ALL C.UTF-8
+
+ENV LANG C.UTF-8
+
 ARG ts_docker_aurora_branch
 
 ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"master"}
