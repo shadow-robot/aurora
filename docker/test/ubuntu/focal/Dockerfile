@@ -1,8 +1,6 @@
-FROM public.ecr.aws/shadowrobot/ubuntu:xenial-20201030
+FROM public.ecr.aws/shadowrobot/ubuntu:focal
 
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
-
-LABEL Description="This image is used for testing empty Ubuntu Xenial deployment" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="This image is used for testing empty Ubuntu Focal deployment" Vendor="Shadow Robot" Version="1.0"
 
 ENV DEBIAN_FRONTEND noninteractive
 

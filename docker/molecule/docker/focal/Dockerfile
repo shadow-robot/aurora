@@ -1,8 +1,6 @@
-FROM public.ecr.aws/shadowrobot/aurora-molecule:xenial
+FROM public.ecr.aws/shadowrobot/aurora-molecule:focal
 
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
-
-LABEL Description="Ubuntu Xenial image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="Ubuntu Focal image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
 
 ARG ml_docker_aurora_branch
 
@@ -26,3 +24,5 @@ RUN set -x && \
         /root/.ansible \
         /root/.gitconfig \
         /root/.cache
+
+VOLUME /var/lib/docker

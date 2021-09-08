@@ -4,9 +4,9 @@ env:
   shell: bash
   variables:
      branch: master
-     image: aurora-molecule-ec2
-     tag: xenial
-     dockerfile_folder: docker/molecule/ec2/xenial/
+     image: aurora-molecule
+     tag: focal
+     dockerfile_folder: docker/molecule/base/focal/
   exported-variables:
      - branch
      - image

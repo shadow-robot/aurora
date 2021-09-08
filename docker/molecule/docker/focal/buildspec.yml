@@ -4,9 +4,9 @@ env:
   shell: bash
   variables:
      branch: master
-     image: aurora-test-ubuntu
-     tag: xenial
-     dockerfile_folder: docker/test/ubuntu/xenial/
+     image: aurora-molecule-docker
+     tag: focal
+     dockerfile_folder: docker/molecule/docker/focal/
   exported-variables:
      - branch
      - image

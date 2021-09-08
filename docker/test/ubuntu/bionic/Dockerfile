@@ -1,6 +1,4 @@
-FROM public.ecr.aws/shadowrobot/ubuntu:bionic-20201119
-
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
+FROM public.ecr.aws/shadowrobot/ubuntu:bionic
 
 LABEL Description="This image is used for testing empty Ubuntu Bionic deployment" Vendor="Shadow Robot" Version="1.0"
 

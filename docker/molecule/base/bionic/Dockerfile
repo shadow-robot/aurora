@@ -1,6 +1,4 @@
-FROM public.ecr.aws/shadowrobot/ubuntu:bionic-20201119
-
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
+FROM public.ecr.aws/shadowrobot/ubuntu:bionic
 
 LABEL Description="This Ubuntu Bionic image contains Ansible and Molecule" Vendor="Shadow Robot" Version="1.0.0"
 
@@ -46,3 +44,5 @@ RUN set -x && \
         /root/.ansible \
         /root/.gitconfig \
         /root/.cache
+
+VOLUME /var/lib/docker
