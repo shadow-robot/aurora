@@ -6,6 +6,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ENV TZ=Europe
 
+ENV LC_ALL C.UTF-8
+
+ENV LANG C.UTF-8
+
 ENV USER testuser
 
 ARG ts_docker_aurora_branch
