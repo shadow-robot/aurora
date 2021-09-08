@@ -8,6 +8,10 @@ ENV PULSE_SERVER /run/pulse/native
 
 ARG ml_devel_aurora_branch
 
+ENV LC_ALL C.UTF-8
+
+ENV LANG C.UTF-8
+
 ENV ml_devel_aurora_branch ${ml_devel_aurora_branch:-"master"}
 
 ENV ml_devel_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_devel_aurora_branch/bin/run-ansible.sh"

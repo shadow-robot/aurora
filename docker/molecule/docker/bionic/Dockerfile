@@ -5,6 +5,10 @@ LABEL Description="Ubuntu Bionic image contains Ansible, Molecule and Docker dri
 
 ARG ml_docker_aurora_branch
 
+ENV LC_ALL C.UTF-8
+
+ENV LANG C.UTF-8
+
 ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"master"}
 
 ENV ml_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_docker_aurora_branch/bin/run-ansible.sh"
