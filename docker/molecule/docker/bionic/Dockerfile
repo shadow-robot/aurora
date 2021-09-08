@@ -1,6 +1,5 @@
 FROM public.ecr.aws/shadowrobot/aurora-molecule:bionic
 
-
 LABEL Description="Ubuntu Bionic image contains Ansible, Molecule and Docker driver" Vendor="Shadow Robot" Version="1.0"
 
 ARG ml_docker_aurora_branch
