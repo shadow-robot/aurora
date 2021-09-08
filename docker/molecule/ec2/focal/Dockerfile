@@ -1,4 +1,4 @@
-FROM public.ecr.aws/shadowrobot/aurora-molecule:xenial
+FROM public.ecr.aws/shadowrobot/aurora-molecule:focal
 
 LABEL Description="Ubuntu Focal image contains Ansible, Molecule and EC2 driver" Vendor="Shadow Robot" Version="1.0"
 
