@@ -1,7 +1,5 @@
 FROM public.ecr.aws/shadowrobot/aurora-test-ubuntu:bionic
 
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
-
 LABEL Description="This image is used for testing Ubuntu Bionic with Docker deployment" Vendor="Shadow Robot" Version="1.0"
 
 ENV DEBIAN_FRONTEND noninteractive

@@ -1,6 +1,4 @@
-FROM public.ecr.aws/shadowrobot/aurora-test-ubuntu:xenial
-
-MAINTAINER "Shadow Robot's Software Team <software@shadowrobot.com>"
+FROM public.ecr.aws/shadowrobot/aurora-test-ubuntu:focal
 
 LABEL Description="This image is used for testing Ubuntu Xenial with Docker deployment" Vendor="Shadow Robot" Version="1.0"
 
