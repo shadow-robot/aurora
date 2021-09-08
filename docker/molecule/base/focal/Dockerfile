@@ -61,3 +61,4 @@ RUN set -x && \
         /root/.gitconfig \
         /root/.cache
 
+VOLUME /var/lib/docker
