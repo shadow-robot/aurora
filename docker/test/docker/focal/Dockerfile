@@ -4,6 +4,8 @@ LABEL Description="This image is used for testing Ubuntu Xenial with Docker depl
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+ENV TZ=Europe
+
 ENV USER testuser
 
 ARG ts_docker_aurora_branch
@@ -16,7 +18,7 @@ RUN set -x && \
     sudo apt-get update && \
     \
     echo "Installing wget" && \
-    sudo apt-get install -y --no-install-recommends ca-certificates wget && \
+    sudo apt-get install -y --no-install-recommends ca-certificates wget tzdata && \
     \
     echo "Installing python 3.6 as required by latest Ansible" && \
     cd /opt && \
