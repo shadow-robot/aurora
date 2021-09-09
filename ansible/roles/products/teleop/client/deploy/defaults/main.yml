@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-polhemus"
-tag: "melodic-night-build"
+tag: "noetic-night-build"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true

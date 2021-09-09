@@ -1,8 +1,8 @@
 ---
 container_name: "dexterous_hand_real_hw"
 image: "shadowrobot/dexterous-hand"
-tag: "melodic-release"
-full_image_name: "shadowrobot/dexterous-hand:melodic-release"
+tag: "noetic-release"
+full_image_name: "shadowrobot/dexterous-hand:noetic-release"
 ethercat_right_hand: "eth0"
 launch_hand: false
 config_branch: ""
