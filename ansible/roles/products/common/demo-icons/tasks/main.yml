@@ -10,6 +10,21 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Set hand type for Hand E
+  set_fact:
+    hand_type : hand_e
+  when: product=='hand_e'|'arm_hand_e'
+
+- name: Set hand type for Hand Lite
+  set_fact:
+    hand_type : hand_lite
+  when: product=='hand_lite'|'arm_hand_lite'
+
+- name: Set hand type for Hand Extra Lite
+  set_fact:
+    hand_type : hand_lite
+  when: product=='hand_extra_lite'|'arm_hand_extra_lite'
+
 - name: Install right hand close hand icon if bimanual is true or if hand_side="right"
   block:
   - name: Copy Close Right Hand desktop icon
@@ -24,8 +39,8 @@
       dest: "{{ shadow_hand_launcher_folder }}/close_right_hand.sh"
       mode: '755'
     vars:
-      project_name: sr_ethercat_hand_config
-      script_name: demo_rs.py
+      project_name: sr_demos
+      script_name: close.py -s right -ht {{ hand_type }}
 
   - name: Create Close Right Hand desktop icon
     template:
@@ -102,8 +117,8 @@
       dest: "{{ shadow_hand_launcher_folder }}/open_right_hand.sh"
       mode: '755'
     vars:
-      project_name: sr_ethercat_hand_config
-      script_name: demo_ro.py
+      project_name: sr_demos
+      script_name: open.py -s right -ht {{ hand_type }}
 
   - name: Create Open Right Hand desktop icon
     template:
@@ -141,8 +156,8 @@
       dest: "{{ shadow_hand_launcher_folder }}/open_left_hand.sh"
       mode: '755'
     vars:
-      project_name: sr_ethercat_hand_config
-      script_name: demo_lo.py
+      project_name: sr_demos
+      script_name: open.py -s left -ht {{ hand_type }}
 
   - name: Create Open Left Hand desktop icon
     template:
@@ -180,8 +195,8 @@
       dest: "{{ shadow_hand_launcher_folder }}/demo_right_hand.sh"
       mode: '755'
     vars:
-      project_name: sr_ethercat_hand_config
-      script_name: demo_r.py
+      project_name: sr_demos
+      script_name: demo.py -s right -ht {{ hand_type }}
 
   - name: Create Standard Right Demo desktop icon
     template:
@@ -222,8 +237,8 @@
       dest: "{{ shadow_hand_launcher_folder }}/demo_left_hand.sh"
       mode: '755'
     vars:
-      project_name: sr_ethercat_hand_config
-      script_name: demo_l.py
+      project_name: sr_demos
+      script_name: demo.py -s left -ht {{ hand_type }}
 
   - name: Create Standard Left Demo desktop icon
     template:

@@ -6,5 +6,6 @@ container_name: "dexterous_hand_real_hw"
 use_aws: false
 bimanual: false
 hand_side: "right"
+hand_type: "hand_e"
 demo_icon_folder: "{{ user_folder }}/Desktop"
 start_terminal: "true"
