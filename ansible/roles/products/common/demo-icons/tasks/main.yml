@@ -13,17 +13,17 @@
 - name: Set hand type for Hand E
   set_fact:
     hand_type : hand_e
-  when: product=="hand_e"|"arm_hand_e"
+  when: product=="hand_e" or "arm_hand_e"
 
 - name: Set hand type for Hand Lite
   set_fact:
     hand_type : hand_lite
-  when: product=="hand_lite"|"arm_hand_lite"
+  when: product=="hand_lite" or "arm_hand_lite"
 
 - name: Set hand type for Hand Extra Lite
   set_fact:
     hand_type : hand_lite
-  when: product=="hand_extra_lite"|"arm_hand_extra_lite"
+  when: product=="hand_extra_lite" or "arm_hand_extra_lite"
 
 - name: Install right hand close hand icon if bimanual is true or if hand_side="right"
   block:
