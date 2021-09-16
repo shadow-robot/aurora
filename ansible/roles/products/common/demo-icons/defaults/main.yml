@@ -7,5 +7,6 @@ use_aws: false
 bimanual: false
 hand_side: "right"
 hand_type: "hand_e"
+biotacs: true
 demo_icon_folder: "{{ user_folder }}/Desktop"
 start_terminal: "true"

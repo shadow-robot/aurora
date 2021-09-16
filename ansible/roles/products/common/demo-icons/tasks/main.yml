@@ -103,6 +103,45 @@
 
   when: bimanual|bool or hand_side=="left"
 
+- name: Install bimanual hands close hand icon if bimanual is true
+  block:
+  - name: Copy Close Bimanual Hand desktop icon
+    copy:
+      src: ../../../common/resources/files/close-hand-icon-bimanual.png
+      dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-bimanual.png"
+      mode: '664'
+
+  - name: Create Close bimanual Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/close_bimanual_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: close.py -s both -ht {{ hand_type }}
+
+  - name: Create Close Bimanual Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Close Bimanual Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Close Bimanual Hand
+      comment: "This runs closes the bimanual hand for transportation"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: close_bimanual_hand.sh
+      icon_file_name: close-hand-icon-bimanual.png
+      start_terminal: "false"
+
+  - name: Make Close bimanual Hand desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Close Bimanual Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
+  when: bimanual|bool
+
 - name: Install right hand open hand icon if bimanual is true or if hand_side="right"
   block:
   - name: Copy Open Right Hand desktop icon
@@ -181,7 +220,46 @@
 
   when: bimanual|bool or hand_side=="left"
 
-- name: Install right hand standard demo icon if bimanual is true or if hand_side="right"
+- name: Install bimanual hand open hand icon if bimanual is true
+  block:
+  - name: Copy Open Bimanual Hand desktop icon
+    copy:
+      src: ../../../common/resources/files/open-hand-icon-bimanual.png
+      dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-bimanual.png"
+      mode: '664'
+
+  - name: Create Open Bimanual Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/open_bimanual_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: open.py -s both -ht {{ hand_type }}
+
+  - name: Create Open Bimanual Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}//Open Bimanual Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Open Bimanual Hand
+      comment: "This opens the bimanual hand"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: open_bimanual_hand.sh
+      icon_file_name: open-hand-icon-bimanual.png
+      start_terminal: "false"
+
+  - name: Make Open Bimanual Hand desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}//Open Bimanual Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
+  when: bimanual|bool
+
+- name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotac is false
   block:
   - name: Copy Standard Right Demo desktop icon
     copy:
@@ -220,10 +298,9 @@
       - skip_molecule_task is not defined
   
   when:
-    - bimanual|bool or hand_side=="right"
-    - groups['simulation'] is not defined
+    - bimanual|bool or hand_side=="right" and not biotac
 
-- name: Install left hand standard demo icon if bimanual is true or if hand_side="left"
+- name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotac is false
   block:
   - name: Copy Standard Left Demo desktop icon
     copy:
@@ -262,8 +339,171 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool or hand_side=="left"
-    - groups['simulation'] is not defined
+    - bimanual|bool or hand_side=="left" and not biotac
+
+- name: Install bimanual hand standard demo icon if bimanual is true and biotac is false
+  block:
+  - name: Copy Standard Bimanual Demo desktop icon
+    copy:
+      src: ../../../common/resources/files/demo-hand-icon-bimanual.png
+      dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-bimanual.png"
+      mode: '664'
+
+  - name: Create Standard Bimanual Demo executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: demo.py -s both -ht {{ hand_type }}
+
+  - name: Create Standard Bimanual Demo desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Demo Bimanual Hand
+      comment: "This runs the standard demo for the bimanual hand"
+      window_title: demo_bimanual_hand_xterm
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: demo_bimanual_hand.sh
+      icon_file_name: demo-hand-icon-bimanual.png
+      start_terminal: "false"
+
+  - name: Make Standard Bimanual Demo desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
+  when:
+    - bimanual|bool and not biotac
+
+- name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotac is true
+  block:
+  - name: Copy Standard Right Demo desktop icon
+    copy:
+      src: ../../../common/resources/files/demo-hand-icon-right.png
+      dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-right.png"
+      mode: '664'
+
+  - name: Create Standard Right Demo executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/demo_right_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: demo.py -s right -ht {{ hand_type }} -tac
+
+  - name: Create Standard Right Demo desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}//Demo Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Demo Right Hand
+      comment: "This runs the standard demo for the right hand"
+      window_title: demo_right_hand_xterm
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: demo_right_hand.sh
+      icon_file_name: demo-hand-icon-right.png
+      start_terminal: "false"
+
+  - name: Make Standard Right Demo desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+  
+  when:
+    - bimanual|bool or hand_side=="right" and biotac|bool
+
+- name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotac is true
+  block:
+  - name: Copy Standard Left Demo desktop icon
+    copy:
+      src: ../../../common/resources/files/demo-hand-icon-left.png
+      dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-left.png"
+      mode: '664'
+
+  - name: Create Standard Left Demo executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/demo_left_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: demo.py -s left -ht {{ hand_type }} -tac
+
+  - name: Create Standard Left Demo desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}//Demo Left Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Demo Left Hand
+      comment: "This runs the standard demo for the left hand"
+      window_title: demo_left_hand_xterm
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: demo_left_hand.sh
+      icon_file_name: demo-hand-icon-left.png
+      start_terminal: "false"
+
+  - name: Make Standard Left Demo desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}//Demo Left Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
+  when:
+    - bimanual|bool or hand_side=="left" and biotac|bool
+
+- name: Install bimanual hand standard demo icon if bimanual is true and biotac is true
+  block:
+  - name: Copy Standard Bimanual Demo desktop icon
+    copy:
+      src: ../../../common/resources/files/demo-hand-icon-bimanual.png
+      dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-bimanual.png"
+      mode: '664'
+
+  - name: Create Standard Bimanual Demo executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: demo.py -s both -ht {{ hand_type }} -tac
+
+  - name: Create Standard Bimanual Demo desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Demo Bimanual Hand
+      comment: "This runs the standard demo for the bimanual hand"
+      window_title: demo_bimanual_hand_xterm
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: demo_bimanual_hand.sh
+      icon_file_name: demo-hand-icon-bimanual.png
+      start_terminal: "false"
+
+  - name: Make Standard Bimanual Demo desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - skip_molecule_task is not defined
+
+  when:
+    - bimanual|bool and biotac|bool
 
 - name: Install right arm and hand joint position example if arm and hand_side="right"
   block:
