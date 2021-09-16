@@ -259,7 +259,7 @@
 
   when: bimanual|bool
 
-- name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotac is false
+- name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotacs is false
   block:
   - name: Copy Standard Right Demo desktop icon
     copy:
@@ -298,9 +298,9 @@
       - skip_molecule_task is not defined
   
   when:
-    - bimanual|bool or hand_side=="right" and not biotac
+    - bimanual|bool or hand_side=="right" and not biotacs
 
-- name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotac is false
+- name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotacs is false
   block:
   - name: Copy Standard Left Demo desktop icon
     copy:
@@ -339,9 +339,9 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool or hand_side=="left" and not biotac
+    - bimanual|bool or hand_side=="left" and not biotacs
 
-- name: Install bimanual hand standard demo icon if bimanual is true and biotac is false
+- name: Install bimanual hand standard demo icon if bimanual is true and biotacs is false
   block:
   - name: Copy Standard Bimanual Demo desktop icon
     copy:
@@ -380,9 +380,9 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool and not biotac
+    - bimanual|bool and not biotacs
 
-- name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotac is true
+- name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotacs is true
   block:
   - name: Copy Standard Right Demo desktop icon
     copy:
@@ -421,9 +421,9 @@
       - skip_molecule_task is not defined
   
   when:
-    - bimanual|bool or hand_side=="right" and biotac|bool
+    - bimanual|bool or hand_side=="right" and biotacs|bool
 
-- name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotac is true
+- name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotacs is true
   block:
   - name: Copy Standard Left Demo desktop icon
     copy:
@@ -462,9 +462,9 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool or hand_side=="left" and biotac|bool
+    - bimanual|bool or hand_side=="left" and biotacs|bool
 
-- name: Install bimanual hand standard demo icon if bimanual is true and biotac is true
+- name: Install bimanual hand standard demo icon if bimanual is true and biotacs is true
   block:
   - name: Copy Standard Bimanual Demo desktop icon
     copy:
@@ -503,7 +503,7 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool and biotac|bool
+    - bimanual|bool and biotacs|bool
 
 - name: Install right arm and hand joint position example if arm and hand_side="right"
   block:
