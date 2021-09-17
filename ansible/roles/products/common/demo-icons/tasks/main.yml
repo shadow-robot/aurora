@@ -361,7 +361,7 @@
   - name: Create Standard Bimanual Demo desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Biotacs Demo Bimanual Hand.desktop"
       mode: '755'
     vars:
       desktop_shortcut_name: Biotacs Demo Bimanual Hand
