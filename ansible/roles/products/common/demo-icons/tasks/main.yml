@@ -384,13 +384,13 @@
 
 - name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotacs is true
   block:
-  - name: Copy Standard Right Demo desktop icon
+  - name: Copy Standard Right Demo desktop icon for biotacs
     copy:
       src: ../../../common/resources/files/demo-hand-icon-right.png
       dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-right.png"
       mode: '664'
 
-  - name: Create Standard Right Demo executable launch script
+  - name: Create Standard Right Demo executable launch script for biotacs
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
       dest: "{{ shadow_hand_launcher_folder }}/demo_right_hand.sh"
@@ -399,7 +399,7 @@
       project_name: sr_demos
       script_name: demo.py -s right -ht {{ hand_type }} -tac
 
-  - name: Create Standard Right Demo desktop icon
+  - name: Create Standard Right Demo desktop icon for biotacs
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
       dest: "{{ demo_icon_folder }}//Demo Right Hand.desktop"
@@ -413,7 +413,7 @@
       icon_file_name: demo-hand-icon-right.png
       start_terminal: "false"
 
-  - name: Make Standard Right Demo desktop icon Trusted
+  - name: Make Standard Right Demo desktop icon Trusted for biotacs
     shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
@@ -431,7 +431,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-left.png"
       mode: '664'
 
-  - name: Create Standard Left Demo executable launch script
+  - name: Create Standard Left Demo executable launch script for biotacs
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
       dest: "{{ shadow_hand_launcher_folder }}/demo_left_hand.sh"
@@ -440,7 +440,7 @@
       project_name: sr_demos
       script_name: demo.py -s left -ht {{ hand_type }} -tac
 
-  - name: Create Standard Left Demo desktop icon
+  - name: Create Standard Left Demo desktop icon for biotacs
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
       dest: "{{ demo_icon_folder }}//Demo Left Hand.desktop"
@@ -454,7 +454,7 @@
       icon_file_name: demo-hand-icon-left.png
       start_terminal: "false"
 
-  - name: Make Standard Left Demo desktop icon Trusted
+  - name: Make Standard Left Demo desktop icon Trusted for biotacs
     shell: gio set "{{ demo_icon_folder }}//Demo Left Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
@@ -472,7 +472,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/demo-hand-icon-bimanual.png"
       mode: '664'
 
-  - name: Create Standard Bimanual Demo executable launch script
+  - name: Create Standard Bimanual Demo executable launch script for biotacs
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
       dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hand.sh"
@@ -481,7 +481,7 @@
       project_name: sr_demos
       script_name: demo.py -s both -ht {{ hand_type }} -tac
 
-  - name: Create Standard Bimanual Demo desktop icon
+  - name: Create Standard Bimanual Demo desktop icon for biotacs
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
       dest: "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop"
@@ -495,7 +495,7 @@
       icon_file_name: demo-hand-icon-bimanual.png
       start_terminal: "false"
 
-  - name: Make Standard Bimanual Demo desktop icon Trusted
+  - name: Make Standard Bimanual Demo desktop icon Trusted for biotacs
     shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
