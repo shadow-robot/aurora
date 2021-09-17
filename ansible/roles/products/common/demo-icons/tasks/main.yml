@@ -361,10 +361,10 @@
   - name: Create Standard Bimanual Demo desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}//Biotacs Demo Bimanual Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: Biotacs Demo Bimanual Hand
+      desktop_shortcut_name: Demo Bimanual Hand
       comment: "This runs the standard demo for the bimanual hand"
       window_title: demo_bimanual_hand_xterm
       folder: "{{ shadow_hand_launcher_folder }}"
@@ -475,7 +475,7 @@
   - name: Create Standard Bimanual Demo executable launch script for biotacs
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hand.sh"
+      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hand_biotacs.sh"
       mode: '755'
     vars:
       project_name: sr_demos
@@ -484,14 +484,14 @@
   - name: Create Standard Bimanual Demo desktop icon for biotacs
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Biotacs Demo Bimanual Hand.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: Demo Bimanual Hand
+      desktop_shortcut_name: Biotacs Demo Bimanual Hand
       comment: "This runs the standard demo for the bimanual hand"
       window_title: demo_bimanual_hand_xterm
       folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: demo_bimanual_hand.sh
+      shell_script_file_name: demo_bimanual_hand_biotacs.sh
       icon_file_name: demo-hand-icon-bimanual.png
       start_terminal: "false"
 
