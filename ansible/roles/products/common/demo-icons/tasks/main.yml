@@ -274,7 +274,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: demo.py -s right -ht {{ hand_type }}
+      script_name: demo.py -s right --hand_type {{ hand_type }}
 
   - name: Create Standard Right Demo desktop icon
     template:
@@ -315,7 +315,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: demo.py -s left -ht {{ hand_type }}
+      script_name: demo.py -s left --hand_type {{ hand_type }}
 
   - name: Create Standard Left Demo desktop icon
     template:
@@ -356,7 +356,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: demo.py -s both -ht {{ hand_type }}
+      script_name: demo.py -s both --hand_type {{ hand_type }}
 
   - name: Create Standard Bimanual Demo desktop icon
     template:
@@ -397,7 +397,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: demo.py -s right -ht {{ hand_type }} -tac
+      script_name: demo.py -s right --hand_type {{ hand_type }} -tac
 
   - name: Create Standard Right Demo desktop icon for biotacs
     template:
@@ -438,7 +438,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: demo.py -s left -ht {{ hand_type }} -tac
+      script_name: demo.py -s left --hand_type {{ hand_type }} -tac
 
   - name: Create Standard Left Demo desktop icon for biotacs
     template:
@@ -479,7 +479,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: demo.py -s both -ht {{ hand_type }} -tac
+      script_name: demo.py -s both --hand_type {{ hand_type }} -tac
 
   - name: Create Standard Bimanual Demo desktop icon for biotacs
     template:
