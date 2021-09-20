@@ -13,17 +13,17 @@
 - name: Set hand type for Hand E
   set_fact:
     hand_type : hand_e
-  when: product =="hand_e" or "arm_hand_e"
+  when: "'hand_e' in product"
 
 - name: Set hand type for Hand Lite
   set_fact:
     hand_type : hand_lite
-  when: product =="hand_lite" or "arm_hand_lite"
+  when: "'hand_lite' in product"
 
 - name: Set hand type for Hand Extra Lite
   set_fact:
     hand_type : hand_lite
-  when: product =="hand_extra_lite" or "arm_hand_extra_lite"
+  when: "'hand_extra_lite' in product"
 
 - name: Install right hand close hand icon if bimanual is true or if hand_side="right"
   block:
@@ -40,7 +40,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: close.py -s right -ht {{ hand_type }}
+      script_name: close.py -s right
 
   - name: Create Close Right Hand desktop icon
     template:
@@ -79,7 +79,7 @@
       mode: '755'
     vars:
       project_name: sr_ethercat_hand_config
-      script_name: demo_ls.py
+      script_name: close.py -s left
 
   - name: Create Close Left Hand desktop icon
     template:
@@ -118,7 +118,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: close.py -s both -ht {{ hand_type }}
+      script_name: close.py -s both
 
   - name: Create Close Bimanual Hand desktop icon
     template:
@@ -157,7 +157,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: open.py -s right -ht {{ hand_type }}
+      script_name: open.py -s right
 
   - name: Create Open Right Hand desktop icon
     template:
@@ -196,7 +196,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: open.py -s left -ht {{ hand_type }}
+      script_name: open.py -s left
 
   - name: Create Open Left Hand desktop icon
     template:
@@ -235,7 +235,7 @@
       mode: '755'
     vars:
       project_name: sr_demos
-      script_name: open.py -s both -ht {{ hand_type }}
+      script_name: open.py -s both
 
   - name: Create Open Bimanual Hand desktop icon
     template:
