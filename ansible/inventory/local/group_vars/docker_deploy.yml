@@ -26,6 +26,10 @@ hand_serial_left: "2346" # Specify the left hand serial number
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
+remote_bag_user: "shadowop"
+remote_bag_storage_IP: "10.5.10.59"
+remote_bag_storage_location: "/volume1/ros_bags"
+bag_all_data_from: ["shadowrobot_210312", "shadowrobot_210311", "shadowrobot_210311_210312"]
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
 arm_hand_readthedocs_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256
