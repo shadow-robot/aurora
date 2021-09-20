@@ -467,7 +467,7 @@
 
   when:
     - (bimanual|bool or hand_side=="left")
-    - biotacsl|bool == true
+    - biotacs|bool == true
 
 - name: Install bimanual hand standard demo icon if bimanual is true and biotacs is true
   block:
