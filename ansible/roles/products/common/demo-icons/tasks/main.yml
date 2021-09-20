@@ -240,18 +240,18 @@
   - name: Create Open Bimanual Hand desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}//Open Bimanual Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Open Bimanual Hands.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: Open Bimanual Hand
-      comment: "This opens the bimanual hand"
+      desktop_shortcut_name: Open Bimanual Hands
+      comment: "This opens the bimanual hands"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: open_bimanual_hand.sh
       icon_file_name: open-hand-icon-bimanual.png
       start_terminal: "false"
 
   - name: Make Open Bimanual Hand desktop icon Trusted
-    shell: gio set "{{ demo_icon_folder }}//Open Bimanual Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ demo_icon_folder }}//Open Bimanual Hands.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
@@ -298,7 +298,8 @@
       - skip_molecule_task is not defined
   
   when:
-    - bimanual|bool or hand_side=="right" and not biotacs
+    - bimanual|bool or hand_side=="right"
+    - not biotacs
 
 - name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotacs is false
   block:
@@ -339,7 +340,8 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool or hand_side=="left" and not biotacs
+    - bimanual|bool or hand_side=="left"
+    - not biotacs
 
 - name: Install bimanual hand standard demo icon if bimanual is true and biotacs is false
   block:
@@ -361,11 +363,11 @@
   - name: Create Standard Bimanual Demo desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Demo Bimanual Hands.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: Demo Bimanual Hand
-      comment: "This runs the standard demo for the bimanual hand"
+      desktop_shortcut_name: Demo Bimanual Hands
+      comment: "This runs the standard demo for the bimanual hands"
       window_title: demo_bimanual_hand_xterm
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: demo_bimanual_hand.sh
@@ -373,14 +375,15 @@
       start_terminal: "false"
 
   - name: Make Standard Bimanual Demo desktop icon Trusted
-    shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hands.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool and not biotacs
+    - bimanual|bool
+    - not biotacs
 
 - name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotacs is true
   block:
@@ -484,10 +487,10 @@
   - name: Create Standard Bimanual Demo desktop icon for biotacs
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}//Biotacs Demo Bimanual Hand.desktop"
+      dest: "{{ demo_icon_folder }}//Biotacs Demo Bimanual Hands.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: Biotacs Demo Bimanual Hand
+      desktop_shortcut_name: Biotacs Demo Bimanual Hands
       comment: "This runs the standard demo for the bimanual hand"
       window_title: demo_bimanual_hand_xterm
       folder: "{{ shadow_hand_launcher_folder }}"
@@ -496,7 +499,7 @@
       start_terminal: "false"
 
   - name: Make Standard Bimanual Demo desktop icon Trusted for biotacs
-    shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hands.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
