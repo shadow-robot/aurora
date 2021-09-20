@@ -298,7 +298,7 @@
       - skip_molecule_task is not defined
   
   when:
-    - (bimanual|bool or hand_side=="right") and not biotacs
+    - not biotacs and (bimanual|bool or hand_side=="right")
 
 - name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotacs is false
   block:
@@ -339,7 +339,7 @@
       - skip_molecule_task is not defined
 
   when:
-    - (bimanual|bool or hand_side=="left") and not biotacs
+    - not biotacs and (bimanual|bool or hand_side=="left")
 
 - name: Install bimanual hand standard demo icon if bimanual is true and biotacs is false
   block:
@@ -380,7 +380,7 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool and not biotacs
+    - not biotacs and bimanual|bool
 
 - name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotacs is true
   block:
