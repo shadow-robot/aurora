@@ -4,7 +4,7 @@ user_folder: "/home/{{ user }}"
 save_latest_ros_logs_folder: "{{ user_folder }}/.shadow_save_log_app/save_latest_ros_logs"
 container_name: "dexterous_hand_real_hw"
 use_aws: false
-bimanual: false
+bimanual: true
 hand_side: "right"
 hand_type: "hand_e"
 biotacs: true
