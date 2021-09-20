@@ -257,7 +257,7 @@
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  when: bimanual|bool
+  when: bimanual
 
 - name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotacs is false
   block:
@@ -298,7 +298,7 @@
       - skip_molecule_task is not defined
   
   when:
-    - not biotacs and (bimanual|bool or hand_side=="right")
+    - not biotacs and (bimanual or hand_side=="right")
 
 - name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotacs is false
   block:
@@ -339,7 +339,7 @@
       - skip_molecule_task is not defined
 
   when:
-    - not biotacs and (bimanual|bool or hand_side=="left")
+    - not biotacs and (bimanual or hand_side=="left")
 
 - name: Install bimanual hand standard demo icon if bimanual is true and biotacs is false
   block:
@@ -380,7 +380,7 @@
       - skip_molecule_task is not defined
 
   when:
-    - not biotacs and bimanual|bool
+    - not biotacs and bimanual
 
 - name: Install right hand standard demo icon if bimanual is true or if hand_side="right" and biotacs is true
   block:
@@ -421,7 +421,7 @@
       - skip_molecule_task is not defined
   
   when:
-    - (bimanual|bool or hand_side=="right") and biotacs|bool
+    - (bimanualor hand_side=="right") and biotacs
 
 - name: Install left hand standard demo icon if bimanual is true or if hand_side="left" and biotacs is true
   block:
@@ -462,7 +462,7 @@
       - skip_molecule_task is not defined
 
   when:
-    - (bimanual|bool or hand_side=="left") and biotacs|bool
+    - (bimanual or hand_side=="left") and biotacs
 
 - name: Install bimanual hand standard demo icon if bimanual is true and biotacs is true
   block:
@@ -503,7 +503,7 @@
       - skip_molecule_task is not defined
 
   when:
-    - bimanual|bool and biotacs|bool
+    - bimanual and biotacs
 
 - name: Install right arm and hand joint position example if arm and hand_side="right"
   block:
