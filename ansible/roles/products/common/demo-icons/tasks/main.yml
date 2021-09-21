@@ -105,36 +105,36 @@
 
 - name: Install bimanual hands close hand icon if bimanual is true
   block:
-  - name: Copy Close Bimanual Hand desktop icon
+  - name: Copy Close Bimanual Hands desktop icon
     copy:
       src: ../../../common/resources/files/close-hand-icon-bimanual.png
       dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-bimanual.png"
       mode: '664'
 
-  - name: Create Close bimanual Hand executable launch script
+  - name: Create Close bimanual Hands executable launch script
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/close_bimanual_hand.sh"
+      dest: "{{ shadow_hand_launcher_folder }}/close_bimanual_hands.sh"
       mode: '755'
     vars:
       project_name: sr_demos
       script_name: close.py -s both
 
-  - name: Create Close Bimanual Hand desktop icon
+  - name: Create Close Bimanual Hands desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}/Close Bimanual Hand.desktop"
+      dest: "{{ demo_icon_folder }}/Close Bimanual Hands.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: Close Bimanual Hand
-      comment: "This runs closes the bimanual hand for transportation"
+      desktop_shortcut_name: Close Bimanual Hands
+      comment: "This runs closes the bimanual hands for transportation"
       folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: close_bimanual_hand.sh
+      shell_script_file_name: close_bimanual_hands.sh
       icon_file_name: close-hand-icon-bimanual.png
       start_terminal: "false"
 
-  - name: Make Close bimanual Hand desktop icon Trusted
-    shell: gio set "{{ demo_icon_folder }}/Close Bimanual Hand.desktop" "metadata::trusted" yes
+  - name: Make Close bimanual Hands desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Close Bimanual Hands.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
@@ -220,24 +220,24 @@
 
   when: bimanual|bool or hand_side=="left"
 
-- name: Install bimanual hand open hand icon if bimanual is true
+- name: Install bimanual hands open hands icon if bimanual is true
   block:
-  - name: Copy Open Bimanual Hand desktop icon
+  - name: Copy Open Bimanual Hands desktop icon
     copy:
       src: ../../../common/resources/files/open-hand-icon-bimanual.png
       dest: "{{ shadow_hand_launcher_folder }}/open-hand-icon-bimanual.png"
       mode: '664'
 
-  - name: Create Open Bimanual Hand executable launch script
+  - name: Create Open Bimanual Hands executable launch script
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/open_bimanual_hand.sh"
+      dest: "{{ shadow_hand_launcher_folder }}/open_bimanual_hands.sh"
       mode: '755'
     vars:
       project_name: sr_demos
       script_name: open.py -s both
 
-  - name: Create Open Bimanual Hand desktop icon
+  - name: Create Open Bimanual Hands desktop icon
     template:
       src: ../resources/templates/desktop-icons/standard-icon.j2
       dest: "{{ demo_icon_folder }}//Open Bimanual Hands.desktop"
@@ -246,11 +246,11 @@
       desktop_shortcut_name: Open Bimanual Hands
       comment: "This opens the bimanual hands"
       folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: open_bimanual_hand.sh
+      shell_script_file_name: open_bimanual_hands.sh
       icon_file_name: open-hand-icon-bimanual.png
       start_terminal: "false"
 
-  - name: Make Open Bimanual Hand desktop icon Trusted
+  - name: Make Open Bimanual Hands desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Open Bimanual Hands.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
@@ -343,7 +343,7 @@
     - biotacs|bool == false
     - bimanual|bool == true or hand_side=="left"
 
-- name: Install bimanual hand standard demo icon if bimanual is true and biotacs is false
+- name: Install bimanual hands standard demo icon if bimanual is true and biotacs is false
   block:
   - name: Copy Standard Bimanual Demo desktop icon
     copy:
@@ -354,7 +354,7 @@
   - name: Create Standard Bimanual Demo executable launch script
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hand.sh"
+      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hands.sh"
       mode: '755'
     vars:
       project_name: sr_demos
@@ -368,9 +368,9 @@
     vars:
       desktop_shortcut_name: Demo Bimanual Hands
       comment: "This runs the standard demo for the bimanual hands"
-      window_title: demo_bimanual_hand_xterm
+      window_title: demo_bimanual_hands_xterm
       folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: demo_bimanual_hand.sh
+      shell_script_file_name: demo_bimanual_hands.sh
       icon_file_name: demo-hand-icon-bimanual.png
       start_terminal: "false"
 
@@ -469,7 +469,7 @@
     - (bimanual|bool or hand_side=="left")
     - biotacs|bool == true
 
-- name: Install bimanual hand standard demo icon if bimanual is true and biotacs is true
+- name: Install bimanual hands standard demo icon if bimanual is true and biotacs is true
   block:
   - name: Copy Standard Bimanual Demo desktop icon
     copy:
@@ -480,7 +480,7 @@
   - name: Create Standard Bimanual Demo executable launch script for biotacs
     template:
       src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hand_biotacs.sh"
+      dest: "{{ shadow_hand_launcher_folder }}/demo_bimanual_hands_biotacs.sh"
       mode: '755'
     vars:
       project_name: sr_demos
@@ -494,9 +494,9 @@
     vars:
       desktop_shortcut_name: Biotacs Demo Bimanual Hands
       comment: "This runs the standard demo for the bimanual hand"
-      window_title: demo_bimanual_hand_xterm
+      window_title: demo_bimanual_hands_xterm
       folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: demo_bimanual_hand_biotacs.sh
+      shell_script_file_name: demo_bimanual_hands_biotacs.sh
       icon_file_name: demo-hand-icon-bimanual.png
       start_terminal: "false"
 
