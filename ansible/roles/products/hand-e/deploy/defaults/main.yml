@@ -2,8 +2,6 @@
 container_name: "dexterous_hand_real_hw"
 image: "shadowrobot/dexterous-hand"
 tag: "noetic-release"
-ethercat_right_hand: "eth0"
-ethercat_left_hand: "eth1"
 demo_icons: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -18,8 +16,6 @@ launch_hand: false
 config_branch: ""
 hand_side: "right"
 bimanual: false
-hand_serial: "1082"
-hand_serial_left: "2346"
 mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
 mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
 robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"

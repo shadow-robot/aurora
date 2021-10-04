@@ -8,11 +8,6 @@ if [ ! -z {{ config_branch }} ]; then
     git checkout sr_lhand.launch
     git checkout sr_bimanual.launch
     git checkout {{ config_branch }}
-    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_right_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_rhand.launch
-    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_lhand.launch
-    sed -i 's|eth_port" value=.*|eth_port" value="{{ ethercat_right_hand }}_{{ ethercat_left_hand }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
-    sed -i 's|rh_serial" value=.*|rh_serial" value="{{ hand_serial }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
-    sed -i 's|lh_serial" value=.*|lh_serial" value="{{ hand_serial_left }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
     sed -i 's|rh_mapping_path" value=.*|rh_mapping_path" value="{{ mapping_path_right }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
     sed -i 's|lh_mapping_path" value=.*|lh_mapping_path" value="{{ mapping_path_left }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
 fi
@@ -40,12 +35,12 @@ if [ -f /tmp/id_rsa ]; then
 fi
 if {{ launch_hand | lower }}; then
     if {{ sim_hand | lower }}; then
-        roslaunch sr_robot_launch srhand.launch
+        sr_hand_autodetect roslaunch sr_robot_launch srhand.launch
     else
-        roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 else
     if {{ override_launch_hand | lower }}; then
-        roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 fi
