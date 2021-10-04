@@ -5,8 +5,6 @@ reinstall: false
 container_name: "dexterous_hand_real_hw"
 nvidia_docker: true
 use_aws: false
-ethercat_right_hand: "eth0"
-ethercat_left_hand: "eth0"
 ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -30,8 +28,6 @@ cyberglove: ""
 server_ip: "10.9.11.1"
 hand_side: "right"
 bimanual: false
-hand_serial: "1082"
-hand_serial_left: "2346"
 use_cyberglove: false
 term_width: 656
 term_height: 400

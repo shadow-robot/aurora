@@ -201,8 +201,6 @@
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand Hardware Control Loop"
-    ethercat_interface_value: "{{ ethercat_right_hand }}"
-    hand_serial_value: "{{ hand_serial }}"
     hand_side_value: "right"
     xacro_value: "{{ xacro_right }}"
     mapping_path_value: "{{ mapping_path_right }}"
@@ -217,8 +215,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     mode: '755'
   vars:
-    hand_serial_var: "{{ hand_serial }}"
-    ethercat_interface_var: "{{ ethercat_right_hand }}"
     hand_side_var: "right"
     xacro_var: "{{ xacro_system }}"
     mapping_path_var: "{{ mapping_path_right }}"
@@ -241,8 +237,6 @@
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand Hardware Control Loop"
-    ethercat_interface_value: "{{ ethercat_left_hand }}"
-    hand_serial_value: "{{ hand_serial_left }}"
     hand_side_value: "left"
     xacro_value: "{{ xacro_left }}"
     mapping_path_value: "{{ mapping_path_left }}"
@@ -257,8 +251,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     mode: '755'
   vars:
-    hand_serial_var: "{{ hand_serial_left }}"
-    ethercat_interface_var: "{{ ethercat_left_hand }}"
     hand_side_var: "left"
     xacro_var: "{{ xacro_system }}"
     mapping_path_var: "{{ mapping_path_left }}"
@@ -301,8 +293,6 @@
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
-    ethercat_interface_value: "{{ ethercat_right_hand }}"
-    hand_serial_value: "{{ hand_serial }}"
     hand_side_value: "right"
     xacro_value: "{{ xacro_right }}"
     mapping_path_value: "{{ mapping_path_right }}"
@@ -319,8 +309,6 @@
     hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
-    ethercat_interface_value: "{{ ethercat_left_hand }}"
-    hand_serial_value: "{{ hand_serial_left }}"
     hand_side_value: "left"
     xacro_value: "{{ xacro_left }}"
     mapping_path_value: "{{ mapping_path_left }}"

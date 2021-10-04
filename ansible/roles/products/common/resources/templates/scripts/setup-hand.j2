@@ -35,12 +35,12 @@ if [ -f /tmp/id_rsa ]; then
 fi
 if {{ launch_hand | lower }}; then
     if {{ sim_hand | lower }}; then
-        roslaunch sr_hand_autodetect roslaunch sr_robot_launch srhand.launch
+        sr_hand_autodetect roslaunch sr_robot_launch srhand.launch
     else
-        roslaunch sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 else
     if {{ override_launch_hand | lower }}; then
-        roslaunch sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 fi
