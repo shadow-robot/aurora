@@ -26,8 +26,8 @@ bimanual: false
 upgrade_check: false
 container_terminal_title: "Teleop Container"
 override_launch_hand: false
-mapping_path_right: "rospack $(find sr_edc_launch )/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "rospack $(find sr_edc_launch )/mappings/default_mappings/lh_E_v4.yaml"
+mapping_path_right: "$(find sr_edc_launch )/mappings/default_mappings/rh_E_v4.yaml"
+mapping_path_left: "$(find sr_edc_launch )/mappings/default_mappings/lh_E_v4.yaml"
 sim_hand: false
 launch_package_name: "sr_ethercat_hand_config"
 launch_file_name: "sr_rhand.launch"

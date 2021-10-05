@@ -12,8 +12,8 @@ icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
 launch_hand: false
 override_launch_hand: false
 config_branch: ""
-mapping_path_right: "rospack $(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "rospack $(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
+mapping_path_right: "$(find sr_edc_launch )/mappings/default_mappings/rh_E_v4.yaml"
+mapping_path_left: "$(find sr_edc_launch )/mappings/default_mappings/lh_E_v4.yaml"
 use_cyberglove: false
 remote_cyberglove: false
 cyberglove: ""
