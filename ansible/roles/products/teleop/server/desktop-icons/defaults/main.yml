@@ -6,15 +6,12 @@ container_name: "teleop"
 config_branch: ""
 config_branch_var: ""
 config_branch_value: ""
-hand_serial: ""
 setup_directory: ""
 nuc_username: "user"
 remote_cyberglove: false
 sim_icon: false
 upgrade_script: false
 hand_side_var: right
-ethercat_right_hand: "eth00"
-ethercat_left_hand: "eth01"
 ethercat_interface_var: "eth0"
 ethercat_interface_value: "eth0"
 server_ip: "10.9.11.1"

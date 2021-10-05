@@ -3,7 +3,6 @@
   import_playbook: ../../../docker_deploy.yml
   vars:
     product: hand_e
-    ethercat_right_hand: enp0s25
     container_name: test_hand_e_empty_machine_container
     allow_auto_reboot: true
     skip_molecule_task: true

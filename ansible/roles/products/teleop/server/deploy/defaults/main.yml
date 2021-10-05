@@ -8,8 +8,6 @@ glove: "shadow_glove"
 cyberglove: ""
 use_aws: false
 use_openvpn: false
-ethercat_right_hand: "eth0"
-ethercat_left_hand: "eth0"
 ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -34,8 +32,6 @@ bimanual: false
 sim_hand: false
 encryption_password: ""
 hand_side: "right"
-hand_serial: "1082"
-hand_serial_left: "2346"
 xacro_right: "$(find sr_description)/robots/shadowhand_motor_plus.urdf.xacro"
 xacro_left: "$(find sr_description)/robots/shadowhand_left_motor_plus.urdf.xacro"
 xacro_bimanual: "$(find sr_description)/robots/bimanual_shadowhand_motor.urdf.xacro"
