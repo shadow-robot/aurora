@@ -14,8 +14,6 @@ optoforce: false # Specify if optoforce sensors are going to be used with a bran
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both left and right hands are used or not
-hand_serial: "1082" # Specify the right hand serial number
-hand_serial_left: "2346" # Specify the left hand serial number
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
