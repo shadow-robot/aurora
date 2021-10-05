@@ -16,8 +16,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_serial_var: "{{ hand_serial_value }}"
-    ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
@@ -33,8 +31,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_serial_var: "{{ hand_serial_value }}"
-    ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
@@ -50,8 +46,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_serial_var: "{{ hand_serial_value }}"
-    ethercat_interface_var: "{{ ethercat_interface_value }}"
     hand_side_var: "{{ hand_side_value }}"
     config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
