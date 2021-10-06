@@ -1,0 +1,6 @@
+---
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+desktop_icon: steam_binding.jpg
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+steam_vive_binding_url: http://127.0.0.1:8998/dashboard/controllerbinding.html

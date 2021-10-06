@@ -258,6 +258,10 @@
   include_role:
     name: products/teleop/server/desktop-icons
 
+- name: Include products/common/steam binding icon role
+  include_role:
+    name: products/common/steam-binding-icon
+    
 - name: Ensure the .ssh folder exists
   file:
     path: "{{ user_folder }}/.ssh/"
