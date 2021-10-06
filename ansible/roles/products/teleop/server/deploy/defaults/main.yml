@@ -17,7 +17,6 @@ setup_directory: "/usr/local/bin"
 use_cyberglove: false
 remote_cyberglove: false
 launch_hand: false
-config_branch: ""
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true

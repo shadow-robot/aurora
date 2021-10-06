@@ -2,7 +2,6 @@
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
-config_branch: ""
 xacro_right: "$(find sr_description)/robots/shadowhand_motor_plus.urdf.xacro"
 xacro_left: "$(find sr_description)/robots/shadowhand_left_motor_plus.urdf.xacro"
 xacro_bimanual: "$(find sr_description)/robots/bimanual_shadowhand_motor.urdf.xacro"

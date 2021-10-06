@@ -4,7 +4,6 @@ image: "shadowrobot/dexterous-hand"
 tag: "noetic-release"
 full_image_name: "shadowrobot/dexterous-hand:noetic-release"
 launch_hand: false
-config_branch: ""
 use_cyberglove: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"

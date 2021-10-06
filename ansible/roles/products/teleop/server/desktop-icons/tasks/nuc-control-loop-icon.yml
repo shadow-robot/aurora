@@ -17,7 +17,6 @@
     mode: '755'
   vars:
     hand_side_var: "{{ hand_side_value }}"
-    config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"
@@ -32,7 +31,6 @@
     mode: '755'
   vars:
     hand_side_var: "{{ hand_side_value }}"
-    config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"
@@ -47,7 +45,6 @@
     mode: '755'
   vars:
     hand_side_var: "{{ hand_side_value }}"
-    config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"

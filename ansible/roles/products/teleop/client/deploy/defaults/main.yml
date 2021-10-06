@@ -9,7 +9,6 @@ cyberglove: ""
 use_aws: false
 use_openvpn: false
 setup_directory: "/usr/local/bin"
-config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"

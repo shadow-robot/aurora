@@ -5,7 +5,6 @@ reinstall: false
 container_name: "dexterous_hand_real_hw"
 ethercat_left_arm: "enx2"
 ethercat_right_arm: "eth1"
-config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"

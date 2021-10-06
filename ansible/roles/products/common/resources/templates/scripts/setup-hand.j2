@@ -1,21 +1,9 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
-if [ ! -z {{ config_branch }} ]; then
-    echo "Checking out the correct sr-config branch"
-    roscd sr_ethercat_hand_config/launch
-    git checkout sr_rhand.launch
-    git checkout sr_lhand.launch
-    git checkout sr_bimanual.launch
-    git checkout {{ config_branch }}
-    sed -i 's|rh_mapping_path" value=.*|rh_mapping_path" value="{{ mapping_path_right }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
-    sed -i 's|lh_mapping_path" value=.*|lh_mapping_path" value="{{ mapping_path_left }}" />|' $(rospack find sr_ethercat_hand_config)/launch/sr_bimanual.launch
-fi
+
 # TODO: FIX so that cyberglove is not mentioned here in docker-container role, and cyberglove setup is handled in cyberglove role
 if {{ use_cyberglove | lower or remote_cyberglove | lower }}; then
-    if [ -d "/home/user/projects/shadow_robot/base/src/sr_config/sr_cyberglove_config" ]; then
-        rm -r /home/user/projects/shadow_robot/base/src/sr_config/sr_cyberglove_config
-    fi
     cd /home/user/projects/shadow_robot/base/src
     if [ -d "sr_cyberglove_config" ]; then
         cd sr_cyberglove_config
@@ -35,12 +23,12 @@ if [ -f /tmp/id_rsa ]; then
 fi
 if {{ launch_hand | lower }}; then
     if {{ sim_hand | lower }}; then
-        sr_hand_autodetect roslaunch sr_robot_launch srhand.launch
+        roslaunch sr_robot_launch srhand.launch
     else
-        sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 else
     if {{ override_launch_hand | lower }}; then
-        sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 fi

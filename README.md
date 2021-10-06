@@ -75,7 +75,7 @@ If no inventory name is provided, and if remote_teleop=true, then "production_re
 Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password config_branch=bimanual_demohands_B_D reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
 ```
 
 Example for simulated robots without a real vive system or real gloves:
@@ -136,7 +136,7 @@ bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy option1=value1 option2=
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat_right_hand=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e
 ```
 Inventories correspond to fixed IP addresses as shown here:
 * [staging_b](ansible/inventory/server_and_nuc/staging_b)
@@ -182,7 +182,7 @@ bash <(curl -Ls bit.ly/run-aurora) docker_deploy option1=value1 option2=value2 o
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e
 ```
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
