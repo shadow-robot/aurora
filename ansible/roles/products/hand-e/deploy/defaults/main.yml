@@ -13,7 +13,6 @@ reinstall: false
 nvidia_docker: false
 use_aws: false
 launch_hand: false
-config_branch: ""
 hand_side: "right"
 bimanual: false
 mapping_path_right: "$(find sr_edc_launch )/mappings/default_mappings/rh_E_v4.yaml"

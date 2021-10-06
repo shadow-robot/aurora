@@ -63,13 +63,6 @@
       modify_script_commands: "/tmp/pull_pr_branches_and_catkin_make.sh"
   when: pr_branches is defined and pr_branches | length > 0
 
-- name: Pull sr-config branch inside the docker container
-  import_tasks: modify-container.yml
-  vars:
-    modify_script_name: "pull_sr_config.sh"
-    modify_script_commands: "roscd sr_ethercat_hand_config;git remote set-url origin https://github.com/shadow-robot/sr-config.git;git fetch;git pull"
-  when: groups['simulation'] is not defined
-
 - name: Installing private repositories for arm and hand product
   block:
   - name: Ensure botocore and boto3 modules are installed

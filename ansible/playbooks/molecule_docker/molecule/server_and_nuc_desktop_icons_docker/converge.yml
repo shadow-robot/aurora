@@ -7,7 +7,6 @@
     allow_auto_reboot: true
     reinstall: true
     nvidia_docker: false
-    config_branch: demohand_A
     product: hand_e
     upgrade_check: true
     bimanual: true

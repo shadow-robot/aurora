@@ -12,7 +12,6 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 nuc_username: "user"
 setup_directory: "/usr/local/bin"
 launch_hand: false
-config_branch: ""
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true

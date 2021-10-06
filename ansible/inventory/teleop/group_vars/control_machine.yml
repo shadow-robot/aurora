@@ -6,7 +6,6 @@ container_name: "teleop" # Name of the docker container
 bimanual: false # Determines if left arm and left hand should be set up
 ethercat_left_arm: "enx2" # Ethercat interface of the left arm
 ethercat_right_arm: "eth1" # Ethercat interface of the right arm
-config_branch: "" # Specify the branch for the specific hand E (or for bimanual: branch for both hands)
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Boolean to indicate whether ROS logs will be uploaded to AWS S3
 glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)

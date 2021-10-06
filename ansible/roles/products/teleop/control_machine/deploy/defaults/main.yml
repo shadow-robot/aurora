@@ -6,7 +6,6 @@ container_name: "teleop"
 bimanual: false
 ethercat_left_arm: "enx2"
 ethercat_right_arm: "eth1"
-config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
