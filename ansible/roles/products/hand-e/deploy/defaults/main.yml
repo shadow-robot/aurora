@@ -15,8 +15,6 @@ use_aws: false
 launch_hand: false
 hand_side: "right"
 bimanual: false
-mapping_path_right: "$(find sr_edc_launch )/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "$(find sr_edc_launch )/mappings/default_mappings/lh_E_v4.yaml"
 robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"
 use_cyberglove: false
 right_hand_picture: hand-e.png
