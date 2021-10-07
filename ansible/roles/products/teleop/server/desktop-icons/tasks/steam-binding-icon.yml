@@ -1,7 +1,7 @@
 - name: Copy desktop icon
   copy:
-    src: ../../../common/resources/files/{{ desktop_icon }}
-    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon }}"
+    src: ../../../common/resources/files/{{ steam_binding }}
+    dest: "{{ shadow_hand_launcher_folder }}/{{ steam_binding }}"
     mode: '664'
 
 - name: Create Steam Vive Binding Icon
@@ -14,5 +14,5 @@
     comment: "This icon opens the browser for tracker binding"
     folder: "{{ shadow_hand_launcher_folder }}"
     exec_command: xdg-open {{ steam_vive_binding_url }}
-    icon_file_name: "{{ desktop_icon }}"
+    icon_file_name: "{{ steam_binding }}"
     start_terminal: "false"
