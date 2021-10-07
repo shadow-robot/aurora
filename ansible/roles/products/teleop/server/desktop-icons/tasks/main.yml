@@ -28,6 +28,7 @@
 
 - name: Include teleop/server/desktop-icons/tasks/steam-binding-icon task
   include_tasks: steam-binding-icon.yml
+  when: glove=="shadow_glove"
 
 - name: Include products/common/close-everything-icon role
   include_role:
