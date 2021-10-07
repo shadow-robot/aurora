@@ -257,7 +257,7 @@
 - name: Include products/teleop/server/desktop-icons role
   include_role:
     name: products/teleop/server/desktop-icons
-    
+
 - name: Ensure the .ssh folder exists
   file:
     path: "{{ user_folder }}/.ssh/"
