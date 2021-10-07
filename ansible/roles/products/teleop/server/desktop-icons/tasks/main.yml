@@ -27,7 +27,7 @@
   when: groups['simulation'] is defined
 
 - name: Include teleop/server/desktop-icons/tasks/steam-binding-icon task
-  include_tasks: products/teleop/server/desktop-icons/tasks/steam-binding-icon
+  include_tasks: steam-binding-icon.yml
 
 - name: Include products/common/close-everything-icon role
   include_role:
