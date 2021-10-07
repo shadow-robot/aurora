@@ -28,7 +28,7 @@
 
 - name: Include teleop/server/desktop-icons/tasks/steam-binding-icon role
   include_role:
-    name: teleop/server/desktop-icons/tasks/steam-binding-icon
+    name: products/teleop/server/desktop-icons/tasks/steam-binding-icon
 
 - name: Include products/common/close-everything-icon role
   include_role:
