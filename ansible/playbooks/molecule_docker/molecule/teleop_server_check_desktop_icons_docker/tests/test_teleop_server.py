@@ -52,6 +52,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
         'Shadow System Monitor',
+        'Steam Vive Binding',
         'Shadow Close Everything'
         )
     scripts = (
