@@ -78,7 +78,7 @@
       dest: "{{ shadow_hand_launcher_folder }}/close_left_hand.sh"
       mode: '755'
     vars:
-      project_name: sr_ethercat_hand_config
+      project_name: sr_demos
       script_name: close.py -s left
 
   - name: Create Close Left Hand desktop icon
