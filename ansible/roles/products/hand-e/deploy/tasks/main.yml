@@ -78,8 +78,8 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_rhand.launch"
-    launch_package_name: "sr_ethercat_hand_config"
+    launch_file_name: "srhand.launch"
+    launch_package_name: "sr_robot_launch"
     override_launch_hand: False
 
 - name: Copying the default setup script into docker container

@@ -42,6 +42,6 @@ robot_config_system: "$(find sr_multi_moveit_config)/config/robot_configs/right_
 ur_robot_type: "ur10e"
 override_launch_hand: false
 remote_cyberglove: false
-launch_package_name: "sr_ethercat_hand_config"
-launch_file_name: "sr_rhand.launch"
+launch_package_name: "sr_robot_launch"
+launch_file_name: "srhand.launch"
 pr_branches: ""

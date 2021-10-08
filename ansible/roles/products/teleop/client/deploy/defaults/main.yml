@@ -26,5 +26,5 @@ upgrade_check: false
 container_terminal_title: "Teleop Container"
 override_launch_hand: false
 sim_hand: false
-launch_package_name: "sr_ethercat_hand_config"
-launch_file_name: "sr_rhand.launch"
+launch_package_name: "sr_robot_launch"
+launch_file_name: "srhand.launch"
