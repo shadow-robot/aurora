@@ -19,16 +19,16 @@
     bimanual_hands_picture: hand_extra_lite_bimanual.jpg
   when: product=='hand_extra_lite'
 
-- name: Creating server setup script for local right hand launch
+- name: Creating server setup script for local hand launch
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_right_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "srhand.launch"
+    launch_file_name: "srhand.launch sim:={{ sim_hand }}"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
-  when: bimanual|bool or hand_side=="right"
+#  when: bimanual|bool or hand_side=="right"
 
 # - name: Creating server setup script for local left hand launch
 #   template:
@@ -47,16 +47,16 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_bm_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "srhand.launch"
+    launch_file_name: "sr_bimanual.launch sim:={{ sim_hand }}"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool
 
-- name: Copying the server setup script for local right hand launch into docker container
+- name: Copying the server setup script for local hand launch into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ local_right_setup_script }} {{ container_name }}:{{ setup_directory }}/{{ local_right_setup_script }}"
   become: yes
-  when: bimanual|bool or hand_side=="right"
+#  when: bimanual|bool or hand_side=="right"
 
 # - name: Copying the server setup script for local left hand launch into docker container
 #   changed_when: false
@@ -70,15 +70,15 @@
   become: yes
   when: bimanual|bool
 
-- name: Install local Shadow Right Hand launch if bimanual is true or if hand_side="right"
+- name: Install local Shadow Hand launch
   block:
-  - name: Copy Launch Local Shadow Right Hand desktop icon
+  - name: Copy Launch Local Shadow Hand desktop icon
     copy:
       src: "../../../common/resources/files/{{ right_hand_picture }}"
       dest: "{{ shadow_hand_launcher_folder }}/{{ right_hand_picture }}"
       mode: '664'
 
-  - name: Create Launch Local Shadow Right Hand script
+  - name: Create Launch Local Shadow Hand script
     template:
       src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
       dest: "{{ shadow_hand_launcher_folder }}/shadow_local_right_launcher_exec.sh"
@@ -86,27 +86,27 @@
     vars:
       local_setup_script_var: "{{ local_right_setup_script }}"
 
-  - name: Create Shadow Local Right Hand Launch desktop icon
+  - name: Create Shadow Local Hand Launch desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop"
+      dest: "{{ icon_folder }}/Launch Local Shadow Hand.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: "Launch Local Shadow Right Hand"
-      comment: "This is application launches the right hand locally without the NUC"
+      desktop_shortcut_name: "Launch Local Shadow Hand"
+      comment: "This is application launches the hand locally without the NUC"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_right_launcher_exec.sh
       icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
 
-  - name: Make Shadow Local Right Hand Launch desktop icon Trusted
-    shell: gio set "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
+  - name: Make Shadow Local Hand Launch desktop icon Trusted
+    shell: gio set "{{ icon_folder }}/Launch Local Shadow Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
       - skip_molecule_task is not defined
 
-  when: bimanual|bool or hand_side=="right"
+#  when: bimanual|bool or hand_side=="right"
 
 # - name: Install local Shadow Left Hand launch if bimanual is true or if hand_side="left"
 #   block:
