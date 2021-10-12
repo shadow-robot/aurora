@@ -200,7 +200,6 @@
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand Hardware Control Loop"
-    hand_side_value: "right"
     xacro_value: "{{ xacro_right }}"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
@@ -213,7 +212,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     mode: '755'
   vars:
-    hand_side_var: "right"
     xacro_var: "{{ xacro_system }}"
     pwm_control_var: "true"
     hand_ctrl_var: "true"
@@ -233,7 +231,6 @@
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand Hardware Control Loop"
-    hand_side_value: "left"
     xacro_value: "{{ xacro_left }}"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
@@ -246,7 +243,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     mode: '755'
   vars:
-    hand_side_var: "left"
     xacro_var: "{{ xacro_system }}"
     pwm_control_var: "true"
     hand_ctrl_var: "true"
@@ -285,7 +281,6 @@
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
-    hand_side_value: "right"
     xacro_value: "{{ xacro_right }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
@@ -299,7 +294,6 @@
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
-    hand_side_value: "left"
     xacro_value: "{{ xacro_left }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"

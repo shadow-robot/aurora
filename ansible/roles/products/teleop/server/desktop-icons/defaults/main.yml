@@ -8,9 +8,6 @@ nuc_username: "user"
 remote_cyberglove: false
 sim_icon: false
 upgrade_script: false
-hand_side_var: right
-ethercat_interface_var: "eth0"
-ethercat_interface_value: "eth0"
 server_ip: "10.9.11.1"
 demohand_icons: false
 teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"

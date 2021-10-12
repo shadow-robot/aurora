@@ -8,7 +8,7 @@
 - name: Set arm y separation if bimanual=true
   set_fact:
     arm_y_separation_value: 1.5
-  when: bimanual|bool and hand_side_value=="left"
+  when: bimanual|bool and hand_side=="left"
 
 - name: Create executable launch script for hand and arm control loop (for cyberglove)
   template:
@@ -16,7 +16,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_side_var: "{{ hand_side_value }}"
     teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"
@@ -29,7 +28,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_side_var: "{{ hand_side_value }}"
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"
@@ -42,7 +40,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_side_var: "{{ hand_side_value }}"
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"

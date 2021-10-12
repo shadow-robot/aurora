@@ -134,7 +134,6 @@
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Right Side Teleop Hardware Control Loop"
-    hand_side_value: "right"
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC left hand and arm hardware control loop
@@ -144,7 +143,6 @@
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Left Side Teleop Hardware Control Loop"
-    hand_side_value: "left"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop
@@ -444,7 +442,6 @@
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
-    hand_side_value: "right"
     xacro_value: "{{ xacro_right }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
@@ -457,7 +454,6 @@
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
-    hand_side_value: "left"
     xacro_value: "{{ xacro_left }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
