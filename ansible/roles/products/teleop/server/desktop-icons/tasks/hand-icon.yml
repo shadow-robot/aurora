@@ -13,7 +13,6 @@
   vars:
     xacro_var: "{{ xacro_value }}"
     pwm_control_var: "{{ pwm_control_value }}"
-    hand_ctrl_var: "{{ hand_ctrl_value }}"
     arm_ctrl_var: "false"
     arm_payload_mass: 5.0
 
