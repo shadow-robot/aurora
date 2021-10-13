@@ -31,10 +31,6 @@ bimanual: false
 sim_hand: false
 encryption_password: ""
 hand_side: "right"
-xacro_right: "$(find sr_description)/robots/shadowhand_motor_plus.urdf.xacro"
-xacro_left: "$(find sr_description)/robots/shadowhand_left_motor_plus.urdf.xacro"
-xacro_bimanual: "$(find sr_description)/robots/bimanual_shadowhand_motor.urdf.xacro"
-robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"
 term_width: 500
 term_height: 400
 term_x: 200

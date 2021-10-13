@@ -11,7 +11,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    xacro_var: "{{ xacro_value }}"
     pwm_control_var: "{{ pwm_control_value }}"
     arm_ctrl_var: "false"
     arm_payload_mass: 5.0

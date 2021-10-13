@@ -15,13 +15,11 @@ fi
 
 ssh -X $NUC_NAME@$NUC_ADDRESS CONTAINER={{ container_name }} HOST_IP=$LOCAL_IP NUC_ADDRESS=$NUC_ADDRESS UR_TYPE={{ ur_robot_type }} ARM_PAYLOAD_MASS={{ arm_mass_payload }} 'bash -s' <<'ENDSSH'
 bash $(while [[ $(ss | grep $HOST_IP | grep $NUC_ADDRESS | grep ssh | grep ESTAB | wc -l) -gt 0 ]]; do sleep 1; done ; pkill -INT -f roslaunch) &
-XACRO='{{ xacro_bimanual }}'
-ROBOT_CONFIG='{{ robot_config_bimanual }}'
 docker stop ${CONTAINER}
 sleep 2
 docker start ${CONTAINER}
 echo "Starting the container..."
 sleep 3
-docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;sr_hand_autodetect roslaunch sr_robot_launch sr_bimanual_hardware_control_loop.launch arm_ctrl:=false robot_description:='${XACRO}' robot_config_file:='${ROBOT_CONFIG}' robot_model:=${UR_TYPE} arm_payload_mass:=${ARM_PAYLOAD_MASS} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
+docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;sr_hand_autodetect roslaunch sr_robot_launch sr_bimanual_hardware_control_loop.launch robot_model:=${UR_TYPE} arm_payload_mass:=${ARM_PAYLOAD_MASS} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
 ENDSSH
 sleep infinity

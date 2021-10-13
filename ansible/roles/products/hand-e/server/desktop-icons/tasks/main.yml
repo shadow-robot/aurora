@@ -200,7 +200,6 @@
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand Hardware Control Loop"
-    xacro_value: "{{ xacro_right }}"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
@@ -212,7 +211,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     mode: '755'
   vars:
-    xacro_var: "{{ xacro_system }}"
     pwm_control_var: "true"
     hand_ctrl_var: "true"
     initial_z_var: "{{ initial_z_value }}"
@@ -231,7 +229,6 @@
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand Hardware Control Loop"
-    xacro_value: "{{ xacro_left }}"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
@@ -243,7 +240,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     mode: '755'
   vars:
-    xacro_var: "{{ xacro_system }}"
     pwm_control_var: "true"
     hand_ctrl_var: "true"
     initial_z_var: "{{ initial_z_value }}"
@@ -281,7 +277,6 @@
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
-    xacro_value: "{{ xacro_right }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
@@ -294,7 +289,6 @@
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
-    xacro_value: "{{ xacro_left }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
@@ -337,17 +331,17 @@
 
 - name: Set arm+hand GUI launch file content for sim
   set_fact:
-    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='$(find sr_multi_description)/urdf/right_srhand_{{ ur_robot_type }}.urdf.xacro' robot_config_file:='$(find sr_multi_moveit_config)/config/robot_configs/right_sh_{{ ur_robot_type }}.yaml' scene:=true"
-    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='$(find sr_multi_description)/urdf/left_srhand_{{ ur_robot_type }}.urdf.xacro' robot_config_file:='$(find sr_multi_moveit_config)/config/robot_configs/left_sh_{{ ur_robot_type }}.yaml' scene:=true"
-    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 robot_description:='$(find sr_multi_description)/urdf/bimanual_srhand_{{ ur_robot_type }}.urdf.xacro' robot_config_file:='$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh_{{ ur_robot_type }}.yaml' scene:=true"
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
   when:
     - "'arm_' in product"
 
 - name: Set arm+hand GUI launch file content
   set_fact:
-    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true"
-    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}' scene:=true"
-    launch_file_content_arm_hand_bimanual: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 robot_description:='{{ xacro_system }}' robot_config_file:='{{ robot_config_system }}'"
+    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
   when:
     - "'arm_' in product"
 
@@ -416,7 +410,7 @@
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false robot_config_file:='{{ robot_config_bimanual }}' robot_description:='{{ xacro_bimanual }}'"
+    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
     desktop_icon_name: "4 - Launch Server Bimanual GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual GUI"
   when: bimanual|bool
@@ -478,7 +472,7 @@
             mode: '755'
           vars:
             project_name: "sr_robot_launch"
-            launch_file: "sr_bimanual.launch external_control_loop:=false sim:=true robot_config_file:='{{ robot_config_bimanual }}' robot_description:='{{ xacro_bimanual }}'"
+            launch_file: "sr_bimanual.launch external_control_loop:=false sim:=true"
 
         - name: Install desktop icon for launching everything for Shadow Bimanual Hands Simulation
           import_tasks: default-icon-server.yml
