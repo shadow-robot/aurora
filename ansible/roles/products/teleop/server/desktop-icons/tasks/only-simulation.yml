@@ -1,12 +1,12 @@
 ---
-- name: Install desktop icon for launching Shadow Right Teleop Simulation
+- name: Install desktop icon for launching Shadow Teleop Simulation
   import_tasks: default-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_launch_right_teleop_sim.sh"
-    desktop_icon_name: "Launch Shadow Right Teleop Simulation"
+    desktop_icon_name: "Launch Shadow Teleop Simulation"
     template: templates/scripts/launch-teleop-right-sim.j2
-    desktop_icon_path: "Launch Shadow Right Teleop Simulation"
+    desktop_icon_path: "Launch Shadow Teleop Simulation"
     launch_terminal: "false"
 
 # - name: Install desktop icon for launching Shadow Left Teleop Simulation
@@ -141,13 +141,13 @@
     launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
   when: scene_file|length > 0
 
-- name: Install desktop icon for Teleop server Simulation (Unimanual Right)
+- name: Install desktop icon for Teleop server Simulation (Unimanual)
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
     launch_script: "shadow_sim_right.sh"
-    desktop_icon_name: "3 - Launch Right Teleop Simulation"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation"
+    desktop_icon_name: "3 - Launch Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Teleop Simulation"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right }}"
 
@@ -192,13 +192,13 @@
     launch_file_input_bimanual: "{{ launch_file_input_gui_bimanual }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
   when: glove=="shadow_glove" and real_glove|bool
 
-- name: Install desktop icon for running right Shadow Glove driver
+- name: Install desktop icon for running Shadow Glove driver
   include_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_driver_right.sh"
-    desktop_icon_name: "4 - Launch Right Shadow Glove Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Shadow Glove Driver"
+    desktop_icon_name: "4 - Launch Shadow Glove Driver"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Shadow Glove Driver"
     project_name_input: "sr_teleop_vive_polhemus"
     launch_file_input: "{{ launch_file_input_right }}"
   when: glove=="shadow_glove" and real_glove|bool
@@ -258,13 +258,13 @@
     launch_file_input: "haptx_base_bimanual.launch"
   when: glove=="haptx" and real_glove|bool
 
-- name: Install desktop icon for running Shadow Glove mapping node right
+- name: Install desktop icon for running Shadow Glove mapping node
   include_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_mapping_launch_right.sh"
-    desktop_icon_name: "5 - Launch Right Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Mapping"
+    desktop_icon_name: "5 - Launch Shadow Glove Mapping"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Shadow Glove Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=rh"
   when: glove=="shadow_glove"
@@ -310,13 +310,13 @@
     launch_file_value: "sr_teleop_mock.launch"
   when: glove!="shadow_glove" and glove!="haptx"
 
-- name: Install desktop icon for Launch Simulated Right Teleop Mock
+- name: Install desktop icon for Launch Simulated Teleop Mock
   include_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_right.sh"
-    desktop_icon_name: "6 - Launch Simulated Right Teleop Mock"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
+    desktop_icon_name: "6 - Launch Simulated Teleop Mock"
+    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false"
   when: not real_vive|bool
