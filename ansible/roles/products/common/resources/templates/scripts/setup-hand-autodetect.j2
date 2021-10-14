@@ -21,4 +21,4 @@ fi
 if [ -f /tmp/id_rsa ]; then
     mv /tmp/id_rsa /home/user/.ssh/id_rsa
 fi
-{{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
