@@ -69,13 +69,13 @@ def test_icons_in_docker(host):
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         'Shadow System Monitor',
-        'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
-        'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
+        'Shadow Advanced Launchers/Launch Local Shadow Hand',
+        #'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
-        'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
-        'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
+        #'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
+        'Shadow Advanced Launchers/Local Zero Force Mode',
         'Shadow Advanced Launchers/Bimanual Teleop Simulation',
         'Shadow Close Everything'
         )
