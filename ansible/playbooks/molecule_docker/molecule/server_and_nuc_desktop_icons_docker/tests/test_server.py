@@ -25,8 +25,8 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
         'and Right Hand Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Launch NUC Container ' +
-        'and Left Hand Hardware Control Loop',
+        # 'Shadow Advanced Launchers/3 - Launch NUC Container ' +
+        # 'and Left Hand Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
         'and Bimanual Hands Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
@@ -76,7 +76,7 @@ def test_icons_in_docker(host):
         'open_bimanual_hands',
         'demo_bimanual_hands',
         'shadow_local_right_launcher_exec',
-        'shadow_local_left_launcher_exec',
+        #'shadow_local_left_launcher_exec',
         'shadow_local_bimanual_launcher_exec',
         'shadow_local_zero_force_mode',
         #'shadow_local_zero_force_mode_left',

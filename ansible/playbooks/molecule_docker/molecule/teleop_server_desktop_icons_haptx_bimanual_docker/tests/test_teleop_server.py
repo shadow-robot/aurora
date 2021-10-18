@@ -112,7 +112,7 @@ def test_icons_in_docker(host):
         'shadow_launcher_doc_exec',
         'shadow_launcher_system_monitor_exec',
         'shadow_local_right_launcher_exec',
-        'shadow_local_left_launcher_exec',
+        #'shadow_local_left_launcher_exec',
         'shadow_local_bimanual_launcher_exec',
         'shadow_sim_demo_bimanual',
         'shadow_local_zero_force_mode',
