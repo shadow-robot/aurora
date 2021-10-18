@@ -30,7 +30,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
         'and Bimanual Hands Hardware Control Loop',
         #'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
-        'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
+        'Shadow Advanced Launchers/3 - Zero Force Mode Hand',
         #'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
         'Shadow Advanced Launchers/Local Zero Force Mode',
         'Shadow Advanced Launchers/4 - Launch Server Left Hand GUI',
