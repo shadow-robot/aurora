@@ -17,8 +17,8 @@ def test_icons_in_docker(host):
     save_logs_script_path = '/home/' + str(host.user().name) + \
                             '/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
-        'Launch Shadow Right Hand',
-        'Launch Shadow Left Hand',
+        'Launch Shadow Hand',
+        #'Launch Shadow Left Hand',
         'Launch Shadow Bimanual Hands',
         'Shadow NUC RQT',
         'Shadow Advanced Launchers/1 - Launch Server Container',
@@ -78,10 +78,10 @@ def test_icons_in_docker(host):
         'shadow_local_right_launcher_exec',
         'shadow_local_left_launcher_exec',
         'shadow_local_bimanual_launcher_exec',
-        'shadow_local_zero_force_mode_right',
-        'shadow_local_zero_force_mode_left',
-        'shadow_local_zero_force_mode_right_launcher',
-        'shadow_local_zero_force_mode_left_launcher',
+        'shadow_local_zero_force_mode',
+        #'shadow_local_zero_force_mode_left',
+        'shadow_local_zero_force_mode_launcher',
+        #'shadow_local_zero_force_mode_left_launcher',
         'shadow_zero_force_mode_right',
         'shadow_zero_force_mode_left',
         'close_everything'
