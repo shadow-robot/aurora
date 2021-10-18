@@ -62,7 +62,7 @@ def test_icons_in_docker(host):
         'shadow_nuc_right_hardware_control_loop',
         #'shadow_nuc_left_hardware_control_loop',
         'shadow_nuc_bimanual_hardware_control_loop',
-        'shadow_GUI_left',
+        #'shadow_GUI_left',
         'shadow_GUI_right',
         'shadow_GUI_bimanual',
         'shadow_nuc_container',
