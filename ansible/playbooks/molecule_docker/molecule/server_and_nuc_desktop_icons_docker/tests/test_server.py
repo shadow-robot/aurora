@@ -24,11 +24,11 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
-        'and Right Hand Hardware Control Loop',
+        'and Hand Hardware Control Loop',
         # 'Shadow Advanced Launchers/3 - Launch NUC Container ' +
         # 'and Left Hand Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
-        'and Bimanual Hands Hardware Control Loop',
+        'and Bimanual Hands Hardware Contrsol Loop',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
         #'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
