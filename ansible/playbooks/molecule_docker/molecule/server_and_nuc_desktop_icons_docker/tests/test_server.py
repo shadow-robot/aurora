@@ -54,7 +54,7 @@ def test_icons_in_docker(host):
         )
     scripts = (
         'shadow_launch_everything_right',
-        'shadow_launch_everything_left',
+        #'shadow_launch_everything_left',
         'shadow_launch_everything_bimanual',
         'nuc_rqt',
         'shadow_server_container',
