@@ -34,4 +34,5 @@ def test_docker_container_exists(host):
 def test_correct_docker_image(host):
     client = docker.from_env()
     image = str(client.containers.get('teleop').image)
-    assert image == "<Image: 'public.ecr.aws/shadowrobot/dexterous-hand:noetic-release'>"
+    assert image == "<Image: 'public.ecr.aws/shadowrobot/" \
+        "dexterous-hand:noetic-release'>"

@@ -18,22 +18,22 @@ def test_icons_in_docker(host):
                             '/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Hand',
-        #'Launch Shadow Left Hand',
+        # 'Launch Shadow Left Hand',
         'Launch Shadow Bimanual Hands',
         'Shadow NUC RQT',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
         'and Hand Hardware Control Loop',
-        # 'Shadow Advanced Launchers/3 - Launch NUC Container ' +
-        # 'and Left Hand Hardware Control Loop',
+        #  'Shadow Advanced Launchers/3 - Launch NUC Container ' +
+        #  'and Left Hand Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Launch NUC Container ' +
         'and Bimanual Hands Hardware Control Loop',
-        #'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
+        # 'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode Hand',
-        #'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
+        # 'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
         'Shadow Advanced Launchers/Local Zero Force Mode',
-        #'Shadow Advanced Launchers/4 - Launch Server Left Hand GUI',
+        # 'Shadow Advanced Launchers/4 - Launch Server Left Hand GUI',
         'Shadow Advanced Launchers/4 - Launch Server Hand GUI',
         'Shadow Advanced Launchers/4 - Launch Server Bimanual GUI',
         'Shadow Advanced Launchers/Launch NUC Container',
@@ -47,22 +47,22 @@ def test_icons_in_docker(host):
         'Shadow Demos/Open Bimanual Hands',
         'Shadow Demos/Demo Bimanual Hands',
         'Shadow Advanced Launchers/Launch Local Shadow Hand',
-        #'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
+        # 'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
         'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
         'Shadow ROS Logs Saver and Uploader',
         'Shadow Close Everything'
         )
     scripts = (
         'shadow_launch_everything_right',
-        #'shadow_launch_everything_left',
+        # 'shadow_launch_everything_left',
         'shadow_launch_everything_bimanual',
         'nuc_rqt',
         'shadow_server_container',
         'shadow_roscore',
         'shadow_nuc_right_hardware_control_loop',
-        #'shadow_nuc_left_hardware_control_loop',
+        # 'shadow_nuc_left_hardware_control_loop',
         'shadow_nuc_bimanual_hardware_control_loop',
-        #'shadow_GUI_left',
+        # 'shadow_GUI_left',
         'shadow_GUI_right',
         'shadow_GUI_bimanual',
         'shadow_nuc_container',
@@ -76,14 +76,14 @@ def test_icons_in_docker(host):
         'open_bimanual_hands',
         'demo_bimanual_hands',
         'shadow_local_right_launcher_exec',
-        #'shadow_local_left_launcher_exec',
+        # 'shadow_local_left_launcher_exec',
         'shadow_local_bimanual_launcher_exec',
         'shadow_local_zero_force_mode',
-        #'shadow_local_zero_force_mode_left',
+        # 'shadow_local_zero_force_mode_left',
         'shadow_local_zero_force_mode_launcher',
-        #'shadow_local_zero_force_mode_left_launcher',
+        # 'shadow_local_zero_force_mode_left_launcher',
         'shadow_zero_force_mode_right',
-        'shadow_zero_force_mode_left',
+        # 'shadow_zero_force_mode_left',
         'close_everything'
         )
     for icon in icons:
