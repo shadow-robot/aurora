@@ -9,15 +9,15 @@
     desktop_icon_path: "Launch Shadow Teleop Simulation"
     launch_terminal: "false"
 
-# - name: Install desktop icon for launching Shadow Left Teleop Simulation
-#   import_tasks: default-icon.yml
-#   vars:
-#     desktop_icon_png: "{{ teleop_glove_left }}"
-#     launch_script: "shadow_launch_left_teleop_sim.sh"
-#     desktop_icon_name: "Launch Shadow Left Teleop Simulation"
-#     template: templates/scripts/launch-teleop-left-sim.j2
-#     desktop_icon_path: "Launch Shadow Left Teleop Simulation"
-#     launch_terminal: "false"
+- name: Install desktop icon for launching Shadow Left Teleop Simulation
+  import_tasks: default-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_left }}"
+    launch_script: "shadow_launch_left_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Left Teleop Simulation"
+    template: templates/scripts/launch-teleop-left-sim.j2
+    desktop_icon_path: "Launch Shadow Left Teleop Simulation"
+    launch_terminal: "false"
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
   import_tasks: default-icon.yml
@@ -151,15 +151,15 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right }}"
 
-# - name: Install desktop icon for Teleop server Simulation (Unimanual Left)
-#   import_tasks: roslaunch-icon.yml
-#   vars:
-#     desktop_icon_png: "{{ glove }}_left.png"
-#     launch_script: "shadow_sim_left.sh"
-#     desktop_icon_name: "3 - Launch Left Teleop Simulation"
-#     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation"
-#     project_name_input: "{{ project_name_input_value }}"
-#     launch_file_input: "{{ launch_file_input_gui_left }}"
+- name: Install desktop icon for Teleop server Simulation (Unimanual Left)
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ glove }}_left.png"
+    launch_script: "shadow_sim_left.sh"
+    desktop_icon_name: "3 - Launch Left Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_left }}"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual)
   import_tasks: roslaunch-icon.yml
