@@ -14,10 +14,10 @@
   include_role:
     name: installation/chrony-client
 
-- name: Find out if we should record all data from these hands
-  set_fact:
-    record_hand_data: "enabled"
-  when: record
+- name: Include products/common/record-hand-data role
+  include_role:
+    name: products/common/record-hand-data
+  when: record_data
 
 - name: Include docker/docker-image role
   include_role:
