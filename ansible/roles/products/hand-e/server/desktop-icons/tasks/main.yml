@@ -536,7 +536,7 @@
         - bimanual|bool or hand_side=="left"
         - "'arm_' in product"
 
-      - name: Bimanual arm+hand sim icon
+    - name: Bimanual arm+hand sim icon
         block:
           - name: Create executable launch script for bimanual arm+hand sim
             template:
