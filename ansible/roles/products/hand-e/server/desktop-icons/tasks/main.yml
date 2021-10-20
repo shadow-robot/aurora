@@ -438,7 +438,7 @@
             template: templates/scripts/launch-everything-server.j2
             desktop_icon_path: "Launch Shadow Right Hand Simulation"
             launch_terminal: "false"
-        when: bimanual|bool or hand_side=="right"
+      when: bimanual|bool or hand_side=="right"
 
     - name: Left hand sim icon
       block:
