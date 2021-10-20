@@ -146,8 +146,8 @@
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
     launch_script: "shadow_sim_right.sh"
-    desktop_icon_name: "3 - Launch Teleop Simulation"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Teleop Simulation"
+    desktop_icon_name: "3 - Launch Right Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right }}"
 

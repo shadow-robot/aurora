@@ -72,13 +72,13 @@
 
 - name: Install local Shadow Right Hand launch
   block:
-  - name: Copy Launch local Shadow Right Hand desktop icon
+  - name: Copy Launch Local Shadow Right Hand desktop icon
     copy:
       src: "../../../common/resources/files/{{ right_hand_picture }}"
       dest: "{{ shadow_hand_launcher_folder }}/{{ right_hand_picture }}"
       mode: '664'
 
-  - name: Create Launch local Shadow Right Hand script
+  - name: Create Launch Local Shadow Right Hand script
     template:
       src: ../../../common/resources/templates/scripts/start-docker-container-local.j2
       dest: "{{ shadow_hand_launcher_folder }}/shadow_local_right_launcher_exec.sh"
@@ -89,10 +89,10 @@
   - name: Create Shadow Local Hand Launch desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ icon_folder }}/Launch local Shadow Right Hand.desktop"
+      dest: "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop"
       mode: '755'
     vars:
-      desktop_shortcut_name: "Launch local Shadow Right Hand"
+      desktop_shortcut_name: "Launch Local Shadow Right Hand"
       comment: "This is application launches the right hand locally without the NUC"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: shadow_local_right_launcher_exec.sh
@@ -100,7 +100,7 @@
       start_terminal: "false"
 
   - name: Make Shadow Local Hand Launch desktop icon Trusted
-    shell: gio set "{{ icon_folder }}/Launch local Shadow Right Hand.desktop" "metadata::trusted" yes
+    shell: gio set "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
