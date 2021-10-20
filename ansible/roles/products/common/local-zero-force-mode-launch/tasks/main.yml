@@ -1,9 +1,9 @@
 ---
 - name: Setup script names
   set_fact:
-    local_zero_force_mode_right_hand_script : shadow_local_zero_force_mode.sh
+    local_zero_force_mode_right_hand_script : shadow_local_zero_force_mode_right.sh
     local_zero_force_mode_left_hand_script : shadow_local_zero_force_mode_left.sh
-    local_zero_force_mode_right_hand_launcher_script: shadow_local_zero_force_mode_launcher.sh
+    local_zero_force_mode_right_hand_launcher_script: shadow_local_zero_force_mode_right_launcher.sh
     local_zero_force_mode_left_hand_launcher_script: shadow_local_zero_force_mode_left_launcher.sh
 
 - name: Set icon picture filenames for hand_lite
