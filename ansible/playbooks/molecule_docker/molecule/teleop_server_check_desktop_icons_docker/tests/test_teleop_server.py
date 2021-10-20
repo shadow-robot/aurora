@@ -48,8 +48,8 @@ def test_icons_in_docker(host):
         'Shadow Demos/Open Right Hand',
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
-        'Shadow Advanced Launchers/Launch Local Shadow Hand',
-        'Shadow Advanced Launchers/Local Zero Force Mode',
+        'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
+        'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
         'Shadow System Monitor',
         'Shadow Close Everything'
@@ -75,8 +75,8 @@ def test_icons_in_docker(host):
         'shadow_launcher_system_monitor_exec',
         'shadow_local_right_launcher_exec',
         'shadow_sim_demo_right',
-        'shadow_local_zero_force_mode',
-        'shadow_local_zero_force_mode_launcher',
+        'shadow_local_zero_force_mode_right',
+        'shadow_local_zero_force_mode_right_launcher',
         'shadow_zero_force_mode_right',
         'close_everything'
         )
