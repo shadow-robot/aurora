@@ -438,7 +438,7 @@
             template: templates/scripts/launch-everything-server.j2
             desktop_icon_path: "Launch Shadow Right Hand Simulation"
             launch_terminal: "false"
-     when: bimanual|bool or hand_side=="right"
+        when: bimanual|bool or hand_side=="right"
 
     - name: Left hand sim icon
       block:
@@ -461,7 +461,7 @@
             template: templates/scripts/launch-everything-server.j2
             desktop_icon_path: "Launch Shadow Left Hand Simulation"
             launch_terminal: "false"
-      when: bimanual|bool or hand_side=="left"
+        when: bimanual|bool or hand_side=="left"
 
     - name: Bimanual hand sim icon
       block:
@@ -484,7 +484,7 @@
             template: templates/scripts/launch-everything-server.j2
             desktop_icon_path: "Launch Shadow Bimanual Hands Simulation"
             launch_terminal: "false"
-      when: bimanual|bool
+        when: bimanual|bool
 
     - name: arm+hand sim icon
       block:
