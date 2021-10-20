@@ -28,7 +28,7 @@
     launch_file_name: "srhand.launch sim:={{ sim_hand }}"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
- when: bimanual|bool or hand_side=="right"
+  when: bimanual|bool or hand_side=="right"
 
 - name: Creating server setup script for local left hand launch
   template:
