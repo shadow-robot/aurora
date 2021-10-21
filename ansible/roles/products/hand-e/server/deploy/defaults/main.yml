@@ -39,3 +39,4 @@ remote_cyberglove: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "srhand.launch"
 pr_branches: ""
+uses_autodetect: False
