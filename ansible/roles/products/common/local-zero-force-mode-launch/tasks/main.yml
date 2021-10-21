@@ -20,7 +20,7 @@
     bimanual_hands_picture: hand_extra_lite_bimanual.jpg
   when: product=='hand_extra_lite'
 
-- name: Creating the setup script for Local Zero Force Mode - Right Hand 
+- name: Creating the setup script for Local Zero Force Mode - Right Hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand-autodetect.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_zero_force_mode_right_hand_script }}"
@@ -54,9 +54,9 @@
   become: yes
   when: bimanual|bool or hand_side=="left"
 
-- name: Install Shadow Local Zero Force Mode - Right Hand
+- name: Install Shadow Local Zero Force Mode - Right Hand if bimanual is true or if hand_side="right"
   block:
-  - name: Copy Launch Shadow Hand desktop icon
+  - name: Copy Launch Shadow Right Hand desktop icon
     copy:
       src: "../../../common/resources/files/{{ right_hand_picture }}"
       dest: "{{ shadow_hand_launcher_folder }}/{{ right_hand_picture }}"

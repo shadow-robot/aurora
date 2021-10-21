@@ -36,7 +36,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_left_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "srhand.launch"
+    launch_file_name: "srhand.launch sim:={{ sim_hand }}"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool or hand_side=="left"
@@ -70,7 +70,7 @@
   become: yes
   when: bimanual|bool
 
-- name: Install local Shadow Right Hand launch
+- name: Install local Shadow Right Hand launch if bimanual is true or if hand_side="right"
   block:
   - name: Copy Launch Local Shadow Right Hand desktop icon
     copy:
@@ -86,7 +86,7 @@
     vars:
       local_setup_script_var: "{{ local_right_setup_script }}"
 
-  - name: Create Shadow Local Hand Launch desktop icon
+  - name: Create Shadow Local Right Hand Launch desktop icon
     template:
       src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
       dest: "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop"

@@ -193,7 +193,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
     launch_terminal: "false"
 
-- name: Install desktop icon for NUC hand hardware control loop
+- name: Install desktop icon for NUC right hand hardware control loop
   import_tasks: hand-icon.yml
   vars:
     desktop_icon_png: "{{ right_hand_picture }}"

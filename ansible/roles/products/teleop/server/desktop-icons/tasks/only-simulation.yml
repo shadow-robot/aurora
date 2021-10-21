@@ -192,7 +192,7 @@
     launch_file_input_bimanual: "{{ launch_file_input_gui_bimanual }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
   when: glove=="shadow_glove" and real_glove|bool
 
-- name: Install desktop icon for running Shadow Glove driver
+- name: Install desktop icon for running right Shadow Glove driver
   include_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "shadow_glove_right.png"
