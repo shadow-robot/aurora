@@ -131,3 +131,4 @@ def test_icons_in_docker(host):
     assert host.file(save_logs_file).exists
     hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
     assert host.file(hand_manual_file).exists
+    
