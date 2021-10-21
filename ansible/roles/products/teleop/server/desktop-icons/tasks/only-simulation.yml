@@ -175,7 +175,7 @@
   set_fact:
     launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }}"
     launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left"
-    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type side:=both}}"
+    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both"
   when: glove=="shadow_glove"
 
 - name: Set Shadow Glove Launch file inputs if real_glove = true
