@@ -11,11 +11,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    hand_serial_var: "{{ hand_serial_value }}"
-    ethercat_interface_var: "{{ ethercat_interface_value }}"
-    hand_side_var: "{{ hand_side_value }}"
-    xacro_var: "{{ xacro_value }}"
-    mapping_path_var: "{{ mapping_path_value }}"
     pwm_control_var: "{{ pwm_control_value }}"
     hand_ctrl_var: "{{ hand_ctrl_value }}"
     arm_ctrl_var: "false"

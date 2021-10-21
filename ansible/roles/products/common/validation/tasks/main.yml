@@ -1,11 +1,4 @@
 ---
-- name: Check ethercat_interface is not defined (it was changed to ethercat_right_hand)
-  assert:
-    that:
-      - ethercat_interface is not defined
-    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you specified a value for ethercat_interface. This variable is called ethercat_right_hand in this version of aurora. Please correct it and re-run aurora"
-    quiet: yes
-
 - name: Check product is defined (for server_and_nuc_deploy and docker_deploy)
   assert:
     that:
@@ -47,32 +40,6 @@
   when:
     - playbook=="teleop_deploy" or 'arm_' in product
     - groups['simulation'] is not defined
-    - hand_side=="left" or bimanual|bool
-
-- name: Make sure ethercat_right_hand is specified for non-sim inventory
-  assert:
-    that:
-      - ethercat_right_hand is defined
-      - ethercat_right_hand not in invalid_eth_values
-    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified ethercat_right_hand. Please specify it and re-run aurora"
-    quiet: yes
-  when:
-    - groups['simulation'] is not defined
-    - playbook=="teleop_deploy" or playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
-    - sim_hand is not defined or not sim_hand|bool
-    - hand_side=="right" or bimanual|bool
-
-- name: Make sure ethercat_left_hand is specified for non-sim inventory
-  assert:
-    that:
-      - ethercat_left_hand is defined
-      - ethercat_left_hand not in invalid_eth_values
-    fail_msg: "In aurora oneliner using playbook {{ playbook }}, you haven't specified ethercat_left_hand. Please specify it and re-run aurora"
-    quiet: yes
-  when:
-    - groups['simulation'] is not defined
-    - playbook=="teleop_deploy" or playbook=="docker_deploy" or playbook=="server_and_nuc_deploy"
-    - sim_hand is not defined or not sim_hand|bool
     - hand_side=="left" or bimanual|bool
 
 - name: Make sure ethercat_right_arm is specified for non-sim inventory (for teleop and arm-related server_and_nuc_deploy)

@@ -8,20 +8,14 @@ bimanual_hands_picture: hand-e-bimanual.png
 product: hand_e
 container_name: "dexterous_hand_real_hw"
 setup_directory: "/usr/local/bin"
-hand_serial: "1082"
-hand_serial_left: "2346"
-ethercat_right_hand: "eth0"
-ethercat_left_hand: "eth1"
 icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
 launch_hand: false
 override_launch_hand: false
-config_branch: ""
-mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
 use_cyberglove: false
 remote_cyberglove: false
 cyberglove: ""
 use_steamvr: false
 sim_hand: false
 launch_package_name: "sr_robot_launch"
-launch_file_name: "sr_hardware_control_loop.launch hand_serial:={{ hand_serial }} eth_port:={{ ethercat_right_hand }} side:=right pwm_control:=false hand_ctrl:=false arm:=false"
+launch_file_name: "sr_hardware_control_loop.launch pwm_control:=false hand_ctrl:=false arm:=false"
+uses_autodetect: False
