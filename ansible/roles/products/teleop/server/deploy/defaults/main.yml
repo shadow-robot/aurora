@@ -8,8 +8,6 @@ glove: "shadow_glove"
 cyberglove: ""
 use_aws: false
 use_openvpn: false
-ethercat_right_hand: "eth0"
-ethercat_left_hand: "eth0"
 ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -19,7 +17,6 @@ setup_directory: "/usr/local/bin"
 use_cyberglove: false
 remote_cyberglove: false
 launch_hand: false
-config_branch: ""
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
@@ -34,14 +31,6 @@ bimanual: false
 sim_hand: false
 encryption_password: ""
 hand_side: "right"
-hand_serial: "1082"
-hand_serial_left: "2346"
-xacro_right: "$(find sr_description)/robots/shadowhand_motor_plus.urdf.xacro"
-xacro_left: "$(find sr_description)/robots/shadowhand_left_motor_plus.urdf.xacro"
-xacro_bimanual: "$(find sr_description)/robots/bimanual_shadowhand_motor.urdf.xacro"
-mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
-robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"
 term_width: 500
 term_height: 400
 term_x: 200
@@ -51,10 +40,10 @@ real_glove: false
 real_vive: false
 ur_robot_type: "ur10e"
 override_launch_hand: false
-launch_package_name: "sr_ethercat_hand_config"
-launch_file_name: "sr_rhand.launch"
+launch_package_name: "sr_robot_launch"
+launch_file_name: "srhand.launch"
 haptx_teleop_readthedocs_token: ""
 shadow_glove_teleop_readthedocs_token: ""
 pr_branches: ""
 polhemus_type: "viper"
-
+uses_autodetect: False

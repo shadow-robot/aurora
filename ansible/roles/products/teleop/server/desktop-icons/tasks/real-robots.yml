@@ -132,13 +132,8 @@
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
-    config_branch_value: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Right Side Teleop Hardware Control Loop"
-    ethercat_interface_value: "{{ ethercat_right_hand }}"
-    hand_serial_value: "{{ hand_serial }}"
-    hand_side_value: "right"
-    mapping_path_value: "{{ mapping_path_right }}"
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC left hand and arm hardware control loop
@@ -146,13 +141,8 @@
   vars:
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
-    config_branch_value: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Left Side Teleop Hardware Control Loop"
-    ethercat_interface_value: "{{ ethercat_left_hand }}"
-    hand_serial_value: "{{ hand_serial_left }}"
-    hand_side_value: "left"
-    mapping_path_value: "{{ mapping_path_left }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop
@@ -160,7 +150,6 @@
   vars:
     desktop_icon_png: "hand-e-bimanual.png"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
-    config_branch_value: "{{ config_branch }}"
     desktop_icon_name: "3 - Launch NUC Bimanual Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Bimanual Teleop Hardware Control Loop"
   when: bimanual|bool
@@ -451,14 +440,8 @@
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_zero_force_mode_right.sh"
-    hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
-    ethercat_interface_value: "{{ ethercat_right_hand }}"
-    hand_serial_value: "{{ hand_serial }}"
-    hand_side_value: "right"
-    xacro_value: "{{ xacro_right }}"
-    mapping_path_value: "{{ mapping_path_right }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
   when: bimanual|bool or hand_side=="right"
@@ -468,14 +451,8 @@
   vars:
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_zero_force_mode_left.sh"
-    hand_branch: "{{ config_branch }}"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
-    ethercat_interface_value: "{{ ethercat_left_hand }}"
-    hand_serial_value: "{{ hand_serial_left }}"
-    hand_side_value: "left"
-    xacro_value: "{{ xacro_left }}"
-    mapping_path_value: "{{ mapping_path_left }}"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
   when: bimanual|bool or hand_side=="left"

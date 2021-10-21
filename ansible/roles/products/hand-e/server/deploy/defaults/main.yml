@@ -5,8 +5,6 @@ reinstall: false
 container_name: "dexterous_hand_real_hw"
 nvidia_docker: true
 use_aws: false
-ethercat_right_hand: "eth0"
-ethercat_left_hand: "eth0"
 ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -14,7 +12,6 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand
 nuc_username: "user"
 setup_directory: "/usr/local/bin"
 launch_hand: false
-config_branch: ""
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 save_nuc_logs: true
@@ -30,25 +27,16 @@ cyberglove: ""
 server_ip: "10.9.11.1"
 hand_side: "right"
 bimanual: false
-hand_serial: "1082"
-hand_serial_left: "2346"
 use_cyberglove: false
 term_width: 656
 term_height: 400
 term_x: 230
 term_y: 0
 term_y_correction: 58
-xacro_right: "$(find sr_description)/robots/shadowhand_motor_plus.urdf.xacro"
-xacro_left: "$(find sr_description)/robots/shadowhand_left_motor_plus.urdf.xacro"
-xacro_bimanual: "$(find sr_description)/robots/bimanual_shadowhand_motor.urdf.xacro"
-xacro_system: "$(find sr_multi_description)/urdf/right_srhand_ur10e.urdf.xacro"
-mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
-robot_config_bimanual: "$(find sr_multi_moveit_config)/config/robot_configs/bimanual_sh.yaml"
-robot_config_system: "$(find sr_multi_moveit_config)/config/robot_configs/right_sh_ur10e.yaml"
 ur_robot_type: "ur10e"
 override_launch_hand: false
 remote_cyberglove: false
-launch_package_name: "sr_ethercat_hand_config"
-launch_file_name: "sr_rhand.launch"
+launch_package_name: "sr_robot_launch"
+launch_file_name: "srhand.launch"
 pr_branches: ""
+uses_autodetect: False

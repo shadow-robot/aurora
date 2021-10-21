@@ -11,18 +11,12 @@ setup_directory: "/usr/local/bin"
 icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
 launch_hand: false
 override_launch_hand: false
-config_branch: ""
-ethercat_right_hand: "enx0"
-ethercat_left_hand: "enx1"
-hand_serial: "1082"
-hand_serial_left: "2346"
-mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
 use_cyberglove: false
 remote_cyberglove: false
 cyberglove: ""
 use_steamvr: false
 sim_hand: false
-launch_package_name: "sr_ethercat_hand_config"
-launch_file_name: "sr_rhand.launch"
+launch_package_name: "sr_robot_launch"
+launch_file_name: "srhand.launch"
 override_launch_hand_var: false
+uses_autodetect: False

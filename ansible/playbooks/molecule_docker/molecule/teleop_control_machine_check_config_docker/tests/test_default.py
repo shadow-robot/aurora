@@ -43,3 +43,5 @@ def test_sr_config_exists_in_docker(host):
     path = '/home/user/projects/shadow_robot/base/src/sr_config'
     bits, stat = container.get_archive(path)
     assert stat['size'] > 0
+    assert image == "<Image: 'public.ecr.aws/shadowrobot/" \
+        "dexterous-hand:noetic-release'>"
