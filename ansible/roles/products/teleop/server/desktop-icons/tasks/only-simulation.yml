@@ -120,16 +120,16 @@
 
 - name: Set GUI icon variables to standard values for haptx
   set_fact:
-    launch_file_input_gui_right: "teleop_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
-    launch_file_input_gui_left: "teleop_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    launch_file_input_gui_right: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    launch_file_input_gui_left: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
     launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
     project_name_input_value: "sr_teleop_vive_haptx"
   when: glove=="haptx"
 
 - name: Set GUI icon variables to standard values for shadow_glove
   set_fact:
-    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
-    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
+    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false"
     launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower | ternary('both','none') }} rh_palm_device:=tracker lh_palm_device:=tracker require_pedal:=false"
     project_name_input_value: "sr_teleop_vive_polhemus"
   when: glove=="shadow_glove"
@@ -174,15 +174,15 @@
 - name: Set Shadow Glove Launch file inputs
   set_fact:
     launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }}"
-    launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }}"
-    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }}"
+    launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left"
+    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type side:=both}}"
   when: glove=="shadow_glove"
 
 - name: Set Shadow Glove Launch file inputs if real_glove = true
   set_fact:
     launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_right.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-    launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml"
+    launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both user_calibration_folder_path:='/home/user/shadow_glove_user_calibration_files' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml"
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Set Shadow Glove Launch file inputs if real_glove = true
@@ -318,7 +318,7 @@
     desktop_icon_name: "6 - Launch Simulated Right Teleop Mock"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
     project_name_input: "{{ project_name_value }}"
-    launch_file_input: "{{ launch_file_value }} bimanual:=false"
+    launch_file_input: "{{ launch_file_value }} bimanual:=false side:=right"
   when: not real_vive|bool
 
 - name: Install desktop icon for Launch Simulated Left Teleop Mock
@@ -329,7 +329,7 @@
     desktop_icon_name: "6 - Launch Simulated Left Teleop Mock"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
     project_name_input: "{{ project_name_value }}"
-    launch_file_input: "{{ launch_file_value }} bimanual:=false"
+    launch_file_input: "{{ launch_file_value }} bimanual:=false side:=left"
   when: not real_vive|bool
 
 - name: Install desktop icon for Launch Simulated Bimanual Teleop Mock
