@@ -141,7 +141,7 @@
     launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
   when: scene_file|length > 0
 
-- name: Install desktop icon for Teleop server Simulation (Unimanual)
+- name: Install desktop icon for Teleop server Simulation (Unimanual Right)
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
@@ -258,7 +258,7 @@
     launch_file_input: "haptx_base_bimanual.launch"
   when: glove=="haptx" and real_glove|bool
 
-- name: Install desktop icon for running Shadow Glove mapping node
+- name: Install desktop icon for running Shadow Glove mapping node right
   include_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "shadow_glove_right.png"

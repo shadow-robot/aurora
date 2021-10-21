@@ -99,7 +99,7 @@
       icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
 
-  - name: Make Shadow Local Hand Launch desktop icon Trusted
+  - name: Make Shadow Local Right Hand Launch desktop icon Trusted
     shell: gio set "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes
     when:
       - ansible_distribution|string == 'Ubuntu'

@@ -486,7 +486,7 @@
             launch_terminal: "false"
       when: bimanual|bool
 
-    - name: arm+hand sim icon
+    - name: Right arm+hand sim icon
       block:
         - name: Create executable launch script for right arm+hand sim
           template:
