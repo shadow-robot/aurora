@@ -75,7 +75,7 @@ If no inventory name is provided, and if remote_teleop=true, then "production_re
 Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password ethercat_right_hand=enx000ec6bfe185 ethercat_left_hand=enx000ec6c042d5 config_branch=bimanual_demohands_B_D reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
 ```
 
 Example for simulated robots without a real vive system or real gloves:
@@ -136,7 +136,7 @@ bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy option1=value1 option2=
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e ethercat_right_hand=enx5647929203 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy product=hand_e
 ```
 Inventories correspond to fixed IP addresses as shown here:
 * [staging_b](ansible/inventory/server_and_nuc/staging_b)
@@ -171,30 +171,18 @@ then a valid Docker Hub account with pull credentials from Shadow Robot's Docker
 container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
 launches the hand.
 
-**Ethercat interface**
-
-Before running the docker_deploy playbook, the ethercat_right_hand parameter for the hand needs to be discovered. In order to do so, after plugging the hand’s ethernet cable into your machine and powering it up, please run
-```shell
-sudo dmesg
-```
-command in the console. At the bottom, there will be information similar to the one below:
-```shell
-[490.757853] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s25: link becomes ready
-```
-In the above example, ‘enp0s25’ is the ethercat_right_hand that is needed.
-
 **How to run:**
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy ethercat_right_hand=enp0s25 option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e ethercat_right_hand=enp0s25 config_branch=demohand_C
+bash <(curl -Ls bit.ly/run-aurora) docker_deploy product=hand_e
 ```
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
