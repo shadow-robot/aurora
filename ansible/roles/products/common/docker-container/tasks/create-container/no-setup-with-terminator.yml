@@ -3,6 +3,11 @@
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
 
+- name: Find out if we should record all data from these hands
+  set_fact:
+    record_hand_data: "enabled"
+  when: record_data
+  
 - name: Creating the container with terminator and no setup
   changed_when: false
   community.docker.docker_container:

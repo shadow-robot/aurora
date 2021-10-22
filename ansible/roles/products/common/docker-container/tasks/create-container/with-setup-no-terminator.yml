@@ -4,6 +4,11 @@
     container_type_shared_volumes:
       - "{{ user_folder }}/.Xauthority:/home/user/.Xauthority"
 
+- name: Find out if we should record all data from these hands
+  set_fact:
+    record_hand_data: "enabled"
+  when: record_data
+
 - name: Set shared volumes
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"

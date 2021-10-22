@@ -29,3 +29,4 @@ arm_ip_left: ""
 arm_ip_right: ""
 ur_robot_type: "ur10e"
 pr_branches: ""
+record_data: false

@@ -23,6 +23,7 @@ remote_bag_user: "shadowop"
 remote_bag_storage_IP: "10.5.10.59"
 remote_bag_storage_location: "/volume1/ros_bags"
 pr_branches: "" # Space-separated list of PRs (https://github.com/shadow-robot/repo/pull/266) or branches (https://github.com/shadow-robot/repo/tree/custom_branch) to check out on NUC and catkin_make
+record_data: false
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435
@@ -37,4 +38,4 @@ ansible_ssh_pass: !vault |
           31613934306166313637326339313136393537393664663664353862613762646333646437646630
           3331323561646639620a363162363661363834616465393132383664363038666532323162393934
           3239
-bag_all_data_from: ["shadowrobot_210312", "shadowrobot_210311", "shadowrobot_210311_210312"]
+
