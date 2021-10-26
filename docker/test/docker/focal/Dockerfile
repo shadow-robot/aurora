@@ -1,14 +1,14 @@
-FROM public.ecr.aws/shadowrobot/aurora-test-ubuntu:bionic
+FROM public.ecr.aws/shadowrobot/aurora-test-ubuntu:focal
 
-LABEL Description="This image is used for testing Ubuntu Bionic with Docker deployment" Vendor="Shadow Robot" Version="1.0"
+LABEL Description="This image is used for testing Ubuntu Focal with Docker deployment" Vendor="Shadow Robot" Version="1.0"
 
-ENV DEBIAN_FRONTEND noninteractive
-
-ENV USER testuser
+ARG DEBIAN_FRONTEND=noninteractive
 
 ENV LC_ALL C.UTF-8
 
 ENV LANG C.UTF-8
+
+ENV USER testuser
 
 ARG ts_docker_aurora_branch
 

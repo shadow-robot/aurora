@@ -255,7 +255,7 @@ The recommended way to develop code for this project is to pull a certain docker
 
 The docker images used for aurora development are [here](https://gallery.ecr.aws/shadowrobot/aurora-molecule-devel).
 
-Currently both xenial and bionic tags are working well.
+Currently both bionic and focal tags are working well.
 
 Use the tag that matches your host operating system.
 
