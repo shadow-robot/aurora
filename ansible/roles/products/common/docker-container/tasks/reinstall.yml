@@ -36,6 +36,13 @@
     modify_script_commands: "sudo mkdir -p /run/user/1000;sudo chmod 0700 /run/user/1000;sudo chown 1000:1000 /run/user/1000;export XDG_RUNTIME_DIR=/run/user/1000"
   when: xdg_check.stdout=="0"
 
+- name: Create ssh folder inside the container
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "create_ssh_folder.sh"
+    modify_script_commands: "sudo mkdir -p /home/user/.ssh"
+  when: "'arm_' in product"
+
 - name: Checking out PRs and branches if pr_branches list has been specified
   block:
   - name: Creating the pull_pr_branches_and_catkin_make bash script for testing for these branches {{ pr_branches }}
