@@ -20,6 +20,11 @@
   vars:
     skip_nvidia: true
 
+- name: Include products/common/record-hand-data role
+  include_role:
+    name: products/common/record-hand-data
+  when: record_data
+
 - name: Set server hostname
   set_fact:
     server_hostname: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"

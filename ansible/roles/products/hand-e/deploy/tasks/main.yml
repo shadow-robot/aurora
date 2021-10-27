@@ -16,7 +16,7 @@
 - name: Include products/common/record-hand-data role
   include_role:
     name: products/common/record-hand-data
-  when: config_branch in bag_all_data_from
+  when: record_data
 
 - name: Include docker/docker-image role
   include_role:
@@ -71,19 +71,14 @@
     mode: '755'
   when: upgrade_check|bool
 
-- name: Include products/common/hand-parameters role
-  include_role:
-    name: products/common/hand-parameters
-  when: config_branch is defined and config_branch | length > 0
-
 - name: Creating the default setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_rhand.launch"
-    launch_package_name: "sr_ethercat_hand_config"
+    launch_file_name: "srhand.launch"
+    launch_package_name: "sr_robot_launch"
     override_launch_hand: False
 
 - name: Copying the default setup script into docker container

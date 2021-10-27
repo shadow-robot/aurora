@@ -3,6 +3,11 @@
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
 
+- name: Find out if we should record all data from these hands
+  set_fact:
+    record_hand_data: "enabled"
+  when: record_data
+  
 - name: Creating the container which will execute setup script when started inside a terminator window
   changed_when: false
   community.docker.docker_container:
@@ -13,8 +18,6 @@
     pull: yes
     env:
       verbose: "true"
-      interface: "{{ ethercat_right_hand }}"
-      interface_left: "{{ ethercat_left_hand }}"
       QT_X11_NO_MITSHM: "1"
       LOCAL_USER_ID: "{{ id.stdout }}"
       DISPLAY: "{{ lookup('env','DISPLAY') }}"

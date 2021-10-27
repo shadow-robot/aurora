@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/dexterous-hand" # Docker image name
-tag: "melodic-release" # Tag of the exact Docker hub image to pull
+tag: "noetic-release" # Tag of the exact Docker hub image to pull
 product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "dexterous_hand_real_hw" # Name of the docker container
@@ -18,8 +18,6 @@ demo_icons: true # Generates desktop icons to run demos
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both hands are used or not
-hand_serial: "1082" # Specify the right hand serial number
-hand_serial_left: "2346" # Specify the left hand serial number
 ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm

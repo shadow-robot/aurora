@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-polhemus" # Docker image name
-tag: "melodic-night-build" # Tag of the exact Docker hub image to pull
+tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
@@ -20,8 +20,6 @@ demo_icons: true # Generates desktop icons to run demos
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 bimanual: false # Specify if both hands are used or not
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
-hand_serial: "1082" # Specify the right hand serial number
-hand_serial_left: "2346" # Specify the left hand serial number
 ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
 remote_teleop: false # Flag to enable/disable remote_teleop software install
 demohand_icons: false # Specify if all the teleop icons for Demohands A,B,C,D should be installed (for demos)

@@ -1,6 +1,6 @@
 ---
 image: "shadowrobot/shadow-teleop-polhemus"
-tag: "melodic-night-build"
+tag: "noetic-night-build"
 reinstall: false
 container_name: "teleop"
 nvidia_docker: true
@@ -9,8 +9,6 @@ cyberglove: ""
 use_aws: false
 use_openvpn: false
 setup_directory: "/usr/local/bin"
-ethercat_right_hand: "eth0"
-config_branch: ""
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
@@ -27,11 +25,7 @@ bimanual: false
 upgrade_check: false
 container_terminal_title: "Teleop Container"
 override_launch_hand: false
-ethercat_left_hand: "enx1"
-mapping_path_right: "$(find sr_edc_launch)/mappings/default_mappings/rh_E_v4.yaml"
-mapping_path_left: "$(find sr_edc_launch)/mappings/default_mappings/lh_E_v4.yaml"
 sim_hand: false
-launch_package_name: "sr_ethercat_hand_config"
-launch_file_name: "sr_rhand.launch"
-hand_serial: "1082"
-hand_serial_left: "2346"
+launch_package_name: "sr_robot_launch"
+launch_file_name: "srhand.launch"
+uses_autodetect: False

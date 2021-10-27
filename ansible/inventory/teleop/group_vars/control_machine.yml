@@ -1,14 +1,11 @@
 ---
 image: "shadowrobot/shadow-teleop-polhemus" # Docker image name
-tag: "melodic-night-build" # Tag of the exact Docker hub image to pull
+tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container
-ethercat_right_hand: "eth0" # Ethercat interface of the right hand
 bimanual: false # Determines if left arm and left hand should be set up
-ethercat_left_hand: "enx1" # Ethercat interface of the left hand
 ethercat_left_arm: "enx2" # Ethercat interface of the left arm
 ethercat_right_arm: "eth1" # Ethercat interface of the right arm
-config_branch: "" # Specify the branch for the specific hand E (or for bimanual: branch for both hands)
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Boolean to indicate whether ROS logs will be uploaded to AWS S3
 glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
@@ -18,8 +15,6 @@ terminator: false # Launch terminator when the Docker starts
 nvidia_docker: false # Define if nvidia-container-toolkit is used (defaul is false)
 use_steamvr: false # Determines if SteamVR will launch inside the container created on this machine
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
-hand_serial: "1082" # Specify the right hand serial number
-hand_serial_left: "2346" # Specify the left hand serial number
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
@@ -28,6 +23,7 @@ remote_bag_user: "shadowop"
 remote_bag_storage_IP: "10.5.10.59"
 remote_bag_storage_location: "/volume1/ros_bags"
 pr_branches: "" # Space-separated list of PRs (https://github.com/shadow-robot/repo/pull/266) or branches (https://github.com/shadow-robot/repo/tree/custom_branch) to check out on NUC and catkin_make
+record_data: false
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435
@@ -42,4 +38,4 @@ ansible_ssh_pass: !vault |
           31613934306166313637326339313136393537393664663664353862613762646333646437646630
           3331323561646639620a363162363661363834616465393132383664363038666532323162393934
           3239
-bag_all_data_from: ["shadowrobot_210312", "shadowrobot_210311", "shadowrobot_210311_210312"]
+

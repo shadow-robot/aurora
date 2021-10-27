@@ -34,7 +34,7 @@ def test_docker_container_exists(host):
 def test_correct_docker_image(host):
     client = docker.from_env()
     image = str(client.containers.get('teleop').image)
-    assert image == "<Image: 'public.ecr.aws/shadowrobot/dexterous-hand:melodic-release'>"
+    assert image == "<Image: 'public.ecr.aws/shadowrobot/dexterous-hand:noetic-release'>"
 
 
 def test_sr_config_exists_in_docker(host):
@@ -43,3 +43,5 @@ def test_sr_config_exists_in_docker(host):
     path = '/home/user/projects/shadow_robot/base/src/sr_config'
     bits, stat = container.get_archive(path)
     assert stat['size'] > 0
+    assert image == "<Image: 'public.ecr.aws/shadowrobot/" \
+        "dexterous-hand:noetic-release'>"

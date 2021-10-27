@@ -11,7 +11,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_bimanual_control.launch"
   when: glove=="haptx"
 
@@ -21,7 +20,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
-    config_branch_var: "{{ config_branch_value }}"
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_bimanual_control.launch"
   when: glove=="shadow_glove"
 

@@ -44,7 +44,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping',
         'Shadow Advanced Launchers/Launch NUC Container',
         'Shadow Demos/Close Right Hand',
-        'Shadow Demos/Demo Right Hand',
+        'Shadow Demos/Biotacs Demo Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
@@ -52,6 +52,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
         'Shadow System Monitor',
+        'Steam Vive Binding',
         'Shadow Close Everything'
         )
     scripts = (
@@ -69,7 +70,7 @@ def test_icons_in_docker(host):
         'shadow_glove_driver_right',
         'shadow_nuc_container',
         'close_right_hand',
-        'demo_right_hand',
+        'demo_right_hand_biotacs',
         'open_right_hand',
         'shadow_launcher_doc_exec',
         'shadow_launcher_system_monitor_exec',
@@ -88,3 +89,4 @@ def test_icons_in_docker(host):
     assert host.file(save_logs_file).exists
     hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
     assert host.file(hand_manual_file).exists
+    

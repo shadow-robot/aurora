@@ -15,6 +15,9 @@ RUN set -x && \
     chmod 755 /tmp/oneliner && \
     /tmp/oneliner install_software --branch $ml_ec2_aurora_branch software=[aws-cli] && \
     \
+    wget https://s3.eu-west-2.amazonaws.com/amazon-ssm-eu-west-2/latest/debian_amd64/amazon-ssm-agent.deb && \
+    dpkg -i amazon-ssm-agent.deb && \
+    \
     echo "Clean up" && \
     apt-get clean && \
     rm -rf \

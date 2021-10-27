@@ -4,9 +4,8 @@
   vars:
     reinstall: true
     use_openvpn: false
-    ethercat_right_hand: enp0s25
     image: public.ecr.aws/shadowrobot/dexterous-hand
-    tag: melodic-release
+    tag: noetic-release
     nvidia_docker: false
     allow_auto_reboot: true
     remote_teleop: true
