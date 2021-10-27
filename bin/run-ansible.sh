@@ -54,6 +54,8 @@ case ${key} in
 esac
 done
 
+echo $test_machine
+
 if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]] && [[ "${test_machine}" = "false" ]]; then
     if [[ -z ${read_secure} ]]; then
         read_secure="sudo_password"
