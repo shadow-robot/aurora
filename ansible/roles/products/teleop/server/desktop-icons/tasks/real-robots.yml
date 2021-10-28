@@ -89,7 +89,7 @@
     local_website_port_var: '8081'
     desktop_icon_name: "Shadow System Monitor"
     desktop_icon_path: "Shadow System Monitor"
-    launch_terminal: "true"
+    launch_terminal: "false"
     start_container_var: "false"
     start_server_command_var: ""
     preconditions_var: "Launch Shadow Teleop icon"
