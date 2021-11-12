@@ -7,13 +7,15 @@
 - name: Check response exists
   block:
     - name: Set variables
-      set_fact: response_path="{{ user_folder }}/.shadow_launcher_app/.response"
+      set_fact: 
+        local_response_path: "{{ user_folder }}/.shadow_launcher_app/.response"
+        container_response_path: "/usr/local/bin/.response"
     - name: Copy response file
-      shell: "docker cp {{ container_name }}:/usr/local/bin/.response {{ response_path }}"
+      shell: "docker cp {{ container_name }}:{{ container_response_path }} {{ local_response_path }}"
       ignore_errors: yes
     - name: Check file exists
       stat:
-        path: "{{ response_path }}"
+        path: "{{ local_response_path }}"
       register: response_file
   when: "'binary' in image"
 
@@ -43,7 +45,7 @@
   include_tasks: create-container/nvidia-with-setup-with-terminator.yml
 
 - name: Move response back to container
-  shell: "docker cp {{ user_folder }}/.shadow_launcher_app/.response {{ container_name }}:/usr/local/bin/.response"
+  shell: "docker cp {{ local_response_path }} {{ container_name }}:{{ container_response_path }}"
   when:
     - "'binary' in image"
     - response_file.stat.exists
