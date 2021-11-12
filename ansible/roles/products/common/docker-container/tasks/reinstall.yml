@@ -1,10 +1,9 @@
 ---
-
 - name: Check response exists
   block:
+    - name: Set variables
+        set_fact: response_path="/usr/local/bin/.response"
     - name: Check file exists
-    - set_fact:
-        response_path: "/usr/local/bin/.response"
       stat:
         path: "{{ response_path }}"
       register: response_file
