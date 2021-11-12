@@ -1,4 +1,9 @@
 ---
+- name: Create the shadow_hand_launcher_folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}"
+    state: directory
+
 - name: Check response exists
   block:
     - name: Set variables
@@ -10,11 +15,6 @@
         path: "{{ response_path }}"
       register: response_file
   when: "'binary' in image"
-
-- name: Create the shadow_hand_launcher_folder
-  file:
-    path: "{{ shadow_hand_launcher_folder }}"
-    state: directory
 
 - name: Check if /run/user/1000 folder exists in the docker image
   shell: "docker image history --no-trunc {{ full_image_name }} | grep XDG_RUNTIME_DIR | wc -l"
