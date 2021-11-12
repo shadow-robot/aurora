@@ -2,13 +2,14 @@
 - name: Check response exists
   block:
     - name: Set variables
-        set_fact: response_path="/usr/local/bin/.response"
+      set_fact: response_path="/usr/local/bin/.response"
     - name: Check file exists
       stat:
         path: "{{ response_path }}"
       register: response_file
     - name: Copy response file
       shell: "docker cp {{ container_name }}:{{ response_path }} {{ user_folder }}/.shadow_launcher_app/.response"
+      when: response_file.stat.exists
   when: "'binary' in {{ image }}"
 
 - name: Create the shadow_hand_launcher_folder
@@ -43,7 +44,9 @@
 
 - name: Move response back to container
   shell: "docker cp {{ user_folder }}/.shadow_launcher_app/.response {{ container_name }}:{{ response_path }}"
-  when: "'binary' in {{ image }}"
+  when:
+    - "'binary' in {{ image }}"
+    - response_file.stat.exists
 
 - name: if run/user/1000 doesn't exist, then create it inside the container
   import_tasks: modify-container.yml
