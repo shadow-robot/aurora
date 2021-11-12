@@ -2,14 +2,13 @@
 - name: Check response exists
   block:
     - name: Set variables
-      set_fact: response_path="/usr/local/bin/.response"
+      set_fact: response_path="{{ user_folder }}/.shadow_launcher_app/.response"
+    - name: Copy response file
+      shell: "docker cp {{ container_name }}:/usr/local/bin/.response {{ response_path }}"
     - name: Check file exists
       stat:
         path: "{{ response_path }}"
       register: response_file
-    - name: Copy response file
-      shell: "docker cp {{ container_name }}:{{ response_path }} {{ user_folder }}/.shadow_launcher_app/.response"
-      when: response_file.stat.exists
   when: "'binary' in image"
 
 - name: Create the shadow_hand_launcher_folder
