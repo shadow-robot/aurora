@@ -53,7 +53,7 @@
   when: bimanual|bool
 
 - name: Pulling latest hand_configurations
-  import_tasks: products/common/docker-container/tasks/modify-container.yml
+  import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "clone_private_repos.sh"
     modify_script_commands: "cd home/user/projects/shadow_robot/base_deps/src/sr_hand_config && git pull"
