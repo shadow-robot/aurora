@@ -138,6 +138,12 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
     mode: '755'
 
+- name: Pulling latest hand_configurations
+  import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
+  vars:
+    modify_script_name: "clone_private_repos.sh"
+    modify_script_commands: "cd home/user/projects/shadow_robot/base_deps/src/sr_hand_config && git pull"
+
 - name: Copying the server setup script into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
