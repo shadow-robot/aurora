@@ -55,7 +55,7 @@
 - name: Pulling latest hand_configurations
   import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
   vars:
-    modify_script_name: "clone_private_repos.sh"
+    modify_script_name: "pull_sr_hand_config.sh"
     modify_script_commands: "roscd sr_hand_config && git pull"
 
 
