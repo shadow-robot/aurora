@@ -85,7 +85,7 @@
   import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "clone_private_repos.sh"
-    modify_script_commands: "cd {{ user_folder }}/projects/shadow_robot/base_deps/src/sr_hand_config && git pull"
+    modify_script_commands: "roscd sr_hand_config && git pull"
 
 - name: Copying the default setup script into docker container
   changed_when: false
