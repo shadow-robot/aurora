@@ -17,7 +17,7 @@ teleop_glove_right: "hand-e.png"
 teleop_glove_left: "hand-e-left.png"
 teleop_glove_bimanual: "hand-e-bimanual.png"
 steam_binding: "steam_binding.jpg"
-steam_vive_binding_url: http://127.0.0.1:27062/dashboard/controllerbinding.html
+steam_vive_binding_url: http://127.0.0.1:8998/dashboard/controllerbinding.html
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
 initial_z_value: 0.7551
