@@ -25,7 +25,7 @@
       community.docker.docker_image:
         name: "{{ full_image_name }}"
         source: pull
-        force_source: reinstall
+        force_source: reinstall|bool
       environment:
         PYTHONPATH: "{{ python_packages_path }}"
       async: 50000
@@ -51,7 +51,7 @@
       community.docker.docker_image:
         name: "{{ full_image_name }}"
         source: pull
-        force_source: reinstall
+        force_source: reinstall|bool
       environment:
         PYTHONPATH: "{{ python_packages_path }}"
       async: 50000
