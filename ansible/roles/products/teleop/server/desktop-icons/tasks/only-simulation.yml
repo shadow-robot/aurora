@@ -123,6 +123,9 @@
     launch_file_input_gui_right: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
     launch_file_input_gui_left: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
     launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }}"
+    launch_file_input_gui_right_8DOF: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_left_8DOF: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_bimanual_8DOF: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
     project_name_input_value: "sr_teleop_vive_haptx"
   when: glove=="haptx"
 
@@ -182,7 +185,7 @@
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
     launch_script: "shadow_sim_right.sh"
-    desktop_icon_name: "3 - Launch Right Teleop Simulation"
+    desktop_icon_name: "3 - Launch Right Teleop Simulation 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_8DOF }}"
@@ -192,7 +195,7 @@
   vars:
     desktop_icon_png: "{{ glove }}_left.png"
     launch_script: "shadow_sim_left.sh"
-    desktop_icon_name: "3 - Launch Left Teleop Simulation"
+    desktop_icon_name: "3 - Launch Left Teleop Simulation 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_8DOF }}"
@@ -202,7 +205,7 @@
   vars:
     desktop_icon_png: "{{ glove }}_bimanual.png"
     launch_script: "shadow_sim_bimanual.sh"
-    desktop_icon_name: "3 - Launch Bimanual Teleop Simulation"
+    desktop_icon_name: "3 - Launch Bimanual Teleop Simulation 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_8DOF }}"
