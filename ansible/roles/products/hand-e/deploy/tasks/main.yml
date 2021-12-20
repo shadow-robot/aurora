@@ -81,6 +81,12 @@
     launch_package_name: "sr_robot_launch"
     override_launch_hand: False
 
+- name: Pulling latest hand_configurations
+  import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
+  vars:
+    modify_script_name: "pull_sr_hand_config.sh"
+    modify_script_commands: "roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull"
+
 - name: Copying the default setup script into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
