@@ -263,7 +263,7 @@
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_GUI_right.sh"
+    launch_script: "shadow_GUI_right_8DOF.sh"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Right Teleop GUI 8DOF"
@@ -274,7 +274,7 @@
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
-    launch_script: "shadow_GUI_left.sh"
+    launch_script: "shadow_GUI_left_8DOF.sh"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Left Teleop GUI 8DOF"
@@ -285,7 +285,7 @@
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
-    launch_script: "shadow_GUI_bimanual.sh"
+    launch_script: "shadow_GUI_bimanual_8DOF.sh"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Bimanual Teleop GUI 8DOF"

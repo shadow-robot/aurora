@@ -184,7 +184,7 @@
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
-    launch_script: "shadow_sim_right.sh"
+    launch_script: "shadow_sim_right_8DOF.sh"
     desktop_icon_name: "3 - Launch Right Teleop Simulation 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
@@ -194,7 +194,7 @@
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ glove }}_left.png"
-    launch_script: "shadow_sim_left.sh"
+    launch_script: "shadow_sim_left_8DOF.sh"
     desktop_icon_name: "3 - Launch Left Teleop Simulation 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
@@ -204,7 +204,7 @@
   import_tasks: roslaunch-icon.yml
   vars:
     desktop_icon_png: "{{ glove }}_bimanual.png"
-    launch_script: "shadow_sim_bimanual.sh"
+    launch_script: "shadow_sim_bimanual_8DOF.sh"
     desktop_icon_name: "3 - Launch Bimanual Teleop Simulation 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
