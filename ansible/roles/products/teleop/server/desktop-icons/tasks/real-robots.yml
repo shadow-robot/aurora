@@ -548,5 +548,3 @@
     launch_terminal: "false"
     glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove"
-
-￼    launch_file_input_gui_bimanual_8DOF: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biot
