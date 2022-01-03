@@ -313,7 +313,9 @@ elif [[ "${playbook}" = "teleop_deploy" ]]; then
     echo ""
 else
     aurora_inventory="ansible/inventory/${aurora_inventory}"
-    ansible_flags="${ansible_flags} --ask-become-pass"
+    if [[ "${test_machine}" != "true" ]]; then
+        ansible_flags="${ansible_flags} --ask-become-pass"
+    fi
     echo ""
     echo " --------------------------------------------"
     echo " |             BECOME password:             |"
