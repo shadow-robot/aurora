@@ -189,6 +189,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_8DOF }}"
+  when: 8dof==true
 
 - name: Install desktop icon for Teleop server Simulation 8DOF (Unimanual Left)
   import_tasks: roslaunch-icon.yml
@@ -199,6 +200,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_8DOF }}"
+  when: 8dof==true
 
 - name: Install desktop icon for Teleop server Simulation 8DOF (Bimanual)
   import_tasks: roslaunch-icon.yml
@@ -209,6 +211,8 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation 8DOF"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_8DOF }}"
+  when: 8dof==true
+
 - name: Set Shadow Glove Launch file inputs
   set_fact:
     launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }}"
