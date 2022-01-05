@@ -268,7 +268,7 @@
     launch_file_input: "{{ launch_file_input_gui_right_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Right Teleop GUI 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI 8DOF"
-  when: bimanual|bool or hand_side=="right" and dof|bool == true
+  when: bimanual|bool or hand_side=="right" and arm_servo|bool == true
 
 - name: Install desktop icon for left side teleop GUI 8DOF
   import_tasks: roslaunch-icon.yml
@@ -279,7 +279,7 @@
     launch_file_input: "{{ launch_file_input_gui_left_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Left Teleop GUI 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI 8DOF"
-  when: bimanual|bool or hand_side=="left" and dof|bool == true
+  when: bimanual|bool or hand_side=="left" and arm_servo|bool == true
 
 - name: Install desktop icon for bimanual teleop GUI 8DOF
   import_tasks: roslaunch-icon.yml
@@ -290,7 +290,7 @@
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Bimanual Teleop GUI 8DOF"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI 8DOF"
-  when: bimanual|bool and dof|bool == true
+  when: bimanual|bool and arm_servo|bool == true
 
 - name: Install desktop icon for running right Shadow Glove driver
   include_tasks: roslaunch-icon.yml
