@@ -32,6 +32,45 @@
     launch_terminal: "false"
   when: bimanual|bool
 
+- name: Install desktop icon for launching Shadow Remote Right Teleop
+  import_tasks: default-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_right }}"
+    launch_script: "shadow_launch_remote_right_teleop.sh"
+    desktop_icon_name: "Launch Remote Shadow Right Teleop"
+    template: templates/scripts/launch-teleop-right-remote.j2
+    desktop_icon_path: "Launch Remote Shadow Right Teleop"
+    launch_terminal: "false"
+  when:
+    - bimanual|bool or hand_side=="right"
+    - remote_icons|bool
+
+- name: Install desktop icon for launching Shadow Remote Left Teleop
+  import_tasks: default-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_left }}"
+    launch_script: "shadow_launch_remote_left_teleop.sh"
+    desktop_icon_name: "Launch Remote Shadow Left Teleop"
+    template: templates/scripts/launch-teleop-left-remote.j2
+    desktop_icon_path: "Launch Remote Shadow Left Teleop"
+    launch_terminal: "false"
+  when:
+    - bimanual|bool or hand_side=="left"
+    - remote_icons|bool
+
+- name: Install desktop icon for launching Shadow Remote Bimanual Teleop
+  import_tasks: default-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_bimanual }}"
+    launch_script: "shadow_launch_remote_bimanual_teleop.sh"
+    desktop_icon_name: "Launch Remote Shadow Bimanual Teleop"
+    template: templates/scripts/launch-teleop-bimanual-remote.j2
+    desktop_icon_path: "Launch Remote Shadow Bimanual Teleop"
+    launch_terminal: "false"
+  when:
+    - bimanual|bool
+    - remote_icons|bool
+
 - name: Include hand-manual role
   include_role:
     name: products/common/hand-manual
@@ -249,7 +288,9 @@
     launch_file_input: "{{ launch_file_input_gui_right_realhw }} remote:=true"
     desktop_icon_name: "4 - Launch Remote Right Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Right Teleop GUI"
-  when: bimanual|bool or hand_side=="right"
+  when:
+    - bimanual|bool or hand_side=="right"
+    - remote_icons|bool
 
 - name: Install desktop icon for remote left side teleop GUI
   import_tasks: roslaunch-icon.yml
@@ -260,7 +301,9 @@
     launch_file_input: "{{ launch_file_input_gui_left_realhw }} remote:=true"
     desktop_icon_name: "4 - Launch Remote Left Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Left Teleop GUI"
-  when: bimanual|bool or hand_side=="left"
+  when:
+    - bimanual|bool or hand_side=="left"
+    - remote_icons|bool
 
 - name: Install desktop icon for remote bimanual teleop GUI
   import_tasks: roslaunch-icon.yml
@@ -271,7 +314,9 @@
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw }} remote:=true"
     desktop_icon_name: "4 - Launch Remote Bimanual Teleop GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Bimanual Teleop GUI"
-  when: bimanual|bool
+  when:
+    - bimanual|bool
+    - remote_icons|bool
 
 - name: Install desktop icon for running right Shadow Glove driver
   include_tasks: roslaunch-icon.yml
