@@ -210,6 +210,9 @@
     launch_file_input_gui_right: "teleop_vive_haptx.launch vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} tracker_id:={{ ra_tracker_id }}"
     launch_file_input_gui_left: "teleop_vive_haptx.launch side:=left vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} tracker_id:={{ la_tracker_id }}"
     launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} ra_tracker_id:={{ ra_tracker_id }} la_tracker_id:={{ la_tracker_id }}"
+    launch_file_input_gui_right_8DOF: "teleop_vive_haptx.launch vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} tracker_id:={{ ra_tracker_id }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_left_8DOF: "teleop_vive_haptx.launch side:=left vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} tracker_id:={{ la_tracker_id }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_bimanual_8DOF: "teleop_bimanual_vive_haptx.launch robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} ra_tracker_id:={{ ra_tracker_id }} la_tracker_id:={{ la_tracker_id }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"  
     project_name_input_value: "sr_teleop_vive_haptx"
   when: glove=="haptx"
 
@@ -218,6 +221,10 @@
     launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_right.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
     launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
     launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+    launch_file_input_gui_right_8DOF: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_right.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration' jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_left_8DOF: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration' jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_bimanual_8DOF: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration' jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+
     project_name_input_value: "sr_teleop_vive_polhemus"
   when: glove=="shadow_glove"
 
@@ -226,6 +233,9 @@
     launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='{{ scene_file }}'"
     launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='{{ scene_file }}'"
     launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}'"
+    launch_file_input_gui_right_8DOF: "{{ launch_file_input_gui_right_8DOF }} scene_file:='{{ scene_file }}'"
+    launch_file_input_gui_left_8DOF: "{{ launch_file_input_gui_left_8DOF }} scene_file:='{{ scene_file }}'"
+    launch_file_input_gui_bimanual_8DOF: "{{ launch_file_input_gui_bimanual_8DOF }} scene_file:='{{ scene_file }}'"
   when: scene_file|length > 0
 
 - name: Set GUI icon variables for sim
@@ -233,18 +243,27 @@
     launch_file_input_gui_right_sim: "{{ launch_file_input_gui_right }} external_control_loop:=false sim:=true"
     launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left }} external_control_loop:=false sim:=true"
     launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual }} external_control_loop:=false sim:=true"
+    launch_file_input_gui_right_sim_8DOF: "{{ launch_file_input_gui_right_8DOF }} external_control_loop:=false sim:=true"
+    launch_file_input_gui_left_sim_8DOF: "{{ launch_file_input_gui_left_8DOF }} external_control_loop:=false sim:=true"
+    launch_file_input_gui_bimanual_sim_8DOF: "{{ launch_file_input_gui_bimanual_8DOF }} external_control_loop:=false sim:=true"
 
 - name: Set GUI icon variables for sim and custom scene
   set_fact:
     launch_file_input_gui_right_sim: "{{ launch_file_input_gui_right_sim }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
     launch_file_input_gui_left_sim: "{{ launch_file_input_gui_left_sim }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
     launch_file_input_gui_bimanual_sim: "{{ launch_file_input_gui_bimanual_sim }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
+    launch_file_input_gui_right_sim_8DOF: "{{ launch_file_input_gui_right_sim_8DOF }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
+    launch_file_input_gui_left_sim_8DOF: "{{ launch_file_input_gui_left_sim_8DOF }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
+    launch_file_input_gui_bimanual_sim_8DOF: "{{ launch_file_input_gui_bimanual_sim_8DOF }} world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
 
 - name: Set GUI icon variables for real hardware
   set_fact:
     launch_file_input_gui_right_realhw: "{{ launch_file_input_gui_right }} external_control_loop:=true"
     launch_file_input_gui_left_realhw: "{{ launch_file_input_gui_left }} external_control_loop:=true"
     launch_file_input_gui_bimanual_realhw: "{{ launch_file_input_gui_bimanual }} external_control_loop:=true"
+    launch_file_input_gui_right_realhw_8DOF: "{{ launch_file_input_gui_right_8DOF }} external_control_loop:=true"
+    launch_file_input_gui_left_realhw_8DOF: "{{ launch_file_input_gui_left_8DOF }} external_control_loop:=true"
+    launch_file_input_gui_bimanual_realhw_8DOF: "{{ launch_file_input_gui_bimanual_8DOF }} external_control_loop:=true"
 
 - name: Install desktop icon for right side teleop GUI
   import_tasks: roslaunch-icon.yml
@@ -362,6 +381,39 @@
     - bimanual|bool
     - remote_icons|bool
     - glove=="haptx"
+
+- name: Install desktop icon for right side teleop GUI 8DOF
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_right }}"
+    launch_script: "shadow_GUI_right_8DOF.sh"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_right_realhw_8DOF }}"
+    desktop_icon_name: "4 - Launch Right Teleop GUI 8DOF"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI 8DOF"
+  when: bimanual|bool or hand_side=="right" and arm_servo|bool == true
+
+- name: Install desktop icon for left side teleop GUI 8DOF
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_left }}"
+    launch_script: "shadow_GUI_left_8DOF.sh"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_left_realhw_8DOF }}"
+    desktop_icon_name: "4 - Launch Left Teleop GUI 8DOF"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI 8DOF"
+  when: bimanual|bool or hand_side=="left" and arm_servo|bool == true
+
+- name: Install desktop icon for bimanual teleop GUI 8DOF
+  import_tasks: roslaunch-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_bimanual }}"
+    launch_script: "shadow_GUI_bimanual_8DOF.sh"
+    project_name_input: "{{ project_name_input_value }}"
+    launch_file_input: "{{ launch_file_input_gui_bimanual_realhw_8DOF }}"
+    desktop_icon_name: "4 - Launch Bimanual Teleop GUI 8DOF"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI 8DOF"
+  when: bimanual|bool and arm_servo|bool == true
 
 - name: Install desktop icon for running right Shadow Glove driver
   include_tasks: roslaunch-icon.yml
