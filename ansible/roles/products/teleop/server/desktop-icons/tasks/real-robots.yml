@@ -71,6 +71,45 @@
     - bimanual|bool
     - remote_icons|bool
 
+- name: Install desktop icons for launching Shadow Remote Client Right Teleop 
+  import_tasks: default-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_right_remote }}"
+    launch_script: "shadow_launch_remote_client_right_teleop.sh"
+    desktop_icon_name: "Launch Remote Client Shadow Right Teleop"
+    template: ansible/roles/products/common/resources/templates/scripts/rosrun-script.j2
+    desktop_icon_path: "Launch Remote Client Shadow Right Teleop"
+    launch_terminal: "false"
+  when:
+    - bimanual|bool or hand_side=="right"
+    - remote_client|default('false')
+
+- name: Install desktop icon for launching Shadow Remote Client Left Teleop
+  import_tasks: default-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_left_remote }}"
+    launch_script: "shadow_launch_remote_client_left_teleop.sh"
+    desktop_icon_name: "Launch Remote Client Shadow Left Teleop"
+    template: ansible/roles/products/common/resources/templates/scripts/rosrun-script.j2
+    desktop_icon_path: "Launch Remote Client Shadow Left Teleop"
+    launch_terminal: "false"
+  when:
+    - bimanual|bool or hand_side=="left"
+    - remote_client|default('false')
+
+- name: Install desktop icon for launching Shadow Remote Client Bimanual Teleop
+  import_tasks: default-icon.yml
+  vars:
+    desktop_icon_png: "{{ teleop_glove_bimanual_remote }}"
+    launch_script: "shadow_launch_remote_client_bimanual_teleop.sh"
+    desktop_icon_name: "Launch Remote Client Shadow Bimanual Teleop"
+    template: ansible/roles/products/common/resources/templates/scripts/rosrun-script.j2
+    desktop_icon_path: "Launch Remote Client Shadow Bimanual Teleop"
+    launch_terminal: "false"
+  when:
+    - bimanual|bool
+    - remote_client|default('false')
+
 - name: Include hand-manual role
   include_role:
     name: products/common/hand-manual

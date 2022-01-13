@@ -16,6 +16,9 @@ biotacs: true
 teleop_glove_right: "hand-e.png"
 teleop_glove_left: "hand-e-left.png"
 teleop_glove_bimanual: "hand-e-bimanual.png"
+teleop_glove_right_remote: "hand-e-remote.png"
+teleop_glove_left_remote: "hand-e-left-remote.png"
+teleop_glove_bimanual_remote: "hand-e-bimanual-remote.png"
 steam_binding: "steam_binding.jpg"
 steam_vive_binding_url: http://127.0.0.1:27062/dashboard/controllerbinding.html
 shadow_glove_teleop_readthedocs_link: ""
