@@ -109,9 +109,3 @@
   shell: "docker cp {{ user_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
   when: arm_ip_left!="" or arm_ip_right!=""
-
-- name: Pulling latest hand_configurations
-  import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
-  vars:
-    modify_script_name: "pull_sr_hand_config.sh"
-    modify_script_commands: "roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull"
