@@ -56,18 +56,27 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'focal'
-    
+
+- name: Install libffi.so.6 from the internet (20.04)
+  apt:
+    deb: http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-8_amd64.deb
+    state: present
+  become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'focal'
+
 - name: Ensure botocore and boto3 modules are installed
   pip:
     name: [ "boto3", "botocore"]
     extra_args: "--user"
 
-- name: Downloading steamvr 1.5.15
+- name: Downloading steamvr 1.21
   amazon.aws.aws_s3:
     aws_access_key: "{{ lookup('env','aws_key') }}"
     aws_secret_key: "{{ lookup('env','aws_secret') }}"
     bucket: shadowrobot.aurora.files
-    object: /server/steamvr/steam.tar.gz
+    object: /server/steamvr/steamNew.tar.gz
     dest: "{{ user_home_dir }}/steam.tar.gz"
     mode: get
 
