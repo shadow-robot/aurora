@@ -4,6 +4,21 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Check response exists
+  block:
+    - name: Set variables
+      set_fact: 
+        local_response_path: "{{ user_folder }}/.shadow_launcher_app/.response"
+        container_response_path: "/usr/local/bin/.response"
+    - name: Copy response file
+      shell: "docker cp {{ container_name }}:{{ container_response_path }} {{ local_response_path }}"
+      ignore_errors: yes
+    - name: Check file exists
+      stat:
+        path: "{{ local_response_path }}"
+      register: response_file
+  when: "'binary' in image"
+
 - name: Check if /run/user/1000 folder exists in the docker image
   shell: "docker image history --no-trunc {{ full_image_name }} | grep XDG_RUNTIME_DIR | wc -l"
   register: xdg_check
@@ -28,6 +43,12 @@
 - name: Creating the container which will execute setup script in terminator when started (NVIDIA)
   when: "nvidia_docker|bool and terminator and setup_script | length > 0"
   include_tasks: create-container/nvidia-with-setup-with-terminator.yml
+
+- name: Move response back to container
+  shell: "docker cp {{ local_response_path }} {{ container_name }}:{{ container_response_path }}"
+  when:
+    - "'binary' in image"
+    - response_file.stat.exists
 
 - name: if run/user/1000 doesn't exist, then create it inside the container
   import_tasks: modify-container.yml
