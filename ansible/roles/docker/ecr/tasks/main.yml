@@ -13,4 +13,4 @@
 
 - name: Print request_result
   debug:
-    msg: "{{ request_result | selectattr('access_key') }}"
+    msg: "{{ request_result }}"
