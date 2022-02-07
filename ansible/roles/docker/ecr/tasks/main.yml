@@ -1,10 +1,11 @@
 ---
 - name: Gather access key and secret key (Polhemus)
   uri:
-    method: GET
     url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod"
-    status_code: [200, 202]
+    method: GET
     body_format: json
+    status_code: [200, 202]
     return_content: yes
     headers:
-      x-api-key: "{{ customer_key }}"
+      Content-Type: application/json
+      x-api-key: customer_key
