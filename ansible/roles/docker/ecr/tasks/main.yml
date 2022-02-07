@@ -13,4 +13,4 @@
 
 - name: Print request_result
   debug:
-    msg: "{{ request_result }}"
+    msg: "{{ request_result.find('access_key') }}"
