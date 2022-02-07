@@ -8,4 +8,5 @@
     key_data: "{{ key_data.stdout | from_json }}"
 
 - name: Print key_data
-  msg: "{{ key_data }}"
+  debug:
+    msg: "{{ key_data }}"
