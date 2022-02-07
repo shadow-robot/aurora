@@ -4,6 +4,11 @@
   set_fact:
     use_aws: "{{ 'true' if image == 'dkr.ecr' else 'false' }}"
 
+- name: Login to AWS for ECR
+  include_role:
+    name: docker/aws/tasks/login.yml
+  when: use_aws == true
+
 
 - name: Docker login
   community.docker.docker_login:
