@@ -7,7 +7,7 @@
 - name: Enable ECR login
   set_fact:
     use_aws: true
-  when: '"dkr.ecr" in {{ image }}'
+  when: '"dkr.ecr" in image'
 
 - name: Login to AWS for ECR
   include_role:
