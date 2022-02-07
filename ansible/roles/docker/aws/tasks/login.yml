@@ -9,7 +9,7 @@
 
 - name: Degug output
   set_fact:
-    key_data_json: "{{ 'key_data.stdout' | from_json }}"
+    key_data_json: "key_data.stdout | from_json"
 
 - name: Print key_data
   debug:
