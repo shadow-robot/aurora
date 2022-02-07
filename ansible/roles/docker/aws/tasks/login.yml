@@ -13,4 +13,4 @@
 
 - name: Print key_data
   debug:
-    msg: "{{ key_data }}"
+    msg: "{{ key_data_json }}"

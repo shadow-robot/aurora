@@ -8,7 +8,6 @@ POLHEMUS_BIN="https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod"
 HAPTX_BIN="https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod"
 DEVELOPMENT="https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod"
 
-
 def gather_customer_key():
     description = 'This script is used to gather the Access Key and Secret Key.'
     parser = argparse.ArgumentParser(description=description)
@@ -43,7 +42,7 @@ def main():
         "access_key": ak,
         "secret_key": sk
     }
-    sys.stdout.write(json.dumps(data))
+    sys.stdout.write(str(data))
 
 if __name__ == "__main__":
     main()
