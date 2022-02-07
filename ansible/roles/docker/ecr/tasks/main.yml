@@ -9,3 +9,8 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
+    register: request_result
+
+- name: Print request_result
+  debug:
+    msg: "{{ request_result }}"
