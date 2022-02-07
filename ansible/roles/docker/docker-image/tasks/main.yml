@@ -1,8 +1,15 @@
 ---
 
 - name: Check whether to use ECR or DockerHub
-  set_fact:
-    use_aws: "{{ 'true' if image == 'dkr.ecr' else 'false' }}"
+  block:
+    - name: Set variables
+      vars: 
+        use_aws: false
+        
+    - name: Enable ECR login
+      vars:
+        use_aws: true
+      when: '"dkr.ecr" in {{ image }}'
 
 - name: Login to AWS for ECR
   include_role:
