@@ -2,6 +2,7 @@
 import sys
 import requests
 import argparse
+import json
 
 POLHEMUS_BIN="https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod"
 HAPTX_BIN="https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod"
@@ -42,7 +43,7 @@ def main():
         "access_key": ak,
         "secret_key": sk
     }
-    sys.stdout.write(str(data))
+    sys.stdout.write(json.dumps(data))
 
 if __name__ == "__main__":
     main()
