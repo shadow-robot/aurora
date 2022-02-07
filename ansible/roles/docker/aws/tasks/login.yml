@@ -3,9 +3,13 @@
   script: files/get_aws_details.py -ck {{ customer_key }} -i {{ image }}
   register: key_data
 
+- name: Print key_data
+  debug:
+    msg: "{{ key_data }}"
+
 - name: Degug output
   set_fact:
-    key_data: "{{ 'key_data.stdout' | from_json }}"
+    key_data_json: "{{ 'key_data.stdout' | from_json }}"
 
 - name: Print key_data
   debug:
