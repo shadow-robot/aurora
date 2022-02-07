@@ -1,0 +1,8 @@
+---
+- name: Gather access key and secret key
+  script: files/get_aws_details.py -ck {{ customer_key }} -i {{ image }}
+  register: key_data
+
+- name: Degug output
+  debug:
+    msg: "{{ key_data.stdout | from_json }}"
