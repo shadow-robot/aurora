@@ -11,8 +11,7 @@
 
 - name: Login to AWS for ECR
   include_role:
-    name: docker/aws
-    tasks_from: login
+    name: docker/ecr
   when: use_aws
 
 
