@@ -5,4 +5,4 @@
 
 - name: Degug output
   debug:
-    msg: key_data.stdout
+    msg: {{ key_data.stdout }}
