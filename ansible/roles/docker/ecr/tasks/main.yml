@@ -5,6 +5,6 @@
     url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod"
     status_code: [200, 202]
     body_format: json
-    return_content: true
+    return_content: yes
     headers:
       x-api-key: "{{ customer_key }}"
