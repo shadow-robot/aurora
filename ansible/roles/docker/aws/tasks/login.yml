@@ -4,5 +4,8 @@
   register: key_data
 
 - name: Degug output
-  debug:
-    msg: "{{ key_data.stdout }}"
+  set_fact:
+    key_data: "{{ key_data.stdout | from_json }}"
+
+- name: Print key_data
+  msg: "{{ key_data }}"
