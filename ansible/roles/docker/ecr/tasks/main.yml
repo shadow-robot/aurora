@@ -8,8 +8,3 @@
     return_content: true
     headers:
       x-api-key: "{{ customer_key }}"
-    register: key_data
-
-- name: Print key_data
-  debug:
-    msg: "{{ key_data }}"
