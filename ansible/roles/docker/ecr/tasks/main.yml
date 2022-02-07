@@ -17,4 +17,5 @@
   
 - name: login to AWS
   shell: aws configure set aws_access_key_id {{ request_result.json.body.access_key }} && \
-    aws configure set aws_secret_access_key {{ request_result.json.body.secret_key }}
+    aws configure set aws_secret_access_key {{ request_result.json.body.secret_key }} && \
+    aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com
