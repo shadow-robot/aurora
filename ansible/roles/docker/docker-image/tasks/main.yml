@@ -2,24 +2,26 @@
 
 - name: Set variables
   set_fact: 
-    use_aws: false
+    aws_login: false
 
 - name: Enable ECR login
   set_fact:
-    use_aws: true
+    aws_login: true
   when: '"dkr.ecr" in image'
 
 - name: Login to AWS for ECR
   include_role:
     name: docker/ecr
-  when: use_aws
-
+  when: aws_login
 
 - name: Docker login
   community.docker.docker_login:
     username: "{{ docker_username }}"
     password: "{{ docker_password }}"
-  when: docker_username is defined and docker_password is defined
+  when: 
+    - docker_username is defined
+    - docker_password is defined
+    - not aws_login
   become: yes
 
 - name: Reading path to Python repository with Docker package
