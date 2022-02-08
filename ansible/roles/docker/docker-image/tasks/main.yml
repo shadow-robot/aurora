@@ -49,7 +49,7 @@
       async: 50000
       poll: 0
       register: docker_pull_job
-      become: yes
+      become: false
       changed_when: false
 
     - name: Wait for Docker image pull to complete
