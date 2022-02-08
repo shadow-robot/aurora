@@ -11,7 +11,8 @@
       x-api-key: "{{ customer_key }}"
   register: request_result
 
-- name: Configure AWS CLI 
+- name: Configure AWS CLI
+  become: true
   expect:
     command: aws configure
     responses:
@@ -19,7 +20,7 @@
       AWS Secret Access Key: "{{ request_result.json.body.secret_key }}"
       Default region name: "eu-west-2"
       Default output format: ""
-    become: yes
+  
 
 - name: ecr docker get-authorization-token
   shell: "aws ecr get-authorization-token --region eu-west-2"
