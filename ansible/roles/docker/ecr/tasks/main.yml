@@ -9,10 +9,13 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
-    register: request_result
+  register: request_result_temp
   when:
     - '"polhemus" in image'
     - '"binary" in image'
+
+- set_fact: request_result="{{ request_result_temp }}"
+  when: request_result_temp.changed
 
 - name: Gather access key and secret key (Haptx)
   uri:
@@ -24,10 +27,13 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
-    register: request_result
+  register: request_result_temp
   when:
     - '"haptx" in image'
     - '"binary" in image'
+
+- set_fact: request_result="{{ request_result_temp }}"
+  when: request_result_temp.changed
 
 - name: Gather access key and secret key (Production)
   uri:
@@ -39,9 +45,12 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
-    register: request_result
+    register: request_result_temp
   when:
     - '"binary" not in image'
+
+- set_fact: request_result="{{ request_result_temp }}"
+  when: request_result_temp.changed
 
 - name: print
   debug:
