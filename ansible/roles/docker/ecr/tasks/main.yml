@@ -15,7 +15,7 @@
     - '"binary" in image'
 
 - set_fact: request_result="{{ request_result_temp }}"
-  when: request_result_temp.changed
+  when: not request_result_temp.skipped | bool
 
 - name: Gather access key and secret key (Haptx)
   uri:
@@ -33,7 +33,7 @@
     - '"binary" in image'
 
 - set_fact: request_result="{{ request_result_temp }}"
-  when: request_result_temp.changed
+  when: not request_result_temp.skipped | bool
 
 - name: Gather access key and secret key (Production)
   uri:
@@ -50,11 +50,11 @@
     - '"binary" not in image'
 
 - set_fact: request_result="{{ request_result_temp }}"
-  when: request_result_temp.changed
+  when: not request_result_temp.skipped | bool
 
 - name: print
   debug:
-    msg: "{{  request_result }}"
+    msg: "{{  request_result_temp }}"
 
 - name: Configure AWS CLI
   become: true
