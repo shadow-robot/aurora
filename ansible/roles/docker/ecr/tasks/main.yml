@@ -1,7 +1,30 @@
 ---
+
+- name: Choosing which API call to make.
+  block:
+    - name: Choose Polhemus
+      set_fact:
+        api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
+      when:
+      - '"polhemus" in image'
+      - '"binary" in image'    
+    
+    - name: Choose Haptx
+      set_fact:
+        api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
+      when:
+      - '"polhemus" in image'
+      - '"binary" in image'
+
+    - name: Choose Production
+      set_fact:
+        api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
+      when:
+      - '"binary" not in image'
+
 - name: Gather access key and secret key (Polhemus)
   uri:
-    url: "https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod"
+    url: "{{ api_url }}"
     method: GET
     body_format: json
     status_code: [200, 202]
@@ -10,47 +33,6 @@
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
   register: request_result_temp
-  when:
-    - '"polhemus" in image'
-    - '"binary" in image'
-
-- set_fact: request_result="{{ request_result_temp }}"
-  when: not request_result_temp.skipped | bool
-
-- name: Gather access key and secret key (Haptx)
-  uri:
-    url: "https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod"
-    method: GET
-    body_format: json
-    status_code: [200, 202]
-    return_content: yes
-    headers:
-      Content-Type: application/json
-      x-api-key: "{{ customer_key }}"
-  register: request_result_temp
-  when:
-    - '"haptx" in image'
-    - '"binary" in image'
-
-- set_fact: request_result="{{ request_result_temp }}"
-  when: not request_result_temp.skipped | bool
-
-- name: Gather access key and secret key (Production)
-  uri:
-    url: "https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod"
-    method: GET
-    body_format: json
-    status_code: [200, 202]
-    return_content: yes
-    headers:
-      Content-Type: application/json
-      x-api-key: "{{ customer_key }}"
-    register: request_result_temp
-  when:
-    - '"binary" not in image'
-
-- set_fact: request_result="{{ request_result_temp }}"
-  when: not request_result_temp.skipped | bool
 
 - name: print
   debug:
