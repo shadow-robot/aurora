@@ -32,11 +32,7 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
-  register: request_result_temp
-
-- name: print
-  debug:
-    msg: "{{  request_result_temp }}"
+  register: request_result
 
 - name: Configure AWS CLI
   become: true
