@@ -38,7 +38,7 @@
     username: "{{ ecr_credentials[0] }}"
     password: "{{ ecr_credentials[1] }}"
     reauthorize: yes
-    become: yes
+  become: yes
 
 # - name: Print request_result
 #   debug:
