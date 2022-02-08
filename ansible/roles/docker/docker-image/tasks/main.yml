@@ -7,13 +7,14 @@
 - name: Enable ECR login
   set_fact:
     aws_login: true
-  when: '"dkr.ecr" in image'
+  when: '"dkr.ecr" in image or "public.ecr" not in image'
 
 - name: Login to AWS for ECR
   include_role:
     name: docker/ecr
   when: 
-   - aws_login
+    - aws_login
+    - '"public.ecr" in image'
 
 - name: Docker login
   community.docker.docker_login:
@@ -23,7 +24,6 @@
     - docker_username is defined
     - docker_password is defined
     - not aws_login
-    - '"public.ecr" not in image'
   become: yes
 
 - name: Reading path to Python repository with Docker package
