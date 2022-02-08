@@ -9,7 +9,7 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
-  register: request_result
+    register: request_result
   when:
     - '"polhemus" in image'
     - '"binary" in image'
@@ -39,7 +39,7 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
-  register: request_result
+    register: request_result
   when:
     - '"binary" not in image'
 
