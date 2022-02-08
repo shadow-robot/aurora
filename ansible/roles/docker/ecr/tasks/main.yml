@@ -20,6 +20,23 @@
       Default region name: "eu-west-2"
       Default output format: ""
 
+- name: ecr docker get-authorization-token
+  shell: "aws ecr get-authorization-token --region eu-west-2"
+  register: ecr_command
+
+- set_fact:
+    ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData[0] }}"
+
+- set_fact:
+    ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
+
+- name: docker_repository - Log into ECR registry and force re-authorization
+  docker_login:
+    registry_url: "{{ ecr_authorization_data.proxyEndpoint.rpartition('//')[2] }}"
+    username: "{{ ecr_credentials[0] }}"
+    password: "{{ ecr_credentials[1] }}"
+    reauthorize: yes
+    
 # - name: Print request_result
 #   debug:
 #     msg: "aws configure set aws_access_key_id {{ request_result.json.body.access_key }} && \
