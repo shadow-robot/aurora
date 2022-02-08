@@ -14,7 +14,7 @@
     name: docker/ecr
   when: 
     - aws_login
-    - '"public.ecr" in image'
+    - '"dkr.ecr" in image'
 
 - name: Docker login
   community.docker.docker_login:
