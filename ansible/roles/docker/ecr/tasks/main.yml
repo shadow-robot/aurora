@@ -1,64 +1,66 @@
 ---
 
-- name: Choosing which API call to make.
+- name: Handle Private ECR Images
   block:
-    - name: Choose Polhemus
-      set_fact:
-        api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
-      when:
-      - '"polhemus" in image'
-      - '"binary" in image'    
+  - name: Choosing which API call to make.
+    block:
+      - name: Choose Polhemus
+        set_fact:
+          api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
+        when:
+        - '"polhemus" in image'
+        - '"binary" in image'    
+      
+      - name: Choose Haptx
+        set_fact:
+          api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
+        when:
+        - '"haptx" in image'
+        - '"binary" in image'
+
+      - name: Choose Production
+        set_fact:
+          api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
+        when:
+        - '"binary" not in image'
+
+  - name: Gather access key and secret key
+    uri:
+      url: "{{ api_url }}"
+      method: GET
+      body_format: json
+      status_code: [200, 202]
+      return_content: yes
+      headers:
+        Content-Type: application/json
+        x-api-key: "{{ customer_key }}"
+    register: request_result
+
+  - name: Configure AWS CLI
+    become: true
+    expect:
+      command: aws configure
+      responses:
+        AWS Access Key ID: "{{ request_result.json.body.access_key }}"
+        AWS Secret Access Key: "{{ request_result.json.body.secret_key }}"
+        Default region name: "eu-west-2"
+        Default output format: ""
     
-    - name: Choose Haptx
-      set_fact:
-        api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
-      when:
-      - '"haptx" in image'
-      - '"binary" in image'
+  - name: ecr docker get-authorization-token
+    shell: "aws ecr get-authorization-token --region eu-west-2"
+    register: ecr_command
 
-    - name: Choose Production
-      set_fact:
-        api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
-      when:
-      - '"binary" not in image'
+  - set_fact:
+      ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData[0] }}"
 
-- name: Gather access key and secret key (Polhemus)
-  uri:
-    url: "{{ api_url }}"
-    method: GET
-    body_format: json
-    status_code: [200, 202]
-    return_content: yes
-    headers:
-      Content-Type: application/json
-      x-api-key: "{{ customer_key }}"
-  register: request_result
+  - set_fact:
+      ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
 
-- name: Configure AWS CLI
-  become: true
-  expect:
-    command: aws configure
-    responses:
-      AWS Access Key ID: "{{ request_result.json.body.access_key }}"
-      AWS Secret Access Key: "{{ request_result.json.body.secret_key }}"
-      Default region name: "eu-west-2"
-      Default output format: ""
-  
-- name: ecr docker get-authorization-token
-  shell: "aws ecr get-authorization-token --region eu-west-2"
-  register: ecr_command
-
-- set_fact:
-    ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData[0] }}"
-
-- set_fact:
-    ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
-
-- name: docker_repository - Log into ECR registry and force re-authorization
-  docker_login:
-    registry_url: "{{ ecr_authorization_data.proxyEndpoint.rpartition('//')[2] }}"
-    username: "{{ ecr_credentials[0] }}"
-    password: "{{ ecr_credentials[1] }}"
-    reauthorize: yes
-  become: yes
+  - name: docker_repository - Log into ECR registry and force re-authorization
+    docker_login:
+      registry_url: "{{ ecr_authorization_data.proxyEndpoint.rpartition('//')[2] }}"
+      username: "{{ ecr_credentials[0] }}"
+      password: "{{ ecr_credentials[1] }}"
+      reauthorize: yes
+    become: yes
 
