@@ -13,7 +13,7 @@
       set_fact:
         api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
       when:
-      - '"polhemus" in image'
+      - '"haptx" in image'
       - '"binary" in image'
 
     - name: Choose Production
