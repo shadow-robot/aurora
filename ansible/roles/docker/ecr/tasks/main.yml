@@ -10,6 +10,38 @@
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
   register: request_result
+  when:
+    - '"polhemus" in image'
+    - '"binary" in image'
+
+- name: Gather access key and secret key (Haptx)
+  uri:
+    url: "https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod"
+    method: GET
+    body_format: json
+    status_code: [200, 202]
+    return_content: yes
+    headers:
+      Content-Type: application/json
+      x-api-key: "{{ customer_key }}"
+  register: request_result
+  when:
+    - '"haptx" in image'
+    - '"binary" in image'
+
+- name: Gather access key and secret key (Production)
+  uri:
+    url: "https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod"
+    method: GET
+    body_format: json
+    status_code: [200, 202]
+    return_content: yes
+    headers:
+      Content-Type: application/json
+      x-api-key: "{{ customer_key }}"
+  register: request_result
+  when:
+    - '"binary" not in image'
 
 - name: Configure AWS CLI
   become: true
@@ -40,13 +72,3 @@
     reauthorize: yes
   become: yes
 
-# - name: Print request_result
-#   debug:
-#     msg: "aws configure set aws_access_key_id {{ request_result.json.body.access_key }} && \
-#     aws configure set aws_secret_access_key {{ request_result.json.body.secret_key }} && \
-#     aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
-  
-# - name: login to AWS
-#   shell: aws configure set aws_access_key_id {{ request_result.json.body.access_key }} && \
-#     aws configure set aws_secret_access_key {{ request_result.json.body.secret_key }} && \
-#     aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com
