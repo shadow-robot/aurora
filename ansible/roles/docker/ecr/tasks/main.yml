@@ -53,6 +53,9 @@
       Default region name: "eu-west-2"
       Default output format: ""
   
+- name: print
+  debug:
+    msg: "{{  request_result }}"
 
 - name: ecr docker get-authorization-token
   shell: "aws ecr get-authorization-token --region eu-west-2"
