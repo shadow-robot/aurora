@@ -24,7 +24,7 @@
     headers:
       Content-Type: application/json
       x-api-key: "{{ customer_key }}"
-  register: request_result
+    register: request_result
   when:
     - '"haptx" in image'
     - '"binary" in image'
