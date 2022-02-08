@@ -7,12 +7,14 @@
 - name: Enable ECR login
   set_fact:
     aws_login: true
-  when: '"dkr.ecr" in image'
+  when: '"dkr.ecr" in image or "public.ecr" in image'
 
 - name: Login to AWS for ECR
   include_role:
     name: docker/ecr
-  when: aws_login
+  when: 
+   - aws_login
+   - '"public.ecr" not in image'
 
 - name: Docker login
   community.docker.docker_login:
