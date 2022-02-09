@@ -19,7 +19,7 @@
     remote_src: yes
 
 - name: Install AWS CLI v2
-  shell: /tmp/aws/install -u
+  shell: "{{ user_folder }}/aws/install -u"
   become: yes
 
 # - name: Remove zip file
