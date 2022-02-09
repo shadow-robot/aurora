@@ -1,8 +1,12 @@
 ---
-# - name: Install zip
-#   apt:
-#     name: unzip
-#   become: yes
+- name: Install Ansible unarchive requirements
+  apt:
+    name:
+      - unzip
+      - zipinfo
+      - gtar
+      - zstd
+  become: yes
 
 - name: Download AWS CLI v2 zip
   get_url:
