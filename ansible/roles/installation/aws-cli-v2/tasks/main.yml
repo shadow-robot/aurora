@@ -3,7 +3,6 @@
   apt:
     name:
       - unzip
-      - zipinfo
       - gtar
       - zstd
   become: yes
