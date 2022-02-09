@@ -7,9 +7,14 @@
 - name: Download AWS CLI v2 zip
   shell: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
 
-- name: Unzip AWS CLI v2 zip
-  shell: unzip "/tmp/awscliv2.zip"
-  become: yes
+# - name: Unzip AWS CLI v2 zip
+#   shell: unzip "/tmp/awscliv2.zip"
+#   become: yes
+
+- name: Unzip AWS CLI v2
+  unarchive:
+    src: "/tmp/awscliv2.zip"
+    dest: "/tmp/"
 
 - name: Install AWS CLI v2
   shell: /tmp/aws/install -u
