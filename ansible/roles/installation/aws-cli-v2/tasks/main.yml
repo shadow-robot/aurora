@@ -14,7 +14,7 @@
 - name: Unzip AWS CLI v2
   unarchive:
     src: "/tmp/awscliv2.zip"
-    dest: "/tmp/"
+    dest: "/tmp/ben"
 
 - name: Install AWS CLI v2
   shell: /tmp/aws/install -u
