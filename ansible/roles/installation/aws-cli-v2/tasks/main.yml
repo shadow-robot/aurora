@@ -1,9 +1,10 @@
 ---
 - name: Install Ansible unarchive requirements
   apt:
-    name: 
+    name:
+    - tar 
     - unzip
-    - tar
+    - zip
   become: yes
 
 - name: Download AWS CLI v2 zip
