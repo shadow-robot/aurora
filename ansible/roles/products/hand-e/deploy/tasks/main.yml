@@ -11,7 +11,7 @@
 
 - name: Include installation/aws-cli role
   include_role:
-    name: installation/aws-cli
+    name: installation/aws-cli-v2
 
 - name: Include installation/terminator role
   include_role:
