@@ -20,6 +20,10 @@
     setup_script: server-setup.sh
     upgrade_script: "upgrade_image.sh"
 
+- name: Include installation/aws-cli role
+  include_role:
+    name: installation/aws-cli
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
