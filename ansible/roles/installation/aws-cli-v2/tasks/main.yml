@@ -6,4 +6,5 @@
   shell: unzip "/tmp/awscliv2.zip"
 
 - name: Install AWS CLI v2
-  shell: sudo "/tmp/aws/install"
+  shell: "/tmp/aws/install"
+  become: yes
