@@ -34,7 +34,6 @@
   register: request_result
 
 - name: Configure AWS CLI
-  become: true
   expect:
     command: aws configure
     responses:
@@ -59,4 +58,3 @@
     username: "{{ ecr_credentials[0] }}"
     password: "{{ ecr_credentials[1] }}"
     reauthorize: yes
-  become: yes
