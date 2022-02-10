@@ -20,6 +20,13 @@
         api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
       when:
       - '"binary" not in image'
+      - '"public.ecr" not in image'
+    
+    - name: Choose Public
+      set_fact:
+        api_url: https://nxmol7pvn3.execute-api.eu-west-2.amazonaws.com/prod
+      when:
+      - '"public.ecr" in image'
 
 - name: Gather access key and secret key
   uri:
