@@ -5,6 +5,7 @@
       set_fact:
         api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
         ecr_version: ecr
+        region: eu-west-2
       when:
       - '"polhemus" in image'
       - '"binary" in image'    
@@ -13,6 +14,7 @@
       set_fact:
         api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
         ecr_version: ecr
+        region: eu-west-2
       when:
       - '"haptx" in image'
       - '"binary" in image'
@@ -21,6 +23,7 @@
       set_fact:
         api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
         ecr_version: ecr
+        region: eu-west-2
       when:
       - '"binary" not in image'
       - '"public.ecr" not in image'
@@ -29,6 +32,7 @@
       set_fact:
         api_url: https://nxmol7pvn3.execute-api.eu-west-2.amazonaws.com/prod
         ecr_version: ecr-public
+        region: us-east-1
       when:
       - '"public.ecr" in image'
 
@@ -50,11 +54,11 @@
     responses:
       AWS Access Key ID: "{{ request_result.json.body.access_key }}"
       AWS Secret Access Key: "{{ request_result.json.body.secret_key }}"
-      Default region name: "eu-west-2"
+      Default region name: "{{ region }}"
       Default output format: ""
   
 - name: ecr docker get-authorization-token
-  shell: "aws {{ ecr_version }} get-authorization-token --region eu-west-2"
+  shell: "aws {{ ecr_version }} get-authorization-token --region {{ region }}"
   register: ecr_command
 
 - set_fact:
