@@ -1,3 +1,4 @@
 ---
 dependencies:
+  - { role: installation/aws-cli }
   - { role: installation/aws-cli-v2 }
