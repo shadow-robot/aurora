@@ -14,11 +14,6 @@
     setup_script: teleop-client-setup.sh
     use_steamvr: false
 
-- name: Include installation/aws-cli role
-  include_role:
-    name: installation/aws-cli-v2
-  when: skip_molecule_task is not defined
-
 - name: Include installation/docker role
   include_role:
     name: installation/docker
