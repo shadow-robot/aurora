@@ -12,8 +12,8 @@
 - name: Include installation/aws-cli role
   include_role:
     name: installation/aws-cli-v2
-  vars:
-    skip_molecule_task: true
+  when: skip_molecule_task is not defined
+
 
 - name: Include installation/terminator role
   include_role:

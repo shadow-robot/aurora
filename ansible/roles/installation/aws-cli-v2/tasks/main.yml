@@ -22,6 +22,7 @@
   shell: "/tmp/aws/install -u"
   become: yes
 
+
 # - name: Remove zip file
 #   file:
 #     state: absent
