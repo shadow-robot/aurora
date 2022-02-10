@@ -12,9 +12,7 @@
 - name: Login to AWS for ECR
   include_role:
     name: docker/ecr
-  when: 
-    - aws_login
-    - '"dkr.ecr" in image'
+  when: aws_login
 
 - name: Docker login
   community.docker.docker_login:
