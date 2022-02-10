@@ -4,6 +4,7 @@
     - name: Choose Polhemus
       set_fact:
         api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
+        ecr_version: ecr
       when:
       - '"polhemus" in image'
       - '"binary" in image'    
@@ -11,6 +12,7 @@
     - name: Choose Haptx
       set_fact:
         api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
+        ecr_version: ecr
       when:
       - '"haptx" in image'
       - '"binary" in image'
@@ -18,6 +20,7 @@
     - name: Choose Production
       set_fact:
         api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
+        ecr_version: ecr
       when:
       - '"binary" not in image'
       - '"public.ecr" not in image'
@@ -25,6 +28,7 @@
     - name: Choose Public
       set_fact:
         api_url: https://nxmol7pvn3.execute-api.eu-west-2.amazonaws.com/prod
+        ecr_version: ecr-public
       when:
       - '"public.ecr" in image'
 
@@ -50,7 +54,7 @@
       Default output format: ""
   
 - name: ecr docker get-authorization-token
-  shell: "aws ecr get-authorization-token --region eu-west-2"
+  shell: "aws {{ ecr_version }} get-authorization-token --region eu-west-2"
   register: ecr_command
 
 - set_fact:
