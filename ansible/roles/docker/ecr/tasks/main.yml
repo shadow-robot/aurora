@@ -32,7 +32,6 @@
       set_fact:
         api_url: https://nxmol7pvn3.execute-api.eu-west-2.amazonaws.com/prod
         ecr_version: ecr-public
-        region: us-east-1
       when:
       - '"public.ecr" in image'
 
@@ -60,6 +59,12 @@
 - name: ecr docker get-authorization-token
   shell: "aws {{ ecr_version }} get-authorization-token --region {{ region }}"
   register: ecr_command
+  when: region is defined
+
+- name: ecr docker get-authorization-token
+  shell: "aws {{ ecr_version }} get-authorization-token"
+  register: ecr_command
+  when: region is undefined
 
 - set_fact:
     ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData[0] }}"
