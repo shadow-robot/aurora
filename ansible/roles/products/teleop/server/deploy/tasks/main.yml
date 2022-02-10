@@ -23,6 +23,8 @@
 - name: Include installation/aws-cli role
   include_role:
     name: installation/aws-cli-v2
+  vars:
+    skip_molecule_task: true
 
 - name: Include installation/docker role
   include_role:

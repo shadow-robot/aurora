@@ -12,8 +12,6 @@
 - name: Login to AWS for ECR
   include_role:
     name: docker/ecr
-  vars:
-    skip_molecule_task: true
   when: 
     - aws_login
     - '"dkr.ecr" in image'
