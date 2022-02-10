@@ -58,7 +58,7 @@
       Default output format: ""
   
 - name: ecr docker get-authorization-token
-  shell: "aws ecr get-authorization-token {% if region == 'eu-west-2' %}--region eu-west-2{% else %}{% endif %}"
+  shell: "aws {{ ecr_version }} get-authorization-token {% if region == 'eu-west-2' %}--region eu-west-2{% else %}{% endif %}"
   register: ecr_command
 
 - set_fact:
