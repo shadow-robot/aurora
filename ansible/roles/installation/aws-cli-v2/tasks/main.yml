@@ -1,4 +1,13 @@
 ---
+
+- name: Check for AWS CLI v1
+  shell: "$(which aws)"
+  register: aws_v1
+
+- name: Remove AWS CLI v1
+  shell: "rm {{ aws_v1.stdout }}"
+  when: aws_v1.stdout | length > 0
+
 - name: Install Ansible unarchive requirements
   apt:
     name:
