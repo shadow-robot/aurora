@@ -3,6 +3,7 @@
 - name: Check for AWS CLI v1
   shell: "$(which aws)"
   register: aws_v1
+  ignore_errors: yes
 
 - name: Remove AWS CLI v1
   shell: "rm {{ aws_v1.stdout }}"
