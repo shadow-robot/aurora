@@ -15,11 +15,11 @@
 - name: Unzip AWS CLI v2
   unarchive:
     src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-    dest: "{{ user_folder }}"
+    dest: "/tmp/"
     remote_src: yes
 
 - name: Install AWS CLI v2
-  shell: "{{ user_folder }}/aws/install -u"
+  shell: "/tmp/aws/install -u"
   become: yes
 
 # - name: Remove zip file
