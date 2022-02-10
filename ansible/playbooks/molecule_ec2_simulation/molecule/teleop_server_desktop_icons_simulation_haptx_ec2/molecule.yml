@@ -21,6 +21,9 @@ platforms:
       - simulation
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      customer_key: ${AURORA_CUSTOMER_KEY:-default}
   env:
     ANSIBLE_ROLES_PATH: ../../../../roles
   connection_options:
