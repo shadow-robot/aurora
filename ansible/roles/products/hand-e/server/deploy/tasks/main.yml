@@ -20,6 +20,11 @@
     setup_script: server-setup.sh
     upgrade_script: "upgrade_image.sh"
 
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -85,11 +90,6 @@
   include_role:
     name: products/common/cyberglove
   when: use_cyberglove|bool
-
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
 
 - name: Include products/common/save-logs-icons role
   include_role:

@@ -14,6 +14,11 @@
     setup_script: teleop-client-setup.sh
     use_steamvr: false
 
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -51,11 +56,6 @@
   vars:
     ros_master: "{{ server_hostname }}"
     container_terminal_title: "Teleop Client Container"
-
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
 
 - name: Include products/common/save-logs-icons role
   include_role:

@@ -20,6 +20,11 @@
     setup_script: teleop-server-setup.sh
     upgrade_script: "upgrade_image.sh"
 
+- name: Include docker/aws role
+  include_role:
+    name: docker/aws
+  when: use_aws|bool
+
 - name: Include installation/docker role
   include_role:
     name: installation/docker
@@ -234,11 +239,6 @@
     ignore_errors: yes
 
   when: glove == "shadow_glove" and real_glove|bool
-
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
 
 - name: Include products/common/save-logs-icons role
   include_role:
