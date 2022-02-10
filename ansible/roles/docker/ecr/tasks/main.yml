@@ -4,8 +4,6 @@
     - name: Choose Polhemus
       set_fact:
         api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
-        ecr_version: ecr
-        region: eu-west-2
       when:
       - '"polhemus" in image'
       - '"binary" in image'    
@@ -13,8 +11,6 @@
     - name: Choose Haptx
       set_fact:
         api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
-        ecr_version: ecr
-        region: eu-west-2
       when:
       - '"haptx" in image'
       - '"binary" in image'
@@ -22,8 +18,6 @@
     - name: Choose Production
       set_fact:
         api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
-        ecr_version: ecr
-        region: eu-west-2
       when:
       - '"binary" not in image'
       - '"public.ecr" not in image'
@@ -31,8 +25,6 @@
     - name: Choose Public
       set_fact:
         api_url: https://nxmol7pvn3.execute-api.eu-west-2.amazonaws.com/prod
-        ecr_version: ecr-public
-        region: us-east-1
       when:
       - '"public.ecr" in image'
 
@@ -57,11 +49,10 @@
       Default region name: "{{ region }}"
       Default output format: ""
   
-
 - name: Public block
   block:
   - name: ecr docker get-authorization-token
-    shell: "aws {{ ecr_version }} get-authorization-token {% if region == 'eu-west-2' %}--region eu-west-2{% else %}{% endif %}"
+    shell: "aws ecr-public get-authorization-token"
     register: ecr_command
 
   - set_fact:
@@ -71,29 +62,34 @@
       ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
 
   - name: docker_repository - Log into ECR registry and force re-authorization
-    docker_login:
-      registry_url: "public.ecr.aws/shadowrobot"
-      username: "{{ ecr_credentials[0] }}"
-      password: "{{ ecr_credentials[1] }}"
-      reauthorize: yes
+    shell: "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
+    # docker_login:
+    #   registry_url: "public.ecr.aws/shadowrobot"
+    #   username: "{{ ecr_credentials[0] }}"
+    #   password: "{{ ecr_credentials[1] }}"
+    #   reauthorize: yes
   when: '"public.ecr" in image'
 
 - name: Private block
   block:
   - name: ecr docker get-authorization-token
-    shell: "aws {{ ecr_version }} get-authorization-token {% if region == 'eu-west-2' %}--region eu-west-2{% else %}{% endif %}"
+    shell: "aws ecr get-authorization-token --region eu-west-2"
     register: ecr_command
 
   - set_fact:
+      # Data is handled differently in ecr then ecr-public so we have to handle the dict different.
       ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData[0] }}"
 
   - set_fact:
       ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
 
   - name: docker_repository - Log into ECR registry and force re-authorization
-    docker_login:
-      registry_url: "{{ ecr_authorization_data.proxyEndpoint.rpartition('//')[2] }}"
-      username: "{{ ecr_credentials[0] }}"
-      password: "{{ ecr_credentials[1] }}"
-      reauthorize: yes
+    shell: "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
+    # docker_login:
+    #   # Gets the endpoint for our docker registry
+    #   registry_url: "{{ ecr_authorization_data.proxyEndpoint.rpartition('//')[2] }}"
+    #   username: "{{ ecr_credentials[0] }}"
+    #   password: "{{ ecr_credentials[1] }}"
+    #   reauthorize: yes
+
   when: '"dkr.ecr" in image'
