@@ -1,4 +1,11 @@
 ---
+- name: Check is aws installed
+  shell: command -v aws >/dev/null 2>&1
+  register: does_aws_exist
+  ignore_errors: yes
+
+- debug: msg="{{ does_aws_exist.rc }}" # it returns rc 1
+- debug: var=does_aws_exist
 
 - name: Check for AWS CLI v1
   shell: "$(which aws)"
