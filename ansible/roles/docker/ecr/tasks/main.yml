@@ -57,19 +57,43 @@
       Default region name: "{{ region }}"
       Default output format: ""
   
-- name: ecr docker get-authorization-token
-  shell: "aws {{ ecr_version }} get-authorization-token {% if region == 'eu-west-2' %}--region eu-west-2{% else %}{% endif %}"
-  register: ecr_command
 
-- set_fact:
-    ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData }}"
+- name: Public block
+  block:
+  - name: ecr docker get-authorization-token
+    shell: "aws {{ ecr_version }} get-authorization-token {% if region == 'eu-west-2' %}--region eu-west-2{% else %}{% endif %}"
+    register: ecr_command
 
-- set_fact:
-    ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
+  - set_fact:
+      ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData }}"
 
-- name: docker_repository - Log into ECR registry and force re-authorization
-  docker_login:
-    registry_url: "{{ ecr_authorization_data.proxyEndpoint.rpartition('//')[2] }}"
-    username: "{{ ecr_credentials[0] }}"
-    password: "{{ ecr_credentials[1] }}"
-    reauthorize: yes
+  - set_fact:
+      ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
+
+  - name: docker_repository - Log into ECR registry and force re-authorization
+    docker_login:
+      registry_url: "public.ecr.aws/shadowrobot"
+      username: "{{ ecr_credentials[0] }}"
+      password: "{{ ecr_credentials[1] }}"
+      reauthorize: yes
+  when: '"public.ecr" in image'
+
+- name: Private block
+  block:
+  - name: ecr docker get-authorization-token
+    shell: "aws {{ ecr_version }} get-authorization-token {% if region == 'eu-west-2' %}--region eu-west-2{% else %}{% endif %}"
+    register: ecr_command
+
+  - set_fact:
+      ecr_authorization_data: "{{ (ecr_command.stdout | from_json).authorizationData[0] }}"
+
+  - set_fact:
+      ecr_credentials: "{{ (ecr_authorization_data.authorizationToken | b64decode).split(':') }}"
+
+  - name: docker_repository - Log into ECR registry and force re-authorization
+    docker_login:
+      registry_url: "{{ ecr_authorization_data.proxyEndpoint.rpartition('//')[2] }}"
+      username: "{{ ecr_credentials[0] }}"
+      password: "{{ ecr_credentials[1] }}"
+      reauthorize: yes
+  when: '"dkr.ecr" in image'
