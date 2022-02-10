@@ -36,4 +36,3 @@
     volumes: "{{ shared_volumes }}"
     command: terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash
     container_default_behavior: compatibility
-  become: yes

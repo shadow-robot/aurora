@@ -41,4 +41,3 @@
     volumes: "{{ shared_volumes }}"
     command: bash
     container_default_behavior: compatibility
-  become: yes

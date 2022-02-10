@@ -36,5 +36,3 @@
     volumes: "{{ shared_volumes }}"
     command: "terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
-  become: yes
-

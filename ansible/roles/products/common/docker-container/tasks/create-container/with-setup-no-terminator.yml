@@ -41,4 +41,3 @@
     volumes: "{{ shared_volumes }}"
     command: "bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
-  become: yes
