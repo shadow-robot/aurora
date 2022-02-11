@@ -26,8 +26,3 @@
 - name: Install AWS CLI v2
   shell: "/tmp/aws/install -u"
   become: yes
-    
-- name: Remove aws folder
-  file:
-    state: absent
-    path: "{{ user_folder }}/aws"
