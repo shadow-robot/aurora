@@ -1,6 +1,6 @@
 ---
 container_name: "dexterous_hand_real_hw"
-image: "shadowrobot/dexterous-hand"
+image: "public.ecr.aws/shadowrobot/dexterous-hand"
 tag: "noetic-release"
 full_image_name: "shadowrobot/dexterous-hand:noetic-release"
 launch_hand: false

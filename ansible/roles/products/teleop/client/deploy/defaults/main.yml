@@ -1,5 +1,5 @@
 ---
-image: "shadowrobot/shadow-teleop-polhemus"
+image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus"
 tag: "noetic-night-build"
 reinstall: false
 container_name: "teleop"

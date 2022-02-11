@@ -1,5 +1,5 @@
 ---
-image: "shadowrobot/dexterous-hand"
+image: "public.ecr.aws/shadowrobot/dexterous-hand"
 tag: "noetic-release"
 reinstall: false
 container_name: "dexterous_hand_real_hw"
