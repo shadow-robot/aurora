@@ -35,8 +35,3 @@
     path: "/tmp/shadow-upload.sh"
     state: absent
   changed_when: false
-
-- name: Install AWS CLI debian
-  apt:
-    name: awscli
-  become: yes
