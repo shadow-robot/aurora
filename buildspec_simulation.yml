@@ -4,7 +4,6 @@ env:
   parameter-store:
      AWS_ACCESS_KEY : CODE_BUILD_EC2_ACCESS_KEY
      AWS_SECRET_KEY : CODE_BUILD_EC2_SECRET_KEY
-     AURORA_CUSTOMER_KEY: AURORA_API_KEY
 phases:
   pre_build:
     commands:
