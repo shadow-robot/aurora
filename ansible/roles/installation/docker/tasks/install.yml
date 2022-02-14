@@ -46,8 +46,7 @@
     append: 'yes'
 
 - name: Docker installation finished
-  debug:
-    msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
+  shell: newgrp docker
 
 - name: Rebooting computer to finish Docker installation
   when: allow_auto_reboot|bool
