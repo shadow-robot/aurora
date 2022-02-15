@@ -1,10 +1,29 @@
 ---
+
+- name: Set variables
+  set_fact: 
+    aws_login: false
+
+- name: Enable ECR login
+  set_fact:
+    aws_login: true
+  when: 
+    - '"dkr.ecr" in image or "public.ecr" in image'
+    - skip_molecule_task is not defined 
+
+- name: Login to AWS for ECR
+  include_role:
+    name: docker/ecr
+  when: aws_login
+
 - name: Docker login
   community.docker.docker_login:
     username: "{{ docker_username }}"
     password: "{{ docker_password }}"
-  when: docker_username is defined and docker_password is defined
-  become: yes
+  when: 
+    - docker_username is defined
+    - docker_password is defined
+    - not aws_login
 
 - name: Reading path to Python repository with Docker package
   command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""
@@ -31,7 +50,6 @@
       async: 50000
       poll: 0
       register: docker_pull_job
-      become: yes
       changed_when: false
 
     - name: Wait for Docker image pull to complete
@@ -41,7 +59,6 @@
       until: docker_pull_result.finished
       retries: 10000
       delay: 5
-      become: yes
   rescue:
     - name: Temporary error in docker pull. Automatically waiting 10 seconds before trying again. If it still fails, re-run the aurora script
       wait_for:
@@ -57,7 +74,6 @@
       async: 50000
       poll: 0
       register: docker_pull_job2
-      become: yes
       changed_when: false
 
     - name: Wait for Docker image pull to complete (attempt 2)
@@ -67,4 +83,3 @@
       until: docker_pull_result2.finished
       retries: 10000
       delay: 5
-      become: yes

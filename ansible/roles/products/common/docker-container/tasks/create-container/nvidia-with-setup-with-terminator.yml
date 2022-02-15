@@ -45,4 +45,3 @@
         count: -1 
         capabilities:
           - ['gpu','nvidia']
-  become: yes

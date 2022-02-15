@@ -1,0 +1,28 @@
+---
+- name: Check for AWS CLI v1
+  shell: "$(which aws)"
+  register: aws_v1
+  ignore_errors: yes
+  no_log: True
+
+- name: Remove AWS CLI v1
+  shell: "rm {{ aws_v1.stdout }}"
+  when: aws_v1.stdout | length > 0
+
+- name: Install Ansible unarchive requirements
+  apt:
+    name:
+    - tar 
+    - unzip
+    - zip
+  become: yes
+
+- name: Unzip AWS CLI v2
+  unarchive:
+    src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    dest: "/tmp/"
+    remote_src: yes
+
+- name: Install AWS CLI v2
+  shell: "/tmp/aws/install -u"
+  become: yes

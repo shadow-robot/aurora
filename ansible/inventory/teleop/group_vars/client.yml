@@ -1,5 +1,5 @@
 ---
-image: "shadowrobot/shadow-teleop-polhemus" # Docker image name
+image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus" # Docker image name
 tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "teleop" # Name of the docker container

@@ -1,0 +1,62 @@
+---
+- name: Choosing which API call to make.
+  block:
+    - name: Choose Polhemus
+      set_fact:
+        api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
+        region: eu-west-2
+      when:
+      - '"polhemus" in image'
+      - '"binary" in image'    
+    
+    - name: Choose Haptx
+      set_fact:
+        api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
+        region: eu-west-2
+      when:
+      - '"haptx" in image'
+      - '"binary" in image'
+
+    - name: Choose Production
+      set_fact:
+        api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
+        region: eu-west-2
+      when:
+      - '"binary" not in image'
+      - '"public.ecr" not in image'
+    
+    - name: Choose Public
+      set_fact:
+        api_url: https://nxmol7pvn3.execute-api.eu-west-2.amazonaws.com/prod
+        region: us-east-1
+      when:
+      - '"public.ecr" in image'
+
+- name: Gather access key and secret key
+  uri:
+    url: "{{ api_url }}"
+    method: GET
+    body_format: json
+    status_code: [200, 202]
+    return_content: yes
+    headers:
+      Content-Type: application/json
+      x-api-key: "{{ customer_key }}"
+  register: request_result
+
+- name: Configure AWS CLI
+  expect:
+    command: aws configure
+    responses:
+      AWS Access Key ID: "{{ request_result.json.body.access_key }}"
+      AWS Secret Access Key: "{{ request_result.json.body.secret_key }}"
+      Default region name: "{{ region }}"
+      Default output format: ""
+
+- name: Login to Docker Hub using AWS CLI (PUBLIC)
+  shell: "aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
+  when: '"public.ecr" in image'
+
+- name: Login to Docker Hub using AWS CLI (PRIVATE)
+  shell: "aws ecr get-login-password --region eu-west-2 | sudo docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
+  when: '"dkr.ecr" in image'
