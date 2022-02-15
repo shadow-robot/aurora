@@ -54,9 +54,9 @@
       Default output format: ""
 
 - name: Login to Docker Hub using AWS CLI (PUBLIC)
-  shell: "aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
+  shell: "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
   when: '"public.ecr" in image'
 
 - name: Login to Docker Hub using AWS CLI (PRIVATE)
-  shell: "aws ecr get-login-password --region eu-west-2 | sudo docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
+  shell: "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
   when: '"dkr.ecr" in image'
