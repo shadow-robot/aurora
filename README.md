@@ -912,3 +912,4 @@ network:
 ```
 
 3. **Unable to launch RQT on NUC** (or other graphical programs running on the NUC), due to Xauthority issues (in server_and_nuc_deploy and teleop_deploy): Before running aurora, execute ssh -X user@nuc-control to create a proper .Xauthority file in the NUC host (user home folder). This is required before aurora runs and creates the container.
+
