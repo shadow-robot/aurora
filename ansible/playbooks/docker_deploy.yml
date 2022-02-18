@@ -6,7 +6,6 @@
 - name: Install product Docker container and icons
   hosts: docker_deploy
   pre_tasks:
-
     - name: get dekstop path
       shell: xdg-user-dir DESKTOP
       register: desktop_path_shell
