@@ -22,7 +22,7 @@
     path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
     state: directory
   changed_when: false
-  when: demo_path.stat.exists and demo_path.stat.isdir
+  when: demo_path.stat.exists
 
 - name: Copy Shadow Demos folder
   copy:
