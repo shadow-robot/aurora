@@ -7,6 +7,12 @@
   hosts: docker_deploy
   pre_tasks:
 
+    - name: get dekstop path
+      shell: xdg-user-dir DESKTOP
+      register: desktop_path
+
+    - debug: msg="{{ desktop_path.stdout }}"
+
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
