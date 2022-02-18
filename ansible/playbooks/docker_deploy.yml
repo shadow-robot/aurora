@@ -26,6 +26,6 @@
   roles:
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
+    - {role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
-    - {role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
