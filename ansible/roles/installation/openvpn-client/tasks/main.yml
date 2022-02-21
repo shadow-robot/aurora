@@ -52,7 +52,7 @@
 - name: Create openVPN desktop icon
   template:
     src: ../../products/common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ desktop_path }}//OpenVPN_Launch.desktop"
+    dest: "{{ desktop_path }}/OpenVPN_Launch.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: OpenVPN_Config_Launch
