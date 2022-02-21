@@ -4,6 +4,7 @@
     path: "{{ desktop_path }}"
     mode: '755'
     state: directory
+  become: yes
 
 - name: Ensures that save_latest_ros_logs_folder exists
   file:
