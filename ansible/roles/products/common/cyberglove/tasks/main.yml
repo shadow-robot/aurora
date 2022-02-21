@@ -1,7 +1,7 @@
 ---
 - name: Ensures that Desktop folder exists
   file:
-    path: "{{ user_folder }}/Desktop"
+    path: "{{ desktop_path }}"
     mode: '755'
     state: directory
 
@@ -25,7 +25,7 @@
 - name: Create Cyberglove desktop icon
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Launch_Cyberglove.desktop"
+    dest: "{{ desktop_path }}/Launch_Cyberglove.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Launch Cyberglove

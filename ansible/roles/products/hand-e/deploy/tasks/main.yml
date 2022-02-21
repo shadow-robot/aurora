@@ -43,7 +43,7 @@
 
 - name: Create Shadow Demos folder
   file:
-    path: "{{ user_folder }}/Desktop/Shadow Demos"
+    path: "{{ desktop_path }}/Shadow Demos"
     mode: '755'
     state: directory
 
@@ -51,7 +51,7 @@
   include_role:
     name: products/common/demo-icons
   vars:
-    demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
+    demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
   when: demo_icons|bool
 
 - name: Include products/common/cyberglove role
@@ -100,14 +100,14 @@
   include_role:
     name: products/common/local-hand-launch
   vars:
-    icon_folder: "{{ user_folder }}/Desktop"
+    icon_folder: "{{ desktop_path }}"
     override_launch_hand_var: False
 
 - name: Include products/common/local-zero-force-mode-launch role
   include_role:
     name: products/common/local-zero-force-mode-launch
   vars:
-    icon_folder: "{{ user_folder }}/Desktop"
+    icon_folder: "{{ desktop_path }}"
 
 - name: Include products/common/close-everything-icon role
   include_role:

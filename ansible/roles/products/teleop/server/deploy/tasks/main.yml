@@ -92,7 +92,7 @@
 
 - name: Ensures that Desktop folder exists
   file:
-    path: "{{ user_folder }}/Desktop"
+    path: "{{ desktop_path }}"
     mode: '755'
     state: directory
 
@@ -100,7 +100,7 @@
   block:
   - name: Set shadow_glove_calibration_folder folder names
     set_fact:
-      shadow_glove_calibration_folder: "{{ user_folder }}/Desktop/shadow_glove_calibration"
+      shadow_glove_calibration_folder: "{{ desktop_path }}/shadow_glove_calibration"
       shadow_glove_calibration_inside_docker: "/home/user/shadow_glove_calibration"
 
   - name: Set shadow glove user calibration and boresight calibration folder names

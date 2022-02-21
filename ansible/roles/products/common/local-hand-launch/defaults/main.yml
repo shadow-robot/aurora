@@ -8,7 +8,7 @@ bimanual_hands_picture: hand-e-bimanual.png
 product: hand_e
 container_name: "dexterous_hand_real_hw"
 setup_directory: "/usr/local/bin"
-icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
+icon_folder: "{{ desktop_path }}/Shadow Advanced Launchers"
 launch_hand: false
 override_launch_hand: false
 use_cyberglove: false

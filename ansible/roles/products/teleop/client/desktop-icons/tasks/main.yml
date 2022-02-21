@@ -1,7 +1,7 @@
 ---
 - name: Ensures that Desktop folder exists
   file:
-    path: "{{ user_folder }}/Desktop"
+    path: "{{ desktop_path }}"
     mode: '755'
     state: directory
 
@@ -25,7 +25,7 @@
 - name: Create Teleop desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Teleop_Container_Launch.desktop"
+    dest: "{{ desktop_path }}/Teleop_Container_Launch.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Teleop_Container_Launcher
@@ -36,7 +36,7 @@
     start_terminal: "true"
 
 - name: Make Desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/Teleop_Container_Launch.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/Teleop_Container_Launch.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
@@ -60,7 +60,7 @@
 - name: Create desktop icon for Cyberglove
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Cyberglove_Launch.desktop"
+    dest: "{{ desktop_path }}/Cyberglove_Launch.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "Cyberglove_Launch"
@@ -71,7 +71,7 @@
     start_terminal: "true"
 
 - name: Make desktop icon for Cyberglove icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/Cyberglove_Launch.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/Cyberglove_Launch.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
