@@ -1,7 +1,7 @@
 ---
 - name: Ensures that Desktop folder exists
   file:
-    path: "{{ user_folder }}/Desktop"
+    path: "{{ desktop_path }}"
     mode: '755'
     state: directory
 
@@ -163,13 +163,13 @@
 
 - name: Create Shadow Demos folder
   file:
-    path: "{{ user_folder }}/Desktop/Shadow Demos"
+    path: "{{ desktop_path }}/Shadow Demos"
     mode: '755'
     state: directory
 
 - name: Create Shadow Advanced Launchers folder
   file:
-    path: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
+    path: "{{ desktop_path }}/Shadow Advanced Launchers"
     mode: '755'
     state: directory
 
@@ -576,7 +576,7 @@
   include_role:
     name: products/common/demo-icons
   vars:
-    demo_icon_folder: "{{ user_folder }}/Desktop/Shadow Demos"
+    demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
   when: demo_icons|bool
 
 - name: Include products/common/local-hand-launch role

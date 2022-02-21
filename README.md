@@ -657,7 +657,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
 ---
 - name: Ensures that Desktop folder exists
   file:
-    path: "{{ user_folder }}/Desktop"
+    path: "{{ desktop_path }}/"
     mode: '755'
     state: directory
 
@@ -681,7 +681,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
 - name: Create the tutorial desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Launch_Tutorial_1.desktop"
+    dest: "{{ desktop_path }}//Launch_Tutorial_1.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Launch_Tutorial_1
@@ -691,7 +691,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
     icon_file_name: tutorial_1_icon.png
 
 - name: Make Desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/Launch_Tutorial_1.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}//Launch_Tutorial_1.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'

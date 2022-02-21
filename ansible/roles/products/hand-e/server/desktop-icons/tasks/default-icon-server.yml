@@ -17,7 +17,7 @@
 - name: Create desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop"
+    dest: "{{ desktop_path }}/{{ desktop_icon_path }}.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "{{ desktop_icon_name }}"
@@ -28,7 +28,7 @@
     start_terminal: "{{ launch_terminal }}"
 
 - name: Make Desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
