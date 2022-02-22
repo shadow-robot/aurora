@@ -6,6 +6,7 @@
 - name: Install product Docker container and icons
   hosts: docker_deploy
   pre_tasks:
+
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
@@ -23,9 +24,9 @@
         use_cyberglove: true
 
   roles:
-    - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - { role: products/get-system-variables }
-    - {role: products/hand-e/deploy, when: product == 'hand_e'}
-    - {role: docker/aws, when: use_aws|bool}
-    - {role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
+    - { role: installation/docker}
+    - { role: installation/nvidia-docker, when: nvidia_docker | bool }
+    - { role: products/common/get-system-variables }
+    - { role: products/hand-e/deploy, when: product == 'hand_e' }
+    - { role: docker/aws, when: use_aws|bool }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' }
