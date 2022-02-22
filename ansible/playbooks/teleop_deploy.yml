@@ -4,19 +4,6 @@
   connection: local
   gather_facts: yes
   pre_tasks:
-    - name: get dekstop path
-      shell: xdg-user-dir DESKTOP
-      register: desktop_path_shell
-      when: skip_molecule_task is not defined
-
-    - name:
-      set_fact: desktop_path="{{ desktop_path_shell.stdout }}"
-      when: skip_molecule_task is not defined
-
-    - name:
-      set_fact: desktop_path="/home/user/Desktop"
-      when: skip_molecule_task is defined
-
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
@@ -90,6 +77,7 @@
       become: yes
 
   roles:
+    - { role: products/get-system-variables }
     - { role: products/teleop/server/deploy }
     - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
 
@@ -103,6 +91,7 @@
         use_aws: true
 
   roles:
+    - { role: products/get-system-variables }
     - { role: products/teleop/server/deploy }
     - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
 
@@ -125,6 +114,7 @@
       become: yes
 
   roles:
+    - { role: products/get-system-variables }
     - { role: products/teleop/control_machine/deploy }
 
 - name: Install Teleop software on Ubuntu teleop client laptop
@@ -146,6 +136,7 @@
       become: yes
 
   roles:
+    - { role: products/get-system-variables }
     - { role: products/teleop/client/deploy , when: remote_teleop|bool }
 
 - name: Inform user for reboot
