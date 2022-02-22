@@ -9,5 +9,5 @@
     when: skip_molecule_task is not defined
 
   - name:
-    set_fact: desktop_path="/home/root/Desktop"
+    set_fact: desktop_path="/home/{{ user }}/Desktop"
     when: skip_molecule_task is defined
