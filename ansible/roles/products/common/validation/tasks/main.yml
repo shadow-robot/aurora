@@ -14,7 +14,7 @@
       - product is not defined
     fail_msg: "In aurora oneliner using playbook {{ playbook }}, you are not allowed to specify a product. Please remove it and re-run aurora"
     quiet: yes
-  when: playbook=="teleop_deploy"
+  when: playbook=="teleop_deploy" and skip_molecule_task is not defined
 
 - name: Make sure arm_ip_right is specified if using teleop or server_and_nuc_deploy with arm, non-sim inventory
   assert:
