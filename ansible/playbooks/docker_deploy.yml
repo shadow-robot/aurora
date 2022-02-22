@@ -13,6 +13,10 @@
     - name:
       set_fact: desktop_path="{{ desktop_path_shell.stdout }}"
 
+    - name:
+      set_fact: desktop_path="{{ /home/user/Desktop }}"
+      when: desktop_path == "/root/Desktop"
+
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
