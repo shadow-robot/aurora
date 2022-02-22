@@ -12,7 +12,6 @@
         name: products/common/validation
       vars:
         playbook: "docker_deploy"
-      #when: skip_molecule_task is not defined
 
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
