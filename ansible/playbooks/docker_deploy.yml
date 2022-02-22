@@ -6,6 +6,12 @@
 - name: Install product Docker container and icons
   hosts: docker_deploy
   pre_tasks:
+    - name: include products/common/validation role
+      include_role:
+        name: products/common/validation
+      vars:
+        playbook: "docker_deploy"
+
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
       set_fact:
@@ -19,7 +25,7 @@
   roles:
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - {role: products/get-system-variables}
+    - { role: products/get-system-variables }
     - {role: products/hand-e/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
     - {role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
