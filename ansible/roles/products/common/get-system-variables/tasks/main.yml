@@ -11,9 +11,3 @@
   - name:
     set_fact: desktop_path="/home/root/Desktop"
     when: skip_molecule_task is defined
-
-  - name: include products/common/validation role
-    include_role:
-      name: products/common/validation
-    vars:
-      playbook: "docker_deploy"
