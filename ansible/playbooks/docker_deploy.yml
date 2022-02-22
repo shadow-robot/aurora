@@ -17,7 +17,7 @@
 
     - name:
       set_fact: desktop_path="/home/user/Desktop"
-      when: desktop_path is not defined
+      when: desktop_path == "/root/Desktop"
 
     - name: include products/common/validation role
       include_role:
