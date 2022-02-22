@@ -9,7 +9,6 @@
         name: products/common/validation
       vars:
         playbook: "server_and_nuc_deploy"
-      #when: skip_molecule_task is not defined
   tasks:
     - name: Extract hostname from server
       set_fact:
