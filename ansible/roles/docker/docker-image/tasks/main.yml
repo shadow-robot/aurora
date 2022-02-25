@@ -9,7 +9,8 @@
     aws_login: true
   when: 
     - '"dkr.ecr" in image or "public.ecr" in image'
-    - skip_molecule_task is not defined 
+    - customer_key is defined
+    - skip_molecule_task is not defined
 
 - name: Login to AWS for ECR
   include_role:
