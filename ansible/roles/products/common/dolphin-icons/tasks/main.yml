@@ -92,6 +92,13 @@
   changed_when: false
   with_items: "{{ file_list.files }}"
 
+- name: Create shadow_hand_launcher folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
+    state: directory
+    mode: '0755'
+  changed_when: false
+
 - name: Create Single Icon for Dolphin file manager
   copy:
     src: ../../../common/resources/files/shadowlogo.jpg

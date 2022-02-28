@@ -77,8 +77,9 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/teleop/server/deploy }
-    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' }
 
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
@@ -90,6 +91,7 @@
         use_aws: true
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/teleop/server/deploy }
     - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
 
@@ -112,6 +114,7 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/teleop/control_machine/deploy }
 
 - name: Install Teleop software on Ubuntu teleop client laptop
@@ -133,6 +136,7 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/teleop/client/deploy , when: remote_teleop|bool }
 
 - name: Inform user for reboot

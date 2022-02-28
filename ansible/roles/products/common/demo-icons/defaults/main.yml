@@ -9,5 +9,5 @@ hand_side: "right"
 hand_type: "hand_e"
 biotacs: false
 product: ''
-demo_icon_folder: "{{ user_folder }}/Desktop"
+demo_icon_folder: "{{ desktop_path }}"
 start_terminal: "true"

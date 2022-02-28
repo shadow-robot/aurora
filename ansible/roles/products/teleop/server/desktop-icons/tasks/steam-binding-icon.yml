@@ -7,7 +7,7 @@
 - name: Create Steam Vive Binding Icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon-command.j2
-    dest: "{{ user_folder }}/Desktop/Steam Vive Binding.desktop"
+    dest: "{{ desktop_path }}/Steam Vive Binding.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "Steam Vive Binding"

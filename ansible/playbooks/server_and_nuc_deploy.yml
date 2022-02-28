@@ -77,8 +77,9 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/hand-e/server/deploy }
-    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' }
 
 - name: Install Hand software on control machine
   hosts: control_machine
@@ -104,6 +105,7 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/hand-e/control_machine/deploy }
 
 - name: Inform user for reboot
