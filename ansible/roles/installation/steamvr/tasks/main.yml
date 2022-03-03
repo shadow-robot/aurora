@@ -40,7 +40,7 @@
     
 - name: Install multiarch-support from the internet 
   apt:
-    deb: http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.2_amd64.deb
+    deb: http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.5_amd64.deb
     state: present
   become: yes
   when:
