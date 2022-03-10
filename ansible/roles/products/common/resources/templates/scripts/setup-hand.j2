@@ -37,5 +37,6 @@ else
             sr_hand_autodetect {{ hand_side_ad }} roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
         else
             roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        fi
     fi
 fi
