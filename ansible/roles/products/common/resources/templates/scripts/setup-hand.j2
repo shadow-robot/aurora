@@ -26,13 +26,13 @@ if {{ launch_hand | lower }}; then
         roslaunch sr_robot_launch srhand.launch sim:=true
     else
         if {{ uses_autodetect | lower }}; then
-            sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+            sr_hand_autodetect {{ hand_side_ad }} roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
         else
             roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
         fi
     fi
 else
     if {{ override_launch_hand | lower }}; then
-        sr_hand_autodetect roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
+        sr_hand_autodetect {{ hand_side_ad }} roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 fi

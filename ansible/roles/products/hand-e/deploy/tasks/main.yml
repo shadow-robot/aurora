@@ -6,7 +6,9 @@
 
 - name: Setup script name
   set_fact:
-    setup_script: server-setup.sh
+    setup_script_default: server-setup.sh
+    setup_script_right: server-setup-right.sh
+    setup_script_left: server-setup-left.sh
     upgrade_script: "upgrade_image.sh"
 
 - name: Include installation/aws-cli role
@@ -85,11 +87,45 @@
     launch_file_name: "srhand.launch"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: False
+  
+- name: Creating the default setup script (Right)
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script_right }}"
+    mode: '755'
+  vars:
+    launch_file_name: "srhand.launch hand_side_ad:=-r"
+    launch_package_name: "sr_robot_launch"
+    override_launch_hand: False
+  when: bimanual|bool
+
+- name: Creating the default setup script (Left)
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script_left }}"
+    mode: '755'
+  vars:
+    launch_file_name: "srhand.launch hand_side_ad:=-l"
+    launch_package_name: "sr_robot_launch"
+    override_launch_hand: False
+  when: bimanual|bool
 
 - name: Copying the default setup script into docker container
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
+
+- name: Copying the default setup script into docker container (Right)
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script_right }} {{ container_name }}:{{ setup_directory }}/{{ setup_script_right }}"
+  become: yes
+  when: bimanual|bool
+
+- name: Copying the default setup script into docker container (Left)
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script_left }} {{ container_name }}:{{ setup_directory }}/{{ setup_script_left }}"
+  become: yes
+  when: bimanual|bool
 
 - name: Include hand-manual role
   include_role:
