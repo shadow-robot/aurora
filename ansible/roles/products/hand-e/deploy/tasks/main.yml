@@ -6,7 +6,7 @@
 
 - name: Setup script name
   set_fact:
-    setup_script_default: server-setup.sh
+    setup_script: server-setup.sh
     setup_script_right: server-setup-right.sh
     setup_script_left: server-setup-left.sh
     upgrade_script: "upgrade_image.sh"
