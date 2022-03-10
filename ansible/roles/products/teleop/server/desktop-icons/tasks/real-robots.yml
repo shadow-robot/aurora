@@ -619,6 +619,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
+    hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -630,6 +631,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
+    hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role

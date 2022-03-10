@@ -15,6 +15,7 @@
     hand_ctrl_var: "{{ hand_ctrl_value }}"
     arm_ctrl_var: "false"
     arm_payload_mass: 5.0
+    hand_side_ad: "{{ hand_side_ad }}"
 
 - name: Create desktop icon for hand
   template:

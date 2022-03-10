@@ -203,6 +203,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
+    hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
 - name: Create executable launch script for hand+arm (Right)
@@ -218,6 +219,7 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
+    hand_side_ad: "-r"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -232,6 +234,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
+    hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
 - name: Create executable launch script for hand+arm (Left)
@@ -247,6 +250,7 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
+    hand_side_ad: "-l"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
@@ -280,6 +284,7 @@
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
+    hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -292,6 +297,7 @@
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
+    hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role
