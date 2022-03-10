@@ -87,6 +87,7 @@
     launch_file_name: "srhand.launch"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: False
+    uses_autodetect: False
   
 - name: Creating the default setup script (Right)
   template:
@@ -97,6 +98,7 @@
     launch_file_name: "srhand.launch hand_side_ad:=-r"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: False
+    uses_autodetect: False
   when: bimanual|bool
 
 - name: Creating the default setup script (Left)
@@ -108,6 +110,7 @@
     launch_file_name: "srhand.launch hand_side_ad:=-l"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: False
+    uses_autodetect: False
   when: bimanual|bool
 
 - name: Copying the default setup script into docker container
