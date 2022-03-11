@@ -18,7 +18,7 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "{{ arm_ctrl_value }}"
     arm_payload_mass: "{{ arm_mass_payload }}"
-    hand_side_ad: "{{ hand_side_ad }}"
+    ad_hand_side: "{{ hand_side_ad }}"
 
 - name: Create desktop icon for hand
   template:
