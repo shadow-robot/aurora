@@ -118,6 +118,8 @@
   changed_when: false
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
+  when: not bimanual|bool
+
 
 - name: Copying the default setup script into docker container (Right)
   changed_when: false
