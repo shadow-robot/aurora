@@ -88,6 +88,7 @@
     launch_package_name: "sr_robot_launch"
     override_launch_hand: False
     uses_autodetect: False
+  when: not bimanual|bool
   
 - name: Creating the default setup script (Right)
   template:
