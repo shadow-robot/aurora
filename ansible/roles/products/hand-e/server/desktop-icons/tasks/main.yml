@@ -182,6 +182,7 @@
     desktop_icon_name: "1 - Launch Server Container"
     desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
     launch_terminal: "false"
+    hand_side_ad: ""
 
 - name: Install desktop icon for launching ROSCORE
   import_tasks: default-icon.yml
