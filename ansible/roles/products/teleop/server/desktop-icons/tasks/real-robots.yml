@@ -173,7 +173,7 @@
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Right Side Teleop Hardware Control Loop"
-    arm_side_ad: "-r"
+    hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC left hand and arm hardware control loop
@@ -183,7 +183,7 @@
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Left Side Teleop Hardware Control Loop"
-    arm_side_ad: "-l"
+    hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop

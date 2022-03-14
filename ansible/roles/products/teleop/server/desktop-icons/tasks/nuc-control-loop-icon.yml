@@ -12,7 +12,7 @@
 
 - name: Create executable launch script for hand and arm control loop (for cyberglove)
   template:
-    src: templates/scripts/start-docker-container-nuc-autodetect.j2
+    src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
   vars:
