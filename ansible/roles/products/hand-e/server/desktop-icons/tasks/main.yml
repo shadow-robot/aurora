@@ -220,7 +220,7 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
-    hand_side_ad: "-r"
+    ad_hand_side: "-r"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -251,7 +251,7 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
-    hand_side_ad: "-l"
+    ad_hand_side: "-l"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
