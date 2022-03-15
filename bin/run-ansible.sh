@@ -45,6 +45,7 @@ case ${key} in
     ;;
     --github-url)
     github_url="$2"
+    shift 2
     *)
     break
     ;;
