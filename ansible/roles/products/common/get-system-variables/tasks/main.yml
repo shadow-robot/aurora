@@ -1,13 +1,28 @@
 ---
-  - name: get dekstop path
-    shell: xdg-user-dir DESKTOP
-    register: desktop_path_shell
-    when: skip_molecule_task is not defined
+- name: get dekstop path
+  shell: xdg-user-dir DESKTOP
+  register: desktop_path_shell
+  when: skip_molecule_task is not defined
 
-  - name:
-    set_fact: desktop_path="{{ desktop_path_shell.stdout }}"
-    when: skip_molecule_task is not defined
+- name:
+  set_fact: desktop_path="{{ desktop_path_shell.stdout }}"
+  when: skip_molecule_task is not defined
 
-  - name:
-    set_fact: desktop_path="/home/{{ user }}/Desktop"
-    when: skip_molecule_task is defined
+- name:
+  set_fact: desktop_path="/home/{{ user }}/Desktop"
+  when: skip_molecule_task is defined
+
+- name: Test connection to github.com
+  uri:
+    url: http://{{ github_url }}/
+    timeout: 1
+    return_content: yes
+  register: _github_connection
+  changed_when: no
+  check_mode: no
+  failed_when: no
+
+- name: Switch github connection if not available
+  set_fact: github_url="hub.fastgit.xyz"
+  when: {{ item.status }} != 400
+  with_items: _github_connection.results

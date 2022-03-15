@@ -43,6 +43,8 @@ case ${key} in
     read_secure="$2"
     shift 2
     ;;
+    --github-url)
+    github_url="$2"
     *)
     break
     ;;
@@ -60,6 +62,11 @@ fi
 if [[ -z ${aurora_tools_branch} ]];
 then
     aurora_tools_branch=master
+fi
+
+if [[ -z ${github_url} ]];
+then
+    github_url=github.com
 fi
 
 if [[ -z ${aurora_inventory} ]];
@@ -234,7 +241,7 @@ pip3 install --user -U pip
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
 
-git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git $aurora_home
+git clone --depth 1 -b ${aurora_tools_branch} https://${github_url}/shadow-robot/aurora.git $aurora_home
 
 echo ""
 echo " -------------------"

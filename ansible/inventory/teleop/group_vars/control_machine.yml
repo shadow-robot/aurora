@@ -24,7 +24,8 @@ remote_bag_storage_IP: "10.5.10.59"
 remote_bag_storage_location: "/volume1/ros_bags"
 pr_branches: "" # Space-separated list of PRs (https://github.com/shadow-robot/repo/pull/266) or branches (https://github.com/shadow-robot/repo/tree/custom_branch) to check out on NUC and catkin_make
 record_data: false
-arm_servo: false
+arm_servo: false # can be used to enable 8 DOF
+github_url: "github.com" # Used if access to github is restricted
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435

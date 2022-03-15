@@ -190,7 +190,7 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
-    modify_script_commands: "cd /home/user/projects/shadow_robot/base/src;git clone https://github.com/shadow-robot/sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base;catkin_make --only-pkg-with-deps sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base/src/sr_dexterous_hand_documentation;curl https://dexterous-hand.readthedocs.io/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv dexterous-hand-latest html/"
+    modify_script_commands: "cd /home/user/projects/shadow_robot/base/src;git clone https://{{ github_url }}/shadow-robot/sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base;catkin_make --only-pkg-with-deps sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base/src/sr_dexterous_hand_documentation;curl https://dexterous-hand.readthedocs.io/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv dexterous-hand-latest html/"
   when:
     - "'arm_' not in product"
     - "'hand' in product"
@@ -202,4 +202,4 @@
   import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "pull_sr_hand_config.sh"
-    modify_script_commands: "roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull"
+    modify_script_commands: "roscd sr_hand_config && git remote set-url origin https://{{ github_url }}/shadow-robot/sr_hand_config && git pull"
