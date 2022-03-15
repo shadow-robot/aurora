@@ -94,10 +94,11 @@ echo "  * --read-secure       Prompt for password(s) required by some playbooks 
 echo ""
 echo "example: ${script_name} docker_deploy --branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
 echo ""
-echo "playbook     = ${playbook}"
-echo "branch       = ${aurora_tools_branch}"
-echo "inventory    = ${aurora_inventory}"
-echo "limit        = ${aurora_limit}"
+echo "playbook      = ${playbook}"
+echo "github mirror = ${github_url}"
+echo "branch        = ${aurora_tools_branch}"
+echo "inventory     = ${aurora_inventory}"
+echo "limit         = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
@@ -123,6 +124,10 @@ IFS=";"
 # read extra_vars again inside new IFS
 extra_vars=$*
 formatted_extra_vars=""
+
+if [ $github_url != "github.com" ]; then
+    formatted_extra_vars="github_url=${github_url}"
+
 for extra_var in $extra_vars; do
     variable="${extra_var%=*}"
     value="${extra_var#*=}"

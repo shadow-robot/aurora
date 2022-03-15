@@ -12,7 +12,7 @@
   set_fact: desktop_path="/home/{{ user }}/Desktop"
   when: skip_molecule_task is defined
 
-- name: Test connection to github.com
+- name: Test connection to given github mirror
   uri:
     url: http://{{ github_url }}/
     timeout: 1
