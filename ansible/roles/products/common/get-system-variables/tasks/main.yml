@@ -23,5 +23,4 @@
 
 - name: Switch github connection if not available
   set_fact: github_url="hub.fastgit.xyz"
-  when: {{ item.status }} > 400
-  with_items: github_connection
+  when: "{ github_connection.status } > 400"
