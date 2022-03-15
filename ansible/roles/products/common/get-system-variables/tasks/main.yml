@@ -15,14 +15,13 @@
 - name: Test connection to given github mirror
   uri:
     url: http://{{ github_url }}/
+    method: HEAD
     timeout: 1
     return_content: yes
   register: github_connection
-  changed_when: no
-  check_mode: no
   failed_when: no
 
 - name: Switch github connection if not available
   set_fact: github_url="hub.fastgit.xyz"
-  when: "item.status != 400"
+  when: "item.status > 400"
   with_items: github_connection
