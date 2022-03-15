@@ -46,6 +46,7 @@ case ${key} in
     --github-url)
     github_url="$2"
     shift 2
+    ;;
     *)
     break
     ;;
@@ -128,6 +129,7 @@ formatted_extra_vars=""
 
 if [ $github_url != "github.com" ]; then
     formatted_extra_vars="github_url=${github_url}"
+fi
 
 for extra_var in $extra_vars; do
     variable="${extra_var%=*}"
