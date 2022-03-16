@@ -42,7 +42,7 @@ identify==1.4.11
 idna==2.10
 importlib-metadata==3.3.0
 importlib-resources==1.4.0
-Jinja2==2.11.2
+Jinja2==2.11.13
 jinja2-time==0.2.0
 jmespath==0.9.5
 lxml==4.6.5
