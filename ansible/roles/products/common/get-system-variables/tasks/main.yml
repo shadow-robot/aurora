@@ -23,4 +23,4 @@
 
 - name: Switch github connection if not available
   set_fact: github_url="hub.fastgit.xyz"
-  when: "github_connection.status > 400"
+  when: "github_connection.status != 200"
