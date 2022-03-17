@@ -14,10 +14,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from base64 import b64decode, b64encode
+from base64 import b64encode
 from cryptography.fernet import Fernet
 import argparse
-import json
 
 def gather_args():
     description = 'Decode AWS Login for Docker Login.'

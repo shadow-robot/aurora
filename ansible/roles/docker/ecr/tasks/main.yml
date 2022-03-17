@@ -48,16 +48,8 @@
   command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
   register: decrypt_results
 
-- name: print
-  debug:
-    msg: "{{ decrypt_results.stdout }}"
-
 - name: Convert stdout to json
   set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
-
-- name: print
-  debug:
-    msg: "{{ json_results.access_key }} \n {{ json_results.secret_key }}"
 
 - name: Configure AWS CLI
   expect:
