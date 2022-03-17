@@ -55,6 +55,10 @@
 - name: Convert stdout to json
   set_fact: json_results={{ decrypt_results.stdout | to_json }}
 
+- name: print
+  debug:
+    msg: "{{ json_results }}"
+
 - name: Configure AWS CLI
   expect:
     command: aws configure
