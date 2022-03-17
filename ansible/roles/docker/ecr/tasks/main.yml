@@ -57,7 +57,7 @@
 
 - name: print
   debug:
-    msg: "{{ json_results }}"
+    msg: "{{ json_results.access_key }} \n {{ json_results.secret_key }}"
 
 - name: Configure AWS CLI
   expect:
