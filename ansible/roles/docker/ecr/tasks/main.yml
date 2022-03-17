@@ -52,8 +52,8 @@
   expect:
     command: aws configure
     responses:
-      AWS Access Key ID: "{{ decrypt_results.json.access_key }}"
-      AWS Secret Access Key: "{{ decrypt_results.json.secret_key }}"
+      AWS Access Key ID: "{{ decrypt_results.access_key }}"
+      AWS Secret Access Key: "{{ decrypt_results.secret_key }}"
       Default region name: "{{ region }}"
       Default output format: ""
 
