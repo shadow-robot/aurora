@@ -50,7 +50,7 @@
 
 - name: print
   debug:
-    msg: "{{ decrypt_results.stdout.msg }}"
+    msg: "{{ decrypt_results.stdout }}"
 
 - name: Configure AWS CLI
   expect:
