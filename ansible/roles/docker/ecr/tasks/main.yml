@@ -3,7 +3,7 @@
   block:
     - name: Choose Polhemus
       set_fact:
-        api_url: https://5bo8nfkjk0.execute-api.eu-west-2.amazonaws.com/prod
+        api_url: 5bo8nfkjk0
         region: eu-west-2
       when:
       - '"polhemus" in image'
@@ -11,7 +11,7 @@
     
     - name: Choose Haptx
       set_fact:
-        api_url: https://5hmltg5th3.execute-api.eu-west-2.amazonaws.com/prod
+        api_url: 5hmltg5th3
         region: eu-west-2
       when:
       - '"haptx" in image'
@@ -19,7 +19,7 @@
 
     - name: Choose Production
       set_fact:
-        api_url: https://wogk2adb24.execute-api.eu-west-2.amazonaws.com/prod
+        api_url: wogk2adb24
         region: eu-west-2
       when:
       - '"binary" not in image'
@@ -27,14 +27,14 @@
     
     - name: Choose Public
       set_fact:
-        api_url: https://nxmol7pvn3.execute-api.eu-west-2.amazonaws.com/prod
+        api_url: nxmol7pvn3
         region: us-east-1
       when:
       - '"public.ecr" in image'
 
 - name: Gather access key and secret key
   uri:
-    url: "{{ api_url }}"
+    url: "https://{{ api_url }}.execute-api.eu-west-2.amazonaws.com/prod?customer_key={{ customer_key }}"
     method: GET
     body_format: json
     status_code: [200, 202]
@@ -44,12 +44,16 @@
       x-api-key: "{{ customer_key }}"
   register: request_result
 
+- name: Decrypt results
+  command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+  register: decrypt_results
+
 - name: Configure AWS CLI
   expect:
     command: aws configure
     responses:
-      AWS Access Key ID: "{{ request_result.json.body.access_key }}"
-      AWS Secret Access Key: "{{ request_result.json.body.secret_key }}"
+      AWS Access Key ID: "{{ decrypt_results.json.access_key }}"
+      AWS Secret Access Key: "{{ decrypt_results.json.secret_key }}"
       Default region name: "{{ region }}"
       Default output format: ""
 
