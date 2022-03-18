@@ -4,9 +4,7 @@
   register: aws_folder
 
 - name: Copy .aws folder
-  copy:
-    src: "{{ user_folder }}/.aws"
-    dest: "{{ user_folder }}/.aws_copy"
+  command: "cp {{ user_folder }}/.aws {{ user_folder }}/.aws_copy"
   when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
 
 - name: Choosing which API call to make.
@@ -84,7 +82,11 @@
     path: "{{ user_folder }}/.aws"
 
 - name: Copy back .aws folder
-  copy:
-    src: "{{ user_folder }}/.aws_copy"
-    dest: "{{ user_folder }}/.aws"
+  command: "cp {{ user_folder }}/.aws_copy {{ user_folder }}/.aws"
+  when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+
+- name: Remove .aws_copy
+  file:
+    state: absent
+    path: "{{ user_folder }}/.aws_copy"
   when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
