@@ -22,11 +22,11 @@ def gather_args():
     description = 'Decode AWS Login for Docker Login.'
     parser = argparse.ArgumentParser(description=description)
     help = "This is the access key which needs to be decoded."
-    parser.add_argument('--accesskey', '-a', type=str, required=True, help=help)
+    parser.add_argument('--access_key', '-a', type=str, required=True, help=help)
     help = "This is the secret key which needs to be decoded."
-    parser.add_argument('--secretkey', '-s', type=str, required=True, help=help)
+    parser.add_argument('--secret_key', '-s', type=str, required=True, help=help)
     help = "This is the Customer Key."
-    parser.add_argument('--customerkey', '-c', type=str, required=True, help=help)
+    parser.add_argument('--customer_key', '-c', type=str, required=True, help=help)
     args = parser.parse_args()
     return args.accesskey, args.secretkey, args.customerkey
 
