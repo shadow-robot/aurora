@@ -18,5 +18,5 @@
 
 - name: Install VSCode 1.35 .deb package from the internet.
   apt:
-    deb: https://update.code.visualstudio.com/1.35.1/linux-deb-x64/stable
+    deb: https://update.code.visualstudio.com/1.65.2/linux-deb-x64/stable
   become: yes
