@@ -182,6 +182,7 @@
     desktop_icon_name: "1 - Launch Server Container"
     desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
     launch_terminal: "false"
+    hand_side_ad: ""
 
 - name: Install desktop icon for launching ROSCORE
   import_tasks: default-icon.yml
@@ -203,6 +204,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
+    hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
 - name: Create executable launch script for hand+arm (Right)
@@ -218,6 +220,7 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
+    ad_hand_side: "-r"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="right"
@@ -232,6 +235,7 @@
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
+    hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
 - name: Create executable launch script for hand+arm (Left)
@@ -247,6 +251,7 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
+    ad_hand_side: "-l"
   when: 
     - "'arm_' in product"
     - not bimanual|bool and hand_side=="left"
@@ -280,6 +285,7 @@
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
+    hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -292,6 +298,7 @@
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
+    hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role
@@ -304,7 +311,7 @@
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: "srhand.launch external_control_loop:=true sim:=false"
+    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-r"
     desktop_icon_name: "4 - Launch Server Right Hand GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand GUI"
   when: bimanual|bool or hand_side=="right"
@@ -399,7 +406,7 @@
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left.sh"
     project_name_input: "sr_robot_launch"
-    launch_file_input: "srhand.launch external_control_loop:=true sim:=false"
+    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-l"
     desktop_icon_name: "4 - Launch Server Left Hand GUI"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Left Hand GUI"
   when: bimanual|bool or hand_side=="left"
