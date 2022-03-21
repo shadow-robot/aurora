@@ -30,6 +30,7 @@
     launch_package_name: "sr_robot_launch"
     uses_autodetect: True
     override_launch_hand: True
+    hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
 - name: Copying the local zero force mode script for the right hand into docker container
@@ -48,6 +49,7 @@
     launch_package_name: "sr_robot_launch"
     uses_autodetect: True
     override_launch_hand: True
+    hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
 - name: Copying the local zero force mode script for left hand into docker container

@@ -25,7 +25,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_right_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "srhand.launch sim:={{ sim_hand }}"
+    launch_file_name: "srhand.launch sim:={{ sim_hand }} hand_side_ad:=-r"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool or hand_side=="right"
@@ -36,7 +36,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_left_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "srhand.launch sim:={{ sim_hand }}"
+    launch_file_name: "srhand.launch sim:={{ sim_hand }} hand_side_ad:=-l"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool or hand_side=="left"

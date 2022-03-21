@@ -29,3 +29,4 @@ launch_file_name: "srhand.launch"
 pr_branches: ""
 record_data: false
 uses_autodetect: False
+hand_side_ad: ""
