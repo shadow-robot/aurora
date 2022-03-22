@@ -28,7 +28,7 @@ def gather_args():
     help = "This is the Customer Key."
     parser.add_argument('--customer_key', '-c', type=str, required=True, help=help)
     args = parser.parse_args()
-    return args.accesskey, args.secretkey, args.customerkey
+    return args.access_key, args.secret_key, args.customer_key
 
 
 def main():
