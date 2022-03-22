@@ -20,6 +20,7 @@
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
+    ad_hand_side: "{{ hand_side_ad }}"
   when: glove=="cyberglove"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
@@ -32,6 +33,7 @@
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
+    ad_hand_side: "{{ hand_side_ad }}"
   when: glove=="haptx"
 
 - name: Create executable launch script for hand and arm control loop (with shadow_glove)
@@ -44,6 +46,7 @@
     initial_z_var: "{{ initial_z_value }}"
     arm_x_separation_var: "{{ arm_x_separation_value }}"
     arm_y_separation_var: "{{ arm_y_separation_value }}"
+    ad_hand_side: "{{ hand_side_ad }}"
   when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand

@@ -47,3 +47,4 @@ shadow_glove_teleop_readthedocs_token: ""
 pr_branches: ""
 polhemus_type: "viper"
 uses_autodetect: False
+hand_side_ad: ""

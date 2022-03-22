@@ -85,6 +85,7 @@
     launch_file_name: "srhand.launch"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: False
+    uses_autodetect: False
 
 - name: Copying the default setup script into docker container
   changed_when: false
