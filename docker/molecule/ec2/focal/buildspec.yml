@@ -18,6 +18,8 @@ phases:
       docker: 19
   build:
     commands:
+      - pwd
+      - git pull origin $branch
       - echo $branch
       - git status
       - git branch
