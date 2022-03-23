@@ -18,6 +18,10 @@ phases:
       docker: 19
   build:
     commands:
+      - cd ..
+      - rm -rf aurora
+      - git clone https://github.com/shadow-robot/aurora.git
+      - cd aurora
       - git checkout $branch
       - awscli_v1_executable=$(which aws)
       - rm $awscli_v1_executable
