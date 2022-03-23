@@ -73,7 +73,6 @@ If no inventory name is provided, and if remote_teleop is not specified or false
 If no inventory name is provided, and if remote_teleop=true, then "production_remote" will be automatically selected.
 
 Example for real robots with haptx bimanual teleop:
-
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production customer_key=fX7zLraJ5W54yg8zWbzTi5G3O71LxPHr39jWZHst reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
 ```
