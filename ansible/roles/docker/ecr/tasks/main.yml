@@ -57,7 +57,7 @@
     - name: Decrypt results
       command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
       register: decrypt_results
-      when: "{{ hosts }} is control_machine"
+      when: inventory_hostname not in groups['control_machine']
 
     - name: Dealing with decode for NUC
       block: 
@@ -71,7 +71,8 @@
         file:
           path: /tmp/decode.py
           state: absent
-      when: "{{ hosts }} is control_machine"
+      when: inventory_hostname in groups['control_machine']
+
 
     - name: Convert stdout to json
       set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
@@ -99,6 +100,7 @@
           file:
             state: absent
             path: "{{ user_folder }}/.aws"
+          when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
 
         - name: Copy back .aws folder
           command: "cp -r {{ user_folder }}/.aws_copy {{ user_folder }}/.aws"
