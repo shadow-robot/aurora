@@ -44,14 +44,14 @@
   block:
     - name: Gather access key and secret key
       uri:
-      url: "https://{{ api_url }}.execute-api.eu-west-2.amazonaws.com/prod?customer_key={{ customer_key }}"
-      method: GET
-      body_format: json
-      status_code: [200, 202]
-      return_content: yes
-      headers:
-        Content-Type: application/json
-        x-api-key: "{{ customer_key }}"
+        url: "https://{{ api_url }}.execute-api.eu-west-2.amazonaws.com/prod?customer_key={{ customer_key }}"
+        method: GET
+        body_format: json
+        status_code: [200, 202]
+        return_content: yes
+        headers:
+          Content-Type: application/json
+          x-api-key: "{{ customer_key }}"
       register: request_result
 
     - name: Decrypt results
