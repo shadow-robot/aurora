@@ -62,9 +62,9 @@
 
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
-      when: control_machine in groups and inventory_hostname not in groups['control_machine']
+      when: groups['control_machine'] is defined or inventory_hostname not in groups['control_machine']
       
-    - name: Dealing with decode for NUC
+    - name: Decode message on NUC
       block: 
       - name: Gather decrypt script
         command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
@@ -75,7 +75,7 @@
       
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
-      when: control_machine in groups and groups[control_machine]
+      when: groups['control_machine'] is defined and inventory_hostname not in groups['control_machine']
 
     - name: Configure AWS CLI
       expect:
