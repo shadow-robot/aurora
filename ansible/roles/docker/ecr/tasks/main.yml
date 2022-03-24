@@ -62,7 +62,7 @@
 
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
-      when: inventory_hostname not in groups['control_machine']
+      when: control_machine in groups and inventory_hostname not in groups['control_machine']
       
     - name: Dealing with decode for NUC
       block: 
@@ -75,7 +75,7 @@
       
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
-      when: inventory_hostname in groups['control_machine']
+      when: control_machine in groups and groups[control_machine]
 
     - name: Configure AWS CLI
       expect:
@@ -111,6 +111,11 @@
             state: absent
             path: "{{ user_folder }}/.aws_copy"
           when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+        
+        - name: End Playbook
+          debug:
+            msg: Playbook ended because of an error when connecting to AWS.
+          meta: end_play
 
 - name: Remove .aws folder
   file:
