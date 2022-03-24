@@ -75,7 +75,7 @@
       
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
-      when: groups['control_machine'] is defined and inventory_hostname not in groups['control_machine'] | default([])
+      when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
 
     - name: Configure AWS CLI
       expect:
