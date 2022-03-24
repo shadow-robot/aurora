@@ -66,6 +66,7 @@
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        register: decrypt_results
 
       - name: Delete decrtpt script
         file:
