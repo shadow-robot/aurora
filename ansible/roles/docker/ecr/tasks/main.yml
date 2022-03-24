@@ -40,41 +40,77 @@
       when:
       - '"public.ecr" in image'
 
-- name: Gather access key and secret key
-  uri:
-    url: "https://{{ api_url }}.execute-api.eu-west-2.amazonaws.com/prod?customer_key={{ customer_key }}"
-    method: GET
-    body_format: json
-    status_code: [200, 202]
-    return_content: yes
-    headers:
-      Content-Type: application/json
-      x-api-key: "{{ customer_key }}"
-  register: request_result
+- name: Login to AWS block
+  block:
+    - name: Gather access key and secret key
+      uri:
+        url: "https://{{ api_url }}.execute-api.eu-west-2.amazonaws.com/prod?customer_key={{ customer_key }}"
+        method: GET
+        body_format: json
+        status_code: [200, 202]
+        return_content: yes
+        headers:
+          Content-Type: application/json
+          x-api-key: "{{ customer_key }}"
+      register: request_result
 
-- name: Decrypt results
-  command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
-  register: decrypt_results
+    - name: Local Decryption
+      block:
+      - name: Decrypt results
+        command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        register: decrypt_results
 
-- name: Convert stdout to json
-  set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
+      - name: Convert stdout to json
+        set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
+      when: inventory_hostname not in groups['control_machine']
+      
+    - name: Dealing with decode for NUC
+      block: 
+      - name: Gather decrypt script
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
 
-- name: Configure AWS CLI
-  expect:
-    command: aws configure
-    responses:
-      AWS Access Key ID: "{{ json_results.access_key }}"
-      AWS Secret Access Key: "{{ json_results.secret_key }}"
-      Default region name: "{{ region }}"
-      Default output format: ""
+      - name: Run decrypt script
+        command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        register: decrypt_results_nuc
+      
+      - name: Convert stdout to json
+        set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
+      when: inventory_hostname in groups['control_machine']
 
-- name: Login to Docker Hub using AWS CLI (PUBLIC)
-  shell: "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
-  when: '"public.ecr" in image'
+    - name: Configure AWS CLI
+      expect:
+        command: aws configure
+        responses:
+          AWS Access Key ID: "{{ json_results.access_key }}"
+          AWS Secret Access Key: "{{ json_results.secret_key }}"
+          Default region name: "{{ region }}"
+          Default output format: ""
 
-- name: Login to Docker Hub using AWS CLI (PRIVATE)
-  shell: "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
-  when: '"dkr.ecr" in image'
+    - name: Login to Docker Hub using AWS CLI (PUBLIC)
+      shell: "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
+      when: '"public.ecr" in image'
+
+    - name: Login to Docker Hub using AWS CLI (PRIVATE)
+      shell: "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
+      when: '"dkr.ecr" in image'
+  rescue:
+    - name: Revert .aws folder
+      block:
+        - name: Remove .aws folder
+          file:
+            state: absent
+            path: "{{ user_folder }}/.aws"
+          when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+
+        - name: Copy back .aws folder
+          command: "cp -r {{ user_folder }}/.aws_copy {{ user_folder }}/.aws"
+          when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+
+        - name: Remove .aws_copy
+          file:
+            state: absent
+            path: "{{ user_folder }}/.aws_copy"
+          when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
 
 - name: Remove .aws folder
   file:
