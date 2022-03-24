@@ -62,7 +62,7 @@
 
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
-      when: groups['control_machine'] is not defined or inventory_hostname not in groups['control_machine'] | default([])
+      when: inventory_hostname not in groups['control_machine'] | default([])
       
     - name: Decode message on NUC
       block: 
