@@ -62,18 +62,12 @@
     - name: Dealing with decode for NUC
       block: 
       - name: Gather decrypt script
-        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -P /tmp"
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
         register: decrypt_results
-
-      - name: Delete decrtpt script
-        file:
-          path: /tmp/decode.py
-          state: absent
       when: inventory_hostname in groups['control_machine']
-
 
     - name: Convert stdout to json
       set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
