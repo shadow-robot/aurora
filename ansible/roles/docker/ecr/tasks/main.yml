@@ -112,9 +112,11 @@
             path: "{{ user_folder }}/.aws_copy"
           when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
         
-        - name: End Playbook
+        - name: Failure message
           debug:
             msg: Playbook ended because of an error when connecting to AWS.
+
+        - name: End Playbook
           meta: end_play
 
 - name: Remove .aws folder
