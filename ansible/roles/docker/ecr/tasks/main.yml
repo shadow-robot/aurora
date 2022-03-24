@@ -54,11 +54,16 @@
           x-api-key: "{{ customer_key }}"
       register: request_result
 
-    - name: Decrypt results
-      command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
-      register: decrypt_results
-      when: inventory_hostname not in groups['control_machine']
+    - name: Local Decryption
+      block:
+      - name: Decrypt results
+        command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        register: decrypt_results
 
+      - name: Convert stdout to json
+        set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
+      when: inventory_hostname not in groups['control_machine']
+      
     - name: Dealing with decode for NUC
       block: 
       - name: Gather decrypt script
@@ -66,11 +71,11 @@
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
-        register: decrypt_results
+        register: decrypt_results_nuc
+      
+      - name: Convert stdout to json
+        set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
       when: inventory_hostname in groups['control_machine']
-
-    - name: Convert stdout to json
-      set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
 
     - name: Configure AWS CLI
       expect:
