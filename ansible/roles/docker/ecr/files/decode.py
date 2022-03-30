@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-from base64 import b64encode
-from cryptography.fernet import Fernet
-import argparse
-
 # Copyright 2022 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
@@ -17,6 +13,10 @@ import argparse
 #
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
+
+from base64 import b64encode
+from cryptography.fernet import Fernet
+import argparse
 
 def gather_args():
     description = 'Decode AWS Login for Docker Login.'
