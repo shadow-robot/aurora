@@ -20,6 +20,6 @@ sleep 2
 docker start ${CONTAINER}
 echo "Starting the container..."
 sleep 3
-docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base_deps/devel/setup.bash;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;sr_hand_autodetect ${HAND_SIDE_AD} roslaunch sr_robot_launch sr_hardware_control_loop.launch arm:=${ARM} pwm_control:=${PWM_CONTROL} hand_ctrl:=${HAND_CTRL} robot_model:=${UR_TYPE} arm_payload_mass:=${ARM_PAYLOAD_MASS} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
+docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;sr_hand_autodetect ${HAND_SIDE_AD} roslaunch sr_robot_launch sr_hardware_control_loop.launch arm:=${ARM} pwm_control:=${PWM_CONTROL} hand_ctrl:=${HAND_CTRL} robot_model:=${UR_TYPE} arm_payload_mass:=${ARM_PAYLOAD_MASS} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)"
 ENDSSH
 sleep infinity
