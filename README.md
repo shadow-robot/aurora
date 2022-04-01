@@ -496,7 +496,7 @@ The other way of having dependencies in Ansible is by using the meta folder and 
 
 ```bash
 dependencies:
-  - { role: installation/aws-cli }
+  - { role: installation/aws-cli-v2 }
 ```
 
 # Playbooks #
