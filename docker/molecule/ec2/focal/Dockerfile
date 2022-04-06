@@ -4,7 +4,7 @@ LABEL Description="Ubuntu Focal image contains Ansible, Molecule and EC2 driver"
 
 ARG ml_ec2_aurora_branch
 
-ENV ml_ec2_aurora_branch ${ml_ec2_aurora_branch:-"master"}
+ENV ml_ec2_aurora_branch ${ml_ec2_aurora_branch:-"SP-196_update_ansible_reqs"}
 
 ENV ml_ec2_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_ec2_aurora_branch/bin/run-ansible.sh"
 
