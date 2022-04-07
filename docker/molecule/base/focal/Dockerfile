@@ -42,7 +42,7 @@ RUN set -x && \
     pip3 --version && \
     python3 --version && \
     echo "Installing molecule" && \
-    pip3 install -r /tmp/aurora/ansible/data/ansible/requirements.txt && \
+    pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
     echo "Clean up" && \
     apt-get clean && \
