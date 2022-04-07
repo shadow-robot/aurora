@@ -73,7 +73,7 @@ pyflakes==2.4.0
 Pygments==2.11.2
 pyparsing==2.4.7
 pyqtgraph==0.11.1
-pytest==7.1.1
+pytest==7.0.1
 pytest-testinfra==6.6.0
 python-gilt==1.2.3
 python-slugify==6.1.1
