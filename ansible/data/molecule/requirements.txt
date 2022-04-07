@@ -39,7 +39,7 @@ future==0.18.2
 git-url-parse==1.2.2
 identify==2.4.4
 idna==3.3
-importlib-metadata==4.11.3
+importlib-metadata==4.8.3
 importlib-resources==5.6.0
 iniconfig==1.1.1
 Jinja2==3.0.3
