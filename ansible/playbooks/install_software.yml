@@ -32,3 +32,4 @@
     - {role: installation/chrome, when: "'chrome' in software_list"}
     - {role: installation/mongodb, when: "'mongodb' in software_list"}
     - {role: installation/warehouse_ros, when: "'warehouse_ros' in software_list"}
+    - {role: installation/production_tools, when: "'production_tools' in software_list"}
