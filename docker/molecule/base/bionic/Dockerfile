@@ -17,7 +17,7 @@ RUN set -x && \
     \
     echo "Installing git, sudo and Python 3" && \
     apt-get install -y \
-         python3.8-dev \
+         python3-dev \
          python3-pip \
          git \
          libyaml-dev \
