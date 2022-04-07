@@ -40,7 +40,7 @@ git-url-parse==1.2.2
 identify==2.4.4
 idna==3.3
 importlib-metadata==4.8.3
-importlib-resources==5.6.0
+importlib-resources==5.4.0
 iniconfig==1.1.1
 Jinja2==3.0.3
 jinja2-time==0.2.0
