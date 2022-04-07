@@ -33,7 +33,7 @@ enrich==1.2.7
 entrypoints==0.4
 enum34==1.1.10
 fasteners==0.17.3
-filelock==3.6.0
+filelock==3.4.1
 flake8==4.0.1
 future==0.18.2
 git-url-parse==1.2.2
