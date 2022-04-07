@@ -12,7 +12,7 @@ ENV LANG C.UTF-8
 
 ARG ml_base_aurora_branch
 
-ENV ml_base_aurora_branch ${ml_base_aurora_branch:-"SP-196_update_ansible_reqs"}
+ENV ml_base_aurora_branch ${ml_base_aurora_branch:-"master"}
 
 RUN set -x && \
     apt-get update && \
@@ -42,7 +42,7 @@ RUN set -x && \
     pip3 --version && \
     python3 --version && \
     echo "Installing molecule" && \
-    pip3 install -r /tmp/aurora/ansible/data/molecule/bionic/requirements.txt && \
+    pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
     echo "Clean up" && \
     apt-get clean && \
