@@ -34,7 +34,7 @@ RUN set -x && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $ml_base_aurora_branch /tmp/aurora && \
     \
     echo "Installing molecule" && \
-    pip3 install -r /tmp/aurora/ansible/data/molecule/bionic/requirements.txt && \
+    pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
     echo "Clean up" && \
     apt-get clean && \
