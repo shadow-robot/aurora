@@ -1,9 +1,8 @@
 version: 0.2
-
 env:
   shell: bash
   variables:
-     branch: SP-196_update_ansible_reqs
+     branch: master
      image: aurora-molecule
      tag: focal
      dockerfile_folder: docker/molecule/base/focal/
