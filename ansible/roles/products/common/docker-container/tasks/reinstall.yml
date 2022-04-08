@@ -202,4 +202,4 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "pull_sr_hand_config.sh"
-    modify_script_commands: "if roscd sr_hand_config; then roscd sr_hand_config git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull; else roscd sr_config && git remote set-url origin https://github.com/shadow-robot/sr-config && git pull; fi"
+    modify_script_commands: "if roscd sr_hand_config; then roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull; else roscd sr_config && git remote set-url origin https://github.com/shadow-robot/sr-config && git pull; fi"
