@@ -202,4 +202,5 @@
   import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "pull_sr_hand_config.sh"
-    modify_script_commands: "if [ -d $(roscd sr_hand_config) ]; then roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull; fi"
+    modify_script_commands: "roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull"
+  ignore_errors: yes
