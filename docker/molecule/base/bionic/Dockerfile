@@ -17,7 +17,6 @@ RUN set -x && \
     \
     echo "Installing git, sudo and Python 3" && \
     apt-get install -y \
-         python3-dev \
          python3-pip \
          git \
          libyaml-dev \
@@ -33,10 +32,8 @@ RUN set -x && \
     echo "Cloning Aurora" && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $ml_base_aurora_branch /tmp/aurora && \
     \
-    pip3 --version && \
-    python3 --version && \
     echo "Installing molecule" && \
-    pip3 install -r /tmp/aurora/ansible/data/molecule/bionic/requirements.txt && \
+    pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
     echo "Clean up" && \
     apt-get clean && \
