@@ -34,7 +34,7 @@ polhemus_type: "viper" # Allows the user to specify the polhemus type used (libe
 scene_file: "" # Allows the user to override the scene_file used in GUI launch e.g. scene_file="\$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
 ra_tracker_id: 0 # Right tracker ID specified for haptx gloves (lowest tracker serial number seen in SteamVR)
 la_tracker_id: 1 # Left tracker ID specified for haptx gloves (highest tracker serial number seen in SteamVR)
-arm_servo: false
+arm_servo: true
 haptx_teleop_readthedocs_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           36316332326334323634393864353132323038333837636264356466353263353038313930383932
