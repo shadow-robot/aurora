@@ -56,7 +56,7 @@ def test_icons_in_docker(host):
         'Shadow Close Everything'
         )
     scripts = (
-        'shadow_launch_right_teleop',
+        'shadow_launch_right_teleop_8dof',
         'nuc_rqt',
         'shadow_server_container',
         'shadow_roscore',
@@ -65,7 +65,7 @@ def test_icons_in_docker(host):
         'teleop_exec_B',
         'teleop_exec_C',
         'teleop_exec_D',
-        'shadow_GUI_right',
+        'shadow_GUI_right_8dof',
         'shadow_glove_mapping_launch_right',
         'shadow_glove_driver_right',
         'shadow_nuc_container',
