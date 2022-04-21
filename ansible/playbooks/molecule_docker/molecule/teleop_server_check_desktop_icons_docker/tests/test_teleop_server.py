@@ -39,7 +39,7 @@ def test_icons_in_docker(host):
         'Right Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Demohand D Launch NUC ' +
         'Left Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/4 - Launch Right Teleop GUI',
+        'Shadow Advanced Launchers/4 - Launch Right Teleop GUI 8DOF',
         'Shadow Advanced Launchers/5 - Launch Right Shadow Glove Driver',
         'Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping',
         'Shadow Advanced Launchers/Launch NUC Container',
