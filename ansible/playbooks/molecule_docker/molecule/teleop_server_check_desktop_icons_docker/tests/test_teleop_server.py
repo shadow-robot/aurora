@@ -65,7 +65,7 @@ def test_icons_in_docker(host):
         'teleop_exec_B',
         'teleop_exec_C',
         'teleop_exec_D',
-        'shadow_GUI_right_8dof',
+        'shadow_GUI_right_8DOF',
         'shadow_glove_mapping_launch_right',
         'shadow_glove_driver_right',
         'shadow_nuc_container',
