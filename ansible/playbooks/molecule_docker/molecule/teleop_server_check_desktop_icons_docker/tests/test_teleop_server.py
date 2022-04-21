@@ -25,7 +25,7 @@ def test_icons_in_docker(host):
     save_logs_script_path = '/home/' + str(host.user().name) + \
                             '/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
-        'Launch Shadow Right Teleop',
+        'Launch Shadow Right Teleop 8DOF',
         'Shadow NUC RQT',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
@@ -39,7 +39,7 @@ def test_icons_in_docker(host):
         'Right Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Demohand D Launch NUC ' +
         'Left Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/4 - Launch Right Teleop GUI',
+        'Shadow Advanced Launchers/4 - Launch Right Teleop GUI 8DOF',
         'Shadow Advanced Launchers/5 - Launch Right Shadow Glove Driver',
         'Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping',
         'Shadow Advanced Launchers/Launch NUC Container',
@@ -56,7 +56,7 @@ def test_icons_in_docker(host):
         'Shadow Close Everything'
         )
     scripts = (
-        'shadow_launch_right_teleop',
+        'shadow_launch_right_teleop_8dof',
         'nuc_rqt',
         'shadow_server_container',
         'shadow_roscore',
@@ -65,7 +65,7 @@ def test_icons_in_docker(host):
         'teleop_exec_B',
         'teleop_exec_C',
         'teleop_exec_D',
-        'shadow_GUI_right',
+        'shadow_GUI_right_8DOF',
         'shadow_glove_mapping_launch_right',
         'shadow_glove_driver_right',
         'shadow_nuc_container',

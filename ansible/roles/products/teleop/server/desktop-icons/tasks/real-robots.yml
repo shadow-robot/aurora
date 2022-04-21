@@ -8,7 +8,7 @@
     template: templates/scripts/launch-teleop-right.j2
     desktop_icon_path: "Launch Shadow Right Teleop"
     launch_terminal: "false"
-  when: bimanual|bool or hand_side=="right"
+  when: (bimanual|bool or hand_side=="right") and not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Left Teleop
   import_tasks: default-icon.yml
@@ -19,7 +19,7 @@
     template: templates/scripts/launch-teleop-left.j2
     desktop_icon_path: "Launch Shadow Left Teleop"
     launch_terminal: "false"
-  when: bimanual|bool or hand_side=="left"
+  when: (bimanual|bool or hand_side=="left") and not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop
   import_tasks: default-icon.yml
@@ -30,7 +30,7 @@
     template: templates/scripts/launch-teleop-bimanual.j2
     desktop_icon_path: "Launch Shadow Bimanual Teleop"
     launch_terminal: "false"
-  when: bimanual|bool
+  when: bimanual|bool and not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Right Teleop 8DOF
   import_tasks: default-icon.yml
