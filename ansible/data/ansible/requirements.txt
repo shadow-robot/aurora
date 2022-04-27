@@ -1,6 +1,6 @@
 ansible==4.2.0
-ansible-core==2.11.10
-jinja2==3.0.3
+ansible-core==2.11.11
+jinja2==3.1.1
 packaging==21.3 
 resolvelib==0.5.4
 MarkupSafe==2.0.1
