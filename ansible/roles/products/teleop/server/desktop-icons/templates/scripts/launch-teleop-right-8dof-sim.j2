@@ -41,7 +41,7 @@ if [ "$proceed" == false ]; then
     exit 1
 fi
 
-terminator --geometry "{{ term_3 }}" -T 'Server Right Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_left_8DOF.sh"
+terminator --geometry "{{ term_3 }}" -T 'Server Right Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/shadow_sim_right_8DOF.sh"
 if {{ real_glove | lower }}; then
     if [[ "{{ glove }}" == "haptx"  ]]; then
       terminator --geometry "{{ term_4 }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
