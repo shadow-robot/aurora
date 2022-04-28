@@ -53,6 +53,7 @@
       poll: 0
       register: docker_pull_job
       changed_when: false
+      when: pull_image
 
     - name: Wait for Docker image pull to complete
       async_status:
@@ -61,6 +62,7 @@
       until: docker_pull_result.finished
       retries: 10000
       delay: 5
+      when: pull_image
   rescue:
     - name: Temporary error in docker pull. Automatically waiting 10 seconds before trying again. If it still fails, re-run the aurora script
       wait_for:
@@ -77,6 +79,7 @@
       poll: 0
       register: docker_pull_job2
       changed_when: false
+      when: pull_image
 
     - name: Wait for Docker image pull to complete (attempt 2)
       async_status:
@@ -85,4 +88,5 @@
       until: docker_pull_result2.finished
       retries: 10000
       delay: 5
+      when: pull_image
   when: pull_image
