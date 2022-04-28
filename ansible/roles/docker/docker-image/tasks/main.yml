@@ -84,3 +84,4 @@
       until: docker_pull_result2.finished
       retries: 10000
       delay: 5
+  when: pull_image
