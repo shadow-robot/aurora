@@ -15,7 +15,7 @@
 - name: Login to AWS for ECR
   include_role:
     name: docker/ecr
-  when: aws_login
+  when: aws_login and pull_image
 
 - name: Docker login
   community.docker.docker_login:
@@ -25,6 +25,7 @@
     - docker_username is defined
     - docker_password is defined
     - not aws_login
+    - pull_image
 
 - name: Reading path to Python repository with Docker package
   command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""
