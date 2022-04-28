@@ -20,7 +20,7 @@
     image: "{{ full_image_name }}"
     state: present
     recreate: yes
-    pull: yes
+    pull: no
     env:
       verbose: "true"
       QT_X11_NO_MITSHM: "1"
