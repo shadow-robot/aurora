@@ -25,7 +25,7 @@
 
 - name: Get dhcp_interface_name
   set_fact:
-    dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enx') | list | first }}"
+    dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enp') | list | first }}"
 
 - name: Create network/interfaces
   become: true
