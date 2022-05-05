@@ -239,7 +239,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
-    arm_ctrl_value: "false"
+    arm_ctrl_value: "true"
     hand_side_ad: "-r"
   when: 
     - bimanual|bool or hand_side=="right"
@@ -254,7 +254,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
-    arm_ctrl_value: "false"
+    arm_ctrl_value: "true"
     hand_side_ad: "-l"
   when: 
     - bimanual|bool or hand_side=="left"
@@ -268,6 +268,7 @@
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
     arm_payload_mass: "{{ arm_mass_payload }}"
+    arm_ctrl_value: "true"
   when: 
     - bimanual|bool
     - "'arm_' in product"
