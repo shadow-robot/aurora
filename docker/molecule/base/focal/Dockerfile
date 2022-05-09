@@ -20,21 +20,12 @@ RUN set -x && \
     echo "Installing wget" && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
     \
-    echo "Installing python 3.6 as required by Molecule" && \
-    cd /opt && \
-    wget https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz && \
-    tar -xvf Python-3.6.9.tgz && \
-    cd Python-3.6.9 && \
-    echo "Installing dependencies for python3.6, SSL, pip3" && \
+    echo "Installing dependencies for python3.8, SSL, pip3" && \
     apt-get install -y build-essential zlib1g-dev libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev && \
-    ./configure && \
-    make && \
-    make install && \
-    update-alternatives --install /usr/bin/python3 python3 /opt/Python-3.6.9/python 1 && \
-    python3 --version && \
     \
     echo "Installing git, sudo and Python 3 pip and dev" && \
     apt-get install -y \
+         python3-dev \
          python3-pip \
          git \
          libyaml-dev \
@@ -42,12 +33,14 @@ RUN set -x && \
          libssl-dev \
          libffi-dev \
          sshpass \
-         sudo \
-         python3-dev && \
+         sudo && \
     \
+    pip3 install --upgrade pip setuptools==44.0.0 gcovr && \
     echo "Cloning Aurora" && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $ml_base_aurora_branch /tmp/aurora && \
     \
+    pip3 --version && \
+    python3 --version && \
     echo "Installing molecule" && \
     pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
