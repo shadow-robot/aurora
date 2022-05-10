@@ -59,11 +59,13 @@
       block:
       - name: Decrypt results
         command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        no_log: True
         register: decrypt_results
 
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
-      no_log: True
+        no_log: True
+
       when: inventory_hostname not in groups['control_machine'] | default([])
       
     - name: Decode message on NUC
@@ -78,8 +80,9 @@
       
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
+        no_log: True
+
       when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
-      no_log: True
 
     - name: Configure AWS CLI
       expect:
@@ -89,7 +92,6 @@
           AWS Secret Access Key: "{{ json_results.secret_key }}"
           Default region name: "{{ region }}"
           Default output format: ""
-      no_log: True
 
     - name: Login to Docker Hub using AWS CLI (PUBLIC)
       shell: "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
