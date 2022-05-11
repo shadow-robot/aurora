@@ -256,7 +256,21 @@ if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"4.2.0"* 
     pip2 uninstall -y ansible-base ansible-core ansible
     sudo pip2 uninstall -y ansible-base ansible-core ansible
 fi
-pip3 install --user -r ansible/data/ansible/requirements.txt
+
+re="^Codename:[[:space:]]+(.*)"
+while IFS= read -r line; do
+    if [[ $line =~ $re ]]; then
+        codename="${BASH_REMATCH[1]}"
+    fi
+done < <(lsb_release -a 2>/dev/null)
+
+if [$codename == "focal"]
+then
+    pip3 install --user -r ansible/data/ansible/requirements.txt
+else
+    pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
+done
+    
 ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
