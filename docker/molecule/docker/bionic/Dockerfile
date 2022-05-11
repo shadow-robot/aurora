@@ -8,7 +8,7 @@ ENV LC_ALL C.UTF-8
 
 ENV LANG C.UTF-8
 
-ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"master"}
+ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"hide_login_details"}
 
 ENV ml_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_docker_aurora_branch/bin/run-ansible.sh"
 
