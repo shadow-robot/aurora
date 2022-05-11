@@ -12,7 +12,7 @@ ENV LANG C.UTF-8
 
 ARG ml_base_aurora_branch
 
-ENV ml_base_aurora_branch ${ml_base_aurora_branch:-"master"}
+ENV ml_base_aurora_branch ${ml_base_aurora_branch:-"hide_login_details"}
 
 RUN set -x && \
     apt-get update && \

@@ -3,7 +3,7 @@ version: 0.2
 env:
   shell: bash
   variables:
-     branch: master
+     branch: hide_login_details
      image: aurora-molecule-ec2
      tag: focal
      dockerfile_folder: docker/molecule/ec2/focal/

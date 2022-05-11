@@ -12,7 +12,7 @@ ENV USER testuser
 
 ARG ts_docker_aurora_branch
 
-ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"master"}
+ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"hide_login_details"}
 
 ENV ts_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ts_docker_aurora_branch/bin/run-ansible.sh"
 

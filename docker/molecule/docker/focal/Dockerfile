@@ -4,7 +4,7 @@ LABEL Description="Ubuntu Focal image contains Ansible, Molecule and Docker driv
 
 ARG ml_docker_aurora_branch
 
-ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"master"}
+ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"hide_login_details"}
 
 ENV ml_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_docker_aurora_branch/bin/run-ansible.sh"
 
