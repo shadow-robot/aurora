@@ -264,14 +264,11 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-echo $codename
-
-if [$codename == "focal"]
-then
-    pip3 install --user -r ansible/data/ansible/requirements.txt
+if [ $codename = "focal" ]; then
+    echo pip3 install --user -r ansible/data/ansible/requirements.txt
 else
-    pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
-done
+    echo pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
+fi
     
 ansible_flags="-v "
 
