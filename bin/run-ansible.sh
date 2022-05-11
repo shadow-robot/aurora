@@ -267,9 +267,9 @@ done < <(lsb_release -a 2>/dev/null)
 echo $codename
 
 if [[ $codename == "focal" ]]; then
-    echo pip3 install --user -r ansible/data/ansible/requirements.txt
+    pip3 install --user -r ansible/data/ansible/requirements.txt
 else
-    echo pip install --user -r ansible/data/ansible/bionic/requirements.txt
+    pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
 fi
     
 ansible_flags="-v "
