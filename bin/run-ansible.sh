@@ -264,6 +264,8 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
+echo $codename
+
 if [ $codename = "focal" ]; then
     echo pip3 install --user -r ansible/data/ansible/requirements.txt
 else
