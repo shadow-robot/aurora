@@ -19,4 +19,5 @@ sim_hand: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "srhand.launch"
 override_launch_hand_var: false
-uses_autodetect: False
+uses_autodetect: false
+hand_side_ad: ""

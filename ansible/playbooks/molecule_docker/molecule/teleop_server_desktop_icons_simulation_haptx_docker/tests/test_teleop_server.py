@@ -12,17 +12,17 @@ def test_icons_in_docker(host):
     save_logs_script_path = '/home/' + str(host.user().name) + \
                             '/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
-        'Launch Shadow Right Teleop Simulation',
-        'Launch Shadow Left Teleop Simulation',
-        'Launch Shadow Bimanual Teleop Simulation',
+        'Launch Shadow Right Teleop 8DOF Simulation',
+        'Launch Shadow Left Teleop 8DOF Simulation',
+        'Launch Shadow Bimanual Teleop 8DOF Simulation',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
         'Shadow Advanced Launchers/3 - Launch Right ' +
-        'Teleop Simulation',
+        'Teleop Simulation 8DOF',
         'Shadow Advanced Launchers/3 - Launch Left ' +
-        'Teleop Simulation',
+        'Teleop Simulation 8DOF',
         'Shadow Advanced Launchers/3 - Launch Bimanual ' +
-        'Teleop Simulation',
+        'Teleop Simulation 8DOF',
         'Shadow Advanced Launchers/4 - Launch Right HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Left HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Bimanual HaptX Mapping',
@@ -39,20 +39,20 @@ def test_icons_in_docker(host):
         'Shadow Close Everything'
         )
     scripts = (
-        'shadow_launch_right_teleop_sim',
-        'shadow_launch_left_teleop_sim',
-        'shadow_launch_bimanual_teleop_sim',
+        'shadow_launch_right_teleop_8dof_sim',
+        'shadow_launch_left_teleop_8dof_sim',
+        'shadow_launch_bimanual_teleop_8dof_sim',
         'shadow_server_container',
         'shadow_roscore',
-        'shadow_sim_right',
-        'shadow_sim_left',
-        'shadow_sim_bimanual',
+        'shadow_sim_right_8DOF',
+        'shadow_sim_left_8DOF',
+        'shadow_sim_bimanual_8DOF',
         'shadow_haptx_mapping_launch_right',
         'shadow_haptx_mapping_launch_left',
         'shadow_haptx_mapping_launch_bimanual',
         'shadow_mock_right',
-        'shadow_mock_right',
-        'shadow_mock_right',
+        'shadow_mock_left',
+        'shadow_mock_bimanual',
         'close_right_hand',
         'open_right_hand',
         'close_left_hand',
