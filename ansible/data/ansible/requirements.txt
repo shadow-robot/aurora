@@ -12,7 +12,7 @@ requests==2.27.1
 pycparser==2.21
 pyparsing==2.4.7
 PyYAML==5.4.1
-yamllint==1.26.3
+yamllint
 six==1.15.0
 setuptools==51.1.1
 testresources==2.0.1
