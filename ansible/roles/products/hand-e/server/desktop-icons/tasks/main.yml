@@ -142,7 +142,7 @@
     start_container_var: "true"
     start_server_command_var: "roscd sr_dexterous_hand_documentation/html; python3 -m http.server {{ local_website_port_var }}"
     preconditions_var: ""
-    live_website_url_var: "https://dexterous-hand.readthedocs.io/en/latest/"
+    live_website_url_var: "https://dexterous-hand.readthedocs.io/en/2.1.4/"
   when: "'arm_' not in product"
 
 - name: Install the Documentation desktop icon for Dexterous Hand and Arm
@@ -233,7 +233,7 @@
 - name: Install desktop icon for NUC right hand+arm hardware control loop
   import_tasks: hand-icon.yml
   vars:
-    desktop_icon_png: "{{ right_hand_picture }}"
+    desktop_icon_png: "{{ right_arm_hand_picture }}"
     launch_script: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
@@ -248,7 +248,7 @@
 - name: Install desktop icon for NUC left hand+arm hardware control loop
   import_tasks: hand-icon.yml
   vars:
-    desktop_icon_png: "{{ left_hand_picture }}"
+    desktop_icon_png: "{{ left_arm_hand_picture }}"
     launch_script: "shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
@@ -263,7 +263,7 @@
 - name: Install desktop icon for NUC bimanual hand+arm hardware control loop
   import_tasks: hand-icon-bimanual.yml
   vars:
-    desktop_icon_png: "{{ bimanual_hands_picture }}"
+    desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
     launch_script: "shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
