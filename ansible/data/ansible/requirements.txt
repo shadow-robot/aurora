@@ -1,6 +1,5 @@
 ansible==4.2.0
 ansible-core==2.11.11
-ansible-lint==5.4.0
 jinja2==3.1.1
 packaging==21.3 
 resolvelib==0.5.4
@@ -8,7 +7,6 @@ MarkupSafe==2.0.1
 asn1crypto==1.5.1
 cffi==1.15.0
 cryptography==3.3.2
-flake8==4.0.1
 lxml==4.8.0
 requests==2.27.1
 pycparser==2.21
@@ -17,4 +15,3 @@ PyYAML==5.4.1
 six==1.15.0
 setuptools==51.1.1
 testresources==2.0.1
-yamllint==1.26.3
