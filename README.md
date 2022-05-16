@@ -62,7 +62,7 @@ You will first need to ensure that you have entered your customer_key into the o
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory customer_key=... option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-secure customer_key option1=value1 option2=value2 option3=value3
 ```
 name_of_inventory can be staging_a, staging_b, production or simulation.
 
@@ -75,13 +75,13 @@ If no inventory name is provided, and if remote_teleop=true, then "production_re
 Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production customer_key=fX7zLraJ5W54yg8zWbzTi5G3O71LxPHr39jWZHst reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-secure customer_key reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
 ```
 
 Example for simulated robots without a real vive system or real gloves:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation customer_key=fX7zLraJ5W54yg8zWbzTi5G3O71LxPHr39jWZHst reinstall=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove="haptx" real_glove=false real_vive=false
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation --read-secure customer_key reinstall=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove="haptx" real_glove=false real_vive=false
 ```
 
 Inventories correspond to fixed IP addresses as shown here:
