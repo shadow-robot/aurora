@@ -9,7 +9,6 @@ phases:
     commands:
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY
       - aws configure set aws_secret_access_key $AWS_SECRET_KEY
-      - aws configure set default.region eu-west-2
   build:
     commands:
       - cd $CODEBUILD_SRC_DIR/ansible/playbooks/molecule_ec2_local_inventories

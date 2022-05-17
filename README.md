@@ -206,7 +206,7 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) configure_software software=['setup-docker']
 ```
- 
+
 ## install_software ##
 
 This installs software based on external parameters (details are [here](https://github.com/shadow-robot/aurora/blob/master/ansible/playbooks/install_software.yml) when it is passed a list of software. This is used in the AWS ECR Docker image builds for Aurora and also builds of shadow-teleop Docker images
