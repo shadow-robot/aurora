@@ -78,7 +78,7 @@ Example for real robots with haptx bimanual teleop:
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-secure customer_key reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
 ```
 
-Example for simulated robots without a real vive system or real gloves:
+Example for simulated robots without a real vive system or real gloves: 
 
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation --read-secure customer_key reinstall=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove="haptx" real_glove=false real_vive=false
