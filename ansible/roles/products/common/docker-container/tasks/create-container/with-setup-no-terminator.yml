@@ -13,6 +13,10 @@
   set_fact:
     shared_volumes: "{{ common_shared_volumes + container_type_shared_volumes + custom_shared_volumes }}"
 
+- name: set pull varaible
+  set_fact: pull_var=false
+  when: local_image
+
 - name: Creating the container which will execute setup script when started and without terminator
   changed_when: false
   community.docker.docker_container:
@@ -20,7 +24,7 @@
     image: "{{ full_image_name }}"
     state: present
     recreate: yes
-    pull: yes
+    pull: local_image
     env:
       verbose: "true"
       QT_X11_NO_MITSHM: "1"

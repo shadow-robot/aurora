@@ -41,3 +41,4 @@ private_github_ssh_key_base64: ""
 private_ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa_private"
 record_hand_data: "disabled"
 record_data: false
+pull_var: true
