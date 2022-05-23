@@ -9,7 +9,7 @@
   when: record_data
 
 - name: set pull varaible
-  set_fact: pull_var=false
+  set_fact: pull_var=no
   when: local_image
 
 - name: Creating the Nvidia container which will execute setup script when started inside a terminator window

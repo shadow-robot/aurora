@@ -14,7 +14,7 @@
   when: record_data
 
 - name: set pull varaible
-  set_fact: pull_var=false
+  set_fact: pull_var=no
   when: local_image
 
 - name: Creating the container with no terminator and no setup
