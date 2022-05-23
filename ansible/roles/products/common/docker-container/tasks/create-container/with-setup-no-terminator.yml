@@ -24,7 +24,7 @@
     image: "{{ full_image_name }}"
     state: present
     recreate: yes
-    pull: pull_var|bool
+    pull: "{{ pull_var|bool }}"
     env:
       verbose: "true"
       QT_X11_NO_MITSHM: "1"
