@@ -18,7 +18,7 @@ bimanual: false # Determines if left arm and left hand should be set up
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 remote_teleop: false # Flag to enable/disable remote_teleop software install
 arm_servo: true
-local_image: true
+local_image: false
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           30323661313462306461396462346166313730356132356465343230363761613466656266366432
