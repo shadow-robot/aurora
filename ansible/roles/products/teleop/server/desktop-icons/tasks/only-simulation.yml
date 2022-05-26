@@ -5,9 +5,13 @@
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_launch_right_teleop_sim.sh"
     desktop_icon_name: "Launch Shadow Right Teleop Simulation"
-    template: templates/scripts/launch-teleop-right-sim.j2
+    template: templates/scripts/launch-teleop-sim.j2
     desktop_icon_path: "Launch Shadow Right Teleop Simulation"
     launch_terminal: "false"
+    hand_arm_side: "Right Hand"
+    control_loop_location: ""
+    gui_location: "shadow_sim_right.sh"
+    haptx_mapping_location: "shadow_haptx_mapping_launch_right.sh"
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Left Teleop Simulation
@@ -16,9 +20,13 @@
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_launch_left_teleop_sim.sh"
     desktop_icon_name: "Launch Shadow Left Teleop Simulation"
-    template: templates/scripts/launch-teleop-left-sim.j2
+    template: templates/scripts/launch-teleop-sim.j2
     desktop_icon_path: "Launch Shadow Left Teleop Simulation"
     launch_terminal: "false"
+    hand_arm_side: "Left Hand"
+    control_loop_location: ""
+    gui_location: "shadow_sim_left.sh"
+    haptx_mapping_location: "shadow_haptx_mapping_launch_left.sh"
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
@@ -27,9 +35,13 @@
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_launch_bimanual_teleop_sim.sh"
     desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation"
-    template: templates/scripts/launch-teleop-bimanual-sim.j2
+    template: templates/scripts/launch-teleop-sim.j2
     desktop_icon_path: "Launch Shadow Bimanual Teleop Simulation"
     launch_terminal: "false"
+    hand_arm_side: "Bimanual"
+    control_loop_location: ""
+    gui_location: "shadow_sim_bimanual.sh"
+    haptx_mapping_location: "shadow_haptx_mapping_launch_bimanual.sh"
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Right Teleop 8DOF Simulation
