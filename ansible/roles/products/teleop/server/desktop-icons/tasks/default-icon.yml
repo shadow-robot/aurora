@@ -14,7 +14,7 @@
     arm_side: "{{ hand_arm_side }}"
     control_loop_script: "{{ control_loop_location }}"
     gui_script: "{{ gui_location }}"
-    haptx_mapping_script: "{{ haptx_mapping_script_location }}"
+    haptx_mapping_script: "{{ haptx_mapping_location }}"
 
 - name: Create desktop icon
   template:
