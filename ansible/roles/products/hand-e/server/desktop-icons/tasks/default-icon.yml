@@ -10,6 +10,10 @@
     src: "{{ template }}"
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
+  vars:
+    arm_side: "{{ hand_arm_side }}"
+    control_loop_script: "{{ control_loop_location }}"
+    gui_script: "{{ gui_location }}"
 
 - name: Create desktop icon
   template:
