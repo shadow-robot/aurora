@@ -97,7 +97,7 @@
     launch_terminal: "false"
   when:
     - "'arm_' in product"
-    - not bimanual|bool and hand_side=="right"
+    - bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Left)
   import_tasks: default-icon.yml
@@ -113,7 +113,7 @@
     gui_location: "shadow_GUI_left_arm_hand.sh"
   when:
     - "'arm_' in product"
-    - not bimanual|bool and hand_side=="left"
+    - bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Bimanual)
   import_tasks: default-icon.yml
