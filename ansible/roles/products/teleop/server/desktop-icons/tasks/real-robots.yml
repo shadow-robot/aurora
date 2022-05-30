@@ -224,7 +224,8 @@
     launch_file_input_gui_bimanual_realhw_8DOF: "{{ launch_file_input_gui_bimanual_8DOF }} external_control_loop:=true"
 
 - name: Install desktop icon for right side teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_GUI_right.sh"
@@ -235,7 +236,8 @@
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for left side teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_GUI_left.sh"
@@ -246,7 +248,8 @@
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for bimanual teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_GUI_bimanual.sh"
@@ -257,7 +260,8 @@
   when: bimanual|bool
 
 - name: Install desktop icon for remote right side teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_GUI_right_remote.sh"
@@ -271,7 +275,8 @@
     - glove=="shadow_glove"
 
 - name: Install desktop icon for remote left side teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_GUI_left_remote.sh"
@@ -285,7 +290,8 @@
     - glove=="shadow_glove"
 
 - name: Install desktop icon for remote bimanual teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_GUI_bimanual_remote.sh"
@@ -299,7 +305,8 @@
     - glove=="shadow_glove"
     
 - name: Install desktop icon for remote right side teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_GUI_right_remote.sh"
@@ -313,7 +320,8 @@
     - glove=="haptx"
 
 - name: Install desktop icon for remote left side teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_GUI_left_remote.sh"
@@ -327,7 +335,8 @@
     - glove=="haptx"
 
 - name: Install desktop icon for remote bimanual teleop GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_GUI_bimanual_remote.sh"
@@ -341,7 +350,8 @@
     - glove=="haptx"
 
 - name: Install desktop icon for right side teleop GUI 8DOF
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_GUI_right_8DOF.sh"
@@ -352,7 +362,8 @@
   when: (bimanual|bool or hand_side=="right") and (arm_servo|bool)
 
 - name: Install desktop icon for left side teleop GUI 8DOF
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_GUI_left_8DOF.sh"
@@ -363,7 +374,8 @@
   when: (bimanual|bool or hand_side=="left") and (arm_servo|bool)
 
 - name: Install desktop icon for bimanual teleop GUI 8DOF
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_GUI_bimanual_8DOF.sh"
@@ -374,7 +386,8 @@
   when: bimanual|bool and arm_servo|bool
 
 - name: Install desktop icon for running right Shadow Glove driver
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_driver_right.sh"
@@ -387,7 +400,8 @@
     - glove=="shadow_glove"
 
 - name: Install desktop icon for running left Shadow Glove driver
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_left.png"
     launch_script: "shadow_glove_driver_left.sh"
@@ -400,7 +414,8 @@
     - glove=="shadow_glove"
 
 - name: Install desktop icon for running bimanual Shadow Glove driver
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_bimanual.png"
     launch_script: "shadow_glove_driver_bimanual.sh"
@@ -431,7 +446,8 @@
   when: lh_biotac_mapping|length > 0 and rh_biotac_mapping|length > 0
 
 - name: Install desktop icon for running haptx mapping node right
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_haptx_mapping_launch_right.sh"
@@ -444,7 +460,8 @@
     - glove=="haptx"
 
 - name: Install desktop icon for running haptx mapping node left
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_haptx_mapping_launch_left.sh"
@@ -457,7 +474,8 @@
     - glove=="haptx"
 
 - name: Install desktop icon for running haptx mapping node bimanual
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
@@ -468,7 +486,8 @@
   when: bimanual|bool and glove=="haptx"
 
 - name: Install desktop icon for running Shadow Glove mapping node right
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_mapping_launch_right.sh"
@@ -481,7 +500,8 @@
     - glove=="shadow_glove"
 
 - name: Install desktop icon for running Shadow Glove mapping node left
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_left.png"
     launch_script: "shadow_glove_mapping_launch_left.sh"
@@ -494,7 +514,8 @@
     - glove=="shadow_glove"
 
 - name: Install desktop icon for running Shadow Glove mapping node bimanual
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_bimanual.png"
     launch_script: "shadow_glove_mapping_launch_bimanual.sh"
@@ -507,7 +528,8 @@
     - glove=="shadow_glove"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_sim_demo_right.sh"
@@ -520,7 +542,8 @@
     - bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_sim_demo_left.sh"
@@ -533,7 +556,8 @@
     - bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_sim_demo_bimanual.sh"

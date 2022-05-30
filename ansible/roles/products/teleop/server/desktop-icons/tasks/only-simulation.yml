@@ -111,7 +111,8 @@
   when: scene_file|length > 0
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
     launch_script: "shadow_sim_right.sh"
@@ -121,7 +122,8 @@
     launch_file_input: "{{ launch_file_input_gui_right }}"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ glove }}_left.png"
     launch_script: "shadow_sim_left.sh"
@@ -131,7 +133,8 @@
     launch_file_input: "{{ launch_file_input_gui_left }}"
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ glove }}_bimanual.png"
     launch_script: "shadow_sim_bimanual.sh"
@@ -141,7 +144,8 @@
     launch_file_input: "{{ launch_file_input_gui_bimanual }}"
 
 - name: Install desktop icon for Teleop server Simulation 8DOF (Unimanual Right)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
     launch_script: "shadow_sim_right_8DOF.sh"
@@ -152,7 +156,8 @@
   when: arm_servo|bool
 
 - name: Install desktop icon for Teleop server Simulation 8DOF (Unimanual Left)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ glove }}_left.png"
     launch_script: "shadow_sim_left_8DOF.sh"
@@ -163,7 +168,8 @@
   when: arm_servo|bool
 
 - name: Install desktop icon for Teleop server Simulation 8DOF (Bimanual)
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "{{ glove }}_bimanual.png"
     launch_script: "shadow_sim_bimanual_8DOF.sh"
@@ -195,7 +201,8 @@
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running right Shadow Glove driver
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_driver_right.sh"
@@ -206,7 +213,8 @@
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running left Shadow Glove driver
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_left.png"
     launch_script: "shadow_glove_driver_left.sh"
@@ -217,7 +225,8 @@
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running bimanual Shadow Glove driver
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_bimanual.png"
     launch_script: "shadow_glove_driver_bimanual.sh"
@@ -228,7 +237,8 @@
   when: glove=="shadow_glove" and real_glove|bool
 
 - name: Install desktop icon for running haptx mapping node right
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "haptx_right.png"
     launch_script: "shadow_haptx_mapping_launch_right.sh"
@@ -239,7 +249,8 @@
   when: glove=="haptx" and real_glove|bool
 
 - name: Install desktop icon for running haptx mapping node left
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "haptx_left.png"
     launch_script: "shadow_haptx_mapping_launch_left.sh"
@@ -250,7 +261,8 @@
   when: glove=="haptx" and real_glove|bool
 
 - name: Install desktop icon for running haptx mapping node bimanual
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "haptx_bimanual.png"
     launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
@@ -261,7 +273,8 @@
   when: glove=="haptx" and real_glove|bool
 
 - name: Install desktop icon for running Shadow Glove mapping node right
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_mapping_launch_right.sh"
@@ -272,7 +285,8 @@
   when: glove=="shadow_glove"
 
 - name: Install desktop icon for running Shadow Glove mapping node left
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_left.png"
     launch_script: "shadow_glove_mapping_launch_left.sh"
@@ -283,7 +297,8 @@
   when: glove=="shadow_glove"
 
 - name: Install desktop icon for running Shadow Glove mapping node bimanual
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "shadow_glove_bimanual.png"
     launch_script: "shadow_glove_mapping_launch_bimanual.sh"
@@ -313,7 +328,8 @@
   when: glove!="shadow_glove" and glove!="haptx"
 
 - name: Install desktop icon for Launch Simulated Right Teleop Mock
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_right.sh"
@@ -324,7 +340,8 @@
   when: not real_vive|bool
 
 - name: Install desktop icon for Launch Simulated Left Teleop Mock
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_left.sh"
@@ -335,7 +352,8 @@
   when: not real_vive|bool
 
 - name: Install desktop icon for Launch Simulated Bimanual Teleop Mock
-  include_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_bimanual.sh"

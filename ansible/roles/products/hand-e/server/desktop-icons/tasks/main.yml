@@ -397,7 +397,8 @@
     - scene_file|length > 0
 
 - name: Install desktop icon for right arm+hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right_arm_hand.sh"
@@ -410,7 +411,8 @@
     - "'arm_' in product"
 
 - name: Install desktop icon for left arm+hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left_arm_hand.sh"
@@ -423,7 +425,8 @@
     - "'arm_' in product"
 
 - name: Install desktop icon for bimanual arm+hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual_arm_hand.sh"
@@ -472,7 +475,8 @@
     - bimanual|bool
   
 - name: Install desktop icon for right hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right.sh"
@@ -483,7 +487,8 @@
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for left hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left.sh"
@@ -494,7 +499,8 @@
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for bimanual hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual.sh"
