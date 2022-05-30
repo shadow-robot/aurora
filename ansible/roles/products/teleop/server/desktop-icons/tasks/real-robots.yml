@@ -119,7 +119,8 @@
   when: customer_key is defined and customer_key | length > 0
 
 - name: Install desktop icon for RQT on NUC
-  include_tasks: default-icon-no-terminator.yml
+  include_role:
+    name: products/common/default-icon-no-terminator
   vars:
     template: templates/scripts/start-docker-container-nuc-command.j2
     desktop_icon_png: "ROS_logo.png"
