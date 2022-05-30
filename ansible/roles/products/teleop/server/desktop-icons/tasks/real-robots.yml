@@ -580,7 +580,8 @@
     - bimanual|bool
 
 - name: Install desktop icon for NUC container
-  include_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     template: templates/scripts/start-docker-container-nuc-interactive-terminal.j2
     desktop_icon_png: "nuc.png"
