@@ -1,6 +1,7 @@
 ---
 - name: Install desktop icon for launching Shadow Right Teleop Simulation
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_launch_right_teleop_sim.sh"
@@ -11,7 +12,8 @@
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Left Teleop Simulation
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_launch_left_teleop_sim.sh"
@@ -22,7 +24,8 @@
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_launch_bimanual_teleop_sim.sh"
@@ -33,7 +36,8 @@
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Right Teleop 8DOF Simulation
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_launch_right_teleop_8dof_sim.sh"
@@ -44,7 +48,8 @@
   when: arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Left Teleop 8DOF Simulation
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_launch_left_teleop_8dof_sim.sh"
@@ -55,7 +60,8 @@
   when: arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop 8DOF Simulation
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_launch_bimanual_teleop_8dof_sim.sh"
@@ -378,7 +384,8 @@
   when: real_glove|bool
 
 - name: Install desktop icon for Shadow right Glove Calibration
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
     launch_script: "shadow_glove_calibration.sh"
@@ -395,7 +402,8 @@
   when: real_glove|bool
 
 - name: Install desktop icon for Shadow left Glove Calibration
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
     launch_script: "shadow_glove_calibration.sh"
@@ -412,7 +420,8 @@
   when: real_glove|bool
 
 - name: Install desktop icon for Shadow bimanual Glove Calibration
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
     launch_script: "shadow_glove_calibration.sh"
