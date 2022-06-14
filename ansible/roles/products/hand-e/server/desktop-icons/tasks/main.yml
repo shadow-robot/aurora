@@ -35,7 +35,8 @@
   when: "'extra_lite' in product"
 
 - name: Install desktop icon for launching everything for Shadow Right Hand
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ right_hand_picture }}"
     launch_script: "shadow_launch_everything_right.sh"
@@ -46,7 +47,8 @@
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for launching everything for Shadow Left Hand
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ left_hand_picture }}"
     launch_script: "shadow_launch_everything_left.sh"
@@ -57,7 +59,8 @@
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for launching everything for Shadow Bimanual Hands
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ bimanual_hands_picture }}"
     launch_script: "shadow_launch_everything_bimanual.sh"
@@ -75,7 +78,8 @@
   when: "'arm_' in product"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Right)
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ right_arm_hand_picture }}"
     launch_script: "shadow_launch_everything_right_arm_hand.sh"
@@ -88,7 +92,8 @@
     - not bimanual|bool and hand_side=="right"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Left)
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ left_arm_hand_picture }}"
     launch_script: "shadow_launch_everything_left_arm_hand.sh"
@@ -101,7 +106,8 @@
     - not bimanual|bool and hand_side=="left"
 
 - name: Install desktop icon for launching everything for Shadow Arm+hand system (Bimanual)
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
     launch_script: "shadow_launch_everything_bimanual_arm_hand.sh"
@@ -119,7 +125,8 @@
   when: customer_key is defined and customer_key | length > 0
 
 - name: Install desktop icon for RQT on NUC
-  include_tasks: default-icon-no-terminator.yml
+  include_role:
+    name: products/common/default-icon-no-terminator
   vars:
     template: templates/scripts/start-docker-container-nuc-command.j2
     desktop_icon_png: "ROS_logo.png"
@@ -174,7 +181,8 @@
     state: directory
 
 - name: Install desktop icon for server container
-  include_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     template: ../../../common/resources/templates/scripts/start-docker-container.j2
     desktop_icon_png: "laptop.png"
@@ -185,7 +193,8 @@
     hand_side_ad: ""
 
 - name: Install desktop icon for launching ROSCORE
-  import_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     template: ../../../common/resources/templates/scripts/start-roscore.j2
     desktop_icon_png: "ROS_logo.png"
@@ -397,7 +406,8 @@
     - scene_file|length > 0
 
 - name: Install desktop icon for right arm+hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right_arm_hand.sh"
@@ -410,7 +420,8 @@
     - "'arm_' in product"
 
 - name: Install desktop icon for left arm+hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left_arm_hand.sh"
@@ -423,7 +434,8 @@
     - "'arm_' in product"
 
 - name: Install desktop icon for bimanual arm+hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual_arm_hand.sh"
@@ -472,7 +484,8 @@
     - bimanual|bool
   
 - name: Install desktop icon for right hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right.sh"
@@ -483,7 +496,8 @@
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for left hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left.sh"
@@ -494,7 +508,8 @@
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for bimanual hand GUI
-  import_tasks: roslaunch-icon.yml
+  include_role:
+    name: products/common/roslaunch-icon
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual.sh"
@@ -652,7 +667,8 @@
   when: sim_icon|bool
 
 - name: Install desktop icon for NUC container
-  include_tasks: default-icon.yml
+  include_role:
+    name: products/common/default-icon
   vars:
     template: templates/scripts/start-docker-container-nuc-interactive-terminal.j2
     desktop_icon_png: "nuc.png"
