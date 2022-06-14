@@ -11,7 +11,7 @@
     hand_side_lable: "Right Hand"
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_right.sh"
-    haptx_mapping_location: "shadow_haptx_mapping_launch_right.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Left Teleop Simulation
@@ -26,7 +26,7 @@
     hand_side_lable: "Left Hand"
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_left.sh"
-    haptx_mapping_location: "shadow_haptx_mapping_launch_left.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
@@ -41,7 +41,7 @@
     hand_side_lable: "Bimanual"
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_bimanual.sh"
-    haptx_mapping_location: "shadow_haptx_mapping_launch_bimanual.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
   when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Right Teleop 8DOF Simulation
@@ -56,7 +56,7 @@
     hand_side_lable: "Right Hand"
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_right_8DOF.sh"
-    haptx_mapping_location: "shadow_haptx_mapping_launch_right.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
   when: arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Left Teleop 8DOF Simulation
@@ -71,7 +71,7 @@
     hand_side_lable: "Left Hand"
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_left_8DOF.sh"
-    haptx_mapping_location: "shadow_haptx_mapping_launch_left.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
   when: arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop 8DOF Simulation
@@ -86,7 +86,7 @@
     hand_side_lable: "Bimanual"
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_bimanual_8DOF.sh"
-    haptx_mapping_location: "shadow_haptx_mapping_launch_bimanual.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
   when: arm_servo|bool
 
 - name: Include hand-manual role

