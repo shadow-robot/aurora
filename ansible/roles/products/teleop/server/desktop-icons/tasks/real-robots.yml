@@ -9,7 +9,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Shadow Right Teleop"
     launch_terminal: "false"
-    hand_side_lable: "Right Hand"
+    hand_side_label: "Right Hand"
     control_loop_script_name: "shadow_nuc_right_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
@@ -25,7 +25,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Shadow Left Teleop"
     launch_terminal: "false"
-    hand_side_lable: "Left Hand"
+    hand_side_label: "Left Hand"
     control_loop_script_name: "shadow_nuc_left_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
@@ -41,7 +41,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Shadow Bimanual Teleop"
     launch_terminal: "false"
-    hand_side_lable: "Bimanual"
+    hand_side_label: "Bimanual"
     control_loop_script_name: "shadow_nuc_bimanual_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_bimanual.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
@@ -57,7 +57,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Shadow Right Teleop 8DOF"
     launch_terminal: "false"
-    hand_side_lable: "Right Hand"
+    hand_side_label: "Right Hand"
     control_loop_script_name: "shadow_nuc_right_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right_8DOF.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
@@ -73,7 +73,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Shadow Left Teleop 8DOF"
     launch_terminal: "false"
-    hand_side_lable: "Left Hand"
+    hand_side_label: "Left Hand"
     control_loop_script_name: "shadow_nuc_left_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left_8DOF.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
@@ -89,7 +89,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Shadow Bimanual Teleop 8DOF"
     launch_terminal: "false"
-    hand_side_lable: "Bimanual"
+    hand_side_label: "Bimanual"
     control_loop_script_name: "shadow_nuc_bimanual_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_bimanual_8DOF.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
@@ -105,7 +105,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Remote Shadow Right Teleop"
     launch_terminal: "false"
-    hand_side_lable: "Right Hand"
+    hand_side_label: "Right Hand"
     control_loop_script_name: "shadow_nuc_right_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right_remote.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
@@ -123,7 +123,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Remote Shadow Left Teleop"
     launch_terminal: "false"
-    hand_side_lable: "Left Hand"
+    hand_side_label: "Left Hand"
     control_loop_script_name: "shadow_nuc_left_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left_remote.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
@@ -141,7 +141,7 @@
     template: templates/scripts/launch-teleop.j2
     desktop_icon_path: "Launch Remote Shadow Bimanual Teleop"
     launch_terminal: "false"
-    hand_side_lable: "Bimanual"
+    hand_side_label: "Bimanual"
     control_loop_script_name: "shadow_nuc_bimanual_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_bimanual_remote.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
