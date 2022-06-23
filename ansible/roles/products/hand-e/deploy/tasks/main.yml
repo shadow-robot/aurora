@@ -4,10 +4,6 @@
     name: products/common/clear-icons
   when: skip_molecule_task is not defined
 
-- name: Install common tools
-  include_role:
-    name: installation/install_common_tools
-
 - name: Setup script name
   set_fact:
     setup_script: server-setup.sh
