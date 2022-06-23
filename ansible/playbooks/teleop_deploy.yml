@@ -135,6 +135,10 @@
       when: cyberglove is defined and cyberglove| length > 0 and remote_teleop|bool
       set_fact:
         use_cyberglove: true
+    
+    - name: Install common tools
+      include_role:
+        name: installation/install_common_tools
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
