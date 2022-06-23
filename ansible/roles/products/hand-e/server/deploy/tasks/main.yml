@@ -4,6 +4,10 @@
     name: products/common/clear-icons
   when: skip_molecule_task is not defined
 
+- name: Install common tools
+  include_role:
+    name: installation/install_common_tools
+
 - name: Set NUC IP address and username for SSH
   set_fact:
     nuc_username: "{{ hostvars[groups['control_machine'][0]]['ansible_user'] }}"

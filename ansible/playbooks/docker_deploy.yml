@@ -3,6 +3,10 @@
 - name: Install Python 3
   import_playbook: ./install_python3.yml
 
+- name: Install common tools
+  include_role:
+    name: installation/install_common_tools
+
 - name: Install product Docker container and icons
   hosts: docker_deploy
   pre_tasks:

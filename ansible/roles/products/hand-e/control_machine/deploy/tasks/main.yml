@@ -5,6 +5,10 @@
   vars:
     skip_nvidia: true
 
+- name: Install common tools
+  include_role:
+    name: installation/install_common_tools
+
 - name: Set chrony server ip
   set_fact:
     chrony_server_ip: "{{ groups['server'][0] }}"
