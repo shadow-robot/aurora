@@ -98,6 +98,11 @@
       async: 7200
       poll: 0
 
+    - name: print
+      debug:
+        msg: "{{item}}"
+      with_items: "{{ server }}"
+
     - name: Wait for instance(s) creation to complete
       async_status:
         jid: "{{ item.ansible_job_id }}"
