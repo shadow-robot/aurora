@@ -82,14 +82,10 @@
         vpc_subnet_id: "{{ item.vpc_subnet_id }}"
         region: "{{ ec2_region }}"
         groups: "{{ security_group_name }}"
-        #instance_tags:
-          #instance: "{{ item.name }}"
         wait: true
         network:
           assign_public_ip: true
         exact_count: 1
-        #count_tag:
-          #instance: "{{ item.name }}"
         volumes:
           - device_name: /dev/sda1
             volume_size: 50
