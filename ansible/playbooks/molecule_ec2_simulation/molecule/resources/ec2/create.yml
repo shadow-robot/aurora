@@ -32,14 +32,14 @@
         ec2_region: "{{ molecule_yml.platforms|selectattr('region','defined')|map(attribute='region')|list|first }}"
 
     - name: Create security group default VPC
-      amazon.aws.ec2_group:
+      community.amazon.aws.ec2_group:
         name: "{{ security_group_name }}"
         description: "{{ security_group_name }}"
         rules: "{{ security_group_rules }}"
         rules_egress: "{{ security_group_rules_egress }}"
 
     - name: Create security group for all platforms with VPC
-      amazon.aws.ec2_group:
+      community.amazon.aws.ec2_group:
         name: "{{ security_group_name }}"
         description: "{{ security_group_name }}"
         rules: "{{ security_group_rules }}"
@@ -55,14 +55,14 @@
       register: keypair_local
 
     - name: Delete remote keypair
-      amazon.aws.ec2_key:
+      community.amazon.aws.ec2_key:
         name: "{{ keypair_name }}"
         state: absent
         region: "{{ ec2_region }}"
       when: not keypair_local.stat.exists|bool
 
     - name: Create keypair
-      amazon.aws.ec2_key:
+      community.amazon.aws.ec2_key:
         name: "{{ keypair_name }}"
         region: "{{ ec2_region }}"
       register: keypair
@@ -75,7 +75,7 @@
       when: keypair.changed
 
     - name: Create molecule instance(s)
-      amazon.aws.ec2:
+      community.amazon.aws.ec2:
         key_name: "{{ keypair_name }}"
         image: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
