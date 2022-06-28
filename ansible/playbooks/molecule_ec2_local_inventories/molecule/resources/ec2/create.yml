@@ -101,7 +101,7 @@
     - name: print
       debug:
         msg: "{{item}}"
-      with_items: "{{ server }}"
+      with_items: "{{ server.results }}"
 
     - name: Wait for instance(s) creation to complete
       async_status:
@@ -116,7 +116,7 @@
     - name: print
       debug:
         msg: "{{item}}"
-      with_items: "{{ ec2_jobs }}"
+      with_items: "{{ ec2_jobs.results }}"
 
     - name: Populate instance config dict
       set_fact:
