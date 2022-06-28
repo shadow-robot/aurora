@@ -81,7 +81,8 @@
         instance_type: "{{ item.instance_type }}"
         vpc_subnet_id: "{{ item.vpc_subnet_id }}"
         region: "{{ ec2_region }}"
-        groups: "{{ security_group_name }}"
+        groups:
+          group_name: "{{ security_group_name }}"
         wait: true
         network:
           assign_public_ip: true
