@@ -95,7 +95,7 @@
           instance: "{{item.name}}"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
-      async: 7200
+      async: 10000
       poll: 0
 
     - name: Wait for instance(s) creation to complete
