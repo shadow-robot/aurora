@@ -77,7 +77,7 @@
     - name: Create molecule instance(s)
       amazon.aws.ec2_instance:
         key_name: "{{ keypair_name }}"
-        image: "{{ item.image }}"
+        image_id: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
         vpc_subnet_id: "{{ item.vpc_subnet_id }}"
         region: "{{ ec2_region }}"
