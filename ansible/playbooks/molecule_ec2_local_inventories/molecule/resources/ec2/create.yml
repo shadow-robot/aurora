@@ -108,6 +108,11 @@
 
     # Mandatory configuration for Molecule to function.
 
+    - name: print
+      debug:
+        msg: "{{item}}"
+      with_items: "{{ ec2_jobs.results }}" 
+
     - name: Populate instance config dict
       set_fact:
         instance_conf_dict: {
