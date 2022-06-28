@@ -41,9 +41,9 @@ if [ "$proceed" == false ]; then
     exit 1
 fi
 
-terminator --geometry "{{ term_3 }}" -T 'NUC right hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_right_hardware_control_loop.sh"
-sleep 30 # temporary workaround until arm controllers starting on time is fixed
-terminator --geometry "{{ term_4 }}" -T 'Server right hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_right.sh"
-if [[ "{{ glove }}" == "haptx"  ]]; then
-  terminator --geometry "{{ term_5 }}" -T 'Server HaptX Right Mapping' -e "{{ shadow_hand_launcher_folder}}/shadow_haptx_mapping_launch_right.sh"
+terminator --geometry "{{ term_3 }}" -T 'Server {{ arm_side }} Teleop Simulation' -e "{{ shadow_hand_launcher_folder}}/{{ gui_script }}"
+if {{ real_glove | lower }}; then
+    if [[ "{{ glove }}" == "haptx"  ]]; then
+      terminator --geometry "{{ term_4 }}" -T 'Server HaptX {{ arm_side }} Mapping' -e "{{ shadow_hand_launcher_folder}}/{{ haptx_mapping_script }}"
+    fi
 fi
