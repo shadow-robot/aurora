@@ -92,7 +92,7 @@
               volume_size: 50
               delete_on_termination: true
         tags:
-          Environment: "{{item.name}}"
+          instance: "{{item.name}}"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
