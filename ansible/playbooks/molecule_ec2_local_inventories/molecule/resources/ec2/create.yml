@@ -98,11 +98,6 @@
       async: 7200
       poll: 0
 
-    - name: print
-      debug:
-        msg: "{{item}}"
-      with_items: "{{ server.results }}"
-
     - name: Wait for instance(s) creation to complete
       async_status:
         jid: "{{ item.ansible_job_id }}"
@@ -121,9 +116,9 @@
     - name: Populate instance config dict
       set_fact:
         instance_conf_dict: {
-          'instance': "{{ item.Instances[0].tags.instance }}",
+          'instance': "{{ item.instances[0].tags.instance }}",
           'region': "{{ ec2_region }}",
-          'address': "{{ item.Instances[0].public_ip }}",
+          'address': "{{ item.instances[0].public_ip }}",
           'user': "{{ ssh_user }}",
           'port': "{{ ssh_port }}",
           'identity_file': "{{ keypair_path }}",
