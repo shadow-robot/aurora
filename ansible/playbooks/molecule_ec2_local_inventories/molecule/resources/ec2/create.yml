@@ -111,7 +111,7 @@
     - name: print
       debug:
         msg: "{{item}}"
-      with_items: "{{ ec2_jobs.results }}" 
+      with_items: "{{ ec2_jobs }}"
 
     - name: Populate instance config dict
       set_fact:
