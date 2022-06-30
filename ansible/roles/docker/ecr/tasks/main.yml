@@ -25,6 +25,14 @@
       - '"haptx" in image'
       - '"binary" in image'
 
+    - name: Choose Hand+Glove
+      set_fact:
+        api_url: mfuauxojf7
+        region: eu-west-2
+      when:
+      - '"hand-glove" in image'
+      - '"binary" in image'
+
     - name: Choose Production
       set_fact:
         api_url: wogk2adb24
