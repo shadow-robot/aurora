@@ -24,7 +24,6 @@ fi
 
 terminator --geometry "{{ term_2 }}" -T 'Server ROS Core' -e "{{ shadow_hand_launcher_folder}}/shadow_roscore.sh"
 
-
 elapsed_time=0
 start_time=$SECONDS
 proceed=false
@@ -42,6 +41,6 @@ if [ "$proceed" == false ]; then
     exit 1
 fi
 
-terminator --geometry "{{ term_3 }}" -T 'NUC bimanual arm and hand hardware control loop' -e "{{ shadow_hand_launcher_folder}}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
+terminator --geometry "{{ term_3 }}" -T 'NUC {{ arm_side }} hardware control loop' -e "{{ shadow_hand_launcher_folder}}/{{ control_loop_script }}"
 sleep 30 # temporary workaround until arm controllers starting on time is fixed
-terminator --geometry "{{ term_4 }}" -T 'Server bimanual arm and hand GUI' -e "{{ shadow_hand_launcher_folder}}/shadow_GUI_bimanual_arm_hand.sh"
+terminator --geometry "{{ term_4 }}" -T 'Server {{ arm_side }} GUI' -e "{{ shadow_hand_launcher_folder}}/{{ gui_script }}"
