@@ -81,10 +81,10 @@
         instance_type: "{{ item.instance_type }}"
         vpc_subnet_id: "{{ item.vpc_subnet_id }}"
         region: "{{ ec2_region }}"
-        security_group: "{{ security_group_name }}"
         wait: true
         network:
           assign_public_ip: true
+          groups: "{{ security_group_name }}"
         exact_count: 1
         volumes:
           - device_name: /dev/sda1
@@ -122,6 +122,7 @@
         instance_conf_dict: {
           'instance': "{{ item.instances[0].tags.instance }}",
           'region': "{{ ec2_region }}",
+          'address': "{{ item.instances[0].public_ip }}",
           'user': "{{ ssh_user }}",
           'port': "{{ ssh_port }}",
           'identity_file': "{{ keypair_path }}",
