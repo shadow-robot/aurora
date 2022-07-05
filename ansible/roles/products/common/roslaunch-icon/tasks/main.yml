@@ -1,19 +1,22 @@
 ---
 - name: Copy desktop icon
   copy:
-    src: ../../../common/resources/files/{{ desktop_icon_png }}
+    src: ../../resources/files/{{ desktop_icon_png }}
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
 - name: Create executable launch script
   template:
-    src: "{{ template }}"
+    src: ../../resources/templates/scripts/roslaunch-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
+  vars:
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_input }}"
 
 - name: Create desktop icon
   template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
+    src: ../../resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ desktop_path }}/{{ desktop_icon_path }}.desktop"
     mode: '755'
   vars:
@@ -22,9 +25,9 @@
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: "{{ launch_script }}"
     icon_file_name: "{{ desktop_icon_png }}"
-    start_terminal: "{{ launch_terminal }}"
+    start_terminal: "false"
 
-- name: Make Desktop icon trusted
+- name: Make desktop icon trusted
   shell: gio set "{{ desktop_path }}/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'

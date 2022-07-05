@@ -25,6 +25,14 @@
       - '"haptx" in image'
       - '"binary" in image'
 
+    - name: Choose Hand and Glove
+      set_fact:
+        api_url: mfuauxojf7
+        region: eu-west-2
+      when:
+      - '"hand-glove" in image'
+      - '"binary" in image'
+
     - name: Choose Production
       set_fact:
         api_url: wogk2adb24
@@ -52,16 +60,20 @@
         headers:
           Content-Type: application/json
           x-api-key: "{{ customer_key }}"
+      no_log: True
       register: request_result
 
     - name: Local Decryption
       block:
       - name: Decrypt results
         command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        no_log: True
         register: decrypt_results
 
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
+        no_log: True
+      
       when: inventory_hostname not in groups['control_machine'] | default([])
       
     - name: Decode message on NUC
@@ -71,10 +83,13 @@
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        no_log: True
         register: decrypt_results_nuc
       
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
+        no_log: True
+        
       when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
 
     - name: Configure AWS CLI

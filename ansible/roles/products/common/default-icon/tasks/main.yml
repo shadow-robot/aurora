@@ -10,10 +10,15 @@
     src: "{{ template }}"
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
+  vars:
+    arm_side: "{{ hand_side_label }}"
+    control_loop_script: "{{ control_loop_script_name }}"
+    gui_script: "{{ gui_script_name }}"
+    haptx_mapping_script: "{{ haptx_mapping_script_name }}"
 
 - name: Create desktop icon
   template:
-    src: ../../../common/resources/templates/desktop-icons/standard-icon-no-terminator.j2
+    src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
     dest: "{{ desktop_path }}/{{ desktop_icon_path }}.desktop"
     mode: '755'
   vars:

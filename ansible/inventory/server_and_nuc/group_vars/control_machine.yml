@@ -21,6 +21,7 @@ remote_bag_storage_IP: "10.5.10.59"
 remote_bag_storage_location: "/volume1/ros_bags"
 record_data: false
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
+local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435
