@@ -579,41 +579,41 @@
     - bimanual|bool
     - "'glove_' in product"
 
-- name: Create executable launch script for hand and glove (Right) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_hand_glove.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_right }}"
-  when:
-    - "'glove_' in product"
-    - not bimanual|bool and hand_side=="right"
+# - name: Create executable launch script for hand and glove (Right) GUI
+#   template:
+#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_hand_glove.sh"
+#     mode: '755'
+#   vars:
+#     project_name: "sr_hand_glove"
+#     launch_file: "{{ launch_file_content_arm_hand_right }}"
+#   when:
+#     - "'glove_' in product"
+#     - not bimanual|bool and hand_side=="right"
 
-- name: Create executable launch script for hand and glove (Left) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_hand_glove.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_left }}"
-  when:
-    - "'glove_' in product"
-    - not bimanual|bool and hand_side=="left"
+# - name: Create executable launch script for hand and glove (Left) GUI
+#   template:
+#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_hand_glove.sh"
+#     mode: '755'
+#   vars:
+#     project_name: "sr_hand_glove"
+#     launch_file: "{{ launch_file_content_arm_hand_left }}"
+#   when:
+#     - "'glove_' in product"
+#     - not bimanual|bool and hand_side=="left"
 
-- name: Create executable launch script for hand and glove (Bimanual) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_hand_glove.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
-  when:
-    - "'glove_' in product"
-    - bimanual|bool
+# - name: Create executable launch script for hand and glove (Bimanual) GUI
+#   template:
+#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_hand_glove.sh"
+#     mode: '755'
+#   vars:
+#     project_name: "sr_hand_glove"
+#     launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
+#   when:
+#     - "'glove_' in product"
+#     - bimanual|bool
   
 - name: Simulation icons
   block:
