@@ -229,7 +229,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     sleep 1
 done
 
-sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
+sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass lsb-release
 pip3 install --user -U pip
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
