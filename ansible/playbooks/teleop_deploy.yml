@@ -83,7 +83,7 @@
   roles:
     - { role: products/common/get-system-variables }
     - { role: products/teleop/server/deploy }
-    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
 
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
@@ -100,7 +100,7 @@
   roles:
     - { role: products/common/get-system-variables }
     - { role: products/teleop/server/deploy }
-    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
 
 - name: Install Teleop software on control machine
   hosts: control_machine
