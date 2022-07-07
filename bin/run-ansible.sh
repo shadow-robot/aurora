@@ -264,10 +264,10 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-if [[ $codename == "focal" ]]; then
-    pip3 install --user -r ansible/data/ansible/requirements.txt
-else
+if [[ $codename == "bionic" ]]; then
     pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
+else
+    pip3 install --user -r ansible/data/ansible/requirements.txt
 fi
 
 
