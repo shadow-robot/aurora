@@ -92,7 +92,7 @@ Inventories correspond to fixed IP addresses as shown here:
 * [production](ansible/inventory/teleop/production)
 * [production_remote](ansible/inventory/teleop/production_remote)
 * [simulation](ansible/inventory/teleop/simulation)
-* [events_1] (ansible/inventory/teleop/events_1)
+* [events_1](ansible/inventory/teleop/events_1)
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
