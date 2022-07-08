@@ -118,10 +118,7 @@ Shadow will supply you with the Vault password, which is needed to decrypt some 
 
 For Hand E software deployments on a laptop (called "server" in this playbook) and a control machine (NUC)
 
-To begin with, the server_and_nuc_deploy playbook checks the installation status of docker. If docker is not installed then a 
-new clean installation is performed. If the required image is private, then a valid Docker Hub account with pull credentials from 
-Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker container is initialized. Finally, 
-a desktop shortcut is generated. This shortcut starts the docker container and launches the hand.
+To begin with, the server_and_nuc_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. If the required image is private, then a valid customer_key is required. Then the specified docker image is pulled and a docker container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and launches the hand.
 
 Within the server_and_nuc playbook you can install 3 types of shadow products, hand_e on its own, hand_e and arm and hand_e and glove.
 The variables that you set when running the playbook determine the icons created. For example setting product=glove_hand_e uses the
@@ -176,7 +173,7 @@ bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --branch v2.1.5 --inven
 ```
 
 ### Hand and Glove ###
-Hand and Glove is another main product of the server_and_nuc playbook. This also takes in a new product type with product=glove_hand_e now, it also has extra parameters relating to the glove that you are using for the product. These variables are found in the options above, but the glove specific variables are glove, real_glove, biotacs and polhemus_type. Another thing to denote about this product is that it's not based on the dexterous-hand image, but instead the shadow-dexterous-hand-glove image.
+Hand and Glove is another main product of the server_and_nuc playbook. This also takes in a new product type with product=glove_hand_e now, it also has extra parameters relating to the glove that you are using for the product. These variables are found in ansible/inventory/server_and_nuc/group_vars. The hand and glove specific variables are glove, real_glove, biotacs and polhemus_type. Another thing to denote about this product is that it's not based on the dexterous-hand image, but instead the shadow-dexterous-hand-glove image.
 
 Example:
 
@@ -188,8 +185,7 @@ bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --branch v2.1.5 --inven
 
 For Hand E software deployments on single laptop.
 
-To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
-new clean installation is performed. If the required image is private, then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and launches the hand.
+To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. If the required image is private, then a valid customer_key is required. Then the specified docker image is pulled and a docker container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and launches the hand.
 
 **How to run:**
 
