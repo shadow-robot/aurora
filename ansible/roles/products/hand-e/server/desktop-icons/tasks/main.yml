@@ -699,7 +699,7 @@
   include_role:
     name: products/common/demo-icons
   vars:
-    demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
+    demo_icon_folder: "{{ desktop_path }}/Shadow Demos {{ container_name }}"
   when: demo_icons|bool
 
 - name: Include products/common/local-hand-launch role
