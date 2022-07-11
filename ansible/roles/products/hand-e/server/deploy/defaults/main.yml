@@ -8,7 +8,7 @@ use_aws: false
 ethercat_left_arm: "enx2"
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 nuc_username: "user"
 setup_directory: "/usr/local/bin"
 launch_hand: false
