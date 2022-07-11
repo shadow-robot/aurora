@@ -13,6 +13,11 @@
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
+
+    - name: Install licence tools
+      include_role:
+        name: installation/install_licence_tools
+      when: '"binary" in image'
   tasks:
     - name: Extract hostname from server
       set_fact:
