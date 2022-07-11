@@ -51,7 +51,7 @@
   include_role:
     name: products/common/demo-icons
   vars:
-    demo_icon_folder: "{{ desktop_path }}/Shadow Demos {{ container_name }}"
+    demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
   when: demo_icons|bool
 
 - name: Include products/common/cyberglove role
