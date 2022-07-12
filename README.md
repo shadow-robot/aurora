@@ -7,6 +7,7 @@
   * [configure_software](#configure_software)
   * [install_software](#install_software)
   * [install_python3](#install_python3)
+  * [Multiple Aurora Installations on one device](#Multiple-Aurora-Installation-on-one-device)
 - [Development](#development)
   * [Development Docker](#development-docker)
 - [Testing](#testing)
@@ -235,6 +236,12 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) install_python3
 ```
+# Multiple Aurora Installations on one device #
+
+Aurora installs icons by taking the containers name and adding it too both ".shadow_launcher_app_{container_name}" and "Shadow Launcher {container_name}.desktop". This lets us have control over which icons get removed and reinstalled when rerunning Aurora.
+
+This allows us to easily have multiple Aurora setups on one device, you simply need to define a unique name for the variable container_name by adding "container_name=new_container_name" to your oneliner when running each Aurora oneliner.
+
 # Development #
 
 The recommended way to develop code for this project is to pull a certain docker image ([Development Docker](#development-docker)) with a lot of tools already installed and open a container of this image, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
