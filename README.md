@@ -1,5 +1,6 @@
 # Table of Contents
 - [Introduction](#introduction)
+- [Multiple Aurora Installations on one device](#multiple-aurora-installations-on-one-device)
 - [How to run](#how-to-run)
   * [teleop_deploy](#teleop_deploy)
   * [server_and_nuc_deploy](#server_and_nuc_deploy)
@@ -7,7 +8,6 @@
   * [configure_software](#configure_software)
   * [install_software](#install_software)
   * [install_python3](#install_python3)
-  * [Multiple Aurora Installations on one device](#multiple-aurora-installations-on-one-device)
 - [Development](#development)
   * [Development Docker](#development-docker)
 - [Testing](#testing)
@@ -45,6 +45,12 @@ For example, it's possible to use Aurora to install Docker, download the specifi
 Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.10.4)
 
 Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.2.1)
+
+# Multiple Aurora Installations on one device #
+
+We can now easily have multiple Aurora setups on one device, you simply need to define a unique name for the variable container_name by adding "container_name=new_container_name" to your oneliner when running each Aurora oneliner. This is because Aurora creates icons and scripts in the folder ".shadow_launcher_app_{container_name}" and stores shortcut these icons at "Shadow Launcher {container_name}.desktop". 
+
+By having the name of the container attached to where we store the icons and scripts we can have more control over which icons get removed and reinstalled when rerunning Aurora, as we can just remove the folders that contain the containers name. This will leave the previous run's icons and scripts intact.
 
 # How to run #
 
@@ -236,11 +242,6 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) install_python3
 ```
-# Multiple Aurora Installations on one device #
-
-Aurora installs icons by taking the containers name and adding it too both ".shadow_launcher_app_{container_name}" and "Shadow Launcher {container_name}.desktop". This lets us have control over which icons get removed and reinstalled when rerunning Aurora.
-
-This allows us to easily have multiple Aurora setups on one device, you simply need to define a unique name for the variable container_name by adding "container_name=new_container_name" to your oneliner when running each Aurora oneliner.
 
 # Development #
 
