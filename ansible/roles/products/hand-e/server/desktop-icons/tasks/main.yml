@@ -631,7 +631,7 @@
             launch_terminal: "false"
       when:
        - bimanual|bool or hand_side=="right"
-        - "'arm_' in product"
+       - "'arm_' in product"
 
     - name: Left arm+hand sim icon
       block:
