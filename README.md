@@ -7,7 +7,7 @@
   * [configure_software](#configure_software)
   * [install_software](#install_software)
   * [install_python3](#install_python3)
-  * [Multiple Aurora Installations on one device](#Multiple-Aurora-Installation-on-one-device)
+  * [Multiple Aurora Installations on one device](#multiple-aurora-installations-on-one-device)
 - [Development](#development)
   * [Development Docker](#development-docker)
 - [Testing](#testing)
