@@ -26,7 +26,7 @@ def test_udev_files(host):
 def test_icons_in_docker(host):
     desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
     script_path = '/home/' + str(host.user().name) + \
-                  '/.shadow_launcher_app/shadow_hand_launcher/'
+                  '/.shadow_launcher_app/shadow_hand_launcher_teleop/'
     save_logs_script_path = '/home/' + str(host.user().name) + \
                             '/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
