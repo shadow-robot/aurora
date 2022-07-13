@@ -105,14 +105,18 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher/shadowlogo.png"
     mode: '664'
 
+- name: Set desktop name
+  set_fact: 
+    shadow_desktop_name:  "{{ container_name | replace('_', ' ') }}"
+
 - name: Create desktop icon for Dolphin file manager
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon-command.j2
-    dest: "{{ desktop_path }}/Shadow Launcher {{ container_name | capitalize | replace('_', ' ') }}.desktop"
+    dest: "{{ desktop_path }}/Shadow Launcher {{ shadow_desktop_name | capitalize }}.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: "Shadow Launcher {{ container_name | capitalize | replace('_', ' ') }}"
-    comment: "Shadow Launcher {{ container_name | capitalize | replace('_', ' ') }}"
+    desktop_shortcut_name: "Shadow Launcher {{ shadow_desktop_name | capitalize }}"
+    comment: "Shadow Launcher {{ shadow_desktop_name | capitalize }}"
     exec_command: "dolphin '{{ shadow_hand_launcher_folder }}/Shadow Icons'"
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
