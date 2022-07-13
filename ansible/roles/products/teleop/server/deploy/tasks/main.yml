@@ -107,8 +107,8 @@
     set_fact:
       user_shadow_glove_calibration_folder: "{{ shadow_glove_calibration_folder }}/user_calibration"
       user_shadow_glove_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/user_calibration"
-      user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
-      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/shadow/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_hand_glove_internal/sr_hand_glove/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/shadow/share/sr_hand_glove/shadow_glove_user_calibration_defaults/."
       boresight_calibration_folder: "{{ shadow_glove_calibration_folder }}/glove_boresight_calibration"
       boresight_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/glove_boresight_calibration"
       boresight_calibration_default_file_inside_docker: "/home/user/projects/shadow_robot/base/src/polhemus_ros_driver/config/{{ polhemus_type }}_calibration.yaml"

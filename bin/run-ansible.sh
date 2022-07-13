@@ -229,7 +229,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     sleep 1
 done
 
-sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
+sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
 pip3 install --user -U pip
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
@@ -264,10 +264,10 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-if [[ $codename == "focal" ]]; then
-    pip3 install --user -r ansible/data/ansible/requirements.txt
-else
+if [[ $codename == "bionic" ]]; then
     pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
+else
+    pip3 install --user -r ansible/data/ansible/requirements.txt
 fi
 
 
