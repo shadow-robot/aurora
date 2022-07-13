@@ -19,11 +19,10 @@ def test_docker_installed(host):
 
 
 def test_icons_in_docker(host):
-    desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
-    script_path = '/home/' + str(host.user().name) + \
-                  '/.shadow_launcher_app/shadow_hand_launcher_teleop/'
-    save_logs_script_path = '/home/' + str(host.user().name) + \
-                            '/.shadow_save_log_app/save_latest_ros_logs/'
+    hostuser = str(host.user().name)
+    desktop_path = f'/home/{hostuser}/Desktop/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app/shadow_hand_launcher_teleop_shadow_glove/'
+    save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Right Teleop 8DOF',
         'Shadow NUC RQT',
