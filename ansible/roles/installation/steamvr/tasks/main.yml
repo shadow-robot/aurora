@@ -38,7 +38,7 @@
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
     
-- name: Install multiarch-support from the internet 
+- name: Install multiarch-support from the internet
   apt:
     deb: http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.5_amd64.deb
     state: present
@@ -46,6 +46,15 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'focal'
+
+- name: Install multiarch-support from the internet
+  apt:
+    deb: http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.5_amd64.deb
+    state: present
+  become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'jammy'
 
 - name: Install libudev0_175 from the internet if absent (20.04)
   apt:
@@ -57,7 +66,17 @@
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'focal'
 
-- name: Install libffi.so.6 from the internet (20.04)
+- name: Install libudev0_175 from the internet if absent (22.04)
+  apt:
+    deb: http://launchpadlibrarian.net/119461136/libudev0_175-0ubuntu13_amd64.deb
+    state: present
+  when: '"libudev0" not in ansible_facts.packages'
+  become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'jammy'
+
+- name: Install libffi.so.6 from the internet (22.04)
   apt:
     deb: http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-8_amd64.deb
     state: present
@@ -65,6 +84,15 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'focal'
+
+- name: Install libffi.so.6 from the internet (22.04)
+  apt:
+    deb: http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-8_amd64.deb
+    state: present
+  become: yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'jammy'
 
 - name: Ensure botocore and boto3 modules are installed
   pip:
