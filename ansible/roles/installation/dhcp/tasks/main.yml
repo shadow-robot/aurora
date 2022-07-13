@@ -9,7 +9,7 @@
     state: present
   become: yes
   when:
-    - ansible_distribution_release|string == 'focal'
+    - ansible_distribution_release|string == 'focal'  or ansible_distribution_release|string == 'jammy'
     
 - name: Install isc-dhcp-server
   apt:
@@ -34,7 +34,7 @@
     state: touch
     mode: u=rw,g=r,o=r
   when:
-    - ansible_distribution_release|string == 'focal'
+    - ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'
     
 - name: Configure static IP for DHCP
   become: yes
@@ -64,7 +64,7 @@
   become: true
   changed_when: false
 
-- name: Configure DHCP interface for Ubuntu Bionic or Focal
+- name: Configure DHCP interface for Ubuntu Bionic and newer
   become: yes
   lineinfile:
     path: /etc/default/isc-dhcp-server
@@ -73,7 +73,7 @@
   changed_when: false
   when:
     - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'focal'
+    - ansible_distribution_release|string == 'bionic' or ansible_distribution_release|string == 'focal'  or ansible_distribution_release|string == 'jammy'
     
 
 - name: Configure DHCP interface for Ubuntu Xenial
