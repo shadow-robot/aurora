@@ -86,6 +86,43 @@
   when:
     - bimanual|bool
 
+- name: Create executable launch script for RQT Shadow Glove Calibration plugin
+  template:
+    src: ../../../common/resources/templates/scripts/command-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_glove_calibration_rqt.sh"
+    mode: '755'
+  vars:
+    command: "rqt -s sr_gui_shadow_glove_calibration.shadow_glove_calibration.SrGuiShadowGloveCalibration"
+  when: glove=="shadow_glove"
+
+- name: Set Shadow Glove driver name (if right)
+  set_fact:
+    glove_driver_type: "right"
+  when: hand_side=="right"
+
+- name: Set Shadow Glove driver name (if left)
+  set_fact:
+    glove_driver_type: "left"
+  when: hand_side=="left"
+
+- name: Set Shadow Glove driver name (if bimanual)
+  set_fact:
+    glove_driver_type: "bimanual"
+  when: bimanual|bool
+
+- name: Install desktop icon for Shadow Glove Calibration
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
+    launch_script: "shadow_glove_calibration.sh"
+    desktop_icon_name: "Launch Shadow {{ glove_driver_type }} Glove Calibration"
+    template: templates/scripts/launch-shadow-glove-calibration.j2
+    desktop_icon_path: "Shadow Advanced Launchers/Launch Shadow {{ glove_driver_type }} Glove Calibration"
+    launch_terminal: "false"
+    glove_driver_value: "{{ glove_driver_type }}"
+  when: glove=="shadow_glove"
+
 - name: Simulation icons
   block:
     - name: Set Sim variables
