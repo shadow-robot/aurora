@@ -87,7 +87,6 @@
         wait: true
         network:
           assign_public_ip: true
-        exact_count: 1
         volumes:
           - device_name: /dev/sda1
             ebs:
