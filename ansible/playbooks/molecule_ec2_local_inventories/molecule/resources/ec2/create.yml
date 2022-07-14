@@ -92,7 +92,7 @@
             ebs:
               volume_size: 50
               delete_on_termination: true
-        tag:
+        tags:
           TagSpecifications: "{{ item.name }}"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
