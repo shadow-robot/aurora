@@ -100,10 +100,6 @@
       async: 7200
       poll: 0
 
-    - name: --debug
-      debug:
-        msg: "{{ server.results }}"
-
     - name: Wait for instance(s) creation to complete
       async_status:
         jid: "{{ item.ansible_job_id }}"
@@ -112,10 +108,6 @@
       retries: 300
       with_items: "{{ server.results }}"
 
-
-    - name: --debug
-      debug:
-        msg: "{{ ec2_jobs.results }}"
     # Mandatory configuration for Molecule to function.
 
     - name: Populate instance config dict
