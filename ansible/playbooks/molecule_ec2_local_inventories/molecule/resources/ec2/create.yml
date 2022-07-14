@@ -111,6 +111,10 @@
       retries: 300
       with_items: "{{ server.results }}"
 
+
+    - name: --debug
+      debug:
+        msg: "{{ ec2_jobs.results }}"
     # Mandatory configuration for Molecule to function.
 
     - name: Populate instance config dict
