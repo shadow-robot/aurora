@@ -748,7 +748,7 @@ lint: |
   flake8
 platforms:
   - name: tutorial_1_docker
-    image: public.ecr.aws/shadowrobot/aurora-test-ubuntu-docker:bionic
+    image: public.ecr.aws/shadowrobot/aurora-test-ubuntu-docker:focal
     groups:
       - docker_deploy
     volumes:
