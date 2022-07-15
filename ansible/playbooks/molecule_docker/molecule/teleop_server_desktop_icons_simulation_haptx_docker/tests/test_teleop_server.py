@@ -63,9 +63,7 @@ def test_icons_in_docker(host):
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
     
-    for path, subdirs, files in os.walk(script_path):
-        for name in files:
-            print(os.path.join(path, name))
+    assert os.path.exists(script_path)
 
     for script in scripts:
         assert host.file(script_path+script+'.sh').exists
