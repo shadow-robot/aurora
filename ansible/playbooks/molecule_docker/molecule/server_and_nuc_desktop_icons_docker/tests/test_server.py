@@ -13,7 +13,7 @@ def test_chrony_server_installed(host):
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
     desktop_path = f'/home/{hostuser}/Desktop/'
-    script_path = f'/home/{hostuser}/.shadow_launcher_app/shadow_hand_launcher_dexterous_hand_real_hw/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app_dexterous_hand/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Right Hand',

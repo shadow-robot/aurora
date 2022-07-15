@@ -8,7 +8,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
     desktop_path = f'/home/{hostuser}/Desktop/'
-    script_path = f'/home/{hostuser}/.shadow_launcher_app/shadow_hand_launcher_teleop_shadow_glove/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app_teleop_shadow_glove/shadow_hand_launcher/'
     icons = (
         'Teleop_Container_Launch',
         'Cyberglove_Launch'
