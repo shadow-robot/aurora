@@ -18,4 +18,3 @@
     haptx_teleop_readthedocs_link: ""
     shadow_glove_teleop_readthedocs_link: ""
     arm_servo: true
-    container_name: "teleop_{{ glove }}"

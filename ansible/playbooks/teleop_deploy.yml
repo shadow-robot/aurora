@@ -111,7 +111,7 @@
     
     - name: debug print
       debug:
-        msg: "ANSIBLE DISTRIBUTION: {{ ansible_distribution_release|string }}"
+        msg: "ANSIBLE DISTRIBUTION: {{ ansible_distribution_release|string }}\n CONTAINER NAME {{ container_name }}"
 
   roles:
     - { role: products/common/get-system-variables }
