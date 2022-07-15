@@ -8,7 +8,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
     desktop_path = f'/home/{hostuser}/Desktop/'
-    script_path = f'/home/{hostuser}/.shadow_launcher_app/shadow_hand_launcher_teleop_haptx/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app/shadow_launcher_app_teleop_haptx/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Right Teleop 8DOF Simulation',
@@ -63,8 +63,6 @@ def test_icons_in_docker(host):
     for icon in icons:
         assert host.file(desktop_path+icon+'.desktop').exists
     
-    assert os.path.exists(script_path)
-
     for script in scripts:
         assert host.file(script_path+script+'.sh').exists
     save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
