@@ -108,6 +108,10 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
+    
+    - name: debug print
+      debug:
+        msg: "ANSIBLE DISTRIBUTION: {{ ansible_distribution_release|string }}"
 
   roles:
     - { role: products/common/get-system-variables }
