@@ -149,6 +149,13 @@
     mode: '755'
     state: directory
 
+- name: Create Shadow Simulation folder
+  file:
+    path: "{{ desktop_path }}/Simulation"
+    mode: '755'
+    state: directory
+  when: sim_icon|bool
+
 - name: Install desktop icon for server container
   include_role:
     name: products/common/default-icon
