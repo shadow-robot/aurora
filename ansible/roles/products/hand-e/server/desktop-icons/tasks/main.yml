@@ -47,7 +47,10 @@
     hand_side_label: "Right Hand"
     control_loop_script_name: "shadow_nuc_right_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right.sh"
-  when: bimanual|bool or hand_side=="right"
+  when: 
+    - bimanual|bool or hand_side=="right"
+    - "'glove_' not in product"
+    - "'arm' not in product"
 
 - name: Install desktop icon for launching everything for Shadow Left Hand
   include_role:
@@ -62,7 +65,10 @@
     hand_side_label: "Left Hand"
     control_loop_script_name: "shadow_nuc_left_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left.sh"
-  when: bimanual|bool or hand_side=="left"
+  when:
+    - bimanual|bool or hand_side=="left"
+    - "'glove_' not in product"
+    - "'arm' not in product"
 
 - name: Install desktop icon for launching everything for Shadow Bimanual Hands
   include_role:
@@ -77,7 +83,10 @@
     hand_side_label: "Bimanual"
     control_loop_script_name: "shadow_nuc_bimanual_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_bimanual.sh"
-  when: bimanual|bool
+  when: 
+    - bimanual|bool
+    - "'glove_' not in product"
+    - "'arm' not in product"
 
 - name: Include hand-manual role
   include_role:
@@ -284,9 +293,9 @@
             desktop_icon_png: "{{ right_hand_picture }}"
             launch_script: "shadow_launch_everything_hand_right_sim.sh"
             server_launch_script_var: "shadow_launch_right_hand_sim.sh"
-            desktop_icon_name: "Launch Shadow Right Hand Simulation"
+            desktop_icon_name: "Simulation/Launch Shadow Right Hand Simulation"
             template: templates/scripts/launch-everything-sim.j2
-            desktop_icon_path: "Launch Shadow Right Hand Simulation"
+            desktop_icon_path: "Simulation/Launch Shadow Right Hand Simulation"
             launch_terminal: "false"
       when: bimanual|bool or hand_side=="right"
 
@@ -307,9 +316,9 @@
             desktop_icon_png: "{{ left_hand_picture }}"
             launch_script: "shadow_launch_everything_hand_left_sim.sh"
             server_launch_script_var: "shadow_launch_left_hand_sim.sh"
-            desktop_icon_name: "Launch Shadow Left Hand Simulation"
+            desktop_icon_name: "Simulation/Launch Shadow Left Hand Simulation"
             template: templates/scripts/launch-everything-sim.j2
-            desktop_icon_path: "Launch Shadow Left Hand Simulation"
+            desktop_icon_path: "Simulation/Launch Shadow Left Hand Simulation"
             launch_terminal: "false"
       when: bimanual|bool or hand_side=="left"
 
@@ -330,19 +339,19 @@
             desktop_icon_png: "{{ bimanual_hands_picture }}"
             launch_script: "shadow_launch_everything_hand_bimanual_sim.sh"
             server_launch_script_var: "shadow_launch_bimanual_hands_sim.sh"
-            desktop_icon_name: "Launch Shadow Bimanual Hands Simulation"
+            desktop_icon_name: "Simulation/Launch Shadow Bimanual Hands Simulation"
             template: templates/scripts/launch-everything-sim.j2
-            desktop_icon_path: "Launch Shadow Bimanual Hands Simulation"
+            desktop_icon_path: "Simulation/Launch Shadow Bimanual Hands Simulation"
             launch_terminal: "false"
       when: bimanual|bool
   when: sim_icon|bool
 
 - name: Install Hand and Arm Roles
-  include_tasks: hand_and_arm.yml
+  include_tasks: hand-and-arm.yml
   when: "'arm_' in product"
 
 - name: Install Hand and Glove Roles
-  include_tasks: hand_and_glove.yml
+  include_tasks: hand-and-glove.yml
   when: "'glove_' in product"
 
 - name: Install desktop icon for NUC container
