@@ -61,14 +61,12 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        assert host.file(desktop_path+icon+'.desktop').exists
-    
-    assert os.path.exists(script_path)
+        assert host.file(f"{desktop_path}{icon}.desktop").exists
 
     for script in scripts:
-        assert host.file(script_path+script+'.sh').exists
+        assert host.file(f"{script_path}{script}.sh").exists
     save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
     assert host.file(save_logs_file).exists
-    hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
+    hand_manual_file = f"{desktop_path}Palm_EDC_User_Manual_1.7.pdf"
     assert host.file(hand_manual_file).exists
     
