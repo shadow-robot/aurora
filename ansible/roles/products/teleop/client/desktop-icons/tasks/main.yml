@@ -17,7 +17,7 @@
 - name: Locating all files in files dir
   register: res
   find:
-    path: "/tmp/test"
+    path: "user_folder"
     patterns: ".*"
     hidden: true
     file_type: any
