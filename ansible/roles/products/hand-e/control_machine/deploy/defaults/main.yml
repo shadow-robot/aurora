@@ -2,7 +2,7 @@
 image: "public.ecr.aws/shadowrobot/dexterous-hand"
 tag: "noetic-release"
 reinstall: false
-container_name: "dexterous_hand_real_hw"
+container_name: "dexterous_hand"
 ethercat_left_arm: "enx2"
 ethercat_right_arm: "eth1"
 allow_auto_reboot: true

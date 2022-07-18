@@ -4,6 +4,22 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Print Launcher Folder
+  debug:
+    msg: "{{ shadow_hand_launcher_folder }}"
+
+- name: Locating all files in files dir
+  register: res
+  find:
+    path: "/tmp/test"
+    patterns: ".*"
+    hidden: true
+    file_type: any
+
+- name: Print Hidden Files
+  debug:
+    msg: "{{ res }}"
+
 - name: Set teleop main icon picture for HaptX
   set_fact:
     teleop_glove_right: "haptx_right.png"

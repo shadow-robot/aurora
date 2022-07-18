@@ -1,8 +1,9 @@
 ---
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
+glove: "shadow_glove"
+container_name: "teleop_{{ glove }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
-container_name: "teleop"
 setup_directory: ""
 nuc_username: "user"
 remote_cyberglove: false
