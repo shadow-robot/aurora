@@ -68,6 +68,34 @@
   become: yes
   changed_when: false
 
+- name: Check if Simulation folder exist
+  stat:
+    path: "{{ shadow_simulation_folder }}"
+  register: demo_path
+
+- name: Create Simulation Folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    state: directory
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
+- name: Copy Shadow Simulation folder
+  copy:
+    src: "{{ shadow_simulation_folder }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+
+- name: Ensure Shadow Simulation folder and contents are deleted
+  file:
+    path: "{{ shadow_simulation_folder }}"
+    state: absent
+  become: yes
+  changed_when: false
+
 - name: Find all .desktop files with Shadow in the comment
   find:
     paths: "{{ desktop_path }}"
