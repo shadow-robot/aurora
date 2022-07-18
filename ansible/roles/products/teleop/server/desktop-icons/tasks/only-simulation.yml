@@ -463,3 +463,30 @@
     demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
     bimanual: true
   when: demo_icons|bool
+
+
+- name: Print Launcher Folder
+  debug:
+    msg: "{{ shadow_hand_launcher_folder }}"
+
+- name: Locating all files in files dir
+  register: res
+  find:
+    path: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}"
+    hidden: true
+    file_type: any
+
+- name: Print Hidden Files
+  debug:
+    msg: "{{ res }}"
+
+- name: Locating all files in files dir
+  register: res
+  find:
+    path: "{{ shadow_hand_launcher_folder }}"
+    hidden: true
+    file_type: any
+
+- name: Print Hidden Files
+  debug:
+    msg: "{{ res }}"

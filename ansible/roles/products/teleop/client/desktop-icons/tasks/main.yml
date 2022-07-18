@@ -17,7 +17,7 @@
 - name: Locating all files in files dir
   register: res
   find:
-    path: "user_folder"
+    path: "{{ user_folder }}"
     patterns: ".*"
     hidden: true
     file_type: any
