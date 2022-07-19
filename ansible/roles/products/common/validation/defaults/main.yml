@@ -50,6 +50,7 @@ product_allowed_values:
   - arm_hand_e
   - arm_hand_lite
   - arm_hand_extra_lite
+  - glove_hand_e
 polhemus_type_allowed_values:
   - liberty
   - viper
