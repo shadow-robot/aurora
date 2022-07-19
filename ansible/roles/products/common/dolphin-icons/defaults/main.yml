@@ -5,4 +5,5 @@ shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ containe
 desktop_path: "{{ user_folder }}/Desktop"
 shadow_demos_folder: "{{ desktop_path }}/Shadow Demos/"
 shadow_advanched_launchers_folder: "{{ desktop_path }}/Shadow Advanced Launchers/"
+shadow_simulation_folder: "{{ desktop_path }}/Simulation/"
 new_path: "{{ shadow_hand_launcher_folder }}icons/"

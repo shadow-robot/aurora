@@ -1,0 +1,324 @@
+---
+- name: Set Shadow Arm+Hand icon pictures
+  set_fact:
+    right_arm_hand_picture: arm_hand_right.jpeg
+    left_arm_hand_picture: arm_hand_left.jpg
+    bimanual_arm_hand_picture: arm_hand_bimanual.jpg
+
+- name: Set arm+hand GUI launch file names for UR10/UR10e
+  set_fact:
+    project_name_input: "sr_robot_launch"
+    launch_file_input_arm_hand_right: "sr_right_ur10arm_hand.launch"
+    launch_file_input_arm_hand_left: "sr_left_ur10arm_hand.launch"
+    launch_file_input_arm_hand_bimanual: "sr_bimanual_ur10arms_hands.launch"
+  when:
+    - ur_robot_type == 'ur10e' or ur_robot_type == 'ur10'
+
+- name: Set arm+hand GUI launch file names for UR5/UR5e
+  set_fact:
+    project_name_input: "sr_robot_launch"
+    launch_file_input_arm_hand_right: "sr_right_ur5arm_hand.launch"
+    launch_file_input_arm_hand_left: "sr_left_ur5arm_hand.launch"
+    launch_file_input_arm_hand_bimanual: "sr_bimanual_ur5arms_hands.launch"
+  when:
+    - ur_robot_type == 'ur5e' or ur_robot_type == 'ur5'
+
+- name: Set arm+hand GUI launch file content for sim
+  set_fact:
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
+
+- name: Set arm+hand GUI launch file content
+  set_fact:
+    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
+
+- name: Set arm+hand GUI launch file content for custom scene
+  set_fact:
+    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_content_arm_hand_right_sim }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_content_arm_hand_left_sim }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_content_arm_hand_bimanual_sim }} scene_file:='{{ scene_file }}'"
+  when:
+    - scene_file|length > 0
+
+- name: Install desktop icon for launching everything for Shadow Arm+hand system (Right)
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ right_arm_hand_picture }}"
+    launch_script: "shadow_launch_everything_right_arm_hand.sh"
+    desktop_icon_name: "Launch Shadow Right Arm and Hand"
+    template: templates/scripts/launch-everything.j2
+    desktop_icon_path: "Launch Shadow Right Arm and Hand"
+    hand_side_label: "Right Arm and Hand"
+    control_loop_script_name: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
+    gui_script_name: "shadow_GUI_right_arm_hand.sh"
+    launch_terminal: "false"
+  when:
+    - bimanual|bool or hand_side=="right"
+
+- name: Install desktop icon for launching everything for Shadow Arm+hand system (Left)
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ left_arm_hand_picture }}"
+    launch_script: "shadow_launch_everything_left_arm_hand.sh"
+    desktop_icon_name: "Launch Shadow Left Arm and Hand"
+    template: templates/scripts/launch-everything.j2
+    desktop_icon_path: "Launch Shadow Left Arm and Hand"
+    launch_terminal: "false"
+    hand_side_label: "Left Arm and Hand"
+    control_loop_script_name: "shadow_nuc_left_arm_hand_hardware_control_loop.sh"
+    gui_script_name: "shadow_GUI_left_arm_hand.sh"
+  when:
+    - bimanual|bool or hand_side=="left"
+
+- name: Install desktop icon for launching everything for Shadow Arm+hand system (Bimanual)
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
+    launch_script: "shadow_launch_everything_bimanual_arm_hand.sh"
+    desktop_icon_name: "Launch Shadow Bimanual Arms and Hands"
+    template: templates/scripts/launch-everything.j2
+    desktop_icon_path: "Launch Shadow Bimanual Arms and Hands"
+    launch_terminal: "false"
+    hand_side_label: "Bimanual Arm and Hand"
+    control_loop_script_name: "shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
+    gui_script_name: "shadow_GUI_bimanual_arm_hand.sh"
+  when:
+    - bimanual|bool
+
+- name: Install desktop icon for NUC right hand+arm hardware control loop
+  import_tasks: hand-icon.yml
+  vars:
+    desktop_icon_png: "{{ right_arm_hand_picture }}"
+    launch_script: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
+    desktop_icon_name: "3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
+    pwm_control_value: "true"
+    hand_ctrl_value: "true"
+    arm_ctrl_value: "true"
+    hand_side_ad: "-r"
+  when: 
+    - bimanual|bool or hand_side=="right"
+
+- name: Install desktop icon for NUC left hand+arm hardware control loop
+  import_tasks: hand-icon.yml
+  vars:
+    desktop_icon_png: "{{ left_arm_hand_picture }}"
+    launch_script: "shadow_nuc_left_arm_hand_hardware_control_loop.sh"
+    desktop_icon_name: "3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
+    pwm_control_value: "true"
+    hand_ctrl_value: "true"
+    arm_ctrl_value: "true"
+    hand_side_ad: "-l"
+  when: 
+    - bimanual|bool or hand_side=="left"
+
+- name: Install desktop icon for NUC bimanual hand+arm hardware control loop
+  import_tasks: hand-icon-bimanual.yml
+  vars:
+    desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
+    launch_script: "shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
+    desktop_icon_name: "3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
+    arm_payload_mass: "{{ arm_mass_payload }}"
+    arm_ctrl_value: "true"
+  when: 
+    - bimanual|bool
+
+- name: Create executable launch script for hand+arm (Right)
+  template:
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_right_arm_hand_hardware_control_loop.sh"
+    mode: '755'
+  vars:
+    pwm_control_var: "true"
+    hand_ctrl_var: "true"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    arm_ctrl_var: "true"
+    arm_payload_mass: "{{ arm_mass_payload }}"
+    ad_hand_side: "-r"
+  when: 
+    - not bimanual|bool and hand_side=="right"
+
+- name: Create executable launch script for hand+arm (Left)
+  template:
+    src: templates/scripts/start-docker-container-nuc.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_left_arm_hand_hardware_control_loop.sh"
+    mode: '755'
+  vars:
+    pwm_control_var: "true"
+    hand_ctrl_var: "true"
+    initial_z_var: "{{ initial_z_value }}"
+    arm_x_separation_var: "{{ arm_x_separation_value }}"
+    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    arm_ctrl_var: "true"
+    arm_payload_mass: "{{ arm_mass_payload }}"
+    ad_hand_side: "-l"
+  when: 
+    - not bimanual|bool and hand_side=="left"
+
+- name: Create executable launch script for hand+arm (Bimanual)
+  template:
+    src: templates/scripts/start-docker-container-nuc-bimanual-arm-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
+    mode: '755'
+  when: 
+    - bimanual|bool
+
+- name: Install desktop icon for right arm+hand GUI
+  include_role:
+    name: products/common/roslaunch-icon
+  vars:
+    desktop_icon_png: "rviz.png"
+    launch_script: "shadow_GUI_right_arm_hand.sh"
+    project_name_input: "sr_robot_launch"
+    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-r"
+    desktop_icon_name: "4 - Launch Server Right Hand+Arm GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand+Arm GUI"
+  when: 
+    - bimanual|bool or hand_side=="right"
+
+- name: Install desktop icon for left arm+hand GUI
+  include_role:
+    name: products/common/roslaunch-icon
+  vars:
+    desktop_icon_png: "rviz.png"
+    launch_script: "shadow_GUI_left_arm_hand.sh"
+    project_name_input: "sr_robot_launch"
+    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-l"
+    desktop_icon_name: "4 - Launch Server Left Hand+Arm GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Left Hand+Arm GUI"
+  when: 
+    - bimanual|bool or hand_side=="left"
+
+- name: Install desktop icon for bimanual arm+hand GUI
+  include_role:
+    name: products/common/roslaunch-icon
+  vars:
+    desktop_icon_png: "rviz.png"
+    launch_script: "shadow_GUI_bimanual_arm_hand.sh"
+    project_name_input: "sr_robot_launch"
+    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
+    desktop_icon_name: "4 - Launch Server Bimanual Hand+Arm GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual Hand+Arm GUI"
+  when: 
+    - bimanual|bool
+
+- name: Create executable launch script for hand+arm (Right) GUI
+  template:
+    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_arm_hand.sh"
+    mode: '755'
+  vars:
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_content_arm_hand_right }}"
+  when:
+    - not bimanual|bool and hand_side=="right"
+
+- name: Create executable launch script for hand+arm (Left) GUI
+  template:
+    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_arm_hand.sh"
+    mode: '755'
+  vars:
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_content_arm_hand_left }}"
+  when:
+    - not bimanual|bool and hand_side=="left"
+
+- name: Create executable launch script for hand+arm (Bimanual) GUI
+  template:
+    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_arm_hand.sh"
+    mode: '755'
+  vars:
+    project_name: "{{ project_name_input }}"
+    launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
+  when:
+    - bimanual|bool
+
+- name: Simulation icons
+  block:
+    - name: Right arm+hand sim icon
+      block:
+        - name: Create executable launch script for right arm+hand sim
+          template:
+            src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+            dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_right_arm_hand_sim.sh"
+            mode: '755'
+          vars:
+            project_name: "{{ project_name_input }}"
+            launch_file: "{{ launch_file_content_arm_hand_right_sim }}"
+
+        - name: Install desktop icon for launching everything for Shadow Arm+Hand Simulation
+          import_tasks: default-icon-server.yml
+          vars:
+            desktop_icon_png: "{{ right_arm_hand_picture }}"
+            launch_script: "shadow_launch_everything_arm_hand_right_sim.sh"
+            server_launch_script_var: "shadow_launch_right_arm_hand_sim.sh"
+            desktop_icon_name: "Simulation/Launch Shadow Right Arm+Hand Simulation"
+            template: templates/scripts/launch-everything-sim.j2
+            desktop_icon_path: "Simulation/Launch Shadow Right Arm+Hand Simulation"
+            launch_terminal: "false"
+      when:
+       - bimanual|bool or hand_side=="right"
+
+    - name: Left arm+hand sim icon
+      block:
+        - name: Create executable launch script for left arm+hand sim
+          template:
+            src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+            dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_left_arm_hand_sim.sh"
+            mode: '755'
+          vars:
+            project_name: "{{ project_name_input }}"
+            launch_file: "{{ launch_file_content_arm_hand_left_sim }}"
+
+        - name: Install desktop icon for launching everything for Shadow Left Arm+Hand Simulation
+          import_tasks: default-icon-server.yml
+          vars:
+            desktop_icon_png: "{{ left_arm_hand_picture }}"
+            launch_script: "shadow_launch_everything_arm_hand_left_sim.sh"
+            server_launch_script_var: "shadow_launch_left_arm_hand_sim.sh"
+            desktop_icon_name: "Simulation/Launch Shadow Left Arm+Hand Simulation"
+            template: templates/scripts/launch-everything-sim.j2
+            desktop_icon_path: "Simulation/Launch Shadow Left Arm+Hand Simulation"
+            launch_terminal: "false"
+      when:
+        - bimanual|bool or hand_side=="left"
+
+    - name: Bimanual arm+hand sim icon
+      block:
+        - name: Create executable launch script for bimanual arm+hand sim
+          template:
+            src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+            dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_bimanual_arm_hand_sim.sh"
+            mode: '755'
+          vars:
+            project_name: "{{ project_name_input }}"
+            launch_file: "{{ launch_file_content_arm_hand_bimanual_sim }}"
+
+        - name: Install desktop icon for launching everything for Shadow Bimanual Arm+Hand Simulation
+          import_tasks: default-icon-server.yml
+          vars:
+            desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
+            launch_script: "shadow_launch_everything_arm_hand_bimanual_sim.sh"
+            server_launch_script_var: "shadow_launch_bimanual_arm_hand_sim.sh"
+            desktop_icon_name: "Simulation/Launch Shadow Bimanual Arm+Hand Simulation"
+            template: templates/scripts/launch-everything-sim.j2
+            desktop_icon_path: "Simulation/Launch Shadow Bimanual Arm+Hand Simulation"
+            launch_terminal: "false"
+      when:
+        - bimanual|bool
+  when: sim_icon|bool
