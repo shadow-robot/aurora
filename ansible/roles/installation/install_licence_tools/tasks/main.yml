@@ -2,8 +2,9 @@
   apt_repository:
     repo: ppa:yubico/stable
     state: present
+  become: yes
 
-- name: Install common tools
+- name: Install yubikey software
   apt:
     name: "{{ packages }}"
     state: present
