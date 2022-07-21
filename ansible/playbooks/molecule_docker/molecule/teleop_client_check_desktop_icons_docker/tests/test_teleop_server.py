@@ -18,6 +18,6 @@ def test_icons_in_docker(host):
         'roslaunch-cyberglove'
         )
     for icon in icons:
-        assert host.file(desktop_path+icon+'.desktop').exists
+        assert host.file(f"{desktop_path}{icon}.desktop").exists
     for script in scripts:
-        assert host.file(script_path+script+'.sh').exists
+        assert host.file(f"{script_path}{script}.sh").exists
