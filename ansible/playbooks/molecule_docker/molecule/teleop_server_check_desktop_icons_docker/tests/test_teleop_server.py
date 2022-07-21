@@ -43,7 +43,6 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping',
         'Shadow Advanced Launchers/Launch NUC Container',
         'Shadow Demos/Close Right Hand',
-        'Shadow Demos/Biotacs Demo Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
