@@ -1,24 +1,8 @@
 ---
-- name: Ensures that Desktop folder exists
-  file:
-    path: "{{ desktop_path }}"
-    mode: '755'
-    state: directory
-
-- name: Ensures that shadow_hand_launcher directory exists
-  file:
-    path: "{{ shadow_hand_launcher_folder }}"
-    state: directory
-
-- name: Print Launcher Folder
-  debug:
-    msg: "{{ shadow_hand_launcher_folder }}"
-
 - name: Locating all files in files dir
   register: res
   find:
-    path: "{{ user_folder }}"
-    patterns: ".*"
+    path: "{{ shadow_hand_launcher_folder }}"
     hidden: true
     file_type: any
 
@@ -26,6 +10,8 @@
   debug:
     msg: "{{ res }}"
 
+
+    
 - name: Copy Teleop desktop icon
   copy: 
     src: ../../../common/resources/files/cyberglove_teleop.png
