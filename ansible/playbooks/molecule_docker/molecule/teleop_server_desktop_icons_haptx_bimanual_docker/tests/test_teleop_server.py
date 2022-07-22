@@ -35,20 +35,13 @@ def test_icons_in_docker(host):
         'Shadow NUC RQT',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch NUC Right ' +
-        'Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Launch NUC Left ' +
-        'Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Launch NUC Bimanual ' +
-        'Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand A Launch NUC ' +
-        'Right Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand B Launch NUC ' +
-        'Right Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand C Launch NUC ' +
-        'Right Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand D Launch NUC ' +
-        'Left Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Launch NUC Right Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Launch NUC Left Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Launch NUC Bimanual Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand A Launch NUC Right Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand B Launch NUC Right Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand C Launch NUC Right Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand D Launch NUC Left Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/4 - Launch Right Teleop GUI 8DOF',
         'Shadow Advanced Launchers/4 - Launch Left Teleop GUI 8DOF',
         'Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI 8DOF',

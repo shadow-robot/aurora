@@ -16,12 +16,9 @@ def test_icons_in_docker(host):
         'Launch Shadow Bimanual Teleop 8DOF Simulation',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch Right ' +
-        'Teleop Simulation 8DOF',
-        'Shadow Advanced Launchers/3 - Launch Left ' +
-        'Teleop Simulation 8DOF',
-        'Shadow Advanced Launchers/3 - Launch Bimanual ' +
-        'Teleop Simulation 8DOF',
+        'Shadow Advanced Launchers/3 - Launch Right Teleop Simulation 8DOF',
+        'Shadow Advanced Launchers/3 - Launch Left Teleop Simulation 8DOF',
+        'Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation 8DOF',
         'Shadow Advanced Launchers/4 - Launch Right HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Left HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Bimanual HaptX Mapping',
