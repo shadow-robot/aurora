@@ -68,7 +68,6 @@ def test_icons_in_docker(host):
         'shadow_glove_driver_right',
         'shadow_nuc_container',
         'close_right_hand',
-        'demo_right_hand_biotacs',
         'open_right_hand',
         'shadow_launcher_doc_exec',
         'shadow_launcher_system_monitor_exec',
