@@ -57,7 +57,6 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/5 - Launch Bimanual HaptX Mapping',
         'Shadow Advanced Launchers/Launch NUC Container',
         'Shadow Demos/Close Right Hand',
-        'Shadow Demos/Biotacs Demo Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow Demos/Close Left Hand',
         'Shadow Demos/Open Left Hand',
