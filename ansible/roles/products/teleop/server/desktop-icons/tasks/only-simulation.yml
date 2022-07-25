@@ -463,4 +463,3 @@
     demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
     bimanual: true
   when: demo_icons|bool
-=
