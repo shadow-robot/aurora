@@ -13,6 +13,7 @@
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
+      when: skip_molecule_task is not defined
 
     - name: Install licence tools
       include_role:
@@ -32,6 +33,7 @@
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
+      when: skip_molecule_task is not defined
         
     - name: Add lines in /etc/hosts in computer that is running Ansible
       blockinfile:

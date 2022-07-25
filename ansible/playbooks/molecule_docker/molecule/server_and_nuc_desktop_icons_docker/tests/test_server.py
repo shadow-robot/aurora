@@ -13,7 +13,7 @@ def test_chrony_server_installed(host):
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
     desktop_path = f'/home/{hostuser}/Desktop/'
-    script_path = f'/home/{hostuser}/.shadow_launcher_app/shadow_hand_launcher_dexterous_hand_real_hw/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app_dexterous_hand/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Right Hand',
@@ -22,12 +22,9 @@ def test_icons_in_docker(host):
         'Shadow NUC RQT',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch NUC Container ' +
-        'and Right Hand Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Launch NUC Container ' +
-        'and Left Hand Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Launch NUC Container ' +
-        'and Bimanual Hands Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
@@ -84,13 +81,13 @@ def test_icons_in_docker(host):
         'shadow_zero_force_mode_right',
         'shadow_zero_force_mode_left',
         'close_everything'
-        )
+        )    
     for icon in icons:
-        assert host.file(desktop_path+icon+'.desktop').exists
+        assert host.file(f"{desktop_path}{icon}.desktop").exists
+
     for script in scripts:
-        assert host.file(script_path+script+'.sh').exists
-    save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
+        assert host.file(f"{script_path}{script}.sh").exists
+    save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
-    hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
+    hand_manual_file = f"{desktop_path}Palm_EDC_User_Manual_1.7.pdf"
     assert host.file(hand_manual_file).exists
-    

@@ -13,6 +13,7 @@
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
+      when: skip_molecule_task is not defined
     
     - name: Install licence tools
       include_role:
@@ -96,6 +97,7 @@
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
+      when: skip_molecule_task is not defined
 
     - name: Install licence tools
       include_role:
@@ -123,6 +125,7 @@
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
+      when: skip_molecule_task is not defined
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -144,6 +147,7 @@
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
+      when: skip_molecule_task is not defined
 
     - name: check if cyberglove branch is provided
       when: cyberglove is defined and cyberglove| length > 0 and remote_teleop|bool

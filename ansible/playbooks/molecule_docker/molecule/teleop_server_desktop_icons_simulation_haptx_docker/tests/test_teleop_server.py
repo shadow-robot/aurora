@@ -8,7 +8,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
     desktop_path = f'/home/{hostuser}/Desktop/'
-    script_path = f'/home/{hostuser}/.shadow_launcher_app/shadow_hand_launcher_teleop_haptx/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app_teleop_haptx/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Right Teleop 8DOF Simulation',
@@ -16,12 +16,9 @@ def test_icons_in_docker(host):
         'Launch Shadow Bimanual Teleop 8DOF Simulation',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch Right ' +
-        'Teleop Simulation 8DOF',
-        'Shadow Advanced Launchers/3 - Launch Left ' +
-        'Teleop Simulation 8DOF',
-        'Shadow Advanced Launchers/3 - Launch Bimanual ' +
-        'Teleop Simulation 8DOF',
+        'Shadow Advanced Launchers/3 - Launch Right Teleop Simulation 8DOF',
+        'Shadow Advanced Launchers/3 - Launch Left Teleop Simulation 8DOF',
+        'Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation 8DOF',
         'Shadow Advanced Launchers/4 - Launch Right HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Left HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Bimanual HaptX Mapping',
@@ -61,11 +58,11 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        assert host.file(desktop_path+icon+'.desktop').exists
+        assert host.file(f"{desktop_path}{icon}.desktop").exists
+
     for script in scripts:
-        assert host.file(script_path+script+'.sh').exists
-    save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
+        assert host.file(f"{script_path}{script}.sh").exists
+    save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
-    hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
+    hand_manual_file = f"{desktop_path}Palm_EDC_User_Manual_1.7.pdf"
     assert host.file(hand_manual_file).exists
-    

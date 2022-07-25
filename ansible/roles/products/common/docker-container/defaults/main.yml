@@ -1,5 +1,5 @@
 ---
-container_name: "dexterous_hand_real_hw"
+container_name: "dexterous_hand"
 image: "public.ecr.aws/shadowrobot/dexterous-hand"
 tag: "noetic-release"
 full_image_name: "shadowrobot/dexterous-hand:noetic-release"

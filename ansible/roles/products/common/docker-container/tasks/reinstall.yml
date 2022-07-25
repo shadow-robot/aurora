@@ -8,7 +8,7 @@
   block:
     - name: Set variables
       set_fact: 
-        local_response_path: "{{ user_folder }}/.shadow_launcher_app/.response"
+        local_response_path: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/.response"
         container_response_path: "/usr/local/bin/.response"
     - name: Copy response file
       shell: "docker cp {{ container_name }}:{{ container_response_path }} {{ local_response_path }}"
