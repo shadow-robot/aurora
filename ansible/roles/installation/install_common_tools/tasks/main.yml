@@ -1,0 +1,11 @@
+- name: Install common tools
+  apt:
+    name: "{{ packages }}"
+    state: present
+    force_apt_get: yes
+  become: yes
+  vars:
+    packages:
+      - htop
+      - nano
+      - net-tools

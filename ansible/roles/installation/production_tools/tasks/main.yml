@@ -17,6 +17,9 @@
     packages:
       - gedit
       - "ros-{{ ros_version.stdout }}-rqt-multiplot"
+      - htop
+      - nano
+      - net-tools
   become: yes
 
 - name: Installing Multiplot Configs

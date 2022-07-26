@@ -51,6 +51,11 @@
   include_role:
     name: installation/chrony-server
 
+- name: Include installation/shadow_glove_driver role
+  include_role:
+    name: installation/shadow_glove_driver
+  when: glove == "shadow_glove" and real_glove|bool and skip_molecule_task is not defined
+
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
@@ -78,6 +83,139 @@
     term_4: "{{ term_width }}x{{ term_height }}+{{ term_x|int + term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
     term_5: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y }}"
     term_6: "{{ term_width }}x{{ term_height }}+{{ term_x|int + 2*term_width|int }}+{{ term_y|int + term_height|int +term_y_correction|int }}"
+
+- name: Custom shared volume for user Shadow Glove calibration and move calibration files.
+  block:
+  - name: Set shadow_glove_calibration_folder folder names
+    set_fact:
+      shadow_glove_calibration_folder: "{{ desktop_path }}/shadow_glove_calibration"
+      shadow_glove_calibration_inside_docker: "/home/user/shadow_glove_calibration"
+  
+  - name: Set shadow glove user calibration and boresight calibration folder names
+    set_fact:
+      user_shadow_glove_calibration_folder: "{{ shadow_glove_calibration_folder }}/user_calibration"
+      user_shadow_glove_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/user_calibration"
+      user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_hand_glove_internal/sr_hand_glove/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/shadow/share/sr_hand_glove/shadow_glove_user_calibration_defaults/."
+      boresight_calibration_folder: "{{ shadow_glove_calibration_folder }}/glove_boresight_calibration"
+      boresight_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/glove_boresight_calibration"
+      boresight_calibration_default_file_inside_docker: "/home/user/projects/shadow_robot/base/src/polhemus_ros_driver/config/{{ polhemus_type }}_calibration.yaml"
+
+  - name: Ensure {{ shadow_glove_calibration_folder }} folder exists
+    file:
+      path: "{{ shadow_glove_calibration_folder }}"
+      mode: '755'
+      state: directory
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }} folder exists
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}"
+      mode: '755'
+      state: directory
+
+  - name: Ensure {{ boresight_calibration_folder }} folder exists
+    file:
+      path: "{{ boresight_calibration_folder }}"
+      mode: '755'
+      state: directory
+
+  - name: Set custom shared volumes for docker container
+    set_fact:
+      custom_shared_volumes: 
+        - "{{ shadow_glove_calibration_folder }}:{{ shadow_glove_calibration_inside_docker }}"
+  
+  - name: Copying default files from non-binary docker container path {{ user_shadow_glove_calibration_defaults_inside_docker }} to the host folder {{ user_shadow_glove_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker }} {{ user_shadow_glove_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+    when: "'binary' not in image"
+
+  - name: Copying default files from binary docker container path {{ user_shadow_glove_calibration_defaults_inside_docker_binary }} to the host folder {{ user_shadow_glove_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ user_shadow_glove_calibration_defaults_inside_docker_binary }} {{ user_shadow_glove_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+    when: "'binary' in image"
+
+  - name: Check if the {{ polhemus_type }}_calibration.yaml exists on the host shared volume
+    stat: 
+      path: "{{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml"
+    register: boresight_calibration_file
+    ignore_errors: yes
+
+  - name: If the default calibration doesn't exist, copy the default boresight calibration file from docker container path {{ boresight_calibration_default_file_inside_docker }} to the host folder {{ boresight_calibration_folder }}
+    changed_when: false
+    shell: "docker cp  {{ container_name }}:{{ boresight_calibration_default_file_inside_docker }} {{ boresight_calibration_folder }}"
+    become: yes
+    ignore_errors: yes
+    when: not boresight_calibration_file.stat.exists
+
+  - name: Ensure {{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml has the right permissions
+    file:
+      path: "{{ boresight_calibration_folder }}/{{ polhemus_type }}_calibration.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Ensure {{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml has the right permissions
+    file:
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+      mode: '666'
+      state: file
+    become: true
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_right.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
+    register: current_calibration_file_right
+    ignore_errors: yes
+
+  - name: Check if the current_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+    register: current_calibration_file_left
+    ignore_errors: yes
+
+  - name: Check if the default_calibration_right.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+    register: default_calibration_file_right
+    ignore_errors: yes
+
+  - name: Check if the default_calibration_left.yaml exists on the host shared volume
+    stat: 
+      path: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+    register: default_calibration_file_left
+    ignore_errors: yes
+
+  - name: if current_calibration_right.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_right.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_right.yaml"
+      mode: '666'
+    when: not current_calibration_file_right.stat.exists and default_calibration_file_right.stat.exists
+    ignore_errors: yes
+
+  - name: if current_calibration_left.yaml doesn't exist but default does, copy default into it
+    copy:
+      src: "{{ user_shadow_glove_calibration_folder }}/default_calibration_left.yaml"
+      dest: "{{ user_shadow_glove_calibration_folder }}/current_calibration_left.yaml"
+      mode: '666'
+    when: not current_calibration_file_left.stat.exists and default_calibration_file_left.stat.exists
+    ignore_errors: yes
+
+  when: glove == "shadow_glove" and real_glove|bool and "'glove_' in product"
 
 - name: Include products/common/docker-container role
   include_role:

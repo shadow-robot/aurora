@@ -1,11 +1,11 @@
 ---
-container_name: "dexterous_hand_real_hw"
+container_name: "dexterous_hand"
 image: "public.ecr.aws/shadowrobot/dexterous-hand"
 tag: "noetic-release"
 demo_icons: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 upgrade_check: false
 sim_hand: false

@@ -6,9 +6,9 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_icons_in_docker(host):
-    desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
-    script_path = '/home/' + str(host.user().name) + \
-                  '/.shadow_launcher_app/shadow_hand_launcher/'
+    hostuser = str(host.user().name)
+    desktop_path = f'/home/{hostuser}/Desktop/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app_teleop_shadow_glove/shadow_hand_launcher/'
     icons = (
         'Teleop_Container_Launch',
         'Cyberglove_Launch'
@@ -18,6 +18,6 @@ def test_icons_in_docker(host):
         'roslaunch-cyberglove'
         )
     for icon in icons:
-        assert host.file(desktop_path+icon+'.desktop').exists
+        assert host.file(f"{desktop_path}{icon}.desktop").exists
     for script in scripts:
-        assert host.file(script_path+script+'.sh').exists
+        assert host.file(f"{script_path}{script}.sh").exists

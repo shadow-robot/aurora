@@ -3,7 +3,7 @@ image: "public.ecr.aws/shadowrobot/dexterous-hand" # Docker image name
 tag: "noetic-release" # Tag of the exact Docker hub image to pull
 product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
-container_name: "dexterous_hand_real_hw" # Name of the docker container
+container_name: "dexterous_hand" # Name of the docker container
 cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
 desktop_icon: true # Generates a desktop icon to launch the hand
@@ -12,7 +12,7 @@ optoforce: false # Specify if optoforce sensors are going to be used with a bran
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
-sim_icon: false # creates an extra icon that runs hand in simulation mode
+sim_icon: true # creates an extra icon that runs hand in simulation mode
 save_nuc_logs: true # enables saving ROS logs from control-computer to server
 demo_icons: true # Generates desktop icons to run demos
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
@@ -22,6 +22,10 @@ ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for t
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
+glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+real_glove: true # Whether a real physical glove is being used for hand control or not
+biotacs: true # Whether the hands will have biotac fingertips
+polhemus_type: "viper" # Allows the user to specify the polhemus type used (liberty or viper)
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
 router: false # Specify if a router is used between server and NUC
 scene_file: "" # Allows the user to override the scene_file used in GUI launch (only for arm+hand product) e.g. scene_file="\$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
