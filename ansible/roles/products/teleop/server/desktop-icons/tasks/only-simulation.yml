@@ -367,7 +367,6 @@
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=right"
-  when: not real_vive|bool
 
 - name: Install desktop icon for Launch Simulated Left Teleop Mock
   include_role:
@@ -379,7 +378,6 @@
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=left"
-  when: not real_vive|bool
 
 - name: Install desktop icon for Launch Simulated Bimanual Teleop Mock
   include_role:
@@ -391,7 +389,6 @@
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Bimanual Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=true"
-  when: not real_vive|bool
 
 - name: Create executable launch script for RQT Shadow Glove Calibration plugin
   template:
