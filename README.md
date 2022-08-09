@@ -491,7 +491,6 @@ The common role contains any common task or roles that is used repeatedly in man
 
 It contains the following roles:
 
- - cyberglove
  - demo-icons
  - docker-container
  - resources
@@ -557,11 +556,6 @@ It has to have a similar structure to this (let's say your playbook is called "m
       when: customer_key is defined and customer_key| length > 0
       set_fact:
         use_aws: true
-
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0
-      set_fact:
-        use_cyberglove: true
 
   roles:
     - {role: installation/docker}

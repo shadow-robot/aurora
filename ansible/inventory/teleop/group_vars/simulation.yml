@@ -3,7 +3,7 @@ image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus" # D
 tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
-glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
 container_name: "teleop_{{ glove }}" # Name of the docker container
 real_glove: false # Whether a real physical glove is being used for hand control or not
 real_vive: false # Whether a real Vive system is being used for arm control

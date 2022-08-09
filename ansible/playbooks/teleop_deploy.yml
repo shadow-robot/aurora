@@ -71,11 +71,6 @@
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
   pre_tasks:
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove | length > 0
-      set_fact:
-        use_cyberglove: true
-
     - name: check if customer_key is provided
       when: customer_key is defined and customer_key | length > 0
       set_fact:
@@ -127,11 +122,6 @@
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0
-      set_fact:
-        use_cyberglove: true
-    
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
@@ -158,11 +148,6 @@
       include_role:
         name: installation/install_common_tools
       when: skip_molecule_task is not defined
-
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0 and remote_teleop|bool
-      set_fact:
-        use_cyberglove: true
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:

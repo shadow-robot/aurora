@@ -16,7 +16,7 @@ bimanual: false # Specify if both left and right hands are used or not
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
-glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
 real_glove: true # Whether a real physical glove is being used for hand control or not
 biotacs: true # Whether the hands will have biotac fingertips
 polhemus_type: "viper" # Allows the user to specify the polhemus type used (liberty or viper)

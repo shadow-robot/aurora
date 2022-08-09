@@ -249,11 +249,6 @@
   include_role:
     name: products/common/save-logs-icons
 
-- name: Include products/common/cyberglove role
-  include_role:
-    name: products/common/cyberglove
-  when: use_cyberglove|bool
-
 - name: Include products/teleop/server/desktop-icons role
   include_role:
     name: products/teleop/server/desktop-icons

@@ -3,16 +3,14 @@ image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus" # D
 tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
-glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
 container_name: "teleop_{{ glove }}" # Name of the docker container
-cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-client should be installed
 openvpn_port: "1196" # Override this with another value if you want to use a different port
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
-remote_cyberglove: true # Determines if the cyberglove is run locally (server) or remotely (client)
 client_use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 bimanual: false # Determines if left arm and left hand should be set up
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container

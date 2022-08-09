@@ -202,14 +202,6 @@
   include_tasks: demohands-unimanual.yml
   when: demohand_icons|bool
 
-- name: Set GUI icon variables to standard values for cyberglove
-  set_fact:
-    launch_file_input_gui_right: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
-    launch_file_input_gui_left: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
-    launch_file_input_gui_bimanual: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
-    project_name_input_value: "sr_teleop_vive_cyberglove"
-  when: glove=="cyberglove"
-
 - name: Set GUI icon variables to standard values for haptx
   set_fact:
     launch_file_input_gui_right: "teleop_vive_haptx.launch vive:=false robot_model:={{ ur_robot_type }} require_pedal:=true biotacs:={{ biotacs | lower }} tracker_id:={{ ra_tracker_id }} hand_side_ad:=-r jog_arm:=true arm_servo:=false"

@@ -66,10 +66,6 @@
   include_role:
     name: products/common/save-logs-icons
 
-- name: Include products/teleop/server/desktop-icons role
-  include_role:
-    name: products/teleop/client/desktop-icons
-
 - name: Creating teleop-client setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2

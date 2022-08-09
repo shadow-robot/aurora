@@ -11,10 +11,6 @@ setup_directory: "/usr/local/bin"
 icon_folder: "{{ desktop_path }}/Shadow Advanced Launchers"
 launch_hand: false
 override_launch_hand: false
-use_cyberglove: false
-remote_cyberglove: false
-cyberglove: ""
-use_steamvr: false
 sim_hand: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "srhand.launch"
