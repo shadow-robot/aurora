@@ -56,7 +56,7 @@ By having the name of the container attached to where we store the icons and scr
 
 ## teleop_deploy ##
 
-If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
+If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC).
 
 Teleop_deploy can also be used fully in simulation, in which case only 1 computer is required (called "server" in this playbook)
 
@@ -104,7 +104,6 @@ Inventories correspond to fixed IP addresses as shown here:
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
 * [control-machine](ansible/inventory/teleop/group_vars/control_machine.yml)
-* [client](ansible/inventory/teleop/group_vars/client.yml)
 * [simulation](ansible/inventory/teleop/group_vars/simulation.yml)
 
 Run a playbook against one or more members of that group using the --limit tag:

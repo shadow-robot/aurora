@@ -42,11 +42,6 @@
     name: installation/nvidia-docker
   when: nvidia_docker | bool
 
-- name: Include installation/openvpn-server role
-  include_role:
-    name: installation/openvpn-server
-  when: use_openvpn|bool
-
 - name: Set chrony allowed network
   set_fact:
     chrony_allowed_network: "0/0"
