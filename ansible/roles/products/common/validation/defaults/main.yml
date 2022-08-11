@@ -16,7 +16,6 @@ boolean_variables:
   - demo_icons
   - upgrade_check
   - bimanual
-  - remote_teleop
   - demohand_icons
   - biotacs
   - allow_auto_reboot

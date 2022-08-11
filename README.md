@@ -73,12 +73,6 @@ bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory -
 ```
 name_of_inventory can be staging_a, staging_b, production or simulation.
 
-Or if you are using remote_teleop=true, they are staging_a_remote, staging_b_remote or production_remote.
-
-If no inventory name is provided, and if remote_teleop is not specified or false, then "production" will be automatically selected.
-
-If no inventory name is provided, and if remote_teleop=true, then "production_remote" will be automatically selected.
-
 Example for real robots with haptx bimanual teleop:
 
 ```bash
