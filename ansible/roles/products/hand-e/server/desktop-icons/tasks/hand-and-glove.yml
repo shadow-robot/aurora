@@ -123,6 +123,21 @@
     glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove"
 
+- name: Install the Shadow System Monitor desktop icon for Teleop
+  include_role:
+    name: products/common/web-gui-icon
+  vars:
+    desktop_icon_png: "system_monitor.png"
+    launch_script: "shadow_launcher_system_monitor_exec.sh"
+    local_website_port_var: '8081'
+    desktop_icon_name: "Shadow System Monitor"
+    desktop_icon_path: "Shadow System Monitor"
+    launch_terminal: "false"
+    start_container_var: "false"
+    start_server_command_var: ""
+    preconditions_var: "Launch Shadow Teleop icon"
+    live_website_url_var: ""
+
 - name: Simulation icons
   block:
     - name: Set Sim variables
