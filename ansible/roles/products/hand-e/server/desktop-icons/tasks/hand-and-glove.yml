@@ -217,4 +217,49 @@
             launch_terminal: "false"
       when:
         - bimanual|bool
+
+    - name: Set mock parameters based on glove if glove is not haptx or shadow_glove
+      set_fact:
+        project_name_value: "sr_teleop_mock"
+        launch_file_value: "sr_teleop_mock.launch"
+
+    - name: Install desktop icon for Launch Simulated Right Teleop Mock
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "vive_tracker.jpg"
+        launch_script: "shadow_mock_right.sh"
+        desktop_icon_name: "6 - Launch Simulated Right Teleop Mock"
+        desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
+        project_name_input: "{{ project_name_value }}"
+        launch_file_input: "{{ launch_file_value }} bimanual:=false side:=right"
+      when:
+        - bimanual|bool or hand_side=="right"
+
+    - name: Install desktop icon for Launch Simulated Left Teleop Mock
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "vive_tracker.jpg"
+        launch_script: "shadow_mock_left.sh"
+        desktop_icon_name: "6 - Launch Simulated Left Teleop Mock"
+        desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
+        project_name_input: "{{ project_name_value }}"
+        launch_file_input: "{{ launch_file_value }} bimanual:=false side:=left"
+      when:
+        - bimanual|bool or hand_side=="left"
+
+    - name: Install desktop icon for Launch Simulated Bimanual Teleop Mock
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "vive_tracker.jpg"
+        launch_script: "shadow_mock_bimanual.sh"
+        desktop_icon_name: "6 - Launch Simulated Bimanual Teleop Mock"
+        desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Bimanual Teleop Mock"
+        project_name_input: "{{ project_name_value }}"
+        launch_file_input: "{{ launch_file_value }} bimanual:=true"
+      when:
+        - bimanual|bool
+
   when: sim_icon|bool
