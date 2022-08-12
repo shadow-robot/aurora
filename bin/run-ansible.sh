@@ -228,6 +228,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     echo "Waiting for apt-get install file lock..."
     sleep 1
 done
+# Pip is broken at the moment and can't find base packages so a reinstall is required.
 curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 get-pip.py --force-reinstall
 sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
 pip3 install --user -U pip
