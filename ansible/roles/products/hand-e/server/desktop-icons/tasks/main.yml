@@ -310,7 +310,7 @@
             mode: '755'
           vars:
             project_name: "sr_robot_launch"
-            launch_file: "srhand.launch external_control_loop:=false sim:=true"
+            launch_file: "srhand.launch external_control_loop:=false sim:=true side:=right"
 
         - name: Install desktop icon for launching everything for Shadow Right Hand Simulation
           import_tasks: default-icon-server.yml
@@ -333,7 +333,7 @@
             mode: '755'
           vars:
             project_name: "sr_robot_launch"
-            launch_file: "srhand.launch external_control_loop:=false sim:=true"
+            launch_file: "srhand.launch external_control_loop:=false sim:=true side:=left"
 
         - name: Install desktop icon for launching everything for Shadow Left Hand Simulation
           import_tasks: default-icon-server.yml
