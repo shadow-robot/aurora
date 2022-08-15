@@ -215,7 +215,7 @@
     when: not current_calibration_file_left.stat.exists and default_calibration_file_left.stat.exists
     ignore_errors: yes
 
-  when: glove == "shadow_glove" and real_glove|bool and "'glove_' in product"
+  when: glove == "shadow_glove" and "'glove_' in product"
 
 - name: Include products/common/docker-container role
   include_role:
