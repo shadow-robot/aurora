@@ -1,3 +1,20 @@
 ---
-- name: Create hand config updater script (Server)
-  shell: "docker cp ../roles/products/common/hand_config/scripts/update_hand_config.sh {{ container_name }}:/bin/update_hand_config.sh"
+- name: Create temporary script file
+  file:
+    path: /tmp/update_hand_config.sh
+    state: touch
+    mode: u=rwx,g=rwx,o=rwx
+
+- name: Add content to script file
+  copy:
+    dest: /tmp/update_hand_config.sh
+    content: |
+      #!/usr/bin/env bash
+      # Used to update hand config.
+      cd ~/projects/shadow_robot/base_deps/src/sr_hand_config
+      git remote set-url origin https://github.com/shadow-robot/sr_hand_config
+      git pull  
+      cd ~
+
+- name: Move script folder over
+  shell: "docker cp /tmp/update_hand_config.sh {{ container_name }}:/bin/update_hand_config.sh"
