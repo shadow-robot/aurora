@@ -1,3 +1,3 @@
 ---
 - name: Create hand config updater script (Server)
-  shell: "docker cp {{ container_name }}:/bin/update_hand_config.sh products/common/hand_config/scripts/update_hand_config.sh"
+  shell: "docker cp ../roles/products/common/hand_config/scripts/update_hand_config.sh {{ container_name }}:/bin/update_hand_config.sh"
