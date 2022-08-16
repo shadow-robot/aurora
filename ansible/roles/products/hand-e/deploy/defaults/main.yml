@@ -15,14 +15,11 @@ use_aws: false
 launch_hand: false
 hand_side: "right"
 bimanual: false
-use_cyberglove: false
 right_hand_picture: hand-e.png
 left_hand_picture: hand-e-left.png
 bimanual_hands_picture: hand-e-bimanual.png
 ur_robot_type: "ur10e"
 override_launch_hand: false
-remote_cyberglove: false
-cyberglove: ""
 use_steamvr: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "srhand.launch"

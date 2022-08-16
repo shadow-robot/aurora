@@ -56,7 +56,7 @@ By having the name of the container attached to where we store the icons and scr
 
 ## teleop_deploy ##
 
-If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
+If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC).
 
 Teleop_deploy can also be used fully in simulation, in which case only 1 computer is required (called "server" in this playbook)
 
@@ -72,12 +72,6 @@ Open a terminal with Ctrl+Alt+T and run:
 bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-secure customer_key option1=value1 option2=value2 option3=value3
 ```
 name_of_inventory can be staging_a, staging_b, production or simulation.
-
-Or if you are using remote_teleop=true, they are staging_a_remote, staging_b_remote or production_remote.
-
-If no inventory name is provided, and if remote_teleop is not specified or false, then "production" will be automatically selected.
-
-If no inventory name is provided, and if remote_teleop=true, then "production_remote" will be automatically selected.
 
 Example for real robots with haptx bimanual teleop:
 
@@ -104,7 +98,6 @@ Inventories correspond to fixed IP addresses as shown here:
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
 * [control-machine](ansible/inventory/teleop/group_vars/control_machine.yml)
-* [client](ansible/inventory/teleop/group_vars/client.yml)
 * [simulation](ansible/inventory/teleop/group_vars/simulation.yml)
 
 Run a playbook against one or more members of that group using the --limit tag:
@@ -491,7 +484,6 @@ The common role contains any common task or roles that is used repeatedly in man
 
 It contains the following roles:
 
- - cyberglove
  - demo-icons
  - docker-container
  - resources
@@ -557,11 +549,6 @@ It has to have a similar structure to this (let's say your playbook is called "m
       when: customer_key is defined and customer_key| length > 0
       set_fact:
         use_aws: true
-
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0
-      set_fact:
-        use_cyberglove: true
 
   roles:
     - {role: installation/docker}

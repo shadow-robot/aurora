@@ -5,7 +5,6 @@ reinstall: false
 nvidia_docker: true
 glove: "shadow_glove"
 container_name: "teleop_{{ glove }}"
-cyberglove: ""
 use_aws: false
 use_openvpn: false
 ethercat_left_arm: "enx2"
@@ -14,8 +13,6 @@ user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 nuc_username: "user"
 setup_directory: "/usr/local/bin"
-use_cyberglove: false
-remote_cyberglove: false
 launch_hand: false
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"

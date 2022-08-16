@@ -10,19 +10,6 @@
     arm_y_separation_value: 1.5
   when: bimanual|bool and hand_side=="left"
 
-- name: Create executable launch script for hand and arm control loop (for cyberglove)
-  template:
-    src: templates/scripts/start-docker-container-nuc.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
-    mode: '755'
-  vars:
-    teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
-    ad_hand_side: "{{ hand_side_ad }}"
-  when: glove=="cyberglove"
-
 - name: Create executable launch script for hand and arm control loop (with haptx)
   template:
     src: templates/scripts/start-docker-container-nuc.j2

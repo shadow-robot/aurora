@@ -3,7 +3,7 @@ image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus" # D
 tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
-glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
 container_name: "teleop_{{ glove }}" # Name of the docker container
 real_glove: false # Whether a real physical glove is being used for hand control or not
 real_vive: false # Whether a real Vive system is being used for arm control
@@ -15,7 +15,6 @@ use_steamvr: false # Determines if SteamVR will launch inside the container crea
 demo_icons: true # Generates desktop icons to run demos
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
-remote_teleop: false # Flag to enable/disable remote_teleop software install
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
