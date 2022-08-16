@@ -1,0 +1,3 @@
+---
+- name: Create hand config updater script (Server)
+  shell: "docker cp {{ container_name }}:/bin/update_hand_config.sh ../scripts/update_hand_config.sh"

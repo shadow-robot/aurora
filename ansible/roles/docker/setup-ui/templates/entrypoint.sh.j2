@@ -37,7 +37,3 @@ echo 1 > /proc/sys/fs/suid_dumpable
 echo {{ new_docker_user_home }}/.ros/log/core_dumps/core_BOF_%e_EOF_%p.%h.%t > /proc/sys/kernel/core_pattern
 
 exec /usr/local/bin/gosu {{ new_docker_user }} "$@"
-
-roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config
-git pull  # Used to update hand config.
-cd ~
