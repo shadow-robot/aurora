@@ -215,7 +215,7 @@
     when: not current_calibration_file_left.stat.exists and default_calibration_file_left.stat.exists
     ignore_errors: yes
 
-  when: glove == "shadow_glove" and real_glove|bool and "'glove_' in product"
+  when: glove == "shadow_glove" and "'glove_' in product"
 
 - name: Include products/common/docker-container role
   include_role:
@@ -223,11 +223,6 @@
   vars:
     container_terminal_title: "Server Docker Container"
     term_args: "--geometry {{ term_1 }}"
-
-- name: Include products/common/cyberglove role
-  include_role:
-    name: products/common/cyberglove
-  when: use_cyberglove|bool
 
 - name: Include docker/aws role
   include_role:

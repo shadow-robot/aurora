@@ -7,9 +7,8 @@ ethercat_left_arm: "enx2" # Ethercat interface of the left arm
 ethercat_right_arm: "eth1" # Ethercat interface of the right arm
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Boolean to indicate whether ROS logs will be uploaded to AWS S3
-glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
 container_name: "teleop_{{ glove }}" # Name of the docker container
-cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
 nvidia_docker: false # Define if nvidia-container-toolkit is used (defaul is false)
