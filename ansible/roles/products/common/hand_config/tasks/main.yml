@@ -11,20 +11,20 @@
     content: |
       #!/usr/bin/env bash
       # Used to update hand config.
+      cd ~/projects/shadow_robot/base_deps/src/sr_hand_config
       git_branch=$(git rev-parse --abbrev-ref HEAD)
       if [[ `git status --porcelain` ]]; then
         file_changed=true
       else
         file_changed=false
       fi
-
+      
       if (( git_branch == "master" )) || (( file_changed == false )) then
-        cd ~/projects/shadow_robot/base_deps/src/sr_hand_config
         git remote set-url origin https://github.com/shadow-robot/sr_hand_config
         git pull  
-        cd ~
       else
         echo "You have custom changes in sr_hand_config, not pulling automatically."
+      cd ~
 
 - name: Move script folder over
   shell: "docker cp /tmp/update_hand_config.sh {{ container_name }}:/bin/update_hand_config.sh"
