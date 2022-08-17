@@ -19,11 +19,12 @@
         file_changed=false
       fi
       
-      if (( git_branch == "master" )) || (( file_changed == false )) then
+      if (( git_branch == "master" || file_changed == false )); then
         git remote set-url origin https://github.com/shadow-robot/sr_hand_config
         git pull  
       else
         echo "You have custom changes in sr_hand_config, not pulling automatically."
+      fi
       cd ~
 
 - name: Move script folder over
