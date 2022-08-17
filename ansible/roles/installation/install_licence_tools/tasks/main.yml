@@ -1,0 +1,21 @@
+- name: Add Yubico apt repositroy
+  apt_repository:
+    repo: ppa:yubico/stable
+    state: present
+  become: yes
+
+- name: Install yubikey software
+  apt:
+    name: "{{ packages }}"
+    state: present
+    force_apt_get: yes
+  become: yes
+  vars:
+    packages:
+      - yubikey-personalization
+
+- name: Install common python packages
+  pip:
+    name: python-yubico==1.3.3
+    state: present
+  become: yes

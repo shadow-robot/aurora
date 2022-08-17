@@ -4,6 +4,21 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Check response exists
+  block:
+    - name: Set variables
+      set_fact: 
+        local_response_path: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/.response"
+        container_response_path: "/usr/local/bin/.response"
+    - name: Copy response file
+      shell: "docker cp {{ container_name }}:{{ container_response_path }} {{ local_response_path }}"
+      ignore_errors: yes
+    - name: Check file exists
+      stat:
+        path: "{{ local_response_path }}"
+      register: response_file
+  when: "'binary' in image"
+
 - name: Check if /run/user/1000 folder exists in the docker image
   shell: "docker image history --no-trunc {{ full_image_name }} | grep XDG_RUNTIME_DIR | wc -l"
   register: xdg_check
@@ -29,12 +44,25 @@
   when: "nvidia_docker|bool and terminator and setup_script | length > 0"
   include_tasks: create-container/nvidia-with-setup-with-terminator.yml
 
+- name: Move response back to container
+  shell: "docker cp {{ local_response_path }} {{ container_name }}:{{ container_response_path }}"
+  when:
+    - "'binary' in image"
+    - response_file.stat.exists
+
 - name: if run/user/1000 doesn't exist, then create it inside the container
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "create_run_user_1000.sh"
     modify_script_commands: "sudo mkdir -p /run/user/1000;sudo chmod 0700 /run/user/1000;sudo chown 1000:1000 /run/user/1000;export XDG_RUNTIME_DIR=/run/user/1000"
   when: xdg_check.stdout=="0"
+
+- name: Create ssh folder inside the container
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "create_ssh_folder.sh"
+    modify_script_commands: "sudo mkdir -p /home/user/.ssh"
+  when: "'arm_' in product"
 
 - name: Checking out PRs and branches if pr_branches list has been specified
   block:
@@ -153,13 +181,23 @@
     - "'arm_' in product"
     - skip_molecule_task is not defined
 
+- name: Set documentation variables for arm and glove
+  set_fact:
+    documentation_repo: sr_dexterous_hand_glove_documentation
+    readthedocs_token: "{{ glove_hand_readthedocs_token }}"
+    documentation_product: dexterous-hand-and-glove
+  when:
+    - "'arm_' in product"
+    - skip_molecule_task is not defined
+
 - name: Update documentation inside the docker container for teleop or arm+hand
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
     modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
   when:
-    - "glove == 'haptx' or glove == 'shadow_glove' or 'arm_' in product"
+    - "glove == 'haptx' or glove == 'shadow_glove' or 'arm_' in product or 'glove_' in product"
+    - "product != 'hand_e' or product != 'hand_lite' or product != 'hand_extra_lite'"
     - skip_molecule_task is not defined
     - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
   ignore_errors: yes
@@ -175,3 +213,9 @@
     - skip_molecule_task is not defined
     - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
   ignore_errors: yes
+  
+- name: Pulling latest hand_configurations
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "pull_sr_hand_config.sh"
+    modify_script_commands: "if roscd sr_hand_config; then roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && git pull; else roscd sr_config && git remote set-url origin https://github.com/shadow-robot/sr-config && git pull; fi"

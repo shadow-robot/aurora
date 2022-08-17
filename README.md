@@ -1,5 +1,6 @@
 # Table of Contents
 - [Introduction](#introduction)
+- [Multiple Aurora Installations on one device](#multiple-aurora-installations-on-one-device)
 - [How to run](#how-to-run)
   * [teleop_deploy](#teleop_deploy)
   * [server_and_nuc_deploy](#server_and_nuc_deploy)
@@ -41,15 +42,21 @@ Aurora is an installation automation tool using Ansible. It uses Molecule for te
 
 For example, it's possible to use Aurora to install Docker, download the specified image and create a new container for you. It will also create a desktop icon to start the container and launch the hand.
 
-Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 2.10.4)
+Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 4.2.0)
 
-Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.2.1)
+Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.6.1)
+
+# Multiple Aurora Installations on one device #
+
+We can now easily have multiple Aurora setups on one device, you simply need to define a unique name for the variable container_name by adding "container_name=new_container_name" to your oneliner when running each Aurora oneliner. This is because Aurora creates icons and scripts in the folder ".shadow_launcher_app_{container_name}" and stores shortcut these icons at "Shadow Launcher {container_name}.desktop". 
+
+By having the name of the container attached to where we store the icons and scripts we can have more control over which icons get removed and reinstalled when rerunning Aurora, as we can just remove the folders that contain the containers name. This will leave the previous run's icons and scripts intact.
 
 # How to run #
 
 ## teleop_deploy ##
 
-If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC). If remote_teleop=true, then software will also be deployed on a third computer (called "client").
+If using real robots, teleop_deploy will deploy software on a laptop (called "server" in this playbook) and a control machine (NUC).
 
 Teleop_deploy can also be used fully in simulation, in which case only 1 computer is required (called "server" in this playbook)
 
@@ -57,31 +64,25 @@ To begin with, the teleop_deploy playbook checks the installation status of dock
 
 **How to run:**
 
-You will be asked for a docker_username and docker_password (for a Docker Hub account that has access to Shadow's private teleop Docker images), then a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
+You will first need to ensure that you have entered your customer_key into the one liner (used to pull the docker images), then a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
 
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-input docker_username --read-secure docker_password  option1=value1 option2=value2 option3=value3
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory name_of_inventory --read-secure customer_key option1=value1 option2=value2 option3=value3
 ```
 name_of_inventory can be staging_a, staging_b, production or simulation.
-
-Or if you are using remote_teleop=true, they are staging_a_remote, staging_b_remote or production_remote.
-
-If no inventory name is provided, and if remote_teleop is not specified or false, then "production" will be automatically selected.
-
-If no inventory name is provided, and if remote_teleop=true, then "production_remote" will be automatically selected.
 
 Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-input docker_username --read-secure docker_password reinstall=true bimanual=true use_aws=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove=haptx use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm=eno1 ethercat_left_arm=enx000ec6bfe175 
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory production --read-secure customer_key reinstall=true bimanual=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.0.23" glove="haptx" use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
 ```
 
-Example for simulated robots without a real vive system or real gloves:
+Example for simulated robots without a real vive system or real gloves: 
 
 ```bash
-bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation --read-input docker_username --read-secure docker_password reinstall=true upgrade_check=true image="shadowrobot/teleop-haptx-binary" tag="melodic-v0.0.1" glove="haptx" real_glove=false real_vive=false
+bash <(curl -Ls bit.ly/run-aurora) teleop_deploy --inventory simulation --read-secure customer_key reinstall=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.0.23" glove="haptx" real_glove=false real_vive=false
 ```
 
 Inventories correspond to fixed IP addresses as shown here:
@@ -92,11 +93,11 @@ Inventories correspond to fixed IP addresses as shown here:
 * [production](ansible/inventory/teleop/production)
 * [production_remote](ansible/inventory/teleop/production_remote)
 * [simulation](ansible/inventory/teleop/simulation)
+* [events_1](ansible/inventory/teleop/events_1)
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
 * [control-machine](ansible/inventory/teleop/group_vars/control_machine.yml)
-* [client](ansible/inventory/teleop/group_vars/client.yml)
 * [simulation](ansible/inventory/teleop/group_vars/simulation.yml)
 
 Run a playbook against one or more members of that group using the --limit tag:
@@ -107,7 +108,7 @@ Run a playbook against one or more members of that group using the --limit tag:
 For assigning input and secure input to playbook variables you can use the tags: --read-input var1, var2, var3 ... and --read-secure secure_var1, secure_var2, secure_var3 ... respectively
 
 * --read-input vars (vars = comma-separated list, e.g. --read-input docker_username - To allow aurora script to prompt for docker username)
-* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure docker_password - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
+* --read-secure secure_vars (secure_vars = comma-separated list, e.g. --read_secure customer_key - To allow aurora script to prompt for docker password, or e.g. --read-secure docker_password,customer_key - To allow aurora script to prompt for ROS logs upload key)
 
 **VAULT password:**
 
@@ -115,13 +116,13 @@ Shadow will supply you with the Vault password, which is needed to decrypt some 
 
 ## server_and_nuc_deploy ##
 
-For Hand E/G/H software deployments on a laptop (called "server" in this playbook) and a control machine (NUC)
+For Hand E software deployments on a laptop (called "server" in this playbook) and a control machine (NUC)
 
-To begin with, the server_and_nuc_deploy playbook checks the installation status of docker. If docker is not installed then a 
-new clean installation is performed. If the required image is private, 
-then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
-container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
-launches the hand.
+To begin with, the server_and_nuc_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. If the required image is private, then a valid customer_key is required. Then the specified docker image is pulled and a docker container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and launches the hand.
+
+Within the server_and_nuc playbook you can install 3 types of shadow products, hand_e on its own, hand_e and arm and hand_e and glove.
+The variables that you set when running the playbook determine the icons created. For example setting product=glove_hand_e uses the
+hand and glove product, or setting product=arm_hand_e will install the hand and arm product.
 
 **How to run:**
 
@@ -161,15 +162,30 @@ For assigning input and secure input to playbook variables you can use the tags:
 
 Shadow will supply you with the Vault password, which is needed to decrypt some credentials to access the NUC.
 
+
+### Hand and Arm ###
+Hand and Arm is one of the main use-cases of the server_and_nuc playbook. It requires more variables to be passed in then just using hand_e on its own. The main variables that need to be set are related to the arms themselves, mainly the variables ethercat_right/left_arm variable and arm_ip_right/left. But also the product type needs to be defined as product=arm_hand_e.
+
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --branch v2.1.5 --inventory production --read-secure customer_key reinstall=true bimanual=true product="arm_hand_e" image="public.ecr.aws/shadowrobot/dexterous-hand" tag="noetic-release" arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
+```
+
+### Hand and Glove ###
+Hand and Glove is another main product of the server_and_nuc playbook. This also takes in a new product type with product=glove_hand_e now, it also has extra parameters relating to the glove that you are using for the product. These variables are found in ansible/inventory/server_and_nuc/group_vars. The hand and glove specific variables are glove, real_glove, biotacs and polhemus_type. Another thing to denote about this product is that it's not based on the dexterous-hand image, but instead the shadow-dexterous-hand-glove image.
+
+Example:
+
+```bash
+bash <(curl -Ls bit.ly/run-aurora) server_and_nuc_deploy --branch v2.1.5 --inventory production --read-secure customer_key reinstall=true bimanual=true product="glove_hand_e" image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-dexterous-hand-glove" tag="noetic-release" glove="shadow_glove" biotacs=true polhemus_type="viper"
+```
+
 ## docker_deploy ##
 
-For Hand E/G/H software deployments on single laptop.
+For Hand E software deployments on single laptop.
 
-To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a 
-new clean installation is performed. If the required image is private, 
-then a valid Docker Hub account with pull credentials from Shadow Robot's Docker Hub is required. Then the specified docker image is pulled and a docker 
-container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and 
-launches the hand.
+To begin with, the docker_deploy playbook checks the installation status of docker. If docker is not installed then a new clean installation is performed. If the required image is private, then a valid customer_key is required. Then the specified docker image is pulled and a docker container is initialized. Finally, a desktop shortcut is generated. This shortcut starts the docker container and launches the hand.
 
 **How to run:**
 
@@ -226,7 +242,7 @@ bash <(curl -Ls bit.ly/run-aurora) install_software software=['docker','aws-cli'
 
 ## install_python3 ##
 
-This installs the default Python3 for Ubuntu 16.04 and 18.04 (Python 3.5.2). Details [here](https://github.com/shadow-robot/aurora/blob/master/ansible/playbooks/install_python3.yml). It also sets ansible_python_interpreter correctly for Python3 
+This installs the default Python3 for Ubuntu 18.04 and 20.04 (Python 3.8.10). Details [here](https://github.com/shadow-robot/aurora/blob/master/ansible/playbooks/install_python3.yml). It also sets ansible_python_interpreter correctly for Python3 
 
 **How to run:**
 
@@ -235,6 +251,7 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls bit.ly/run-aurora) install_python3
 ```
+
 # Development #
 
 The recommended way to develop code for this project is to pull a certain docker image ([Development Docker](#development-docker)) with a lot of tools already installed and open a container of this image, then clone the aurora GitHub repository inside it. It is not recommended to clone aurora directly on your local machine while you do development and testing.
@@ -467,7 +484,6 @@ The common role contains any common task or roles that is used repeatedly in man
 
 It contains the following roles:
 
- - cyberglove
  - demo-icons
  - docker-container
  - resources
@@ -496,7 +512,7 @@ The other way of having dependencies in Ansible is by using the meta folder and 
 
 ```bash
 dependencies:
-  - { role: installation/aws-cli }
+  - { role: installation/aws-cli-v2 }
 ```
 
 # Playbooks #
@@ -533,11 +549,6 @@ It has to have a similar structure to this (let's say your playbook is called "m
       when: customer_key is defined and customer_key| length > 0
       set_fact:
         use_aws: true
-
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0
-      set_fact:
-        use_cyberglove: true
 
   roles:
     - {role: installation/docker}
@@ -657,7 +668,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
 ---
 - name: Ensures that Desktop folder exists
   file:
-    path: "{{ user_folder }}/Desktop"
+    path: "{{ desktop_path }}"
     mode: '755'
     state: directory
 
@@ -681,7 +692,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
 - name: Create the tutorial desktop icon
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Launch_Tutorial_1.desktop"
+    dest: "{{ desktop_path }}/Launch_Tutorial_1.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: Launch_Tutorial_1
@@ -691,7 +702,7 @@ tutorial_launcher_folder: "{{ user_folder }}/.tutorial/tutorial_1"
     icon_file_name: tutorial_1_icon.png
 
 - name: Make Desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/Launch_Tutorial_1.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/Launch_Tutorial_1.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
@@ -724,7 +735,7 @@ lint: |
   flake8
 platforms:
   - name: tutorial_1_docker
-    image: public.ecr.aws/shadowrobot/aurora-test-ubuntu-docker:bionic
+    image: public.ecr.aws/shadowrobot/aurora-test-ubuntu-docker:focal
     groups:
       - docker_deploy
     volumes:

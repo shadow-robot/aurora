@@ -1,14 +1,12 @@
 ---
-container_name: "dexterous_hand_real_hw"
-image: "shadowrobot/dexterous-hand"
+container_name: "dexterous_hand"
+image: "public.ecr.aws/shadowrobot/dexterous-hand"
 tag: "noetic-release"
 full_image_name: "shadowrobot/dexterous-hand:noetic-release"
 launch_hand: false
-use_cyberglove: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
-cyberglove: "A-dg"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 reinstall: true
 container_exists: false
 container_running: false
@@ -27,6 +25,7 @@ documentation_product: ""
 shadow_glove_teleop_readthedocs_token: ""
 haptx_teleop_readthedocs_token: ""
 arm_hand_readthedocs_token: ""
+glove_hand_readthedocs_token: ""
 glove: ""
 common_shared_volumes:
   - /dev:/dev
@@ -41,3 +40,4 @@ private_github_ssh_key_base64: ""
 private_ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa_private"
 record_hand_data: "disabled"
 record_data: false
+pull_var: yes

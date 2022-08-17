@@ -1,68 +1,89 @@
 ---
-- name: Docker login
-  community.docker.docker_login:
-    username: "{{ docker_username }}"
-    password: "{{ docker_password }}"
-  when: docker_username is defined and docker_password is defined
-  become: yes
-
-- name: Reading path to Python repository with Docker package
-  command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""
-  register: python_packages_path_output
-  changed_when: python_packages_path_output.rc != 0
-
-- name: Set path to Docker Python package
-  set_fact:
-    python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
 
 - name: Set docker full image name
   set_fact:
     full_image_name: "{{ image }}:{{ tag }}"
 
-- name: Pull Docker image in progress
+- name: Pull Docker Image
   block:
-    - name: Pull Docker image
-      community.docker.docker_image:
-        name: "{{ full_image_name }}"
-        source: pull
-      environment:
-        PYTHONPATH: "{{ python_packages_path }}"
-      async: 50000
-      poll: 0
-      register: docker_pull_job
-      become: yes
-      changed_when: false
+  - name: Set variables
+    set_fact: 
+      aws_login: false
 
-    - name: Wait for Docker image pull to complete
-      async_status:
-        jid: "{{ docker_pull_job.ansible_job_id }}"
-      register: docker_pull_result
-      until: docker_pull_result.finished
-      retries: 10000
-      delay: 5
-      become: yes
-  rescue:
-    - name: Temporary error in docker pull. Automatically waiting 10 seconds before trying again. If it still fails, re-run the aurora script
-      wait_for:
-        timeout: 10
+  - name: Enable ECR login
+    set_fact:
+      aws_login: true
+    when: 
+      - '"dkr.ecr" in image or "public.ecr" in image'
+      - customer_key is defined
+      - skip_molecule_task is not defined
 
-    - name: Pull Docker image (attempt 2)
-      community.docker.docker_image:
-        name: "{{ full_image_name }}"
-        source: pull
-      environment:
-        PYTHONPATH: "{{ python_packages_path }}"
-      async: 50000
-      poll: 0
-      register: docker_pull_job2
-      become: yes
-      changed_when: false
+  - name: Login to AWS for ECR
+    include_role:
+      name: docker/ecr
+    when: aws_login
 
-    - name: Wait for Docker image pull to complete (attempt 2)
-      async_status:
-        jid: "{{ docker_pull_job2.ansible_job_id }}"
-      register: docker_pull_result2
-      until: docker_pull_result2.finished
-      retries: 10000
-      delay: 5
-      become: yes
+  - name: Docker login
+    community.docker.docker_login:
+      username: "{{ docker_username }}"
+      password: "{{ docker_password }}"
+    when: 
+      - docker_username is defined
+      - docker_password is defined
+      - not aws_login
+
+  - name: Reading path to Python repository with Docker package
+    command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""
+    register: python_packages_path_output
+    changed_when: python_packages_path_output.rc != 0
+
+  - name: Set path to Docker Python package
+    set_fact:
+      python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
+
+  - name: Pull Docker image in progress
+    block:
+      - name: Pull Docker image
+        community.docker.docker_image:
+          name: "{{ full_image_name }}"
+          source: pull
+          force_source: "{{ reinstall }}"
+        environment:
+          PYTHONPATH: "{{ python_packages_path }}"
+        async: 50000
+        poll: 0
+        register: docker_pull_job
+        changed_when: false
+
+      - name: Wait for Docker image pull to complete
+        async_status:
+          jid: "{{ docker_pull_job.ansible_job_id }}"
+        register: docker_pull_result
+        until: docker_pull_result.finished
+        retries: 10000
+        delay: 5
+    rescue:
+      - name: Temporary error in docker pull. Automatically waiting 10 seconds before trying again. If it still fails, re-run the aurora script
+        wait_for:
+          timeout: 10
+
+      - name: Pull Docker image (attempt 2)
+        community.docker.docker_image:
+          name: "{{ full_image_name }}"
+          source: pull
+          force_source: "{{ reinstall }}"
+        environment:
+          PYTHONPATH: "{{ python_packages_path }}"
+        async: 50000
+        poll: 0
+        register: docker_pull_job2
+        changed_when: false
+
+      - name: Wait for Docker image pull to complete (attempt 2)
+        async_status:
+          jid: "{{ docker_pull_job2.ansible_job_id }}"
+        register: docker_pull_result2
+        until: docker_pull_result2.finished
+        retries: 10000
+        delay: 5
+  when: not local_image

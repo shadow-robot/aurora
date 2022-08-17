@@ -1,0 +1,81 @@
+---
+- name: Install the Teleop Documentation desktop icon for HaptX
+  include_role:
+    name: products/common/web-gui-icon
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    local_website_port_var: '7070'
+    desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
+    launch_terminal: "false"
+    start_container_var: "true"
+    start_server_command_var: "roscd sr_teleop_haptx_documentation/html; python3 -m http.server {{ local_website_port_var }}"
+    preconditions_var: ""
+    live_website_url_var: "{{ haptx_teleop_readthedocs_link }}"
+  when: glove=="haptx"
+
+- name: Install the Teleop Documentation desktop icon for Shadow Glove Teleop
+  include_role:
+    name: products/common/web-gui-icon
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    local_website_port_var: '7070'
+    desktop_icon_name: "Teleop Documentation"
+    desktop_icon_path: "Teleop Documentation"
+    launch_terminal: "false"
+    start_container_var: "true"
+    start_server_command_var: "roscd sr_teleop_polhemus_documentation/html; python3 -m http.server {{ local_website_port_var }}"
+    preconditions_var: ""
+    live_website_url_var: "{{ shadow_glove_teleop_readthedocs_link }}"
+  when: glove=="shadow_glove"
+
+- name: Install the Shadow System Monitor desktop icon for Teleop
+  include_role:
+    name: products/common/web-gui-icon
+  vars:
+    desktop_icon_png: "system_monitor.png"
+    launch_script: "shadow_launcher_system_monitor_exec.sh"
+    local_website_port_var: '8081'
+    desktop_icon_name: "Shadow System Monitor"
+    desktop_icon_path: "Shadow System Monitor"
+    launch_terminal: "false"
+    start_container_var: "false"
+    start_server_command_var: ""
+    preconditions_var: "Launch Shadow Teleop icon"
+    live_website_url_var: ""
+
+- name: Create Shadow Demos folder
+  file:
+    path: "{{ desktop_path }}/Shadow Demos"
+    mode: '755'
+    state: directory
+
+- name: Create Shadow Advanced Launchers folder
+  file:
+    path: "{{ desktop_path }}/Shadow Advanced Launchers"
+    mode: '755'
+    state: directory
+
+- name: Install desktop icon for server container
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.png"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "1 - Launch Server Container"
+    desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
+    launch_terminal: "false"
+
+- name: Install desktop icon for launching ROSCORE
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-roscore.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "shadow_roscore.sh"
+    desktop_icon_name: "2 - Launch Server ROSCORE"
+    desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
+    launch_terminal: "false"

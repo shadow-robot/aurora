@@ -18,13 +18,6 @@
   become: yes
   changed_when: false
 
-- name: Removing aws-cli-requirements.txt local
-  file:
-    path: "/tmp/aws-cli-requirements.txt"
-    state: absent
-  become: yes
-  changed_when: false
-
 - name: Removing shadow-upload.sh from local
   file:
     path: "/tmp/shadow-upload.sh"

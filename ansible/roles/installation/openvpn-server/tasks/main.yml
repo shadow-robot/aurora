@@ -1,9 +1,0 @@
----
-- name: Check if OpenVPN server is already installed
-  stat: 'path=/etc/openvpn/server.key'
-  register: openvpn_check
-  ignore_errors: yes
-
-- name: Install OpenVPN server
-  import_tasks: install.yml
-  when: not openvpn_check.stat.exists|bool

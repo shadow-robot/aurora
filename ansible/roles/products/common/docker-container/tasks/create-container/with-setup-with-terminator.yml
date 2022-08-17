@@ -7,6 +7,10 @@
   set_fact:
     record_hand_data: "enabled"
   when: record_data
+
+- name: set pull varaible
+  set_fact: pull_var=no
+  when: local_image
   
 - name: Creating the container which will execute setup script when started inside a terminator window
   changed_when: false
@@ -15,7 +19,7 @@
     image: "{{ full_image_name }}"
     state: present
     recreate: yes
-    pull: yes
+    pull: "{{ pull_var|bool }}"
     env:
       verbose: "true"
       QT_X11_NO_MITSHM: "1"
@@ -36,5 +40,3 @@
     volumes: "{{ shared_volumes }}"
     command: "terminator {{ term_args }} -T '{{ container_terminal_title }}' -x bash -c '[[ -e {{ setup_directory }}/{{ setup_script }} ]] && {{ setup_directory }}/{{ setup_script }} && bash || bash'"
     container_default_behavior: compatibility
-  become: yes
-

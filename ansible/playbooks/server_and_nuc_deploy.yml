@@ -9,6 +9,16 @@
         name: products/common/validation
       vars:
         playbook: "server_and_nuc_deploy"
+    
+    - name: Install common tools
+      include_role:
+        name: installation/install_common_tools
+      when: skip_molecule_task is not defined
+
+    - name: Install licence tools
+      include_role:
+        name: installation/install_licence_tools
+      when: '"binary" in image'
   tasks:
     - name: Extract hostname from server
       set_fact:
@@ -20,6 +30,11 @@
   connection: local
   gather_facts: yes
   tasks:
+    - name: Install common tools
+      include_role:
+        name: installation/install_common_tools
+      when: skip_molecule_task is not defined
+        
     - name: Add lines in /etc/hosts in computer that is running Ansible
       blockinfile:
         dest: /etc/hosts
@@ -60,11 +75,16 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
-
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove | length > 0
+    
+    - name: Set container name for hand and arm
+      when: "'arm_' in product"
       set_fact:
-        use_cyberglove: true
+        container_name: "{{ container_name }}_arm"
+
+    - name: Set container name for hand and glove
+      when: "'glove_' in product"
+      set_fact:
+        container_name: "{{ container_name }}_glove"
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -77,8 +97,9 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/hand-e/server/deploy }
-    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
 
 - name: Install Hand software on control machine
   hosts: control_machine
@@ -88,10 +109,15 @@
       set_fact:
         use_aws: true
 
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove | length > 0
+    - name: Set container name for hand and arm
+      when: "'arm_' in product"
       set_fact:
-        use_cyberglove: true
+        container_name: "{{ container_name }}_arm"
+
+    - name: Set container name for hand and glove
+      when: "'glove_' in product"
+      set_fact:
+        container_name: "{{ container_name }}_glove"
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -104,6 +130,7 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/hand-e/control_machine/deploy }
 
 - name: Inform user for reboot

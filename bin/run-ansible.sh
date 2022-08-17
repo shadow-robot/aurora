@@ -240,8 +240,9 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     echo "Waiting for apt-get install file lock..."
     sleep 1
 done
-
-sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
+# Pip is broken at the moment and can't find base packages so a reinstall is required.
+curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
+sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
 pip3 install --user -U pip
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
@@ -268,7 +269,21 @@ if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"4.2.0"* 
     pip2 uninstall -y ansible-base ansible-core ansible
     sudo pip2 uninstall -y ansible-base ansible-core ansible
 fi
-pip3 install --user -r ansible/data/ansible/requirements.txt
+
+re="^Codename:[[:space:]]+(.*)"
+while IFS= read -r line; do
+    if [[ $line =~ $re ]]; then
+        codename="${BASH_REMATCH[1]}"
+    fi
+done < <(lsb_release -a 2>/dev/null)
+
+if [[ $codename == "bionic" ]]; then
+    pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
+else
+    pip3 install --user -r ansible/data/ansible/requirements.txt
+fi
+
+
 ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
@@ -298,11 +313,7 @@ elif [[ "${playbook}" = "teleop_deploy" ]]; then
         ansible_flags="${ansible_flags} --ask-vault-pass"
     fi
     if [[ "${aurora_inventory}" = "" ]]; then
-        if [[ $extra_vars == *"remote_teleop=true"* ]]; then
-            aurora_inventory="ansible/inventory/teleop/production_remote"
-        else
-            aurora_inventory="ansible/inventory/teleop/production"
-        fi
+        aurora_inventory="ansible/inventory/teleop/production"
     else
         aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
     fi

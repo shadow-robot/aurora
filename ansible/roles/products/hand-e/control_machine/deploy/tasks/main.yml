@@ -10,6 +10,11 @@
     chrony_server_ip: "{{ groups['server'][0] }}"
   when: groups['server'] is defined
 
+- name: Include installation/aws-cli role
+  include_role:
+    name: installation/aws-cli-v2
+  when: skip_molecule_task is not defined
+
 - name: Include installation/chrony-client role
   include_role:
     name: installation/chrony-client
@@ -104,3 +109,4 @@
   shell: "docker cp {{ user_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
   when: arm_ip_left!="" or arm_ip_right!=""
+

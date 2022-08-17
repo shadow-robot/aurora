@@ -1,0 +1,13 @@
+---
+  - name: get dekstop path
+    shell: xdg-user-dir DESKTOP
+    register: desktop_path_shell
+    when: skip_molecule_task is not defined
+
+  - name:
+    set_fact: desktop_path="{{ desktop_path_shell.stdout }}"
+    when: skip_molecule_task is not defined
+
+  - name:
+    set_fact: desktop_path="/home/{{ user }}/Desktop"
+    when: skip_molecule_task is defined

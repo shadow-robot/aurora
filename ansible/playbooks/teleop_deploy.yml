@@ -4,11 +4,26 @@
   connection: local
   gather_facts: yes
   pre_tasks:
+    - name: Unset arm_servo if haptx
+      when: "'haptx' in image"
+      set_fact:
+        arm_servo: false
+
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
       vars:
         playbook: "teleop_deploy"
+    
+    - name: Install common tools
+      include_role:
+        name: installation/install_common_tools
+      when: skip_molecule_task is not defined
+    
+    - name: Install licence tools
+      include_role:
+        name: installation/install_licence_tools
+      when: '"binary" in image'
   tasks:
     - name: Extract hostname from server
       set_fact:
@@ -56,11 +71,6 @@
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
   pre_tasks:
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove | length > 0
-      set_fact:
-        use_cyberglove: true
-
     - name: check if customer_key is provided
       when: customer_key is defined and customer_key | length > 0
       set_fact:
@@ -77,12 +87,27 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/teleop/server/deploy }
-    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
 
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
   pre_tasks:
+    - name: Unset arm_servo if haptx
+      when: "'haptx' in image"
+      set_fact:
+        arm_servo: false
+
+    - name: Install common tools
+      include_role:
+        name: installation/install_common_tools
+      when: skip_molecule_task is not defined
+
+    - name: Install licence tools
+      include_role:
+        name: installation/install_licence_tools
+      when: '"binary" in image'
 
     - name: check if customer_key is provided
       when: customer_key is defined and customer_key | length > 0
@@ -90,16 +115,17 @@
         use_aws: true
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/teleop/server/deploy }
-    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal'}
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
 
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0
-      set_fact:
-        use_cyberglove: true
+    - name: Install common tools
+      include_role:
+        name: installation/install_common_tools
+      when: skip_molecule_task is not defined
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -112,28 +138,8 @@
       become: yes
 
   roles:
+    - { role: products/common/get-system-variables }
     - { role: products/teleop/control_machine/deploy }
-
-- name: Install Teleop software on Ubuntu teleop client laptop
-  hosts: client
-  pre_tasks:
-    - name: check if cyberglove branch is provided
-      when: cyberglove is defined and cyberglove| length > 0 and remote_teleop|bool
-      set_fact:
-        use_cyberglove: true
-
-    - name: Add IP address of all hosts to all hosts
-      lineinfile:
-        dest: /etc/hosts
-        regexp: '^{{ item }}.*$'
-        line: "{{ item }} {{ hostvars[item].ansible_host }}"
-        state: present
-      when: hostvars[item].ansible_host is defined and remote_teleop|bool
-      with_items: "{{ groups.all }}"
-      become: yes
-
-  roles:
-    - { role: products/teleop/client/deploy , when: remote_teleop|bool }
 
 - name: Inform user for reboot
   hosts: 127.0.0.1

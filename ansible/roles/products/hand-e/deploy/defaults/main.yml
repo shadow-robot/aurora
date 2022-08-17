@@ -1,11 +1,11 @@
 ---
-container_name: "dexterous_hand_real_hw"
-image: "shadowrobot/dexterous-hand"
+container_name: "dexterous_hand"
+image: "public.ecr.aws/shadowrobot/dexterous-hand"
 tag: "noetic-release"
 demo_icons: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 upgrade_check: false
 sim_hand: false
@@ -15,17 +15,15 @@ use_aws: false
 launch_hand: false
 hand_side: "right"
 bimanual: false
-use_cyberglove: false
 right_hand_picture: hand-e.png
 left_hand_picture: hand-e-left.png
 bimanual_hands_picture: hand-e-bimanual.png
 ur_robot_type: "ur10e"
 override_launch_hand: false
-remote_cyberglove: false
-cyberglove: ""
 use_steamvr: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "srhand.launch"
 pr_branches: ""
 record_data: false
 uses_autodetect: False
+hand_side_ad: ""

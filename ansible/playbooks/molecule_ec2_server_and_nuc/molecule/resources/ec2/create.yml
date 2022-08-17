@@ -75,24 +75,26 @@
       when: keypair.changed
 
     - name: Create molecule instance(s)
-      amazon.aws.ec2:
+      amazon.aws.ec2_instance:
         key_name: "{{ keypair_name }}"
-        image: "{{ item.image }}"
+        image:
+          id: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
         vpc_subnet_id: "{{ item.vpc_subnet_id }}"
         region: "{{ ec2_region }}"
-        group: "{{ security_group_name }}"
-        instance_tags:
-          instance: "{{ item.name }}"
+        security_group: "{{ security_group_name }}"
+        instance_ids: "{{ item.name }}"
         wait: true
-        assign_public_ip: true
-        exact_count: 1
-        count_tag:
-          instance: "{{ item.name }}"
+        network:
+          assign_public_ip: true
         volumes:
           - device_name: /dev/sda1
-            volume_size: 50
-            delete_on_termination: true
+            ebs:
+              volume_size: 50
+              delete_on_termination: true
+        tags:
+          TagSpecifications: "{{ item.name }}"
+        state: "running"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
@@ -111,9 +113,9 @@
     - name: Populate instance config dict
       set_fact:
         instance_conf_dict: {
-          'instance': "{{ item.instances[0].tags.instance }}",
+          'instance': "{{ item.instances[0].tags.TagSpecifications }}",
+          'address': "{{ item.instances[0].public_ip_address }}",
           'region': "{{ ec2_region }}",
-          'address': "{{ item.instances[0].public_ip }}",
           'user': "{{ ssh_user }}",
           'port': "{{ ssh_port }}",
           'identity_file': "{{ keypair_path }}",

@@ -1,9 +1,9 @@
 ---
-image: "shadowrobot/dexterous-hand" # Docker image name
+image: "public.ecr.aws/shadowrobot/dexterous-hand" # Docker image name
 tag: "noetic-release" # Tag of the exact Docker hub image to pull
 product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
-container_name: "dexterous_hand_real_hw" # Name of the docker container
+container_name: "dexterous_hand" # Name of the docker container
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
@@ -16,11 +16,16 @@ bimanual: false # Specify if both left and right hands are used or not
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
+real_glove: true # Whether a real physical glove is being used for hand control or not
+biotacs: true # Whether the hands will have biotac fingertips
+polhemus_type: "viper" # Allows the user to specify the polhemus type used (liberty or viper)
 remote_bag_user: "shadowop"
 remote_bag_storage_IP: "10.5.10.59"
 remote_bag_storage_location: "/volume1/ros_bags"
 record_data: false
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
+local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435

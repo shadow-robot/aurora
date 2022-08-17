@@ -2,7 +2,8 @@
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 save_latest_ros_logs_folder: "{{ user_folder }}/.shadow_save_log_app/save_latest_ros_logs"
-container_name: "dexterous_hand_real_hw"
+desktop_path: "{{ user_folder }}/Desktop"
+container_name: "dexterous_hand"
 use_aws: false
 nuc_username: ""
 nuc_address: ""

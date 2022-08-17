@@ -1,7 +1,7 @@
 ---
 - name: Ensures that Desktop folder exists
   file:
-    path: "{{ user_folder }}/Desktop"
+    path: "{{ desktop_path }}"
     mode: '755'
     state: directory
 
@@ -26,7 +26,7 @@
   when: not use_aws|bool
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Shadow ROS Logs Saver.desktop"
+    dest: "{{ desktop_path }}/Shadow ROS Logs Saver.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "Shadow ROS Logs Saver"
@@ -37,7 +37,7 @@
     start_terminal: "false"
 
 - name: Make ROS Logs Saver desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/Shadow ROS Logs Saver.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/Shadow ROS Logs Saver.desktop" "metadata::trusted" yes
   when:
     - not use_aws|bool
     - ansible_distribution|string == 'Ubuntu'
@@ -48,7 +48,7 @@
   when: use_aws|bool
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/Shadow ROS Logs Saver and Uploader.desktop"
+    dest: "{{ desktop_path }}/Shadow ROS Logs Saver and Uploader.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "Shadow ROS Logs Saver and Uploader"
@@ -59,7 +59,7 @@
     start_terminal: "false"
 
 - name: Make ROS Logs Saver and Uploader desktop icon trusted
-  shell: gio set "{{ user_folder }}/Desktop/Shadow ROS Logs Saver and Uploader.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/Shadow ROS Logs Saver and Uploader.desktop" "metadata::trusted" yes
   when:
     - use_aws|bool
     - ansible_distribution|string == 'Ubuntu'

@@ -1,11 +1,11 @@
 ---
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
-container_name: "teleop"
+glove: "shadow_glove"
+container_name: "teleop_{{ glove }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 setup_directory: ""
 nuc_username: "user"
-remote_cyberglove: false
 sim_icon: false
 upgrade_script: false
 server_ip: "10.9.11.1"
@@ -17,7 +17,7 @@ teleop_glove_right: "hand-e.png"
 teleop_glove_left: "hand-e-left.png"
 teleop_glove_bimanual: "hand-e-bimanual.png"
 steam_binding: "steam_binding.jpg"
-steam_vive_binding_url: http://127.0.0.1:8998/dashboard/controllerbinding.html
+steam_vive_binding_url: http://127.0.0.1:27062/dashboard/controllerbinding.html
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
 initial_z_value: 0.7551
@@ -34,3 +34,5 @@ glove_driver_type: "right"
 glove_driver_value: "right"
 ra_tracker_id: 0
 la_tracker_id: 1
+remote_icons: false
+hand_side_ad: ""

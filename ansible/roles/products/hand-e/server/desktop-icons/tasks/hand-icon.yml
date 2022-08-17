@@ -18,11 +18,12 @@
     arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "{{ arm_ctrl_value }}"
     arm_payload_mass: "{{ arm_mass_payload }}"
+    ad_hand_side: "{{ hand_side_ad }}"
 
 - name: Create desktop icon for hand
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon.j2
-    dest: "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop"
+    dest: "{{ desktop_path }}/{{ desktop_icon_path }}.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: "{{ desktop_icon_name }}"
@@ -33,7 +34,7 @@
     start_terminal: "false"
 
 - name: Make desktop icon for hand trusted
-  shell: gio set "{{ user_folder }}/Desktop/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'

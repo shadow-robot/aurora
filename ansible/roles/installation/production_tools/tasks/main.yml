@@ -1,0 +1,35 @@
+---
+# Production tools
+
+- name: Update package lists
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Get ROS version
+  shell: "rosversion -d"
+  register: ros_version
+
+- name: Install needed libs
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - gedit
+      - "ros-{{ ros_version.stdout }}-rqt-multiplot"
+      - htop
+      - nano
+      - net-tools
+  become: yes
+
+- name: Installing Multiplot Configs
+  git:
+    repo: https://github.com/shadow-robot/sr_multiplot_config.git
+    dest: /home/user/sr_multiplot_config
+    depth: 1
+
+- name: Setting permissions 
+  file:
+    path: /home/user/sr_multiplot_config
+    owner: user
+    group: user

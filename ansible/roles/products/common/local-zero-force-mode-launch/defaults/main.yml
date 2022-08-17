@@ -1,21 +1,19 @@
 ---
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+container_name: "dexterous_hand"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 right_hand_picture: hand-e.png
 left_hand_picture: hand-e-left.png
 bimanual_hands_picture: hand-e-bimanual.png
 product: hand_e
-container_name: "dexterous_hand_real_hw"
 setup_directory: "/usr/local/bin"
-icon_folder: "{{ user_folder }}/Desktop/Shadow Advanced Launchers"
+icon_folder: "{{ desktop_path }}/Shadow Advanced Launchers"
 launch_hand: false
 override_launch_hand: false
-use_cyberglove: false
-remote_cyberglove: false
-cyberglove: ""
 use_steamvr: false
 sim_hand: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "sr_hardware_control_loop.launch pwm_control:=false hand_ctrl:=false arm:=false"
 uses_autodetect: False
+hand_side_ad: ""

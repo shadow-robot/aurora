@@ -1,20 +1,18 @@
 ---
-image: "shadowrobot/shadow-teleop-polhemus"
+image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus"
 tag: "noetic-night-build"
 reinstall: false
-container_name: "teleop"
+glove: "shadow_glove"
+container_name: "teleop_{{ glove }}"
 bimanual: false
 ethercat_left_arm: "enx2"
 ethercat_right_arm: "eth1"
 allow_auto_reboot: true
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app/shadow_hand_launcher"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 use_aws: false
-glove: "shadow_glove"
-use_cyberglove: false
-cyberglove: ""
 launch_hand: false
 server_hostname: "SERVER"
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"

@@ -1,0 +1,150 @@
+---
+- name: Does .aws folder exist
+  stat: path={{ user_folder }}/.aws
+  register: aws_folder
+
+- name: Copy .aws folder
+  command: "cp -r {{ user_folder }}/.aws {{ user_folder }}/.aws_copy"
+  when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+
+- name: Choosing which API call to make.
+  block:
+    - name: Choose Polhemus
+      set_fact:
+        api_url: 5bo8nfkjk0
+        region: eu-west-2
+      when:
+      - '"polhemus" in image'
+      - '"binary" in image'    
+    
+    - name: Choose Haptx
+      set_fact:
+        api_url: 5hmltg5th3
+        region: eu-west-2
+      when:
+      - '"haptx" in image'
+      - '"binary" in image'
+
+    - name: Choose Hand and Glove
+      set_fact:
+        api_url: mfuauxojf7
+        region: eu-west-2
+      when:
+      - '"hand-glove" in image'
+      - '"binary" in image'
+
+    - name: Choose Production
+      set_fact:
+        api_url: wogk2adb24
+        region: eu-west-2
+      when:
+      - '"binary" not in image'
+      - '"public.ecr" not in image'
+    
+    - name: Choose Public
+      set_fact:
+        api_url: nxmol7pvn3
+        region: us-east-1
+      when:
+      - '"public.ecr" in image'
+
+- name: Login to AWS block
+  block:
+    - name: Gather access key and secret key
+      uri:
+        url: "https://{{ api_url }}.execute-api.eu-west-2.amazonaws.com/prod?customer_key={{ customer_key }}"
+        method: GET
+        body_format: json
+        status_code: [200, 202]
+        return_content: yes
+        headers:
+          Content-Type: application/json
+          x-api-key: "{{ customer_key }}"
+      no_log: True
+      register: request_result
+
+    - name: Local Decryption
+      block:
+      - name: Decrypt results
+        command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        no_log: True
+        register: decrypt_results
+
+      - name: Convert stdout to json
+        set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
+        no_log: True
+      
+      when: inventory_hostname not in groups['control_machine'] | default([])
+      
+    - name: Decode message on NUC
+      block: 
+      - name: Gather decrypt script
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
+
+      - name: Run decrypt script
+        command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        no_log: True
+        register: decrypt_results_nuc
+      
+      - name: Convert stdout to json
+        set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
+        no_log: True
+        
+      when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+
+    - name: Configure AWS CLI
+      expect:
+        command: aws configure
+        responses:
+          AWS Access Key ID: "{{ json_results.access_key }}"
+          AWS Secret Access Key: "{{ json_results.secret_key }}"
+          Default region name: "{{ region }}"
+          Default output format: ""
+
+    - name: Login to Docker Hub using AWS CLI (PUBLIC)
+      shell: "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot"
+      when: '"public.ecr" in image'
+
+    - name: Login to Docker Hub using AWS CLI (PRIVATE)
+      shell: "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com"
+      when: '"dkr.ecr" in image'
+  rescue:
+    - name: Revert .aws folder
+      block:
+        - name: Remove .aws folder
+          file:
+            state: absent
+            path: "{{ user_folder }}/.aws"
+          when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+
+        - name: Copy back .aws folder
+          command: "cp -r {{ user_folder }}/.aws_copy {{ user_folder }}/.aws"
+          when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+
+        - name: Remove .aws_copy
+          file:
+            state: absent
+            path: "{{ user_folder }}/.aws_copy"
+          when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+        
+        - name: Failure message
+          debug:
+            msg: Playbook ended because of an error when connecting to AWS.
+
+        - name: End Playbook
+          meta: end_play
+
+- name: Remove .aws folder
+  file:
+    state: absent
+    path: "{{ user_folder }}/.aws"
+
+- name: Copy back .aws folder
+  command: "cp -r {{ user_folder }}/.aws_copy {{ user_folder }}/.aws"
+  when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
+
+- name: Remove .aws_copy
+  file:
+    state: absent
+    path: "{{ user_folder }}/.aws_copy"
+  when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
