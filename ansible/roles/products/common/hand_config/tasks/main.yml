@@ -21,7 +21,7 @@
 
       if [[ $file_changed == false ]]; then
         git remote set-url origin https://github.com/shadow-robot/sr_hand_config
-        git fetch -f origin master
+        git fetch -f origin master:master
       else
         echo "You have custom changes in sr_hand_config, not pulling automatically."
       fi
