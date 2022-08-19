@@ -19,19 +19,16 @@
         file_changed=false
       fi
       
-      git_name=$(git config --global user.name)
-      git_email=$(git config --global user.email)
-      echo "first names $git_name $git_email"
       git remote set-url origin https://github.com/shadow-robot/sr_hand_config
       if [[ $git_branch == "master" && $file_changed == false ]]; then
         git pull
       elif [[ $git_branch != "master" && $file_changed == false ]]; then
-        echo "Getting the latest changes to master branch then switching back to $git_branch"
+        echo "Getting the latest changes to master branch then switching back to branch $git_branch"
         git checkout master
         git pull
         git checkout $git_branch
       else
-        echo "You have un-commited changes in sr_hand_config, not pulling automatically."
+        echo "You have un-commited changes in sr_hand_config, not pulling any changes automatically."
       fi
       cd ~
 
