@@ -30,8 +30,8 @@
           git config user.email "automaticpull@shadowrobot.com"
           git config user.name "automatedpull"
 
-          git_name=$(git config --global user.name)
-          git_email=$(git config --global user.email)
+          git_name=$(git config user.name)
+          git_email=$(git config user.email)
           echo "set names $git_name $git_email"
         fi
         git fetch -f origin master:master
@@ -40,8 +40,8 @@
           git config user.email ""
           git config user.name ""
 
-          git_name=$(git config --global user.name)
-          git_email=$(git config --global user.email)
+          git_name=$(git config user.name)
+          git_email=$(git config user.email)
           echo "final names $git_name $git_email"
         fi
       else
