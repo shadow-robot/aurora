@@ -123,7 +123,7 @@
     glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove"
 
-- name: Install the Shadow System Monitor desktop icon for Teleop
+- name: Install the Shadow System Monitor desktop icon for Hand and Glove
   include_role:
     name: products/common/web-gui-icon
   vars:
@@ -135,7 +135,7 @@
     launch_terminal: "false"
     start_container_var: "false"
     start_server_command_var: ""
-    preconditions_var: "Launch Shadow Teleop icon"
+    preconditions_var: "Launch Shadow Hand and Glove icon"
     live_website_url_var: ""
 
 - name: Simulation icons

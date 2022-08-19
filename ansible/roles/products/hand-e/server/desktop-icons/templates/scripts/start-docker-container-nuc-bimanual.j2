@@ -20,6 +20,6 @@ sleep 2
 docker start ${CONTAINER}
 echo "Starting the container..."
 sleep 3
-docker exec --user user ${CONTAINER} bash -c "export ROSCONSOLE_FORMAT='"'[${severity}](${node}): [${time}] ${message}'"';export ROSCONSOLE_STDOUT_LINE_BUFFERED=1;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;sr_hand_autodetect roslaunch sr_robot_launch sr_bimanual_hardware_control_loop.launch arms:=false robot_model:=${UR_TYPE} arm_payload_mass:=${ARM_PAYLOAD_MASS} 2> >(tee -a /home/user/.ros/log/stderr.log)"
+docker exec --user user ${CONTAINER} bash -c "export ROSCONSOLE_FORMAT='"'[${severity}](${node}): [${time}] ${message}'"';export ROSCONSOLE_STDOUT_LINE_BUFFERED=1;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;/bin/update_hand_config.sh;sr_hand_autodetect roslaunch sr_robot_launch sr_bimanual_hardware_control_loop.launch arms:=false robot_model:=${UR_TYPE} arm_payload_mass:=${ARM_PAYLOAD_MASS} 2> >(tee -a /home/user/.ros/log/stderr.log)"
 ENDSSH
 sleep infinity

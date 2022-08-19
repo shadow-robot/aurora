@@ -270,6 +270,11 @@
   changed_when: false
   when: skip_molecule_task is not defined
 
+- name: Include products/common/hand_config role
+  include_role:
+    name: products/common/hand_config
+  when: skip_molecule_task is not defined
+
 - name: Creating server setup script
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2

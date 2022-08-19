@@ -1,7 +1,7 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
-
+/bin/update_hand_config.sh
 if {{ use_steamvr | lower }}; then
     cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &> /dev/null 2>&1
 fi
