@@ -32,6 +32,12 @@
 
           echo $(git config user.name) $(git config user.email)
         fi
+        if [[ $git_name == "" && $git_email == "" ]]; then
+            git config user.email "$git_email"
+            git config user.name "$git_name"
+
+            echo $(git config user.name) $(git config user.email)
+        fi
         git fetch -f origin master:master
         git pull -f --no-edit -s recursive origin master --allow-unrelated-histories
         if [[ $git_name == "" && $git_email == "" ]]; then
