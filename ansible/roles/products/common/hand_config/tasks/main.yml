@@ -32,7 +32,7 @@
 
           echo $(git config user.name) $(git config user.email)
         fi
-        if [[ $git_name == "" && $git_email == "" ]]; then
+        if [[ $git_name != "" && $git_email != "" ]]; then
             git config user.email "$git_email"
             git config user.name "$git_name"
 
