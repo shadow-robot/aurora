@@ -30,9 +30,7 @@
           git config user.email "automaticpull@shadowrobot.com"
           git config user.name "automatedpull"
 
-          git_name=$(git config user.name)
-          git_email=$(git config user.email)
-          echo "set names $git_name $git_email"
+          echo $(git config user.name) $(git config user.email)
         fi
         git fetch -f origin master:master
         git pull -f --no-edit -s recursive origin master
@@ -40,9 +38,7 @@
           git config user.email ""
           git config user.name ""
 
-          git_name=$(git config user.name)
-          git_email=$(git config user.email)
-          echo "final names $git_name $git_email"
+          echo $(git config user.name) $(git config user.email)
         fi
       else
         echo "You have un-commited changes in sr_hand_config, not pulling automatically."
