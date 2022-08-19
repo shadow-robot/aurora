@@ -135,7 +135,7 @@
     launch_terminal: "false"
     start_container_var: "false"
     start_server_command_var: ""
-    preconditions_var: "Launch Shadow Teleop icon"
+    preconditions_var: "Launch Shadow Hand and Glove icon"
     live_website_url_var: ""
 
 - name: Simulation icons
