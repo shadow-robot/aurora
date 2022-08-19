@@ -23,8 +23,12 @@
       if [[ $git_branch == "master"  && $file_changed == false ]]; then
         git pull
       elif [[ $git_branch != "master"  && $file_changed == false ]]; then
+        git config user.email "automaticpull@shadowrobot.com"
+        git config user.name "automatedpull"
         git fetch -f origin master:master
         git pull origin master --allow-unrelated-histories
+        git config user.email ""
+        git config user.name ""
       else
         echo "You have un-commited changes in sr_hand_config, not pulling automatically."
       fi
