@@ -26,7 +26,7 @@
         git config user.email "automaticpull@shadowrobot.com"
         git config user.name "automatedpull"
         git fetch -f origin master:master
-        git pull -f -s recursive origin master
+        git pull -f --no-edit -s recursive origin master
         git config user.email ""
         git config user.name ""
       else
