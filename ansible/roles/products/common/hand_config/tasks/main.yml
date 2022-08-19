@@ -26,7 +26,7 @@
         git config user.email "automaticpull@shadowrobot.com"
         git config user.name "automatedpull"
         git fetch -f origin master:master
-        git pull origin master --allow-unrelated-histories
+        git pull -f origin master
         git config user.email ""
         git config user.name ""
       else
