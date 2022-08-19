@@ -114,3 +114,8 @@
   shell: "docker cp {{ user_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
   when: arm_ip_left!="" or arm_ip_right!=""
+
+- name: Include products/common/hand_config role
+  include_role:
+    name: products/common/hand_config
+  when: skip_molecule_task is not defined

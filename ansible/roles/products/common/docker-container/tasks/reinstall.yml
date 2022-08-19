@@ -207,7 +207,7 @@
     - skip_molecule_task is not defined
     - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
   ignore_errors: yes
-  
+
 - name: Pulling latest hand_configurations
   import_tasks: modify-container.yml
   vars:

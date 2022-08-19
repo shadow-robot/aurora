@@ -105,6 +105,11 @@
   vars:
     icon_folder: "{{ desktop_path }}"
 
+- name: Include products/common/hand_config role
+  include_role:
+    name: products/common/hand_config
+  when: skip_molecule_task is not defined
+
 - name: Include products/common/close-everything-icon role
   include_role:
     name: products/common/close-everything-icon
