@@ -19,8 +19,8 @@
         file_changed=false
       fi
       
-      git_name=$(git config user.name)
-      git_email=$(git config user.email)
+      git_name=$(git config --global user.name)
+      git_email=$(git config --global user.email)
       echo "first names $git_name $git_email"
       git remote set-url origin https://github.com/shadow-robot/sr_hand_config
       if [[ $git_branch == "master" && $file_changed == false ]]; then
@@ -33,7 +33,7 @@
           echo $(git config user.name) $(git config user.email)
         fi
         git fetch -f origin master:master
-        git pull -f --no-edit -s recursive origin master
+        git pull -f --no-edit -s recursive origin master --allow-unrelated-histories
         if [[ $git_name == "" && $git_email == "" ]]; then
           git config user.email ""
           git config user.name ""
