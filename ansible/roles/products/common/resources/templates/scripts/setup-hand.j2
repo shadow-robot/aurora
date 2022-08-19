@@ -2,17 +2,6 @@
 #! /bin/bash
 source /home/user/projects/shadow_robot/base/devel/setup.bash
 
-# TODO: FIX so that cyberglove is not mentioned here in docker-container role, and cyberglove setup is handled in cyberglove role
-if {{ use_cyberglove | lower or remote_cyberglove | lower }}; then
-    cd /home/user/projects/shadow_robot/base/src
-    if [ -d "sr_cyberglove_config" ]; then
-        cd sr_cyberglove_config
-    else
-        git clone https://github.com/shadow-robot/sr_cyberglove_config.git;
-        cd sr_cyberglove_config
-    fi
-    git checkout {{ cyberglove }}
-fi
 if {{ use_steamvr | lower }}; then
     cd /home/user/.steam/bin && STEAM_RUNTIME=1 ./vrstartup.sh &> /dev/null 2>&1
 fi

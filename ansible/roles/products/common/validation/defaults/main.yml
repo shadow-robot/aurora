@@ -8,7 +8,6 @@ boolean_variables:
   - use_aws
   - use_openvpn
   - terminator
-  - remote_cyberglove
   - launch_hand
   - use_steamvr
   - sim_icon
@@ -17,7 +16,6 @@ boolean_variables:
   - demo_icons
   - upgrade_check
   - bimanual
-  - remote_teleop
   - demohand_icons
   - biotacs
   - allow_auto_reboot
@@ -34,7 +32,6 @@ ip_regex: '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
 glove_allowed_values:
   - haptx
   - shadow_glove
-  - cyberglove
 ur_robot_type_allowed_values:
   - ur10
   - ur10e
