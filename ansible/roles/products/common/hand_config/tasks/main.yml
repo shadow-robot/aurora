@@ -29,6 +29,9 @@
         if [[ $git_name == "" && $git_email == "" ]]; then
           git config user.email "automaticpull@shadowrobot.com"
           git config user.name "automatedpull"
+
+          git_name=$(git config --global user.name)
+          git_email=$(git config --global user.email)
           echo "set names $git_name $git_email"
         fi
         git fetch -f origin master:master
@@ -36,6 +39,9 @@
         if [[ $git_name == "" && $git_email == "" ]]; then
           git config user.email ""
           git config user.name ""
+
+          git_name=$(git config --global user.name)
+          git_email=$(git config --global user.email)
           echo "final names $git_name $git_email"
         fi
       else
