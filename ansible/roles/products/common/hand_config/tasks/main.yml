@@ -24,7 +24,7 @@
         git pull
       elif [[ $git_branch != "master"  && $file_changed == false ]]; then
         git fetch -f origin master:master
-        git pull master
+        git pull origin master --allow-unrelated-histories
       else
         echo "You have un-commited changes in sr_hand_config, not pulling automatically."
       fi
