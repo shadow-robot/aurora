@@ -18,17 +18,24 @@
       else
         file_changed=false
       fi
+      
+      git_name=$(git config user.name)
+      git_email=$(git config user.email)
 
       git remote set-url origin https://github.com/shadow-robot/sr_hand_config
-      if [[ $git_branch == "master"  && $file_changed == false ]]; then
+      if [[ $git_branch == "master" && $file_changed == false ]]; then
         git pull
-      elif [[ $git_branch != "master"  && $file_changed == false ]]; then
-        git config user.email "automaticpull@shadowrobot.com"
-        git config user.name "automatedpull"
+      elif [[ $git_branch != "master" && $file_changed == false ]]; then
+        if [[ $git_name == "" && $git_email == "" ]]; then
+          git config user.email "automaticpull@shadowrobot.com"
+          git config user.name "automatedpull"
+        fi
         git fetch -f origin master:master
         git pull -f --no-edit -s recursive origin master
-        git config user.email ""
-        git config user.name ""
+        if [[ $git_name == "" && $git_email == "" ]]; then
+          git config user.email ""
+          git config user.name ""
+        fi
       else
         echo "You have un-commited changes in sr_hand_config, not pulling automatically."
       fi
