@@ -21,12 +21,13 @@
       
       git remote set-url origin https://github.com/shadow-robot/sr_hand_config
       if [[ $git_branch == "master" && $file_changed == false ]]; then
+        echo "Pulling the latest sr_hand_config changes."
         git pull
       elif [[ $git_branch != "master" && $file_changed == false ]]; then
-        echo "Getting the latest changes to master branch then switching back to branch $git_branch"
-        git checkout master
+        echo "Pulling the latest sr_hand_config changes to master branch then switching back to branch $git_branch"
+        git checkout master 1> /dev/null
         git pull
-        git checkout $git_branch
+        git checkout $git_branch 1> /dev/null
       else
         echo "You have un-commited changes in sr_hand_config, not pulling any changes automatically."
       fi
