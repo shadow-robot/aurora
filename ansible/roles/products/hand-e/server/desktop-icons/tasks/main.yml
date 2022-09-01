@@ -176,16 +176,16 @@
 
 - name: Set Advanced Launcher Name
   set_fact:
-    - left_advanced_launcher: "Shadow Advanced Launchers"
-    - right_advanced_launcher: "Shadow Advanced Launchers"
-    - bimanual_advanced_launcher: "Shadow Advanced Launchers"
+    left_advanced_launcher: "Shadow Advanced Launchers"
+    right_advanced_launcher: "Shadow Advanced Launchers"
+    bimanual_advanced_launcher: "Shadow Advanced Launchers"
   when: bimanual|bool == false
 
 - name: Set Advanced Launcher Name
   set_fact:
-    - left_advanced_launcher: "Shadow Advanced Launchers/Left Side"
-    - right_advanced_launcher: "Shadow Advanced Launchers/Right Side"
-    - bimanual_advanced_launcher: "Shadow Advanced Launchers/Bimanual"
+    left_advanced_launcher: "Shadow Advanced Launchers/Left Side"
+    right_advanced_launcher: "Shadow Advanced Launchers/Right Side"
+    bimanual_advanced_launcher: "Shadow Advanced Launchers/Bimanual"
   when: bimanual|bool == false
 
 - name: Install desktop icon for server container
