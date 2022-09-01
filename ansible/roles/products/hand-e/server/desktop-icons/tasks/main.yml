@@ -174,6 +174,20 @@
     state: directory
   when: sim_icon|bool
 
+- name: Set Advanced Launcher Name
+  set_fact:
+    - left_advanced_launcher: "Shadow Advanced Launchers"
+    - right_advanced_launcher: "Shadow Advanced Launchers"
+    - bimanual_advanced_launcher: "Shadow Advanced Launchers"
+  when: bimanual|bool == false
+
+- name: Set Advanced Launcher Name
+  set_fact:
+    - left_advanced_launcher: "Shadow Advanced Launchers/Left Side"
+    - right_advanced_launcher: "Shadow Advanced Launchers/Right Side"
+    - bimanual_advanced_launcher: "Shadow Advanced Launchers/Bimanual"
+  when: bimanual|bool == false
+
 - name: Install desktop icon for server container
   include_role:
     name: products/common/default-icon
@@ -203,7 +217,7 @@
     desktop_icon_png: "{{ right_hand_picture }}"
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand Hardware Control Loop"
+    desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Container and Right Hand Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
@@ -216,7 +230,7 @@
     desktop_icon_png: "{{ left_hand_picture }}"
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand Hardware Control Loop"
+    desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Container and Left Hand Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
@@ -229,7 +243,7 @@
     desktop_icon_png: "{{ bimanual_hands_picture }}"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
     arm_payload_mass: "{{ arm_mass_payload }}"
   when: bimanual|bool
 
@@ -239,7 +253,7 @@
     desktop_icon_png: "{{ right_hand_picture }}"
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
+    desktop_icon_path: "{{ right_advanced_launcher }}/3 - Zero Force Mode - Right Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
@@ -252,7 +266,7 @@
     desktop_icon_png: "{{ left_hand_picture }}"
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
+    desktop_icon_path: "{{ left_advanced_launcher }}/3 - Zero Force Mode - Left Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
@@ -272,7 +286,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-r"
     desktop_icon_name: "4 - Launch Server Right Hand GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand GUI"
+    desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Server Right Hand GUI"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for left hand GUI
@@ -284,7 +298,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-l"
     desktop_icon_name: "4 - Launch Server Left Hand GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Left Hand GUI"
+    desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Server Left Hand GUI"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for bimanual hand GUI
@@ -296,7 +310,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
     desktop_icon_name: "4 - Launch Server Bimanual GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual GUI"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Server Bimanual GUI"
   when: bimanual|bool
 
 - name: Simulation icons
