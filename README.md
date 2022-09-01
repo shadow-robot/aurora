@@ -48,7 +48,7 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/lates
 
 # Multiple Aurora Installations on one device #
 
-We can now easily have multiple Aurora setups on one device, you simply need to define a unique name for the variable container_name by adding "container_name=new_container_name" to your oneliner when running each Aurora oneliner. This is because Aurora creates icons and scripts in the folder ".shadow_launcher_app_{container_name}" and stores shortcut these icons at "Shadow Launcher {container_name}.desktop". 
+We can now easily have multiple Aurora setups on one device, you simply need to define a unique name for the variable container_name by adding "container_name=new_container_name" to your oneliner when running each Aurora oneliner. This is because Aurora creates icons and scripts in the folder ".shadow_launcher_app_{container_name}" and stores shortcut these icons at "{container_name}.desktop".
 
 By having the name of the container attached to where we store the icons and scripts we can have more control over which icons get removed and reinstalled when rerunning Aurora, as we can just remove the folders that contain the containers name. This will leave the previous run's icons and scripts intact.
 

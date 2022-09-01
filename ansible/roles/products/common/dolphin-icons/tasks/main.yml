@@ -136,11 +136,11 @@
 - name: Create desktop icon for Dolphin file manager
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon-command.j2
-    dest: "{{ desktop_path }}/Shadow Launcher {{ container_name | replace('_', ' ') | title }}.desktop"
+    dest: "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: "Shadow Launcher {{ container_name | replace('_', ' ') | title }}"
-    comment: "Shadow Launcher {{ container_name | replace('_', ' ') | title }}"
+    desktop_shortcut_name: "{{ container_name | replace('_', ' ') | title }}"
+    comment: "{{ container_name | replace('_', ' ') | title }}"
     exec_command: "dolphin '{{ shadow_hand_launcher_folder }}/Shadow Icons'"
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
