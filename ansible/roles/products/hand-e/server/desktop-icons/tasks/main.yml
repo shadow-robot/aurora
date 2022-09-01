@@ -190,21 +190,21 @@
 
 - name: Create Shadow Advanced Launchers/Right Side folder
   file:
-    path: "{{ desktop_path }}/{right_advanced_launcher}"
+    path: "{{ desktop_path }}/{{ right_advanced_launcher }}"
     mode: '755'
     state: directory
   when: bimanual|bool
 
 - name: Create Shadow Advanced Launchers/Left Side folder
   file:
-    path: "{{ desktop_path }}/{left_advanced_launcher}"
+    path: "{{ desktop_path }}/{{ left_advanced_launcher }}"
     mode: '755'
     state: directory
   when: bimanual|bool
 
 - name: Create Shadow Advanced Launchers/Bimanual folder
   file:
-    path: "{{ desktop_path }}/{bimanual_advanced_launcher}"
+    path: "{{ desktop_path }}/{{ bimanual_advanced_launcher }}"
     mode: '755'
     state: directory
   when: bimanual|bool
