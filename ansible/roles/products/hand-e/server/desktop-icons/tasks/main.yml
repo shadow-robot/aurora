@@ -179,14 +179,35 @@
     left_advanced_launcher: "Shadow Advanced Launchers"
     right_advanced_launcher: "Shadow Advanced Launchers"
     bimanual_advanced_launcher: "Shadow Advanced Launchers"
-  when: bimanual|bool == false
+  when: not bimanual|bool
 
 - name: Set Advanced Launcher Name
   set_fact:
     left_advanced_launcher: "Shadow Advanced Launchers/Left Side"
     right_advanced_launcher: "Shadow Advanced Launchers/Right Side"
     bimanual_advanced_launcher: "Shadow Advanced Launchers/Bimanual"
-  when: bimanual|bool == false
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Right Side folder
+  file:
+    path: "{{ desktop_path }}/{right_advanced_launcher}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Left Side folder
+  file:
+    path: "{{ desktop_path }}/{left_advanced_launcher}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Bimanual folder
+  file:
+    path: "{{ desktop_path }}/{bimanual_advanced_launcher}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
 
 - name: Install desktop icon for server container
   include_role:
