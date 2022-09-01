@@ -183,9 +183,9 @@
 
 - name: Set Advanced Launcher Name
   set_fact:
-    left_advanced_launcher: "Shadow Advanced Launchers/Left Side"
-    right_advanced_launcher: "Shadow Advanced Launchers/Right Side"
-    bimanual_advanced_launcher: "Shadow Advanced Launchers/Bimanual"
+    left_advanced_launcher: "Left Side"
+    right_advanced_launcher: "Right Side"
+    bimanual_advanced_launcher: "Bimanual"
   when: bimanual|bool
 
 - name: Create Shadow Advanced Launchers/Right Side folder
