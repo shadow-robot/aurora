@@ -101,6 +101,10 @@
   changed_when: false
   when: demo_path.stat.exists and demo_path.stat.isdir
 
+- name: templates/scripts/launch-everything-sim.j2
+  debug:
+    msg: "{{ right_advanced_launcher }}"
+
 - name: Check if Right Side folder exist
   stat:
     path: "{{ right_advanced_launcher }}"
