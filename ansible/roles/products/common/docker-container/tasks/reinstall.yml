@@ -157,14 +157,20 @@
     documentation_repo: sr_teleop_polhemus_documentation
     readthedocs_token: "{{ shadow_glove_teleop_readthedocs_token }}"
     documentation_product: teleop-polhemus
-  when: glove == "shadow_glove" and skip_molecule_task is not defined
+  when:
+    - glove == "shadow_glove"
+    - product is not defined
+    - skip_molecule_task is not defined
 
 - name: Set documentation variables for haptx teleop
   set_fact:
     documentation_repo: sr_teleop_haptx_documentation
     readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
     documentation_product: teleop-haptx
-  when: glove == "haptx" and skip_molecule_task is not defined
+  when:
+    - glove == "haptx"
+    - product is not defined
+    - skip_molecule_task is not defined
 
 - name: Set documentation variables for arm and hand
   set_fact:
@@ -181,7 +187,7 @@
     readthedocs_token: "{{ glove_hand_readthedocs_token }}"
     documentation_product: dexterous-hand-and-glove
   when:
-    - "'arm_' in product"
+    - "'glove_' in product"
     - skip_molecule_task is not defined
 
 - name: Update documentation inside the docker container for teleop or arm+hand
