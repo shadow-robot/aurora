@@ -174,6 +174,12 @@
     state: directory
   when: sim_icon|bool
 
+- name: Create Local Launch folder
+  file:
+    path: "{{ desktop_path }}/Local Launch"
+    mode: '755'
+    state: directory
+
 - name: Set Advanced Launcher Name
   set_fact:
     left_advanced_launcher: "Shadow Advanced Launchers"
@@ -299,10 +305,6 @@
     arm_ctrl_value: "false"
     hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
-
-- name: Include products/common/local-zero-force-mode-launch role
-  include_role:
-    name: products/common/local-zero-force-mode-launch
   
 - name: Install desktop icon for right hand GUI
   include_role:

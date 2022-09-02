@@ -101,10 +101,7 @@
   become: yes
   changed_when: false
 
-- name: templates/scripts/launch-everything-sim.j2
-  debug:
-    msg: "{{ right_launcher }}"
-
+# Advanced Launcher Icons - Bimanual
 - name: Check if Right Side folder exist
   stat:
     path: "{{ right_launcher }}"
@@ -194,6 +191,37 @@
   become: yes
   changed_when: false
   when: bimanual|bool and bimanual_path.stat.exists and bimanual_path.stat.isdir
+
+# Advanced Launcher Icons - Local Icons
+- name: Check if Local folder exist
+  stat:
+    path: "{{ local_launcher }}"
+  register: local_path
+
+- name: Create Shadow Advanced Launchers/Local folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
+    mode: '755'
+    state: directory
+  when: local_path.stat.exists and local_path.stat.isdir
+
+- name: Copy Advanced Launchers/Local Launch folder
+  copy:
+    src: "{{ local_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: local_path.stat.exists and local_path.stat.isdir
+
+- name: Ensure Local Launch folder and contents are deleted
+  file:
+    path: "{{ local_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: local_path.stat.exists and local_path.stat.isdir
 
 # Cleanup
 - name: Find all .desktop files with Shadow in the comment

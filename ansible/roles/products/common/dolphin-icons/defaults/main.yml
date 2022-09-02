@@ -8,5 +8,6 @@ shadow_advanched_launchers_folder: "{{ desktop_path }}/Shadow Advanced Launchers
 right_launcher: "{{ desktop_path }}/Right Side/"
 left_launcher: "{{ desktop_path }}/Left Side/"
 bimanual_launcher: "{{ desktop_path }}/Bimanual/"
+local_launcher: "{{ desktop_path }}/Local Launch/"
 shadow_simulation_folder: "{{ desktop_path }}/Simulation/"
 new_path: "{{ shadow_hand_launcher_folder }}icons/"
