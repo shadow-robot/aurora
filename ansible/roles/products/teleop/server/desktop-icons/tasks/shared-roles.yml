@@ -58,6 +58,51 @@
     mode: '755'
     state: directory
 
+- name: Create Local Launch folder
+  file:
+    path: "{{ desktop_path }}/Local Launch"
+    mode: '755'
+    state: directory
+
+- name: Set Advanced Launcher Name
+  set_fact:
+    left_advanced_launcher: "Shadow Advanced Launchers"
+    right_advanced_launcher: "Shadow Advanced Launchers"
+    bimanual_advanced_launcher: "Shadow Advanced Launchers"
+  when: not bimanual|bool
+
+- name: Set Advanced Launcher Name
+  set_fact:
+    left_advanced_launcher: "Left Side"
+    right_advanced_launcher: "Right Side"
+    bimanual_advanced_launcher: "Bimanual"
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Right Side folder
+  file:
+    path: "{{ desktop_path }}/{{ right_advanced_launcher }}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Left Side folder
+  file:
+    path: "{{ desktop_path }}/{{ left_advanced_launcher }}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Bimanual folder
+  file:
+    path: "{{ desktop_path }}/{{ bimanual_advanced_launcher }}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
+- name: Include Bimanual Role
+  include_role:
+    name: products/common/bimanual-icons
+
 - name: Install desktop icon for server container
   include_role:
     name: products/common/default-icon
@@ -65,9 +110,10 @@
     template: ../../../common/resources/templates/scripts/start-docker-container.j2
     desktop_icon_png: "laptop.png"
     launch_script: "shadow_server_container.sh"
-    desktop_icon_name: "1 - Launch Server Container"
-    desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
+    desktop_icon_name: "Launch Server Container"
+    desktop_icon_path: "Shadow Advanced Launchers/Launch Server Container"
     launch_terminal: "false"
+  when: not bimanual|bool
 
 - name: Install desktop icon for launching ROSCORE
   include_role:
@@ -76,6 +122,7 @@
     template: ../../../common/resources/templates/scripts/start-roscore.j2
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
-    desktop_icon_name: "2 - Launch Server ROSCORE"
-    desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
+    desktop_icon_name: "Launch Server ROSCORE"
+    desktop_icon_path: "Shadow Advanced Launchers/Launch Server ROSCORE"
     launch_terminal: "false"
+  when: not bimanual|bool

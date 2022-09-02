@@ -1,5 +1,4 @@
 ---
-
 - name: Install desktop icon for server container
   include_role:
     name: products/common/default-icon
