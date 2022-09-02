@@ -64,6 +64,14 @@
   failed_when: false
   when: demo_path.stat.exists and demo_path.stat.isdir
 
+- name: Ensure Shadow Simulation folder and contents are deleted
+  file:
+    path: "{{ shadow_simulation_folder }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
 # Advanced Launcher Icons
 - name: Check if Advanced Launchers folder exist
   stat:
@@ -92,14 +100,6 @@
     state: absent
   become: yes
   changed_when: false
-
-- name: Ensure Shadow Simulation folder and contents are deleted
-  file:
-    path: "{{ shadow_simulation_folder }}"
-    state: absent
-  become: yes
-  changed_when: false
-  when: demo_path.stat.exists and demo_path.stat.isdir
 
 - name: templates/scripts/launch-everything-sim.j2
   debug:
@@ -161,10 +161,10 @@
   failed_when: false
   when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
 
-- name: Copy Advanced Launchers/Bimanual Side folder
+- name: Copy Advanced Launchers/Bimanual folder
   copy:
     src: "{{ bimanual_launcher }}"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual Side"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual"
     directory_mode: yes
     mode: 0755 
   changed_when: false
@@ -187,7 +187,7 @@
   changed_when: false
   when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
 
-- name: Ensure Bimanual Side folder and contents are deleted
+- name: Ensure Bimanual folder and contents are deleted
   file:
     path: "{{ bimanual_launcher }}"
     state: absent
