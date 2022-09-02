@@ -220,6 +220,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
     launch_terminal: "false"
     hand_side_ad: ""
+  when: not bimanual|bool
 
 - name: Install desktop icon for launching ROSCORE
   include_role:
@@ -231,6 +232,12 @@
     desktop_icon_name: "2 - Launch Server ROSCORE"
     desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
     launch_terminal: "false"
+  when: not bimanual|bool
+
+- name: Include Bimanual Icons
+  include_role:
+    name: bimanual-icons
+  when: bimanual|bool
 
 - name: Install desktop icon for NUC right hand hardware control loop
   import_tasks: hand-icon.yml
