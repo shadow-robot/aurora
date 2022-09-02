@@ -20,7 +20,7 @@
     desktop_icon_png: "laptop.png"
     launch_script: "shadow_server_container.sh"
     desktop_icon_name: "1 - Launch Server Container"
-    desktop_icon_path: "Right Side/1 - Launch Server Container"
+    desktop_icon_path: "{{ right_advanced_launcher }}/1 - Launch Server Container"
     launch_terminal: "false"
     hand_side_ad: ""
 
@@ -32,7 +32,7 @@
     desktop_icon_png: "laptop.png"
     launch_script: "shadow_server_container.sh"
     desktop_icon_name: "1 - Launch Server Container"
-    desktop_icon_path: "Left Side/1 - Launch Server Container"
+    desktop_icon_path: "{{ left_advanced_launcher }}/1 - Launch Server Container"
     launch_terminal: "false"
     hand_side_ad: ""
 
@@ -44,7 +44,7 @@
     desktop_icon_png: "laptop.png"
     launch_script: "shadow_server_container.sh"
     desktop_icon_name: "1 - Launch Server Container"
-    desktop_icon_path: "Bimanual/1 - Launch Server Container"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/1 - Launch Server Container"
     launch_terminal: "false"
     hand_side_ad: ""
 
@@ -56,7 +56,7 @@
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "2 - Launch Server ROSCORE"
-    desktop_icon_path: "Right Side/2 - Launch Server ROSCORE"
+    desktop_icon_path: "{{ right_advanced_launcher }}/2 - Launch Server ROSCORE"
     launch_terminal: "false"
 
 - name: Install desktop icon for launching ROSCORE
@@ -67,7 +67,7 @@
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "2 - Launch Server ROSCORE"
-    desktop_icon_path: "Left Side/2 - Launch Server ROSCORE"
+    desktop_icon_path: "{{ left_advanced_launcher }}/2 - Launch Server ROSCORE"
     launch_terminal: "false"
 
 - name: Install desktop icon for launching ROSCORE
@@ -78,5 +78,5 @@
     desktop_icon_png: "ROS_logo.png"
     launch_script: "shadow_roscore.sh"
     desktop_icon_name: "2 - Launch Server ROSCORE"
-    desktop_icon_path: "Bimanual/2 - Launch Server ROSCORE"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/2 - Launch Server ROSCORE"
     launch_terminal: "false"
