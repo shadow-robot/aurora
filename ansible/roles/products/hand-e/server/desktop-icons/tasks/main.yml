@@ -235,8 +235,7 @@
   when: not bimanual|bool
 
 - name: Include Bimanual Icons
-  include_role:
-    name: bimanual-icons
+  import_tasks: bimanual-icons.yml
   when: bimanual|bool
 
 - name: Install desktop icon for NUC right hand hardware control loop
