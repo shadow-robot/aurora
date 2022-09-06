@@ -417,3 +417,4 @@
     dest: /etc/udev/rules.d/90-VEC-USB-Footpedal.rules
     mode: '0644'
   become: yes
+  when: "'glove' in product"
