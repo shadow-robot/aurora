@@ -34,7 +34,6 @@ def test_icons_in_docker(host):
         'Launch Shadow Bimanual Teleop 8DOF',
         'Shadow NUC RQT',
         'Shadow Advanced Launchers/Launch Server Container',
-        'Shadow Advanced Launchers/Launch Server ROSCORE',
         'Right Side/1 - Launch Server Container',
         'Right Side/2 - Launch Server ROSCORE',
         'Left Side/1 - Launch Server Container',
