@@ -168,7 +168,13 @@
 
 - name: Create shared icons
   include_tasks: shared-roles.yml
-  
+
+- name: Create Local Launch folder
+  file:
+    path: "{{ desktop_path }}/Local Launch"
+    mode: '755'
+    state: directory
+
 - name: Install desktop icon for NUC right hand and arm hardware control loop
   import_tasks: nuc-control-loop-icon.yml
   vars:

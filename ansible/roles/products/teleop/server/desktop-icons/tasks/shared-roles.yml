@@ -58,12 +58,6 @@
     mode: '755'
     state: directory
 
-- name: Create Local Launch folder
-  file:
-    path: "{{ desktop_path }}/Local Launch"
-    mode: '755'
-    state: directory
-
 - name: Set Advanced Launcher Name
   set_fact:
     left_advanced_launcher: "Shadow Advanced Launchers"
