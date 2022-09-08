@@ -35,7 +35,7 @@ def test_icons_in_docker(host):
         'Local Launch/Local Zero Force Mode - Left Hand',
         'Local Launch/Local Zero Force Mode - Right Hand',
         'Left Side/4 - Launch Server Left Hand GUI',
-        'Right Side Launchers/4 - Launch Server Right Hand GUI',
+        'Right Side/4 - Launch Server Right Hand GUI',
         'Bimanual/4 - Launch Server Bimanual GUI',
         'Shadow Advanced Launchers/Launch NUC Container',
         'Shadow Demos/Close Right Hand',
