@@ -8,7 +8,7 @@ left_hand_picture: hand-e-left.png
 bimanual_hands_picture: hand-e-bimanual.png
 product: hand_e
 setup_directory: "/usr/local/bin"
-icon_folder: "{{ desktop_path }}/Shadow Advanced Launchers"
+icon_folder: "{{ desktop_path }}/Local Launch"
 launch_hand: false
 override_launch_hand: false
 use_steamvr: false
