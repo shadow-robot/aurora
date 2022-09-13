@@ -39,7 +39,7 @@ COMMON_ROSNODE_KILL_COMMAND="rosnode list | grep /bag_rotate | xargs -I{} rosnod
   docker stop $CONTAINER_NAME
   sleep 1
   echo "# Stopping all Shadow Robot processes server host"
-  pids=$(pgrep -f 'shadow_')
+  pids=$(ps -ef | grep '[s]hadow_' | grep -v 'dolphin' | awk '{print $2}')
   sleep 1
   echo 90
   echo "# All Shadow Robot processes closed!"

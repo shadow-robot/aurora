@@ -12,6 +12,7 @@
     state: directory
   changed_when: false
 
+# Demo Icons
 - name: Check if Demos folder exist
   stat:
     path: "{{ shadow_demos_folder }}"
@@ -40,6 +41,38 @@
   become: yes
   changed_when: false
 
+# Simulation Icons
+- name: Check if Simulation folder exist
+  stat:
+    path: "{{ shadow_simulation_folder }}"
+  register: demo_path
+
+- name: Create Simulation Folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    state: directory
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
+- name: Copy Shadow Simulation folder
+  copy:
+    src: "{{ shadow_simulation_folder }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
+- name: Ensure Shadow Simulation folder and contents are deleted
+  file:
+    path: "{{ shadow_simulation_folder }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
+# Advanced Launcher Icons
 - name: Check if Advanced Launchers folder exist
   stat:
     path: "{{ shadow_advanched_launchers_folder }}"
@@ -68,34 +101,129 @@
   become: yes
   changed_when: false
 
-- name: Check if Simulation folder exist
+# Advanced Launcher Icons - Bimanual
+- name: Check if Right Side folder exist
   stat:
-    path: "{{ shadow_simulation_folder }}"
-  register: demo_path
+    path: "{{ right_launcher }}"
+  register: right_path
 
-- name: Create Simulation Folder
+- name: Check if Left Side folder exist
+  stat:
+    path: "{{ left_launcher }}"
+  register: left_path
+
+- name: Check if Bimanual folder exist
+  stat:
+    path: "{{ bimanual_launcher }}"
+  register: bimanual_path
+
+- name: Create Shadow Advanced Launchers/Right Side folder
   file:
-    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Right Side"
+    mode: '755'
     state: directory
-  changed_when: false
-  when: demo_path.stat.exists and demo_path.stat.isdir
+  when: bimanual|bool and right_path.stat.exists and right_path.stat.isdir
 
-- name: Copy Shadow Simulation folder
+- name: Create Shadow Advanced Launchers/Left Side folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Left Side"
+    mode: '755'
+    state: directory
+  when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
+
+- name: Create Shadow Advanced Launchers/Bimanual folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual"
+    mode: '755'
+    state: directory
+  when: bimanual|bool and bimanual_path.stat.exists and bimanual_path.stat.isdir
+
+- name: Copy Advanced Launchers/Right Side folder
   copy:
-    src: "{{ shadow_simulation_folder }}"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    src: "{{ right_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Right Side"
     directory_mode: yes
     mode: 0755 
   changed_when: false
   failed_when: false
+  when: bimanual|bool and right_path.stat.exists and right_path.stat.isdir
 
-- name: Ensure Shadow Simulation folder and contents are deleted
+- name: Copy Advanced Launchers/Left Side folder
+  copy:
+    src: "{{ left_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Left Side"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
+
+- name: Copy Advanced Launchers/Bimanual folder
+  copy:
+    src: "{{ bimanual_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: bimanual|bool and bimanual_path.stat.exists and bimanual_path.stat.isdir
+
+- name: Ensure Right Side folder and contents are deleted
   file:
-    path: "{{ shadow_simulation_folder }}"
+    path: "{{ right_launcher }}"
     state: absent
   become: yes
   changed_when: false
+  when: bimanual|bool and right_path.stat.exists and right_path.stat.isdir
 
+- name: Ensure Left Side folder and contents are deleted
+  file:
+    path: "{{ left_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
+
+- name: Ensure Bimanual folder and contents are deleted
+  file:
+    path: "{{ bimanual_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: bimanual|bool and bimanual_path.stat.exists and bimanual_path.stat.isdir
+
+# Advanced Launcher Icons - Local Icons
+- name: Check if Local folder exist
+  stat:
+    path: "{{ local_launcher }}"
+  register: local_path
+
+- name: Create Shadow Advanced Launchers/Local folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
+    mode: '755'
+    state: directory
+  when: local_path.stat.exists and local_path.stat.isdir
+
+- name: Copy Advanced Launchers/Local Launch folder
+  copy:
+    src: "{{ local_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: local_path.stat.exists and local_path.stat.isdir
+
+- name: Ensure Local Launch folder and contents are deleted
+  file:
+    path: "{{ local_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: local_path.stat.exists and local_path.stat.isdir
+
+# Cleanup
 - name: Find all .desktop files with Shadow in the comment
   find:
     paths: "{{ desktop_path }}"
