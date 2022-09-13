@@ -1,0 +1,37 @@
+---
+- name: Create temporary script file
+  file:
+    path: /tmp/update_hand_config.sh
+    state: touch
+    mode: u=rwx,g=rwx,o=rwx
+
+- name: Add content to script file
+  copy:
+    dest: /tmp/update_hand_config.sh
+    content: |
+      #!/usr/bin/env bash
+      # Used to update hand config.
+      cd ~/projects/shadow_robot/base_deps/src/sr_hand_config
+      git_branch=$(git rev-parse --abbrev-ref HEAD | xargs)
+      if [[ `git status --porcelain` ]]; then
+        file_changed=true
+      else
+        file_changed=false
+      fi
+      
+      git remote set-url origin https://github.com/shadow-robot/sr_hand_config
+      if [[ $git_branch == "master" && $file_changed == false ]]; then
+        echo "Pulling the latest sr_hand_config changes."
+        git pull
+      elif [[ $git_branch != "master" && $file_changed == false ]]; then
+        echo "Pulling the latest sr_hand_config changes to master branch then switching back to branch $git_branch"
+        git checkout master --quiet 1> /dev/null
+        git pull
+        git checkout $git_branch --quiet 1> /dev/null
+      else
+        echo "You have un-commited changes in sr_hand_config, not pulling any changes automatically."
+      fi
+      cd ~
+
+- name: Move script folder over
+  shell: "docker cp /tmp/update_hand_config.sh {{ container_name }}:/bin/update_hand_config.sh"

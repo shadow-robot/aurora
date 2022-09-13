@@ -22,6 +22,6 @@ echo "Starting the container..."
 sleep 2
 docker exec --user user ${CONTAINER} bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;rosrun sr_firmware_checker ur_firmware_check"
 sleep 1
-docker exec --user user ${CONTAINER} bash -c "export ROSCONSOLE_FORMAT='"'[${severity}](${node}): [${time}] ${message}'"';export ROSCONSOLE_STDOUT_LINE_BUFFERED=1;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;roslaunch {{ teleop_control_launch }} robot_model:=${UR_TYPE} biotacs:=${BIOTACS} 2> >(tee -a /home/user/.ros/log/stderr.log)"
+docker exec --user user ${CONTAINER} bash -c "export ROSCONSOLE_FORMAT='"'[${severity}](${node}): [${time}] ${message}'"';export ROSCONSOLE_STDOUT_LINE_BUFFERED=1;source /home/user/projects/shadow_robot/base/devel/setup.bash;ulimit -c unlimited;/bin/update_hand_config.sh;roslaunch {{ teleop_control_launch }} robot_model:=${UR_TYPE} biotacs:=${BIOTACS} 2> >(tee -a /home/user/.ros/log/stderr.log)"
 ENDSSH
 sleep infinity

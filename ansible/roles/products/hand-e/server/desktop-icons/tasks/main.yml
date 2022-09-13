@@ -118,7 +118,7 @@
     start_container_var: "true"
     start_server_command_var: "roscd sr_dexterous_hand_documentation/html; python3 -m http.server {{ local_website_port_var }}"
     preconditions_var: ""
-    live_website_url_var: "https://dexterous-hand.readthedocs.io/en/2.1.5/"
+    live_website_url_var: "https://dexterous-hand.readthedocs.io/en/2.1.6/"
   when: 
     - "'arm_' not in product"
     - "'glove_' not in product"
@@ -174,6 +174,47 @@
     state: directory
   when: sim_icon|bool
 
+- name: Create Local Launch folder
+  file:
+    path: "{{ desktop_path }}/Local Launch"
+    mode: '755'
+    state: directory
+
+- name: Set Advanced Launcher Name
+  set_fact:
+    left_advanced_launcher: "Shadow Advanced Launchers"
+    right_advanced_launcher: "Shadow Advanced Launchers"
+    bimanual_advanced_launcher: "Shadow Advanced Launchers"
+  when: not bimanual|bool
+
+- name: Set Advanced Launcher Name
+  set_fact:
+    left_advanced_launcher: "Left Side"
+    right_advanced_launcher: "Right Side"
+    bimanual_advanced_launcher: "Bimanual"
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Right Side folder
+  file:
+    path: "{{ desktop_path }}/{{ right_advanced_launcher }}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Left Side folder
+  file:
+    path: "{{ desktop_path }}/{{ left_advanced_launcher }}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
+- name: Create Shadow Advanced Launchers/Bimanual folder
+  file:
+    path: "{{ desktop_path }}/{{ bimanual_advanced_launcher }}"
+    mode: '755'
+    state: directory
+  when: bimanual|bool
+
 - name: Install desktop icon for server container
   include_role:
     name: products/common/default-icon
@@ -185,6 +226,7 @@
     desktop_icon_path: "Shadow Advanced Launchers/1 - Launch Server Container"
     launch_terminal: "false"
     hand_side_ad: ""
+  when: not bimanual|bool
 
 - name: Install desktop icon for launching ROSCORE
   include_role:
@@ -196,6 +238,12 @@
     desktop_icon_name: "2 - Launch Server ROSCORE"
     desktop_icon_path: "Shadow Advanced Launchers/2 - Launch Server ROSCORE"
     launch_terminal: "false"
+  when: not bimanual|bool
+
+- name: Include Bimanual Icons
+  include_role:
+    name: products/common/bimanual-icons
+  when: bimanual|bool
 
 - name: Install desktop icon for NUC right hand hardware control loop
   import_tasks: hand-icon.yml
@@ -203,7 +251,7 @@
     desktop_icon_png: "{{ right_hand_picture }}"
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand Hardware Control Loop"
+    desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Container and Right Hand Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
@@ -216,7 +264,7 @@
     desktop_icon_png: "{{ left_hand_picture }}"
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand Hardware Control Loop"
+    desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Container and Left Hand Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "false"
@@ -229,7 +277,7 @@
     desktop_icon_png: "{{ bimanual_hands_picture }}"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop"
     arm_payload_mass: "{{ arm_mass_payload }}"
   when: bimanual|bool
 
@@ -239,7 +287,7 @@
     desktop_icon_png: "{{ right_hand_picture }}"
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
+    desktop_icon_path: "{{ right_advanced_launcher }}/3 - Zero Force Mode - Right Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
@@ -252,16 +300,12 @@
     desktop_icon_png: "{{ left_hand_picture }}"
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
+    desktop_icon_path: "{{ left_advanced_launcher }}/3 - Zero Force Mode - Left Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     arm_ctrl_value: "false"
     hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
-
-- name: Include products/common/local-zero-force-mode-launch role
-  include_role:
-    name: products/common/local-zero-force-mode-launch
   
 - name: Install desktop icon for right hand GUI
   include_role:
@@ -272,7 +316,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-r"
     desktop_icon_name: "4 - Launch Server Right Hand GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand GUI"
+    desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Server Right Hand GUI"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for left hand GUI
@@ -284,7 +328,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-l"
     desktop_icon_name: "4 - Launch Server Left Hand GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Left Hand GUI"
+    desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Server Left Hand GUI"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for bimanual hand GUI
@@ -296,7 +340,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
     desktop_icon_name: "4 - Launch Server Bimanual GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual GUI"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Server Bimanual GUI"
   when: bimanual|bool
 
 - name: Simulation icons
@@ -410,3 +454,11 @@
 - name: Include products/common/close-everything-icon role
   include_role:
     name: products/common/close-everything-icon
+
+- name: Udev rules for pedal
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr_teleop_devices/noetic-devel/sr_pedal/90-VEC-USB-Footpedal.rules
+    dest: /etc/udev/rules.d/90-VEC-USB-Footpedal.rules
+    mode: '0644'
+  become: yes
+  when: "'glove' in product"
