@@ -181,7 +181,7 @@
     - "'arm_' in product"
     - skip_molecule_task is not defined
 
-- name: Set documentation variables for arm and glove
+- name: Set documentation variables for glove and hand
   set_fact:
     documentation_repo: sr_dexterous_hand_glove_documentation
     readthedocs_token: "{{ glove_hand_readthedocs_token }}"
