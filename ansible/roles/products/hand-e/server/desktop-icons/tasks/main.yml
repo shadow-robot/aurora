@@ -118,7 +118,7 @@
     start_container_var: "true"
     start_server_command_var: "roscd sr_dexterous_hand_documentation/html; python3 -m http.server {{ local_website_port_var }}"
     preconditions_var: ""
-    live_website_url_var: "https://dexterous-hand.readthedocs.io/en/2.1.5/"
+    live_website_url_var: "https://dexterous-hand.readthedocs.io/en/2.1.6/"
   when: 
     - "'arm_' not in product"
     - "'glove_' not in product"
@@ -410,3 +410,11 @@
 - name: Include products/common/close-everything-icon role
   include_role:
     name: products/common/close-everything-icon
+
+- name: Udev rules for pedal
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr_teleop_devices/noetic-devel/sr_pedal/90-VEC-USB-Footpedal.rules
+    dest: /etc/udev/rules.d/90-VEC-USB-Footpedal.rules
+    mode: '0644'
+  become: yes
+  when: "'glove' in product"
