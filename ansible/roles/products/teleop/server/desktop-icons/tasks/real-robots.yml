@@ -689,9 +689,9 @@
   vars:
     desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
     launch_script: "shadow_glove_calibration.sh"
-    desktop_icon_name: "Launch Shadow {{ glove_driver_type | title }}"
+    desktop_icon_name: "Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
     template: templates/scripts/launch-shadow-glove-calibration.j2
-    desktop_icon_path: "Shadow Advanced Launchers/Launch Shadow {{ glove_driver_type | title }}"
+    desktop_icon_path: "Shadow Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
     launch_terminal: "false"
     glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove"
