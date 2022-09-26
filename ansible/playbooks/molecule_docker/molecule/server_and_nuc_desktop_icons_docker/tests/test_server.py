@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import os
 import testinfra.utils.ansible_runner
 
@@ -86,7 +100,7 @@ def test_icons_in_docker(host):
         'shadow_zero_force_mode_right',
         'shadow_zero_force_mode_left',
         'close_everything'
-        )    
+        )
     for icon in icons:
         assert host.file(f"{desktop_path}{icon}.desktop").exists
 

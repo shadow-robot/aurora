@@ -6,6 +6,21 @@ reinstall: false # Flag to know if the docker container should be fully reinstal
 container_name: "dexterous_hand" # Name of the docker container
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
 nvidia_docker: false # Define if nvidia-container-toolkit is used (defaul is false)
