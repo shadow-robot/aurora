@@ -52,15 +52,13 @@
   set_fact:
     pub_readthedocs: https://shadow-robot-company-dexterous-hand.readthedocs-hosted.com/en/2.1.6/
   when:
-    - "'lite' not in product"
-    - "'extra_lite' not in product"
+    - "'lite' not in product or 'extra_lite' not in product"
 
 - name: Set public readthedocs link (lite)
   set_fact:
     pub_readthedocs: https://shadow-robot-company-dexterous-hand-lite.readthedocs-hosted.com/en/latest/
   when:
-    - "'lite' in product"
-    - "'extra_lite' in product"
+    - "'lite' in product or 'extra_lite' in product"
 
 - name: Install desktop icon for launching everything for Shadow Right Hand
   include_role:
