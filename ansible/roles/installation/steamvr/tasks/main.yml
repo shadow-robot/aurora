@@ -104,7 +104,7 @@
     aws_access_key: "{{ lookup('env','aws_key') }}"
     aws_secret_key: "{{ lookup('env','aws_secret') }}"
     bucket: shadowrobot.aurora.files
-    object: /server/steamvr/steamNew.tar.gz
+    object: /server/steamvr/steam.tar.gz
     dest: "{{ user_home_dir }}/steam.tar.gz"
     mode: get
 
