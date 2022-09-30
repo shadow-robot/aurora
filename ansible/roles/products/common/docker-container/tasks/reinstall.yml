@@ -43,12 +43,6 @@
   when: "nvidia_docker|bool and terminator and setup_script | length > 0"
   include_tasks: create-container/nvidia-with-setup-with-terminator.yml
 
-- name: Move response back to container
-  shell: "docker cp {{ local_response_path }} {{ container_name }}:{{ container_response_path }}"
-  when:
-    - "'binary' in image"
-    - response_file.stat.exists
-
 - name: if run/user/1000 doesn't exist, then create it inside the container
   import_tasks: modify-container.yml
   vars:
