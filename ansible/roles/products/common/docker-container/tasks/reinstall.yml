@@ -18,21 +18,6 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
-- name: Check response exists
-  block:
-    - name: Set variables
-      set_fact: 
-        local_response_path: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/.response"
-        container_response_path: "/usr/local/bin/.response"
-    - name: Copy response file
-      shell: "docker cp {{ container_name }}:{{ container_response_path }} {{ local_response_path }}"
-      ignore_errors: yes
-    - name: Check file exists
-      stat:
-        path: "{{ local_response_path }}"
-      register: response_file
-  when: "'binary' in image"
-
 - name: Check if /run/user/1000 folder exists in the docker image
   shell: "docker image history --no-trunc {{ full_image_name }} | grep XDG_RUNTIME_DIR | wc -l"
   register: xdg_check
