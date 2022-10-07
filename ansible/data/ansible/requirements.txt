@@ -1,5 +1,7 @@
 ansible==4.2.0
 ansible-core==2.11.11
+boto3==1.27.88
+botocore==1.24.88
 jinja2==3.1.1
 packaging==21.3 
 resolvelib==0.5.4
