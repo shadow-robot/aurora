@@ -1,9 +1,23 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 image: "public.ecr.aws/shadowrobot/dexterous-hand" # Docker image name
 tag: "noetic-release" # Tag of the exact Docker hub image to pull
 product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
-container_name: "dexterous_hand_real_hw" # Name of the docker container
+container_name: "dexterous_hand" # Name of the docker container
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
@@ -16,6 +30,10 @@ bimanual: false # Specify if both left and right hands are used or not
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
+real_glove: true # Whether a real physical glove is being used for hand control or not
+biotacs: true # Whether the hands will have biotac fingertips
+polhemus_type: "viper" # Allows the user to specify the polhemus type used (liberty or viper)
 remote_bag_user: "shadowop"
 remote_bag_storage_IP: "10.5.10.59"
 remote_bag_storage_location: "/volume1/ros_bags"

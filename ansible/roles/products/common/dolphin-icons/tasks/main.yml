@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Dolphin file manager installation for Icons handling
   apt:
@@ -12,6 +26,7 @@
     state: directory
   changed_when: false
 
+# Demo Icons
 - name: Check if Demos folder exist
   stat:
     path: "{{ shadow_demos_folder }}"
@@ -40,6 +55,38 @@
   become: yes
   changed_when: false
 
+# Simulation Icons
+- name: Check if Simulation folder exist
+  stat:
+    path: "{{ shadow_simulation_folder }}"
+  register: demo_path
+
+- name: Create Simulation Folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    state: directory
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
+- name: Copy Shadow Simulation folder
+  copy:
+    src: "{{ shadow_simulation_folder }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
+- name: Ensure Shadow Simulation folder and contents are deleted
+  file:
+    path: "{{ shadow_simulation_folder }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: demo_path.stat.exists and demo_path.stat.isdir
+
+# Advanced Launcher Icons
 - name: Check if Advanced Launchers folder exist
   stat:
     path: "{{ shadow_advanched_launchers_folder }}"
@@ -68,11 +115,134 @@
   become: yes
   changed_when: false
 
+# Advanced Launcher Icons - Bimanual
+- name: Check if Right Side folder exist
+  stat:
+    path: "{{ right_launcher }}"
+  register: right_path
+
+- name: Check if Left Side folder exist
+  stat:
+    path: "{{ left_launcher }}"
+  register: left_path
+
+- name: Check if Bimanual folder exist
+  stat:
+    path: "{{ bimanual_launcher }}"
+  register: bimanual_path
+
+- name: Create Shadow Advanced Launchers/Right Side folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Right Side"
+    mode: '755'
+    state: directory
+  when: bimanual|bool and right_path.stat.exists and right_path.stat.isdir
+
+- name: Create Shadow Advanced Launchers/Left Side folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Left Side"
+    mode: '755'
+    state: directory
+  when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
+
+- name: Create Shadow Advanced Launchers/Bimanual folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual"
+    mode: '755'
+    state: directory
+  when: bimanual|bool and bimanual_path.stat.exists and bimanual_path.stat.isdir
+
+- name: Copy Advanced Launchers/Right Side folder
+  copy:
+    src: "{{ right_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Right Side"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: bimanual|bool and right_path.stat.exists and right_path.stat.isdir
+
+- name: Copy Advanced Launchers/Left Side folder
+  copy:
+    src: "{{ left_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Left Side"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
+
+- name: Copy Advanced Launchers/Bimanual folder
+  copy:
+    src: "{{ bimanual_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: bimanual|bool and bimanual_path.stat.exists and bimanual_path.stat.isdir
+
+- name: Ensure Right Side folder and contents are deleted
+  file:
+    path: "{{ right_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: bimanual|bool and right_path.stat.exists and right_path.stat.isdir
+
+- name: Ensure Left Side folder and contents are deleted
+  file:
+    path: "{{ left_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
+
+- name: Ensure Bimanual folder and contents are deleted
+  file:
+    path: "{{ bimanual_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: bimanual|bool and bimanual_path.stat.exists and bimanual_path.stat.isdir
+
+# Advanced Launcher Icons - Local Icons
+- name: Check if Local folder exist
+  stat:
+    path: "{{ local_launcher }}"
+  register: local_path
+
+- name: Create Shadow Advanced Launchers/Local folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
+    mode: '755'
+    state: directory
+  when: local_path.stat.exists and local_path.stat.isdir
+
+- name: Copy Advanced Launchers/Local Launch folder
+  copy:
+    src: "{{ local_launcher }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
+    directory_mode: yes
+    mode: 0755 
+  changed_when: false
+  failed_when: false
+  when: local_path.stat.exists and local_path.stat.isdir
+
+- name: Ensure Local Launch folder and contents are deleted
+  file:
+    path: "{{ local_launcher }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: local_path.stat.exists and local_path.stat.isdir
+
+# Cleanup
 - name: Find all .desktop files with Shadow in the comment
   find:
     paths: "{{ desktop_path }}"
     patterns: '*.desktop'
-    contains: "^.*Comment=autogenerated_aurora"
+    contains: "^.*Comment=autogenerated_aurora_{{ container_name }}"
   register: file_list
 
 - name: Copy all .desktop files with Shadow in the comment
@@ -108,11 +278,11 @@
 - name: Create desktop icon for Dolphin file manager
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon-command.j2
-    dest: "{{ desktop_path }}/Shadow Launcher.desktop"
+    dest: "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: "Shadow Launcher"
-    comment: "Shadow Launcher"
+    desktop_shortcut_name: "{{ container_name | replace('_', ' ') | title }}"
+    comment: "{{ container_name | replace('_', ' ') | title }}"
     exec_command: "dolphin '{{ shadow_hand_launcher_folder }}/Shadow Icons'"
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"

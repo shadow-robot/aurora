@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Create
   hosts: localhost
@@ -75,24 +89,26 @@
       when: keypair.changed
 
     - name: Create molecule instance(s)
-      amazon.aws.ec2:
+      amazon.aws.ec2_instance:
         key_name: "{{ keypair_name }}"
-        image: "{{ item.image }}"
+        image:
+          id: "{{ item.image }}"
         instance_type: "{{ item.instance_type }}"
         vpc_subnet_id: "{{ item.vpc_subnet_id }}"
         region: "{{ ec2_region }}"
-        group: "{{ security_group_name }}"
-        instance_tags:
-          instance: "{{ item.name }}"
+        security_group: "{{ security_group_name }}"
+        instance_ids: "{{ item.name }}"
         wait: true
-        assign_public_ip: true
-        exact_count: 1
-        count_tag:
-          instance: "{{ item.name }}"
+        network:
+          assign_public_ip: true
         volumes:
           - device_name: /dev/sda1
-            volume_size: 50
-            delete_on_termination: true
+            ebs:
+              volume_size: 50
+              delete_on_termination: true
+        tags:
+          TagSpecifications: "{{ item.name }}"
+        state: "running"
       register: server
       with_items: "{{ molecule_yml.platforms }}"
       async: 7200
@@ -111,9 +127,9 @@
     - name: Populate instance config dict
       set_fact:
         instance_conf_dict: {
-          'instance': "{{ item.instances[0].tags.instance }}",
+          'instance': "{{ item.instances[0].tags.TagSpecifications }}",
+          'address': "{{ item.instances[0].public_ip_address }}",
           'region': "{{ ec2_region }}",
-          'address': "{{ item.instances[0].public_ip }}",
           'user': "{{ ssh_user }}",
           'port': "{{ ssh_port }}",
           'identity_file': "{{ keypair_path }}",

@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Include products/common/clear-icons role
   include_role:
@@ -41,11 +55,6 @@
   include_role:
     name: installation/nvidia-docker
   when: nvidia_docker | bool
-
-- name: Include installation/openvpn-server role
-  include_role:
-    name: installation/openvpn-server
-  when: use_openvpn|bool
 
 - name: Set chrony allowed network
   set_fact:
@@ -107,8 +116,8 @@
     set_fact:
       user_shadow_glove_calibration_folder: "{{ shadow_glove_calibration_folder }}/user_calibration"
       user_shadow_glove_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/user_calibration"
-      user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_teleop_vive_polhemus_internal/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
-      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/shadow/share/sr_teleop_vive_polhemus/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker: "/home/user/projects/shadow_robot/base/src/sr_hand_glove_internal/sr_hand_glove/shadow_glove_user_calibration_defaults/."
+      user_shadow_glove_calibration_defaults_inside_docker_binary: "/opt/ros/shadow/share/sr_hand_glove/shadow_glove_user_calibration_defaults/."
       boresight_calibration_folder: "{{ shadow_glove_calibration_folder }}/glove_boresight_calibration"
       boresight_calibration_inside_docker: "{{ shadow_glove_calibration_inside_docker }}/glove_boresight_calibration"
       boresight_calibration_default_file_inside_docker: "/home/user/projects/shadow_robot/base/src/polhemus_ros_driver/config/{{ polhemus_type }}_calibration.yaml"
@@ -248,11 +257,6 @@
 - name: Include products/common/save-logs-icons role
   include_role:
     name: products/common/save-logs-icons
-
-- name: Include products/common/cyberglove role
-  include_role:
-    name: products/common/cyberglove
-  when: use_cyberglove|bool
 
 - name: Include products/teleop/server/desktop-icons role
   include_role:

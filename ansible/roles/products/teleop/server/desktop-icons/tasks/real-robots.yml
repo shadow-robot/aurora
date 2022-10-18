@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Install desktop icon for launching Shadow Right Teleop
   include_role:
@@ -168,14 +182,20 @@
 
 - name: Create shared icons
   include_tasks: shared-roles.yml
-  
+
+- name: Create Local Launch folder
+  file:
+    path: "{{ desktop_path }}/Local Launch"
+    mode: '755'
+    state: directory
+
 - name: Install desktop icon for NUC right hand and arm hardware control loop
   import_tasks: nuc-control-loop-icon.yml
   vars:
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Right Side Teleop Hardware Control Loop"
+    desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Right Side Teleop Hardware Control Loop"
     hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
@@ -185,7 +205,7 @@
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Left Side Teleop Hardware Control Loop"
+    desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Left Side Teleop Hardware Control Loop"
     hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
@@ -195,20 +215,12 @@
     desktop_icon_png: "hand-e-bimanual.png"
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Bimanual Teleop Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Bimanual Teleop Hardware Control Loop"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch NUC Bimanual Teleop Hardware Control Loop"
   when: bimanual|bool
 
 - name: Setting up icons for demohands A,B,C,D for unimanual teleop
   include_tasks: demohands-unimanual.yml
   when: demohand_icons|bool
-
-- name: Set GUI icon variables to standard values for cyberglove
-  set_fact:
-    launch_file_input_gui_right: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
-    launch_file_input_gui_left: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
-    launch_file_input_gui_bimanual: "sr_teleop_vive_cyberglove.launch remote_cyberglove:={{ remote_cyberglove }}"
-    project_name_input_value: "sr_teleop_vive_cyberglove"
-  when: glove=="cyberglove"
 
 - name: Set GUI icon variables to standard values for haptx
   set_fact:
@@ -278,7 +290,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_realhw }}"
     desktop_icon_name: "4 - Launch Right Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
+    desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Right Teleop GUI"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for left side teleop GUI
@@ -290,7 +302,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_realhw }}"
     desktop_icon_name: "4 - Launch Left Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
+    desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Left Teleop GUI"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for bimanual teleop GUI
@@ -302,7 +314,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw }}"
     desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Bimanual Teleop GUI"
   when: bimanual|bool
 
 - name: Install desktop icon for remote right side teleop GUI
@@ -314,7 +326,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_realhw }} remote:=true"
     desktop_icon_name: "4 - Launch Remote Right Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Right Teleop GUI"
+    desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Remote Right Teleop GUI"
   when:
     - bimanual|bool or hand_side=="right"
     - remote_icons|bool
@@ -329,7 +341,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_realhw }} remote:=true"
     desktop_icon_name: "4 - Launch Remote Left Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Left Teleop GUI"
+    desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Remote Left Teleop GUI"
   when:
     - bimanual|bool or hand_side=="left"
     - remote_icons|bool
@@ -344,7 +356,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw }} remote:=true"
     desktop_icon_name: "4 - Launch Remote Bimanual Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Bimanual Teleop GUI"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Remote Bimanual Teleop GUI"
   when:
     - bimanual|bool
     - remote_icons|bool
@@ -359,7 +371,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_realhw }} pedal:=false"
     desktop_icon_name: "4 - Launch Remote Right Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Right Teleop GUI"
+    desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Remote Right Teleop GUI"
   when:
     - bimanual|bool or hand_side=="right"
     - remote_icons|bool
@@ -374,7 +386,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_realhw }} pedal:=false"
     desktop_icon_name: "4 - Launch Remote Left Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Left Teleop GUI"
+    desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Remote Left Teleop GUI"
   when:
     - bimanual|bool or hand_side=="left"
     - remote_icons|bool
@@ -389,7 +401,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw }} pedal:=false"
     desktop_icon_name: "4 - Launch Remote Bimanual Teleop GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Remote Bimanual Teleop GUI"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Remote Bimanual Teleop GUI"
   when:
     - bimanual|bool
     - remote_icons|bool
@@ -404,7 +416,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Right Teleop GUI 8DOF"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI 8DOF"
+    desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Right Teleop GUI 8DOF"
   when: (bimanual|bool or hand_side=="right") and (arm_servo|bool)
 
 - name: Install desktop icon for left side teleop GUI 8DOF
@@ -416,7 +428,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Left Teleop GUI 8DOF"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI 8DOF"
+    desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Left Teleop GUI 8DOF"
   when: (bimanual|bool or hand_side=="left") and (arm_servo|bool)
 
 - name: Install desktop icon for bimanual teleop GUI 8DOF
@@ -428,7 +440,7 @@
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw_8DOF }}"
     desktop_icon_name: "4 - Launch Bimanual Teleop GUI 8DOF"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI 8DOF"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Bimanual Teleop GUI 8DOF"
   when: bimanual|bool and arm_servo|bool
 
 - name: Install desktop icon for running right Shadow Glove driver
@@ -438,7 +450,7 @@
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_driver_right.sh"
     desktop_icon_name: "5 - Launch Right Shadow Glove Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Driver"
+    desktop_icon_path: "{{ right_advanced_launcher }}/5 - Launch Right Shadow Glove Driver"
     project_name_input: "sr_teleop_vive_polhemus"
     launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_right.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
   when:
@@ -452,7 +464,7 @@
     desktop_icon_png: "shadow_glove_left.png"
     launch_script: "shadow_glove_driver_left.sh"
     desktop_icon_name: "5 - Launch Left Shadow Glove Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Shadow Glove Driver"
+    desktop_icon_path: "{{ left_advanced_launcher }}/5 - Launch Left Shadow Glove Driver"
     project_name_input: "sr_teleop_vive_polhemus"
     launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
   when:
@@ -466,7 +478,7 @@
     desktop_icon_png: "shadow_glove_bimanual.png"
     launch_script: "shadow_glove_driver_bimanual.sh"
     desktop_icon_name: "5 - Launch Bimanual Shadow Glove Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Shadow Glove Driver"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/5 - Launch Bimanual Shadow Glove Driver"
     project_name_input: "sr_teleop_vive_polhemus"
     launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
   when:
@@ -498,7 +510,7 @@
     desktop_icon_png: "{{ teleop_glove_right }}"
     launch_script: "shadow_haptx_mapping_launch_right.sh"
     desktop_icon_name: "5 - Launch Right HaptX Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right HaptX Mapping"
+    desktop_icon_path: "{{ right_advanced_launcher }}/5 - Launch Right HaptX Mapping"
     project_name_input: "sr_teleop_vive_haptx"
     launch_file_input: "{{ launch_file_input_haptx_mapping_right }}"
   when:
@@ -512,7 +524,7 @@
     desktop_icon_png: "{{ teleop_glove_left }}"
     launch_script: "shadow_haptx_mapping_launch_left.sh"
     desktop_icon_name: "5 - Launch Left HaptX Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left HaptX Mapping"
+    desktop_icon_path: "{{ left_advanced_launcher }}/5 - Launch Left HaptX Mapping"
     project_name_input: "sr_teleop_vive_haptx"
     launch_file_input: "{{ launch_file_input_haptx_mapping_left }}"
   when:
@@ -526,7 +538,7 @@
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
     launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
     desktop_icon_name: "5 - Launch Bimanual HaptX Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual HaptX Mapping"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/5 - Launch Bimanual HaptX Mapping"
     project_name_input: "sr_teleop_vive_haptx"
     launch_file_input: "{{ launch_file_input_haptx_mapping_bimanual }}"
   when: bimanual|bool and glove=="haptx"
@@ -538,7 +550,7 @@
     desktop_icon_png: "shadow_glove_right.png"
     launch_script: "shadow_glove_mapping_launch_right.sh"
     desktop_icon_name: "6 - Launch Right Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping"
+    desktop_icon_path: "{{ right_advanced_launcher }}/6 - Launch Right Shadow Glove Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch"
   when:
@@ -552,7 +564,7 @@
     desktop_icon_png: "shadow_glove_left.png"
     launch_script: "shadow_glove_mapping_launch_left.sh"
     desktop_icon_name: "6 - Launch Left Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Shadow Glove Mapping"
+    desktop_icon_path: "{{ left_advanced_launcher }}/6 - Launch Left Shadow Glove Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
   when:
@@ -566,7 +578,7 @@
     desktop_icon_png: "shadow_glove_bimanual.png"
     launch_script: "shadow_glove_mapping_launch_bimanual.sh"
     desktop_icon_name: "6 - Launch Bimanual Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Shadow Glove Mapping"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/6 - Launch Bimanual Shadow Glove Mapping"
     project_name_input: "sr_fingertip_hand_teleop"
     launch_file_input: "sr_fingertip_hand_teleop_bimanual.launch"
   when:
@@ -645,7 +657,7 @@
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand"
+    desktop_icon_path: "{{ right_advanced_launcher }}/3 - Zero Force Mode - Right Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     hand_side_ad: "-r"
@@ -657,7 +669,7 @@
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand"
+    desktop_icon_path: "{{ left_advanced_launcher }}/3 - Zero Force Mode - Left Hand"
     pwm_control_value: "false"
     hand_ctrl_value: "false"
     hand_side_ad: "-l"
@@ -697,9 +709,9 @@
   vars:
     desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
     launch_script: "shadow_glove_calibration.sh"
-    desktop_icon_name: "Launch Shadow {{ glove_driver_type }} Glove Calibration"
+    desktop_icon_name: "Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
     template: templates/scripts/launch-shadow-glove-calibration.j2
-    desktop_icon_path: "Shadow Advanced Launchers/Launch Shadow {{ glove_driver_type }} Glove Calibration"
+    desktop_icon_path: "Shadow Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
     launch_terminal: "false"
     glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove"

@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Copy desktop icon
   copy:
@@ -9,19 +23,6 @@
   set_fact:
     arm_y_separation_value: 1.5
   when: bimanual|bool and hand_side=="left"
-
-- name: Create executable launch script for hand and arm control loop (for cyberglove)
-  template:
-    src: templates/scripts/start-docker-container-nuc.j2
-    dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
-    mode: '755'
-  vars:
-    teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
-    ad_hand_side: "{{ hand_side_ad }}"
-  when: glove=="cyberglove"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
   template:

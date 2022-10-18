@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Create the shadow_hand_launcher_folder
   file:
@@ -8,7 +22,7 @@
   block:
     - name: Set variables
       set_fact: 
-        local_response_path: "{{ user_folder }}/.shadow_launcher_app/.response"
+        local_response_path: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/.response"
         container_response_path: "/usr/local/bin/.response"
     - name: Copy response file
       shell: "docker cp {{ container_name }}:{{ container_response_path }} {{ local_response_path }}"
@@ -157,14 +171,20 @@
     documentation_repo: sr_teleop_polhemus_documentation
     readthedocs_token: "{{ shadow_glove_teleop_readthedocs_token }}"
     documentation_product: teleop-polhemus
-  when: glove == "shadow_glove" and skip_molecule_task is not defined
+  when:
+    - glove == "shadow_glove"
+    - product is not defined
+    - skip_molecule_task is not defined
 
 - name: Set documentation variables for haptx teleop
   set_fact:
     documentation_repo: sr_teleop_haptx_documentation
     readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
     documentation_product: teleop-haptx
-  when: glove == "haptx" and skip_molecule_task is not defined
+  when: 
+    - glove == "haptx"
+    - product is not defined
+    - skip_molecule_task is not defined
 
 - name: Set documentation variables for arm and hand
   set_fact:
@@ -175,13 +195,23 @@
     - "'arm_' in product"
     - skip_molecule_task is not defined
 
-- name: Update documentation inside the docker container for teleop or arm+hand
+- name: Set documentation variables for glove and hand
+  set_fact:
+    documentation_repo: sr_dexterous_hand_glove_documentation
+    readthedocs_token: "{{ glove_hand_readthedocs_token }}"
+    documentation_product: dexterous-hand-and-glove
+  when:
+    - "'glove_' in product"
+    - skip_molecule_task is not defined
+
+- name: Update documentation inside the docker container for teleop or arm+hand or glove+hand
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "update_documentation.sh"
     modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
   when:
-    - "glove == 'haptx' or glove == 'shadow_glove' or 'arm_' in product"
+    - "glove == 'haptx' or glove == 'shadow_glove' or 'arm_' in product or 'glove_' in product"
+    - "product != 'hand_e' or product != 'hand_lite' or product != 'hand_extra_lite'"
     - skip_molecule_task is not defined
     - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
   ignore_errors: yes
@@ -197,7 +227,7 @@
     - skip_molecule_task is not defined
     - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
   ignore_errors: yes
-  
+
 - name: Pulling latest hand_configurations
   import_tasks: modify-container.yml
   vars:

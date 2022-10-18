@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 set -e # fail on errors
 #set -x # echo commands run
 
@@ -228,8 +242,9 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     echo "Waiting for apt-get install file lock..."
     sleep 1
 done
-
-sudo apt-get install -y python3-pip git libyaml-dev python-crypto libssl-dev libffi-dev sshpass
+# Pip is broken at the moment and can't find base packages so a reinstall is required.
+curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
+sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
 pip3 install --user -U pip
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
@@ -264,10 +279,10 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-if [[ $codename == "focal" ]]; then
-    pip3 install --user -r ansible/data/ansible/requirements.txt
-else
+if [[ $codename == "bionic" ]]; then
     pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
+else
+    pip3 install --user -r ansible/data/ansible/requirements.txt
 fi
 
 
@@ -292,11 +307,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
 elif [[ "${playbook}" = "teleop_deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-vault-pass"
     if [[ "${aurora_inventory}" = "" ]]; then
-        if [[ $extra_vars == *"remote_teleop=true"* ]]; then
-            aurora_inventory="ansible/inventory/teleop/production_remote"
-        else
-            aurora_inventory="ansible/inventory/teleop/production"
-        fi
+        aurora_inventory="ansible/inventory/teleop/production"
     else
         aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
     fi

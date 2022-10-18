@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import os
 import testinfra.utils.ansible_runner
 
@@ -24,58 +38,52 @@ def test_udev_files(host):
 
 
 def test_icons_in_docker(host):
-    desktop_path = '/home/' + str(host.user().name) + '/Desktop/'
-    script_path = '/home/' + str(host.user().name) + \
-                  '/.shadow_launcher_app/shadow_hand_launcher/'
-    save_logs_script_path = '/home/' + str(host.user().name) + \
-                            '/.shadow_save_log_app/save_latest_ros_logs/'
+    hostuser = str(host.user().name)
+    desktop_path = f'/home/{hostuser}/Desktop/'
+    script_path = f'/home/{hostuser}/.shadow_launcher_app_teleop_haptx/shadow_hand_launcher/'
+    save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Right Teleop 8DOF',
         'Launch Shadow Left Teleop 8DOF',
         'Launch Shadow Bimanual Teleop 8DOF',
         'Shadow NUC RQT',
-        'Shadow Advanced Launchers/1 - Launch Server Container',
-        'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch NUC Right ' +
-        'Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Launch NUC Left ' +
-        'Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Launch NUC Bimanual ' +
-        'Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand A Launch NUC ' +
-        'Right Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand B Launch NUC ' +
-        'Right Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand C Launch NUC ' +
-        'Right Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/3 - Demohand D Launch NUC ' +
-        'Left Side Teleop Hardware Control Loop',
-        'Shadow Advanced Launchers/4 - Launch Right Teleop GUI 8DOF',
-        'Shadow Advanced Launchers/4 - Launch Left Teleop GUI 8DOF',
-        'Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI 8DOF',
-        'Shadow Advanced Launchers/5 - Launch Right HaptX Mapping',
-        'Shadow Advanced Launchers/5 - Launch Left HaptX Mapping',
-        'Shadow Advanced Launchers/5 - Launch Bimanual HaptX Mapping',
+        'Shadow Advanced Launchers/Launch Server Container',
+        'Right Side/1 - Launch Server Container',
+        'Right Side/2 - Launch Server ROSCORE',
+        'Left Side/1 - Launch Server Container',
+        'Left Side/2 - Launch Server ROSCORE',
+        'Bimanual/1 - Launch Server Container',
+        'Bimanual/2 - Launch Server ROSCORE',
+        'Right Side/3 - Launch NUC Right Side Teleop Hardware Control Loop',
+        'Left Side/3 - Launch NUC Left Side Teleop Hardware Control Loop',
+        'Bimanual/3 - Launch NUC Bimanual Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand A Launch NUC Right Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand B Launch NUC Right Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand C Launch NUC Right Side Teleop Hardware Control Loop',
+        'Shadow Advanced Launchers/3 - Demohand D Launch NUC Left Side Teleop Hardware Control Loop',
+        'Right Side/4 - Launch Right Teleop GUI 8DOF',
+        'Left Side/4 - Launch Left Teleop GUI 8DOF',
+        'Bimanual/4 - Launch Bimanual Teleop GUI 8DOF',
+        'Right Side/5 - Launch Right HaptX Mapping',
+        'Left Side/5 - Launch Left HaptX Mapping',
+        'Bimanual/5 - Launch Bimanual HaptX Mapping',
         'Shadow Advanced Launchers/Launch NUC Container',
         'Shadow Demos/Close Right Hand',
-        'Shadow Demos/Biotacs Demo Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow Demos/Close Left Hand',
         'Shadow Demos/Open Left Hand',
-        'Shadow Demos/Biotacs Demo Left Hand',
         'Shadow Demos/Close Bimanual Hands',
         'Shadow Demos/Open Bimanual Hands',
-        'Shadow Demos/Biotacs Demo Bimanual Hands',
         'Shadow ROS Logs Saver and Uploader',
         'Teleop Documentation',
         'Shadow System Monitor',
-        'Shadow Advanced Launchers/Launch Local Shadow Right Hand',
-        'Shadow Advanced Launchers/Launch Local Shadow Left Hand',
-        'Shadow Advanced Launchers/Launch Local Shadow Bimanual Hands',
-        'Shadow Advanced Launchers/3 - Zero Force Mode - Left Hand',
-        'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',
-        'Shadow Advanced Launchers/Local Zero Force Mode - Left Hand',
-        'Shadow Advanced Launchers/Local Zero Force Mode - Right Hand',
+        'Local Launch/Launch Local Shadow Right Hand',
+        'Local Launch/Launch Local Shadow Left Hand',
+        'Local Launch/Launch Local Shadow Bimanual Hands',
+        'Local Launch/Local Zero Force Mode - Left Hand',
+        'Local Launch/Local Zero Force Mode - Right Hand',
+        'Left Side/3 - Zero Force Mode - Left Hand',
+        'Right Side/3 - Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/Bimanual Teleop Simulation',
         'Shadow Close Everything'
         )
@@ -102,13 +110,10 @@ def test_icons_in_docker(host):
         'shadow_nuc_container',
         'close_right_hand',
         'open_right_hand',
-        'demo_right_hand_biotacs',
         'close_left_hand',
         'open_left_hand',
-        'demo_left_hand_biotacs',
         'close_bimanual_hands',
         'open_bimanual_hands',
-        'demo_bimanual_hands_biotacs',
         'shadow_launcher_doc_exec',
         'shadow_launcher_system_monitor_exec',
         'shadow_local_right_launcher_exec',
@@ -124,11 +129,11 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        assert host.file(desktop_path+icon+'.desktop').exists
+        assert host.file(f"{desktop_path}{icon}.desktop").exists
+
     for script in scripts:
-        assert host.file(script_path+script+'.sh').exists
-    save_logs_file = save_logs_script_path+'save-latest-ros-logs.sh'
+        assert host.file(f"{script_path}{script}.sh").exists
+    save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
-    hand_manual_file = desktop_path+'Palm_EDC_User_Manual_1.7.pdf'
+    hand_manual_file = f"{desktop_path}Palm_EDC_User_Manual_1.7.pdf"
     assert host.file(hand_manual_file).exists
-    

@@ -1,18 +1,30 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus" # Docker image name
 tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
-container_name: "teleop" # Name of the docker container
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
-glove: "shadow_glove" # Determines which glove is installed (cyberglove, haptx or shadow_glove)
+glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
+container_name: "teleop_{{ glove }}" # Name of the docker container
 real_glove: true # Whether a real physical glove is being used for hand control or not
 real_vive: true # Whether a real Vive system is being used for arm control
-cyberglove: "" # Specify the branch of sr_cyberglove_config for cyberglove configuration
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 use_openvpn: false # Specify if openvpn-server should be installed
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
-remote_cyberglove: false # Determines if the cyberglove is run locally (server) or remotely (client)
 use_steamvr: true # Determines if SteamVR will launch inside the container created on this machine
 sim_icon: false # creates an extra icon that runs teleoperation in simulation mode
 save_nuc_logs: true # enables saving ROS logs from control-computer to server
@@ -21,7 +33,6 @@ upgrade_check: false # If set to true will pull latest docker image and prompt t
 bimanual: false # Specify if both hands are used or not
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for the server laptop
-remote_teleop: false # Flag to enable/disable remote_teleop software install
 demohand_icons: false # Specify if all the teleop icons for Demohands A,B,C,D should be installed (for demos)
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm

@@ -1,0 +1,95 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Install desktop icon for server container
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.png"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "Launch Server Container"
+    desktop_icon_path: "Shadow Advanced Launchers/Launch Server Container"
+    launch_terminal: "false"
+    hand_side_ad: ""
+
+- name: Install desktop icon for server container Right
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.png"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "1 - Launch Server Container"
+    desktop_icon_path: "{{ right_advanced_launcher }}/1 - Launch Server Container"
+    launch_terminal: "false"
+    hand_side_ad: ""
+
+- name: Install desktop icon for server container Left
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.png"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "1 - Launch Server Container"
+    desktop_icon_path: "{{ left_advanced_launcher }}/1 - Launch Server Container"
+    launch_terminal: "false"
+    hand_side_ad: ""
+
+- name: Install desktop icon for server container Bimanual
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.png"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "1 - Launch Server Container"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/1 - Launch Server Container"
+    launch_terminal: "false"
+    hand_side_ad: ""
+
+- name: Install desktop icon for launching ROSCORE
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-roscore.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "shadow_roscore.sh"
+    desktop_icon_name: "2 - Launch Server ROSCORE"
+    desktop_icon_path: "{{ right_advanced_launcher }}/2 - Launch Server ROSCORE"
+    launch_terminal: "false"
+
+- name: Install desktop icon for launching ROSCORE
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-roscore.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "shadow_roscore.sh"
+    desktop_icon_name: "2 - Launch Server ROSCORE"
+    desktop_icon_path: "{{ left_advanced_launcher }}/2 - Launch Server ROSCORE"
+    launch_terminal: "false"
+
+- name: Install desktop icon for launching ROSCORE
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-roscore.j2
+    desktop_icon_png: "ROS_logo.png"
+    launch_script: "shadow_roscore.sh"
+    desktop_icon_name: "2 - Launch Server ROSCORE"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/2 - Launch Server ROSCORE"
+    launch_terminal: "false"
