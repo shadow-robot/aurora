@@ -15,6 +15,7 @@
 ---
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
+desktop_path: "{{ user_folder }}/Desktop"
 manual_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}"
 manual_filename: "shadow_documentation.pdf"
 bucket_name: "shadowrobot.aurora.files"
