@@ -1,0 +1,61 @@
+- name: Set documentation variables for shadow_glove teleop
+  set_fact:
+    documentation_repo: sr_teleop_polhemus_documentation
+    readthedocs_token: "{{ shadow_glove_teleop_readthedocs_token }}"
+    documentation_product: teleop-polhemus
+  when:
+    - glove == "shadow_glove"
+    - product is not defined
+    - skip_molecule_task is not defined
+
+- name: Set documentation variables for haptx teleop
+  set_fact:
+    documentation_repo: sr_teleop_haptx_documentation
+    readthedocs_token: "{{ haptx_teleop_readthedocs_token }}"
+    documentation_product: teleop-haptx
+  when: 
+    - glove == "haptx"
+    - product is not defined
+    - skip_molecule_task is not defined
+
+- name: Set documentation variables for arm and hand
+  set_fact:
+    documentation_repo: sr_dexterous_hand_and_arm_documentation
+    readthedocs_token: "{{ arm_hand_readthedocs_token }}"
+    documentation_product: dexterous-hand-and-arm
+  when:
+    - "'arm_' in product"
+    - skip_molecule_task is not defined
+
+- name: Set documentation variables for glove and hand
+  set_fact:
+    documentation_repo: sr_dexterous_hand_glove_documentation
+    readthedocs_token: "{{ glove_hand_readthedocs_token }}"
+    documentation_product: dexterous-hand-and-glove
+  when:
+    - "'glove_' in product"
+    - skip_molecule_task is not defined
+
+- name: Update documentation inside the docker container for teleop or arm+hand or glove+hand
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "update_documentation.sh"
+    modify_script_commands: "roscd {{ documentation_repo }};curl -H 'Authorization: Token {{ readthedocs_token }}' https://shadow-robot-company-{{ documentation_product }}.readthedocs-hosted.com/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv shadow-robot-company-{{ documentation_product }}-latest/ html/"
+  when:
+    - "glove == 'haptx' or glove == 'shadow_glove' or 'arm_' in product or 'glove_' in product"
+    - "product != 'hand_e' or product != 'hand_lite' or product != 'hand_extra_lite'"
+    - skip_molecule_task is not defined
+    - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
+  ignore_errors: yes
+
+- name: Update documentation inside the docker container for hand only
+  import_tasks: modify-container.yml
+  vars:
+    modify_script_name: "update_documentation.sh"
+    modify_script_commands: "cd /home/user/projects/shadow_robot/base/src;git clone https://github.com/shadow-robot/sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base;catkin_make --only-pkg-with-deps sr_dexterous_hand_documentation;cd /home/user/projects/shadow_robot/base/src/sr_dexterous_hand_documentation;curl https://dexterous-hand.readthedocs.io/_/downloads/en/latest/htmlzip/ -o temp.zip;unzip temp.zip;mv dexterous-hand-latest html/"
+  when:
+    - "'arm_' not in product"
+    - "'hand' in product"
+    - skip_molecule_task is not defined
+    - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
+  ignore_errors: yes

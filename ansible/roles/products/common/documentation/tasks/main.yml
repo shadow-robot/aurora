@@ -42,13 +42,70 @@
     aws_secret: "{{ lookup('env','AWS_SECRET_KEY') }}"
   when: skip_molecule_task is defined
 
+- name: Choose documentation version
+  block:
+    - name: Choose Dexterous Hand
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand_lite"
+        documentation_file: "dexterous-hand-lite-test.pdf"
+      when:
+        - "'arm_' not in product"
+        - "'glove_' not in product"
+        - product == 'hand_lite' or product == 'hand_extra_lite'"
+        - product is defined
+    
+    - name: Choose Dexterous Hand
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand"
+        documentation_file: "dexterous-hand-2.1.6.pdf"
+      when:
+        - "'arm_' not in product"
+        - "'glove_' not in product"
+        - "product == 'hand_e'"
+        - product is defined
+    
+    - name: Choose Dexterous Hand and Arm
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand_arm"
+        documentation_file: "dexterous-hand-arm-2.1.6.pdf"
+      when:
+        - "'arm_' in product"
+        - "'glove_' not in product"
+        - product is defined
+    
+    - name: Choose Dexterous Hand and Glove
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand_glove"
+        documentation_file: "dexterous-hand-glove-release.pdf"
+      when:
+        - "'arm_' not in product"
+        - "'glove_' in product"
+        - product is defined
+    
+    - name: Choose Teleop Polhemus
+      set_fact:
+        documentation_folder: "documentation/teleop_polhemus"
+        documentation_file: "teleop-polhemus-latest.pdf"
+      when:
+        - glove == "shadow_glove"
+        - product is not defined
+    
+    - name: Choose Teleop Haptx
+      set_fact:
+        documentation_folder: "documentation/teleop_haptx"
+        documentation_file: "teleop-haptx-latest.pdf"
+      when:
+        - glove == "haptx"
+        - product is not defined
+
+
 - name: Downloading the hand manual from AWS to Desktop
   amazon.aws.aws_s3:
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
     security_token: "{{ aws_security_token }}"
-    bucket: shadowrobot.aurora.files
-    object: "/server/{{ manual_filename }}"
+    bucket: "{{ bucket_name }}"
+    object: "/{{ documentation_folder }}/{{ documentation_file }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
   when: skip_molecule_task is not defined
@@ -58,8 +115,8 @@
   amazon.aws.aws_s3:
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
-    bucket: shadowrobot.aurora.files
-    object: "/server/{{ manual_filename }}"
+    bucket: "{{ bucket_name }}"
+    object: "/{{ documentation_folder }}/{{ manual_filename }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
   when: skip_molecule_task is defined

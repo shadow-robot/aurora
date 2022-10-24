@@ -109,9 +109,9 @@
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
   when: arm_servo|bool
 
-- name: Include hand-manual role
+- name: Include documentation role
   include_role:
-    name: products/common/hand-manual
+    name: products/common/documentation
   when: customer_key is defined and customer_key | length > 0
 
 - name: Set default biotacs to false if Shadow Glove is being used (user can still override)

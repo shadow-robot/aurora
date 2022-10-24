@@ -116,9 +116,9 @@
     - "'glove_' not in product"
     - "'arm' not in product"
 
-- name: Include hand-manual role
+- name: Include documentation role
   include_role:
-    name: products/common/hand-manual
+    name: products/common/documentation
   when: customer_key is defined and customer_key | length > 0
 
 - name: Install desktop icon for RQT on NUC
