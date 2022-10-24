@@ -26,7 +26,6 @@
     mode: '755'
   vars:
     local_website_name: "{{ desktop_icon_name }}"
-    preconditions: "{{ preconditions_var }}"
     live_website_url: "{{ live_website_url_var }}"
 
 - name: Create desktop icon
