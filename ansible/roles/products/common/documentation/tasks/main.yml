@@ -53,7 +53,7 @@
       when:
         - "'arm_' not in product"
         - "'glove_' not in product"
-        - product == 'hand_lite' or product == 'hand_extra_lite'"
+        - "product == 'hand_lite' or product == 'hand_extra_lite'"
         - product is defined
     
     - name: Choose Dexterous Hand
@@ -65,7 +65,7 @@
       when:
         - "'arm_' not in product"
         - "'glove_' not in product"
-        - "product == 'hand_e'"
+        - product == 'hand_e'
         - product is defined
     
     - name: Choose Dexterous Hand and Arm
