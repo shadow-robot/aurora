@@ -72,6 +72,8 @@
       set_fact:
         documentation_folder: "documentation/dexterous_hand_arm"
         documentation_file: "dexterous-hand-arm-2.1.6.pdf"
+        pub_readthedocs: "{{ arm_hand_readthedocs_link }}"
+        pub_icon_name: Dexterous Hand and Arm Documentation
       when:
         - "'arm_' in product"
         - "'glove_' not in product"
@@ -81,6 +83,8 @@
       set_fact:
         documentation_folder: "documentation/dexterous_hand_glove"
         documentation_file: "dexterous-hand-glove-release.pdf"
+        pub_readthedocs: "{{ glove_hand_readthedocs_link }}"
+        pub_icon_name: Dexterous Hand and Glove Documentation
       when:
         - "'arm_' not in product"
         - "'glove_' in product"
@@ -90,6 +94,8 @@
       set_fact:
         documentation_folder: "documentation/teleop_polhemus"
         documentation_file: "teleop-polhemus-latest.pdf"
+        pub_readthedocs: "{{ shadow_glove_teleop_readthedocs_link }}"
+        pub_icon_name: Shadow Teleop Documentation
       when:
         - glove == "shadow_glove"
         - product is not defined
@@ -98,6 +104,8 @@
       set_fact:
         documentation_folder: "documentation/teleop_haptx"
         documentation_file: "teleop-haptx-latest.pdf"
+        pub_readthedocs: "{{ haptx_teleop_readthedocs_link }}"
+        pub_icon_name: Shadow Teleop Documentation
       when:
         - glove == "haptx"
         - product is not defined
