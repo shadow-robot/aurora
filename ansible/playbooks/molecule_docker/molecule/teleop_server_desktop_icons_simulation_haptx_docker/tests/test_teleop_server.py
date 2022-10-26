@@ -49,7 +49,7 @@ def test_icons_in_docker(host):
         'Shadow Demos/Close Left Hand',
         'Shadow Demos/Open Left Hand',
         'Shadow ROS Logs Saver and Uploader',
-        'Teleop Documentation',
+        'Shadow Teleop Documentation',
         'Shadow System Monitor',
         'Shadow Close Everything'
         )

@@ -54,7 +54,7 @@ def test_icons_in_docker(host):
         'Shadow Demos/Close Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow ROS Logs Saver and Uploader',
-        'Teleop Documentation',
+        'Shadow Teleop Documentation',
         'Local Launch/Launch Local Shadow Right Hand',
         'Local Launch/Local Zero Force Mode - Right Hand',
         'Shadow Advanced Launchers/3 - Zero Force Mode - Right Hand',

@@ -75,7 +75,7 @@ def test_icons_in_docker(host):
         'Shadow Demos/Close Bimanual Hands',
         'Shadow Demos/Open Bimanual Hands',
         'Shadow ROS Logs Saver and Uploader',
-        'Teleop Documentation',
+        'Shadow Teleop Documentation',
         'Shadow System Monitor',
         'Local Launch/Launch Local Shadow Right Hand',
         'Local Launch/Launch Local Shadow Left Hand',
