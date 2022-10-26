@@ -111,7 +111,7 @@
         - product is not defined
 
 
-- name: Downloading the hand manual from AWS to Desktop
+- name: Downloading the Documentation from AWS to Desktop
   amazon.aws.aws_s3:
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
@@ -123,12 +123,12 @@
   when: skip_molecule_task is not defined
   changed_when: false
 
-- name: Downloading the hand manual from AWS to Desktop (for Molecule in AWS)
+- name: Downloading the Documentation from AWS to Desktop (for Molecule in AWS)
   amazon.aws.aws_s3:
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
     bucket: "{{ bucket_name }}"
-    object: "/{{ documentation_folder }}/{{ manual_filename }}"
+    object: "/{{ documentation_folder }}/{{ documentation_file }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
   when: skip_molecule_task is defined
