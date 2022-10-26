@@ -42,7 +42,7 @@
     aws_secret: "{{ lookup('env','AWS_SECRET_KEY') }}"
   when: skip_molecule_task is defined
 
-- name: Choose documentation version
+- name: Choose documentation version (not teleop)
   block:
     - name: Choose Dexterous Hand Lite
       set_fact:
@@ -89,7 +89,11 @@
         - "'arm_' not in product"
         - "'glove_' in product"
         - product is defined
-    
+  when:
+    - product is defined
+
+- name: Choose documentation version (teleop)
+  block:
     - name: Choose Teleop Polhemus
       set_fact:
         documentation_folder: "documentation/teleop_polhemus"
@@ -108,7 +112,8 @@
         doc_icon_name: Shadow Teleop Documentation
       when:
         - glove == "haptx"
-        - product is not defined
+  when:
+    - product is not defined
 
 
 - name: Downloading the Documentation from AWS to Desktop
