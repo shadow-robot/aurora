@@ -252,7 +252,7 @@
     launch_script: "shadow_glove_driver_right.sh"
     desktop_icon_name: "4 - Launch Right Shadow Glove Driver"
     desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Right Shadow Glove Driver"
-    project_name_input: "sr_teleop_vive_polhemus"
+    project_name_input: "sr_hand_glove"
     launch_file_input: "{{ launch_file_input_right }}"
   when: glove=="shadow_glove" and real_glove|bool
 
@@ -264,7 +264,7 @@
     launch_script: "shadow_glove_driver_left.sh"
     desktop_icon_name: "4 - Launch Left Shadow Glove Driver"
     desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Left Shadow Glove Driver"
-    project_name_input: "sr_teleop_vive_polhemus"
+    project_name_input: "sr_hand_glove"
     launch_file_input: "{{ launch_file_input_left }}"
   when: glove=="shadow_glove" and real_glove|bool
 
@@ -276,7 +276,7 @@
     launch_script: "shadow_glove_driver_bimanual.sh"
     desktop_icon_name: "4 - Launch Bimanual Shadow Glove Driver"
     desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Bimanual Shadow Glove Driver"
-    project_name_input: "sr_teleop_vive_polhemus"
+    project_name_input: "sr_hand_glove"
     launch_file_input: "{{ launch_file_input_bimanual }}"
   when: glove=="shadow_glove" and real_glove|bool
 
