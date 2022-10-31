@@ -24,7 +24,7 @@ bucket_name: "shadowrobot.aurora.files"
 hand_lite_version: "test"
 hand_e_version: "2.1.6"
 hand_arm_version: "2.1.6"
-hand_glove_version: "release"
+hand_glove_version: "2.1.8"
 teleop_polhemus_version: "latest"
 teleop_haptx_version: "latest"
 # ReadTheDocs links
