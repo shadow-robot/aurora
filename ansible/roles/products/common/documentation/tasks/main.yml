@@ -47,7 +47,7 @@
     - name: Choose Dexterous Hand Lite
       set_fact:
         documentation_folder: "documentation/dexterous_hand_lite"
-        documentation_file: "dexterous-hand-lite-{hand_lite_version}.pdf"
+        documentation_file: "dexterous-hand-lite-{{ hand_lite_version }}.pdf"
         readthedocs_link: "{{ dexterous_hand_lite_readthedocs_link }}"
         doc_icon_name: Dexterous Hand-Lite Documentation
       when:
@@ -59,7 +59,7 @@
     - name: Choose Dexterous Hand
       set_fact:
         documentation_folder: "documentation/dexterous_hand"
-        documentation_file: "dexterous-hand-{hand_e_version}.pdf"
+        documentation_file: "dexterous-hand-{{ hand_e_version }}.pdf"
         readthedocs_link: "{{ dexterous_hand_readthedocs_link }}"
         doc_icon_name: Dexterous Hand Documentation
       when:
@@ -71,7 +71,7 @@
     - name: Choose Dexterous Hand and Arm
       set_fact:
         documentation_folder: "documentation/dexterous_hand_arm"
-        documentation_file: "dexterous-hand-arm-{hand_arm_version}.pdf"
+        documentation_file: "dexterous-hand-arm-{{ hand_arm_version }}.pdf"
         readthedocs_link: "{{ arm_hand_readthedocs_link }}"
         doc_icon_name: Dexterous Hand and Arm Documentation
       when:
@@ -82,7 +82,7 @@
     - name: Choose Dexterous Hand and Glove
       set_fact:
         documentation_folder: "documentation/dexterous_hand_glove"
-        documentation_file: "dexterous-hand-glove-{hand_glove_version}.pdf"
+        documentation_file: "dexterous-hand-glove-{{ hand_glove_version }}.pdf"
         readthedocs_link: "{{ glove_hand_readthedocs_link }}"
         doc_icon_name: Dexterous Hand and Glove Documentation
       when:
@@ -97,7 +97,7 @@
     - name: Choose Teleop Polhemus
       set_fact:
         documentation_folder: "documentation/teleop_polhemus"
-        documentation_file: "teleop-polhemus-{teleop_polhemus_version}.pdf"
+        documentation_file: "teleop-polhemus-{{ teleop_polhemus_version }}.pdf"
         readthedocs_link: "{{ shadow_glove_teleop_readthedocs_link }}"
         doc_icon_name: Shadow Teleop Documentation
       when:
@@ -107,7 +107,7 @@
     - name: Choose Teleop Haptx
       set_fact:
         documentation_folder: "documentation/teleop_haptx"
-        documentation_file: "teleop-haptx-{teleop_haptx_version}.pdf"
+        documentation_file: "teleop-haptx-{{ teleop_haptx_version }}.pdf"
         readthedocs_link: "{{ haptx_teleop_readthedocs_link }}"
         doc_icon_name: Shadow Teleop Documentation
       when:
