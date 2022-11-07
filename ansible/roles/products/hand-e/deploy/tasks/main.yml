@@ -101,9 +101,9 @@
   shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
 
-- name: Include hand-manual role
+- name: Include documentation role
   include_role:
-    name: products/common/hand-manual
+    name: products/common/documentation
   when: customer_key is defined and customer_key | length > 0
 
 - name: Include products/common/local-hand-launch role
