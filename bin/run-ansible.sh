@@ -140,29 +140,29 @@ IFS=${old_IFS}
 
 github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
 github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
-if [[ $extra_vars == *"pr_branches="* ]]; then
-    echo " -------------------------------------------------------------------------------------"
-    echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
-    echo "Using SSH key from $github_ssh_private_key_path"
-    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
-    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
-        echo " ---------------------------------"
-        echo "Github SSH key successfully added!"
-        echo " ---------------------------------"
-    else
-        if [[ -z ${read_input} ]]; then
-            read_input="github_email"
-        else
-            read_input=$read_input",github_email"
-        fi
-        # Wait for apt-get install lock file to be released
-        while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
-            echo "Waiting for apt-get install file lock..."
-            sleep 1
-        done
-        sudo apt-get install -y xclip
-    fi
-fi
+#if [[ $extra_vars == *"pr_branches="* ]]; then
+#    echo " -------------------------------------------------------------------------------------"
+#    echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
+#    echo "Using SSH key from $github_ssh_private_key_path"
+#    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+#    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+#        echo " ---------------------------------"
+#        echo "Github SSH key successfully added!"
+#        echo " ---------------------------------"
+#    else
+#        if [[ -z ${read_input} ]]; then
+#            read_input="github_email"
+#        else
+#            read_input=$read_input",github_email"
+#        fi
+#        # Wait for apt-get install lock file to be released
+#        while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
+#            echo "Waiting for apt-get install file lock..."
+#            sleep 1
+#        done
+#        sudo apt-get install -y xclip
+#    fi
+#fi
 
 IFS=',' read -ra inputdata <<< "$read_input"
 for i in "${inputdata[@]}"; do
