@@ -15,8 +15,7 @@
 ---
 container_name: "dexterous_hand"
 image: "public.ecr.aws/shadowrobot/dexterous-hand"
-tag: "noetic-release"
-full_image_name: "shadowrobot/dexterous-hand:noetic-release"
+tag: "noetic-v1.0.21"
 launch_hand: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"

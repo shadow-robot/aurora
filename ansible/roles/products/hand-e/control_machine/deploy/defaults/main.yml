@@ -14,7 +14,7 @@
 
 ---
 image: "public.ecr.aws/shadowrobot/dexterous-hand"
-tag: "noetic-release"
+tag: "noetic-v1.0.21"
 reinstall: false
 container_name: "dexterous_hand"
 ethercat_left_arm: "enx2"

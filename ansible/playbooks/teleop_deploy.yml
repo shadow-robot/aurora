@@ -29,9 +29,9 @@
       vars:
         playbook: "teleop_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
     
     - name: Install licence tools
@@ -113,9 +113,9 @@
       set_fact:
         arm_servo: false
 
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
 
     - name: Install licence tools
@@ -136,9 +136,9 @@
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
 
     - name: Add IP address of all hosts to all hosts

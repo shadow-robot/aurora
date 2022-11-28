@@ -18,7 +18,7 @@
   vars:
     reinstall: true
     image: public.ecr.aws/shadowrobot/dexterous-hand
-    tag: noetic-release
+    tag: noetic-v1.0.21
     nvidia_docker: false
     skip_molecule_task: true
     allow_auto_reboot: true

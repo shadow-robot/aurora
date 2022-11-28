@@ -17,7 +17,7 @@
   import_playbook: ../../../teleop_deploy.yml
   vars:
     image: public.ecr.aws/shadowrobot/dexterous-hand
-    tag: noetic-release
+    tag: noetic-v1.0.21
     reinstall: true
     use_openvpn: false
     nvidia_docker: false
