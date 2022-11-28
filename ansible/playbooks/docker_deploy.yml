@@ -27,9 +27,9 @@
       vars:
         playbook: "docker_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
 
     - name: check if customer_key is provided and not false

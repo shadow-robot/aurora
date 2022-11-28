@@ -24,9 +24,9 @@
       vars:
         playbook: "server_and_nuc_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
 
     - name: Install licence tools
@@ -44,9 +44,9 @@
   connection: local
   gather_facts: yes
   tasks:
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
         
     - name: Add lines in /etc/hosts in computer that is running Ansible
