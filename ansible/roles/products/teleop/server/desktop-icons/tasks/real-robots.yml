@@ -423,46 +423,46 @@
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI 8DOF"
   when: bimanual|bool and arm_servo|bool
 
-- name: Install desktop icon for running right Shadow Glove driver
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_right.png"
-    launch_script: "shadow_glove_driver_right.sh"
-    desktop_icon_name: "5 - Launch Right Shadow Glove Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Driver"
-    project_name_input: "sr_hand_glove"
-    launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_right.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-  when:
-    - bimanual|bool or hand_side=="right"
-    - glove=="shadow_glove"
+# - name: Install desktop icon for running right Shadow Glove driver
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_right.png"
+#     launch_script: "shadow_glove_driver_right.sh"
+#     desktop_icon_name: "5 - Launch Right Shadow Glove Driver"
+#     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Driver"
+#     project_name_input: "sr_hand_glove"
+#     launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_right.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+#   when:
+#     - bimanual|bool or hand_side=="right"
+#     - glove=="shadow_glove"
 
-- name: Install desktop icon for running left Shadow Glove driver
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_left.png"
-    launch_script: "shadow_glove_driver_left.sh"
-    desktop_icon_name: "5 - Launch Left Shadow Glove Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Shadow Glove Driver"
-    project_name_input: "sr_hand_glove"
-    launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-  when:
-    - bimanual|bool or hand_side=="left"
-    - glove=="shadow_glove"
+# - name: Install desktop icon for running left Shadow Glove driver
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_left.png"
+#     launch_script: "shadow_glove_driver_left.sh"
+#     desktop_icon_name: "5 - Launch Left Shadow Glove Driver"
+#     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Shadow Glove Driver"
+#     project_name_input: "sr_hand_glove"
+#     launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+#   when:
+#     - bimanual|bool or hand_side=="left"
+#     - glove=="shadow_glove"
 
-- name: Install desktop icon for running bimanual Shadow Glove driver
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_bimanual.png"
-    launch_script: "shadow_glove_driver_bimanual.sh"
-    desktop_icon_name: "5 - Launch Bimanual Shadow Glove Driver"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Shadow Glove Driver"
-    project_name_input: "sr_hand_glove"
-    launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
-  when:
-    - bimanual|bool and glove=="shadow_glove"
+# - name: Install desktop icon for running bimanual Shadow Glove driver
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_bimanual.png"
+#     launch_script: "shadow_glove_driver_bimanual.sh"
+#     desktop_icon_name: "5 - Launch Bimanual Shadow Glove Driver"
+#     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Bimanual Shadow Glove Driver"
+#     project_name_input: "sr_hand_glove"
+#     launch_file_input: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration'"
+#   when:
+#     - bimanual|bool and glove=="shadow_glove"
 
 - name: Set launch file input for HaptX mapping (overriding right mapping only)
   set_fact:
@@ -523,47 +523,47 @@
     launch_file_input: "{{ launch_file_input_haptx_mapping_bimanual }}"
   when: bimanual|bool and glove=="haptx"
 
-- name: Install desktop icon for running Shadow Glove mapping node right
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_right.png"
-    launch_script: "shadow_glove_mapping_launch_right.sh"
-    desktop_icon_name: "6 - Launch Right Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch"
-  when:
-    - bimanual|bool or hand_side=="right"
-    - glove=="shadow_glove"
+# - name: Install desktop icon for running Shadow Glove mapping node right
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_right.png"
+#     launch_script: "shadow_glove_mapping_launch_right.sh"
+#     desktop_icon_name: "6 - Launch Right Shadow Glove Mapping"
+#     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping"
+#     project_name_input: "sr_fingertip_hand_teleop"
+#     launch_file_input: "sr_fingertip_hand_teleop.launch"
+#   when:
+#     - bimanual|bool or hand_side=="right"
+#     - glove=="shadow_glove"
 
-- name: Install desktop icon for running Shadow Glove mapping node left
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_left.png"
-    launch_script: "shadow_glove_mapping_launch_left.sh"
-    desktop_icon_name: "6 - Launch Left Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Shadow Glove Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
-  when:
-    - bimanual|bool or hand_side=="left"
-    - glove=="shadow_glove"
+# - name: Install desktop icon for running Shadow Glove mapping node left
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_left.png"
+#     launch_script: "shadow_glove_mapping_launch_left.sh"
+#     desktop_icon_name: "6 - Launch Left Shadow Glove Mapping"
+#     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Left Shadow Glove Mapping"
+#     project_name_input: "sr_fingertip_hand_teleop"
+#     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
+#   when:
+#     - bimanual|bool or hand_side=="left"
+#     - glove=="shadow_glove"
 
-- name: Install desktop icon for running Shadow Glove mapping node bimanual
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_bimanual.png"
-    launch_script: "shadow_glove_mapping_launch_bimanual.sh"
-    desktop_icon_name: "6 - Launch Bimanual Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Shadow Glove Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop_bimanual.launch"
-  when:
-    - bimanual|bool
-    - glove=="shadow_glove"
+# - name: Install desktop icon for running Shadow Glove mapping node bimanual
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_bimanual.png"
+#     launch_script: "shadow_glove_mapping_launch_bimanual.sh"
+#     desktop_icon_name: "6 - Launch Bimanual Shadow Glove Mapping"
+#     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Shadow Glove Mapping"
+#     project_name_input: "sr_fingertip_hand_teleop"
+#     launch_file_input: "sr_fingertip_hand_teleop_bimanual.launch"
+#   when:
+#     - bimanual|bool
+#     - glove=="shadow_glove"
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right)
   include_role:
