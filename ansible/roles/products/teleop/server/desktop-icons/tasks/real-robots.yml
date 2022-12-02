@@ -271,7 +271,7 @@
     launch_file_input: "{{ launch_file_input_gui_right_realhw }}"
     desktop_icon_name: "4 - Launch Right Teleop GUI Jog Arm"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI Jog Arm"
-  when: bimanual|bool or hand_side=="right" and not arm_servo|bool
+  when: (bimanual|bool or hand_side=="right") and not arm_servo|bool
 
 - name: Install desktop icon for left side teleop GUI
   include_role:
@@ -283,7 +283,7 @@
     launch_file_input: "{{ launch_file_input_gui_left_realhw }}"
     desktop_icon_name: "4 - Launch Left Teleop GUI Jog Arm"
     desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI Jog Arm"
-  when: bimanual|bool or hand_side=="left" and not arm_servo|bool
+  when: (bimanual|bool or hand_side=="left") and not arm_servo|bool
 
 - name: Install desktop icon for bimanual teleop GUI
   include_role:
