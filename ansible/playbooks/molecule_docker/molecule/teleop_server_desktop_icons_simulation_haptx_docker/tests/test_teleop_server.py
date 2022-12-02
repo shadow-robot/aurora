@@ -11,14 +11,14 @@ def test_icons_in_docker(host):
     script_path = f'/home/{hostuser}/.shadow_launcher_app_teleop_haptx/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
-        'Launch Shadow Right Teleop 8DOF Simulation',
-        'Launch Shadow Left Teleop 8DOF Simulation',
-        'Launch Shadow Bimanual Teleop 8DOF Simulation',
+        'Launch Shadow Right Teleop Simulation',
+        'Launch Shadow Left Teleop Simulation',
+        'Launch Shadow Bimanual Teleop Simulation',
         'Shadow Advanced Launchers/1 - Launch Server Container',
         'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch Right Teleop Simulation 8DOF',
-        'Shadow Advanced Launchers/3 - Launch Left Teleop Simulation 8DOF',
-        'Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation 8DOF',
+        'Shadow Advanced Launchers/3 - Launch Right Teleop Simulation',
+        'Shadow Advanced Launchers/3 - Launch Left Teleop Simulation',
+        'Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation',
         'Shadow Advanced Launchers/4 - Launch Right HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Left HaptX Mapping',
         'Shadow Advanced Launchers/4 - Launch Bimanual HaptX Mapping',
