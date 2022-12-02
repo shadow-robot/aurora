@@ -364,7 +364,7 @@
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_right.sh"
     desktop_icon_name: "5 - Launch Simulated Right Teleop Mock"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Simulated Right Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=right"
 
@@ -375,7 +375,7 @@
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_left.sh"
     desktop_icon_name: "5 - Launch Simulated Left Teleop Mock"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Simulated Left Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=left"
 
@@ -386,7 +386,7 @@
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_bimanual.sh"
     desktop_icon_name: "5 - Launch Simulated Bimanual Teleop Mock"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Bimanual Teleop Mock"
+    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Simulated Bimanual Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=true"
 
