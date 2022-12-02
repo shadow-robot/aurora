@@ -302,42 +302,42 @@
     launch_file_input: "haptx_base_bimanual.launch"
   when: glove=="haptx" and real_glove|bool
 
-- name: Install desktop icon for running Shadow Glove mapping node right
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_right.png"
-    launch_script: "shadow_glove_mapping_launch_right.sh"
-    desktop_icon_name: "5 - Launch Right Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=rh"
-  when: glove=="shadow_glove"
+# - name: Install desktop icon for running Shadow Glove mapping node right
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_right.png"
+#     launch_script: "shadow_glove_mapping_launch_right.sh"
+#     desktop_icon_name: "5 - Launch Right Shadow Glove Mapping"
+#     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Right Shadow Glove Mapping"
+#     project_name_input: "sr_fingertip_hand_teleop"
+#     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=rh"
+#   when: glove=="shadow_glove"
 
-- name: Install desktop icon for running Shadow Glove mapping node left
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_left.png"
-    launch_script: "shadow_glove_mapping_launch_left.sh"
-    desktop_icon_name: "5 - Launch Left Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Shadow Glove Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
-  when: glove=="shadow_glove"
+# - name: Install desktop icon for running Shadow Glove mapping node left
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_left.png"
+#     launch_script: "shadow_glove_mapping_launch_left.sh"
+#     desktop_icon_name: "5 - Launch Left Shadow Glove Mapping"
+#     desktop_icon_path: "Shadow Advanced Launchers/5 - Launch Left Shadow Glove Mapping"
+#     project_name_input: "sr_fingertip_hand_teleop"
+#     launch_file_input: "sr_fingertip_hand_teleop.launch hand_side_prefix:=lh"
+#   when: glove=="shadow_glove"
 
-- name: Install desktop icon for running Shadow Glove mapping node bimanual
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_bimanual.png"
-    launch_script: "shadow_glove_mapping_launch_bimanual.sh"
-    desktop_icon_name: "6 - Launch Bimanual Shadow Glove Mapping"
-    desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Shadow Glove Mapping"
-    project_name_input: "sr_fingertip_hand_teleop"
-    launch_file_input: "sr_fingertip_hand_teleop_bimanual.launch"
-  when:
-    - glove=="shadow_glove"
+# - name: Install desktop icon for running Shadow Glove mapping node bimanual
+#   include_role:
+#     name: products/common/roslaunch-icon
+#   vars:
+#     desktop_icon_png: "shadow_glove_bimanual.png"
+#     launch_script: "shadow_glove_mapping_launch_bimanual.sh"
+#     desktop_icon_name: "6 - Launch Bimanual Shadow Glove Mapping"
+#     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Bimanual Shadow Glove Mapping"
+#     project_name_input: "sr_fingertip_hand_teleop"
+#     launch_file_input: "sr_fingertip_hand_teleop_bimanual.launch"
+#   when:
+#     - glove=="shadow_glove"
 
 - name: Set mock parameters based on glove=haptx
   set_fact:
@@ -363,7 +363,7 @@
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_right.sh"
-    desktop_icon_name: "6 - Launch Simulated Right Teleop Mock"
+    desktop_icon_name: "5 - Launch Simulated Right Teleop Mock"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=right"
@@ -374,7 +374,7 @@
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_left.sh"
-    desktop_icon_name: "6 - Launch Simulated Left Teleop Mock"
+    desktop_icon_name: "5 - Launch Simulated Left Teleop Mock"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=left"
@@ -385,7 +385,7 @@
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_bimanual.sh"
-    desktop_icon_name: "6 - Launch Simulated Bimanual Teleop Mock"
+    desktop_icon_name: "5 - Launch Simulated Bimanual Teleop Mock"
     desktop_icon_path: "Shadow Advanced Launchers/6 - Launch Simulated Bimanual Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=true"
