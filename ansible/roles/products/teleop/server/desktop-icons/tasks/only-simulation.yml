@@ -13,7 +13,6 @@
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_right.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
-  when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Left Teleop Simulation
   include_role:
@@ -29,7 +28,6 @@
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_left.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
-  when: not arm_servo|bool
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
   include_role:
@@ -45,55 +43,6 @@
     control_loop_script_name: ""
     gui_script_name: "shadow_sim_bimanual.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
-  when: not arm_servo|bool
-
-- name: Install desktop icon for launching Shadow Right Teleop 8DOF Simulation
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_launch_right_teleop_8dof_sim.sh"
-    desktop_icon_name: "Launch Shadow Right Teleop Simulation"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Launch Shadow Right Teleop Simulation"
-    launch_terminal: "false"
-    hand_side_label: "Right Hand"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_right_8DOF.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
-  when: arm_servo|bool
-
-- name: Install desktop icon for launching Shadow Left Teleop 8DOF Simulation
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_left }}"
-    launch_script: "shadow_launch_left_teleop_8dof_sim.sh"
-    desktop_icon_name: "Launch Shadow Left Teleop Simulation"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Launch Shadow Left Teleop Simulation"
-    launch_terminal: "false"
-    hand_side_label: "Left Hand"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_left_8DOF.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
-  when: arm_servo|bool
-
-- name: Install desktop icon for launching Shadow Bimanual Teleop 8DOF Simulation
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_bimanual }}"
-    launch_script: "shadow_launch_bimanual_teleop_8dof_sim.sh"
-    desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Launch Shadow Bimanual Teleop Simulation"
-    launch_terminal: "false"
-    hand_side_label: "Bimanual"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_bimanual_8DOF.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
-  when: arm_servo|bool
 
 - name: Include hand-manual role
   include_role:
@@ -110,23 +59,17 @@
 
 - name: Set GUI icon variables to standard values for haptx
   set_fact:
-    launch_file_input_gui_right: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=true arm_servo:=false"
-    launch_file_input_gui_left: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=true arm_servo:=false"
-    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=true arm_servo:=false"
-    launch_file_input_gui_right_8DOF: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_left_8DOF: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_bimanual_8DOF: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_right: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_left: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
     project_name_input_value: "sr_teleop_vive_haptx"
   when: glove=="haptx"
 
 - name: Set GUI icon variables to standard values for shadow_glove
   set_fact:
-    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=true arm_servo:=false"
-    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=true arm_servo:=false"
-    launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower | ternary('both','none') }} rh_palm_device:=tracker lh_palm_device:=tracker require_pedal:=false jog_arm:=true arm_servo:=false"
-    launch_file_input_gui_right_8DOF: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_left_8DOF: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_bimanual_8DOF: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower | ternary('both','none') }} rh_palm_device:=tracker lh_palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower | ternary('both','none') }} rh_palm_device:=tracker lh_palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
     project_name_input_value: "sr_teleop_vive_polhemus"
   when: glove=="shadow_glove"
 
@@ -135,9 +78,6 @@
     launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
     launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
     launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
-    launch_file_input_gui_right_8DOF: "{{ launch_file_input_gui_right_8DOF }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
-    launch_file_input_gui_left_8DOF: "{{ launch_file_input_gui_left_8DOF }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
-    launch_file_input_gui_bimanual_8DOF: "{{ launch_file_input_gui_bimanual_8DOF }} scene_file:='{{ scene_file }}' world:='{{ scene_file | replace('.scene','.world') | replace('/scenes/','/worlds/') }}'"
   when: scene_file|length > 0
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right)
@@ -146,11 +86,10 @@
   vars:
     desktop_icon_png: "{{ glove }}_right.png"
     launch_script: "shadow_sim_right.sh"
-    desktop_icon_name: "3 - Launch Right Teleop Simulation Jog Arm"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation Jog Arm"
+    desktop_icon_name: "3 - Launch Right Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right }}"
-  when: not arm_servo|bool
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Left)
   include_role:
@@ -158,11 +97,10 @@
   vars:
     desktop_icon_png: "{{ glove }}_left.png"
     launch_script: "shadow_sim_left.sh"
-    desktop_icon_name: "3 - Launch Left Teleop Simulation Jog Arm"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation Jog Arm"
+    desktop_icon_name: "3 - Launch Left Teleop Simulation"
+    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left }}"
-  when: not arm_servo|bool
 
 - name: Install desktop icon for Teleop server Simulation (Bimanual)
   include_role:
@@ -170,47 +108,10 @@
   vars:
     desktop_icon_png: "{{ glove }}_bimanual.png"
     launch_script: "shadow_sim_bimanual.sh"
-    desktop_icon_name: "3 - Launch Bimanual Teleop Simulation Jog Arm"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation Jog Arm"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_bimanual }}"
-  when: not arm_servo|bool
-
-- name: Install desktop icon for Teleop server Simulation 8DOF (Unimanual Right)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_right.png"
-    launch_script: "shadow_sim_right_8DOF.sh"
-    desktop_icon_name: "3 - Launch Right Teleop Simulation"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Right Teleop Simulation"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_right_8DOF }}"
-  when: arm_servo|bool
-
-- name: Install desktop icon for Teleop server Simulation 8DOF (Unimanual Left)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_left.png"
-    launch_script: "shadow_sim_left_8DOF.sh"
-    desktop_icon_name: "3 - Launch Left Teleop Simulation"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Left Teleop Simulation"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_left_8DOF }}"
-  when: arm_servo|bool
-
-- name: Install desktop icon for Teleop server Simulation 8DOF (Bimanual)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_bimanual.png"
-    launch_script: "shadow_sim_bimanual_8DOF.sh"
     desktop_icon_name: "3 - Launch Bimanual Teleop Simulation"
     desktop_icon_path: "Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation"
     project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_bimanual_8DOF }}"
-  when: arm_servo|bool
+    launch_file_input: "{{ launch_file_input_gui_bimanual }}"
 
 - name: Set Shadow Glove Launch file inputs
   set_fact:

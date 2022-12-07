@@ -35,14 +35,14 @@ def test_icons_in_docker(host):
         'Shadow Close Everything'
         )
     scripts = (
-        'shadow_launch_right_teleop_8dof_sim',
-        'shadow_launch_left_teleop_8dof_sim',
-        'shadow_launch_bimanual_teleop_8dof_sim',
+        'shadow_launch_right_teleop_sim',
+        'shadow_launch_left_teleop_sim',
+        'shadow_launch_bimanual_teleop_sim',
         'shadow_server_container',
         'shadow_roscore',
-        'shadow_sim_right_8DOF',
-        'shadow_sim_left_8DOF',
-        'shadow_sim_bimanual_8DOF',
+        'shadow_sim_right',
+        'shadow_sim_left',
+        'shadow_sim_bimanual',
         'shadow_haptx_mapping_launch_right',
         'shadow_haptx_mapping_launch_left',
         'shadow_haptx_mapping_launch_bimanual',

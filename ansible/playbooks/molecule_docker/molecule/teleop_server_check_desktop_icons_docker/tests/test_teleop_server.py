@@ -34,8 +34,6 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/3 - Demohand C Launch NUC Right Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/3 - Demohand D Launch NUC Left Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/4 - Launch Right Teleop GUI',
-        #'Shadow Advanced Launchers/5 - Launch Right Shadow Glove Driver',
-        #'Shadow Advanced Launchers/6 - Launch Right Shadow Glove Mapping',
         'Shadow Advanced Launchers/Launch NUC Container',
         'Shadow Demos/Close Right Hand',
         'Shadow Demos/Open Right Hand',
@@ -49,7 +47,7 @@ def test_icons_in_docker(host):
         'Shadow Close Everything'
         )
     scripts = (
-        'shadow_launch_right_teleop_8dof',
+        'shadow_launch_right_teleop',
         'nuc_rqt',
         'shadow_server_container',
         'shadow_roscore',
@@ -58,9 +56,7 @@ def test_icons_in_docker(host):
         'teleop_exec_B',
         'teleop_exec_C',
         'teleop_exec_D',
-        'shadow_GUI_right_8DOF',
-        #'shadow_glove_mapping_launch_right',
-        #'shadow_glove_driver_right',
+        'shadow_GUI_right',
         'shadow_nuc_container',
         'close_right_hand',
         'open_right_hand',
