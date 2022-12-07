@@ -203,8 +203,8 @@
     launch_script: "shadow_GUI_right.sh"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_right_realhw }}"
-    desktop_icon_name: "4 - Launch Right Teleop GUI Jog Arm"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI Jog Arm"
+    desktop_icon_name: "4 - Launch Right Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Right Teleop GUI"
   when: (bimanual|bool or hand_side=="right")
 
 - name: Install desktop icon for left side teleop GUI
@@ -215,8 +215,8 @@
     launch_script: "shadow_GUI_left.sh"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_left_realhw }}"
-    desktop_icon_name: "4 - Launch Left Teleop GUI Jog Arm"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI Jog Arm"
+    desktop_icon_name: "4 - Launch Left Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Left Teleop GUI"
   when: (bimanual|bool or hand_side=="left")
 
 - name: Install desktop icon for bimanual teleop GUI
@@ -227,8 +227,8 @@
     launch_script: "shadow_GUI_bimanual.sh"
     project_name_input: "{{ project_name_input_value }}"
     launch_file_input: "{{ launch_file_input_gui_bimanual_realhw }}"
-    desktop_icon_name: "4 - Launch Bimanual Teleop GUI Jog Arm"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI Jog Arm"
+    desktop_icon_name: "4 - Launch Bimanual Teleop GUI"
+    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Bimanual Teleop GUI"
   when: bimanual|bool
 
 - name: Install desktop icon for remote right side teleop GUI
