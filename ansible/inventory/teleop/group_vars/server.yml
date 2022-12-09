@@ -31,7 +31,6 @@ polhemus_type: "viper" # Allows the user to specify the polhemus type used (libe
 scene_file: "" # Allows the user to override the scene_file used in GUI launch e.g. scene_file="\$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
 ra_tracker_id: 0 # Right tracker ID specified for haptx gloves (lowest tracker serial number seen in SteamVR)
 la_tracker_id: 1 # Left tracker ID specified for haptx gloves (highest tracker serial number seen in SteamVR)
-arm_servo: true # This boolean dictates which method of arm controller to use. True for arm_servo or false for jog_arm.
 local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
 haptx_teleop_readthedocs_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256

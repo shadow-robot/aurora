@@ -4,11 +4,6 @@
   connection: local
   gather_facts: yes
   pre_tasks:
-    - name: Unset arm_servo if haptx
-      when: "'haptx' in image"
-      set_fact:
-        arm_servo: false
-
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
@@ -94,11 +89,6 @@
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
   pre_tasks:
-    - name: Unset arm_servo if haptx
-      when: "'haptx' in image"
-      set_fact:
-        arm_servo: false
-
     - name: Install common tools
       include_role:
         name: installation/install_common_tools
