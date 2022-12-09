@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import os
 import testinfra.utils.ansible_runner
 
@@ -14,23 +28,28 @@ def test_icons_in_docker(host):
         'Launch Shadow Right Teleop Simulation',
         'Launch Shadow Left Teleop Simulation',
         'Launch Shadow Bimanual Teleop Simulation',
-        'Shadow Advanced Launchers/1 - Launch Server Container',
-        'Shadow Advanced Launchers/2 - Launch Server ROSCORE',
-        'Shadow Advanced Launchers/3 - Launch Right Teleop Simulation',
-        'Shadow Advanced Launchers/3 - Launch Left Teleop Simulation',
-        'Shadow Advanced Launchers/3 - Launch Bimanual Teleop Simulation',
-        'Shadow Advanced Launchers/4 - Launch Right HaptX Mapping',
-        'Shadow Advanced Launchers/4 - Launch Left HaptX Mapping',
-        'Shadow Advanced Launchers/4 - Launch Bimanual HaptX Mapping',
-        'Shadow Advanced Launchers/5 - Launch Simulated Right Teleop Mock',
-        'Shadow Advanced Launchers/5 - Launch Simulated Left Teleop Mock',
-        'Shadow Advanced Launchers/5 - Launch Simulated Bimanual Teleop Mock',
+        'Shadow Advanced Launchers/Launch Server Container',
+        'Right Side/1 - Launch Server Container',
+        'Right Side/2 - Launch Server ROSCORE',
+        'Left Side/1 - Launch Server Container',
+        'Left Side/2 - Launch Server ROSCORE',
+        'Bimanual/1 - Launch Server Container',
+        'Bimanual/2 - Launch Server ROSCORE',
+        'Right Side/3 - Launch Right Teleop Simulation',
+        'Left Side/3 - Launch Left Teleop Simulation',
+        'Bimanual/3 - Launch Bimanual Teleop Simulation',
+        'Right Side/4 - Launch Right HaptX Mapping',
+        'Left Side/4 - Launch Left HaptX Mapping',
+        'Bimanual/4 - Launch Bimanual HaptX Mapping',
+        'Right Side/6 - Launch Simulated Right Teleop Mock',
+        'Left Side/6 - Launch Simulated Left Teleop Mock',
+        'Bimanual/6 - Launch Simulated Bimanual Teleop Mock',
         'Shadow Demos/Close Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow Demos/Close Left Hand',
         'Shadow Demos/Open Left Hand',
         'Shadow ROS Logs Saver and Uploader',
-        'Teleop Documentation',
+        'Shadow Teleop Documentation',
         'Shadow System Monitor',
         'Shadow Close Everything'
         )
@@ -64,5 +83,3 @@ def test_icons_in_docker(host):
         assert host.file(f"{script_path}{script}.sh").exists
     save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
-    hand_manual_file = f"{desktop_path}Palm_EDC_User_Manual_1.7.pdf"
-    assert host.file(hand_manual_file).exists

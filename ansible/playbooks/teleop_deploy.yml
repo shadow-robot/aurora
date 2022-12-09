@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Set server hostname variable and validate input variables
   hosts: server
@@ -10,9 +24,9 @@
       vars:
         playbook: "teleop_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
     
     - name: Install licence tools
@@ -89,9 +103,14 @@
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
   pre_tasks:
-    - name: Install common tools
+    - name: Unset arm_servo if haptx
+      when: "'haptx' in image"
+      set_fact:
+        arm_servo: false
+
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
 
     - name: Install licence tools
@@ -112,9 +131,9 @@
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
+        name: installation/playbook_setup
       when: skip_molecule_task is not defined
 
     - name: Add IP address of all hosts to all hosts

@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Set Shadow Arm+Hand icon pictures
   set_fact:
@@ -100,7 +114,7 @@
     desktop_icon_png: "{{ right_arm_hand_picture }}"
     launch_script: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
+    desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Container and Right Hand+Arm Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
@@ -114,7 +128,7 @@
     desktop_icon_png: "{{ left_arm_hand_picture }}"
     launch_script: "shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
+    desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Container and Left Hand+Arm Hardware Control Loop"
     pwm_control_value: "true"
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
@@ -128,7 +142,7 @@
     desktop_icon_png: "{{ bimanual_arm_hand_picture }}"
     launch_script: "shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
-    desktop_icon_path: "Shadow Advanced Launchers/3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
     arm_payload_mass: "{{ arm_mass_payload }}"
     arm_ctrl_value: "true"
   when: 
@@ -185,7 +199,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-r"
     desktop_icon_name: "4 - Launch Server Right Hand+Arm GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Right Hand+Arm GUI"
+    desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Server Right Hand+Arm GUI"
   when: 
     - bimanual|bool or hand_side=="right"
 
@@ -198,7 +212,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-l"
     desktop_icon_name: "4 - Launch Server Left Hand+Arm GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Left Hand+Arm GUI"
+    desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Server Left Hand+Arm GUI"
   when: 
     - bimanual|bool or hand_side=="left"
 
@@ -211,7 +225,7 @@
     project_name_input: "sr_robot_launch"
     launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
     desktop_icon_name: "4 - Launch Server Bimanual Hand+Arm GUI"
-    desktop_icon_path: "Shadow Advanced Launchers/4 - Launch Server Bimanual Hand+Arm GUI"
+    desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Server Bimanual Hand+Arm GUI"
   when: 
     - bimanual|bool
 

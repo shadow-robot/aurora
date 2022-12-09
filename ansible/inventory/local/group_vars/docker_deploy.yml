@@ -1,6 +1,20 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
-image: "shadowrobot/dexterous-hand" # Docker image name
-tag: "noetic-release" # Tag of the exact Docker hub image to pull
+image: "public.ecr.aws/shadowrobot/dexterous-hand" # Docker image name
+tag: "noetic-v1.0.21" # Tag of the exact Docker hub image to pull
 product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "dexterous_hand" # Name of the docker container
@@ -26,23 +40,3 @@ remote_bag_storage_location: "/volume1/ros_bags"
 bag_all_data_from: ["shadowrobot_210312", "shadowrobot_210311", "shadowrobot_210311_210312"]
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
 local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
-arm_hand_readthedocs_token: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          66353963666432383265393835616638613636366135663330383339323666636139653535386338
-          3862393133333033323961633735643131306134366135300a393435356162343863326530333131
-          39646636663333653732643033353838343237623834383434373533653465366463623165386565
-          6135376565363933620a386561666563666431343931626239613761663537366239643063626236
-          66626266333436366434376536636537626262343161633535663935666561383136
-arm_hand_readthedocs_link: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          36666266326536386336316166626631333738613730666165326435353063646535363163353432
-          3965623466306161623433333538363938666331376661630a373663626237303463353636323330
-          33336531653431663438376531653734306330346335646161626262643965363030373837346135
-          3361356664303739390a363731643964643830363966313963356364386232656530666634383866
-          33386263323131663836626565383431656164363763363862333235333862623334666461363336
-          66633735326261373334353134313331636663303638633664333237626461316130653362353763
-          32616439626536373862646339623065643063313764353835633039376333643466366234396465
-          35316232643932633138373330366536613061366335386532346332353461363965663533333132
-          33666434393533396132643533356461656339366465323333653366353663386538656436353733
-          38626635363932626431326661666633643732363665646566353162623862663938393838356237
-          316632643837373336333761303336616661

@@ -1,5 +1,0 @@
----
-user: "{{ ansible_user_id }}"
-user_folder: "/home/{{ user }}"
-manual_folder: "{{ desktop_path }}"
-manual_filename: "Palm_EDC_User_Manual_1.7.pdf"
