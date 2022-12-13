@@ -25,9 +25,9 @@ def test_icons_in_docker(host):
     script_path = f'/home/{hostuser}/.shadow_launcher_app_teleop_haptx/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
-        'Launch Shadow Right Teleop 8DOF Simulation',
-        'Launch Shadow Left Teleop 8DOF Simulation',
-        'Launch Shadow Bimanual Teleop 8DOF Simulation',
+        'Launch Shadow Right Teleop Simulation',
+        'Launch Shadow Left Teleop Simulation',
+        'Launch Shadow Bimanual Teleop Simulation',
         'Shadow Advanced Launchers/Launch Server Container',
         'Right Side/1 - Launch Server Container',
         'Right Side/2 - Launch Server ROSCORE',
@@ -35,9 +35,9 @@ def test_icons_in_docker(host):
         'Left Side/2 - Launch Server ROSCORE',
         'Bimanual/1 - Launch Server Container',
         'Bimanual/2 - Launch Server ROSCORE',
-        'Right Side/3 - Launch Right Teleop Simulation 8DOF',
-        'Left Side/3 - Launch Left Teleop Simulation 8DOF',
-        'Bimanual/3 - Launch Bimanual Teleop Simulation 8DOF',
+        'Right Side/3 - Launch Right Teleop Simulation',
+        'Left Side/3 - Launch Left Teleop Simulation',
+        'Bimanual/3 - Launch Bimanual Teleop Simulation',
         'Right Side/4 - Launch Right HaptX Mapping',
         'Left Side/4 - Launch Left HaptX Mapping',
         'Bimanual/4 - Launch Bimanual HaptX Mapping',
@@ -54,14 +54,14 @@ def test_icons_in_docker(host):
         'Shadow Close Everything'
         )
     scripts = (
-        'shadow_launch_right_teleop_8dof_sim',
-        'shadow_launch_left_teleop_8dof_sim',
-        'shadow_launch_bimanual_teleop_8dof_sim',
+        'shadow_launch_right_teleop_sim',
+        'shadow_launch_left_teleop_sim',
+        'shadow_launch_bimanual_teleop_sim',
         'shadow_server_container',
         'shadow_roscore',
-        'shadow_sim_right_8DOF',
-        'shadow_sim_left_8DOF',
-        'shadow_sim_bimanual_8DOF',
+        'shadow_sim_right',
+        'shadow_sim_left',
+        'shadow_sim_bimanual',
         'shadow_haptx_mapping_launch_right',
         'shadow_haptx_mapping_launch_left',
         'shadow_haptx_mapping_launch_bimanual',
