@@ -3,4 +3,4 @@
 NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 CONTAINER={{ container_name }}
-ssh -Xt $NUC_NAME@$NUC_ADDRESS "docker start ${CONTAINER};docker exec -i --user user $CONTAINER bash -c 'cat > ~/.Xauthority' < ~/.Xauthority;docker exec -it --user user $CONTAINER /bin/bash -c $'export ROSCONSOLE_FORMAT='"'[${severity}](${node}): [${time}] ${message}'"';export ROSCONSOLE_STDOUT_LINE_BUFFERED=1;source /home/user/projects/shadow_robot/base/devel/setup.bash;xauth list | tail -1 | awk \'{print \$1}\' | cut -d ':' -f2 > ~/.display_number;export DISPLAY=localhost:\$(<~/.display_number).0;/bin/update_hand_config.sh;bash'"
+ssh -Xt $NUC_NAME@$NUC_ADDRESS "docker start ${CONTAINER};docker exec -i --user user $CONTAINER bash -c 'cat > ~/.Xauthority' < ~/.Xauthority;docker exec -it --user user $CONTAINER /bin/bash -c $'export ROSCONSOLE_FORMAT=\'[${severity}](${node}): [${time}] ${message}\';export ROSCONSOLE_STDOUT_LINE_BUFFERED=1;source /home/user/projects/shadow_robot/base/devel/setup.bash;xauth list | tail -1 | awk \'{print \$1}\' | cut -d ':' -f2 > ~/.display_number;export DISPLAY=localhost:\$(<~/.display_number).0;/bin/update_hand_config.sh;bash'"
