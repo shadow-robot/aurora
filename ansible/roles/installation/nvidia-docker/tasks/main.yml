@@ -31,6 +31,12 @@
 
 - name: Check what graphic drivers are used
   block:
+  - name: install nvidia-prime apt
+    apt:
+      name: nvidia-prime
+      state: present
+    become: yes
+
   - name: query prime-select
     command: prime-select query
     become: yes
