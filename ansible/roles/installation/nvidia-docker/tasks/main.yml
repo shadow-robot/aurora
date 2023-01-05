@@ -34,6 +34,9 @@
   become: yes
   register: prime_select_results
 
+- debug:
+    msg: "{{ prime_select_results.stdout_lines }}"
+
 - name: Debug
   debug:
     msg: "NVIDIA SELECTED"
