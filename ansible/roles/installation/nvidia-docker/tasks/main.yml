@@ -30,16 +30,24 @@
   changed_when: false
 
 - name: Check what graphic drivers are used
-  command: prime-select query
-  become: yes
-  register: prime_select_results
+  block:
+  - name: query prime-select
+    command: prime-select query
+    become: yes
+    register: prime_select_results
 
-- debug:
-    msg: "{{ prime_select_results.stdout }}"
+  - name: switch driver to nvidia
+    command: prime-select nvidia
+    become: yes
+    when: "prime_select_results.stdout != 'nvidia'"
 
-- name: Debug
-  debug:
-    msg: "NVIDIA SELECTED"
-  when: "prime_select_results.stdout == 'nvidia'"
+  - name: reboot the computer
+    debug:
+      msg: You used graphic driver has been switched to nvidia. Please reboot your PC and rerun the oneliner.
+    when: "prime_select_results.stdout != 'nvidia'"
 
-- meta: end_play
+  - name: end playbook so user can reboot
+    meta: end_play
+    when: "prime_select_results.stdout != 'nvidia'"
+
+  when: nvidia_docker | bool and not skip_nvidia|bool
