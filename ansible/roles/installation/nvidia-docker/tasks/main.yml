@@ -35,6 +35,7 @@
   register: prime_select_results
 
 - debug:
-    var: prime_select_results.stdout_lines
+    msg: "NVIDIA SELECTED"
+    when: prime_select_results.stdout_lines == "nvidia"
 
 - meta: end_play
