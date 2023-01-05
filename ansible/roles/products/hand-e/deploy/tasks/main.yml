@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -45,11 +45,6 @@
     name: installation/nvidia-docker
   when: nvidia_docker | bool
 
-- name: Include products/common/record-hand-data role
-  include_role:
-    name: products/common/record-hand-data
-  when: record_data
-
 - name: Include docker/docker-image role
   include_role:
     name: docker/docker-image
@@ -64,6 +59,11 @@
   include_role:
     name: docker/aws
   when: use_aws|bool
+
+- name: Include products/common/record-hand-data role
+  include_role:
+    name: products/common/record-hand-data
+  when: record_data
 
 - name: Include products/common/save-logs-icons role
   include_role:
@@ -81,11 +81,6 @@
   vars:
     demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
   when: demo_icons|bool
-
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
 
 - name: Include products/common/arm-interfaces role
   include_role:
@@ -132,6 +127,7 @@
     name: products/common/local-zero-force-mode-launch
   vars:
     icon_folder: "{{ desktop_path }}"
+  when: not sim_icon
 
 - name: Include products/common/hand_config role
   include_role:
