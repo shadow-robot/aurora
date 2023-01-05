@@ -35,11 +35,11 @@
   register: prime_select_results
 
 - debug:
-    msg: "{{ prime_select_results.stdout_lines }}"
+    msg: "{{ prime_select_results.stdout }}"
 
 - name: Debug
   debug:
     msg: "NVIDIA SELECTED"
-  when: "{{ prime_select_results.stdout_lines | trim }} == 'nvidia'"
+  when: "prime_select_results.stdout == 'nvidia'"
 
 - meta: end_play
