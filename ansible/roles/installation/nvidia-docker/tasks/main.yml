@@ -49,7 +49,7 @@
 
   - name: reboot the computer
     debug:
-      msg: You used graphic driver has been switched to nvidia. Please reboot your PC and rerun the oneliner.
+      msg: Your graphic driver has been switched to nvidia. Please reboot your PC and rerun the oneliner.
     when: "prime_select_results.stdout != 'nvidia'"
 
   - name: end playbook so user can reboot
