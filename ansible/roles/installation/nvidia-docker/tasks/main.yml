@@ -64,7 +64,7 @@
   
   - name: reboot the computer
     debug:
-      msg: Your computer isn't using the right driver, please change it in "Additional Drivers". Once done please reboot your PC and rerun the oneliner.
+      msg: Your computer isn't using the right driver, please change it in the application `Additional Drivers`. Once done please reboot your PC and rerun the oneliner.
     when: "nvidia_smi_results.rc != 0"
 
   - name: end playbook so user can reboot
