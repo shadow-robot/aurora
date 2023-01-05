@@ -60,6 +60,7 @@
     command: nvidia-smi
     become: yes
     register: nvidia_smi_results
+    ignore_errors: true
   
   - name: reboot the computer
     debug:
