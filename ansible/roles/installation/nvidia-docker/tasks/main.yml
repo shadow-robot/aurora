@@ -55,5 +55,19 @@
   - name: end playbook so user can reboot
     meta: end_play
     when: "prime_select_results.stdout != 'nvidia'"
+  
+  - name: query nvidia-smi
+    command: nvidia-smi
+    become: yes
+    register: nvidia_smi_results
+  
+  - name: reboot the computer
+    debug:
+      msg: Your computer isn't using the right driver, please change it in "Additional Drivers". Once done please reboot your PC and rerun the oneliner.
+    when: "nvidia_smi_results.rc != 0"
+
+  - name: end playbook so user can reboot
+    meta: end_play
+    when: "nvidia_smi_results.rc != 0"
 
   when: nvidia_docker | bool and not skip_nvidia|bool
