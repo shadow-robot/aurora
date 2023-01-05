@@ -28,3 +28,13 @@
   when: nvidia_docker | bool and not skip_nvidia|bool
   become: yes
   changed_when: false
+
+- name: Check what graphic drivers are used
+  command: prime-select query
+  become: yes
+  register: prime-select-results
+
+- debug:
+    var: prime-select-results.stdout_lines
+
+- meta: end_play
