@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -28,3 +28,47 @@
   when: nvidia_docker | bool and not skip_nvidia|bool
   become: yes
   changed_when: false
+
+- name: Check what graphic drivers are used
+  block:
+  - name: install nvidia-prime apt
+    apt:
+      name: nvidia-prime
+      state: present
+    become: yes
+
+  - name: query prime-select
+    command: prime-select query
+    become: yes
+    register: prime_select_results
+
+  - name: switch driver to nvidia
+    command: prime-select nvidia
+    become: yes
+    when: "prime_select_results.stdout != 'nvidia'"
+
+  - name: reboot the computer
+    debug:
+      msg: Your graphic driver has been switched to nvidia. Please reboot your PC and rerun the oneliner.
+    when: "prime_select_results.stdout != 'nvidia'"
+
+  - name: end playbook so user can reboot
+    meta: end_play
+    when: "prime_select_results.stdout != 'nvidia'"
+  
+  - name: query nvidia-smi
+    command: nvidia-smi
+    become: yes
+    register: nvidia_smi_results
+    ignore_errors: true
+  
+  - name: reboot the computer
+    debug:
+      msg: "Your computer isn't using the right driver, please change it in the application `Additional Drivers`. Once done please reboot your PC and rerun the oneliner."
+    when: "nvidia_smi_results.rc != 0"
+
+  - name: end playbook so user can reboot
+    meta: end_play
+    when: "nvidia_smi_results.rc != 0"
+
+  when: nvidia_docker | bool and not skip_nvidia|bool
