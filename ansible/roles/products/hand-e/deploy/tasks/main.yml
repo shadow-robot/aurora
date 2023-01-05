@@ -28,9 +28,22 @@
     name: installation/aws-cli-v2
   when: skip_molecule_task is not defined
 
+- name: Include installation/docker role
+  include_role:
+    name: installation/docker
+
+- name: Include installation/lxml role
+  include_role:
+    name: installation/lxml
+
 - name: Include installation/terminator role
   include_role:
     name: installation/terminator
+
+- name: Include installation/nvidia-docker role
+  include_role:
+    name: installation/nvidia-docker
+  when: nvidia_docker | bool
 
 - name: Include products/common/record-hand-data role
   include_role:
@@ -47,9 +60,10 @@
   vars:
     container_terminal_title: "{{ product }} container"
 
-- name: Include installation/lxml role
+- name: Include docker/aws role
   include_role:
-    name: installation/lxml
+    name: docker/aws
+  when: use_aws|bool
 
 - name: Include products/common/save-logs-icons role
   include_role:
