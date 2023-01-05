@@ -32,7 +32,7 @@
 - name: Check what graphic drivers are used
   command: prime-select query
   become: yes
-  register: prime-select-results
+  register: prime_select_results
 
 - debug:
     var: prime-select-results.stdout_lines
