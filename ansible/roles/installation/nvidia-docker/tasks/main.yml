@@ -35,6 +35,6 @@
   register: prime_select_results
 
 - debug:
-    var: prime-select-results.stdout_lines
+    var: prime_select_results.stdout_lines
 
 - meta: end_play
