@@ -92,7 +92,7 @@
     name: products/common/local-zero-force-mode-launch
   vars:
     icon_folder: "{{ desktop_path }}"
-  when: not sim_icon
+  when: not sim_icon|bool
 
 - name: Include products/common/hand_config role
   include_role:
