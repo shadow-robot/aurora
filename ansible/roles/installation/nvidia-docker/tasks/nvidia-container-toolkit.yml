@@ -69,7 +69,7 @@
 - name: Reload daemon
   systemd:
     daemon_reload: yes
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Restart docker after installing nvidia-container-toolkit
   service:

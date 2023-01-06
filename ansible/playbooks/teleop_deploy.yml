@@ -27,7 +27,7 @@
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup
-      when: not skip_molecule_task
+      when: not skip_molecule_task|bool
     
     - name: Install licence tools
       include_role:
@@ -37,7 +37,7 @@
     - name: Extract hostname from server
       set_fact:
         ansible_host: "{{ ansible_hostname }}"
-      when: not skip_molecule_task
+      when: not skip_molecule_task|bool
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: server
@@ -111,7 +111,7 @@
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup
-      when: not skip_molecule_task
+      when: not skip_molecule_task|bool
 
     - name: Install licence tools
       include_role:
@@ -134,7 +134,7 @@
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup
-      when: not skip_molecule_task
+      when: not skip_molecule_task|bool
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:

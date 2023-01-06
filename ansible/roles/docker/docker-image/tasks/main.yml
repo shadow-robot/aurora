@@ -30,7 +30,7 @@
     when: 
       - '"dkr.ecr" in image or "public.ecr" in image'
       - customer_key is defined
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   - name: Login to AWS for ECR
     include_role:
