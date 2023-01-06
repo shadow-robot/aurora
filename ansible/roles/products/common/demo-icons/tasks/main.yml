@@ -74,7 +74,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
 
@@ -113,7 +113,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
 
@@ -152,7 +152,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when: bimanual|bool
 
@@ -191,7 +191,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
 
@@ -230,7 +230,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
 
@@ -269,7 +269,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when: bimanual|bool == true
 
@@ -309,7 +309,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
   
   when:
     - bimanual|bool == true or hand_side=="right"
@@ -350,7 +350,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when:
     - bimanual|bool == true or hand_side=="left"
@@ -391,7 +391,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when:
     - bimanual|bool == true
@@ -431,7 +431,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when:
     - product is defined
@@ -473,7 +473,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when:
     - product is defined
@@ -515,7 +515,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - not skip_molecule_task
+      - not skip_molecule_task|bool
 
   when:
     - product is defined

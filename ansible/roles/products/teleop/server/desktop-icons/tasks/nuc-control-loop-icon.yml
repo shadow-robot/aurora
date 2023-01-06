@@ -68,4 +68,4 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
-    - not skip_molecule_task
+    - not skip_molecule_task|bool

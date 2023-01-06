@@ -51,4 +51,4 @@
 - name: Include products/common/hand_config role
   include_role:
     name: products/common/hand_config
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool

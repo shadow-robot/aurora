@@ -17,22 +17,22 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'jammy'
-    - not skip_molecule_task
+    - not skip_molecule_task|bool
 
 - import_tasks: bionic.yml
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'focal'
-    - not skip_molecule_task
+    - not skip_molecule_task|bool
 
 - import_tasks: bionic.yml
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
-    - not skip_molecule_task
+    - not skip_molecule_task|bool
     
 - import_tasks: xenial.yml
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'xenial'
-    - not skip_molecule_task
+    - not skip_molecule_task|bool

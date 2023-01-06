@@ -27,5 +27,5 @@
   shell: "/tmp/{{ modify_script_name }}"
   become: yes
   changed_when: false
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
   

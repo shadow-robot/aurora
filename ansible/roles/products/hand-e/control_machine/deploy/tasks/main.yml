@@ -27,7 +27,7 @@
 - name: Include installation/aws-cli role
   include_role:
     name: installation/aws-cli-v2
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Include installation/chrony-client role
   include_role:
@@ -121,7 +121,7 @@
 - name: Include products/common/hand_config role
   include_role:
     name: products/common/hand_config
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Copying  NUC arm ip setup script into docker container
   changed_when: false

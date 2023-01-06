@@ -16,7 +16,7 @@
 - name: Include products/common/clear-icons role
   include_role:
     name: products/common/clear-icons
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Set NUC IP address and username for SSH
   set_fact:
@@ -37,7 +37,7 @@
 - name: Include installation/aws-cli role
   include_role:
     name: installation/aws-cli-v2
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Include installation/docker role
   include_role:
@@ -68,7 +68,7 @@
 - name: Include installation/shadow_glove_driver role
   include_role:
     name: installation/shadow_glove_driver
-  when: glove == "shadow_glove" and real_glove|bool and not skip_molecule_task
+  when: glove == "shadow_glove" and real_glove|bool and not skip_molecule_task|bool
 
 - name: Include docker/docker-image role
   include_role:
@@ -268,26 +268,26 @@
 - name: Adding the ssh identity
   shell: "ssh-add {{ ssh_keys_path }}"
   changed_when: false
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
   copy:
     src: "{{ ssh_keys_path }}.pub"
     dest: "{{ temp_ssh_keys_path }}.pub"
   changed_when: false
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Make a copy of SSH private key to a /tmp/ folder for copying to other machines
   copy:
     src: "{{ ssh_keys_path }}"
     dest: "{{ temp_ssh_keys_path }}"
   changed_when: false
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Include products/common/hand_config role
   include_role:
     name: products/common/hand_config
-  when: not skip_molecule_task
+  when: not skip_molecule_task|bool
 
 - name: Creating server setup script
   template:
