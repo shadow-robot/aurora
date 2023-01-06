@@ -35,7 +35,6 @@ terminator: false
 use_steamvr: false
 nvidia_docker: false
 ur_interface: "eth0"
-sim_hand: false
 hand_side: "right"
 arm_ip_left: ""
 arm_ip_right: ""

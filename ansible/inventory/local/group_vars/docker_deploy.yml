@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -28,7 +28,7 @@ demo_icons: true # Generates desktop icons to run demos
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
-sim_hand: false # if set to true it will autolaunch the hand in simulation
+sim_icon: false # If set to true it will create simulation icons
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both hands are used or not
 arm_ip_left: "" # Specify the IP address of left arm

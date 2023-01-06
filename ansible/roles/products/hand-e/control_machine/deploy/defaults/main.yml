@@ -32,7 +32,6 @@ temp_ssh_keys_path: "/tmp/id_ssh_rsa"
 terminator: false
 use_steamvr: false
 nvidia_docker: false
-sim_hand: false
 bimanual: false
 hand_side: "right"
 ur_robot_type: "ur10e"

@@ -11,7 +11,7 @@ if [ -f /tmp/id_rsa ]; then
     mv /tmp/id_rsa /home/user/.ssh/id_rsa
 fi
 if {{ launch_hand | lower }}; then
-    if {{ sim_hand | lower }}; then
+    if {{ sim_icon | lower }}; then
         roslaunch sr_robot_launch srhand.launch sim:=true
     else
         if {{ uses_autodetect | lower }}; then
