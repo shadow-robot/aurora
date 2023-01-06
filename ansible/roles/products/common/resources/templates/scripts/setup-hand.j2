@@ -10,22 +10,11 @@ fi
 if [ -f /tmp/id_rsa ]; then
     mv /tmp/id_rsa /home/user/.ssh/id_rsa
 fi
-if {{ launch_hand | lower }}; then
-    if {{ sim_icon | lower }}; then
-        roslaunch sr_robot_launch srhand.launch sim:=true
+
+if {{ override_launch_hand | lower }}; then
+    if {{ uses_autodetect | lower }}; then
+        sr_hand_autodetect {{ hand_side_ad }} roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     else
-        if {{ uses_autodetect | lower }}; then
-            sr_hand_autodetect {{ hand_side_ad }} roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
-        else
-            roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
-        fi
-    fi
-else
-    if {{ override_launch_hand | lower }}; then
-        if {{ uses_autodetect | lower }}; then
-            sr_hand_autodetect {{ hand_side_ad }} roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
-        else
-            roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
-        fi
+        roslaunch {{ launch_package_name }} {{ launch_file_name }} 2> >(tee -a /home/user/.ros/log/stderr.log >&2)
     fi
 fi

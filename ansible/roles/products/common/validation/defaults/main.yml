@@ -22,7 +22,6 @@ boolean_variables:
   - use_aws
   - use_openvpn
   - terminator
-  - launch_hand
   - use_steamvr
   - sim_icon
   - save_nuc_logs
