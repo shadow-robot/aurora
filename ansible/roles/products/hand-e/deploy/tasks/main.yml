@@ -132,7 +132,7 @@
     name: products/common/local-hand-launch
   vars:
     icon_folder: "{{ desktop_path }}"
-    override_launch_hand_var: False
+    override_launch_hand_var: True
 
 - name: Include products/common/local-zero-force-mode-launch role
   include_role:
