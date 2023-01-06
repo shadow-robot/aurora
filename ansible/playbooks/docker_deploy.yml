@@ -39,5 +39,5 @@
 
   roles:
     - { role: products/common/get-system-variables }
-    - { role: products/hand-e/docker-deploy/deploy, when: product == 'hand_e' }
+    - { role: products/hand-e/docker-deploy/deploy }
     - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
