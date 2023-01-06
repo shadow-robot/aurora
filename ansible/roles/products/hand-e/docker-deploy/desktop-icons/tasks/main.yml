@@ -52,11 +52,6 @@
     demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
   when: demo_icons|bool
 
-- name: Include products/common/arm-interfaces role
-  include_role:
-    name: products/common/arm-interfaces
-  when: "'arm_' in product"
-
 - name: Creating upgrade script
   template:
     src: ../../../common/resources/templates/scripts/upgrade_image.j2

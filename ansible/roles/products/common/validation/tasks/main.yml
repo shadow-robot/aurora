@@ -30,6 +30,14 @@
     quiet: yes
   when: playbook=="teleop_deploy"
 
+- name: Make sure arm not used in docker_deploy
+  assert:
+    that:
+     - "'arm_' not in product"
+    fail_msg: "You cannot use the docker_deploy playbook with an arm. This requires a NUC, please plug the arm into the nuc and run the server_and_nuc playbook."
+    quiet: yes
+  when: playbook=="docker_deploy"
+
 - name: Make sure arm_ip_right is specified if using teleop or server_and_nuc_deploy with arm, non-sim inventory
   assert:
     that:
