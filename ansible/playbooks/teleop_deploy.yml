@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -27,7 +27,7 @@
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task
     
     - name: Install licence tools
       include_role:
@@ -37,7 +37,7 @@
     - name: Extract hostname from server
       set_fact:
         ansible_host: "{{ ansible_hostname }}"
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: server
@@ -111,7 +111,7 @@
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task
 
     - name: Install licence tools
       include_role:
@@ -134,7 +134,7 @@
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:

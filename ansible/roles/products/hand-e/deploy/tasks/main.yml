@@ -16,7 +16,7 @@
 - name: Include products/common/clear-icons role
   include_role:
     name: products/common/clear-icons
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task
 
 - name: Setup script name
   set_fact:
@@ -26,7 +26,7 @@
 - name: Include installation/aws-cli role
   include_role:
     name: installation/aws-cli-v2
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task
 
 - name: Include installation/docker role
   include_role:
@@ -144,7 +144,7 @@
 - name: Include products/common/hand_config role
   include_role:
     name: products/common/hand_config
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task
 
 - name: Include products/common/close-everything-icon role
   include_role:

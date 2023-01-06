@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -13,15 +13,15 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-  - name: get dekstop path
-    shell: xdg-user-dir DESKTOP
-    register: desktop_path_shell
-    when: skip_molecule_task is not defined
+- name: get dekstop path
+  shell: xdg-user-dir DESKTOP
+  register: desktop_path_shell
+  when: not skip_molecule_task
 
-  - name:
-    set_fact: desktop_path="{{ desktop_path_shell.stdout }}"
-    when: skip_molecule_task is not defined
+- name:
+  set_fact: desktop_path="{{ desktop_path_shell.stdout }}"
+  when: not skip_molecule_task
 
-  - name:
-    set_fact: desktop_path="/home/{{ user }}/Desktop"
-    when: skip_molecule_task is defined
+- name:
+  set_fact: desktop_path="/home/{{ user }}/Desktop"
+  when: skip_molecule_task

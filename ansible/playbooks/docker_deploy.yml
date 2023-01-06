@@ -30,7 +30,7 @@
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task
 
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0

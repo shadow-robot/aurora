@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -43,3 +43,5 @@ pr_branches: "" # Space-separated list in double quotes of PRs and branches like
 router: false # Specify if a router is used between server and NUC
 scene_file: "" # Allows the user to override the scene_file used in GUI launch (only for arm+hand product) e.g. scene_file="\$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
 local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
+
+skip_molecule_task: false # Used for automated tests - should not be used by users
