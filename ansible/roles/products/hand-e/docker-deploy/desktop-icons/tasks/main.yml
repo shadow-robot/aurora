@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Shadow Robot Company Ltd.
+# Copyright 2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -13,52 +13,10 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Include products/common/clear-icons role
-  include_role:
-    name: products/common/clear-icons
-  when: not skip_molecule_task|bool
-
 - name: Setup script name
   set_fact:
     setup_script: server-setup.sh
     upgrade_script: "upgrade_image.sh"
-
-- name: Include installation/aws-cli role
-  include_role:
-    name: installation/aws-cli-v2
-  when: not skip_molecule_task|bool
-
-- name: Include installation/docker role
-  include_role:
-    name: installation/docker
-
-- name: Include installation/lxml role
-  include_role:
-    name: installation/lxml
-
-- name: Include installation/terminator role
-  include_role:
-    name: installation/terminator
-
-- name: Include installation/nvidia-docker role
-  include_role:
-    name: installation/nvidia-docker
-  when: nvidia_docker | bool
-
-- name: Include docker/docker-image role
-  include_role:
-    name: docker/docker-image
-
-- name: Include products/common/docker-container role
-  include_role:
-    name: products/common/docker-container
-  vars:
-    container_terminal_title: "{{ product }} container"
-
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
 
 - name: Install desktop icon for server container
   include_role:

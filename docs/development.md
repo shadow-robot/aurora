@@ -255,7 +255,7 @@ It has to have a similar structure to this (let's say your playbook is called "m
   roles:
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - {role: products/hand-e/deploy, when: product == 'hand_e'}
+    - {role: products/hand-e/docker-deploy/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
 ```
 Key points:
@@ -287,7 +287,7 @@ An example of a role section:
   roles:
     - {role: installation/docker}
     - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - {role: products/hand-e/deploy, when: product == 'hand_e'}
+    - {role: products/hand-e/docker-deploy/deploy, when: product == 'hand_e'}
     - {role: docker/aws, when: use_aws|bool}
 ```
 
