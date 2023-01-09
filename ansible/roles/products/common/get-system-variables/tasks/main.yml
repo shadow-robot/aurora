@@ -30,6 +30,3 @@
   file:
     path: "{{ desktop_path }}"
     state: directory
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    mode: 0775
