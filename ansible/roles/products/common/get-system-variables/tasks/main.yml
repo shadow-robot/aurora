@@ -25,3 +25,11 @@
 - name: set desktop path (for molecule tests)
   set_fact: desktop_path="/home/{{ user }}/Desktop"
   when: skip_molecule_task|bool
+
+- name: Ensure desktop folder exists
+  file:
+    path: "{{ desktop_path }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0775
