@@ -15,7 +15,7 @@
 ---
 image: "public.ecr.aws/shadowrobot/dexterous-hand" # Docker image name
 tag: "noetic-v1.0.21" # Tag of the exact Docker hub image to pull
-product: 'hand_e' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
+product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite, hand_extra_lite, arm_hand_extra_lite)
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "dexterous_hand" # Name of the docker container
 nvidia_docker: false # Define if nvidia-container-toolkit is used (default is false)
