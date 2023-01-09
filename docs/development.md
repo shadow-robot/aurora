@@ -245,18 +245,22 @@ It has to have a similar structure to this (let's say your playbook is called "m
       include_role:
         name: products/common/validation
       vars:
-        playbook: "my_playbook"
+        playbook: "docker_deploy"
+    
+    - name: Running playbook setup role
+      include_role:
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
 
     - name: check if customer_key is provided and not false
-      when: customer_key is defined and customer_key| length > 0
+      when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
 
   roles:
-    - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - {role: products/hand-e/docker-deploy/deploy, when: product == 'hand_e'}
-    - {role: docker/aws, when: use_aws|bool}
+    - { role: products/common/get-system-variables }
+    - { role: products/hand-e/docker-deploy/deploy }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
 ```
 Key points:
 
@@ -285,10 +289,9 @@ An example of a role section:
 
 ```bash
   roles:
-    - {role: installation/docker}
-    - {role: installation/nvidia-docker, when: nvidia_docker | bool}
-    - {role: products/hand-e/docker-deploy/deploy, when: product == 'hand_e'}
-    - {role: docker/aws, when: use_aws|bool}
+    - { role: products/common/get-system-variables }
+    - { role: products/hand-e/docker-deploy/deploy }
+    - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy' }
 ```
 
 # Inventories #
