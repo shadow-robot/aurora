@@ -32,8 +32,6 @@ boolean_variables:
   - biotacs
   - allow_auto_reboot
   - client_use_steamvr
-  - desktop_icon
-  - optoforce
   - router
 boolean_allowed_values:
   - true
