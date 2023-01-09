@@ -40,7 +40,7 @@
 
 - name: set product variable
   set_fact:
-    hand_type_value: ""
+    hand_type_value: "hand_type:=hand_e"
   when: 'product is not defined or "hand_e" in product'
 
 - name: Creating server setup script for local right hand launch
