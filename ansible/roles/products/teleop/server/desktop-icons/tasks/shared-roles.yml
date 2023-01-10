@@ -31,6 +31,12 @@
     live_website_url_var: "{{ shadow_glove_teleop_readthedocs_link }}"
   when: glove=="shadow_glove"
 
+- name: debug
+  debug:
+    msg: "{{ shadow_glove_teleop_readthedocs_link }}"
+
+- meta: end_play  
+
 - name: Install the Shadow System Monitor desktop icon for Teleop
   include_role:
     name: products/common/web-gui-icon
