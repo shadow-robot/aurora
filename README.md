@@ -150,11 +150,11 @@ Hand and Arm is one of the main use-cases of the server_and_nuc playbook. It req
 Example:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.1.5 --inventory production --read-secure customer_key reinstall=true bimanual=true product="arm_hand_e" image="public.ecr.aws/shadowrobot/dexterous-hand" tag="noetic-v1.0.18" arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.1.5 --read-secure customer_key reinstall=true bimanual=true product="arm_hand_e" image="public.ecr.aws/shadowrobot/dexterous-hand" tag="noetic-v1.0.18" arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
 ```
 
 ### Hand and Glove ###
-Hand and Glove is another main product of the server_and_nuc playbook. This also takes in a new product type with product=glove_hand_e now, it also has extra parameters relating to the glove that you are using for the product. These variables are found in ansible/inventory/server_and_nuc/group_vars. The hand and glove specific variables are glove, real_glove, biotacs and polhemus_type. Another thing to denote about this product is that it's not based on the dexterous-hand image, but instead the shadow-dexterous-hand-glove image.
+Hand and Glove is another main product of the server_and_nuc playbook. This also takes in a new product type with product=glove_hand_e now, it also has extra parameters relating to the glove that you are using for the product. These variables are found in ansible/inventory/server_and_nuc/group_vars. The hand and glove specific variables are glove, real_glove and polhemus_type. Another thing to denote about this product is that it's not based on the dexterous-hand image, but instead the shadow-dexterous-hand-glove image.
 
 Example:
 
