@@ -29,6 +29,7 @@ boolean_variables:
   - save_nuc_logs
   - demo_icons
   - upgrade_check
+  - bimanual
   - demohand_icons
   - allow_auto_reboot
   - client_use_steamvr
