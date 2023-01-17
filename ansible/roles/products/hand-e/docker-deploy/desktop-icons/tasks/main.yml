@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -13,43 +13,27 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Include products/common/clear-icons role
-  include_role:
-    name: products/common/clear-icons
-  when: skip_molecule_task is not defined
-
 - name: Setup script name
   set_fact:
     setup_script: server-setup.sh
     upgrade_script: "upgrade_image.sh"
 
-- name: Include installation/aws-cli role
+- name: Install desktop icon for server container
   include_role:
-    name: installation/aws-cli-v2
-  when: skip_molecule_task is not defined
-
-- name: Include installation/terminator role
-  include_role:
-    name: installation/terminator
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.png"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "Launch Server Container"
+    desktop_icon_path: "Launch Server Container"
+    launch_terminal: "false"
+    hand_side_ad: ""
 
 - name: Include products/common/record-hand-data role
   include_role:
     name: products/common/record-hand-data
   when: record_data
-
-- name: Include docker/docker-image role
-  include_role:
-    name: docker/docker-image
-
-- name: Include products/common/docker-container role
-  include_role:
-    name: products/common/docker-container
-  vars:
-    container_terminal_title: "{{ product }} container"
-
-- name: Include installation/lxml role
-  include_role:
-    name: installation/lxml
 
 - name: Include products/common/save-logs-icons role
   include_role:
@@ -67,16 +51,6 @@
   vars:
     demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
   when: demo_icons|bool
-
-- name: Include docker/aws role
-  include_role:
-    name: docker/aws
-  when: use_aws|bool
-
-- name: Include products/common/arm-interfaces role
-  include_role:
-    name: products/common/arm-interfaces
-  when: "'arm_' in product"
 
 - name: Creating upgrade script
   template:
@@ -111,20 +85,20 @@
     name: products/common/local-hand-launch
   vars:
     icon_folder: "{{ desktop_path }}"
-    override_launch_hand_var: False
+    override_launch_hand_var: True
 
 - name: Include products/common/local-zero-force-mode-launch role
   include_role:
     name: products/common/local-zero-force-mode-launch
   vars:
     icon_folder: "{{ desktop_path }}"
+  when: not sim_icon|bool
 
 - name: Include products/common/hand_config role
   include_role:
     name: products/common/hand_config
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task|bool
 
 - name: Include products/common/close-everything-icon role
   include_role:
     name: products/common/close-everything-icon
-

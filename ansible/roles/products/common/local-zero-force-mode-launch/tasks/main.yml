@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -34,13 +34,23 @@
     bimanual_hands_picture: hand_extra_lite_bimanual.jpg
   when: product=='hand_extra_lite'
 
+- name: set product variable
+  set_fact:
+    hand_type_value: "hand_type:=hand_g"
+  when: '"hand_extra_lite" in product or "hand_lite" in product'
+
+- name: set product variable
+  set_fact:
+    hand_type_value: "hand_type:=hand_e"
+  when: 'product is not defined or "hand_e" in product'
+
 - name: Creating the setup script for Local Zero Force Mode - Right Hand
   template:
     src: ../../../common/resources/templates/scripts/setup-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_zero_force_mode_right_hand_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_hardware_control_loop.launch pwm_control:=false hand_ctrl:=false arm:=false"
+    launch_file_name: "sr_hardware_control_loop.launch pwm_control:=false hand_ctrl:=false arm:=false {{ hand_type_value }}"
     launch_package_name: "sr_robot_launch"
     uses_autodetect: True
     override_launch_hand: True
@@ -59,7 +69,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_zero_force_mode_left_hand_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_hardware_control_loop.launch pwm_control:=false hand_ctrl:=false arm:=false"
+    launch_file_name: "sr_hardware_control_loop.launch pwm_control:=false hand_ctrl:=false arm:=false {{ hand_type_value }}"
     launch_package_name: "sr_robot_launch"
     uses_autodetect: True
     override_launch_hand: True
@@ -106,7 +116,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
 
@@ -144,6 +154,6 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
