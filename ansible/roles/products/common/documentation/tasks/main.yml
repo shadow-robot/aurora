@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -27,20 +27,20 @@
     headers:
       x-api-key: "{{ customer_key }}"
   register: response
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task|bool
 
 - name: Set temporary AWS credentials for accessing necessary files
   set_fact:
     aws_key: "{{ response.content | regex_search('(?<=ACCESS_KEY_ID=)(.*)(?=\\nSECRET_ACCESS_KEY)', multiline=True) }}"
     aws_secret: "{{ response.content | regex_search('(?<=SECRET_ACCESS_KEY=)(.*)(?=\\nSESSION_TOKEN)', multiline=True) }}"
     aws_security_token: "{{ response.content | regex_search('(?<=SESSION_TOKEN=)(.*)(?=\\nEXPIRATION)', multiline=True) }}"
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task|bool
 
 - name: Set AWS credentials for accessing necessary files (for Molecule in AWS)
   set_fact:
     aws_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
     aws_secret: "{{ lookup('env','AWS_SECRET_KEY') }}"
-  when: skip_molecule_task is defined
+  when: skip_molecule_task|bool
 
 - name: Choose documentation version (not teleop)
   block:
@@ -125,7 +125,7 @@
     object: "/{{ documentation_folder }}/{{ documentation_file }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task|bool
   changed_when: false
 
 - name: Downloading the Documentation from AWS to Desktop (for Molecule in AWS)
@@ -136,7 +136,7 @@
     object: "/{{ documentation_folder }}/{{ documentation_file }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
-  when: skip_molecule_task is defined
+  when: skip_molecule_task|bool
   changed_when: false
 
 - name: Create the Documentation desktop icon
