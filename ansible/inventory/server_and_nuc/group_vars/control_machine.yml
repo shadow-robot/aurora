@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -23,7 +23,6 @@ use_aws: false # Flag to prompt for customer key for uploading files to AWS
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
 nvidia_docker: false # Define if nvidia-container-toolkit is used (defaul is false)
-optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
 upgrade_check: false # If set to true will pull latest docker image and prompt to upgrade the container
 hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=true)
 bimanual: false # Specify if both left and right hands are used or not
@@ -54,3 +53,5 @@ ansible_ssh_pass: !vault |
           31613934306166313637326339313136393537393664663664353862613762646333646437646630
           3331323561646639620a363162363661363834616465393132383664363038666532323162393934
           3239
+
+skip_molecule_task: false # Used for automated tests

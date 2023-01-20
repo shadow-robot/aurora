@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -23,10 +23,8 @@ bimanual_hands_picture: hand-e-bimanual.png
 product: hand_e
 setup_directory: "/usr/local/bin"
 icon_folder: "{{ desktop_path }}/Local Launch"
-launch_hand: false
 override_launch_hand: false
 use_steamvr: false
-sim_hand: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "sr_hardware_control_loop.launch pwm_control:=false hand_ctrl:=false arm:=false"
 uses_autodetect: False

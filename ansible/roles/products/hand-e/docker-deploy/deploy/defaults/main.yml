@@ -13,47 +13,29 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus"
-tag: "noetic-night-build"
-reinstall: false
-nvidia_docker: true
-glove: "shadow_glove"
-container_name: "teleop_{{ glove }}"
-use_aws: false
-use_openvpn: false
-ethercat_left_arm: "enx2"
+container_name: "dexterous_hand"
+image: "public.ecr.aws/shadowrobot/dexterous-hand"
+tag: "noetic-v1.0.21"
+demo_icons: false
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
-nuc_username: "user"
 setup_directory: "/usr/local/bin"
-ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
-temp_ssh_keys_path: "/tmp/id_ssh_rsa"
-save_nuc_logs: true
-nuc_address: "10.9.11.2"
-server_ip: "10.9.11.1"
 upgrade_check: false
-terminator: true
-use_steamvr: true
-sim_icon: false
-demo_icons: true
-bimanual: false
-encryption_password: ""
+reinstall: false
+nvidia_docker: false
+use_aws: false
 hand_side: "right"
-term_width: 500
-term_height: 400
-term_x: 200
-term_y: 0
-term_y_correction: 58
-real_glove: false
-real_vive: false
+bimanual: false
+right_hand_picture: hand-e.png
+left_hand_picture: hand-e-left.png
+bimanual_hands_picture: hand-e-bimanual.png
 ur_robot_type: "ur10e"
 override_launch_hand: false
+use_steamvr: false
 launch_package_name: "sr_robot_launch"
 launch_file_name: "srhand.launch"
-haptx_teleop_readthedocs_token: ""
-shadow_glove_teleop_readthedocs_token: ""
 pr_branches: ""
-polhemus_type: "viper"
+record_data: false
 uses_autodetect: False
 hand_side_ad: ""
