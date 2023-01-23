@@ -13,6 +13,11 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Setup script name
+  set_fact:
+    setup_script: server-setup.sh
+    upgrade_script: "upgrade_image.sh"
+
 - name: Include products/common/clear-icons role
   include_role:
     name: products/common/clear-icons
