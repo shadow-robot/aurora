@@ -38,6 +38,10 @@
   register: xdg_check
   changed_when: false
 
+- name: print 
+  debug:
+    msg: "VARIABLE: {{ setup_script }}"
+
 - name: Creating the container which will execute setup script in terminator when started
   when: "not nvidia_docker|bool and terminator and setup_script | length > 0"
   include_tasks: create-container/with-setup-with-terminator.yml
