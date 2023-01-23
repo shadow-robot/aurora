@@ -68,7 +68,7 @@
 - name: Include installation/shadow_glove_driver role
   include_role:
     name: installation/shadow_glove_driver
-  when: glove == "shadow_glove" and real_glove|bool and not skip_molecule_task|bool
+  when: '"glove_" in product and glove == "shadow_glove" and real_glove|bool and not skip_molecule_task|bool'
 
 - name: Include docker/docker-image role
   include_role:
