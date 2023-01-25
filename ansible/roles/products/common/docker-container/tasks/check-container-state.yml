@@ -24,18 +24,6 @@
   set_fact:
     container_exists: true
 
-- name: Checking if container already running
-  shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
-  register: container_running_output
-  when: container_exists | bool
-  become: yes
-  changed_when: container_running_output.rc != 0
-
-- name: Set container_running to true
-  set_fact:
-    container_running: "{{ container_running_output.stdout | bool }}"
-  when: container_exists | bool
-
 - name: Reinstalling docker container because it doesn't exist
   import_tasks: reinstall.yml
   when: not container_exists | bool

@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -19,9 +19,7 @@ product: '' # Name of the product (hand_e, arm_hand_e, hand_lite, arm_hand_lite,
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 container_name: "dexterous_hand" # Name of the docker container
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
-desktop_icon: true # Generates a desktop icon to launch the hand
 shortcut_name: "Shadow_Hand_Launcher" # Specify the name for the desktop icon (default: Shadow_Hand_Launcher)
-optoforce: false # Specify if optoforce sensors are going to be used with a branch name (Only for Flexible Hand)
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts
@@ -35,10 +33,12 @@ ansible_become_password: "{{ sudo_password }}" # Specify the sudo password for t
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
-glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
-real_glove: true # Whether a real physical glove is being used for hand control or not
+glove: "" # Determines which glove is installed (shadow_glove)
+real_glove: false # Whether a real physical glove is being used for hand control or not
 polhemus_type: "viper" # Allows the user to specify the polhemus type used (liberty or viper)
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
 router: false # Specify if a router is used between server and NUC
 scene_file: "" # Allows the user to override the scene_file used in GUI launch (only for arm+hand product) e.g. scene_file="\$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
 local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
+
+skip_molecule_task: false # Used for automated tests - should not be used by users
