@@ -13,11 +13,6 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Setup script name
-  set_fact:
-    setup_script: server-setup.sh
-    upgrade_script: "upgrade_image.sh"
-
 - name: Install desktop icon for server container
   include_role:
     name: products/common/default-icon
