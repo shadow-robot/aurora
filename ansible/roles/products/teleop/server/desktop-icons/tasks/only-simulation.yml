@@ -63,27 +63,22 @@
     name: products/common/documentation
   when: customer_key is defined and customer_key | length > 0
 
-- name: Set default biotacs to false if Shadow Glove is being used (user can still override)
-  set_fact:
-    biotacs: false
-  when: glove=="shadow_glove"
-
 - name: Create shared icons
   include_tasks: shared-roles.yml
 
 - name: Set GUI icon variables to standard values for haptx
   set_fact:
-    launch_file_input_gui_right: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_left: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false biotacs:={{ biotacs | lower }} vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_right: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=right robot_model:={{ ur_robot_type }} require_pedal:=false vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_left: "teleop_vive_haptx.launch external_control_loop:=false sim:=true side:=left robot_model:={{ ur_robot_type }} require_pedal:=false vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_bimanual: "teleop_bimanual_vive_haptx.launch external_control_loop:=false sim:=true robot_model:={{ ur_robot_type }} require_pedal:=false vive:={{ real_vive | lower }} jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
     project_name_input_value: "sr_teleop_vive_haptx"
   when: glove=="haptx"
 
 - name: Set GUI icon variables to standard values for shadow_glove
   set_fact:
-    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
-    launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} biotacs:={{ biotacs | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower | ternary('both','none') }} rh_palm_device:=tracker lh_palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=right vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true side:=left vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower }} palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} external_control_loop:=false sim:=true vive:={{ real_vive | lower }} robot_model:={{ ur_robot_type }} polhemus:={{ real_glove | lower | ternary('both','none') }} rh_palm_device:=tracker lh_palm_device:=tracker require_pedal:=false jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
     project_name_input_value: "sr_teleop_vive_polhemus"
   when: glove=="shadow_glove"
 

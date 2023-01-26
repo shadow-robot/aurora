@@ -22,7 +22,6 @@ container_name: "teleop_{{ glove }}" # Name of the docker container
 bimanual: true # when doing sim we should always have it bimanual.
 real_glove: false # Whether a real physical glove is being used for hand control or not
 real_vive: false # Whether a real Vive system is being used for arm control
-biotacs: true # Whether the hands will have biotac fingertips
 use_aws: false # Flag to prompt for customer key for uploading files to AWS
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: true # Launch terminator when the Docker starts

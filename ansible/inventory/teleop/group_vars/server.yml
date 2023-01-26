@@ -37,7 +37,6 @@ demohand_icons: false # Specify if all the teleop icons for Demohands A,B,C,D sh
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
-biotacs: true # Whether the hands will have biotac fingertips
 rh_biotac_mapping: "" # Allows the user to override the rh_biotac_mapping_script_type (if empty, default in Github will be used)
 lh_biotac_mapping: "" # Allows the user to override the lh_biotac_mapping_script_type (if empty, default in Github will be used)
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
