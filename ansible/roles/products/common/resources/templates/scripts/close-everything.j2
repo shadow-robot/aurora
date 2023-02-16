@@ -8,7 +8,7 @@ NUC_RECORD="/control_box/record"
 SERVER_RECORD="/server_record"
 COMMON_ROSNODE_KILL_COMMAND="rosnode list | grep /bag_rotate | xargs -I{} rosnode kill {}; rosnode kill -all"
 (
-  echo "Calibrating hand before closing everything"
+  echo "# Calibrating hand before closing everything"
   docker exec $CONTAINER_NAME bash -c "source /home/user/projects/shadow_robot/base/devel/setup.bash;roslaunch sr_utilities calibrate_hand_finder.launch node_shutdown:=true node_timeout:=10"
   if $CLOSE_NUC_PROCESSES;
   then
