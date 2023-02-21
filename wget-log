@@ -1,11 +1,0 @@
---2023-02-16 16:49:11--  https://insights.hotjar.com/r?site=3361049
-Resolving insights.hotjar.com (insights.hotjar.com)... 18.165.242.105, 18.165.242.125, 18.165.242.72, ...
-Connecting to insights.hotjar.com (insights.hotjar.com)|18.165.242.105|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 5878 (5.7K) [text/html]
-Saving to: ‘r?site=3361049’
-
-r?site=3361049                                        0%[                                                                                                                 ]       0  --.-KB/s               r?site=3361049                                      100%[================================================================================================================>]   5.74K  --.-KB/s    in 0s      
-
-2023-02-16 16:49:11 (1.17 GB/s) - ‘r?site=3361049’ saved [5878/5878]
-
