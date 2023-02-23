@@ -54,7 +54,12 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/{release_tag}}/bin/run-ansible.sh) teleop_deploy --branch {release_tag} --inventory name_of_inventory --read-secure customer_key option1=value1 option2=value2 option3=value3
 ```
-name_of_inventory can be staging_a, staging_b, production or simulation.
+name_of_inventory corresponds to fixed IP addresses as shown here:
+* [development](ansible/inventory/teleop/development)
+* [development_remote](ansible/inventory/teleop/development_remote)
+* [production](ansible/inventory/teleop/production)
+* [production_remote](ansible/inventory/teleop/production_remote)
+* [simulation](ansible/inventory/teleop/simulation)
 
 Example for real robots with haptx bimanual teleop:
 
@@ -67,16 +72,6 @@ Example for simulated robots without a real vive system or real gloves:
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.7/bin/run-ansible.sh) teleop_deploy --branch v2.1.7 --inventory simulation --read-secure customer_key reinstall=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.0.23" glove="haptx" real_glove=false real_vive=false
 ```
-
-Inventories correspond to fixed IP addresses as shown here:
-* [staging_b](ansible/inventory/teleop/staging_b)
-* [staging_b_remote](ansible/inventory/teleop/staging_b_remote)
-* [staging_a](ansible/inventory/teleop/staging_a)
-* [staging_a_remote](ansible/inventory/teleop/staging_a_remote)
-* [production](ansible/inventory/teleop/production)
-* [production_remote](ansible/inventory/teleop/production_remote)
-* [simulation](ansible/inventory/teleop/simulation)
-* [events_1](ansible/inventory/teleop/events_1)
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
@@ -122,8 +117,7 @@ Example:
 bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.1.5 --read-secure customer_key product=hand_e tag="noetic-v1.0.18"
 ```
 Inventories correspond to fixed IP addresses as shown here:
-* [staging_b](ansible/inventory/server_and_nuc/staging_b)
-* [staging_a](ansible/inventory/server_and_nuc/staging_a)
+* [development](ansible/inventory/server_and_nuc/development)
 * [production](ansible/inventory/server_and_nuc/production)
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
