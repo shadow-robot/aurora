@@ -5,14 +5,34 @@ NUC_USERNAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP={{ server_ip }}
 USER={{ user }}
+CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
+RED='\033[0;31m'
 
 function check_storage_available {
     # Get the current disk usage as a percentage
     disk_usage=$(df -h --output=pcent / | tail -n 1 | tr -d '% ')
-    # Check if the disk usage is less than 10%
+
+    string="Disk usage is at %$disk_usage"
     if [[ $disk_usage -lt 10 ]]; then
-        echo "Warning: Disk usage is at $disk_usage%. Please free up some space."
+        string+="${RED}\nWarning: Please free up some space."
     fi
+    echo -e $string
+}
+
+function check_cpu_and_mem_usage {
+    # Get the current CPU and memory usage
+    CPU=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+    MEM=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+    CPU_THRESHOLD=80
+    MEM_THRESHOLD=80
+
+    # Check if usage exceeds the thresholds
+    if (( $(echo "$CPU > $CPU_THRESHOLD" | bc -l) )) || (( $(echo "$MEM > $MEM_THRESHOLD" | bc -l) )); then
+        # If usage is high, print a warning message
+        echo -e "${RED}Warning: High CPU or memory usage detected!"
+    fi
+    echo "CPU usage: $CPU%"
+    echo "Memory usage: $MEM%"
 }
 
 function run_system_test {
@@ -20,11 +40,13 @@ function run_system_test {
     address=$2
     echo "Running system test on $user:$address"
     check_storage_available
+    check_cpu_and_mem_usage
 }
 
 
 run_system_test $USER $LOCAL_IP
 
+if $CLOSE_NUC_PROCESSES; then
 if ping -c 1 $NUC_ADDRESS &> /dev/null; then
     ssh -X $NUC_USERNAME@$NUC_ADDRESS 'bash -s' <<ENDSSH
         $(declare -f $(compgen -A function))
@@ -32,5 +54,7 @@ if ping -c 1 $NUC_ADDRESS &> /dev/null; then
         run_system_test $NUC_USERNAME $NUC_ADDRESS
 ENDSSH
 fi
+fi
 
-
+echo "\n Press any key to close window"
+read
