@@ -426,3 +426,7 @@
     mode: '0644'
   become: yes
   when: "'glove' in product"
+
+- name: include products/common/validation role
+  include_role:
+    name: products/common/system-check-icon

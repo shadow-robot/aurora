@@ -288,6 +288,3 @@
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
 
-- name: include products/common/validation role
-  include_role:
-    name: products/common/system-check-icon
