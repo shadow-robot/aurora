@@ -7,16 +7,17 @@ LOCAL_IP={{ server_ip }}
 USER={{ user }}
 CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
 RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 
 function check_storage_available {
     # Get the current disk usage as a percentage
     disk_usage=$(df -h --output=pcent / | tail -n 1 | tr -d '% ')
 
-    string="Disk usage is at %$disk_usage"
-    if [[ $disk_usage -lt 10 ]]; then
-        string+="${RED}\nWarning: Please free up some space."
+    printf "Disk usage is at $disk_usage%"
+    if [[ $disk_usage -gt 85 ]]; then  # If storage is 85% or higher it will print a warning
+        printf "${RED}\nWarning: Please free up some space.${NC}"
     fi
-    echo -e $string
 }
 
 function check_cpu_and_mem_usage {
@@ -29,16 +30,16 @@ function check_cpu_and_mem_usage {
     # Check if usage exceeds the thresholds
     if (( $(echo "$CPU > $CPU_THRESHOLD" | bc -l) )) || (( $(echo "$MEM > $MEM_THRESHOLD" | bc -l) )); then
         # If usage is high, print a warning message
-        echo -e "${RED}Warning: High CPU or memory usage detected!"
+        printf "${RED}Warning: High CPU or memory usage detected!${NC}"
     fi
-    echo "CPU usage: $CPU%"
-    echo "Memory usage: $MEM%"
+    printf "CPU usage: $CPU%"
+    printf "Memory usage: $MEM%"
 }
 
 function run_system_test {
     user=$1
     address=$2
-    echo "Running system test on $user:$address"
+    printf "Running system test on $user:$address"
     check_storage_available
     check_cpu_and_mem_usage
 }
@@ -56,5 +57,5 @@ ENDSSH
 fi
 fi
 
-echo "\n Press any key to close window"
+printf "\n Press enter key to close window"
 read
