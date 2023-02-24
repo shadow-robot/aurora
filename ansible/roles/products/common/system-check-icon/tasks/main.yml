@@ -16,7 +16,7 @@
 - name: Create System Check icon
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-    dest: "System Check.desktop"
+    dest: "{{ desktop_path }}/System Check.desktop"
     mode: '755'
   vars:
     desktop_shortcut_name: System Check
@@ -27,7 +27,7 @@
     start_terminal: "false"
 
 - name: Make System Check icon Trusted
-  shell: gio set "{{ demo_icon_folder }}/System Check.desktop" "metadata::trusted" yes
+  shell: gio set "{{ desktop_path }}/System Check.desktop" "metadata::trusted" yes
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
