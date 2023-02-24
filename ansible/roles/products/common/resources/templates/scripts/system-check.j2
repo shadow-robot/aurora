@@ -5,6 +5,7 @@ NUC_USERNAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP={{ server_ip }}
 USER={{ user }}
+HOSTNAME=$(hostname)
 CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
 RED='\033[0;31m'
 NC='\033[0m' # No Color
@@ -41,9 +42,9 @@ function check_hosts_file {
     hostname="$2"
     grep -q -E "^$ip_address\s+$hostname\s*$" /etc/hosts
     if [[ $? -eq 0 ]]; then
-        echo "The IP address $ip_address and hostname $hostname exist in /etc/hosts.\n"
+        printf "The IP address $ip_address and hostname $hostname exist in /etc/hosts.\n"
     else
-        echo "${RED}The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
+        printf "${RED}The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
     fi
 }
 
@@ -55,7 +56,7 @@ function check_nuc_connection {
         return 1
     fi
 
-    check_hosts_file $NUC_ADDRESS $NUC_USERNAME
+    check_hosts_file $NUC_ADDRESS nuc-control
 
     return 0
 }
@@ -76,9 +77,9 @@ check_nuc_connection
 if ping -c 1 $NUC_ADDRESS &> /dev/null; then
     ssh -X $NUC_USERNAME@$NUC_ADDRESS 'bash -s' <<ENDSSH
         $(declare -f $(compgen -A function))
-        $(declare -p USER LOCAL_IP NUC_ADDRESS NUC_USERNAME)
+        $(declare -p USER LOCAL_IP NUC_ADDRESS NUC_USERNAME HOSTNAME CLOSE_NUC_PROCESSES RED NC)
         run_system_test $NUC_USERNAME $NUC_ADDRESS
-        check_hosts_file $LOCAL_IP $USER
+        check_hosts_file $LOCAL_IP $HOSTNAME
 ENDSSH
 fi
 fi
