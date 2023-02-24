@@ -1,0 +1,36 @@
+#jinja2: trim_blocks:False
+#!/bin/bash
+
+NUC_USERNAME={{ nuc_username }}
+NUC_ADDRESS={{ nuc_address }}
+LOCAL_IP={{ server_ip }}
+USER={{ user }}
+
+function check_storage_available {
+    # Get the current disk usage as a percentage
+    disk_usage=$(df -h --output=pcent / | tail -n 1 | tr -d '% ')
+    # Check if the disk usage is less than 10%
+    if [[ $disk_usage -lt 10 ]]; then
+        echo "Warning: Disk usage is at $disk_usage%. Please free up some space."
+    fi
+}
+
+function run_system_test {
+    user=$1
+    address=$2
+    echo "Running system test on $user:$address"
+    check_storage_available
+}
+
+
+run_system_test $USER $LOCAL_IP
+
+if ping -c 1 $NUC_ADDRESS &> /dev/null; then
+    ssh -X $NUC_USERNAME@$NUC_ADDRESS 'bash -s' <<ENDSSH
+        $(declare -f $(compgen -A function))
+        $(declare -p USER LOCAL_IP NUC_ADDRESS NUC_USERNAME)
+        run_system_test $NUC_USERNAME $NUC_ADDRESS
+ENDSSH
+fi
+
+

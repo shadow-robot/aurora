@@ -1,0 +1,34 @@
+
+---
+
+# - name: Copy System Check desktop icon
+#   copy:
+#     src: ../resources/files/close-hand-icon-right.png
+#     dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
+#     mode: '664'
+
+- name: Create System Check executable launch script
+  template:
+    src: ../resources/templates/scripts/system-check.j2
+    dest: "{{ shadow_hand_launcher_folder }}/system-check.sh"
+    mode: '755'
+
+- name: Create System Check icon
+  template:
+    src: ../resources/templates/desktop-icons/standard-icon.j2
+    dest: "System Check.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: System Check
+    comment: "Checks the overall status of the system (and nuc if connected)"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: system-check.sh
+    icon_file_name: close-hand-icon-right.png
+    start_terminal: "false"
+
+- name: Make System Check icon Trusted
+  shell: gio set "{{ demo_icon_folder }}/System Check.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - not skip_molecule_task|bool
