@@ -36,6 +36,30 @@ function check_cpu_and_mem_usage {
     printf "Memory usage: $MEM%%\n"
 }
 
+function check_hosts_file {
+    ip_address="$1"
+    hostname="$2"
+    grep -q -E "^$ip_address\s+$hostname\s*$" /etc/hosts
+    if [[ $? -eq 0 ]]; then
+        echo "The IP address $ip_address and hostname $hostname exist in /etc/hosts.\n"
+    else
+        echo "${RED}The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
+    fi
+}
+
+function check_nuc_connection {
+    if ssh -q -o ConnectTimeout=5 -o BatchMode=yes $NUC_USERNAME@$NUC_ADDRESS "echo 2>&1" >/dev/null; then
+        printf "$NUC_USERNAME@$NUC_ADDRESS is reachable via SSH.\n"
+    else
+        printf "${RED}$NUC_USERNAME@$NUC_ADDRESS is not reachable via SSH.${NC}\n"
+        return 1
+    fi
+
+    check_hosts_file $NUC_ADDRESS $NUC_USERNAME
+
+    return 0
+}
+
 function run_system_test {
     user=$1
     address=$2
@@ -48,11 +72,13 @@ function run_system_test {
 run_system_test $USER $LOCAL_IP
 
 if $CLOSE_NUC_PROCESSES; then
+check_nuc_connection
 if ping -c 1 $NUC_ADDRESS &> /dev/null; then
     ssh -X $NUC_USERNAME@$NUC_ADDRESS 'bash -s' <<ENDSSH
         $(declare -f $(compgen -A function))
         $(declare -p USER LOCAL_IP NUC_ADDRESS NUC_USERNAME)
         run_system_test $NUC_USERNAME $NUC_ADDRESS
+        check_hosts_file $LOCAL_IP $USER
 ENDSSH
 fi
 fi
