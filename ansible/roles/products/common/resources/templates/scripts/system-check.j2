@@ -14,9 +14,9 @@ function check_storage_available {
     # Get the current disk usage as a percentage
     disk_usage=$(df -h --output=pcent / | tail -n 1 | tr -d '% ')
 
-    printf "Disk usage is at $disk_usage%"
+    printf "Disk usage is at $disk_usage%%\n"
     if [[ $disk_usage -gt 85 ]]; then  # If storage is 85% or higher it will print a warning
-        printf "${RED}\nWarning: Please free up some space.${NC}"
+        printf "${RED}Warning: Please free up some space.${NC}\n"
     fi
 }
 
@@ -30,16 +30,16 @@ function check_cpu_and_mem_usage {
     # Check if usage exceeds the thresholds
     if (( $(echo "$CPU > $CPU_THRESHOLD" | bc -l) )) || (( $(echo "$MEM > $MEM_THRESHOLD" | bc -l) )); then
         # If usage is high, print a warning message
-        printf "${RED}Warning: High CPU or memory usage detected!${NC}"
+        printf "${RED}Warning: High CPU or memory usage detected!${NC}\n"
     fi
-    printf "CPU usage: $CPU%"
-    printf "Memory usage: $MEM%"
+    printf "CPU usage: $CPU%%\n"
+    printf "Memory usage: $MEM%%\n"
 }
 
 function run_system_test {
     user=$1
     address=$2
-    printf "Running system test on $user:$address"
+    printf "Running system test on $user:$address\n"
     check_storage_available
     check_cpu_and_mem_usage
 }
