@@ -6,7 +6,8 @@ NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP={{ server_ip }}
 USER={{ user }}
 HOSTNAME=$(hostname)
-CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower}}
+CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower }}
+NVIDIA_DOCKER={{ nvidia_docker | lower }}
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
@@ -15,8 +16,8 @@ function check_storage_available {
     # Get the current disk usage as a percentage
     disk_usage=$(df -h --output=pcent / | tail -n 1 | tr -d '% ')
 
-    printf "Disk usage is at $disk_usage%%\n"
-    if [[ $disk_usage -gt 85 ]]; then  # If storage is 85% or higher it will print a warning
+    printf "\nDisk usage is at $disk_usage%%\n"
+    if [[ $disk_usage -gt 70 ]]; then  # If storage is 70% or higher it will print a warning
         printf "${RED}Warning: Please free up some space.${NC}\n"
     fi
 }
@@ -34,30 +35,53 @@ function check_cpu_and_mem_usage {
         printf "${RED}Warning: High CPU or memory usage detected!${NC}\n"
     fi
     printf "CPU usage: $CPU%%\n"
-    printf "Memory usage: $MEM%%\n"
+    printf "Memory usage: $MEM%%\n\n"
 }
 
 function check_hosts_file {
     ip_address="$1"
     hostname="$2"
     grep -q -E "^$ip_address\s+$hostname\s*$" /etc/hosts
-    if [[ $? -eq 0 ]]; then
-        printf "The IP address $ip_address and hostname $hostname exist in /etc/hosts.\n"
-    else
-        printf "${RED}The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
+    if [[ $? != 0 ]]; then
+        printf "\n${RED}The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
+        return 1
     fi
+    return 0
 }
 
 function check_nuc_connection {
-    if ssh -q -o ConnectTimeout=5 -o BatchMode=yes $NUC_USERNAME@$NUC_ADDRESS "echo 2>&1" >/dev/null; then
-        printf "$NUC_USERNAME@$NUC_ADDRESS is reachable via SSH.\n"
-    else
-        printf "${RED}$NUC_USERNAME@$NUC_ADDRESS is not reachable via SSH.${NC}\n"
+    if ! ping -c 1 $NUC_ADDRESS &> /dev/null; then
+        printf "\n${RED}Cannot ping the NUC at $NUC_ADDRESS. ${NC}\n"
         return 1
     fi
 
-    check_hosts_file $NUC_ADDRESS nuc-control
+    if ! ssh -q -o ConnectTimeout=5 -o BatchMode=yes $NUC_USERNAME@$NUC_ADDRESS "echo 2>&1" >/dev/null; then
+        printf "\n${RED}$NUC_USERNAME@$NUC_ADDRESS is not reachable via SSH.${NC}\n"
+        return 1
+    fi
 
+    if [ $(check_hosts_file $NUC_ADDRESS nuc-control) != 0 ]; then
+        return 1
+    fi
+
+    return 0
+}
+
+function check_nvidia_settings {
+    if ! command -v nvidia-smi &> /dev/null; then
+        echo "NVIDIA driver not found. Please install it first."
+        return 1
+    fi
+
+    if ! nvidia-smi &> /dev/null; then
+        echo "NVIDIA driver is installed, but not working properly."
+        return 1
+    fi
+    
+    if [[ "$(prime-select query)" != *"nvidia"* ]]; then
+        echo "NVIDIA driver is not set as the current GPU using prime-select."
+        return 1
+    fi
     return 0
 }
 
@@ -72,9 +96,12 @@ function run_system_test {
 
 run_system_test $USER $LOCAL_IP
 
+if $NVIDIA_DOCKER; then;
+    check_nvidia_settings
+fi
+
 if $CLOSE_NUC_PROCESSES; then
-check_nuc_connection
-if ping -c 1 $NUC_ADDRESS &> /dev/null; then
+if [ check_nuc_connection != 0 ] then
     ssh -X $NUC_USERNAME@$NUC_ADDRESS 'bash -s' <<ENDSSH
         $(declare -f $(compgen -A function))
         $(declare -p USER LOCAL_IP NUC_ADDRESS NUC_USERNAME HOSTNAME CLOSE_NUC_PROCESSES RED NC)
@@ -84,5 +111,5 @@ ENDSSH
 fi
 fi
 
-printf "\n Press enter key to close window"
+printf "\n Press enter key to close window\n"
 read
