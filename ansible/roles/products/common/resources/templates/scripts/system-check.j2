@@ -68,21 +68,22 @@ function check_nuc_connection {
 }
 
 function check_nvidia_settings {
+    return_val=0
     if ! command -v nvidia-smi &> /dev/null; then
-        echo "NVIDIA driver not found. Please install it first."
-        return 1
+        echo "\n${RED}NVIDIA driver not found. Please install it first.${NC}\n"
+        return_val=1
     fi
 
     if ! nvidia-smi &> /dev/null; then
-        echo "NVIDIA driver is installed, but not working properly."
-        return 1
+        echo "\n${RED}NVIDIA driver is installed, but not working properly.${NC}\n"
+        return_val=1
     fi
     
     if [[ "$(prime-select query)" != *"nvidia"* ]]; then
-        echo "NVIDIA driver is not set as the current GPU using prime-select."
-        return 1
+        printf "\n${RED}NVIDIA driver is not set as the current GPU using `prime-select nvidia`.${NC}\n"
+        return_val=1
     fi
-    return 0
+    return $return_val
 }
 
 function run_system_test {
@@ -96,12 +97,12 @@ function run_system_test {
 
 run_system_test $USER $LOCAL_IP
 
-if $NVIDIA_DOCKER; then;
+if $NVIDIA_DOCKER; then
     check_nvidia_settings
 fi
 
 if $CLOSE_NUC_PROCESSES; then
-if [ check_nuc_connection != 0 ] then
+if [ check_nuc_connection != 0 ]; then
     ssh -X $NUC_USERNAME@$NUC_ADDRESS 'bash -s' <<ENDSSH
         $(declare -f $(compgen -A function))
         $(declare -p USER LOCAL_IP NUC_ADDRESS NUC_USERNAME HOSTNAME CLOSE_NUC_PROCESSES RED NC)
