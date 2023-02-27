@@ -43,7 +43,7 @@ function check_hosts_file {
     hostname="$2"
     grep -q -E "^$ip_address\s+$hostname\s*$" /etc/hosts
     if [[ $? != 0 ]]; then
-        printf "\n${RED}The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
+        printf "\n${RED}Error: The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
         return 1
     fi
     return 0
@@ -51,12 +51,12 @@ function check_hosts_file {
 
 function check_nuc_connection {
     if ! ping -c 1 $NUC_ADDRESS &> /dev/null; then
-        printf "\n${RED}Cannot ping the NUC at $NUC_ADDRESS. ${NC}\n"
+        printf "\n${RED}Error: Cannot ping the NUC at $NUC_ADDRESS. ${NC}\n"
         return 1
     fi
 
     if ! ssh -q -o ConnectTimeout=5 -o BatchMode=yes $NUC_USERNAME@$NUC_ADDRESS "echo 2>&1" >/dev/null; then
-        printf "\n${RED}$NUC_USERNAME@$NUC_ADDRESS is not reachable via SSH.${NC}\n"
+        printf "\n${RED}Error: $NUC_USERNAME@$NUC_ADDRESS is not reachable via SSH.${NC}\n"
         return 1
     fi
 
@@ -70,17 +70,17 @@ function check_nuc_connection {
 function check_nvidia_settings {
     return_val=0
     if ! command -v nvidia-smi &> /dev/null; then
-        echo "\n${RED}NVIDIA driver not found. Please install it first.${NC}\n"
+        echo "\n${RED}Error: NVIDIA driver not found. Please install it first.${NC}\n"
         return_val=1
     fi
 
     if ! nvidia-smi &> /dev/null; then
-        echo "\n${RED}NVIDIA driver is installed, but not working properly.${NC}\n"
+        echo "\n${RED}Error: NVIDIA driver is installed, but not working properly.${NC}\n"
         return_val=1
     fi
     
     if [[ "$(prime-select query)" != *"nvidia"* ]]; then
-        printf "\n${RED}NVIDIA driver is not set as the current GPU using `prime-select nvidia`.${NC}\n"
+        printf "\n${RED}Error: NVIDIA driver is not set as the current GPU using \`prime-select nvidia\`.${NC}\n"
         return_val=1
     fi
     return $return_val
@@ -89,7 +89,7 @@ function check_nvidia_settings {
 function run_system_test {
     user=$1
     address=$2
-    printf "Running system test on $user:$address\n"
+    printf "Running system test on $user:$address"
     check_storage_available
     check_cpu_and_mem_usage
 }
@@ -112,5 +112,5 @@ ENDSSH
 fi
 fi
 
-printf "\n Press enter key to close window\n"
+printf "\nPress enter key to close window\n"
 read
