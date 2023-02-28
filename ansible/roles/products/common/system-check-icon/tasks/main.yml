@@ -13,11 +13,11 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-# - name: Copy System Check desktop icon
-#   copy:
-#     src: ../resources/files/close-hand-icon-right.png
-#     dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
-#     mode: '664'
+- name: Copy System Check desktop icon
+  copy:
+    src: ../resources/files/system-check.png
+    dest: "{{ shadow_hand_launcher_folder }}/system-check.png"
+    mode: '664'
 
 - name: Set close_nuc_processes variable
   set_fact:
@@ -40,7 +40,7 @@
     comment: "Checks the overall status of the system (and nuc if connected)"
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: system-check.sh
-    icon_file_name: close-hand-icon-right.png
+    icon_file_name: system-check.png
     start_terminal: "false"
 
 - name: Make System Check icon Trusted
