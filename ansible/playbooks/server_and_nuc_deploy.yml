@@ -122,6 +122,11 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
+    
+    - name: Running playbook setup role
+      include_role:
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
 
     - name: Set container name for hand and arm
       when: "'arm_' in product"
