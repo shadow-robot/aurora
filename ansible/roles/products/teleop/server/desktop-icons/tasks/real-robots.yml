@@ -500,7 +500,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_glove_calibration_rqt.sh"
     mode: '755'
   vars:
-    command: "rqt -s sr_gui_shadow_glove_calibration.shadow_glove_calibration.SrGuiShadowGloveCalibration"
+    command: "rqt -s sr_glove_calibration_gui.sr_glove_calibration_gui.SrGloveCalibrationGui"
   when: glove=="shadow_glove"
 
 - name: Set Shadow Glove driver name (if right)
