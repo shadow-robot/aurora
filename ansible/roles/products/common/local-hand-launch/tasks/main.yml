@@ -13,6 +13,10 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Print message if nvidia-smi is installed
+  debug:
+    msg: "SIM VAR: {{ simulate_icons }}"
+    
 - name: Setup script names
   set_fact:
     local_right_setup_script: local-right-server-setup.sh
