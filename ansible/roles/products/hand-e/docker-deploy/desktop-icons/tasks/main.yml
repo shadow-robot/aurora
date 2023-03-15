@@ -97,3 +97,7 @@
 - name: Include products/common/close-everything-icon role
   include_role:
     name: products/common/close-everything-icon
+
+- name: include products/common/validation role
+  include_role:
+    name: products/common/system-check-icon
