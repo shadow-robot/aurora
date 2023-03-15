@@ -84,7 +84,7 @@
     control_loop_script_name: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right_arm_hand.sh"
     launch_terminal: "false"
-    enable_warnining: "{{ bimanual|bool }}"
+    enable_warning: "{{ bimanual|bool }}"
   when:
     - bimanual|bool or hand_side=="right"
 
@@ -101,7 +101,7 @@
     hand_side_label: "Left Arm and Hand"
     control_loop_script_name: "shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left_arm_hand.sh"
-    enable_warnining: "{{ bimanual|bool }}"
+    enable_warning: "{{ bimanual|bool }}"
   when:
     - bimanual|bool or hand_side=="left"
 
@@ -118,7 +118,7 @@
     hand_side_label: "Bimanual Arm and Hand"
     control_loop_script_name: "shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_bimanual_arm_hand.sh"
-    enable_warnining: "false"
+    enable_warning: "false"
   when:
     - bimanual|bool
 
