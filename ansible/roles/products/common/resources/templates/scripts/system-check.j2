@@ -13,19 +13,23 @@ NC='\033[0m' # No Color
 
 
 function check_storage_available {
-    # Get the current disk usage as a percentage
-    disk_usage=$(df -h --output=pcent / | tail -n 1 | tr -d '% ')
+    # Get available storage space on main drive in GB
+    disk_free=$(df -h / | awk 'NR==2{print $4}')
 
-    printf "\nDisk usage is at $disk_usage%%\n"
-    if [[ $disk_usage -gt 70 ]]; then  # If storage is 70% or higher it will print a warning
-        printf "${RED}Warning: Please free up some space.${NC}\n"
+    # Remove "G" from the disk_free value and convert it to a number
+    disk_free=$(echo "$disk_free" | tr -d "G")
+    disk_free=$(bc <<< "$disk_free * 1")
+
+    # Check if available storage space is less than 50GB
+    if [[ $disk_free -lt 50 ]]; then
+        printf "${RED}Error: Available storage space on main drive is less than 50GB.${NC}\n"
     fi
 }
 
 function check_cpu_and_mem_usage {
     # Get the current CPU and memory usage
     CPU=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2 + $4}')
-    MEM=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+    MEM=$(free | awk '/Mem/{printf("%d"), $4/$2*100}')
     CPU_THRESHOLD=80
     MEM_THRESHOLD=80
 
