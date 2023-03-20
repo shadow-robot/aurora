@@ -400,8 +400,8 @@
   block:
   - name: Copy right Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
+      src: ../../../common/resources/files/arm_hand_right.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.png"
       mode: '664'
 
   - name: Create Right Hand and Arm Joint Positions executable launch script
@@ -423,7 +423,7 @@
       comment: "This runs arm and hand plan and move to joint positions example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: right_arm_hand_joint_pos.sh
-      icon_file_name: arm_hand_right.jpeg
+      icon_file_name: arm_hand_right.png
       start_terminal: "false"
 
   - name: Make Right Hand and Arm Joint Positions Example desktop icon Trusted
@@ -442,8 +442,8 @@
   block:
   - name: Copy right Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
+      src: ../../../common/resources/files/arm_hand_right.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.png"
       mode: '664'
 
   - name: Create Right Hand and Arm Waypoints executable launch script
@@ -465,7 +465,7 @@
       comment: "This runs arm and hand plan and move to Waypoints example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: right_arm_hand_waypoints.sh
-      icon_file_name: arm_hand_right.jpeg
+      icon_file_name: arm_hand_right.png
       start_terminal: "false"
 
   - name: Make Right Hand and Arm Waypoints Example desktop icon Trusted
@@ -484,8 +484,8 @@
   block:
   - name: Copy right Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
+      src: ../../../common/resources/files/arm_hand_right.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.png"
       mode: '664'
 
   - name: Create Right Hand and Arm End Effector executable launch script
@@ -507,7 +507,7 @@
       comment: "This runs arm and hand plan and move to End Effector example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: right_arm_hand_end_effector.sh
-      icon_file_name: arm_hand_right.jpeg
+      icon_file_name: arm_hand_right.png
       start_terminal: "false"
 
   - name: Make Right Hand and Arm End Effector Example desktop icon Trusted
@@ -526,8 +526,8 @@
   block:
   - name: Copy left Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_left.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.jpeg"
+      src: ../../../common/resources/files/arm_hand_left.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.png"
       mode: '664'
 
   - name: Create Left Hand and Arm Joint Positions executable launch script
@@ -549,7 +549,7 @@
       comment: "This runs arm and hand plan and move to joint positions example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: left_arm_hand_joint_pos.sh
-      icon_file_name: arm_hand_left.jpeg
+      icon_file_name: arm_hand_left.png
       start_terminal: "false"
 
   - name: Make Left Hand and Arm Joint Positions Example desktop icon Trusted
@@ -568,8 +568,8 @@
   block:
   - name: Copy Left Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_left.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.jpeg"
+      src: ../../../common/resources/files/arm_hand_left.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.png"
       mode: '664'
 
   - name: Create Left Hand and Arm Waypoints executable launch script
@@ -591,7 +591,7 @@
       comment: "This runs arm and hand plan and move to Waypoints example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: left_arm_hand_waypoints.sh
-      icon_file_name: arm_hand_left.jpeg
+      icon_file_name: arm_hand_left.png
       start_terminal: "false"
 
   - name: Make Left Hand and Arm Waypoints Example desktop icon Trusted
@@ -610,8 +610,8 @@
   block:
   - name: Copy Left Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_left.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.jpeg"
+      src: ../../../common/resources/files/arm_hand_left.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.png"
       mode: '664'
 
   - name: Create Left Hand and Arm End Effector executable launch script
@@ -633,7 +633,7 @@
       comment: "This runs arm and hand plan and move to End Effector example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: left_arm_hand_end_effector.sh
-      icon_file_name: arm_hand_left.jpeg
+      icon_file_name: arm_hand_left.png
       start_terminal: "false"
 
   - name: Make Left Hand and Arm End Effector Example desktop icon Trusted
