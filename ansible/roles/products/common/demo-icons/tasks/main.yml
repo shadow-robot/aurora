@@ -436,7 +436,7 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="right"
+    - bimanual|bool == true or hand_side=="right"
 
 - name: Install right arm and hand waypoints example if arm and hand_side="right"
   block:
@@ -478,7 +478,7 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="right"
+    - bimanual|bool == true or hand_side=="right"
 
 - name: Install right arm and hand End Effector example if arm and hand_side="right"
   block:
@@ -520,7 +520,7 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="right"
+    - bimanual|bool == true or hand_side=="right"
 
 - name: Install left arm and hand joint position example if arm and hand_side="left"
   block:
@@ -562,7 +562,7 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="left"
+    - bimanual|bool == true or hand_side=="left"
 
 - name: Install left arm and hand waypoints example if arm and hand_side="left"
   block:
@@ -604,7 +604,7 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="left"
+    - bimanual|bool == true or hand_side=="left"
 
 - name: Install left arm and hand End Effector example if arm and hand_side="left"
   block:
@@ -646,4 +646,4 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="left"
+    - bimanual|bool == true or hand_side=="left"
