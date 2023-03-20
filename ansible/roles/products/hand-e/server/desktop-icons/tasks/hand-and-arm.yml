@@ -15,9 +15,9 @@
 ---
 - name: Set Shadow Arm+Hand icon pictures
   set_fact:
-    right_arm_hand_picture: arm_hand_right.jpeg
-    left_arm_hand_picture: arm_hand_left.jpg
-    bimanual_arm_hand_picture: arm_hand_bimanual.jpg
+    right_arm_hand_picture: arm_hand_right.png
+    left_arm_hand_picture: arm_hand_left.png
+    bimanual_arm_hand_picture: arm_hand_bimanual.png
 
 - name: Set arm+hand GUI launch file names for UR10/UR10e
   set_fact:
