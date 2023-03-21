@@ -114,7 +114,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin
 Example:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.2.0 --read-secure customer_key product=hand_e tag="noetic-v1.0.25"
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.2.0 --read-secure customer_key product=hand_e tag="noetic-v1.0.26"
 ```
 Inventories correspond to fixed IP addresses as shown here:
 * [development](ansible/inventory/server_and_nuc/development)
@@ -144,7 +144,7 @@ Hand and Arm is one of the main use-cases of the server_and_nuc playbook. It req
 Example:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.2.0 --read-secure customer_key reinstall=true bimanual=true product="arm_hand_e" image="public.ecr.aws/shadowrobot/dexterous-hand" tag="noetic-v1.0.25" arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.2.0 --read-secure customer_key reinstall=true bimanual=true product="arm_hand_e" image="public.ecr.aws/shadowrobot/dexterous-hand" tag="noetic-v1.0.26" arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
 ```
 
 ### Hand and Glove ###
@@ -173,7 +173,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin
 Example:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) docker_deploy --branch v2.2.0 product=hand_e tag=noetic-v1.0.25
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) docker_deploy --branch v2.2.0 product=hand_e tag=noetic-v1.0.26
 ```
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 
