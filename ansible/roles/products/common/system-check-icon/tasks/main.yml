@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-
----
-
-# - name: Copy System Check desktop icon
-#   copy:
-#     src: ../resources/files/close-hand-icon-right.png
-#     dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
-#     mode: '664'
-=======
 # Copyright 2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
@@ -33,7 +23,6 @@
   set_fact:
     close_nuc_processes: true
   when: groups['control_machine'] is defined
->>>>>>> a99855ea58ee4998f03ed5408def7527000748a1
 
 - name: Create System Check executable launch script
   template:
@@ -44,30 +33,18 @@
 - name: Create System Check icon
   template:
     src: ../resources/templates/desktop-icons/standard-icon.j2
-<<<<<<< HEAD
-    dest: "System Check.desktop"
-=======
     dest: "{{ desktop_path }}/System Check.desktop"
->>>>>>> a99855ea58ee4998f03ed5408def7527000748a1
     mode: '755'
   vars:
     desktop_shortcut_name: System Check
     comment: "Checks the overall status of the system (and nuc if connected)"
     folder: "{{ shadow_hand_launcher_folder }}"
     shell_script_file_name: system-check.sh
-<<<<<<< HEAD
-    icon_file_name: close-hand-icon-right.png
-    start_terminal: "false"
-
-- name: Make System Check icon Trusted
-  shell: gio set "{{ demo_icon_folder }}/System Check.desktop" "metadata::trusted" yes
-=======
     icon_file_name: system-check.png
     start_terminal: "false"
 
 - name: Make System Check icon Trusted
   shell: gio set "{{ desktop_path }}/System Check.desktop" "metadata::trusted" yes
->>>>>>> a99855ea58ee4998f03ed5408def7527000748a1
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
