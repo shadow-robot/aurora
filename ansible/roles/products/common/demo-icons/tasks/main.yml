@@ -634,6 +634,7 @@
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: left_arm_hand_end_effector.sh
       icon_file_name: arm_hand_left.png
+
       start_terminal: "false"
 
   - name: Make Left Hand and Arm End Effector Example desktop icon Trusted
