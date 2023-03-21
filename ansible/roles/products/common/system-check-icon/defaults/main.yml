@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Shadow Robot Company Ltd.
+# Copyright 2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -17,17 +17,6 @@ user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 container_name: "dexterous_hand"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
-right_hand_picture: hand-e.png
-left_hand_picture: hand-e-left.png
-bimanual_hands_picture: hand-e-bimanual.png
-product: hand_e
-setup_directory: "/usr/local/bin"
-icon_folder: "{{ desktop_path }}/Local Launch"
-override_launch_hand: false
-use_steamvr: false
-launch_package_name: "sr_robot_launch"
-launch_file_name: "srhand.launch"
-override_launch_hand_var: false
-uses_autodetect: false
-hand_side_ad: ""
-simulate_icons: false
+nuc_username: "user"
+nuc_address: "10.9.11.2"
+close_nuc_processes: false

@@ -39,7 +39,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_right_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "srhand.launch sim:={{ sim_icon }} hand_id:=rh hand_side_ad:=-r"
+    launch_file_name: "srhand.launch sim:={{ simulate_icons }} hand_id:=rh hand_side_ad:=-r"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool or hand_side=="right"
@@ -50,7 +50,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_left_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "srhand.launch sim:={{ sim_icon }} hand_id:=lh hand_side_ad:=-l"
+    launch_file_name: "srhand.launch sim:={{ simulate_icons }} hand_id:=lh hand_side_ad:=-l"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool or hand_side=="left"
@@ -61,7 +61,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ local_bm_setup_script }}"
     mode: '755'
   vars:
-    launch_file_name: "sr_bimanual.launch sim:={{ sim_icon }}"
+    launch_file_name: "sr_bimanual.launch sim:={{ simulate_icons }}"
     launch_package_name: "sr_robot_launch"
     override_launch_hand: "{{ override_launch_hand_var }}"
   when: bimanual|bool
