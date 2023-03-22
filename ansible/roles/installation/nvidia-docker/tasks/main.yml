@@ -47,27 +47,19 @@
     become: yes
     when: "prime_select_results.stdout != 'nvidia'"
 
-  - name: reboot the computer
-    debug:
-      msg: Your graphic driver has been switched to nvidia. Please reboot your PC and rerun the oneliner.
-    when: "prime_select_results.stdout != 'nvidia'"
-
   - name: end playbook so user can reboot
-    meta: end_play
+    fail:
+      msg: "Your graphic driver has been switched to nvidia. Please reboot your PC and rerun the oneliner."
     when: "prime_select_results.stdout != 'nvidia'"
   
   - name: Check if nvidia-smi is installed
     stat:
       path: /usr/bin/nvidia-smi
     register: nvidia_smi_installed
-  
-  - name: reboot the computer
-    debug:
-      msg: "Your computer isn't using the right driver, please change it in the application `Additional Drivers`. Once done please reboot your PC and rerun the oneliner."
-    when: not nvidia_smi_installed.stat.exists
 
   - name: end playbook so user can reboot
-    meta: end_play
+    fail:
+      msg: "Your computer isn't using the right driver, please change it in the application Additional Drivers. Once done please reboot your PC and rerun the oneliner."
     when: not nvidia_smi_installed.stat.exists
 
   when: nvidia_docker | bool and not skip_nvidia|bool
