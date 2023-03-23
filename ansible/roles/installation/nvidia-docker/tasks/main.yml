@@ -56,19 +56,18 @@
     meta: end_play
     when: "prime_select_results.stdout != 'nvidia'"
   
-  - name: query nvidia-smi
-    command: nvidia-smi
-    become: yes
-    register: nvidia_smi_results
-    ignore_errors: true
+  - name: Check if nvidia-smi is installed
+    stat:
+      path: /usr/bin/nvidia-smi
+    register: nvidia_smi_installed
   
   - name: reboot the computer
     debug:
       msg: "Your computer isn't using the right driver, please change it in the application `Additional Drivers`. Once done please reboot your PC and rerun the oneliner."
-    when: "nvidia_smi_results.rc != 0"
+    when: not nvidia_smi_installed.stat.exists
 
   - name: end playbook so user can reboot
     meta: end_play
-    when: "nvidia_smi_results.rc != 0"
+    when: not nvidia_smi_installed.stat.exists
 
   when: nvidia_docker | bool and not skip_nvidia|bool

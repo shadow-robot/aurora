@@ -400,8 +400,8 @@
   block:
   - name: Copy right Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
+      src: ../../../common/resources/files/arm_hand_right.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.png"
       mode: '664'
 
   - name: Create Right Hand and Arm Joint Positions executable launch script
@@ -423,7 +423,7 @@
       comment: "This runs arm and hand plan and move to joint positions example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: right_arm_hand_joint_pos.sh
-      icon_file_name: arm_hand_right.jpeg
+      icon_file_name: arm_hand_right.png
       start_terminal: "false"
 
   - name: Make Right Hand and Arm Joint Positions Example desktop icon Trusted
@@ -436,14 +436,14 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="right"
+    - bimanual|bool == true or hand_side=="right"
 
 - name: Install right arm and hand waypoints example if arm and hand_side="right"
   block:
   - name: Copy right Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
+      src: ../../../common/resources/files/arm_hand_right.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.png"
       mode: '664'
 
   - name: Create Right Hand and Arm Waypoints executable launch script
@@ -465,7 +465,7 @@
       comment: "This runs arm and hand plan and move to Waypoints example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: right_arm_hand_waypoints.sh
-      icon_file_name: arm_hand_right.jpeg
+      icon_file_name: arm_hand_right.png
       start_terminal: "false"
 
   - name: Make Right Hand and Arm Waypoints Example desktop icon Trusted
@@ -478,14 +478,14 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="right"
+    - bimanual|bool == true or hand_side=="right"
 
 - name: Install right arm and hand End Effector example if arm and hand_side="right"
   block:
   - name: Copy right Arm and Hand desktop icon
     copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
+      src: ../../../common/resources/files/arm_hand_right.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.png"
       mode: '664'
 
   - name: Create Right Hand and Arm End Effector executable launch script
@@ -507,7 +507,7 @@
       comment: "This runs arm and hand plan and move to End Effector example"
       folder: "{{ shadow_hand_launcher_folder }}"
       shell_script_file_name: right_arm_hand_end_effector.sh
-      icon_file_name: arm_hand_right.jpeg
+      icon_file_name: arm_hand_right.png
       start_terminal: "false"
 
   - name: Make Right Hand and Arm End Effector Example desktop icon Trusted
@@ -520,4 +520,130 @@
   when:
     - product is defined
     - "'arm_' in product"
-    - hand_side=="right"
+    - bimanual|bool == true or hand_side=="right"
+
+- name: Install left arm and hand joint position example if arm and hand_side="left"
+  block:
+  - name: Copy left Arm and Hand desktop icon
+    copy:
+      src: ../../../common/resources/files/arm_hand_left.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.png"
+      mode: '664'
+
+  - name: Create Left Hand and Arm Joint Positions executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/left_arm_hand_joint_pos.sh"
+      mode: '755'
+    vars:
+      project_name: sr_example
+      script_name: sr_left_hand_arm_joint_pos.py
+
+  - name: Create Left Hand and Arm Joint Positions desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Left Hand and Arm Joint Positions Example.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Left Hand and Arm Joint Positions Example
+      comment: "This runs arm and hand plan and move to joint positions example"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: left_arm_hand_joint_pos.sh
+      icon_file_name: arm_hand_left.png
+      start_terminal: "false"
+
+  - name: Make Left Hand and Arm Joint Positions Example desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Left Hand and Arm Joint Positions Example.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - not skip_molecule_task|bool
+
+  when:
+    - product is defined
+    - "'arm_' in product"
+    - bimanual|bool == true or hand_side=="left"
+
+- name: Install left arm and hand waypoints example if arm and hand_side="left"
+  block:
+  - name: Copy Left Arm and Hand desktop icon
+    copy:
+      src: ../../../common/resources/files/arm_hand_left.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.png"
+      mode: '664'
+
+  - name: Create Left Hand and Arm Waypoints executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/left_arm_hand_waypoints.sh"
+      mode: '755'
+    vars:
+      project_name: sr_example
+      script_name: sr_left_hand_arm_waypoints.py
+
+  - name: Create Left Hand and Arm Waypoints desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Left Hand and Arm Waypoints Example.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Left Hand and Arm Waypoints Example
+      comment: "This runs arm and hand plan and move to Waypoints example"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: left_arm_hand_waypoints.sh
+      icon_file_name: arm_hand_left.png
+      start_terminal: "false"
+
+  - name: Make Left Hand and Arm Waypoints Example desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Left Hand and Arm Waypoints Example.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - not skip_molecule_task|bool
+
+  when:
+    - product is defined
+    - "'arm_' in product"
+    - bimanual|bool == true or hand_side=="left"
+
+- name: Install left arm and hand End Effector example if arm and hand_side="left"
+  block:
+  - name: Copy Left Arm and Hand desktop icon
+    copy:
+      src: ../../../common/resources/files/arm_hand_left.png
+      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_left.png"
+      mode: '664'
+
+  - name: Create Left Hand and Arm End Effector executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/left_arm_hand_end_effector.sh"
+      mode: '755'
+    vars:
+      project_name: sr_example
+      script_name: sr_left_hand_arm_ef_pos.py
+
+  - name: Create Left Hand and Arm End Effector desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Left Hand and Arm End Effector Example.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Left Hand and Arm End Effector Example
+      comment: "This runs arm and hand plan and move to End Effector example"
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: left_arm_hand_end_effector.sh
+      icon_file_name: arm_hand_left.png
+      start_terminal: "false"
+
+  - name: Make Left Hand and Arm End Effector Example desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Left Hand and Arm End Effector Example.desktop" "metadata::trusted" yes
+    when:
+      - ansible_distribution|string == 'Ubuntu'
+      - ansible_distribution_release|string == 'bionic'
+      - not skip_molecule_task|bool
+
+  when:
+    - product is defined
+    - "'arm_' in product"
+    - bimanual|bool == true or hand_side=="left"
