@@ -68,7 +68,21 @@
 - name: Include installation/shadow_glove_driver role
   include_role:
     name: installation/shadow_glove_driver
-  when: '"glove_" in product and glove == "shadow_glove" and real_glove|bool and not skip_molecule_task|bool'
+  when: "'glove' in product and not skip_molecule_task|bool"
+
+- name: Udev rules for pedal
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr_teleop_devices/noetic-devel/sr_pedal/90-VEC-USB-Footpedal.rules
+    dest: /etc/udev/rules.d/90-VEC-USB-Footpedal.rules
+    mode: '0644'
+  become: yes
+  when: "'glove' in product"
+
+- name: Reload udev rules
+  shell: udevadm control --reload-rules && udevadm trigger
+  changed_when: false
+  become: yes
+  when: "'glove' in product and not skip_molecule_task|bool"
 
 - name: Include docker/docker-image role
   include_role:
