@@ -200,6 +200,7 @@
     arm_y_separation_var: "{{ arm_y_separation }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
+    ad_hand_side: ""
   when: 
     - bimanual|bool
 
