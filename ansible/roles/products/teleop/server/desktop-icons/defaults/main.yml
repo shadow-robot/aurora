@@ -33,7 +33,7 @@ steam_binding: "steam_binding.jpg"
 steam_vive_binding_url: http://127.0.0.1:27062/dashboard/controllerbinding.html
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
-initial_z: 0.7551
+initial_z: 0.8221
 arm_x_separation: 0.0
 arm_y_separation: 0.0
 rh_biotac_mapping: ""
