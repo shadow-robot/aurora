@@ -19,10 +19,15 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Set arm y separation if bimanual=true
+- name: Set arm y separation for left arm if bimanual=true
   set_fact:
-    arm_y_separation_value: 1.5
+    arm_y_separation: 1.5
   when: bimanual|bool and hand_side=="left"
+
+- name: Set arm y separation for right arm if bimanual=true
+  set_fact:
+    arm_y_separation: 0.0
+  when: bimanual|bool and hand_side=="right"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
   template:
@@ -31,9 +36,9 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    initial_z_var: "{{ initial_z }}"
+    arm_x_separation_var: "{{ arm_x_separation }}"
+    arm_y_separation_var: "{{ arm_y_separation }}"
     ad_hand_side: "{{ hand_side_ad }}"
   when: glove=="haptx"
 
@@ -44,9 +49,9 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    initial_z_var: "{{ initial_z }}"
+    arm_x_separation_var: "{{ arm_x_separation }}"
+    arm_y_separation_var: "{{ arm_y_separation }}"
     ad_hand_side: "{{ hand_side_ad }}"
   when: glove=="shadow_glove"
 

@@ -33,9 +33,9 @@ steam_binding: "steam_binding.jpg"
 steam_vive_binding_url: http://127.0.0.1:27062/dashboard/controllerbinding.html
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
-initial_z_value: 0.7551
-arm_x_separation_value: 0.0
-arm_y_separation_value: 0.0
+initial_z: 0.7551
+arm_x_separation: 0.0
+arm_y_separation: 0.0
 rh_biotac_mapping: ""
 lh_biotac_mapping: ""
 launch_file_input_haptx_mapping_left: "haptx_base.launch side:=left"

@@ -19,6 +19,10 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
+- name: Set arm y separation if bimanual=true
+  set_fact:
+    initial_z: 1.5
+
 - name: Create executable launch script for bimanual hand and arm control loop (with haptx)
   template:
     src: templates/scripts/start-docker-container-nuc-bimanual.j2
@@ -35,6 +39,9 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_bimanual_control.launch"
+    initial_z_var: "{{ initial_z }}"
+    arm_x_separation_var: "{{ arm_x_separation }}"
+    arm_y_separation_var: "{{ arm_y_separation }}"
   when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand

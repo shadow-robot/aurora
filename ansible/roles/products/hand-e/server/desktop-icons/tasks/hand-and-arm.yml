@@ -19,6 +19,13 @@
     left_arm_hand_picture: arm_hand_left.png
     bimanual_arm_hand_picture: arm_hand_bimanual.png
 
+- name: Set inital_y when bimanual is true
+  set_fact:
+    initial_y_left: 1.5
+    initial_y_right: 0.0
+  when: 
+    - bimanual|bool
+
 - name: Set arm+hand GUI launch file names for UR10/UR10e
   set_fact:
     project_name_input: "sr_robot_launch"
@@ -39,9 +46,9 @@
 
 - name: Set arm+hand GUI launch file content for sim
   set_fact:
-    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
-    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
-    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true initial_y:={{ initial_y_right }} initial_z:={{ initial_z }}"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true initial_y:={{ initial_y_left }} initial_z:={{ initial_z }}"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true arm_1_z:={{ initial_y_right }} arm_2_z:={{ initial_y_left }} initial_z:={{ initial_z }}"
 
 - name: Set arm+hand GUI launch file content
   set_fact:
@@ -156,9 +163,8 @@
   vars:
     pwm_control_var: "true"
     hand_ctrl_var: "true"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    initial_z_var: "{{ initial_z }}"
+    inital_y_var: "{{ initial_y_right }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
     ad_hand_side: "-r"
@@ -173,9 +179,8 @@
   vars:
     pwm_control_var: "true"
     hand_ctrl_var: "true"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    initial_z_var: "{{ initial_z }}"
+    inital_y_var: "{{ initial_y_left }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
     ad_hand_side: "-l"
@@ -187,6 +192,13 @@
     src: templates/scripts/start-docker-container-nuc-bimanual-arm-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     mode: '755'
+  vars:
+    pwm_control_var: "true"
+    hand_ctrl_var: "true"
+    arm_x_separation_var: "{{ arm_x_separation }}"
+    arm_y_separation_var: "{{ arm_y_separation }}"
+    arm_ctrl_var: "true"
+    arm_payload_mass: "{{ arm_mass_payload }}"
   when: 
     - bimanual|bool
 
