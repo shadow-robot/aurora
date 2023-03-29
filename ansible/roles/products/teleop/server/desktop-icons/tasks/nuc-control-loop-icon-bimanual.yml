@@ -22,6 +22,7 @@
 - name: Set arm y separation if bimanual=true
   set_fact:
     arm_y_separation: 1.5
+  when: bimanual|bool == true
 
 - name: Create executable launch script for bimanual hand and arm control loop (with haptx)
   template:
