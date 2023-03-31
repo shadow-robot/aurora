@@ -19,10 +19,9 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Set arm y separation if bimanual=true
+- name: Set arm y separation
   set_fact:
-    arm_y_separation: 1.5
-  when: bimanual|bool == true
+    initial_y: 1.5
 
 - name: Create executable launch script for bimanual hand and arm control loop (with haptx)
   template:
@@ -31,6 +30,7 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_bimanual_control.launch"
+    launch_file_params: "robot_model:={{ ur_robot_type }} arm_1_z:={{ initial_z }} arm_2_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }}"
   when: glove=="haptx"
 
 - name: Create executable launch script for bimanual hand and arm control loop (with shadow_glove)
@@ -40,9 +40,7 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_bimanual_control.launch"
-    initial_z_var: "{{ initial_z }}"
-    arm_x_separation_var: "{{ arm_x_separation }}"
-    arm_y_separation_var: "{{ arm_y_separation }}"
+    launch_file_params: "robot_model:={{ ur_robot_type }} arm_1_z:={{ initial_z }} arm_2_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }}"
   when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand

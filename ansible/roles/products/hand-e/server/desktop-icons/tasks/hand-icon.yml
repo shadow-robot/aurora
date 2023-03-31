@@ -28,7 +28,6 @@
     pwm_control_var: "{{ pwm_control_value }}"
     hand_ctrl_var: "{{ hand_ctrl_value }}"
     initial_z_var: "{{ initial_z }}"
-    inital_y_var: "{{ initial_y }}"
     arm_x_separation_var: "{{ arm_x_separation }}"
     arm_y_separation_var: "{{ arm_y_separation }}"
     arm_ctrl_var: "{{ arm_ctrl_value }}"

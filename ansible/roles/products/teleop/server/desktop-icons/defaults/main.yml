@@ -25,6 +25,7 @@ upgrade_script: false
 server_ip: "10.9.11.1"
 demohand_icons: false
 teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
+launch_file_params: ""
 ur_robot_type: "ur10e"
 teleop_glove_right: "hand-e.png"
 teleop_glove_left: "hand-e-left.png"
@@ -34,8 +35,8 @@ steam_vive_binding_url: http://127.0.0.1:27062/dashboard/controllerbinding.html
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
 initial_z: 0.8221
-arm_x_separation: 0.0
-arm_y_separation: 0.0
+initial_y: 0.0
+initial_x: 0.0
 rh_biotac_mapping: ""
 lh_biotac_mapping: ""
 launch_file_input_haptx_mapping_left: "haptx_base.launch side:=left"
