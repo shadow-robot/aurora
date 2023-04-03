@@ -71,7 +71,7 @@
 
     - name: Set scene and initial_z for developers (Bimanual)
       set_fact:
-        scene_file: "$(find sr_description_common)/scenes/customer_stand_bimanual.scene"
+        scene_file: "$(find sr_description_common)/scenes/demo_space_large_bimanual.scene"
         initial_z: 0.7521
       when:
         - not scene_file
@@ -81,7 +81,7 @@
 
     - name: Set scene and initial_z for developers (Unimanual)
       set_fact:
-        scene_file: "$(find sr_description_common)/scenes/customer_stand_unimanual.scene"
+        scene_file: "$(find sr_description_common)/scenes/demo_space_large_unimanual.scene"
         initial_z: 0.7521
       when:
         - not scene_file
