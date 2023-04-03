@@ -37,7 +37,7 @@
     - not scene_file
     - bimanual|bool
     - delivery|bool
-    - "'teleop_deploy.yml' in playbook_name or 'arm' in (product|default(''))"
+    - "'teleop_deploy.yml' in ansible_playbook_name or 'arm' in (product|default(''))"
 
 - name: Set scene and initial_z for production (Unimanual)
   set_fact:
@@ -47,7 +47,7 @@
     - not scene_file
     - not bimanual|bool
     - delivery|bool
-    - "'teleop_deploy.yml' in playbook_name or 'arm' in (product|default(''))"
+    - "'teleop_deploy.yml' in ansible_playbook_name or 'arm' in (product|default(''))"
 
 - name: Set scene and initial_z for developers (Bimanual)
   set_fact:
@@ -57,7 +57,7 @@
     - not scene_file
     - bimanual|bool
     - not delivery|bool
-    - "'teleop_deploy.yml' in playbook_name or 'arm' in (product|default(''))"
+    - "'teleop_deploy.yml' in ansible_playbook_name or 'arm' in (product|default(''))"
 
 - name: Set scene and initial_z for developers (Unimanual)
   set_fact:
@@ -67,4 +67,4 @@
     - not scene_file
     - not bimanual|bool
     - not delivery|bool
-    - "'teleop_deploy.yml' in playbook_name or 'arm' in (product|default(''))"
+    - "'teleop_deploy.yml' in ansible_playbook_name or 'arm' in (product|default(''))"
