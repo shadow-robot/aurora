@@ -29,6 +29,42 @@
         name: installation/playbook_setup
       when: not skip_molecule_task|bool
     
+    - name: Set scene and initial_z for production (Bimanual)
+      set_fact:
+        scene_file: "$(find sr_description_common)/scenes/customer_stand_bimanual.scene"
+        initial_z: 0.8221
+      when:
+        - not scene_file
+        - bimanual|bool
+        - delivery|bool
+
+    - name: Set scene and initial_z for production (Unimanual)
+      set_fact:
+        scene_file: "$(find sr_description_common)/scenes/customer_stand_unimanual.scene"
+        initial_z: 0.8221
+      when:
+        - not scene_file
+        - not bimanual|bool
+        - delivery|bool
+
+    - name: Set scene and initial_z for developers (Bimanual)
+      set_fact:
+        scene_file: "$(find sr_description_common)/scenes/customer_stand_bimanual.scene"
+        initial_z: 0.7521
+      when:
+        - not scene_file
+        - bimanual|bool
+        - not delivery|bool
+
+    - name: Set scene and initial_z for developers (Unimanual)
+      set_fact:
+        scene_file: "$(find sr_description_common)/scenes/customer_stand_unimanual.scene"
+        initial_z: 0.7521
+      when:
+        - not scene_file
+        - not bimanual|bool
+        - not delivery|bool
+    
     - name: Install licence tools
       include_role:
         name: installation/install_licence_tools
