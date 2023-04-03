@@ -91,7 +91,7 @@
         initial_z: 0.8221
       when:
         - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
+        - bimanual|bool
         - delivery|bool
 
     - name: Set scene and initial_z for production (Unimanual)
@@ -100,7 +100,7 @@
         initial_z: 0.8221
       when:
         - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
+        - bimanual|bool
         - delivery|bool
 
     - name: Set scene and initial_z for developers (Bimanual)
@@ -109,7 +109,7 @@
         initial_z: 0.7521
       when:
         - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
+        - bimanual|bool
         - not delivery|bool
 
     - name: Set scene and initial_z for developers (Unimanual)
@@ -118,7 +118,7 @@
         initial_z: 0.7521
       when:
         - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
+        - bimanual|bool
         - not delivery|bool
 
     - name: Add IP address of all hosts to all hosts
@@ -149,36 +149,17 @@
         name: installation/playbook_setup
       when: not skip_molecule_task|bool
 
-    - name: Set scene and initial_z for production (Bimanual)
+    - name: Set scene and initial_z for production (Simulation)
       set_fact:
         scene_file: "$(find sr_description_common)/scenes/customer_stand_bimanual.scene"
         initial_z: 0.8221
       when:
         - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
         - delivery|bool
 
-    - name: Set scene and initial_z for production (Unimanual)
-      set_fact:
-        scene_file: "$(find sr_description_common)/scenes/customer_stand_unimanual.scene"
-        initial_z: 0.8221
-      when:
-        - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
-        - delivery|bool
-
-    - name: Set scene and initial_z for developers (Bimanual)
+    - name: Set scene and initial_z for developers (Simulation)
       set_fact:
         scene_file: "$(find sr_description_common)/scenes/demo_space_large_bimanual.scene"
-        initial_z: 0.7521
-      when:
-        - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
-        - not delivery|bool
-
-    - name: Set scene and initial_z for developers (Unimanual)
-      set_fact:
-        scene_file: "$(find sr_description_common)/scenes/demo_space_large_unimanual.scene"
         initial_z: 0.7521
       when:
         - not scene_file
