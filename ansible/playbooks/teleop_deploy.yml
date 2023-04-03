@@ -100,7 +100,7 @@
         initial_z: 0.8221
       when:
         - not scene_file
-        - bimanual|bool
+        - not bimanual|bool
         - delivery|bool
 
     - name: Set scene and initial_z for developers (Bimanual)
@@ -118,7 +118,7 @@
         initial_z: 0.7521
       when:
         - not scene_file
-        - bimanual|bool
+        - not bimanual|bool
         - not delivery|bool
 
     - name: Add IP address of all hosts to all hosts
@@ -163,7 +163,6 @@
         initial_z: 0.7521
       when:
         - not scene_file
-        - bimanual|bool or inventory_hostname in groups['production', 'simulation']
         - not delivery|bool
 
     - name: Install licence tools
