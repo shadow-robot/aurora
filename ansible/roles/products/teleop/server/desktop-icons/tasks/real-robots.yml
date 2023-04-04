@@ -478,6 +478,7 @@
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "{{ right_advanced_launcher }}/3 - Zero Force Mode - Right Hand"
+    pwm_control_var: false
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -489,6 +490,7 @@
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "{{ left_advanced_launcher }}/3 - Zero Force Mode - Left Hand"
+    pwm_control_var: false
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role
