@@ -29,7 +29,7 @@
 
 - name: Set arm+hand GUI launch file names for UR10/UR10e
   set_fact:
-    project_name_input: "sr_robot_launch"
+    project_name_var: "sr_robot_launch"
     launch_file_input_arm_hand_right: "sr_right_ur10arm_hand.launch"
     launch_file_input_arm_hand_left: "sr_left_ur10arm_hand.launch"
     launch_file_input_arm_hand_bimanual: "sr_bimanual_ur10arms_hands.launch"
@@ -38,7 +38,7 @@
 
 - name: Set arm+hand GUI launch file names for UR5/UR5e
   set_fact:
-    project_name_input: "sr_robot_launch"
+    project_name_var: "sr_robot_launch"
     launch_file_input_arm_hand_right: "sr_right_ur5arm_hand.launch"
     launch_file_input_arm_hand_left: "sr_left_ur5arm_hand.launch"
     launch_file_input_arm_hand_bimanual: "sr_bimanual_ur5arms_hands.launch"
@@ -210,7 +210,7 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right_arm_hand.sh"
-    project_name_input: "{{ project_name_input }}"
+    project_name_input: "{{ project_name_var }}"
     launch_file_input: "{{ launch_file_content_arm_hand_right }}"
     desktop_icon_name: "4 - Launch Server Right Hand+Arm GUI"
     desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Server Right Hand+Arm GUI"
@@ -223,7 +223,7 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left_arm_hand.sh"
-    project_name_input: "{{ project_name_input }}"
+    project_name_input: "{{ project_name_var }}"
     launch_file_input: "{{ launch_file_content_arm_hand_left }}"
     desktop_icon_name: "4 - Launch Server Left Hand+Arm GUI"
     desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Server Left Hand+Arm GUI"
@@ -236,7 +236,7 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual_arm_hand.sh"
-    project_name_input: "{{ project_name_input }}"
+    project_name_input: "{{ project_name_var }}"
     launch_file_input: "{{ launch_file_content_arm_hand_bimanual }}"
     desktop_icon_name: "4 - Launch Server Bimanual Hand+Arm GUI"
     desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Server Bimanual Hand+Arm GUI"
@@ -249,7 +249,7 @@
 #     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_arm_hand.sh"
 #     mode: '755'
 #   vars:
-#     project_name: "{{ project_name_input }}"
+#     project_name: "{{ project_name_var }}"
 #     launch_file: "{{ launch_file_content_arm_hand_right }}"
 #   when:
 #     - not bimanual|bool and hand_side=="right"
@@ -260,7 +260,7 @@
 #     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_arm_hand.sh"
 #     mode: '755'
 #   vars:
-#     project_name: "{{ project_name_input }}"
+#     project_name: "{{ project_name_var }}"
 #     launch_file: "{{ launch_file_content_arm_hand_left }}"
 #   when:
 #     - not bimanual|bool and hand_side=="left"
@@ -271,7 +271,7 @@
 #     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_arm_hand.sh"
 #     mode: '755'
 #   vars:
-#     project_name: "{{ project_name_input }}"
+#     project_name: "{{ project_name_var }}"
 #     launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
 #   when:
 #     - bimanual|bool
@@ -286,7 +286,7 @@
             dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_right_arm_hand_sim.sh"
             mode: '755'
           vars:
-            project_name: "{{ project_name_input }}"
+            project_name: "{{ project_name_var }}"
             launch_file: "{{ launch_file_content_arm_hand_right_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Arm+Hand Simulation
@@ -310,7 +310,7 @@
             dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_left_arm_hand_sim.sh"
             mode: '755'
           vars:
-            project_name: "{{ project_name_input }}"
+            project_name: "{{ project_name_var }}"
             launch_file: "{{ launch_file_content_arm_hand_left_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Left Arm+Hand Simulation
@@ -334,7 +334,7 @@
             dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_bimanual_arm_hand_sim.sh"
             mode: '755'
           vars:
-            project_name: "{{ project_name_input }}"
+            project_name: "{{ project_name_var }}"
             launch_file: "{{ launch_file_content_arm_hand_bimanual_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Bimanual Arm+Hand Simulation
