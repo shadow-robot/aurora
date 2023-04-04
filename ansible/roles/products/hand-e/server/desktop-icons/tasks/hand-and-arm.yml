@@ -210,8 +210,8 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right_arm_hand.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-r"
+    project_name_input: "{{ project_name_input }}"
+    launch_file_input: "{{ launch_file_content_arm_hand_right }}"
     desktop_icon_name: "4 - Launch Server Right Hand+Arm GUI"
     desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Server Right Hand+Arm GUI"
   when: 
@@ -223,8 +223,8 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left_arm_hand.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-l"
+    project_name_input: "{{ project_name_input }}"
+    launch_file_input: "{{ launch_file_content_arm_hand_left }}"
     desktop_icon_name: "4 - Launch Server Left Hand+Arm GUI"
     desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Server Left Hand+Arm GUI"
   when: 
@@ -236,45 +236,45 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual_arm_hand.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
+    project_name_input: "{{ project_name_input }}"
+    launch_file_input: "{{ launch_file_content_arm_hand_bimanual }}"
     desktop_icon_name: "4 - Launch Server Bimanual Hand+Arm GUI"
     desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Server Bimanual Hand+Arm GUI"
   when: 
     - bimanual|bool
 
-- name: Create executable launch script for hand+arm (Right) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_arm_hand.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_right }}"
-  when:
-    - not bimanual|bool and hand_side=="right"
+# - name: Create executable launch script for hand+arm (Right) GUI
+#   template:
+#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_arm_hand.sh"
+#     mode: '755'
+#   vars:
+#     project_name: "{{ project_name_input }}"
+#     launch_file: "{{ launch_file_content_arm_hand_right }}"
+#   when:
+#     - not bimanual|bool and hand_side=="right"
 
-- name: Create executable launch script for hand+arm (Left) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_arm_hand.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_left }}"
-  when:
-    - not bimanual|bool and hand_side=="left"
+# - name: Create executable launch script for hand+arm (Left) GUI
+#   template:
+#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_arm_hand.sh"
+#     mode: '755'
+#   vars:
+#     project_name: "{{ project_name_input }}"
+#     launch_file: "{{ launch_file_content_arm_hand_left }}"
+#   when:
+#     - not bimanual|bool and hand_side=="left"
 
-- name: Create executable launch script for hand+arm (Bimanual) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_arm_hand.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
-  when:
-    - bimanual|bool
+# - name: Create executable launch script for hand+arm (Bimanual) GUI
+#   template:
+#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
+#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_arm_hand.sh"
+#     mode: '755'
+#   vars:
+#     project_name: "{{ project_name_input }}"
+#     launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
+#   when:
+#     - bimanual|bool
 
 - name: Simulation icons
   block:
