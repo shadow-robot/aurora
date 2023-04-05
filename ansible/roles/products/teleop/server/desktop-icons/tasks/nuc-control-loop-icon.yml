@@ -22,14 +22,12 @@
 - name: Set arm y separation for left arm if bimanual=true
   set_fact:
     initial_y: 1.5
-    hand_side_ad: "-l"
-  when: bimanual|bool and hand_side=="left"
+  when: bimanual|bool and hand_side_var=="left"
 
 - name: Set arm y separation for right arm if bimanual=true
   set_fact:
     initial_y: 0.0
-    hand_side_ad: "-r"
-  when: bimanual|bool and hand_side=="right"
+  when: bimanual|bool and hand_side_var=="right"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
   template:
