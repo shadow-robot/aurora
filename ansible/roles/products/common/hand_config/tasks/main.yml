@@ -25,7 +25,7 @@
     content: |
         #!/usr/bin/env bash
         # Check if there is internet connection
-        if ! ping -q -c 1 -W 1 google.com >/dev/null; then
+        if ! curl -s --head https://www.google.com/ 2>&1 | grep "HTTP/1.[01] [23].." >/dev/null; then
           echo "There is no internet connection. Nothing will be pulled."
           exit 1
         fi
