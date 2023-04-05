@@ -25,7 +25,7 @@
     content: |
         #!/usr/bin/env bash
         # Check if there is internet connection
-        if ! curl -s --head https://www.google.com/ 2>&1 | grep "HTTP/1.[01] [23].." >/dev/null; then
+        if ! wget -q --spider https://www.google.com/; then
           echo "There is no internet connection. Nothing will be pulled."
           exit 1
         fi
