@@ -43,7 +43,7 @@
         git remote set-url origin https://github.com/shadow-robot/sr_hand_config
         if [[ $git_branch == "master" && $file_changed == false ]]; then
           echo "Pulling the latest sr_hand_config changes."
-          git pull
+          git pull --timeout=5
         elif [[ $git_branch != "master" && $file_changed == false ]]; then
           echo "Pulling the latest sr_hand_config changes to master branch then switching back to branch $git_branch"
           git checkout master --quiet 1> /dev/null
