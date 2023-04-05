@@ -148,7 +148,6 @@
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
     desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Right Side Teleop Hardware Control Loop"
-    hand_side_ad: "-r"
     hand_side: "right"
   when: bimanual|bool or hand_side=="right"
 
@@ -159,7 +158,6 @@
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
     desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Left Side Teleop Hardware Control Loop"
-    hand_side_ad: "-l"
     hand_side: "left"
   when: bimanual|bool or hand_side=="left"
 
@@ -478,7 +476,7 @@
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "{{ right_advanced_launcher }}/3 - Zero Force Mode - Right Hand"
-    hand_side_ad: "-r"
+    roslaunch_command: "sr_hand_autodetect -r roslaunch"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
@@ -490,7 +488,7 @@
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "{{ left_advanced_launcher }}/3 - Zero Force Mode - Left Hand"
-    hand_side_ad: "-l"
+    roslaunch_command: "sr_hand_autodetect -l roslaunch"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role

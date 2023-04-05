@@ -50,3 +50,4 @@ ra_tracker_id: 0
 la_tracker_id: 1
 remote_icons: false
 hand_side_ad: ""
+roslaunch_command: "roslaunch"

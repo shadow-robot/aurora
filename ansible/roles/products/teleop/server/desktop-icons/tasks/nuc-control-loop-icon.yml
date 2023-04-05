@@ -38,7 +38,8 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
-    launch_file_params: "robot_model:={{ ur_robot_type }} initial_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }}"
+    launch_file_params: "robot_model:={{ ur_robot_type }} initial_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }} hand_side_ad:={{ hand_side_ad }}"
+    roslaunch_command: "roslaunch"
   when: glove=="haptx"
 
 - name: Create executable launch script for hand and arm control loop (with shadow_glove)
@@ -48,7 +49,8 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
-    launch_file_params: "robot_model:={{ ur_robot_type }} initial_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }}"
+    launch_file_params: "robot_model:={{ ur_robot_type }} initial_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }} hand_side_ad:={{ hand_side_ad }}"
+    roslaunch_command: "roslaunch"
   when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand
