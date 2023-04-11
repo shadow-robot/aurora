@@ -43,11 +43,11 @@
         git remote set-url origin https://github.com/shadow-robot/sr_hand_config
         if [[ $git_branch == "master" && $file_changed == false ]]; then
           echo "Pulling the latest sr_hand_config changes."
-          git pull --timeout=5
+          timeout 5s git pull
         elif [[ $git_branch != "master" && $file_changed == false ]]; then
           echo "Pulling the latest sr_hand_config changes to master branch then switching back to branch $git_branch"
           git checkout master --quiet 1> /dev/null
-          git pull --timeout=5
+          timeout 5s git pull
           git checkout $git_branch --quiet 1> /dev/null
         else
           echo "You have un-commited changes in sr_hand_config, not pulling any changes automatically."
