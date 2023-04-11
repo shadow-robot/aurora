@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -419,3 +419,15 @@
 - name: Include products/common/close-everything-icon role
   include_role:
     name: products/common/close-everything-icon
+
+- name: Udev rules for pedal
+  get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/sr_teleop_devices/noetic-devel/sr_pedal/90-VEC-USB-Footpedal.rules
+    dest: /etc/udev/rules.d/90-VEC-USB-Footpedal.rules
+    mode: '0644'
+  become: yes
+  when: "'glove' in product"
+
+- name: include products/common/validation role
+  include_role:
+    name: products/common/system-check-icon
