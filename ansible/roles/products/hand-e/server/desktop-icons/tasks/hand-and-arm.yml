@@ -243,39 +243,6 @@
   when: 
     - bimanual|bool
 
-# - name: Create executable launch script for hand+arm (Right) GUI
-#   template:
-#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_arm_hand.sh"
-#     mode: '755'
-#   vars:
-#     project_name: "{{ project_name_var }}"
-#     launch_file: "{{ launch_file_content_arm_hand_right }}"
-#   when:
-#     - not bimanual|bool and hand_side=="right"
-
-# - name: Create executable launch script for hand+arm (Left) GUI
-#   template:
-#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_arm_hand.sh"
-#     mode: '755'
-#   vars:
-#     project_name: "{{ project_name_var }}"
-#     launch_file: "{{ launch_file_content_arm_hand_left }}"
-#   when:
-#     - not bimanual|bool and hand_side=="left"
-
-# - name: Create executable launch script for hand+arm (Bimanual) GUI
-#   template:
-#     src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-#     dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_arm_hand.sh"
-#     mode: '755'
-#   vars:
-#     project_name: "{{ project_name_var }}"
-#     launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
-#   when:
-#     - bimanual|bool
-
 - name: Simulation icons
   block:
     - name: Right arm+hand sim icon
