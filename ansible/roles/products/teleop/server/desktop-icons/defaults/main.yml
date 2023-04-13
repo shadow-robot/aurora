@@ -49,5 +49,6 @@ glove_driver_value: "right"
 ra_tracker_id: 0
 la_tracker_id: 1
 remote_icons: false
-hand_side_ad: ""
+hand_side_var: "right"
+hand_side_ad: "-r"
 roslaunch_command: "roslaunch"
