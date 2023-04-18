@@ -38,7 +38,8 @@ real_glove: false # Whether a real physical glove is being used for hand control
 polhemus_type: "viper" # Allows the user to specify the polhemus type used (liberty or viper)
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
 router: false # Specify if a router is used between server and NUC
-scene_file: "" # Allows the user to override the scene_file used in GUI launch (only for arm+hand product) e.g. scene_file="\$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
+scene_file: "" # Allows the user to override the scene_file used in GUI launch (only for arm+hand product) e.g. scene_file="new_scene" (we do not add .scene to the variable as it assumes:$(find sr_description_common)/worlds/{scene_file}.world and $(find sr_description_common)/worlds/{scene_file}.world)
+delivery: true # This variable is used to determine whether we are using this for product delivery, or for development purposes. (should be used internally by Shadow Engineers)
 local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
 
 skip_molecule_task: false # Used for automated tests - should not be used by users
