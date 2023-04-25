@@ -158,7 +158,6 @@
         name: installation/playbook_setup
       when: not skip_molecule_task|bool
 
-<<<<<<< HEAD
     - name: Set container name (Shadow Teleop System)
       set_fact:
         container_name: "shadow_teleoperation_system"
@@ -173,8 +172,6 @@
         - container_name == "shadow_teleop"
         - glove == "haptx"
     
-=======
->>>>>>> ee67ce0eaae86d3300d854092eeb6931cd139902
     - name: Set scene and initial_z for production (Simulation)
       set_fact:
         scene_file: "customer_stand_bimanual"
