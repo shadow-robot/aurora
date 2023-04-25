@@ -186,9 +186,9 @@
 
 - name: Set GUI icon variables to standard values for shadow_glove
   set_fact:
-    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_right.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration' jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true hand_side_ad:=-r"
-    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration' jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true hand_side_ad:=-l"
-    launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true user_calibration_folder_path:='/home/user/shadow_glove_calibration/user_calibration' right_user_calibration_file_name:=current_calibration_right.yaml left_user_calibration_file_name:=current_calibration_left.yaml boresight_calibration_file_path:='/home/user/shadow_glove_calibration/glove_boresight_calibration' jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
+    launch_file_input_gui_right: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true user_calibration_file_name:=default_calibration_right.yaml jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true hand_side_ad:=-r"
+    launch_file_input_gui_left: "sr_teleop_vive_polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true user_calibration_file_name:=default_calibration_left.yaml jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true hand_side_ad:=-l"
+    launch_file_input_gui_bimanual: "sr_teleop_vive_polhemus_bimanual.launch polhemus_product_type:={{ polhemus_type }} vive:=true robot_model:={{ ur_robot_type }} require_pedal:=true right_user_calibration_file_name:=default_calibration_right.yaml left_user_calibration_file_name:=default_calibration_left.yaml jog_arm:=false arm_servo:=true ee_link:=palm tracker_on_palm:=true"
     project_name_input_value: "sr_teleop_vive_polhemus"
   when: glove=="shadow_glove"
 
@@ -503,7 +503,7 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_glove_calibration_rqt.sh"
     mode: '755'
   vars:
-    command: "rqt -s sr_gui_shadow_glove_calibration.shadow_glove_calibration.SrGuiShadowGloveCalibration"
+    command: "rqt -s sr_glove_calibration_gui.sr_glove_calibration_gui.SrGloveCalibrationGui"
   when: glove=="shadow_glove"
 
 - name: Set Shadow Glove driver name (if right)
