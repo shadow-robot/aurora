@@ -1,0 +1,51 @@
+# Copyright 2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Copy System Check desktop icon
+  copy:
+    src: ../resources/files/system-check.png
+    dest: "{{ shadow_hand_launcher_folder }}/system-check.png"
+    mode: '664'
+
+- name: Set close_nuc_processes variable
+  set_fact:
+    close_nuc_processes: true
+  when: groups['control_machine'] is defined
+
+- name: Create System Check executable launch script
+  template:
+    src: ../resources/templates/scripts/system-check.j2
+    dest: "{{ shadow_hand_launcher_folder }}/system-check.sh"
+    mode: '755'
+
+- name: Create System Check icon
+  template:
+    src: ../resources/templates/desktop-icons/standard-icon.j2
+    dest: "{{ desktop_path }}/System Check.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: System Check
+    comment: "Checks the overall status of the system (and nuc if connected)"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: system-check.sh
+    icon_file_name: system-check.png
+    start_terminal: "false"
+
+- name: Make System Check icon Trusted
+  shell: gio set "{{ desktop_path }}/System Check.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - not skip_molecule_task|bool
