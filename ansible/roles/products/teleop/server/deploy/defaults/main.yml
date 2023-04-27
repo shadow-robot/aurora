@@ -18,7 +18,7 @@ tag: "noetic-night-build"
 reinstall: false
 nvidia_docker: true
 glove: "shadow_glove"
-container_name: "teleop_{{ glove }}"
+container_name: "shadow_teleop"
 use_aws: false
 use_openvpn: false
 ethercat_left_arm: "enx2"
