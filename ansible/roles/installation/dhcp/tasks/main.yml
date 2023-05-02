@@ -41,6 +41,16 @@
   set_fact:
     dhcp_interface_name: "{{ hostvars[groups['dhcp'][0]]['ansible_interfaces'] | select('match','enp') | list | first }}"
 
+- name: Print dhcp_interface_name
+  ansible.builtin.debug:
+    msg: 
+    msg:
+    - "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    - "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    - "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    - "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    - "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff found interface name: {{ dhcp_interface_name }}"
+
 - name: Create network/interfaces
   become: true
   ansible.builtin.file:
