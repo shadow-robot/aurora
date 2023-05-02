@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -18,21 +18,16 @@
   connection: local
   gather_facts: yes
   pre_tasks:
-    - name: Unset arm_servo if haptx
-      when: "'haptx' in image"
-      set_fact:
-        arm_servo: false
-
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
       vars:
         playbook: "teleop_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
     
     - name: Install licence tools
       include_role:
@@ -42,7 +37,7 @@
     - name: Extract hostname from server
       set_fact:
         ansible_host: "{{ ansible_hostname }}"
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task|bool
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: server
@@ -89,6 +84,56 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
+    
+    - name: Set container name (Shadow Teleop System)
+      set_fact:
+        container_name: "shadow_teleoperation_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "shadow_glove"
+    
+    - name: Set container name (Tactile Telerobot System)
+      set_fact:
+        container_name: "tactile_telerobot_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "haptx"
+    
+    - name: Set scene and initial_z for production (Bimanual)
+      set_fact:
+        scene_file: "customer_stand_bimanual"
+        initial_z: 0.8221
+      when:
+        - not scene_file
+        - bimanual|bool
+        - delivery|bool
+
+    - name: Set scene and initial_z for production (Unimanual)
+      set_fact:
+        scene_file: "customer_stand_unimanual"
+        initial_z: 0.8221
+      when:
+        - not scene_file
+        - not bimanual|bool
+        - delivery|bool
+
+    - name: Set scene and initial_z for developers (Bimanual)
+      set_fact:
+        scene_file: "demo_space_large_bimanual"
+        initial_z: 0.7521
+      when:
+        - not scene_file
+        - bimanual|bool
+        - not delivery|bool
+
+    - name: Set scene and initial_z for developers (Unimanual)
+      set_fact:
+        scene_file: "demo_space_large_unimanual"
+        initial_z: 0.7521
+      when:
+        - not scene_file
+        - not bimanual|bool
+        - not delivery|bool
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -108,15 +153,40 @@
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
   pre_tasks:
-    - name: Unset arm_servo if haptx
-      when: "'haptx' in image"
-      set_fact:
-        arm_servo: false
-
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
+
+    - name: Set container name (Shadow Teleop System)
+      set_fact:
+        container_name: "shadow_teleoperation_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "shadow_glove"
+    
+    - name: Set container name (Tactile Telerobot System)
+      set_fact:
+        container_name: "tactile_telerobot_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "haptx"
+    
+    - name: Set scene and initial_z for production (Simulation)
+      set_fact:
+        scene_file: "customer_stand_bimanual"
+        initial_z: 0.8221
+      when:
+        - not scene_file
+        - delivery|bool
+
+    - name: Set scene and initial_z for developers (Simulation)
+      set_fact:
+        scene_file: "demo_space_large_bimanual"
+        initial_z: 0.7521
+      when:
+        - not scene_file
+        - not delivery|bool
 
     - name: Install licence tools
       include_role:
@@ -136,10 +206,24 @@
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
+
+    - name: Set container name (Shadow Teleop System)
+      set_fact:
+        container_name: "shadow_teleoperation_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "shadow_glove"
+    
+    - name: Set container name (Tactile Telerobot System)
+      set_fact:
+        container_name: "tactile_telerobot_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "haptx"
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:

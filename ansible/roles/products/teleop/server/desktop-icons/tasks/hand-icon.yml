@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -21,15 +21,9 @@
 
 - name: Create executable launch script for hand
   template:
-    src: ../../../hand-e/server/desktop-icons/templates/scripts/start-docker-container-nuc.j2
+    src: templates/scripts/start-docker-container-nuc.j2
     dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
     mode: '755'
-  vars:
-    pwm_control_var: "{{ pwm_control_value }}"
-    hand_ctrl_var: "{{ hand_ctrl_value }}"
-    arm_ctrl_var: "false"
-    arm_payload_mass: 5.0
-    ad_hand_side: "{{ hand_side_ad }}"
 
 - name: Create desktop icon for hand
   template:
@@ -49,4 +43,4 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
-    - skip_molecule_task is not defined
+    - not skip_molecule_task|bool

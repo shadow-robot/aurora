@@ -54,7 +54,12 @@ Open a terminal with Ctrl+Alt+T and run:
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/{release_tag}}/bin/run-ansible.sh) teleop_deploy --branch {release_tag} --inventory name_of_inventory --read-secure customer_key option1=value1 option2=value2 option3=value3
 ```
-name_of_inventory can be staging_a, staging_b, production or simulation.
+name_of_inventory corresponds to fixed IP addresses as shown here:
+* [development](ansible/inventory/teleop/development)
+* [development_remote](ansible/inventory/teleop/development_remote)
+* [production](ansible/inventory/teleop/production)
+* [production_remote](ansible/inventory/teleop/production_remote)
+* [simulation](ansible/inventory/teleop/simulation)
 
 Example for real robots with haptx bimanual teleop:
 
@@ -67,16 +72,6 @@ Example for simulated robots without a real vive system or real gloves:
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.7/bin/run-ansible.sh) teleop_deploy --branch v2.1.7 --inventory simulation --read-secure customer_key reinstall=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.0.23" glove="haptx" real_glove=false real_vive=false
 ```
-
-Inventories correspond to fixed IP addresses as shown here:
-* [staging_b](ansible/inventory/teleop/staging_b)
-* [staging_b_remote](ansible/inventory/teleop/staging_b_remote)
-* [staging_a](ansible/inventory/teleop/staging_a)
-* [staging_a_remote](ansible/inventory/teleop/staging_a_remote)
-* [production](ansible/inventory/teleop/production)
-* [production_remote](ansible/inventory/teleop/production_remote)
-* [simulation](ansible/inventory/teleop/simulation)
-* [events_1](ansible/inventory/teleop/events_1)
 
 Options for teleop_deploy playbook are here for the following machines:
 * [server](ansible/inventory/teleop/group_vars/server.yml)
@@ -113,17 +108,16 @@ You will be asked for a sudo_password (i.e. the password of the user with sudo p
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.1.5 --read-secure customer_key option1=value1 option2=value2 option3=value3
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.2.0 --read-secure customer_key option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.1.5 --read-secure customer_key product=hand_e tag="noetic-v1.0.18"
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.2.0 --read-secure customer_key product=hand_e tag="noetic-v1.0.26"
 ```
 Inventories correspond to fixed IP addresses as shown here:
-* [staging_b](ansible/inventory/server_and_nuc/staging_b)
-* [staging_a](ansible/inventory/server_and_nuc/staging_a)
+* [development](ansible/inventory/server_and_nuc/development)
 * [production](ansible/inventory/server_and_nuc/production)
 
 Options for server_and_nuc_deploy playbook are here for the following machines:
@@ -150,11 +144,11 @@ Hand and Arm is one of the main use-cases of the server_and_nuc playbook. It req
 Example:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.1.5 --inventory production --read-secure customer_key reinstall=true bimanual=true product="arm_hand_e" image="public.ecr.aws/shadowrobot/dexterous-hand" tag="noetic-v1.0.18" arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) server_and_nuc_deploy --branch v2.2.0 --read-secure customer_key reinstall=true bimanual=true product="arm_hand_e" image="public.ecr.aws/shadowrobot/dexterous-hand" tag="noetic-v1.0.26" arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
 ```
 
 ### Hand and Glove ###
-Hand and Glove is another main product of the server_and_nuc playbook. This also takes in a new product type with product=glove_hand_e now, it also has extra parameters relating to the glove that you are using for the product. These variables are found in ansible/inventory/server_and_nuc/group_vars. The hand and glove specific variables are glove, real_glove, biotacs and polhemus_type. Another thing to denote about this product is that it's not based on the dexterous-hand image, but instead the shadow-dexterous-hand-glove image.
+Hand and Glove is another main product of the server_and_nuc playbook. This also takes in a new product type with product=glove_hand_e now, it also has extra parameters relating to the glove that you are using for the product. These variables are found in ansible/inventory/server_and_nuc/group_vars. The hand and glove specific variables are glove, real_glove and polhemus_type. Another thing to denote about this product is that it's not based on the dexterous-hand image, but instead the shadow-dexterous-hand-glove image.
 
 Example:
 
@@ -173,13 +167,13 @@ To begin with, the docker_deploy playbook checks the installation status of dock
 Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) docker_deploy --branch v2.1.5 option1=value1 option2=value2 option3=value3
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) docker_deploy --branch v2.2.0 option1=value1 option2=value2 option3=value3
 ```
 
 Example:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.5/bin/run-ansible.sh) docker_deploy product=hand_e tag=noetic-v1.0.18
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.0/bin/run-ansible.sh) docker_deploy --branch v2.2.0 product=hand_e tag=noetic-v1.0.26
 ```
 Options for docker_deploy playbook are [here](ansible/inventory/local/group_vars/docker_deploy.yml)
 

@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -19,10 +19,15 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
     mode: '664'
 
-- name: Set arm y separation if bimanual=true
+- name: Set arm y separation for left arm if bimanual=true
   set_fact:
-    arm_y_separation_value: 1.5
-  when: bimanual|bool and hand_side=="left"
+    initial_y: 1.5
+  when: bimanual|bool and hand_side_var=="left"
+
+- name: Set arm y separation for right arm if bimanual=true
+  set_fact:
+    initial_y: 0.0
+  when: bimanual|bool and hand_side_var=="right"
 
 - name: Create executable launch script for hand and arm control loop (with haptx)
   template:
@@ -31,10 +36,8 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_haptx teleop_vive_haptx_control.launch"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
-    ad_hand_side: "{{ hand_side_ad }}"
+    launch_file_params: "robot_model:={{ ur_robot_type }} initial_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }} hand_side_ad:={{ hand_side_ad }}"
+    roslaunch_command: "roslaunch"
   when: glove=="haptx"
 
 - name: Create executable launch script for hand and arm control loop (with shadow_glove)
@@ -44,10 +47,8 @@
     mode: '755'
   vars:
     teleop_control_launch: "sr_teleop_vive_polhemus teleop_vive_polhemus_control.launch"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
-    ad_hand_side: "{{ hand_side_ad }}"
+    launch_file_params: "robot_model:={{ ur_robot_type }} initial_z:={{ initial_z }} arm_x_separation:={{ initial_x }} arm_y_separation:={{ initial_y }} hand_side_ad:={{ hand_side_ad }}"
+    roslaunch_command: "roslaunch"
   when: glove=="shadow_glove"
 
 - name: Create desktop icon for hand
@@ -68,4 +69,4 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
-    - skip_molecule_task is not defined
+    - not skip_molecule_task|bool

@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -22,20 +22,15 @@ boolean_variables:
   - use_aws
   - use_openvpn
   - terminator
-  - launch_hand
   - use_steamvr
   - sim_icon
-  - sim_hand
   - save_nuc_logs
   - demo_icons
   - upgrade_check
   - bimanual
   - demohand_icons
-  - biotacs
   - allow_auto_reboot
   - client_use_steamvr
-  - desktop_icon
-  - optoforce
   - router
 boolean_allowed_values:
   - true

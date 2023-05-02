@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -22,7 +22,7 @@ ethercat_right_arm: "eth1" # Ethercat interface of the right arm
 allow_auto_reboot: true # Allow Ansible to reboot the control_machine automatically during software installation
 use_aws: false # Boolean to indicate whether ROS logs will be uploaded to AWS S3
 glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
-container_name: "teleop_{{ glove }}" # Name of the docker container
+container_name: "shadow_teleop" # Name of the docker container
 setup_directory: "/usr/local/bin" # Where setup scripts should be installed that are launched when Docker starts
 terminator: false # Launch terminator when the Docker starts
 nvidia_docker: false # Define if nvidia-container-toolkit is used (defaul is false)
@@ -31,14 +31,13 @@ hand_side: "right" # Specify if the hand is right or left (ignored if bimanual=t
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
-biotacs: true # Whether the hands will have biotac fingertips
 remote_bag_user: "shadowop"
 remote_bag_storage_IP: "10.5.10.59"
 remote_bag_storage_location: "/volume1/ros_bags"
 pr_branches: "" # Space-separated list of PRs (https://github.com/shadow-robot/repo/pull/266) or branches (https://github.com/shadow-robot/repo/tree/custom_branch) to check out on NUC and catkin_make
 record_data: false
-arm_servo: true # This boolean dictates which method of arm controller to use. True for arm_servo or false for jog_arm.
 local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
+delivery: true # This variable is used to determine whether we are using this for product delivery, or for development purposes. (should be used internally by Shadow Engineers)
 ansible_become_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37666530346662303365643738316338633231613365666339383135616237666336646133326435
@@ -54,3 +53,4 @@ ansible_ssh_pass: !vault |
           3331323561646639620a363162363661363834616465393132383664363038666532323162393934
           3239
 
+skip_molecule_task: false # Used for automated tests - should not be used by users

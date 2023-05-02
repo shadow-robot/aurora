@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -24,10 +24,10 @@
       vars:
         playbook: "server_and_nuc_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
 
     - name: Install licence tools
       include_role:
@@ -37,17 +37,57 @@
     - name: Extract hostname from server
       set_fact:
         ansible_host: "{{ ansible_hostname }}"
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task|bool
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: server
   connection: local
   gather_facts: yes
   tasks:
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
+
+    - name: Set scene and initial_z for production (Bimanual)
+      set_fact:
+        scene_file: "customer_stand_bimanual"
+        initial_z: 0.8221
+      when:
+        - not scene_file
+        - bimanual|bool
+        - delivery|bool
+        - "'arm' in product"
+
+    - name: Set scene and initial_z for production (Unimanual)
+      set_fact:
+        scene_file: "customer_stand_unimanual"
+        initial_z: 0.8221
+      when:
+        - not scene_file
+        - not bimanual|bool
+        - delivery|bool
+        - "'arm' in product"
+
+    - name: Set scene and initial_z for developers (Bimanual)
+      set_fact:
+        scene_file: "demo_space_large_bimanual"
+        initial_z: 0.7521
+      when:
+        - not scene_file
+        - bimanual|bool
+        - not delivery|bool
+        - "'arm' in product"
+
+    - name: Set scene and initial_z for developers (Unimanual)
+      set_fact:
+        scene_file: "demo_space_large_unimanual"
+        initial_z: 0.7521
+      when:
+        - not scene_file
+        - not bimanual|bool
+        - not delivery|bool
+        - "'arm' in product"
         
     - name: Add lines in /etc/hosts in computer that is running Ansible
       blockinfile:
@@ -122,6 +162,11 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
+    
+    - name: Running playbook setup role
+      include_role:
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
 
     - name: Set container name for hand and arm
       when: "'arm_' in product"

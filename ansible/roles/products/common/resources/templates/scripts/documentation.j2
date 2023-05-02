@@ -1,0 +1,19 @@
+#jinja2: trim_blocks:False
+#! /bin/bash
+LIVE_URL={{ live_website_url }}
+live_url_available=false
+
+if [[ -n ${LIVE_URL} ]];
+then
+  check=$(curl -s -w "%{http_code}\n" -L "${LIVE_URL}" -o /dev/null)
+  if [[ $check == 200 ]]; then
+    live_url_available=true
+    echo "{{ local_website_name }}'s live url is available on the internet! Opening it now in a browser..."
+    xdg-open {{ live_website_url }}
+    sleep 3
+  fi
+fi
+if ! $live_url_available;
+then
+  xdg-open {{ file_path }}
+fi

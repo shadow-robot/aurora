@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -74,7 +74,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
 
@@ -113,7 +113,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
 
@@ -152,7 +152,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool
 
@@ -191,7 +191,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
 
@@ -230,7 +230,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
 
@@ -269,7 +269,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when: bimanual|bool == true
 
@@ -309,7 +309,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
   
   when:
     - bimanual|bool == true or hand_side=="right"
@@ -350,7 +350,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when:
     - bimanual|bool == true or hand_side=="left"
@@ -391,133 +391,7 @@
     when:
       - ansible_distribution|string == 'Ubuntu'
       - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
+      - not skip_molecule_task|bool
 
   when:
     - bimanual|bool == true
-
-- name: Install right arm and hand joint position example if arm and hand_side="right"
-  block:
-  - name: Copy right Arm and Hand desktop icon
-    copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
-      mode: '664'
-
-  - name: Create Right Hand and Arm Joint Positions executable launch script
-    template:
-      src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/right_arm_hand_joint_pos.sh"
-      mode: '755'
-    vars:
-      project_name: sr_example
-      script_name: sr_right_hand_arm_joint_pos.py
-
-  - name: Create Right Hand and Arm Joint Positions desktop icon
-    template:
-      src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}/Right Hand and Arm Joint Positions Example.desktop"
-      mode: '755'
-    vars:
-      desktop_shortcut_name: Right Hand and Arm Joint Positions Example
-      comment: "This runs arm and hand plan and move to joint positions example"
-      folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: right_arm_hand_joint_pos.sh
-      icon_file_name: arm_hand_right.jpeg
-      start_terminal: "false"
-
-  - name: Make Right Hand and Arm Joint Positions Example desktop icon Trusted
-    shell: gio set "{{ demo_icon_folder }}/Right Hand and Arm Joint Positions Example.desktop" "metadata::trusted" yes
-    when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
-
-  when:
-    - product is defined
-    - "'arm_' in product"
-    - hand_side=="right"
-
-- name: Install right arm and hand waypoints example if arm and hand_side="right"
-  block:
-  - name: Copy right Arm and Hand desktop icon
-    copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
-      mode: '664'
-
-  - name: Create Right Hand and Arm Waypoints executable launch script
-    template:
-      src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/right_arm_hand_waypoints.sh"
-      mode: '755'
-    vars:
-      project_name: sr_example
-      script_name: sr_right_hand_arm_waypoints.py
-
-  - name: Create Right Hand and Arm Waypoints desktop icon
-    template:
-      src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}/Right Hand and Arm Waypoints Example.desktop"
-      mode: '755'
-    vars:
-      desktop_shortcut_name: Right Hand and Arm Waypoints Example
-      comment: "This runs arm and hand plan and move to Waypoints example"
-      folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: right_arm_hand_waypoints.sh
-      icon_file_name: arm_hand_right.jpeg
-      start_terminal: "false"
-
-  - name: Make Right Hand and Arm Waypoints Example desktop icon Trusted
-    shell: gio set "{{ demo_icon_folder }}/Right Hand and Arm Waypoints Example.desktop" "metadata::trusted" yes
-    when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
-
-  when:
-    - product is defined
-    - "'arm_' in product"
-    - hand_side=="right"
-
-- name: Install right arm and hand End Effector example if arm and hand_side="right"
-  block:
-  - name: Copy right Arm and Hand desktop icon
-    copy:
-      src: ../../../common/resources/files/arm_hand_right.jpeg
-      dest: "{{ shadow_hand_launcher_folder }}/arm_hand_right.jpeg"
-      mode: '664'
-
-  - name: Create Right Hand and Arm End Effector executable launch script
-    template:
-      src: ../resources/templates/scripts/rosrun-script.j2
-      dest: "{{ shadow_hand_launcher_folder }}/right_arm_hand_end_effector.sh"
-      mode: '755'
-    vars:
-      project_name: sr_example
-      script_name: sr_right_hand_arm_ef_pos.py
-
-  - name: Create Right Hand and Arm End Effector desktop icon
-    template:
-      src: ../resources/templates/desktop-icons/standard-icon.j2
-      dest: "{{ demo_icon_folder }}/Right Hand and Arm End Effector Example.desktop"
-      mode: '755'
-    vars:
-      desktop_shortcut_name: Right Hand and Arm End Effector Example
-      comment: "This runs arm and hand plan and move to End Effector example"
-      folder: "{{ shadow_hand_launcher_folder }}"
-      shell_script_file_name: right_arm_hand_end_effector.sh
-      icon_file_name: arm_hand_right.jpeg
-      start_terminal: "false"
-
-  - name: Make Right Hand and Arm End Effector Example desktop icon Trusted
-    shell: gio set "{{ demo_icon_folder }}/Right Hand and Arm End Effector Example.desktop" "metadata::trusted" yes
-    when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
-      - skip_molecule_task is not defined
-
-  when:
-    - product is defined
-    - "'arm_' in product"
-    - hand_side=="right"

@@ -13,38 +13,6 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Install the Teleop Documentation desktop icon for HaptX
-  include_role:
-    name: products/common/web-gui-icon
-  vars:
-    desktop_icon_png: "documentation_icon.png"
-    launch_script: "shadow_launcher_doc_exec.sh"
-    local_website_port_var: '7070'
-    desktop_icon_name: "Teleop Documentation"
-    desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "false"
-    start_container_var: "true"
-    start_server_command_var: "roscd sr_teleop_haptx_documentation/html; python3 -m http.server {{ local_website_port_var }}"
-    preconditions_var: ""
-    live_website_url_var: "{{ haptx_teleop_readthedocs_link }}"
-  when: glove=="haptx"
-
-- name: Install the Teleop Documentation desktop icon for Shadow Glove Teleop
-  include_role:
-    name: products/common/web-gui-icon
-  vars:
-    desktop_icon_png: "documentation_icon.png"
-    launch_script: "shadow_launcher_doc_exec.sh"
-    local_website_port_var: '7070'
-    desktop_icon_name: "Teleop Documentation"
-    desktop_icon_path: "Teleop Documentation"
-    launch_terminal: "false"
-    start_container_var: "true"
-    start_server_command_var: "roscd sr_teleop_polhemus_documentation/html; python3 -m http.server {{ local_website_port_var }}"
-    preconditions_var: ""
-    live_website_url_var: "{{ shadow_glove_teleop_readthedocs_link }}"
-  when: glove=="shadow_glove"
-
 - name: Install the Shadow System Monitor desktop icon for Teleop
   include_role:
     name: products/common/web-gui-icon
