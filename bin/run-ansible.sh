@@ -262,13 +262,13 @@ pushd $aurora_home
 ansible_version_pip3=$(pip3 freeze | grep ansible== | tr -d "ansible==")
 if [[ "${ansible_version_pip3}" != "" && "${ansible_version_pip3}" != *"4.2.0"* ]]; then
     echo "Uninstalling pre-existing pip3 Ansible version $ansible_version_pip3 which is not supported by aurora, if prompted for sudo password, please enter it"
-    pip3 uninstall -y ansible-base ansible-core ansible
+    # pip3 uninstall -y ansible-base ansible-core ansible
     sudo pip3 uninstall -y ansible-base ansible-core ansible
 fi
 ansible_version_pip2=$(pip2 freeze | grep ansible== | tr -d "ansible==")
 if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"4.2.0"* ]]; then
     echo "Uninstalling pre-existing pip2 Ansible version $ansible_version_pip2 which is not supported by aurora, if prompted for sudo password, please enter it"
-    pip2 uninstall -y ansible-base ansible-core ansible
+    # pip2 uninstall -y ansible-base ansible-core ansible
     sudo pip2 uninstall -y ansible-base ansible-core ansible
 fi
 
