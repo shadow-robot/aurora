@@ -148,6 +148,7 @@
     launch_script: "shadow_nuc_right_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Right Side Teleop Hardware Control Loop"
     desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Right Side Teleop Hardware Control Loop"
+    hand_side_var: "right"
     hand_side_ad: "-r"
   when: bimanual|bool or hand_side=="right"
 
@@ -158,6 +159,7 @@
     launch_script: "shadow_nuc_left_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Left Side Teleop Hardware Control Loop"
     desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Left Side Teleop Hardware Control Loop"
+    hand_side_var: "left"
     hand_side_ad: "-l"
   when: bimanual|bool or hand_side=="left"
 
@@ -192,9 +194,9 @@
 
 - name: Set GUI icon variables for custom scene
   set_fact:
-    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='{{ scene_file }}'"
-    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='{{ scene_file }}'"
-    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='{{ scene_file }}'"
+    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
+    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
+    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
   when: scene_file|length > 0
 
 - name: Set GUI icon variables for sim
@@ -470,25 +472,25 @@
 - name: Install desktop icon for Zero Force Mode - Right Hand for NUC
   include_tasks: hand-icon.yml
   vars:
+    teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
+    launch_file_params: "robot_model:={{ ur_robot_type }} pwm_control:=false"
     desktop_icon_png: "hand-e.png"
     launch_script: "shadow_zero_force_mode_right.sh"
     desktop_icon_name: "3 - Zero Force Mode - Right Hand"
     desktop_icon_path: "{{ right_advanced_launcher }}/3 - Zero Force Mode - Right Hand"
-    pwm_control_value: "false"
-    hand_ctrl_value: "false"
-    hand_side_ad: "-r"
+    roslaunch_command: "sr_hand_autodetect -r roslaunch"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for Zero Force Mode - Left Hand for NUC
   include_tasks: hand-icon.yml
   vars:
+    teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
+    launch_file_params: "robot_model:={{ ur_robot_type }} pwm_control:=false"
     desktop_icon_png: "hand-e-left.png"
     launch_script: "shadow_zero_force_mode_left.sh"
     desktop_icon_name: "3 - Zero Force Mode - Left Hand"
     desktop_icon_path: "{{ left_advanced_launcher }}/3 - Zero Force Mode - Left Hand"
-    pwm_control_value: "false"
-    hand_ctrl_value: "false"
-    hand_side_ad: "-l"
+    roslaunch_command: "sr_hand_autodetect -l roslaunch"
   when: bimanual|bool or hand_side=="left"
 
 - name: Include products/common/local-zero-force-mode-launch role

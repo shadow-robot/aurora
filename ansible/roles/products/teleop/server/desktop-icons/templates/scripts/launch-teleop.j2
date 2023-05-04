@@ -42,7 +42,11 @@ if [ "$proceed" == false ]; then
 fi
 
 terminator --geometry "{{ term_3 }}" -T 'NUC {{ arm_side }} hardware control loop' -e "{{ shadow_hand_launcher_folder}}/{{ control_loop_script }}"
-sleep 30 # temporary workaround until arm controllers starting on time is fixed
+if [[ "{{ arm_side }}" == "Bimanual" ]]; then # temporary workaround until arm controllers starting on time is fixed
+  sleep 60
+else 
+  sleep 40
+fi
 terminator --geometry "{{ term_4 }}" -T 'Server {{ arm_side }} GUI' -e "{{ shadow_hand_launcher_folder}}/{{ gui_script }}"
 if [[ "{{ glove }}" == "haptx"  ]]; then
   terminator --geometry "{{ term_5 }}" -T 'Server HaptX {{ arm_side }} Mapping' -e "{{ shadow_hand_launcher_folder}}/{{ haptx_mapping_script }}"

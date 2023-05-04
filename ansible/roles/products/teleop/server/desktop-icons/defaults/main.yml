@@ -16,7 +16,7 @@
 user: "{{ ansible_user_id }}"
 user_folder: "/home/{{ user }}"
 glove: "shadow_glove"
-container_name: "teleop_{{ glove }}"
+container_name: "shadow_teleop"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 setup_directory: ""
 nuc_username: "user"
@@ -25,6 +25,7 @@ upgrade_script: false
 server_ip: "10.9.11.1"
 demohand_icons: false
 teleop_control_launch: "sr_robot_launch sr_hardware_control_loop.launch"
+launch_file_params: ""
 ur_robot_type: "ur10e"
 teleop_glove_right: "hand-e.png"
 teleop_glove_left: "hand-e-left.png"
@@ -33,9 +34,9 @@ steam_binding: "steam_binding.jpg"
 steam_vive_binding_url: http://127.0.0.1:27062/dashboard/controllerbinding.html
 shadow_glove_teleop_readthedocs_link: ""
 haptx_teleop_readthedocs_link: ""
-initial_z_value: 0.7551
-arm_x_separation_value: 0.0
-arm_y_separation_value: 0.0
+initial_z: 0.8221
+initial_y: 0.0
+initial_x: 0.0
 rh_biotac_mapping: ""
 lh_biotac_mapping: ""
 launch_file_input_haptx_mapping_left: "haptx_base.launch side:=left"
@@ -48,4 +49,6 @@ glove_driver_value: "right"
 ra_tracker_id: 0
 la_tracker_id: 1
 remote_icons: false
-hand_side_ad: ""
+hand_side_var: "right"
+hand_side_ad: "-r"
+roslaunch_command: "roslaunch"

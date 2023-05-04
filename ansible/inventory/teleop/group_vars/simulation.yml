@@ -18,7 +18,7 @@ tag: "noetic-night-build" # Tag of the exact Docker hub image to pull
 reinstall: false # Flag to know if the docker container should be fully reinstalled
 nvidia_docker: true # Define if nvidia-container-toolkit is used (defaul is false)
 glove: "shadow_glove" # Determines which glove is installed (haptx or shadow_glove)
-container_name: "teleop_{{ glove }}" # Name of the docker container
+container_name: "shadow_teleop" # Name of the docker container
 bimanual: true # when doing sim we should always have it bimanual.
 real_glove: false # Whether a real physical glove is being used for hand control or not
 real_vive: false # Whether a real Vive system is being used for arm control
@@ -33,7 +33,8 @@ ur_robot_type: "ur10e" # Specify ur robot type: ur10, ur10e, ur5, ur5e
 arm_ip_left: "" # Specify the IP address of left arm
 arm_ip_right: "" # Specify the IP address of right arm
 pr_branches: "" # Space-separated list in double quotes of PRs and branches like this "https://github.com/shadow-robot/repo/pull/266 https://github.com/shadow-robot/repo/tree/custom_branch" to check out on server and catkin_make
-scene_file: "" # Allows the user to override the scene_file used in GUI launch e.g. scene_file="\$(find sr_description_common)/scenes/custom.scene" (if empty, default in Github will be used)
+scene_file: "" # Allows the user to override the scene_file used in GUI launch e.g. scene_file="new_scene" (we do not add .scene to the variable as it assumes:$(find sr_description_common)/scenes/{scene_file}.scene and $(find sr_description_common)/worlds/{scene_file}.world)
 local_image: false # This boolean dictates if you want to use a local image or not. Skips all authentication checks and stops the image from being pulled.
+delivery: true # This variable is used to determine whether we are using this for product delivery, or for development purposes. (should be used internally by Shadow Engineers)
 
 skip_molecule_task: false # Used for automated tests - should not be used by users
