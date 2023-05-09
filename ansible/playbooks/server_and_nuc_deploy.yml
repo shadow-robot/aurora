@@ -122,6 +122,19 @@
       ping:
   become: yes
 
+- name: Doing Control Machine pre-checks
+  hosts: control_machine
+  pre_tasks:
+      - name: Check if Turbo Boost is enabled
+      shell: cat /sys/devices/system/cpu/intel_pstate/no_turbo
+      register: boost_check
+
+    - name: Fail if Turbo Boost is disabled
+      fail:
+        msg: "Turbo Boost is not enabled on this machine"
+      when: boost_check.stdout.strip() == "1"
+
+
 - name: Install Hand software on Ubuntu server laptop
   hosts: server
   pre_tasks:
@@ -162,15 +175,6 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
-    
-    - name: Check if Turbo Boost is enabled
-      shell: cat /sys/devices/system/cpu/intel_pstate/no_turbo
-      register: boost_check
-
-    - name: Fail if Turbo Boost is disabled
-      fail:
-        msg: "Turbo Boost is not enabled on this machine"
-      when: boost_check.stdout.strip() == "1"
     
     - name: Running playbook setup role
       include_role:
