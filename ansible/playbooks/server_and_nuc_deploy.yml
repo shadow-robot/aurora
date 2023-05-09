@@ -130,7 +130,6 @@
         name: installation/nuc-pre-check
       when: not skip_molecule_task|bool
 
-
 - name: Install Hand software on Ubuntu server laptop
   hosts: server
   pre_tasks:
