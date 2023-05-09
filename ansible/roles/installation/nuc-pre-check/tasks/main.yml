@@ -20,4 +20,4 @@
 - name: Fail if Intel Turbo Boost is disabled on control_machine
   fail:
     msg: "Intel Turbo Boost is not enabled on this machine. Please go into the BIOS and enable it."
-  when: boost_check.stdout.strip() == "1"
+  when: boost_check.stdout.strip() != "0"
