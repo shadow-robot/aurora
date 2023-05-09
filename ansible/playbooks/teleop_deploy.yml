@@ -80,7 +80,7 @@
 - name: Doing Control Machine pre-checks
   hosts: control_machine
   pre_tasks:
-      - name: Check if Turbo Boost is enabled
+    - name: Check if Turbo Boost is enabled
       shell: cat /sys/devices/system/cpu/intel_pstate/no_turbo
       register: boost_check
 
