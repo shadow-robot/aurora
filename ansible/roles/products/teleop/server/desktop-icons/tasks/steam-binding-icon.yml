@@ -30,3 +30,4 @@
     exec_command: xdg-open {{ steam_vive_binding_url }}
     icon_file_name: "{{ steam_binding }}"
     start_terminal: "false"
+    no_display: "false"

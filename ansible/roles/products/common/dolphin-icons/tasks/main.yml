@@ -287,6 +287,7 @@
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
+    no_display: "true"
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
   shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" yes
