@@ -122,7 +122,7 @@
     aws_secret_key: "{{ aws_secret }}"
     security_token: "{{ aws_security_token }}"
     bucket: "{{ bucket_name }}"
-    object: "/{{ documentation_folder }}/{{ documentation_file }}"
+    object: "{{ documentation_folder }}/{{ documentation_file }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
   when: not skip_molecule_task|bool
@@ -133,7 +133,7 @@
     aws_access_key: "{{ aws_key }}"
     aws_secret_key: "{{ aws_secret }}"
     bucket: "{{ bucket_name }}"
-    object: "/{{ documentation_folder }}/{{ documentation_file }}"
+    object: "{{ documentation_folder }}/{{ documentation_file }}"
     dest: "{{ manual_folder }}/{{ manual_filename }}"
     mode: get
   when: skip_molecule_task|bool
