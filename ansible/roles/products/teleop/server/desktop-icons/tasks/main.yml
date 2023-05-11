@@ -52,3 +52,7 @@
   include_role:
     name: products/common/hand_config
   when: not skip_molecule_task|bool
+
+- name: include products/common/validation role
+  include_role:
+    name: products/common/system-check-icon
