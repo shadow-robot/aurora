@@ -13,6 +13,11 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Include products/common/scene-files
+  include_role:
+    name: products/common/scene-files
+  when: scene_file or "arm_" in product
+
 - name: Set Shadow Arm+Hand icon pictures
   set_fact:
     right_arm_hand_picture: arm_hand_right.png
@@ -61,12 +66,12 @@
 
 - name: Set arm+hand GUI launch file content for custom scene
   set_fact:
-    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_content_arm_hand_right_sim: "{{ launch_file_content_arm_hand_right_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_content_arm_hand_left_sim: "{{ launch_file_content_arm_hand_left_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_content_arm_hand_bimanual_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
+    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
+    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bi }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bi }}.world'"
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_content_arm_hand_right_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_content_arm_hand_left_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_content_arm_hand_bimanual_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bi }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bi }}.world'"
   when:
     - scene_file|length > 0
 

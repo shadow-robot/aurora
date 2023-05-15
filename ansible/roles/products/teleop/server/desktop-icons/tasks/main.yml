@@ -18,6 +18,10 @@
     path: "{{ shadow_hand_launcher_folder }}"
     state: directory
 
+- name: Include products/common/scene-files
+  include_role:
+    name: products/common/scene-files
+
 - name: Set teleop main icon picture for HaptX
   set_fact:
     teleop_glove_right: "haptx_right.png"
