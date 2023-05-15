@@ -59,7 +59,7 @@
         - not bimanual|bool
         - not delivery|bool
   when:
-    - inventory_hostname not in groups['simulation']
+    - "'simulation' not in group_names"
     - not scene_file
 
 - name: Block to set scene file and inital_z (simulation)
@@ -84,7 +84,7 @@
       when:
         - not delivery|bool
   when: 
-    - inventory_hostname in groups['simulation']
+    - "'simulation' in group_names"
     - not scene_file
 
 - name: Set scene file when defined
