@@ -13,6 +13,14 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Set scene file when set
+  set_fact:
+    scene_file_left: "{{ scene_file }}"
+    scene_file_right: "{{ scene_file }}"
+    scene_file_bi: "{{ scene_file }}"
+    initial_z: 0.8221
+  when: scene_file
+
 - name: Block to set scene file and initial_z
   block:
     - name: Set scene and initial_z for production (Bimanual)
@@ -86,11 +94,3 @@
   when: 
     - "'simulation' in group_names"
     - not scene_file
-
-- name: Set scene file when defined
-  set_fact:
-    scene_file_left: "{{ scene_file }}"
-    scene_file_right: "{{ scene_file }}"
-    scene_file_bi: "{{ scene_file }}"
-    initial_z: 0.7521
-  when: scene_file
