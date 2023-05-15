@@ -14,10 +14,10 @@
 
 ---
 - name: Check if Intel Turbo Boost is enabled
-  shell: cat /sys/devices/system/cpu/intel_pstate/no_turbo
-  register: boost_check
+  set_fact:
+    boost_check: "{{ lookup('file', '/sys/devices/system/cpu/intel_pstate/no_turbo') | int }}"
 
 - name: Fail if Intel Turbo Boost is disabled on control_machine
   fail:
     msg: "Intel Turbo Boost is not enabled on this machine. Please go into the BIOS and enable it."
-  when: boost_check.stdout.strip() != "0"
+  when: boost_check != 0
