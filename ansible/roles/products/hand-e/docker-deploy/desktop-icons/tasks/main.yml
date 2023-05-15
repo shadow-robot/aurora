@@ -99,6 +99,6 @@
   include_role:
     name: products/common/close-everything-icon
 
-- name: include products/common/validation role
+- name: include products/common/system-check-icon role
   include_role:
     name: products/common/system-check-icon
