@@ -141,12 +141,9 @@
             path: "{{ user_folder }}/.aws_copy"
           when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
         
-        - name: Failure message
-          debug:
-            msg: Playbook ended because of an error when connecting to AWS.
-
-        - name: End Playbook
-          meta: end_play
+        - name: end playbook so user can reboot
+          fail:
+            msg: "Playbook ended because of an error when connecting to AWS. Please check your customer key is correct and rerun the oneliner. If the oneliner is correct and you are still getting errors please contact support@shadowrobot.com"
 
 - name: Remove .aws folder
   file:

@@ -58,10 +58,6 @@
     groups: 'docker'
     append: 'yes'
 
-- name: Docker installation finished
-  debug:
-    msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
-
 - name: Rebooting computer to finish Docker installation
   when: allow_auto_reboot|bool
   async: 1
@@ -74,6 +70,7 @@
     delay: '10'
     timeout: '300'
 
-- name: Finishing Docker installation
+- name: end playbook so user can reboot
+  fail:
+    msg: "Installation of Docker is finished. Please restart you computer and run the same oneliner again."
   when: not allow_auto_reboot|bool
-  meta: end_play
