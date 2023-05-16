@@ -88,7 +88,7 @@
     control_loop_script_name: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right_arm_hand.sh"
     launch_terminal: "false"
-    enable_warning: "{{ bimanual|bool }}"
+    enable_warning: "{{ bimanual|lower }}"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
   when:
