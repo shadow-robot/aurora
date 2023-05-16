@@ -18,6 +18,11 @@
     bimanual_warning_title: "Unimanual Launch Warning"
     bimanual_warning_text: "It is unsafe to use the unimanual system on its own. To safely launch the unimanual robot please first launch the un-used side of the robot and put it in the Goal State 'safe_store'\nunder the Planning Group '*side*_arm_and_hand' in the Planning tab of MotionPlanning RViz.\nBy clicking 'I accept the risks', you acknowledge that you understand the risks involved and take full responsibility for any consequences that may arise."
 
+- name: Set enable warning vars
+  set_fact:
+    enable_warning_var: true
+  when: bimanual|bool and not skip_warning|bool
+
 - name: Install desktop icon for launching Shadow Right Teleop
   include_role:
     name: products/common/default-icon
@@ -32,7 +37,7 @@
     control_loop_script_name: "shadow_nuc_right_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
-    enable_warning: "{{ bimanual|lower }}"
+    enable_warning: "{{ enable_warning_var|bool }}"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
   when: bimanual|bool or hand_side=="right"
@@ -51,7 +56,7 @@
     control_loop_script_name: "shadow_nuc_left_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
-    enable_warning: "{{ bimanual|lower }}"
+    enable_warning: "{{ enable_warning_var|bool }}"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
   when: bimanual|bool or hand_side=="left"

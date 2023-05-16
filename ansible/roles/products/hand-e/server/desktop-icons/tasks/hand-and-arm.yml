@@ -18,6 +18,11 @@
     name: products/common/scene-files
   when: scene_file or "arm_" in product
 
+- name: Set enable warning vars
+  set_fact:
+    enable_warning_var: true
+  when: bimanual|bool and not skip_warning|bool
+
 - name: Set Shadow Arm+Hand icon pictures
   set_fact:
     right_arm_hand_picture: arm_hand_right.png
@@ -88,7 +93,7 @@
     control_loop_script_name: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right_arm_hand.sh"
     launch_terminal: "false"
-    enable_warning: "{{ bimanual|lower }}"
+    enable_warning: "{{ enable_warning_var|bool }}"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
   when:
@@ -107,7 +112,7 @@
     hand_side_label: "Left Arm and Hand"
     control_loop_script_name: "shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left_arm_hand.sh"
-    enable_warning: "{{ bimanual|lower }}"
+    enable_warning: "{{ enable_warning_var|bool }}"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
   when:
