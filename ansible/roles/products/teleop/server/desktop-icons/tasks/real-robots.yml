@@ -15,10 +15,8 @@
 ---
 - name: Set Shadow Bimanual Warnining
   set_fact:
-    bimanual_arm_hand_picture: arm_hand_bimanual.png
     bimanual_warning_title: "Unimanual Launch Warning"
     bimanual_warning_text: "It is unsafe to use the unimanual system on its own. To safely launch the unimanual robot please first launch the un-used side of the robot and put it in the Goal State 'safe_store'\nunder the Planning Group '*side*_arm_and_hand' in the Planning tab of MotionPlanning RViz.\nBy clicking 'I accept the risks', you acknowledge that you understand the risks involved and take full responsibility for any consequences that may arise."
-  when: bimanual|bool
 
 - name: Install desktop icon for launching Shadow Right Teleop
   include_role:
