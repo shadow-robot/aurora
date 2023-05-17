@@ -58,6 +58,11 @@
     groups: 'docker'
     append: 'yes'
 
+- name: Set permissions for docker.sock
+  become: true
+  become_user: root
+  command: chmod 666 /var/run/docker.sock
+
 # - name: Rebooting computer to finish Docker installation
 #   when: allow_auto_reboot|bool
 #   async: 1
