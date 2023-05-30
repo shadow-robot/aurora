@@ -88,18 +88,6 @@
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
         no_log: True
 
-      - name: Copy file 1
-        copy:
-          src: "{{ role_path }}/files/requirements.txt"
-          dest: "/tmp/requirements.txt"
-        delegate_to: control_machine
-
-      - name: Copy file 2
-        copy:
-          src: "{{ role_path }}/files/decode.py"
-          dest: "/tmp/decode.py"
-        delegate_to: control_machine
-
       when: inventory_hostname not in groups['control_machine'] | default([])
       
     - name: Decode message on NUC
