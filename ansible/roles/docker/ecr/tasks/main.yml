@@ -104,8 +104,11 @@
       
     - name: Decode message on NUC
       block: 
-      # - name: Gather decrypt script
-      #   command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
+      - name: Gather decrypt script
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
+
+      - name: Gather requirments script
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/requirements.txt -O /tmp/requirements.txt"
 
       - name: Install Python dependencies
         pip:
