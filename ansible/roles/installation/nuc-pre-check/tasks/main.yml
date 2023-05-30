@@ -17,6 +17,10 @@
   set_fact:
     boost_check: "{{ lookup('file', '/sys/devices/system/cpu/intel_pstate/no_turbo') | int }}"
 
+- name: Print boost_check
+  debug:
+    msg: "{{ boost_check }}"
+
 - name: Fail if Intel Turbo Boost is disabled on control_machine
   fail:
     msg: "Intel Turbo Boost is not enabled on this machine. Please go into the BIOS and enable it."
