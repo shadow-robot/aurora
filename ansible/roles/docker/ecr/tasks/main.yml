@@ -92,12 +92,17 @@
       
     - name: Decode message on NUC
       block: 
-      - name: Gather decrypt script
-        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
+      # - name: Gather decrypt script
+      #   command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
+
+      - name: Install Python dependencies
+        pip:
+          requirements: "{{ role_path }}/files/requirements.txt"
+        become: true
 
       - name: Run decrypt script
-        command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
-        #no_log: True
+        command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        no_log: True
         register: decrypt_results_nuc
       
       - name: Convert stdout to json
