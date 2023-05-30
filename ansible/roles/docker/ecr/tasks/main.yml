@@ -97,7 +97,7 @@
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
-        no_log: True
+        #no_log: True
         register: decrypt_results_nuc
       
       - name: Convert stdout to json
