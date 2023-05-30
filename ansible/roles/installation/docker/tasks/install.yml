@@ -58,13 +58,6 @@
     enabled: 'yes'
   ignore_errors: yes
 
-- name: Wait for Docker to start
-  wait_for:
-    port: 2375
-    delay: 5
-    timeout: 60
-    state: started
-
 - name: Set permissions for docker.sock
   file:
     path: /var/run/docker.sock
