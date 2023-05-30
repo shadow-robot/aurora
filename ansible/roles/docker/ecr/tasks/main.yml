@@ -96,7 +96,7 @@
         command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
 
       - name: Gather requirments script
-        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/requirements.txt -O /tmp/requirements.txt"
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/F%23_SP-644_clearer_aurora_fails/ansible/roles/docker/ecr/files/requirements.txt -O /tmp/requirements.txt"
 
       - name: Install Python dependencies
         pip:
