@@ -82,6 +82,14 @@
       ping:
   become: yes
 
+- name: Doing Control Machine pre-checks
+  hosts: control_machine
+  pre_tasks:
+    - name: Running nuc-pre-check role
+      include_role:
+        name: installation/nuc-pre-check
+      when: not skip_molecule_task|bool
+
 - name: Install Hand software on Ubuntu server laptop
   hosts: server
   pre_tasks:
