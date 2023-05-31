@@ -198,6 +198,8 @@
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
     ad_hand_side: "-r"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: 
     - not bimanual|bool and hand_side=="right"
 
@@ -214,6 +216,8 @@
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
     ad_hand_side: "-l"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: 
     - not bimanual|bool and hand_side=="left"
 
