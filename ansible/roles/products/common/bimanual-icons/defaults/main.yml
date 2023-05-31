@@ -16,3 +16,6 @@
 left_advanced_launcher: "Left Side"
 right_advanced_launcher: "Right Side"
 bimanual_advanced_launcher: "Bimanual"
+warning_title: "Example Warning"
+warning_text: "Example Text"
+extra_vars: ""
