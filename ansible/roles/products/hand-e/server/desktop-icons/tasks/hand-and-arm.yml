@@ -148,6 +148,8 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-r"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
     extra_vars: " 0"
   when: 
     - bimanual|bool or hand_side=="right"
@@ -163,6 +165,8 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-l"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
     extra_vars: " 0"
   when: 
     - bimanual|bool or hand_side=="left"
@@ -176,6 +180,8 @@
     desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
     arm_payload_mass: "{{ arm_mass_payload }}"
     arm_ctrl_value: "true"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: 
     - bimanual|bool
 
