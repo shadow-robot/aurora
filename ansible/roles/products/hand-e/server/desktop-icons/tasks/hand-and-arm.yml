@@ -148,6 +148,7 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-r"
+    extra_vars: " 0"
   when: 
     - bimanual|bool or hand_side=="right"
 
@@ -162,6 +163,7 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-l"
+    extra_vars: " 0"
   when: 
     - bimanual|bool or hand_side=="left"
 

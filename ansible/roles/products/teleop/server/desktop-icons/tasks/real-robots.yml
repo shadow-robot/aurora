@@ -169,6 +169,7 @@
     desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Right Side Teleop Hardware Control Loop"
     hand_side_var: "right"
     hand_side_ad: "-r"
+    extra_vars: " 0"
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC left hand and arm hardware control loop
@@ -180,6 +181,7 @@
     desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Left Side Teleop Hardware Control Loop"
     hand_side_var: "left"
     hand_side_ad: "-l"
+    extra_vars: " 0"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop

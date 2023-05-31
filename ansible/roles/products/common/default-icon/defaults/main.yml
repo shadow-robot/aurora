@@ -20,3 +20,4 @@ haptx_mapping_script: ""
 enable_warning: false
 warning_title: "Example Warning"
 warning_text: "Example Text"
+extra_vars: ""

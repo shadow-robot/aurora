@@ -4,7 +4,7 @@
 CONST_TIMEOUT=20
 
 if {{ enable_warning | lower }}; then
-  zenity --warning --title="{{ warning_title }}" --text="{{ warning_text }}" --ok-label="I accept the risks" --no-wrap --width=400 --height=120
+  zenity --warning --title="{{ warning_title }}" --text="{{ warning_text }}" --ok-label="I accept the risks" --extra-button="I decline the risks" --no-wrap --width=400 --height=120
   response=$?
   if [ $response -ne 0 ]; then
       echo "User has declined the risks. Aborting script."
