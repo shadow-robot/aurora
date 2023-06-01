@@ -64,3 +64,15 @@
     owner: root
     group: docker
     mode: '0660'
+
+- name: Rebooting computer to finish Docker installation
+  when: allow_auto_reboot|bool
+  async: 1
+  poll: 0
+  shell: sleep 5 && reboot
+
+- name: Waiting for remote host to come back after reboot
+  when: allow_auto_reboot|bool
+  wait_for_connection:
+    delay: '10'
+    timeout: '300'
