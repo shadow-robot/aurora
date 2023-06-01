@@ -186,7 +186,7 @@
     hand_side_ad: "-l"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
-    extra_vars: " {{ extra_vars_value }}}"
+    extra_vars: " {{ extra_vars_value }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop
