@@ -21,6 +21,7 @@
 - name: Set enable warning vars
   set_fact:
     enable_warning_var: true
+    extra_vars_value: "0"  # Used to enable the bimanual warning for control loop advanced launcher icon
   when: bimanual|bool and not skip_warning|bool
 
 - name: Install desktop icon for launching Shadow Right Teleop
@@ -171,7 +172,7 @@
     hand_side_ad: "-r"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
-    extra_vars: " 0"
+    extra_vars: " {{ extra_vars_value }}"
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC left hand and arm hardware control loop
@@ -185,7 +186,7 @@
     hand_side_ad: "-l"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
-    extra_vars: " 0"
+    extra_vars: " {{ extra_vars_value }}}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop

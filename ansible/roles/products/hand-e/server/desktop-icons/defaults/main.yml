@@ -41,3 +41,4 @@ skip_warning: false
 warning_title: "Example Warning"
 warning_text: "Example Text"
 extra_vars: ""
+extra_vars_value: ""
