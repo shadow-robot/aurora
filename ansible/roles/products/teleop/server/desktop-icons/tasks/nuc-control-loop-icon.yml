@@ -60,7 +60,7 @@
     desktop_shortcut_name: "{{ desktop_icon_name }}"
     comment: "{{ desktop_icon_name }}"
     folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: "'{{ launch_script }} {{ extra_vars }}'"
+    shell_script_file_name: "'{{ launch_script }}{{ extra_vars }}'"
     icon_file_name: "{{ desktop_icon_png }}"
     start_terminal: "false"
 
