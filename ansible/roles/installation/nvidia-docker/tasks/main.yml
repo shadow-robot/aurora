@@ -65,8 +65,8 @@
   - name: Nvidia Graphics Error - End playbook so user can make changes and reboot
     fail:
       msg: |
-      {{ nvidia_error_message | replace('\n', '\n') }}
-      Restart your computer and re-run the oneliner.
+        {{ nvidia_error_message | replace('\n', '\n') }}
+        Restart your computer and re-run the oneliner.
     when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
 
   when: nvidia_docker | bool and not skip_nvidia|bool
