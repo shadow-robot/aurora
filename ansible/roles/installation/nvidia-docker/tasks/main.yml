@@ -62,11 +62,16 @@
       nvidia_error_message: "{{ nvidia_error_message + '\nYour computer is not using a Nvidia driver, please change it in the application Additional Drivers.\n' }}"
     when: not nvidia_smi_installed.stat.exists
 
-  - name: Nvidia Graphics Error - End playbook so user can make changes and reboot
-    fail:
+  - name: Display error message
+    debug:
       msg: |
-        {{ nvidia_error_message | replace('\n', '\n') }}
+        {{ nvidia_error_message }}
         Restart your computer and re-run the oneliner.
+    when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
+
+  - name: Fail if error conditions met
+    fail:
+      msg: "The error conditions were met. See the debug output above for more details."
     when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
 
   when: nvidia_docker | bool and not skip_nvidia|bool
