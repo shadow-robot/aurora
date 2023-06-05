@@ -15,4 +15,4 @@
 ---
 ubuntu_version: "18.04"
 skip_nvidia: false
-nvidia_error_message: "Nvidia Graphics card error\\n If the machine you are running the oneliner on doesn't have a Nvidia graphics card please add `nvidia_docker=false` to the oneliner.\\n"
+nvidia_error_message: "Nvidia Graphics card error\\n If the machine you are running the oneliner on doesn't have a Nvidia graphics card please add `nvidia_docker=false` to the oneliner."

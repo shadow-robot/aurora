@@ -54,17 +54,19 @@
 
   - name: Update error message
     set_fact:
-      nvidia_error_message: "{{ nvidia_error_message + '\\nYour prime-select graphic driver has been switched to Nvidia from {{ prime_select_results.stdout }}.' }}"
+      nvidia_error_message: "{{ nvidia_error_message + '\nYour prime-select graphic driver has been switched to Nvidia from {{ prime_select_results.stdout }}.\n' }}"
     when: "prime_select_results.stdout != 'nvidia'"
 
   - name: Update error message
     set_fact:
-      nvidia_error_message: "{{ nvidia_error_message + '\\nYour computer is not using a Nvidia driver, please change it in the application Additional Drivers.' }}"
+      nvidia_error_message: "{{ nvidia_error_message + '\nYour computer is not using a Nvidia driver, please change it in the application Additional Drivers.\n' }}"
     when: not nvidia_smi_installed.stat.exists
 
   - name: Nvidia Graphics Error - End playbook so user can make changes and reboot
     fail:
-      msg: "{{ nvidia_error_message }}\\nRestart your computer and re-run the oneliner." 
+      msg: |
+      {{ nvidia_error_message | replace('\n', '\n') }}
+      Restart your computer and re-run the oneliner.
     when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
 
   when: nvidia_docker | bool and not skip_nvidia|bool
