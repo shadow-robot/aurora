@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -76,3 +76,8 @@
   wait_for_connection:
     delay: '10'
     timeout: '300'
+
+- name: End playbook so user can reboot
+  fail:
+    msg: "Docker has been installed. Please reboot your device and run the same oneliner to complete installation"
+  when: not allow_auto_reboot|bool

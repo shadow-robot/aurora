@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -15,3 +15,4 @@
 ---
 ubuntu_version: "18.04"
 skip_nvidia: false
+nvidia_error_message: "Nvidia Graphics card error. If the machine you are running the oneliner on doesn't have a Nvidia graphics card please add `nvidia_docker=false` to the oneliner.\n"
