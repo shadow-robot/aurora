@@ -59,7 +59,7 @@
 
   - name: Update error message
     set_fact:
-      nvidia_error_message: "{{ nvidia_error_message + '\nYour computer isn't using a Nvidia driver, please change it in the application Additional Drivers.' }}"
+      nvidia_error_message: "{{ nvidia_error_message + '\nYour computer is not using a Nvidia driver, please change it in the application Additional Drivers.' }}"
     when: not nvidia_smi_installed.stat.exists
 
   - name: Nvidia Graphics Error - End playbook so user can make changes and reboot
