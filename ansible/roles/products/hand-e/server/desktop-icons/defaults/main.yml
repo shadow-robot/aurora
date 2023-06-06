@@ -35,7 +35,7 @@ scene_file: ""
 arm_mass_payload: 5.0
 hand_side_ad: ""
 bimanual_warning_title: "Unimanual Launch Warning"
-bimanual_warning_text: "It is potentially unsafe to run a bimanual robot in unimanual mode; the pose of the unused arm is unknown, which may result in collisions.\nTo safely launch in unimanual mode, please first launch in bimanual mode, and use Rviz MotionPlanning to move the arm and hand you do not intend to use into the 'safe_store' state.\nBy clicking 'I accept the risks', you acknowledge that you understand the risks involved and take full responsibility for any consequences that may arise."
+bimanual_warning_text: "It is potentially unsafe to run a bimanual robot in unimanual mode; the pose of the unused arm is unknown, which may result in collisions.\nTo safely launch in unimanual mode, please first launch in bimanual mode, and use Rviz MotionPlanning to move the arm and hand you do not intend to use into the 'safe_store' state.\nBy clicking 'I accept the risks', you acknowledge that you understand the risks involved by running the unimanual system without moving the other robot arm and take full responsibility for any consequences that may arise."
 enable_warning_var: false
 skip_warning: false
 warning_title: "Example Warning"

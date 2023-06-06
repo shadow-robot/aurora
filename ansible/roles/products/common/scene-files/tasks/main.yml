@@ -17,7 +17,7 @@
   set_fact:
     scene_file_left: "{{ scene_file }}"
     scene_file_right: "{{ scene_file }}"
-    scene_file_bi: "{{ scene_file }}"
+    scene_file_bimanual: "{{ scene_file }}"
     initial_z: 0.8221
   when: scene_file
 
@@ -28,7 +28,7 @@
         scene_file: "customer_stand_bimanual"
         scene_file_left: "customer_stand_bimanual_left_only"
         scene_file_right: "customer_stand_bimanual_right_only"
-        scene_file_bi: "customer_stand_bimanual"
+        scene_file_bimanual: "customer_stand_bimanual"
         initial_z: 0.8221
       when:
         - bimanual|bool
@@ -39,7 +39,7 @@
         scene_file: "customer_stand_unimanual"
         scene_file_left: "customer_stand_unimanual"
         scene_file_right: "customer_stand_unimanual"
-        scene_file_bi: "customer_stand_unimanual"
+        scene_file_bimanual: "customer_stand_unimanual"
         initial_z: 0.8221
       when:
         - not bimanual|bool
@@ -50,7 +50,7 @@
         scene_file: "demo_space_large_bimanual"
         scene_file_left: "demo_space_large_bimanual"
         scene_file_right: "demo_space_large_bimanual"
-        scene_file_bi: "demo_space_large_bimanual"
+        scene_file_bimanual: "demo_space_large_bimanual"
         initial_z: 0.7521
       when:
         - bimanual|bool
@@ -61,7 +61,7 @@
         scene_file: "demo_space_large_unimanual"
         scene_file_left: "demo_space_large_unimanual"
         scene_file_right: "demo_space_large_unimanual"
-        scene_file_bi: "demo_space_large_unimanual"
+        scene_file_bimanual: "demo_space_large_unimanual"
         initial_z: 0.7521
       when:
         - not bimanual|bool
