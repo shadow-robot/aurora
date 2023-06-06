@@ -36,7 +36,7 @@ phases:
       - rm -rf aurora
       - git clone https://github.com/shadow-robot/aurora.git
       - cd aurora
-      - git checkout $SOURCE_VERSION
+      - git checkout $CODEBUILD_SOURCE_VERSION
       - awscli_v1_executable=$(which aws)
       - rm $awscli_v1_executable
       - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -44,7 +44,7 @@ phases:
       - ./aws/install
       - cd $dockerfile_folder
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot
-      - docker build --build-arg ts_docker_aurora_branch=$SOURCE_VERSION -t $image .
+      - docker build --build-arg ts_docker_aurora_branch=$CODEBUILD_SOURCE_VERSION -t $image .
       - docker tag $image:latest public.ecr.aws/shadowrobot/$image:$tag
       - docker push public.ecr.aws/shadowrobot/$image:$tag
       - comm -13 <(aws ecr-public describe-image-tags --repository-name $image --region us-east-1 --output text | awk '{print $3}' | tr " " "\n" | sort -u) <(aws ecr-public describe-images --repository-name $image --region us-east-1 --output text | awk '{print $2}' | tr " " "\n" | sort -u) >> ids_to_delete.txt
