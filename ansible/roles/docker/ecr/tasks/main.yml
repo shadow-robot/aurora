@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -79,6 +79,11 @@
 
     - name: Local Decryption
       block:
+      - name: Install Python dependencies
+        pip:
+          requirements: "{{ role_path }}/files/requirements.txt"
+        become: true
+
       - name: Decrypt results
         command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
         no_log: True
@@ -87,13 +92,21 @@
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
         no_log: True
-      
+
       when: inventory_hostname not in groups['control_machine'] | default([])
       
     - name: Decode message on NUC
       block: 
       - name: Gather decrypt script
         command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
+
+      - name: Gather requirments script
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/requirements.txt -O /tmp/requirements.txt"
+
+      - name: Install Python dependencies
+        pip:
+          requirements: "/tmp/requirements.txt"
+        become: true
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
@@ -141,12 +154,9 @@
             path: "{{ user_folder }}/.aws_copy"
           when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
         
-        - name: Failure message
-          debug:
-            msg: Playbook ended because of an error when connecting to AWS.
-
-        - name: End Playbook
-          meta: end_play
+        - name: Error connecting to AWS
+          fail:
+            msg: "Playbook ended because of an error when connecting to AWS. Please check your customer key is correct and rerun the oneliner. If the oneliner is correct and you are still getting errors please contact support@shadowrobot.com"
 
 - name: Remove .aws folder
   file:

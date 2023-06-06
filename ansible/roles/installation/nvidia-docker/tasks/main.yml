@@ -47,19 +47,32 @@
     become: yes
     when: "prime_select_results.stdout != 'nvidia'"
 
-  - name: end playbook so user can reboot
-    fail:
-      msg: "Your graphic driver has been switched to nvidia. Please reboot your PC and rerun the oneliner."
-    when: "prime_select_results.stdout != 'nvidia'"
-  
   - name: Check if nvidia-smi is installed
     stat:
       path: /usr/bin/nvidia-smi
     register: nvidia_smi_installed
 
-  - name: end playbook so user can reboot
+  - name: Graphics Error Message
     fail:
-      msg: "Your computer isn't using the right driver, please change it in the application Additional Drivers. Once done please reboot your PC and rerun the oneliner."
+      msg: "Nvidia Graphics card error: If the machine you are running the oneliner on doesn't have a Nvidia graphics card please add `nvidia_docker=false` to the oneliner and rerun."
+    ignore_errors: True
+    when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
+
+  - name: Prime select error message
+    fail:
+      msg: "Your prime-select graphic driver has been switched to Nvidia from {{ prime_select_results.stdout }}."
+    ignore_errors: True
+    when: "prime_select_results.stdout != 'nvidia'"
+
+  - name: No Nvidia driver detected error message 
+    fail:
+      msg: "Your computer is not using a Nvidia driver, please change it in the application Additional Drivers."
+    ignore_errors: True
     when: not nvidia_smi_installed.stat.exists
+
+  - name: Error message to alert of problems
+    fail:
+      msg: "The error conditions were met. See the debug output above for more details."
+    when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
 
   when: nvidia_docker | bool and not skip_nvidia|bool
