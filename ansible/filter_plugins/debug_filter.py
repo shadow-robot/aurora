@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Shadow Robot Company Ltd.
+# Copyright 2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -12,6 +12,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
----
-ubuntu_version: "18.04"
-skip_nvidia: false
+from ansible.utils.display import Display
+
+
+class FilterModule(object):
+    def filters(self): return {'warn_filter': self.warn_filter}
+
+    def warn_filter(self, message, **kwargs):
+        Display().warning(message)
+        return message

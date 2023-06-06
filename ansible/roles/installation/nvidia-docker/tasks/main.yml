@@ -52,24 +52,25 @@
       path: /usr/bin/nvidia-smi
     register: nvidia_smi_installed
 
-  - name: Update error message
-    set_fact:
-      nvidia_error_message: "{{ nvidia_error_message + '\nYour prime-select graphic driver has been switched to Nvidia from {{ prime_select_results.stdout }}.\n' }}"
-    when: "prime_select_results.stdout != 'nvidia'"
-
-  - name: Update error message
-    set_fact:
-      nvidia_error_message: "{{ nvidia_error_message + '\nYour computer is not using a Nvidia driver, please change it in the application Additional Drivers.\n' }}"
-    when: not nvidia_smi_installed.stat.exists
-
-  - name: Display error message
-    debug:
-      msg: |
-        {{ nvidia_error_message }}
-        Restart your computer and re-run the oneliner.
+  - name: Graphics Error Message
+    fail:
+      msg: "Nvidia Graphics card error: If the machine you are running the oneliner on doesn't have a Nvidia graphics card please add `nvidia_docker=false` to the oneliner and rerun."
+    ignore_errors: True
     when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
 
-  - name: Fail if error conditions met
+  - name: Prime select error message
+    fail:
+      msg: "Your prime-select graphic driver has been switched to Nvidia from {{ prime_select_results.stdout }}."
+    ignore_errors: True
+    when: "prime_select_results.stdout != 'nvidia'"
+
+  - name: No Nvidia driver detected error message 
+    fail:
+      msg: "Your computer is not using a Nvidia driver, please change it in the application Additional Drivers."
+    ignore_errors: True
+    when: not nvidia_smi_installed.stat.exists
+
+  - name: Error message to alert of problems
     fail:
       msg: "The error conditions were met. See the debug output above for more details."
     when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
