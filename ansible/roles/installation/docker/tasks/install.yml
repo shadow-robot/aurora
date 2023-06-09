@@ -79,6 +79,8 @@
     timeout: '300'
 
 - name: End playbook so user can reboot
-  when: not allow_auto_reboot|bool
   fail:
     msg: "Docker has been installed. Please reboot your device and run the same oneliner to complete installation"
+  when: 
+    - not allow_auto_reboot|bool
+    - not skip_molecule_task|bool
