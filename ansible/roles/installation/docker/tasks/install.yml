@@ -64,6 +64,7 @@
     owner: root
     group: docker
     mode: '0660'
+  ignore_errors: yes
 
 - name: Rebooting computer to finish Docker installation
   when: allow_auto_reboot|bool
