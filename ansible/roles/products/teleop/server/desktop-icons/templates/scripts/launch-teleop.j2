@@ -3,6 +3,15 @@
 
 CONST_TIMEOUT=20
 
+if {{ enable_warning | lower }}; then
+  zenity --warning --title="{{ warning_title }}" --text="{{ warning_text }}" --ok-label="I accept the risks" --extra-button="I decline the risks" --no-wrap --width=400 --height=120
+  response=$?
+  if [ $response -ne 0 ]; then
+      echo "User has declined the risks. Aborting script."
+      exit 1
+  fi
+fi
+
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 
 elapsed_time=0

@@ -89,9 +89,9 @@
 
 - name: Set GUI icon variables for custom scene
   set_fact:
-    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
+    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
+    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
+    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
   when: scene_file|length > 0
 
 - name: Install desktop icon for Teleop server Simulation (Unimanual Right)

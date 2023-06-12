@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Shadow Robot Company Ltd.
+# Copyright 2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -13,11 +13,8 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-user: "{{ ansible_user_id }}"
-user_folder: "/home/{{ user }}"
-shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
-haptx_mapping_script: ""
-enable_warning: false
-warning_title: "Example Warning"
-warning_text: "Example Text"
-extra_vars: ""
+scene_file: ""
+scene_file_left: ""
+scene_file_right: ""
+scene_file_bimanual: ""
+initial_z: 0.8221

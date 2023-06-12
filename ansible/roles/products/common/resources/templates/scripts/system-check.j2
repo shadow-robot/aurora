@@ -95,7 +95,7 @@ function check_nvidia_settings {
 function run_system_test {
     user=$1
     address=$2
-    printf "Running system test on $user:$address"
+    printf "Running system test on $user:$address\n"
     check_storage_available
     check_cpu_and_mem_usage
 }

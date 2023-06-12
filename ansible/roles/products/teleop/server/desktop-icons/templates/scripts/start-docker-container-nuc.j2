@@ -4,6 +4,23 @@ NUC_NAME={{ nuc_username }}
 NUC_ADDRESS={{ nuc_address }}
 LOCAL_IP={{ server_ip }}
 
+default_value=1
+if [ $# -eq 1 ]; then
+  enable_warning=$1
+else
+  enable_warning=$default_value
+fi
+
+if [ $enable_warning -eq 0 ]; then
+  zenity --warning --title="{{ warning_title }}" --text="{{ warning_text }}" --ok-label="I accept the risks" --extra-button="I decline the risks" --no-wrap --width=400 --height=120
+  response=$?
+  if [ $response -ne 0 ]; then
+      echo "User has declined the risks. Aborting script."
+      {{ shadow_hand_launcher_folder}}/close_everything.sh
+      exit 1
+  fi
+fi
+
 chrony_status=$(ssh {{ nuc_username }}@{{ nuc_address }} chronyc -n tracking | grep {{ server_ip }} | wc -l)
 if [ $chrony_status -eq 0 ]; then
     echo "NUC lost chrony tracking. Restarting chrony on server and NUC..."

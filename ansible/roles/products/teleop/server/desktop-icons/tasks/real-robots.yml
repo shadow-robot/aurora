@@ -13,6 +13,17 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Set Shadow Bimanual Warnining
+  set_fact:
+    bimanual_warning_title: "Unimanual Launch Warning"
+    bimanual_warning_text: "It is potentially unsafe to run a bimanual robot in unimanual mode; the pose of the unused arm is unknown, which may result in collisions.\nTo safely launch in unimanual mode, please first launch in bimanual mode, and use Rviz MotionPlanning to move the arm and hand you do not intend to use into the 'safe_store' state.\nBy clicking 'I accept the risks', you acknowledge that you understand the risks involved by running the unimanual system without moving the other robot arm and take full responsibility for any consequences that may arise."
+
+- name: Set enable warning vars
+  set_fact:
+    enable_warning_var: true
+    extra_vars_value: " 0"  # Used to enable the bimanual warning for control loop advanced launcher icon
+  when: bimanual|bool and not skip_warning|bool
+
 - name: Install desktop icon for launching Shadow Right Teleop
   include_role:
     name: products/common/default-icon
@@ -27,6 +38,9 @@
     control_loop_script_name: "shadow_nuc_right_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
+    enable_warning: "{{ enable_warning_var|bool }}"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: bimanual|bool or hand_side=="right"
 
 - name: Install desktop icon for launching Shadow Left Teleop
@@ -43,6 +57,9 @@
     control_loop_script_name: "shadow_nuc_left_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
+    enable_warning: "{{ enable_warning_var|bool }}"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for launching Shadow Bimanual Teleop
@@ -59,6 +76,9 @@
     control_loop_script_name: "shadow_nuc_bimanual_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_bimanual.sh"
     haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
+    enable_warning: "false"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: bimanual|bool
 
 - name: Install desktop icon for launching Shadow Remote Right Teleop
@@ -150,6 +170,9 @@
     desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch NUC Right Side Teleop Hardware Control Loop"
     hand_side_var: "right"
     hand_side_ad: "-r"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
+    extra_vars: "{{ extra_vars_value }}"
   when: bimanual|bool or hand_side=="right"
 
 - name:  Install desktop icon for NUC left hand and arm hardware control loop
@@ -161,6 +184,9 @@
     desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch NUC Left Side Teleop Hardware Control Loop"
     hand_side_var: "left"
     hand_side_ad: "-l"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
+    extra_vars: "{{ extra_vars_value }}"
   when: bimanual|bool or hand_side=="left"
 
 - name: Install desktop icon for NUC bimanual teleop hardware control loop
@@ -170,6 +196,8 @@
     launch_script: "shadow_nuc_bimanual_hardware_control_loop.sh"
     desktop_icon_name: "3 - Launch NUC Bimanual Teleop Hardware Control Loop"
     desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch NUC Bimanual Teleop Hardware Control Loop"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: bimanual|bool
 
 - name: Setting up icons for demohands A,B,C,D for unimanual teleop
@@ -194,9 +222,9 @@
 
 - name: Set GUI icon variables for custom scene
   set_fact:
-    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
-    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file }}.world'"
+    launch_file_input_gui_right: "{{ launch_file_input_gui_right }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
+    launch_file_input_gui_left: "{{ launch_file_input_gui_left }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
+    launch_file_input_gui_bimanual: "{{ launch_file_input_gui_bimanual }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
   when: scene_file|length > 0
 
 - name: Set GUI icon variables for sim

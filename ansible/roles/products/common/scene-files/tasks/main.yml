@@ -1,0 +1,70 @@
+# Copyright 2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Set scene file when set
+  set_fact:
+    scene_file_left: "{{ scene_file }}"
+    scene_file_right: "{{ scene_file }}"
+    scene_file_bimanual: "{{ scene_file }}"
+    initial_z: 0.8221
+  when: scene_file
+
+- name: Block to set scene file and initial_z
+  block:
+    - name: Set scene and initial_z for production (Bimanual)
+      set_fact:
+        scene_file: "customer_stand_bimanual"
+        scene_file_left: "customer_stand_bimanual_left_only"
+        scene_file_right: "customer_stand_bimanual_right_only"
+        scene_file_bimanual: "customer_stand_bimanual"
+        initial_z: 0.8221
+      when:
+        - bimanual|bool
+        - delivery|bool
+
+    - name: Set scene and initial_z for production (Unimanual)
+      set_fact:
+        scene_file: "customer_stand_unimanual"
+        scene_file_left: "customer_stand_unimanual"
+        scene_file_right: "customer_stand_unimanual"
+        scene_file_bimanual: "customer_stand_unimanual"
+        initial_z: 0.8221
+      when:
+        - not bimanual|bool
+        - delivery|bool
+
+    - name: Set scene and initial_z for developers (Bimanual)
+      set_fact:
+        scene_file: "demo_space_large_bimanual"
+        scene_file_left: "demo_space_large_bimanual"
+        scene_file_right: "demo_space_large_bimanual"
+        scene_file_bimanual: "demo_space_large_bimanual"
+        initial_z: 0.7521
+      when:
+        - bimanual|bool
+        - not delivery|bool
+
+    - name: Set scene and initial_z for developers (Unimanual)
+      set_fact:
+        scene_file: "demo_space_large_unimanual"
+        scene_file_left: "demo_space_large_unimanual"
+        scene_file_right: "demo_space_large_unimanual"
+        scene_file_bimanual: "demo_space_large_unimanual"
+        initial_z: 0.7521
+      when:
+        - not bimanual|bool
+        - not delivery|bool
+  when:
+    - not scene_file
