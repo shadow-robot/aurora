@@ -13,13 +13,8 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Update apt cache
-  apt:
-    update_cache: yes
-    force_apt_get: yes
-  become: true
-
 - name: Install libminizip1 package (Dependency for TeamViewer)
+  become: true
   apt:
     name: libminizip1
     state: present
