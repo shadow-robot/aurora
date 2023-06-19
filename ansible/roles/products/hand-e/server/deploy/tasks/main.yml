@@ -34,6 +34,10 @@
     setup_script: server-setup.sh
     upgrade_script: "upgrade_image.sh"
 
+- name: Include installation/teamviewer role
+  include_role:
+    name: installation/teamviewer
+
 - name: Include installation/aws-cli role
   include_role:
     name: installation/aws-cli-v2
