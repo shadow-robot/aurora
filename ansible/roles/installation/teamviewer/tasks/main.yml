@@ -13,6 +13,11 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Install libminizip1 package (Dependency for TeamViewer)
+  apt:
+    name: libminizip1
+    state: present
+
 - name: Download TeamViewer package
   get_url:
     url: "{{ teamviewer_package_url }}"
