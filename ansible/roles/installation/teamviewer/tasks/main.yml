@@ -16,6 +16,7 @@
 - name: Update apt cache
   apt:
     update_cache: yes
+  become: true
 
 - name: Install libminizip1 package (Dependency for TeamViewer)
   apt:
