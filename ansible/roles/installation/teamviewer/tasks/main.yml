@@ -13,6 +13,10 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
 - name: Install libminizip1 package (Dependency for TeamViewer)
   apt:
     name: libminizip1
