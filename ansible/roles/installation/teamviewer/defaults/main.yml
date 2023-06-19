@@ -13,14 +13,5 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Download TeamViewer package
-  get_url:
-    url: "{{ teamviewer_package_url }}"
-    dest: "{{ teamviewer_package_dest }}"
-
-- name: Install TeamViewer package
-  become: true
-  apt:
-    deb: "{{ teamviewer_package_dest }}"
-    state: present
-
+teamviewer_package_url: "https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
+teamviewer_package_dest: "/tmp/teamviewer_amd64.deb"
