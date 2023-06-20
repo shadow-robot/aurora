@@ -51,13 +51,13 @@
   with_items:
     - nvidia-docker
 
-- name: Add libnvidia-container repository
-  apt_repository:
-    repo: deb https://nvidia.github.io/{{ item }}/stable/ubuntu{{ ubuntu_version }}/amd64 /
-    state: present
-  with_items:
-    - libnvidia-container
-    - nvidia-container-runtime
+# - name: Add libnvidia-container repository
+#   apt_repository:
+#     repo: deb https://nvidia.github.io/{{ item }}/stable/ubuntu{{ ubuntu_version }}/amd64 /
+#     state: present
+#   with_items:
+#     - libnvidia-container
+#     - nvidia-container-runtime
 
 - name: Install nvidia-container-toolkit
   apt:
