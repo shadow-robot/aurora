@@ -234,6 +234,7 @@
   vars:
     pwm_control_var: "true"
     hand_ctrl_var: "true"
+    initial_z_var: "{{ initial_z }}"
     arm_x_separation_var: "{{ arm_x_separation }}"
     arm_y_separation_var: "{{ arm_y_separation }}"
     arm_ctrl_var: "true"
