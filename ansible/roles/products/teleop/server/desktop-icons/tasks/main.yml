@@ -48,7 +48,6 @@
 
 - name: Install desktop icons for simulated robots
   include_tasks: only-simulation.yml
-  when: groups['simulation'] is defined
 
 - name: Include teleop/server/desktop-icons/tasks/steam-binding-icon task
   include_tasks: steam-binding-icon.yml
