@@ -72,8 +72,6 @@
   - name: Make Close Right Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Right Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
@@ -111,8 +109,6 @@
   - name: Make Close Left Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Left Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
@@ -150,8 +146,6 @@
   - name: Make Close bimanual Hands desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Bimanual Hands.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool
@@ -189,8 +183,6 @@
   - name: Make Open Right Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Open Right Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
@@ -228,8 +220,6 @@
   - name: Make Open Left Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Open Left Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
@@ -267,8 +257,6 @@
   - name: Make Open Bimanual Hands desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Open Bimanual Hands.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool == true
@@ -307,8 +295,6 @@
   - name: Make Standard Right Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
   
   when:
@@ -348,8 +334,6 @@
   - name: Make Standard Left Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Left Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when:
@@ -389,8 +373,6 @@
   - name: Make Standard Bimanual Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hands.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when:
