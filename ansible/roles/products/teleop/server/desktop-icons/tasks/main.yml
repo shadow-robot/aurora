@@ -36,6 +36,12 @@
     teleop_glove_bimanual: "shadow_glove_bimanual.png"
   when: glove=="shadow_glove"
 
+- name: Create Shadow Simulation folder
+  file:
+    path: "{{ desktop_path }}/Simulation"
+    mode: "755"
+    state: directory
+
 - name: Install desktop icons for real robots
   include_tasks: real-robots.yml
   when: groups['simulation'] is not defined
@@ -56,6 +62,11 @@
   include_role:
     name: products/common/hand_config
   when: not skip_molecule_task|bool
+
+- name: Include documentation role
+  include_role:
+    name: products/common/documentation
+  when: customer_key is defined and customer_key | length > 0
 
 - name: include products/common/system-check-icon role
   include_role:

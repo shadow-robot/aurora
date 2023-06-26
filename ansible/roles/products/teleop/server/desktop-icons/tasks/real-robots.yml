@@ -135,11 +135,6 @@
     - bimanual|bool
     - remote_icons|bool
 
-- name: Include documentation role
-  include_role:
-    name: products/common/documentation
-  when: customer_key is defined and customer_key | length > 0
-
 - name: Install desktop icon for RQT on NUC
   include_role:
     name: products/common/default-icon-no-terminator
