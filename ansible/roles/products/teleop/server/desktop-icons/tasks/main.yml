@@ -67,7 +67,3 @@
   include_role:
     name: products/common/documentation
   when: customer_key is defined and customer_key | length > 0
-
-- name: include products/common/system-check-icon role
-  include_role:
-    name: products/common/system-check-icon
