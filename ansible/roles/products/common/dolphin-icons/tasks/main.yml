@@ -93,7 +93,7 @@
 - name: Copy Shadow Simulation Advanced folder
   copy:
     src: "{{ shadow_simulation_advanced_folder }}"
-    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Simulation Advanced Launchers"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation/Shadow Simulation Advanced Launchers"
     directory_mode: yes
     mode: 0755
   changed_when: false
