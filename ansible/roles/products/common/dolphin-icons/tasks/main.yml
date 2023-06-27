@@ -59,14 +59,26 @@
 - name: Check if Simulation folder exist
   stat:
     path: "{{ shadow_simulation_folder }}"
-  register: demo_path
+  register: simulation_path
+
+- name: Check if Advanced Simulation folder exists
+  stat:
+    path: "{{ shadow_simulation_advanced_folder }}"
+  register: advanced_simulation_path
 
 - name: Create Simulation Folder
   file:
     path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
     state: directory
   changed_when: false
-  when: demo_path.stat.exists and demo_path.stat.isdir
+  when: simulation_path.stat.exists and simulation_path.stat.isdir
+
+- name: Create Simulation Advanced Folder
+  file:
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Simulation Advanced Launchers"
+    state: directory
+  changed_when: false
+  when: advanced_simulation_path.stat.exists and advanced_simulation_path.stat.isdir
 
 - name: Copy Shadow Simulation folder
   copy:
@@ -76,7 +88,17 @@
     mode: 0755 
   changed_when: false
   failed_when: false
-  when: demo_path.stat.exists and demo_path.stat.isdir
+  when: simulation_path.stat.exists and simulation_path.stat.isdir
+
+- name: Copy Shadow Simulation Advanced folder
+  copy:
+    src: "{{ shadow_simulation_advanced_folder }}"
+    dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Simulation Advanced Launchers"
+    directory_mode: yes
+    mode: 0755
+  changed_when: false
+  failed_when: false
+  when: advanced_simulation_path.stat.exists and advanced_simulation_path.stat.isdir
 
 - name: Ensure Shadow Simulation folder and contents are deleted
   file:
@@ -84,20 +106,20 @@
     state: absent
   become: yes
   changed_when: false
-  when: demo_path.stat.exists and demo_path.stat.isdir
+  when: simulation_path.stat.exists and simulation_path.stat.isdir
 
 # Advanced Launcher Icons
 - name: Check if Advanced Launchers folder exist
   stat:
     path: "{{ shadow_advanched_launchers_folder }}"
-  register: demo_path
+  register: advance_path
 
 - name: Create Advanced Launchers Folder
   file:
     path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers"
     state: directory
   changed_when: false
-  when: demo_path.stat.exists and demo_path.stat.isdir
+  when: advance_path.stat.exists and advance_path.stat.isdir
 
 - name: Copy Shadow Advanced Launchers folder
   copy:
@@ -107,6 +129,7 @@
     mode: 0755 
   changed_when: false
   failed_when: false
+  when: advance_path.stat.exists and advance_path.stat.isdir
 
 - name: Ensure Shadow Advanced Launchers folder and contents are deleted
   file:

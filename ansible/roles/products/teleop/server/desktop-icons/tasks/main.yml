@@ -42,12 +42,6 @@
     mode: "755"
     state: directory
 
-- name: Create Shadow Simulation Advanced Launcher folder
-  file:
-    path: "{{ desktop_path }}/Simulation/Shadow Advanced Launchers"
-    mode: "755"
-    state: directory
-
 - name: Install desktop icons for real robots
   include_tasks: real-robots.yml
   when: groups['simulation'] is not defined
