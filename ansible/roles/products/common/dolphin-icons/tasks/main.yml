@@ -75,7 +75,7 @@
 
 - name: Create Simulation Advanced Folder
   file:
-    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Simulation Advanced Launchers"
+    path: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation/Shadow Simulation Advanced Launchers"
     state: directory
   changed_when: false
   when: advanced_simulation_path.stat.exists and advanced_simulation_path.stat.isdir
@@ -107,6 +107,14 @@
   become: yes
   changed_when: false
   when: simulation_path.stat.exists and simulation_path.stat.isdir
+
+- name: Ensure Shadow Simulation Advanced folder and contents are deleted
+  file:
+    path: "{{ shadow_simulation_advanced_folder }}"
+    state: absent
+  become: yes
+  changed_when: false
+  when: advanced_simulation_path.stat.exists and advanced_simulation_path.stat.isdir
 
 # Advanced Launcher Icons
 - name: Check if Advanced Launchers folder exist
