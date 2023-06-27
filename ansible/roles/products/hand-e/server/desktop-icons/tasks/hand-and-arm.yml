@@ -72,9 +72,9 @@
 
 - name: Set arm+hand GUI launch file content for custom scene
   set_fact:
-    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
-    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
-    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
+    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} initial_y:={{ initial_y_right_arm }} initial_z:={{ initial_z }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
+    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} initial_y:={{ initial_y_right_arm }} initial_z:={{ initial_z }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} arm_1_z:={{ initial_z }} arm_2_z:={{ initial_z }} arm_y_separation:={{ arm_y_separation }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
     launch_file_content_arm_hand_right_sim: "{{ launch_file_content_arm_hand_right_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
     launch_file_content_arm_hand_left_sim: "{{ launch_file_content_arm_hand_left_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
     launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_content_arm_hand_bimanual_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
@@ -149,6 +149,8 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-r"
+    initial_z_var: "{{ initial_z }}"
+    initial_y_var: "{{ initial_y_right_arm }}"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
     extra_vars: "{{ extra_vars_value }}"
@@ -166,6 +168,8 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-l"
+    initial_z_var: "{{ initial_z }}"
+    initial_y_var: "{{ initial_y_left_arm }}"
     warning_title: "{{ bimanual_warning_title }}"
     warning_text: "{{ bimanual_warning_text }}"
     extra_vars: "{{ extra_vars_value }}"
@@ -230,11 +234,11 @@
   vars:
     pwm_control_var: "true"
     hand_ctrl_var: "true"
+    initial_z_var: "{{ initial_z }}"
     arm_x_separation_var: "{{ arm_x_separation }}"
     arm_y_separation_var: "{{ arm_y_separation }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
-    ad_hand_side: ""
   when: 
     - bimanual|bool
 

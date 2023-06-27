@@ -28,6 +28,8 @@ bimanual_hands_picture: hand-e-bimanual.png
 initial_z: 0.8221
 initial_y_left_arm: 0.0
 initial_y_right_arm: 0.0
+initial_y_var: 0.0
+initial_z_var: 0.0
 arm_x_separation: 0.0
 arm_y_separation: 0.0
 arm_hand_readthedocs_link: ""
