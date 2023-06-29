@@ -167,7 +167,7 @@
 
 - name: Create executable launch script for RQT Shadow Glove Calibration plugin
   template:
-    src: {{ playbook_dir }}/products/common/common/resources/templates/scripts/command-script.j2
+    src: "{{ playbook_dir }}/products/common/resources/templates/scripts/command-script.j2"
     dest: "{{ shadow_hand_launcher_folder }}/shadow_glove_calibration_rqt.sh"
     mode: "755"
   vars:
