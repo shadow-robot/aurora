@@ -13,102 +13,6 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Create Shadow Simulation Advanced Launcher folder
-  file:
-    path: "{{ desktop_path }}/Shadow Simulation Advanced Launchers"
-    mode: "755"
-    state: directory
-
-- name: Install desktop icon for launching Shadow Right Teleop Simulation
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_launch_right_teleop_sim.sh"
-    desktop_icon_name: "Simulation/Launch Shadow Right Teleop Simulation"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Simulation/Launch Shadow Right Teleop Simulation"
-    launch_terminal: "false"
-    hand_side_label: "Right Hand"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_right.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
-
-- name: Install desktop icon for launching Shadow Left Teleop Simulation
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_left }}"
-    launch_script: "shadow_launch_left_teleop_sim.sh"
-    desktop_icon_name: "Simulation/Launch Shadow Left Teleop Simulation"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Simulation/Launch Shadow Left Teleop Simulation"
-    launch_terminal: "false"
-    hand_side_label: "Left Hand"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_left.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
-
-- name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_bimanual }}"
-    launch_script: "shadow_launch_bimanual_teleop_sim.sh"
-    desktop_icon_name: "Simulation/Launch Shadow Bimanual Teleop Simulation"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Simulation/Launch Shadow Bimanual Teleop Simulation"
-    launch_terminal: "false"
-    hand_side_label: "Bimanual"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_bimanual.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
-
-- name: Install desktop icon for launching Shadow Right Teleop Simulation Real Hardware
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_launch_right_teleop_sim.sh"
-    desktop_icon_name: "Simulation/Launch Shadow Right Teleop Simulation Real Hardware"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Simulation/Launch Shadow Right Teleop Simulation Real Hardware"
-    launch_terminal: "false"
-    hand_side_label: "Right Hand"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_right_realhw.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
-
-- name: Install desktop icon for launching Shadow Left Teleop Simulation Real Hardware
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_left }}"
-    launch_script: "shadow_launch_left_teleop_sim.sh"
-    desktop_icon_name: "Simulation/Launch Shadow Left Teleop Simulation Real Hardware"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Simulation/Launch Shadow Left Teleop Simulation Real Hardware"
-    launch_terminal: "false"
-    hand_side_label: "Left Hand"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_left_realhw.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
-
-- name: Install desktop icon for launching Shadow Bimanual Teleop Simulation Real Hardware
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "{{ teleop_glove_bimanual }}"
-    launch_script: "shadow_launch_bimanual_teleop_sim.sh"
-    desktop_icon_name: "Simulation/Launch Shadow Bimanual Teleop Simulation Real Hardware"
-    template: templates/scripts/launch-teleop-sim.j2
-    desktop_icon_path: "Simulation/Launch Shadow Bimanual Teleop Simulation Real Hardware"
-    launch_terminal: "false"
-    hand_side_label: "Bimanual"
-    control_loop_script_name: ""
-    gui_script_name: "shadow_sim_bimanual_realhw.sh"
-    haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
-
 - name: Set variables for sim
   set_fact:
     initial_y_left_arm: 1.5
@@ -116,6 +20,7 @@
 
 - name: Create shared icons
   include_tasks: shared-roles.yml
+  when: groups['simulation'] is defined
 
 - name: Set GUI icon variables to standard values for haptx
   set_fact:
@@ -149,164 +54,179 @@
     launch_file_input_gui_bimanual_realhw: "{{ launch_file_input_gui_bimanual_realhw }} scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
   when: scene_file|length > 0
 
-- name: Install desktop icon for Teleop server Simulation (Unimanual Right)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_right.png"
-    launch_script: "shadow_sim_right.sh"
-    desktop_icon_name: "3 - Launch Right Teleop Simulation"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/3 - Launch Right Teleop Simulation"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_right }}"
-
-- name: Install desktop icon for Teleop server Simulation Real Hardware (Unimanual Right)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_right.png"
-    launch_script: "shadow_sim_right_realhw.sh"
-    desktop_icon_name: "3 - Launch Right Teleop Simulation Real Hardware"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/3 - Launch Right Teleop Simulation Real Hardware"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_right_realhw }}"
-
-- name: Install desktop icon for Teleop server Simulation (Unimanual Left)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_left.png"
-    launch_script: "shadow_sim_left.sh"
-    desktop_icon_name: "3 - Launch Left Teleop Simulation"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/3 - Launch Left Teleop Simulation"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_left }}"
-
-- name: Install desktop icon for Teleop server Simulation Real Hardware (Unimanual Left)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_left.png"
-    launch_script: "shadow_sim_left_realhw.sh"
-    desktop_icon_name: "3 - Launch Left Teleop Simulation Real Hardware"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/3 - Launch Left Teleop Simulation Real Hardware"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_left_realhw }}"
-
-- name: Install desktop icon for Teleop server Simulation (Bimanual)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_bimanual.png"
-    launch_script: "shadow_sim_bimanual.sh"
-    desktop_icon_name: "3 - Launch Bimanual Teleop Simulation"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/3 - Launch Bimanual Teleop Simulation"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_bimanual }}"
-
-- name: Install desktop icon for Teleop server Simulation Real Hardware (Bimanual)
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "{{ glove }}_bimanual.png"
-    launch_script: "shadow_sim_bimanual_realhw.sh"
-    desktop_icon_name: "3 - Launch Bimanual Teleop Simulation Real Hardware"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/3 - Launch Bimanual Teleop Simulation Real Hardware"
-    project_name_input: "{{ project_name_input_value }}"
-    launch_file_input: "{{ launch_file_input_gui_bimanual_realhw }}"
-
-- name: Set Shadow Glove Launch file inputs
+- name: Set Real Hardware vars
   set_fact:
-    launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }}"
-    launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left"
-    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both"
-  when: glove=="shadow_glove"
+    folder_prefix: "Simulation"
+    glove_calibration_folder_prefix_r: "{{ folder_prefix }}"
+    glove_calibration_folder_prefix_l: "{{ folder_prefix }}"
+    glove_calibration_folder_prefix_bi: "{{ folder_prefix }}"
+    mock_file_prefix: ""
+  when: groups['simulation'] is not defined
 
-- name: Set Shadow Glove Launch file inputs if real_glove = true
+- name: Set Simulation vars
   set_fact:
-    launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_file_name:=default_calibration_right.yaml"
-    launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left user_calibration_file_name:=default_calibration_left.yaml"
-    launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both right_user_calibration_file_name:=default_calibration_right.yaml left_user_calibration_file_name:=default_calibration_left.yaml"
+    folder_prefix: ""
+    glove_calibration_folder_prefix_r: "{{ right_advanced_launcher }}"
+    glove_calibration_folder_prefix_l: "{{ left_advanced_launcher }}"
+    glove_calibration_folder_prefix_bi: "{{ bimanual_advanced_launcher }}"
+    mock_file_prefix: "6 - "
+  when: groups['simulation'] is defined
+
+- name: Install desktop icon for launching Shadow Right Teleop Simulation
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ teleop_glove_right }}"
+    launch_script: "shadow_launch_right_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Right Teleop Simulation"
+    template: templates/scripts/launch-teleop-sim.j2
+    desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Right Teleop Simulation"
+    launch_terminal: "false"
+    hand_side_label: "Right Hand"
+    control_loop_script_name: ""
+    gui_script_name: "shadow_sim_right.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
+
+- name: Install desktop icon for launching Shadow Left Teleop Simulation
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ teleop_glove_left }}"
+    launch_script: "shadow_launch_left_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Left Teleop Simulation"
+    template: templates/scripts/launch-teleop-sim.j2
+    desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Left Teleop Simulation"
+    launch_terminal: "false"
+    hand_side_label: "Left Hand"
+    control_loop_script_name: ""
+    gui_script_name: "shadow_sim_left.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
+
+- name: Install desktop icon for launching Shadow Bimanual Teleop Simulation
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ teleop_glove_bimanual }}"
+    launch_script: "shadow_launch_bimanual_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation"
+    template: templates/scripts/launch-teleop-sim.j2
+    desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Bimanual Teleop Simulation"
+    launch_terminal: "false"
+    hand_side_label: "Bimanual"
+    control_loop_script_name: ""
+    gui_script_name: "shadow_sim_bimanual.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
+
+- name: Install desktop icon for launching Shadow Right Teleop Simulation Real Hardware
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ teleop_glove_right }}"
+    launch_script: "shadow_launch_right_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Right Teleop Simulation Real Hardware"
+    template: templates/scripts/launch-teleop-sim.j2
+    desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Right Teleop Simulation Real Hardware"
+    launch_terminal: "false"
+    hand_side_label: "Right Hand"
+    control_loop_script_name: ""
+    gui_script_name: "shadow_sim_right_realhw.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_right.sh"
+  when: real_glove|bool or groups['simulation'] is not defined
+
+- name: Install desktop icon for launching Shadow Left Teleop Simulation Real Hardware
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ teleop_glove_left }}"
+    launch_script: "shadow_launch_left_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Left Teleop Simulation Real Hardware"
+    template: templates/scripts/launch-teleop-sim.j2
+    desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Left Teleop Simulation Real Hardware"
+    launch_terminal: "false"
+    hand_side_label: "Left Hand"
+    control_loop_script_name: ""
+    gui_script_name: "shadow_sim_left_realhw.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_left.sh"
+  when: real_glove|bool or groups['simulation'] is not defined
+
+- name: Install desktop icon for launching Shadow Bimanual Teleop Simulation Real Hardware
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "{{ teleop_glove_bimanual }}"
+    launch_script: "shadow_launch_bimanual_teleop_sim.sh"
+    desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation Real Hardware"
+    template: templates/scripts/launch-teleop-sim.j2
+    desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Bimanual Teleop Simulation Real Hardware"
+    launch_terminal: "false"
+    hand_side_label: "Bimanual"
+    control_loop_script_name: ""
+    gui_script_name: "shadow_sim_bimanual_realhw.sh"
+    haptx_mapping_script_name: "shadow_haptx_mapping_launch_bimanual.sh"
+  when: real_glove|bool or groups['simulation'] is not defined
+
+- name: Create executable launch script for RQT Shadow Glove Calibration plugin
+  template:
+    src: ../../../common/resources/templates/scripts/command-script.j2
+    dest: "{{ shadow_hand_launcher_folder }}/shadow_glove_calibration_rqt.sh"
+    mode: "755"
+  vars:
+    command: "rqt -s sr_glove_calibration_gui.sr_glove_calibration_gui.SrGloveCalibrationGui"
   when: glove=="shadow_glove" and real_glove|bool
 
-- name: Set Shadow Glove Launch file inputs if real_glove = true
+- name: Set Shadow Glove driver name (if right)
   set_fact:
-    launch_file_input_right: "{{ launch_file_input_right }} user_calibration_file_name:=default_calibration_right.yaml"
-    launch_file_input_left: "{{ launch_file_input_right }} user_calibration_file_name:=default_calibration_left.yaml"
-    launch_file_input_bimanual: "{{ launch_file_input_gui_bimanual }} right_user_calibration_file_name:=default_calibration_right.yaml left_user_calibration_file_name:=default_calibration_left.yaml"
+    glove_driver_type: "right"
+  when: real_glove|bool
+
+- name: Install desktop icon for Shadow right Glove Calibration
+  include_role:
+    name: products/common/default-icon
+  vars:
+    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
+    launch_script: "shadow_glove_calibration.sh"
+    desktop_icon_name: "Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
+    template: templates/scripts/launch-shadow-glove-calibration.j2
+    desktop_icon_path: "{{ glove_calibration_folder_prefix_r }}/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
+    launch_terminal: "false"
+    glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove" and real_glove|bool
 
-- name: Install desktop icon for running right Shadow Glove driver
+- name: Set Shadow Glove driver name (if left)
+  set_fact:
+    glove_driver_type: "left"
+  when: real_glove|bool
+
+- name: Install desktop icon for Shadow left Glove Calibration
   include_role:
-    name: products/common/roslaunch-icon
+    name: products/common/default-icon
   vars:
-    desktop_icon_png: "shadow_glove_right.png"
-    launch_script: "shadow_glove_driver_right.sh"
-    desktop_icon_name: "4 - Launch Right Shadow Glove Driver"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/4 - Launch Right Shadow Glove Driver"
-    project_name_input: "sr_hand_glove"
-    launch_file_input: "{{ launch_file_input_right }}"
+    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
+    launch_script: "shadow_glove_calibration.sh"
+    desktop_icon_name: "Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
+    template: templates/scripts/launch-shadow-glove-calibration.j2
+    desktop_icon_path: "{{ glove_calibration_folder_prefix_l }}/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
+    launch_terminal: "false"
+    glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove" and real_glove|bool
 
-- name: Install desktop icon for running left Shadow Glove driver
+- name: Set Shadow Glove driver name (if bimanual)
+  set_fact:
+    glove_driver_type: "bimanual"
+  when: real_glove|bool
+
+- name: Install desktop icon for Shadow bimanual Glove Calibration
   include_role:
-    name: products/common/roslaunch-icon
+    name: products/common/default-icon
   vars:
-    desktop_icon_png: "shadow_glove_left.png"
-    launch_script: "shadow_glove_driver_left.sh"
-    desktop_icon_name: "4 - Launch Left Shadow Glove Driver"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/4 - Launch Left Shadow Glove Driver"
-    project_name_input: "sr_hand_glove"
-    launch_file_input: "{{ launch_file_input_left }}"
+    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
+    launch_script: "shadow_glove_calibration.sh"
+    desktop_icon_name: "Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
+    template: templates/scripts/launch-shadow-glove-calibration.j2
+    desktop_icon_path: "{{ glove_calibration_folder_prefix_bi }}/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
+    launch_terminal: "false"
+    glove_driver_value: "{{ glove_driver_type }}"
   when: glove=="shadow_glove" and real_glove|bool
-
-- name: Install desktop icon for running bimanual Shadow Glove driver
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "shadow_glove_bimanual.png"
-    launch_script: "shadow_glove_driver_bimanual.sh"
-    desktop_icon_name: "4 - Launch Bimanual Shadow Glove Driver"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/4 - Launch Bimanual Shadow Glove Driver"
-    project_name_input: "sr_hand_glove"
-    launch_file_input: "{{ launch_file_input_bimanual }}"
-  when: glove=="shadow_glove" and real_glove|bool
-
-- name: Install desktop icon for running haptx mapping node right
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "haptx_right.png"
-    launch_script: "shadow_haptx_mapping_launch_right.sh"
-    desktop_icon_name: "4 - Launch Right HaptX Mapping"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/4 - Launch Right HaptX Mapping"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base.launch hand_side_prefix:=rh"
-  when: glove=="haptx" and real_glove|bool
-
-- name: Install desktop icon for running haptx mapping node left
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "haptx_left.png"
-    launch_script: "shadow_haptx_mapping_launch_left.sh"
-    desktop_icon_name: "4 - Launch Left HaptX Mapping"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/4 - Launch Left HaptX Mapping"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base.launch hand_side_prefix:=lh"
-  when: glove=="haptx" and real_glove|bool
-
-- name: Install desktop icon for running haptx mapping node bimanual
-  include_role:
-    name: products/common/roslaunch-icon
-  vars:
-    desktop_icon_png: "haptx_bimanual.png"
-    launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
-    desktop_icon_name: "4 - Launch Bimanual HaptX Mapping"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/4 - Launch Bimanual HaptX Mapping"
-    project_name_input: "sr_teleop_vive_haptx"
-    launch_file_input: "haptx_base_bimanual.launch"
-  when: glove=="haptx" and real_glove|bool
 
 - name: Set mock parameters based on glove=haptx
   set_fact:
@@ -332,8 +252,8 @@
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_right.sh"
-    desktop_icon_name: "Shadow Simulation Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/6 - Launch Simulated Right Teleop Mock"
+    desktop_icon_name: "{{ mock_file_prefix }}Launch Simulated Right Teleop Mock"
+    desktop_icon_path: "{{ glove_calibration_folder_prefix_r }}/{{ mock_file_prefix }}Launch Simulated Right Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=right"
 
@@ -343,8 +263,8 @@
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_left.sh"
-    desktop_icon_name: "Shadow Simulation Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/6 - Launch Simulated Left Teleop Mock"
+    desktop_icon_name: "{{ mock_file_prefix }}Launch Simulated Left Teleop Mock"
+    desktop_icon_path: "{{ glove_calibration_folder_prefix_l }}/{{ mock_file_prefix }}Launch Simulated Left Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=false side:=left"
 
@@ -354,78 +274,178 @@
   vars:
     desktop_icon_png: "vive_tracker.jpg"
     launch_script: "shadow_mock_bimanual.sh"
-    desktop_icon_name: "Shadow Simulation Advanced Launchers/6 - Launch Simulated Bimanual Teleop Mock"
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/6 - Launch Simulated Bimanual Teleop Mock"
+    desktop_icon_name: "{{ mock_file_prefix }}Launch Simulated Bimanual Teleop Mock"
+    desktop_icon_path: "{{ glove_calibration_folder_prefix_bi }}/{{ mock_file_prefix }}Launch Simulated Bimanual Teleop Mock"
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=true"
 
-- name: Create executable launch script for RQT Shadow Glove Calibration plugin
-  template:
-    src: ../../../common/resources/templates/scripts/command-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_glove_calibration_rqt.sh"
-    mode: '755'
-  vars:
-    command: "rqt -s sr_glove_calibration_gui.sr_glove_calibration_gui.SrGloveCalibrationGui"
-  when: glove=="shadow_glove" and real_glove|bool
+- name: Block - Handle Sim Only icons
+  block:
+    - name: Install desktop icon for Teleop server Simulation (Unimanual Right)
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "{{ glove }}_right.png"
+        launch_script: "shadow_sim_right.sh"
+        desktop_icon_name: "3 - Launch Right Teleop Simulation"
+        desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch Right Teleop Simulation"
+        project_name_input: "{{ project_name_input_value }}"
+        launch_file_input: "{{ launch_file_input_gui_right }}"
 
-- name: Set Shadow Glove driver name (if right)
-  set_fact:
-    glove_driver_type: "right"
-  when: real_glove|bool
+    - name: Install desktop icon for Teleop server Simulation Real Hardware (Unimanual Right)
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "{{ glove }}_right.png"
+        launch_script: "shadow_sim_right_realhw.sh"
+        desktop_icon_name: "3 - Launch Right Teleop Simulation Real Hardware"
+        desktop_icon_path: "{{ right_advanced_launcher }}/3 - Launch Right Teleop Simulation Real Hardware"
+        project_name_input: "{{ project_name_input_value }}"
+        launch_file_input: "{{ launch_file_input_gui_right_realhw }}"
 
-- name: Install desktop icon for Shadow right Glove Calibration
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
-    launch_script: "shadow_glove_calibration.sh"
-    desktop_icon_name: "Shadow Simulation Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
-    template: templates/scripts/launch-shadow-glove-calibration.j2
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
-    launch_terminal: "false"
-    glove_driver_value: "{{ glove_driver_type }}"
-  when: glove=="shadow_glove" and real_glove|bool
+    - name: Install desktop icon for Teleop server Simulation (Unimanual Left)
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "{{ glove }}_left.png"
+        launch_script: "shadow_sim_left.sh"
+        desktop_icon_name: "3 - Launch Left Teleop Simulation"
+        desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch Left Teleop Simulation"
+        project_name_input: "{{ project_name_input_value }}"
+        launch_file_input: "{{ launch_file_input_gui_left }}"
 
-- name: Set Shadow Glove driver name (if left)
-  set_fact:
-    glove_driver_type: "left"
-  when: real_glove|bool
+    - name: Install desktop icon for Teleop server Simulation Real Hardware (Unimanual Left)
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "{{ glove }}_left.png"
+        launch_script: "shadow_sim_left_realhw.sh"
+        desktop_icon_name: "3 - Launch Left Teleop Simulation Real Hardware"
+        desktop_icon_path: "{{ left_advanced_launcher }}/3 - Launch Left Teleop Simulation Real Hardware"
+        project_name_input: "{{ project_name_input_value }}"
+        launch_file_input: "{{ launch_file_input_gui_left_realhw }}"
 
-- name: Install desktop icon for Shadow left Glove Calibration
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
-    launch_script: "shadow_glove_calibration.sh"
-    desktop_icon_name: "Shadow Simulation Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
-    template: templates/scripts/launch-shadow-glove-calibration.j2
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
-    launch_terminal: "false"
-    glove_driver_value: "{{ glove_driver_type }}"
-  when: glove=="shadow_glove" and real_glove|bool
+    - name: Install desktop icon for Teleop server Simulation (Bimanual)
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "{{ glove }}_bimanual.png"
+        launch_script: "shadow_sim_bimanual.sh"
+        desktop_icon_name: "3 - Launch Bimanual Teleop Simulation"
+        desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch Bimanual Teleop Simulation"
+        project_name_input: "{{ project_name_input_value }}"
+        launch_file_input: "{{ launch_file_input_gui_bimanual }}"
 
-- name: Set Shadow Glove driver name (if bimanual)
-  set_fact:
-    glove_driver_type: "bimanual"
-  when: real_glove|bool
+    - name: Install desktop icon for Teleop server Simulation Real Hardware (Bimanual)
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "{{ glove }}_bimanual.png"
+        launch_script: "shadow_sim_bimanual_realhw.sh"
+        desktop_icon_name: "3 - Launch Bimanual Teleop Simulation Real Hardware"
+        desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch Bimanual Teleop Simulation Real Hardware"
+        project_name_input: "{{ project_name_input_value }}"
+        launch_file_input: "{{ launch_file_input_gui_bimanual_realhw }}"
 
-- name: Install desktop icon for Shadow bimanual Glove Calibration
-  include_role:
-    name: products/common/default-icon
-  vars:
-    desktop_icon_png: "shadow_glove_{{ glove_driver_type }}.png"
-    launch_script: "shadow_glove_calibration.sh"
-    desktop_icon_name: "Shadow Simulation Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
-    template: templates/scripts/launch-shadow-glove-calibration.j2
-    desktop_icon_path: "Shadow Simulation Advanced Launchers/Launch Shadow {{ glove_driver_type | title }} Glove Calibration"
-    launch_terminal: "false"
-    glove_driver_value: "{{ glove_driver_type }}"
-  when: glove=="shadow_glove" and real_glove|bool
+    - name: Set Shadow Glove Launch file inputs
+      set_fact:
+        launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }}"
+        launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left"
+        launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both"
+      when: glove=="shadow_glove"
 
-- name: Include products/common/demo-icons role
-  include_role:
-    name: products/common/demo-icons
-  vars:
-    demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
-    bimanual: true
-  when: demo_icons|bool
+    - name: Set Shadow Glove Launch file inputs if real_glove = true
+      set_fact:
+        launch_file_input_right: "polhemus.launch polhemus_product_type:={{ polhemus_type }} user_calibration_file_name:=default_calibration_right.yaml"
+        launch_file_input_left: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=left user_calibration_file_name:=default_calibration_left.yaml"
+        launch_file_input_bimanual: "polhemus.launch polhemus_product_type:={{ polhemus_type }} side:=both right_user_calibration_file_name:=default_calibration_right.yaml left_user_calibration_file_name:=default_calibration_left.yaml"
+      when: glove=="shadow_glove" and real_glove|bool
+
+    - name: Set Shadow Glove Launch file inputs if real_glove = true
+      set_fact:
+        launch_file_input_right: "{{ launch_file_input_right }} user_calibration_file_name:=default_calibration_right.yaml"
+        launch_file_input_left: "{{ launch_file_input_right }} user_calibration_file_name:=default_calibration_left.yaml"
+        launch_file_input_bimanual: "{{ launch_file_input_gui_bimanual }} right_user_calibration_file_name:=default_calibration_right.yaml left_user_calibration_file_name:=default_calibration_left.yaml"
+      when: glove=="shadow_glove" and real_glove|bool
+
+    - name: Install desktop icon for running right Shadow Glove driver
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "shadow_glove_right.png"
+        launch_script: "shadow_glove_driver_right.sh"
+        desktop_icon_name: "4 - Launch Right Shadow Glove Driver"
+        desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Right Shadow Glove Driver"
+        project_name_input: "sr_hand_glove"
+        launch_file_input: "{{ launch_file_input_right }}"
+      when: glove=="shadow_glove" and real_glove|bool
+
+    - name: Install desktop icon for running left Shadow Glove driver
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "shadow_glove_left.png"
+        launch_script: "shadow_glove_driver_left.sh"
+        desktop_icon_name: "4 - Launch Left Shadow Glove Driver"
+        desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Left Shadow Glove Driver"
+        project_name_input: "sr_hand_glove"
+        launch_file_input: "{{ launch_file_input_left }}"
+      when: glove=="shadow_glove" and real_glove|bool
+
+    - name: Install desktop icon for running bimanual Shadow Glove driver
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "shadow_glove_bimanual.png"
+        launch_script: "shadow_glove_driver_bimanual.sh"
+        desktop_icon_name: "4 - Launch Bimanual Shadow Glove Driver"
+        desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Bimanual Shadow Glove Driver"
+        project_name_input: "sr_hand_glove"
+        launch_file_input: "{{ launch_file_input_bimanual }}"
+      when: glove=="shadow_glove" and real_glove|bool
+
+    - name: Install desktop icon for running haptx mapping node right
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "haptx_right.png"
+        launch_script: "shadow_haptx_mapping_launch_right.sh"
+        desktop_icon_name: "4 - Launch Right HaptX Mapping"
+        desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Right HaptX Mapping"
+        project_name_input: "sr_teleop_vive_haptx"
+        launch_file_input: "haptx_base.launch hand_side_prefix:=rh"
+      when: glove=="haptx" and real_glove|bool
+
+    - name: Install desktop icon for running haptx mapping node left
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "haptx_left.png"
+        launch_script: "shadow_haptx_mapping_launch_left.sh"
+        desktop_icon_name: "4 - Launch Left HaptX Mapping"
+        desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Left HaptX Mapping"
+        project_name_input: "sr_teleop_vive_haptx"
+        launch_file_input: "haptx_base.launch hand_side_prefix:=lh"
+      when: glove=="haptx" and real_glove|bool
+
+    - name: Install desktop icon for running haptx mapping node bimanual
+      include_role:
+        name: products/common/roslaunch-icon
+      vars:
+        desktop_icon_png: "haptx_bimanual.png"
+        launch_script: "shadow_haptx_mapping_launch_bimanual.sh"
+        desktop_icon_name: "4 - Launch Bimanual HaptX Mapping"
+        desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Bimanual HaptX Mapping"
+        project_name_input: "sr_teleop_vive_haptx"
+        launch_file_input: "haptx_base_bimanual.launch"
+      when: glove=="haptx" and real_glove|bool
+
+    - name: Include products/common/demo-icons role
+      include_role:
+        name: products/common/demo-icons
+      vars:
+        demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
+        bimanual: true
+      when: demo_icons|bool
+
+  when: groups['simulation'] is defined
