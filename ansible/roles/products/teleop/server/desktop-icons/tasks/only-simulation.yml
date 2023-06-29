@@ -279,6 +279,50 @@
     project_name_input: "{{ project_name_value }}"
     launch_file_input: "{{ launch_file_value }} bimanual:=true"
 
+- name: Block - Handle Real Hardware icons
+  block:
+    - name: Create executable for Teleop server Simulation (Unimanual Right)
+      template:
+        src: ../../resources/templates/scripts/roslaunch-script.j2
+        dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+        mode: '755'
+      vars:
+        project_name: "{{ project_name_input_value }}"
+        launch_file: "{{ launch_file_input_gui_right }}"
+        launch_script: "shadow_sim_right.sh"
+    
+    - name: Create executable for Teleop server Simulation Real Hardware (Unimanual Right)
+      template:
+        src: ../../resources/templates/scripts/roslaunch-script.j2
+        dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+        mode: '755'
+      vars:
+        project_name: "{{ project_name_input_value }}"
+        launch_file: "{{ launch_file_input_gui_right_realhw }}"
+        launch_script: "shadow_sim_right_realhw.sh"
+    
+    - name: Create executable for Teleop server Simulation (Unimanual Left)
+      template:
+        src: ../../resources/templates/scripts/roslaunch-script.j2
+        dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+        mode: '755'
+      vars:
+        project_name: "{{ project_name_input_value }}"
+        launch_file: "{{ launch_file_input_gui_left }}"
+        launch_script: "shadow_sim_left.sh"
+    
+    - name: Create executable for Teleop server Simulation Real Hardware (Unimanual Right)
+      template:
+        src: ../../resources/templates/scripts/roslaunch-script.j2
+        dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+        mode: '755'
+      vars:
+        project_name: "{{ project_name_input_value }}"
+        launch_file: "{{ launch_file_input_gui_left_realhw }}"
+        launch_script: "shadow_sim_left_realhw.sh"
+        
+  when: groups['simulation'] is not defined
+
 - name: Block - Handle Sim Only icons
   block:
     - name: Install desktop icon for Teleop server Simulation (Unimanual Right)
