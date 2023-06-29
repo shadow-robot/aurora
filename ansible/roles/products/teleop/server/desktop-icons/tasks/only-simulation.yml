@@ -167,7 +167,7 @@
 
 - name: Create executable launch script for RQT Shadow Glove Calibration plugin
   template:
-    src: ../../../common/resources/templates/scripts/command-script.j2
+    src: {{ playbook_dir }}/products/common/common/resources/templates/scripts/command-script.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_glove_calibration_rqt.sh"
     mode: "755"
   vars:
@@ -283,7 +283,7 @@
   block:
     - name: Create executable for Teleop server Simulation (Unimanual Right)
       template:
-        src: ../../../resources/templates/scripts/roslaunch-script.j2
+        src: "{{ playbook_dir }}/products/common/resources/templates/scripts/roslaunch-script.j2"
         dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
         mode: '755'
       vars:
@@ -293,7 +293,7 @@
     
     - name: Create executable for Teleop server Simulation Real Hardware (Unimanual Right)
       template:
-        src: ../../../resources/templates/scripts/roslaunch-script.j2
+        src: "{{ playbook_dir }}/products/common/resources/templates/scripts/roslaunch-script.j2"
         dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
         mode: '755'
       vars:
@@ -303,7 +303,7 @@
     
     - name: Create executable for Teleop server Simulation (Unimanual Left)
       template:
-        src: ../../../resources/templates/scripts/roslaunch-script.j2
+        src: "{{ playbook_dir }}/products/common/resources/templates/scripts/roslaunch-script.j2"
         dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
         mode: '755'
       vars:
@@ -311,15 +311,35 @@
         launch_file: "{{ launch_file_input_gui_left }}"
         launch_script: "shadow_sim_left.sh"
     
-    - name: Create executable for Teleop server Simulation Real Hardware (Unimanual Right)
+    - name: Create executable for Teleop server Simulation Real Hardware (Unimanual Left)
       template:
-        src: ../../../resources/templates/scripts/roslaunch-script.j2
+        src: "{{ playbook_dir }}/products/common/resources/templates/scripts/roslaunch-script.j2"
         dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
         mode: '755'
       vars:
         project_name: "{{ project_name_input_value }}"
         launch_file: "{{ launch_file_input_gui_left_realhw }}"
         launch_script: "shadow_sim_left_realhw.sh"
+
+    - name: Create executable for Teleop server Simulation (Bimanual)
+      template:
+        src: "{{ playbook_dir }}/products/common/resources/templates/scripts/roslaunch-script.j2"
+        dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+        mode: '755'
+      vars:
+        project_name: "{{ project_name_input_value }}"
+        launch_file: "{{ launch_file_input_gui_bimanual }}"
+        launch_script: "shadow_sim_bimanual.sh"
+    
+    - name: Create executable for Teleop server Simulation Real Hardware (Bimanual)
+      template:
+        src: "{{ playbook_dir }}/products/common/resources/templates/scripts/roslaunch-script.j2"
+        dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+        mode: '755'
+      vars:
+        project_name: "{{ project_name_input_value }}"
+        launch_file: "{{ launch_file_input_gui_bimanual_realhw }}"
+        launch_script: "shadow_sim_bimanual_realhw.sh"
 
   when: groups['simulation'] is not defined
 
