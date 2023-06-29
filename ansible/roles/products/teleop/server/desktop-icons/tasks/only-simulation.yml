@@ -283,7 +283,7 @@
   block:
     - name: print variables
       debug:
-        msg: "{{ role_path | regex_replace('/roles/.*$', '') }}"
+        msg: "{{ role_path | regex_replace('/roles/.*$', '/roles') }}"
 
     - name: Create executable for Teleop server Simulation (Unimanual Right)
       template:
