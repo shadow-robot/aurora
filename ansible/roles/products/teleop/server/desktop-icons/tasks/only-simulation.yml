@@ -281,6 +281,10 @@
 
 - name: Block - Handle Real Hardware icons
   block:
+    - name: print variables
+      debug:
+        msg: "{{ playbook_dir }}"
+
     - name: Create executable for Teleop server Simulation (Unimanual Right)
       template:
         src: "{{ playbook_dir }}/products/common/resources/templates/scripts/roslaunch-script.j2"
