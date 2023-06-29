@@ -122,7 +122,7 @@
     name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_right }}"
-    launch_script: "shadow_launch_right_teleop_sim.sh"
+    launch_script: "shadow_launch_right_teleop_sim_realhw.sh"
     desktop_icon_name: "Launch Shadow Right Teleop Simulation Real Hardware"
     template: templates/scripts/launch-teleop-sim.j2
     desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Right Teleop Simulation Real Hardware"
@@ -138,7 +138,7 @@
     name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_left }}"
-    launch_script: "shadow_launch_left_teleop_sim.sh"
+    launch_script: "shadow_launch_left_teleop_sim_realhw.sh"
     desktop_icon_name: "Launch Shadow Left Teleop Simulation Real Hardware"
     template: templates/scripts/launch-teleop-sim.j2
     desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Left Teleop Simulation Real Hardware"
@@ -154,7 +154,7 @@
     name: products/common/default-icon
   vars:
     desktop_icon_png: "{{ teleop_glove_bimanual }}"
-    launch_script: "shadow_launch_bimanual_teleop_sim.sh"
+    launch_script: "shadow_launch_bimanual_teleop_sim_realhw.sh"
     desktop_icon_name: "Launch Shadow Bimanual Teleop Simulation Real Hardware"
     template: templates/scripts/launch-teleop-sim.j2
     desktop_icon_path: "{{ folder_prefix }}/Launch Shadow Bimanual Teleop Simulation Real Hardware"
