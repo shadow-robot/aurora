@@ -327,7 +327,7 @@
         dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
         mode: '755'
       vars:
-        project_name: "{{ project_name_input _value }}"
+        project_name: "{{ project_name_input_value }}"
         launch_file: "{{ launch_file_input_gui_bimanual }}"
         launch_script: "shadow_sim_bimanual.sh"
     
