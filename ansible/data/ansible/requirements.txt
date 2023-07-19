@@ -8,7 +8,7 @@ MarkupSafe==2.0.1
 asn1crypto==1.5.1
 cffi==1.15.0
 # cryptography==2.3.0
-pyopenssl==22.0.1
+pyopenssl==22.1.0
 paramiko==2.12
 lxml==4.8.0
 requests==2.27.1
