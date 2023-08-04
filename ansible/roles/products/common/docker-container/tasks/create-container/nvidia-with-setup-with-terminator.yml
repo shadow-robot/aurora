@@ -47,7 +47,6 @@
       SR_RECORD_HAND_DATA: "{{ record_hand_data }}"
     network_mode: "host"
     pid_mode: "host"
-    ipc_mode: "host"
     privileged: yes
     interactive: yes
     security_opts:
