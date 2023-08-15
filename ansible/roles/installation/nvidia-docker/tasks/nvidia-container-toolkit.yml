@@ -56,8 +56,8 @@
     repo: deb https://nvidia.github.io/{{ item }}/stable/ubuntu{{ ubuntu_version }}/amd64 /
     state: present
   with_items:
-    - libnvidia-container
-    # - nvidia-container-runtime
+    # - libnvidia-container
+    - nvidia-container-runtime
 
 - name: Install nvidia-container-toolkit
   apt:
