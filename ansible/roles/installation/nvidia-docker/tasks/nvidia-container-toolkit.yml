@@ -57,7 +57,7 @@
     state: present
   with_items:
     - libnvidia-container
-    - nvidia-container-runtime
+    # - nvidia-container-runtime
 
 - name: Install nvidia-container-toolkit
   apt:
