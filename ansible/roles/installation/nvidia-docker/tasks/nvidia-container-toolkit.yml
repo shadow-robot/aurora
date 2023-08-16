@@ -26,7 +26,7 @@
         dest: /tmp/nvidia-container-toolkit-keyring.asc
 
     - name: Dearmour gpg key
-      command: cat /tmp/nvidia-container-toolkit-keyring.asc | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+      shell: cat /tmp/nvidia-container-toolkit-keyring.asc | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
       become: true        
 
     - name: Add nvidia-container-toolkit repository, pointing to the dearmored gpg key (backwards compatable, 18.04 should work with up to at least 22.04)
