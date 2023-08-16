@@ -58,6 +58,7 @@
     stat:
       path: /usr/bin/nvidia-smi
     register: nvidia_smi_installed
+
   - name: Graphics Error Message
     fail:
       msg: "Nvidia Graphics card error: If the machine you are running the oneliner on doesn't have a Nvidia graphics card please add `nvidia_docker=false` to the oneliner and rerun."
