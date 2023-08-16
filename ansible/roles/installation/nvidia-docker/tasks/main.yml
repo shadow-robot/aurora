@@ -37,15 +37,22 @@
       state: present
     become: yes
 
-  - name: query prime-select
-    command: prime-select query
-    become: yes
-    register: prime_select_results
+  - name: Query and set prime-select
+    block:
+    - name: query prime-select
+      command: prime-select query
+      become: yes
+      register: prime_select_results
 
-  - name: switch driver to nvidia
-    command: prime-select nvidia
-    become: yes
-    when: "prime_select_results.stdout != 'nvidia'"
+    - name: switch driver to nvidia
+      command: prime-select nvidia
+      become: yes
+      when: "prime_select_results.stdout != 'nvidia'"
+
+    - name: query prime-select again, check it's been set
+      command: prime-select query
+      become: yes
+      register: prime_select_results
 
   - name: Check if nvidia-smi is installed
     stat:
