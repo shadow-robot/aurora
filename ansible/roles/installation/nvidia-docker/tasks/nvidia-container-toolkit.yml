@@ -31,7 +31,7 @@
 
     - name: Add nvidia-container-toolkit repository, pointing to the dearmored gpg key (backwards compatable, 18.04 should work with up to at least 22.04)
       ansible.builtin.apt_repository:
-        repo: "deb [ARCH=amd64 signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/$(ARCH)"
+        repo: "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/$(ARCH) /"
         state: present
 
 - name: Install nvidia-container-toolkit
