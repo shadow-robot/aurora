@@ -21,7 +21,7 @@
 - name: Check nvidia-container-toolkit repository key exists
   stat: 
     path: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
-  register: nvidia_container_toolkit_repo_and_key_exists
+  register: nvidia_container_toolkit_repo_key_exists
 
 - name: Get and de-armour gpg key, add repository
   block:
@@ -38,7 +38,7 @@
       ansible.builtin.apt_repository:
         repo: "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/$(ARCH) /"
         state: present
-  when: nvidia_container_toolkit_repo_and_key_exists.stat.exists == false
+  when: nvidia_container_toolkit_repo_key_exists.stat.exists == false
 
 - name: Install nvidia-container-toolkit
   apt:
