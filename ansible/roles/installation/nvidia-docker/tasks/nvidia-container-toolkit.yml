@@ -18,7 +18,7 @@
     name: nvidia-modprobe
     state: present
 
-- name: Check nvidia-container-toolkit repository and key exists
+- name: Check nvidia-container-toolkit repository key exists
   stat: 
     path: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
   register: nvidia_container_toolkit_repo_and_key_exists
