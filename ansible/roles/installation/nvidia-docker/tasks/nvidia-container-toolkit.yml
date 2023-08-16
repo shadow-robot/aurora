@@ -23,6 +23,7 @@
     path: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
   register: nvidia_container_toolkit_repo_key_exists
 
+# Inspired by: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#setting-up-nvidia-container-toolkit
 - name: Get and de-armour gpg key, add repository
   block:
     - name: Get armoured gpg key
