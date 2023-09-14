@@ -23,7 +23,7 @@ COMMON_ROSNODE_KILL_COMMAND="rosnode list | grep /bag_rotate | xargs -I{} rosnod
   fi
   echo 10
   echo "# Stopping Shadow Robot processes in the server container"
-  docker exec $CONTAINER_NAME bash -c "rosnode kill $SERVER_RECORD; $COMMON_ROSNODE_KILL_COMMAND" || true &
+  timeout 10 docker exec $CONTAINER_NAME bash -c "rosnode kill $SERVER_RECORD; $COMMON_ROSNODE_KILL_COMMAND" || true
   sleep 0.2
   echo 20
   sleep 0.2
