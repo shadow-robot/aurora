@@ -23,16 +23,16 @@ COMMON_ROSNODE_KILL_COMMAND="rosnode list | grep /bag_rotate | xargs -I{} rosnod
   fi
   echo 10
   echo "# Stopping Shadow Robot processes in the server container"
-  docker exec $CONTAINER_NAME bash -c "rosnode kill $SERVER_RECORD; $COMMON_ROSNODE_KILL_COMMAND" || true &
-  sleep 2
+  timeout 10 docker exec $CONTAINER_NAME bash -c "rosnode kill $SERVER_RECORD; $COMMON_ROSNODE_KILL_COMMAND" || true
+  sleep 0.2
   echo 20
-  sleep 2
+  sleep 0.2
   echo 30
-  sleep 2
+  sleep 0.2
   echo 40
-  sleep 2
+  sleep 0.2
   echo 50
-  sleep 2
+  sleep 0.2
   echo 60
   if $CLOSE_NUC_PROCESSES;
   then
@@ -51,4 +51,5 @@ COMMON_ROSNODE_KILL_COMMAND="rosnode list | grep /bag_rotate | xargs -I{} rosnod
   echo "# All Shadow Robot processes closed!"
   echo 100
   echo $pids | xargs kill -15
-) | zenity --title "Closing all Shadow Robot processes" --progress --auto-kill
+  sleep 5
+) | zenity --title "Closing all Shadow Robot processes" --progress --auto-kill --auto-close
