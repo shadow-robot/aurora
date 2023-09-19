@@ -165,6 +165,12 @@
   changed_when: false
   when: not skip_molecule_task|bool
 
+- name: Copying ssh key pair into docker container
+  changed_when: false
+  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
+  become: yes
+  when: groups['server'] is defined
+
 - name: Include products/common/hand_config role
   include_role:
     name: products/common/hand_config
