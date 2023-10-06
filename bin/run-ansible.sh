@@ -243,6 +243,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     sleep 1
 done
 # Pip is broken at the moment and can't find base packages so a reinstall is required.
+sudo apt-get install -y python3.8-distutils
 curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
 sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
 pip3 install --user -U pip
