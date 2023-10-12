@@ -352,7 +352,7 @@ fetch_new_files() {
     for remote_package in $(echo "${remote_only}"); do
       echo "  Downloading: ${remote_package}"
       wget -O ${local_download_dir}/${remote_package} ${aws_bucket_url}/${aws_bucket_dir}/${remote_package}
-      if [[ $(stat --print="%s" ${remote_package}) -eq 0 ]]; then
+      if [[ $(stat --print="%s" ${local_download_dir}/${remote_package}) -eq 0 ]]; then
         echo -e "\n${RED}WARNING! The package ${remote_package} from ${aws_bucket_url}/${aws_bucket_dir}/${remote_package} has downloaded a file of zero bytes! This probably means s3 bucket permissions are wrong and is very likely to cause deployment issues on your system. Please contact shadow directly to get this fixed.${NC}\n"
         rm ${local_download_dir}/${remote_package}
       fi
