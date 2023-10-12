@@ -121,6 +121,13 @@
         
       when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
 
+    - name: Install pexpect
+      pip:
+        executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8"
+        name: [ "pexpect" ]
+        state: present
+      become: yes
+
     - name: Configure AWS CLI
       expect:
         command: aws configure
