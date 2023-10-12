@@ -21,7 +21,7 @@
   pre_tasks:
 
     - name: Check if Python 3 is installed
-      raw: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python --version"
+      raw: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8 --version"
       register: output
       ignore_errors: yes
       changed_when: output.rc != 0
@@ -37,4 +37,4 @@
 
     - name: Set Python 3 interpreter
       set_fact:
-        ansible_python_interpreter: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python
+        ansible_python_interpreter: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8
