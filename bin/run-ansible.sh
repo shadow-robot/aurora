@@ -322,7 +322,7 @@ ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8
 python -m pip install yq
 pip_package_downloads_path="/tmp/aurora_host_pip_packages"
 mkdir -p $pip_package_downloads_path
-remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | xq | grep 'Key' | sed -r 's/.*pip_packages\///g' | sed -r 's/",//g')
+remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | xq | grep pip_packages | grep 'Key' | sed -r 's/.*pip_packages\///g' | sed -r 's/",//g')
 # remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | yq --input-format xml  | grep 'Key:' | sed -r 's/.*pip_packages\///g')
 local_only=$(comm -23 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
 remote_only=$(comm -13 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
