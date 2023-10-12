@@ -35,6 +35,7 @@ conda_ws_name="test_aurora"
 miniconda_install_location="/home/$USER/.shadow_miniconda"
 miniconda_installer="/tmp/Miniconda3-latest-Linux-x86_64.sh"
 miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
+packages_download_root="/tmp/aurora_host_packages"
 
 playbook=$1
 # playbook="docker_deploy"
@@ -327,7 +328,7 @@ fetch_new_files() {
   aws_bucket_dir=$2
   # aws_bucket_url="http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com"
   # aws_bucket_dir="pip_packages"
-  local_download_dir="/tmp/aurora_host_${aws_bucket_dir}"
+  local_download_dir="${packages_download_root}/${aws_bucket_dir}"
   mkdir -p $local_download_dir
   remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
 
@@ -363,7 +364,7 @@ fetch_new_files() {
 fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "pip_packages"
 fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "ansible_collections"
 
-python -m pip install ${pip_package_downloads_path}/*
+python -m pip install ${packages_download_root}/pip_packages/*
 
 
 ansible_flags="-v "
@@ -424,7 +425,7 @@ fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
-"${ansible_galaxy_executable}" collection install $(realpath /tmp/aurora_host_ansible_collections/*)
+"${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
