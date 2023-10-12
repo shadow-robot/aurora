@@ -81,7 +81,7 @@
       block:
       - name: Install Python dependencies
         pip:
-          virtualenv: /home/{{ lookup('env','USER') }}/.shadow_miniconda/envs/test_aurora
+          executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/envs/test_aurora/bin/pip3"
           requirements: "{{ role_path }}/files/requirements.txt"
         become: true
 
@@ -106,6 +106,7 @@
 
       - name: Install Python dependencies
         pip:
+          executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/envs/test_aurora/bin/pip3"
           requirements: "/tmp/requirements.txt"
         become: true
 
