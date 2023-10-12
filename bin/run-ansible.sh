@@ -15,6 +15,8 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set -e # fail on errors
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 #set -x # echo commands run
 
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
@@ -320,38 +322,49 @@ fi
 
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
 python -m pip install yq
-pip_package_downloads_path="/tmp/aurora_host_pip_packages"
-mkdir -p $pip_package_downloads_path
-remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | xq | grep pip_packages | grep 'Key' | sed -r 's/.*pip_packages\///g' | sed -r 's/",//g')
-# remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | yq --input-format xml  | grep 'Key:' | sed -r 's/.*pip_packages\///g')
-local_only=$(comm -23 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
-remote_only=$(comm -13 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
+fetch_new_files() {
+  aws_bucket_url=$1
+  aws_bucket_dir=$2
+  # aws_bucket_url="http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com"
+  # aws_bucket_dir="pip_packages"
+  local_download_dir="/tmp/aurora_host_${aws_bucket_dir}"
+  mkdir -p $local_download_dir
+  remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
 
-echo "Packages found locally that are not in the bucket: ${local_only}"
-echo "Packages found in the bucket that we don't have a local copy of: ${remote_only}"
+  local_only=$(comm -23 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
+  remote_only=$(comm -13 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
 
-if [[ $(echo "${local_only}" | wc -c) -gt 1 ]]; then 
-  echo "Additional downloaded packages detecting, removing them..."
-  for local_package in $(echo ${local_only}); do
-    echo "  removing: ${pip_package_downloads_path}/${local_package}"
-    rm ${pip_package_downloads_path}/${local_package}
-  done
-else
-  echo "No additional local packages found, continuing..."
-fi
+  echo "Packages found locally that are not in the bucket: ${local_only}"
+  echo "Packages found in the bucket that we don't have a local copy of: ${remote_only}"
 
+  if [[ $(echo "${local_only}" | wc -c) -gt 1 ]]; then
+    echo "Additional downloaded packages detecting, removing them..."
+    for local_package in $(echo ${local_only}); do
+      echo "  removing: ${local_download_dir}/${local_package}"
+      rm ${local_download_dir}/${local_package}
+    done
+  else
+    echo "No additional local packages found, continuing..."
+  fi
 
-if [[ $(echo "${remote_only}" | wc -c) -gt 1 ]]; then
-  echo "Remote packages found that we don't have locally, downloading them..."
-  for remote_package in $(echo "${remote_only}"); do
-    echo "  Downloading: ${remote_package}"
-    wget -O ${pip_package_downloads_path}/${remote_package} http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/pip_packages/${remote_package}
-  done
-fi
+  if [[ $(echo "${remote_only}" | wc -c) -gt 1 ]]; then
+    echo "Remote packages found that we don't have locally, downloading them..."
+    for remote_package in $(echo "${remote_only}"); do
+      echo "  Downloading: ${remote_package}"
+      wget -O ${local_download_dir}/${remote_package} ${aws_bucket_url}/${aws_bucket_dir}/${remote_package}
+      if [[ $(stat --print="%s" ${remote_package}) -eq 0 ]]; then
+        echo -e "\n${RED}WARNING! The package ${remote_package} from ${aws_bucket_url}/${aws_bucket_dir}/${remote_package} has downloaded a file of zero bytes! This probably means s3 bucket permissions are wrong and is very likely to cause deployment issues on your system. Please contact shadow directly to get this fixed.${NC}\n"
+        rm ${local_download_dir}/${remote_package}
+      fi
+    done
+  fi
+}
+
+fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "pip_packages"
+fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "ansible_collections"
 
 python -m pip install ${pip_package_downloads_path}/*
 
-# exit
 
 ansible_flags="-v "
 
@@ -411,7 +424,7 @@ fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
-"${ansible_galaxy_executable}" collection install community.docker amazon.aws
+"${ansible_galaxy_executable}" collection install $(realpath /tmp/aurora_host_ansible_collections/*)
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
