@@ -29,7 +29,13 @@ if [[ $# -lt 2 ]]; then
 fi
 
 aurora_home=/tmp/aurora
+conda_ws_name="test_aurora"
+miniconda_install_location="/home/$USER/.shadow_miniconda"
+miniconda_installer="/tmp/Miniconda3-latest-Linux-x86_64.sh"
+miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
+
 playbook=$1
+# playbook="docker_deploy"
 aurora_limit=all
 shift
 
@@ -112,6 +118,7 @@ export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 # check for := (ROS style) variable assignments (just = should be used)
 extra_vars=$*
+# extra_vars='product=hand_e image=public.ecr.aws/shadowrobot/dexterous-hand tag=noetic-v1.0.27 container_name="temp_test_1_conda"'
 if [[ $extra_vars == *":="* ]]; then
     echo ""
     echo "All aurora variable assignments should be done with just = not :="
@@ -243,10 +250,10 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     sleep 1
 done
 # Pip is broken at the moment and can't find base packages so a reinstall is required.
-curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
-sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
-pip3 install --user -U pip
-sudo chown $USER:$USER $aurora_home || true
+# curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
+# sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
+# pip3 install --user -U pip
+#sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
 
 git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git $aurora_home
@@ -259,18 +266,18 @@ echo ""
 
 pushd $aurora_home
 
-ansible_version_pip3=$(pip3 freeze | grep ansible== | tr -d "ansible==")
-if [[ "${ansible_version_pip3}" != "" && "${ansible_version_pip3}" != *"4.2.0"* ]]; then
-    echo "Uninstalling pre-existing pip3 Ansible version $ansible_version_pip3 which is not supported by aurora, if prompted for sudo password, please enter it"
-    pip3 uninstall -y ansible-base ansible-core ansible
-    sudo pip3 uninstall -y ansible-base ansible-core ansible
-fi
-ansible_version_pip2=$(pip2 freeze | grep ansible== | tr -d "ansible==")
-if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"4.2.0"* ]]; then
-    echo "Uninstalling pre-existing pip2 Ansible version $ansible_version_pip2 which is not supported by aurora, if prompted for sudo password, please enter it"
-    pip2 uninstall -y ansible-base ansible-core ansible
-    sudo pip2 uninstall -y ansible-base ansible-core ansible
-fi
+# ansible_version_pip3=$(pip3 freeze | grep ansible== | tr -d "ansible==")
+# if [[ "${ansible_version_pip3}" != "" && "${ansible_version_pip3}" != *"4.2.0"* ]]; then
+#     echo "Uninstalling pre-existing pip3 Ansible version $ansible_version_pip3 which is not supported by aurora, if prompted for sudo password, please enter it"
+#     pip3 uninstall -y ansible-base ansible-core ansible
+#     sudo pip3 uninstall -y ansible-base ansible-core ansible
+# fi
+# ansible_version_pip2=$(pip2 freeze | grep ansible== | tr -d "ansible==")
+# if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"4.2.0"* ]]; then
+#     echo "Uninstalling pre-existing pip2 Ansible version $ansible_version_pip2 which is not supported by aurora, if prompted for sudo password, please enter it"
+#     pip2 uninstall -y ansible-base ansible-core ansible
+#     sudo pip2 uninstall -y ansible-base ansible-core ansible
+# fi
 
 re="^Codename:[[:space:]]+(.*)"
 while IFS= read -r line; do
@@ -279,12 +286,71 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-if [[ $codename == "bionic" ]]; then
-    pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
-else
-    pip3 install --user -r ansible/data/ansible/requirements.txt
+# if [[ $codename == "bionic" ]]; then
+#     pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
+# else
+#     pip3 install --user -r ansible/data/ansible/requirements.txt
+# fi
+
+while [[ $(echo $CONDA_PREFIX  | wc -c) -gt 1 ]]; do
+  conda deactivate
+done
+
+attempts=1
+while ! $(echo "${miniconda_checksum} ${miniconda_installer}" | sha256sum --status --check); do
+  if [[ -f "$miniconda_installer" ]]; then
+    rm $miniconda_installer
+  fi
+  echo "Attempt number ${attempts}: "
+  wget -O $miniconda_installer https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  attempts=$(( attempts + 1 ))
+  if [[ $(echo $attempts) -gt 3 ]]; then
+    echo "Maximim attempts to fetch ${miniconda_installer} failed. Has the checksum changed?"
+    echo "  Previously known good checksum: ${miniconda_checksum}"
+    echo "  Current checksum:               $(sha256sum $miniconda_installer)"
+    exit 0
+  fi
+done
+
+bash /tmp/Miniconda3-latest-Linux-x86_64.sh -u -b -p $miniconda_install_location
+
+if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]; then
+  PATH="${PATH}:${miniconda_install_location}/bin"
 fi
 
+${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
+
+pip_package_downloads_path="/tmp/aurora_host_pip_packages"
+mkdir -p $pip_package_downloads_path
+remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | yq --input-format xml  | grep 'Key:' | sed -r 's/.*pip_packages\///g')
+local_only=$(comm -23 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
+remote_only=$(comm -13 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
+
+echo "Packages found locally that are not in the bucket: ${local_only}"
+echo "Packages found in the bucket that we don't have a local copy of: ${remote_only}"
+
+if [[ $(echo "${local_only}" | wc -c) -gt 1 ]]; then 
+  echo "Additional downloaded packages detecting, removing them..."
+  for local_package in $(echo ${local_only}); do
+    echo "  removing: ${pip_package_downloads_path}/${local_package}"
+    rm ${pip_package_downloads_path}/${local_package}
+  done
+else
+  echo "No additional local packages found, continuing..."
+fi
+
+
+if [[ $(echo "${remote_only}" | wc -c) -gt 1 ]]; then
+  echo "Remote packages found that we don't have locally, downloading them..."
+  for remote_package in $(echo "${remote_only}"); do
+    echo "  Downloading: ${remote_package}"
+    wget -O ${pip_package_downloads_path}/${remote_package} http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/pip_packages/${remote_package}
+  done
+fi
+
+python -m pip install ${pip_package_downloads_path}/*
+
+# exit
 
 ansible_flags="-v "
 
