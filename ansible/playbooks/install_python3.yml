@@ -21,14 +21,14 @@
   pre_tasks:
 
     - name: Check if Python 3 is installed
-      raw: 'python3 --version'
+      raw: '/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python --version'
       register: output
       ignore_errors: yes
       changed_when: output.rc != 0
 
-    - name: Install Python 3 in case if it is not installed
-      raw: 'apt-get -y update && apt-get install -y python3'
-      when: output.rc != 0
+    # - name: Install Python 3 in case if it is not installed
+    #   raw: 'apt-get -y update && apt-get install -y python3'
+    #   when: output.rc != 0
 
 - name: Set Python 3 variable
   hosts: all
@@ -37,4 +37,4 @@
 
     - name: Set Python 3 interpreter
       set_fact:
-        ansible_python_interpreter: /usr/bin/python3
+        ansible_python_interpreter: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python
