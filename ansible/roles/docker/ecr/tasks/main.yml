@@ -81,6 +81,7 @@
       block:
       - name: Install Python dependencies
         pip:
+          virtualenv: /home/{{ lookup('env','USER') }}/.shadow_miniconda/envs/test_aurora
           requirements: "{{ role_path }}/files/requirements.txt"
         become: true
 
