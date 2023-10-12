@@ -123,7 +123,7 @@
 
     - name: Install pexpect
       pip:
-        executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8"
+        executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
         name: [ "pexpect" ]
         state: present
       become: yes
