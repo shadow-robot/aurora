@@ -251,7 +251,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
 done
 # Pip is broken at the moment and can't find base packages so a reinstall is required.
 # curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
-# sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
+sudo apt-get install -y git #libyaml-dev libssl-dev libffi-dev sshpass lsb-release
 # pip3 install --user -U pip
 #sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
@@ -319,10 +319,11 @@ if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]
 fi
 
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-
+python -m pip install yq
 pip_package_downloads_path="/tmp/aurora_host_pip_packages"
 mkdir -p $pip_package_downloads_path
-remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | yq --input-format xml  | grep 'Key:' | sed -r 's/.*pip_packages\///g')
+remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | xq | grep 'Key' | sed -r 's/.*pip_packages\///g' | sed -r 's/",//g'
+# remote_packages=$(curl -Ls http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ | yq --input-format xml  | grep 'Key:' | sed -r 's/.*pip_packages\///g')
 local_only=$(comm -23 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
 remote_only=$(comm -13 <(ls $pip_package_downloads_path | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
 
