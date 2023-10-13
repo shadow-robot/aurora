@@ -29,7 +29,7 @@
 
 - name: Install Docker pip module (and up to date versions of chardet and urllib3)
   pip:
-    executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
+    executable: {{ ansible_pip3_executable }}
     name: [ "docker >=4.4.1" ]
     state: present
   become: yes
