@@ -15,6 +15,7 @@
 ---
 - name: Ensure botocore and boto3 modules are installed
   pip:
+    executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/envs/test_aurora/bin/pip3"
     name: [ "boto3", "botocore"]
     extra_args: "--user"
   changed_when: false
