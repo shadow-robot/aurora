@@ -14,7 +14,7 @@
 
 ---
 - name: Check pip3 installed (will prevent reinstallation in case if pip3 was installed without Apt)
-  command: /home/{{ lookup('env','USER') }}/.shadow_miniconda/envs/test_aurora/bin/pip3 --version
+  command: "{{ ansible_pip3_executable }} --version"
   register: pip_status
   ignore_errors: yes
   changed_when: pip_status.rc != 0
@@ -29,7 +29,7 @@
 
 - name: Install lxml pip module
   pip:
-    executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
+    executable: "{{ ansible_pip3_executable }}"
     name: lxml
     state: present
   become: yes
