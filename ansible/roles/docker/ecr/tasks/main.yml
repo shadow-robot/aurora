@@ -81,7 +81,7 @@
       block:
       - name: Install Python dependencies
         pip:
-          executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
+          executable: "{{ ansible_pip3_executable }}"
           requirements: "{{ role_path }}/files/requirements.txt"
         become: true
 
@@ -106,7 +106,7 @@
 
       - name: Install Python dependencies
         pip:
-          executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
+          executable: "{{ ansible_pip3_executable }}"
           requirements: "/tmp/requirements.txt"
         become: true
 
@@ -123,7 +123,7 @@
 
     - name: Install pexpect
       pip:
-        executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
+        executable: "{{ ansible_pip3_executable }}"
         name: [ "pexpect" ]
         state: present
       become: yes
