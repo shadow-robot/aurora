@@ -317,7 +317,7 @@ while ! $(echo "${miniconda_checksum} ${miniconda_installer}" | sha256sum --stat
   fi
 done
 
-bash /tmp/Miniconda3-latest-Linux-x86_64.sh -u -b -p $miniconda_install_location
+bash $miniconda_installer -u -b -p $miniconda_install_location
 
 if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]; then
   PATH="${PATH}:${miniconda_install_location}/bin"
