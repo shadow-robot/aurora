@@ -83,7 +83,6 @@
         pip:
           executable: "{{ ansible_pip3_executable }}"
           requirements: "{{ role_path }}/files/requirements.txt"
-        become: true
 
       - name: Decrypt results
         command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
@@ -108,7 +107,6 @@
         pip:
           executable: "{{ ansible_pip3_executable }}"
           requirements: "/tmp/requirements.txt"
-        become: true
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
@@ -126,7 +124,6 @@
         executable: "{{ ansible_pip3_executable }}"
         name: [ "pexpect" ]
         state: present
-      become: yes
 
     - name: Configure AWS CLI
       expect:
