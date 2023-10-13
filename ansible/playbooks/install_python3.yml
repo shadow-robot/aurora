@@ -35,9 +35,20 @@
   gather_facts: no
   pre_tasks:
 
+    - name: Set python3/pip path if not molecule
+      set_fact:
+        ansible_python_and_pip_path: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin
+      when: "{{ not (lookup('env', 'MOLECULE_DEBUG') | bool) }}"
+
+    - name: Set python3/pip path if molecule
+      set_fact:
+        ansible_python_and_pip_path: /root/.shadow_miniconda/miniconda/envs/test_aurora/bin
+      when: "{{ (lookup('env', 'MOLECULE_DEBUG') | bool) }}"
+
     - name: Set Python 3 interpreter
       set_fact:
-        ansible_python_interpreter: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8
+        ansible_python_interpreter: "{{ ansible_python_and_pip_path }}/python3.8"
+
     - name: Set Python3 pip executable
       set_fact:
-        ansible_pip3_executable: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3
+        ansible_pip3_executable: "{{ ansible_python_and_pip_path }}/pip3"
