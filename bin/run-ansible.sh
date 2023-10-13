@@ -34,7 +34,7 @@ aurora_home=/tmp/aurora
 conda_ws_name="test_aurora"
 miniconda_install_root="/home/$USER/.shadow_miniconda"
 miniconda_install_location="${miniconda_install_root}/miniconda"
-miniconda_installer="${miniconda_install_root}/miniconda_installer"
+miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
 miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
 packages_download_root="/tmp/aurora_host_packages"
 
