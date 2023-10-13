@@ -110,7 +110,7 @@
 
 - name: Ensure botocore and boto3 modules are installed
   pip:
-    executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
+    executable: "{{ ansible_pip3_executable }}"
     name: [ "boto3", "botocore"]
     extra_args: "--user"
 
