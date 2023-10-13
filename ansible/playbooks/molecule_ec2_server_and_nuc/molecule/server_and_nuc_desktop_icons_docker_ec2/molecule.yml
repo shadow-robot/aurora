@@ -15,8 +15,7 @@
 ---
 dependency:
   name: shell
-  command: bash -c "ansible-galaxy collection install amazon.aws ansible.netcommon:1.5.0 --force"
-driver:
+command: bash -c "wget -O /tmp/amazon-aws-6.5.0.tar.gz http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ansible_collections/amazon-aws-6.5.0.tar.gz && ansible-galaxy collection install /tmp/amazon-aws-6.5.0.tar.gz --force && ansible-galaxy collection install ansible.netcommon:1.5.0 --force"driver:
   name: ec2
 lint: |
   set -e
