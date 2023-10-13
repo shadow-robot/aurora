@@ -30,7 +30,7 @@
 
 - name: Install common python packages
   pip:
-    executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/envs/test_aurora/bin/pip3"
+    executable: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3"
     name: python-yubico==1.3.3
     state: present
   become: yes
