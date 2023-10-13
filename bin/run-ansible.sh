@@ -300,6 +300,7 @@ while [[ $(echo $CONDA_PREFIX  | wc -c) -gt 1 ]]; do
   conda deactivate
 done
 
+mkdir -p $miniconda_install_root
 attempts=1
 while ! $(echo "${miniconda_checksum} ${miniconda_installer}" | sha256sum --status --check); do
   if [[ -f "$miniconda_installer" ]]; then
