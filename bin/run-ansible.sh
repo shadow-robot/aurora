@@ -35,11 +35,11 @@ conda_ws_name="test_aurora"
 miniconda_install_root="/home/$USER/.shadow_miniconda"
 miniconda_install_location="${miniconda_install_root}/miniconda"
 miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
+miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
 miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
 packages_download_root="/tmp/aurora_host_packages"
 
 playbook=$1
-# playbook="docker_deploy"
 aurora_limit=all
 shift
 
@@ -122,7 +122,6 @@ export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 # check for := (ROS style) variable assignments (just = should be used)
 extra_vars=$*
-# extra_vars='product=hand_e image=public.ecr.aws/shadowrobot/dexterous-hand tag=noetic-v1.0.27 container_name="temp_test_1_conda"'
 if [[ $extra_vars == *":="* ]]; then
     echo ""
     echo "All aurora variable assignments should be done with just = not :="
@@ -253,11 +252,10 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     echo "Waiting for apt-get install file lock..."
     sleep 1
 done
-# Pip is broken at the moment and can't find base packages so a reinstall is required.
-# curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
-sudo apt-get install -y git jq #libyaml-dev libssl-dev libffi-dev sshpass lsb-release
-# pip3 install --user -U pip
-#sudo chown $USER:$USER $aurora_home || true
+
+# jq is needed for yq, which installs xq, which helps parse aws s3 http requests
+sudo apt-get install -y git jq
+sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
 
 git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git $aurora_home
@@ -269,19 +267,6 @@ echo " -------------------"
 echo ""
 
 pushd $aurora_home
-
-# ansible_version_pip3=$(pip3 freeze | grep ansible== | tr -d "ansible==")
-# if [[ "${ansible_version_pip3}" != "" && "${ansible_version_pip3}" != *"4.2.0"* ]]; then
-#     echo "Uninstalling pre-existing pip3 Ansible version $ansible_version_pip3 which is not supported by aurora, if prompted for sudo password, please enter it"
-#     pip3 uninstall -y ansible-base ansible-core ansible
-#     sudo pip3 uninstall -y ansible-base ansible-core ansible
-# fi
-# ansible_version_pip2=$(pip2 freeze | grep ansible== | tr -d "ansible==")
-# if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"4.2.0"* ]]; then
-#     echo "Uninstalling pre-existing pip2 Ansible version $ansible_version_pip2 which is not supported by aurora, if prompted for sudo password, please enter it"
-#     pip2 uninstall -y ansible-base ansible-core ansible
-#     sudo pip2 uninstall -y ansible-base ansible-core ansible
-# fi
 
 re="^Codename:[[:space:]]+(.*)"
 while IFS= read -r line; do
@@ -307,7 +292,7 @@ while ! $(echo "${miniconda_checksum} ${miniconda_installer}" | sha256sum --stat
     rm $miniconda_installer
   fi
   echo "Attempt number ${attempts}: "
-  wget -O $miniconda_installer https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  wget -O $miniconda_installer $miniconda_installer_url
   attempts=$(( attempts + 1 ))
   if [[ $(echo $attempts) -gt 3 ]]; then
     echo "Maximim attempts to fetch ${miniconda_installer} failed. Has the checksum changed?"
