@@ -38,3 +38,6 @@
     - name: Set Python 3 interpreter
       set_fact:
         ansible_python_interpreter: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8
+    - name: Set Python3 pip executable
+      set_fact:
+        ansible_pip3_executable: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/pip3
