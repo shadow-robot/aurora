@@ -12,9 +12,10 @@ ENV LANG C.UTF-8
 
 ARG ts_docker_aurora_branch
 
-ENV ts_docker_aurora_branch ${ts_docker_aurora_branch:-"master"}
 
-ENV ts_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/F_testing_conda_deployment/bin/run-ansible.sh"
+ENV ts_docker_aurora_branch "F_testing_conda_deployment"  # ${ts_docker_aurora_branch:-"master"}
+
+ENV ts_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ts_docker_aurora_branch/bin/run-ansible.sh"
 
 RUN set -x && \
     sudo apt-get update && \
