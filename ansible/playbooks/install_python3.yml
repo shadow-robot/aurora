@@ -64,7 +64,7 @@
 
     - name: Install Python 3 in case if it is not installed
       raw: 'apt-get -y update && apt-get install -y python3'
-      when: output.rc != 0 and '"root" in sr_user_home'
+      when: '"root" in sr_user_home'
 
 - name: Set Python 3 variable
   hosts: all
