@@ -6,7 +6,7 @@ ARG ml_docker_aurora_branch
 
 ENV ml_docker_aurora_branch ${ml_docker_aurora_branch:-"master"}
 
-ENV ml_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_docker_aurora_branch/bin/run-ansible.sh"
+ENV ml_docker_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/F_testing_conda_deployment/bin/run-ansible.sh"
 
 RUN set -x && \
     \

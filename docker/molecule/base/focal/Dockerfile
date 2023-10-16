@@ -37,7 +37,7 @@ RUN set -x && \
     \
     pip3 install --upgrade pip setuptools==51.1.1 gcovr && \
     echo "Cloning Aurora" && \
-    git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $ml_base_aurora_branch /tmp/aurora && \
+    git clone --depth 1 https://github.com/shadow-robot/aurora.git -b F_testing_conda_deployment /tmp/aurora && \
     \
     pip3 --version && \
     python3 --version && \
