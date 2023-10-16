@@ -92,7 +92,7 @@
       
     - name: Set Python3 pip executable
       set_fact:
-        ansible_pip3_executable: "/usr/local/bin/pip3"
+        ansible_pip3_executable: "/usr/bin/pip3"
       when: '"root" in sr_user_home'
 
     - name: test set python3 variable 1
