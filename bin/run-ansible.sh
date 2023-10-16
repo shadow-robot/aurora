@@ -317,7 +317,19 @@ fetch_new_files() {
   # aws_bucket_dir="pip_packages"
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
   mkdir -p $local_download_dir
-  remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
+  full_xml=$(curl -Ls ${aws_bucket_url})
+  echo "full xml: ${full_xml}"
+  xq_out=$(echo ${full_xml} | xq)
+  echo "xq out: ${xq_out}"
+  grep_bucket_dir=$(echo ${xq_out} | grep $aws_bucket_dir)
+  echo "grep_bucket_dir: ${grep_bucket_dir}"
+  grep_key=$(echo ${grep_bucket_dir} | grep 'Key')
+  echo "grep_key: ${grep_key}"
+  sed_r=$(echo ${grep_key} | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
+  echo "sed_r: ${sed_r}"
+  remote_packages=$(echo ${sed_r})
+  echo "remote_packages: ${remote_packages}"
+  # remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
 
   local_only=$(comm -23 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
   remote_only=$(comm -13 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
