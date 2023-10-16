@@ -28,15 +28,15 @@
         msg: "{{ printenv_vars.stdout_lines }}"
       become: yes
 
-    - name: test register env var
-      raw: "${HOME:-/home/user}"
-      register: test_var
-      become: yes
+    # - name: test register env var
+    #   raw: "${HOME:-/home/user}"
+    #   register: test_var
+    #   become: yes
 
-    - name: print env var test
-      debug:
-        msg: "{{ test_var.stdout_lines }}"
-      become: yes
+    # - name: print env var test
+    #   debug:
+    #     msg: "{{ test_var.stdout_lines }}"
+    #   become: yes
   
 - name: Install Python 3
   hosts: all
