@@ -61,7 +61,7 @@
 
     - name: Set user home from env var
       set_fact:
-        sr_user_home: "{{ lookup('env',HOME') }}"
+        sr_user_home: "{{ lookup('env','HOME') }}"
 
     - name: Set python3/pip path
       set_fact:
