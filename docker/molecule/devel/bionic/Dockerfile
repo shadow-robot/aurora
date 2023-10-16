@@ -12,7 +12,7 @@ ENV LC_ALL C.UTF-8
 
 ENV LANG C.UTF-8
 
-ENV ml_devel_aurora_branch "F_testing_conda_deployment"  # ${ml_devel_aurora_branch:-"master"}
+ENV ml_devel_aurora_branch "F_testing_conda_deployment"
 
 ENV ml_devel_aurora_script "https://raw.githubusercontent.com/shadow-robot/aurora/$ml_devel_aurora_branch/bin/run-ansible.sh"
 
