@@ -13,31 +13,6 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Install Python 3 check printenv
-  hosts: all
-  become: yes
-  gather_facts: no
-  pre_tasks:
-  
-    - name: register printenv
-      raw: "printenv"
-      register: printenv_vars
-
-    - name: print printenv
-      debug:
-        msg: "{{ printenv_vars.stdout_lines }}"
-      become: yes
-
-    # - name: test register env var
-    #   raw: "${HOME:-/home/user}"
-    #   register: test_var
-    #   become: yes
-
-    # - name: print env var test
-    #   debug:
-    #     msg: "{{ test_var.stdout_lines }}"
-    #   become: yes
-  
 - name: Install Python 3
   hosts: all
   become: yes
@@ -53,18 +28,24 @@
       register: output
       ignore_errors: yes
       changed_when: output.rc != 0
-      when: '"root" in sr_user_home'
-
-    - name: Check if Python 3 is installed
-      raw: "{{ lookup('env','HOME') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8 --version"
-      register: output
-      ignore_errors: yes
-      changed_when: output.rc != 0
-      when: '"root" not in sr_user_home'
 
     - name: Install Python 3 in case if it is not installed
-      raw: 'apt-get -y update && apt-get install -y python3 python3-pip'
-      when: '"root" in sr_user_home'
+      raw: 'apt-get -y update && apt-get install -y python3'
+      when: output.rc != 0
+
+    - name: Check pip3 installed (will prevent reinstallation in case if pip3 was installed without Apt)
+      command: pip3 --version
+      register: pip_status
+      ignore_errors: yes
+      changed_when: pip_status.rc != 0
+    
+    - name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
+      apt:
+        name: 'python3-pip'
+        state: 'present'
+        update_cache: yes
+      when: pip_status.rc != 0
+      become: yes
 
 - name: Set Python 3 variable
   hosts: all
