@@ -366,6 +366,8 @@ fetch_new_files() {
 }
 
 fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "pip_packages"
+echo "####################"
+echo "fetching ansible_collections..."
 fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "ansible_collections"
 
 python -m pip install ${packages_download_root}/pip_packages/*
