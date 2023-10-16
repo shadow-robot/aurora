@@ -333,6 +333,7 @@ fetch_new_files() {
   # echo "remote_packages: ${remote_packages}"
   remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
 
+
   echo "remote_packages: ${remote_packages}"
 
   local_only=$(comm -23 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
@@ -365,10 +366,10 @@ fetch_new_files() {
   IFS=${old_IFS}
 }
 
-fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "pip_packages"
+fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
 echo "####################"
 echo "fetching ansible_collections..."
-fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "ansible_collections"
+fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
 
 python -m pip install ${packages_download_root}/pip_packages/*
 
