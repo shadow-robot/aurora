@@ -45,7 +45,7 @@
   pre_tasks:
 
     - name: Check if Python 3 is installed
-      raw: "/home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8 --version"
+      raw: "{{ lookup('env',HOME') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8 --version"
       register: output
       ignore_errors: yes
       changed_when: output.rc != 0
@@ -61,24 +61,24 @@
 
     - name: Set user home from env var
       set_fact:
-        ansible_user_home: "{{ lookup('env',HOME') }}"
+        sr_user_home: "{{ lookup('env',HOME') }}"
 
     - name: Set python3/pip path
       set_fact:
-        ansible_python_and_pip_path: "{{ ansible_user_home }}/.shadow_miniconda/miniconda/envs/test_aurora/bin"
+        sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/test_aurora/bin"
 
     - name: Set Python 3 interpreter
       set_fact:
-        ansible_python_interpreter: "{{ ansible_python_and_pip_path }}/python3.8"
+        ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3.8"
 
     - name: Set Python3 pip executable
       set_fact:
-        ansible_pip3_executable: "{{ ansible_python_and_pip_path }}/pip3"
+        ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
 
     - name: test set python3 variable 1
       debug:
-        msg: "{{ ansible_user_home }}"
+        msg: "{{ sr_user_home }}"
     
     - name: test set python3 variable 2
       debug:
-        msg: "{{ ansible_python_and_pip_path }}"
+        msg: "{{ sr_python_and_pip_path }}"
