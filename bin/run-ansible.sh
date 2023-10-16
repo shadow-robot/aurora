@@ -309,7 +309,7 @@ if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]
 fi
 
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-python -m pip install yq
+python -m pip install yq xq
 fetch_new_files() {
   old_IFS=$IFS
   IFS=$'\n'
