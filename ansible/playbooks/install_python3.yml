@@ -16,7 +16,17 @@
 - name: Install Python 3 check printenv
   hosts: all
   become: yes
-  shell: "printenv"
+  gather_facts: no
+  pre_tasks:
+  
+    - name: register printenv
+      raw: "printenv"
+      register: printenv_vars
+
+    - name: print printenv
+      debug:
+        msg: "{{ printenv_vars.stdout_lines }}"
+
   
 - name: Install Python 3
   hosts: all
