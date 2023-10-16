@@ -309,7 +309,7 @@ if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]
 fi
 
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-python -m pip install yq
+python -m pip install yq xq
 fetch_new_files() {
   old_IFS=$IFS
   IFS=$'\n'
@@ -319,19 +319,22 @@ fetch_new_files() {
   # aws_bucket_dir="pip_packages"
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
   mkdir -p $local_download_dir
-  full_xml=$(curl -Ls ${aws_bucket_url})
-  echo "full xml: ${full_xml}"
-  xq_out=$(echo ${full_xml} | xq)
-  echo "xq out: ${xq_out}"
-  grep_bucket_dir=$(echo ${xq_out} | grep $aws_bucket_dir)
-  echo "grep_bucket_dir: ${grep_bucket_dir}"
-  grep_key=$(echo ${grep_bucket_dir} | grep 'Key')
-  echo "grep_key: ${grep_key}"
-  sed_r=$(echo ${grep_key} | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
-  echo "sed_r: ${sed_r}"
-  remote_packages=$(echo ${sed_r})
+  # full_xml=$(curl -Ls ${aws_bucket_url})
+  # echo "full xml: ${full_xml}"
+  # xq_out=$(echo ${full_xml} | xq)
+  # echo "xq out: ${xq_out}"
+  # grep_bucket_dir=$(echo ${xq_out} | grep $aws_bucket_dir)
+  # echo "grep_bucket_dir: ${grep_bucket_dir}"
+  # grep_key=$(echo ${grep_bucket_dir} | grep 'Key')
+  # echo "grep_key: ${grep_key}"
+  # sed_r=$(echo ${grep_key} | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
+  # echo "sed_r: ${sed_r}"
+  # remote_packages=$(echo ${sed_r})
+  # echo "remote_packages: ${remote_packages}"
+  remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
+
+
   echo "remote_packages: ${remote_packages}"
-  # remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
 
   local_only=$(comm -23 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
   remote_only=$(comm -13 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
@@ -363,8 +366,10 @@ fetch_new_files() {
   IFS=${old_IFS}
 }
 
-fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "pip_packages"
-fetch_new_files "http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com" "ansible_collections"
+fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
+echo "####################"
+echo "fetching ansible_collections..."
+fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
 
 python -m pip install ${packages_download_root}/pip_packages/*
 
