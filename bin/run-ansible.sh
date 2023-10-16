@@ -315,8 +315,8 @@ fetch_new_files() {
   IFS=$'\n'
   aws_bucket_url=$1
   aws_bucket_dir=$2
-  aws_bucket_url="http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com"
-  aws_bucket_dir="pip_packages"
+  # aws_bucket_url="http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com"
+  # aws_bucket_dir="pip_packages"
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
   mkdir -p $local_download_dir
   # full_xml=$(curl -Ls ${aws_bucket_url})
