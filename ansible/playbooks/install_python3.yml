@@ -63,7 +63,7 @@
 
     - name: Set python3/pip path
       set_fact:
-        ansible_python_and_pip_path: "{{ ansible_user_home }}/.shadow_miniconda/miniconda/envs/test_aurora/bin
+        ansible_python_and_pip_path: "{{ ansible_user_home }}/.shadow_miniconda/miniconda/envs/test_aurora/bin"
 
     - name: Set Python 3 interpreter
       set_fact:
@@ -77,6 +77,6 @@
       debug:
         msg: "{{ ansible_user_home }}"
     
-    - name: test set python3 variable 1
+    - name: test set python3 variable 2
       debug:
         msg: "{{ ansible_python_and_pip_path }}"
