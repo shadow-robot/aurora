@@ -63,7 +63,7 @@
       when: '"root" not in sr_user_home'
 
     - name: Install Python 3 in case if it is not installed
-      raw: 'apt-get -y update && apt-get install -y python3'
+      raw: 'apt-get -y update && apt-get install -y python3 python3-pip'
       when: '"root" in sr_user_home'
 
 - name: Set Python 3 variable
@@ -92,7 +92,7 @@
       
     - name: Set Python3 pip executable
       set_fact:
-        ansible_pip3_executable: "/usr/local/bin/pip3"
+        ansible_pip3_executable: "/usr/bin/pip3"
       when: '"root" in sr_user_home'
 
     - name: test set python3 variable 1
