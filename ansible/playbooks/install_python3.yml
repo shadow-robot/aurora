@@ -45,7 +45,7 @@
   pre_tasks:
 
     - name: Check if Python 3 is installed
-      raw: "{{ lookup('env',HOME') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8 --version"
+      raw: "{{ lookup('env','HOME') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin/python3.8 --version"
       register: output
       ignore_errors: yes
       changed_when: output.rc != 0
