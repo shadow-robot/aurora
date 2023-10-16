@@ -254,7 +254,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
 done
 
 # jq is needed for yq, which installs xq, which helps parse aws s3 http requests
-sudo apt-get install -y git jq curl
+sudo apt-get install -y git jq curl lsb-release
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
 
@@ -268,7 +268,6 @@ echo ""
 
 pushd $aurora_home
 
-sudo apt install -y lsb_release
 
 re="^Codename:[[:space:]]+(.*)"
 while IFS= read -r line; do
