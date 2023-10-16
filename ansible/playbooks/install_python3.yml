@@ -26,6 +26,7 @@
     - name: print printenv
       debug:
         msg: "{{ printenv_vars.stdout_lines }}"
+      become: yes
 
     - name: test register env var
       raw: "${HOME:-/home/user}"
@@ -35,7 +36,7 @@
     - name: print env var test
       debug:
         msg: "{{ test_var.stdout_lines }}"
-
+      become: yes
   
 - name: Install Python 3
   hosts: all
