@@ -322,18 +322,7 @@ fetch_new_files() {
   mkdir -p $local_download_dir
   full_xml=$(curl -Ls ${aws_bucket_url})
   echo "full xml: ${full_xml}"
-  # xq_out=$(echo ${full_xml} | xq)
-  # echo "xq out: ${xq_out}"
-  # grep_bucket_dir=$(echo ${xq_out} | grep $aws_bucket_dir)
-  # echo "grep_bucket_dir: ${grep_bucket_dir}"
-  # grep_key=$(echo ${grep_bucket_dir} | grep 'Key')
-  # echo "grep_key: ${grep_key}"
-  # sed_r=$(echo ${grep_key} | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g')
-  # echo "sed_r: ${sed_r}"
-  # remote_packages=$(echo ${sed_r})
-  # echo "remote_packages: ${remote_packages}"
   remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
-
 
   echo "remote_packages: ${remote_packages}"
 
