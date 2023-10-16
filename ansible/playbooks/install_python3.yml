@@ -27,6 +27,14 @@
       debug:
         msg: "{{ printenv_vars.stdout_lines }}"
 
+    - name: test register env var
+      raw: "${HOME:-/home/user}"
+      register: test_var
+
+    - name: print env var test
+      debug:
+        msg: "{{ test_var.stdout_lines }}"
+
   
 - name: Install Python 3
   hosts: all
@@ -49,15 +57,13 @@
   gather_facts: no
   pre_tasks:
 
-    - name: Set python3/pip path if not molecule
+    - name: Set user home from env var
       set_fact:
-        ansible_python_and_pip_path: /home/{{ lookup('env','USER') }}/.shadow_miniconda/miniconda/envs/test_aurora/bin
-      when: "{{ not (lookup('env', 'MOLECULE_DEBUG') | bool) }}"
+        ansible_user_home: "{{ lookup('env',HOME') }}"
 
-    - name: Set python3/pip path if molecule
+    - name: Set python3/pip path
       set_fact:
-        ansible_python_and_pip_path: /root/.shadow_miniconda/miniconda/envs/test_aurora/bin
-      when: "{{ (lookup('env', 'MOLECULE_DEBUG') | bool) }}"
+        ansible_python_and_pip_path: "{{ ansible_user_home }}/.shadow_miniconda/miniconda/envs/test_aurora/bin
 
     - name: Set Python 3 interpreter
       set_fact:
@@ -66,3 +72,11 @@
     - name: Set Python3 pip executable
       set_fact:
         ansible_pip3_executable: "{{ ansible_python_and_pip_path }}/pip3"
+
+    - name: test set python3 variable 1
+      debug:
+        msg: "{{ ansible_user_home }}"
+    
+    - name: test set python3 variable 1
+      debug:
+        msg: "{{ ansible_python_and_pip_path }}"
