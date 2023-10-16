@@ -319,8 +319,8 @@ fetch_new_files() {
   # aws_bucket_dir="pip_packages"
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
   mkdir -p $local_download_dir
-  # full_xml=$(curl -Ls ${aws_bucket_url})
-  # echo "full xml: ${full_xml}"
+  full_xml=$(curl -Ls ${aws_bucket_url})
+  echo "full xml: ${full_xml}"
   # xq_out=$(echo ${full_xml} | xq)
   # echo "xq out: ${xq_out}"
   # grep_bucket_dir=$(echo ${xq_out} | grep $aws_bucket_dir)
