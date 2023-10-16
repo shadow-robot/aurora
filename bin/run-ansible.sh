@@ -268,6 +268,8 @@ echo ""
 
 pushd $aurora_home
 
+sudo apt install -y lsb_release
+
 re="^Codename:[[:space:]]+(.*)"
 while IFS= read -r line; do
     if [[ $line =~ $re ]]; then
