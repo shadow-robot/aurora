@@ -30,6 +30,7 @@
     - name: test register env var
       raw: "${HOME:-/home/user}"
       register: test_var
+      become: yes
 
     - name: print env var test
       debug:
