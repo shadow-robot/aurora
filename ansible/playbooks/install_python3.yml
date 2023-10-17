@@ -56,36 +56,28 @@
       set_fact:
         sr_user_home: "{{ lookup('env','HOME') }}"
 
-    - name: Set python3/pip path
-      set_fact:
-        sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/test_aurora/bin"
+    - name: Install python3 non-root
       when: '"root" not in sr_user_home'
+      block:
+        - name: Set python3/pip path
+          set_fact:
+            sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/aurora_conda_ws/bin"
 
-    - name: Set Python 3 interpreter
-      set_fact:
-        ansible_python_interpreter: "/usr/bin/python3"
+        - name: Set Python 3 interpreter
+          set_fact:
+            ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3.8"
+
+        - name: Set Python3 pip executable
+          set_fact:
+            ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
+
+    - name: Install python3 root
       when: '"root" in sr_user_home'
+      block:
+        - name: Set Python 3 interpreter
+          set_fact:
+            ansible_python_interpreter: "/usr/bin/python3"
 
-    - name: Set Python 3 interpreter
-      set_fact:
-        ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3.8"
-      when: '"root" not in sr_user_home'
-
-    - name: Set Python3 pip executable
-      set_fact:
-        ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
-      when: '"root" not in sr_user_home'
-      
-    - name: Set Python3 pip executable
-      set_fact:
-        ansible_pip3_executable: "/usr/bin/pip3"
-      when: '"root" in sr_user_home'
-
-    - name: test set python3 variable 1
-      debug:
-        msg: "{{ sr_user_home }}"
-    
-    - name: test set python3 variable 2
-      debug:
-        msg: "{{ sr_python_and_pip_path }}"
-      when: '"root" not in sr_user_home'
+        - name: Set Python3 pip executable
+          set_fact:
+            ansible_pip3_executable: "/usr/bin/pip3"
