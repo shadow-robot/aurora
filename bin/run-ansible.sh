@@ -30,31 +30,12 @@ if [[ $# -lt 2 ]]; then
     exit 1
 fi
 
-
-echo -e "ff1247\n$(printenv)"
-
+# Some molecule tests install to `/home/...` (no user account)
 if [ -z $USER ]; then
   if [ -z $MY_USERNAME ]; then
     HOME='/home'
   fi
 fi
-
-#   if [ ! -z $HOME ]; then
-#     if [[ "${HOME}" == *"root"* ]]; then
-#       USER='root'
-#     fi
-#   fi
-# fi
-
-# if [ -z $HOME ]; then
-
-# If 'USER' or 'MY_USERNAME' are not set, default to 'user'
-# USER="${USER:-$MY_USERNAME}"
-# USER="${USER:-user}"
-# HOME="${HOME:-/home}"
-
-
-echo -e "ff11487\n$(printenv)"
 
 aurora_home=/tmp/aurora
 conda_ws_name="test_aurora"
@@ -302,15 +283,6 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-# if [[ $codename == "bionic" ]]; then
-#     pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
-# else
-#     pip3 install --user -r ansible/data/ansible/requirements.txt
-# fi
-
-while [[ $(echo $CONDA_PREFIX  | wc -c) -gt 1 ]]; do
-  conda deactivate
-done
 
 mkdir -p $miniconda_install_root
 attempts=1
@@ -342,12 +314,11 @@ fetch_new_files() {
   IFS=$'\n'
   aws_bucket_url=$1
   aws_bucket_dir=$2
-  # aws_bucket_url="http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com"
-  # aws_bucket_dir="pip_packages"
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
+
+  echo "Fetching ${aws_bucket_dir}..."
   mkdir -p $local_download_dir
-  full_xml=$(curl -Ls ${aws_bucket_url})
-  echo "full xml: ${full_xml}"
+
   remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
 
   echo "remote_packages: ${remote_packages}"
@@ -383,10 +354,7 @@ fetch_new_files() {
 }
 
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
-echo "####################"
-echo "fetching ansible_collections..."
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
-
 python -m pip install ${packages_download_root}/pip_packages/*
 
 
