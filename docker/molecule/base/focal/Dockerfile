@@ -12,7 +12,7 @@ ENV LANG C.UTF-8
 
 ARG ml_base_aurora_branch
 
-ENV ml_base_aurora_branch "F_testing_conda_deployment"  # ${ml_base_aurora_branch:-"master"}
+ENV ml_base_aurora_branch "F_testing_conda_deployment"
 
 RUN set -x && \
     apt-get update && \
