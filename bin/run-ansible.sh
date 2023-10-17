@@ -34,7 +34,9 @@ fi
 echo -e "ff1247\n$(printenv)"
 
 if [ -z $USER ]; then
-  HOME='/home'
+  if [ -z $MY_USERNAME ]; then
+    HOME='/home'
+  fi
 fi
 
 #   if [ ! -z $HOME ]; then
