@@ -27,8 +27,8 @@ command_usage_message="${command_usage_message} [<parameter>=<value>] [<paramete
 
 
 echo -e "xy1247\n$(printenv)"
-exit 0
 exit 1
+exit 0
 exit
 
 if [[ $# -lt 2 ]]; then
