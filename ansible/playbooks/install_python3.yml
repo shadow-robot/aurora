@@ -13,6 +13,7 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+
 - name: Install Python 3
   hosts: all
   become: yes
