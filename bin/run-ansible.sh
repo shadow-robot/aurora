@@ -25,25 +25,26 @@ command_usage_message="Command usage: ${script_name} <playbook name> [--branch <
 command_usage_message="${command_usage_message} [--limit <rules>]"
 command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
 
-
-echo -e "xy1247\n$(printenv)"
-exit 1
-exit 0
-exit
-
 if [[ $# -lt 2 ]]; then
     echo "${command_usage_message}"
     exit 1
 fi
 
+if [ -z $USER ]; then
+  if [ ! -z $HOME ]; then
+    if [[ "${HOME}" == *"root"* ]]; then
+      USER='root'
+    fi
+  fi
+fi
 
 # If 'USER' or 'MY_USERNAME' are not set, default to 'user'
-USER="${USER:-$MY_USERNAME}"
-USER="${USER:-user}"
+# USER="${USER:-$MY_USERNAME}"
+# USER="${USER:-user}"
 
 aurora_home=/tmp/aurora
 conda_ws_name="test_aurora"
-miniconda_install_root="/home/$USER/.shadow_miniconda"
+miniconda_install_root="${HOME}/.shadow_miniconda"
 miniconda_install_location="${miniconda_install_root}/miniconda"
 miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
 miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
@@ -128,7 +129,7 @@ echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
-export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
+export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
 export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 # check for := (ROS style) variable assignments (just = should be used)
@@ -166,8 +167,8 @@ for extra_var in $extra_vars; do
 done
 IFS=${old_IFS}
 
-github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
-github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
+github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
+github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
     echo " -------------------------------------------------------------------------------------"
     echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
@@ -198,7 +199,7 @@ for i in "${inputdata[@]}"; do
     read -r input_data
     if [[ "${i}" = "github_email" ]]; then
         if [[ ! -f "$github_ssh_public_key_path" ]]; then
-            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f /home/$USER/.ssh/id_rsa
+            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f ${HOME}/.ssh/id_rsa
         fi    
         eval "$(ssh-agent -s)"
         ssh-add $github_ssh_private_key_path
