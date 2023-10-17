@@ -30,6 +30,11 @@ if [[ $# -lt 2 ]]; then
     exit 1
 fi
 
+
+# If 'USER' or 'MY_USERNAME' are not set, default to 'user'
+USER="${USER:-$MY_USERNAME}"
+USER="${USER:-user}"
+
 aurora_home=/tmp/aurora
 conda_ws_name="test_aurora"
 miniconda_install_root="/home/$USER/.shadow_miniconda"

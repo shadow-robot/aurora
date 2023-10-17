@@ -66,6 +66,11 @@
         ansible_python_interpreter: "/usr/bin/python3"
       when: '"root" in sr_user_home'
 
+    - name: Set Python 3 interpreter
+      set_fact:
+        ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3.8"
+      when: '"root" not in sr_user_home'
+
     - name: Set Python3 pip executable
       set_fact:
         ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
