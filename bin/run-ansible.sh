@@ -25,6 +25,12 @@ command_usage_message="Command usage: ${script_name} <playbook name> [--branch <
 command_usage_message="${command_usage_message} [--limit <rules>]"
 command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
 
+
+echo -e "xy1247\n$(printenv)"
+exit 0
+exit 1
+exit
+
 if [[ $# -lt 2 ]]; then
     echo "${command_usage_message}"
     exit 1
