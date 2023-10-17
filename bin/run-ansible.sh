@@ -30,17 +30,29 @@ if [[ $# -lt 2 ]]; then
     exit 1
 fi
 
+
+echo -e "ff1247\n$(printenv)"
+
 if [ -z $USER ]; then
-  if [ ! -z $HOME ]; then
-    if [[ "${HOME}" == *"root"* ]]; then
-      USER='root'
-    fi
-  fi
+  HOME='/home'
 fi
+
+#   if [ ! -z $HOME ]; then
+#     if [[ "${HOME}" == *"root"* ]]; then
+#       USER='root'
+#     fi
+#   fi
+# fi
+
+# if [ -z $HOME ]; then
 
 # If 'USER' or 'MY_USERNAME' are not set, default to 'user'
 # USER="${USER:-$MY_USERNAME}"
 # USER="${USER:-user}"
+# HOME="${HOME:-/home}"
+
+
+echo -e "ff11487\n$(printenv)"
 
 aurora_home=/tmp/aurora
 conda_ws_name="test_aurora"
