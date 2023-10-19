@@ -44,7 +44,7 @@ miniconda_install_location="${miniconda_install_root}/miniconda"
 miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
 miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-py311_23.5.2-0-Linux-x86_64.sh"
 miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
-packages_download_root="/tmp/aurora_host_packages"
+packages_download_root="${miniconda_install_root}/aurora_host_packages"
 
 playbook=$1
 aurora_limit=all
@@ -355,7 +355,7 @@ fetch_new_files() {
 
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
-python -m pip install ${packages_download_root}/pip_packages/*
+ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
 
 
 ansible_flags="-v "
