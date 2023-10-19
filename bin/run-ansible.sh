@@ -195,7 +195,7 @@ for i in "${inputdata[@]}"; do
     if [[ "${i}" = "github_email" ]]; then
         if [[ ! -f "$github_ssh_public_key_path" ]]; then
             ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f ${HOME}/.ssh/id_rsa
-        fi    
+        fi
         eval "$(ssh-agent -s)"
         ssh-add $github_ssh_private_key_path
         xclip -sel clip < $github_ssh_public_key_path
