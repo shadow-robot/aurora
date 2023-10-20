@@ -32,5 +32,5 @@
 
 - name: print modify_container_command_output
   debug:
-  msg: "modify_container_command_output: {{ modify_container_command_output.stdout }}"
+    msg: "modify_container_command_output: {{ modify_container_command_output.stdout }}"
   
