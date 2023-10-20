@@ -18,4 +18,3 @@
   vars:
     modify_script_name: "block_until_entrypoint_finishes.sh"
     modify_script_commands: "while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 1 ]]; do sleep 0.1; done"
-  when: xdg_check.stdout=="0"
