@@ -13,8 +13,8 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: If LOCAL_USER_ID != 1000, change filesystem ownership insode the container (please wait, this may take a minute or two)
+- name: If LOCAL_USER_ID != 1000, change filesystem ownership inside the container (please wait, this may take a minute or two)
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "block_until_entrypoint_finishes.sh"
-    modify_script_commands: "while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 1 ]]; do sleep 0.1; done"
+    modify_script_commands: "while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 0.1; done"
