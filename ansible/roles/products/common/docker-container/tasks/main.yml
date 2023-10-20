@@ -18,16 +18,9 @@
   register: id
   changed_when: id.rc != 0
 
-- name: If LOCAL_USER_ID != 1000, change filesystem ownership inside the container (please wait, this may take a minute or two)
-  shell: "docker start {{ container_name  }} && docker exec -i --user user {{ container_name }} bash -c \"echo ${LOCAL_USER_ID}; sleep 0.5; echo; echo $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep); while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done \" && docker stop {{ container_name  }}"
-  register: modify_container_command_output
+- name: Check and set UID in container
   when: id.stdout != 1000
-
-- name: print modify_container_command_output
-  debug:
-    msg: "modify_container_command_output: {{ modify_container_command_output.stdout }}"
-  when: id.stdout != 1000
-  
+  import_tasks: set-container-uid.yml
 
 - name: Reinstall docker container
   when: reinstall|bool

@@ -13,13 +13,19 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: If LOCAL_USER_ID != 1000, change filesystem ownership inside the container (please wait, this may take a minute or two)
-  shell: "docker start {{ container_name  }} && echo ${LOCAL_USER_ID}; sleep 0.5; echo; echo $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep); while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done && docker stop {{ container_name  }}"
-  args:
-    executable: /bin/bash
+- name: Creating the block-until-entrypoint-exits container script
+  template:
+    src: scripts/block-until-entrypoint-exits.j2
+    dest: "/tmp/block-until-entrypoint-exits.sh"
+    mode: '755'
+  changed_when: false
+
+- name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }}
+  shell: "/tmp/block-until-entrypoint-exits.sh"
+  changed_when: false
+  when: not skip_molecule_task|bool
   register: modify_container_command_output
 
 - name: print modify_container_command_output
   debug:
     msg: "modify_container_command_output: {{ modify_container_command_output.stdout }}"
-  

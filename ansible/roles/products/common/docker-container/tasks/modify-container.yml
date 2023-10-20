@@ -28,9 +28,3 @@
   become: yes
   changed_when: false
   when: not skip_molecule_task|bool
-  register: modify_container_command_output
-
-- name: print modify_container_command_output
-  debug:
-    msg: "modify_container_command_output: {{ modify_container_command_output.stdout }}"
-  
