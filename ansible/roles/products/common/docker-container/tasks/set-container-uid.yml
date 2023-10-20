@@ -15,6 +15,8 @@
 ---
 - name: If LOCAL_USER_ID != 1000, change filesystem ownership inside the container (please wait, this may take a minute or two)
   shell: "docker start {{ container_name  }} && echo ${LOCAL_USER_ID}; sleep 0.5; echo; echo $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep); while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done && docker stop {{ container_name  }}"
+  args:
+    executable: /bin/bash
   register: modify_container_command_output
 
 - name: print modify_container_command_output
