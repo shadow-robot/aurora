@@ -17,4 +17,4 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "block_until_entrypoint_finishes.sh"
-    modify_script_commands: "while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 0.1; done"
+    modify_script_commands: "echo ${LOCAL_USER_ID}; sleep 0.5; echo; echo $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep); while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done"
