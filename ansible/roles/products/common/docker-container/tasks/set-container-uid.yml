@@ -14,7 +14,10 @@
 
 ---
 - name: If LOCAL_USER_ID != 1000, change filesystem ownership inside the container (please wait, this may take a minute or two)
-  import_tasks: modify-container.yml
-  vars:
-    modify_script_name: "block_until_entrypoint_finishes.sh"
-    modify_script_commands: "echo ${LOCAL_USER_ID}; sleep 0.5; echo; echo $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep); while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done"
+  shell: "docker start {{ container_name  }} && echo ${LOCAL_USER_ID}; sleep 0.5; echo; echo $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep); while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done && docker stop {{ container_name  }}"
+  register: modify_container_command_output
+
+- name: print modify_container_command_output
+  debug:
+    msg: "modify_container_command_output: {{ modify_container_command_output.stdout }}"
+  
