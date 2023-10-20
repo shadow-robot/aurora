@@ -13,7 +13,7 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: If LOCAL_USER_ID != 1000, change filesystem ownership insode the container
+- name: If LOCAL_USER_ID != 1000, change filesystem ownership insode the container (please wait, this may take a minute or two)
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "block_until_entrypoint_finishes.sh"
