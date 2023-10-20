@@ -20,7 +20,7 @@
     mode: '755'
   changed_when: false
 
-- name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }}
+- name: If LOCAL_USER_ID != 1000, change filesystem ownership insode the container (this could take a few minutes, please wait)
   shell: "/tmp/block-until-entrypoint-exits.sh"
   changed_when: false
   when: not skip_molecule_task|bool
