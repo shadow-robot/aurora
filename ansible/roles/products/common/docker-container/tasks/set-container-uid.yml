@@ -26,6 +26,7 @@
   changed_when: false
   when: not skip_molecule_task|bool
   register: modify_container_command_output
+  become: true
 
 - name: print modify_container_command_output
   debug:
