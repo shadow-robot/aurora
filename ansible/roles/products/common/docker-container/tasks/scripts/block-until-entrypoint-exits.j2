@@ -6,5 +6,5 @@ echo "grepping for ${entrypoint_path}..."
 while [[ $(ps aux | grep ${entrypoint_path} | grep -v grep | wc -l) -gt 0 ]]; do echo "$(ps aux | grep ${entrypoint_path} | grep -v grep)"; sleep 1; done
 sleep 3
 while [[ $(ps aux | grep ${entrypoint_path} | grep -v grep | wc -l) -gt 0 ]]; do echo "$(ps aux | grep ${entrypoint_path} | grep -v grep)"; sleep 1; done
-echo "$(ps aux | grep ${entrypoint_path} | grep -v grep)"
+echo "#: $(ps aux | grep entrypoint.sh | grep -v grep)"
 docker stop {{ container_name  }} &> /dev/null && exit 0 || docker stop {{ container_name  }} &> /dev/null && exit 1
