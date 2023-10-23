@@ -1,4 +1,4 @@
 #jinja2: trim_blocks:False
 #! /bin/bash
 docker start {{ container_name  }} &> /dev/null
-docker exec -i --user user {{ container_name }} bash -c "echo ${LOCAL_USER_ID}; sleep 1; num_grep_lines=1; while [[ $(echo $num_grep_lines) -gt 0 ]]; do grep_lines=$(ps aux | grep -E '(usermod|groupmod)' | grep -v grep); echo $grep_lines >> /tmp/grep_lines; num_grep_lines=$(echo $grep_lines | wc -l); sleep 1; done" && docker stop {{ container_name  }} &> /dev/null && exit 0 || docker stop {{ container_name  }} &> /dev/null && exit 1
+docker exec -i --user user {{ container_name }} bash -c "echo ${LOCAL_USER_ID}; sleep 1; while [[ $(ps aux | grep -E '(usermod|groupmod)' | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; ps aux | grep -E '(usermod|groupmod)' | grep -v grep >> /tmp/grep_lines; done" && docker stop {{ container_name  }} &> /dev/null && exit 0 || docker stop {{ container_name  }} &> /dev/null && exit 1
