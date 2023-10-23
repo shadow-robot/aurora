@@ -1,0 +1,32 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Creating the block-until-entrypoint-exits container script
+  template:
+    src: scripts/block-until-entrypoint-exits.j2
+    dest: "/tmp/block-until-entrypoint-exits.sh"
+    mode: '755'
+  changed_when: false
+  become: true
+
+- name: Detected that the current user does not have the LOCAL_USER_ID 1000, changing filesystem ownership inside the container (this could take a few minutes, please wait)
+  shell: "/tmp/block-until-entrypoint-exits.sh"
+  # changed_when: false
+  when: not skip_molecule_task|bool
+  register: modify_container_command_output
+
+- name: print modify_container_command_output
+  debug:
+    msg: "modify_container_command_output: {{ modify_container_command_output.stdout }}"

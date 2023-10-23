@@ -18,6 +18,10 @@
   register: id
   changed_when: id.rc != 0
 
+- name: Set uid and gid inside container if current user uid != 1000
+  when: id.stdout != 1000
+  import_tasks: set-container-uid.yml
+
 - name: Reinstall docker container
   when: reinstall|bool
   import_tasks: reinstall.yml
