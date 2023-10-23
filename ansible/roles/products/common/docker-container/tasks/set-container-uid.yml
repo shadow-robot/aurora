@@ -21,6 +21,7 @@
     owner: 1000
     group: 1000
   changed_when: false
+  become: true
 
 - name: Detected that the current user does not have the LOCAL_USER_ID 1000, changing filesystem ownership inside the container (this could take a few minutes, please wait)
   shell: "/tmp/block-until-entrypoint-exits.sh"
