@@ -3,9 +3,8 @@
 entrypoint_path=$(docker inspect -f {% raw %}'{{.Config.Entrypoint}}'{% endraw %} {{ container_name  }} | sed -r 's/\[//g' | sed -r 's/\]//g')
 docker start {{ container_name  }} && sleep 3
 echo "grepping for ${entrypoint_path}..."
-while [[ $(ps aux | grep ${entrypoint_path} | grep -v grep | wc -l) -eq 0 ]]; do sleep 1; done
-while [[ $(ps aux | grep ${entrypoint_path} | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done
+while [[ $(ps aux | grep ${entrypoint_path} | grep -v grep | wc -l) -gt 0 ]]; do echo "$(ps aux | grep ${entrypoint_path} | grep -v grep)"; sleep 1; done
 sleep 3
-while [[ $(ps aux | grep ${entrypoint_path} | grep -v grep | wc -l) -gt 0 ]]; do sleep 1; done
-sleep 5
+while [[ $(ps aux | grep ${entrypoint_path} | grep -v grep | wc -l) -gt 0 ]]; do echo "$(ps aux | grep ${entrypoint_path} | grep -v grep)"; sleep 1; done
+echo "#: $(ps aux | grep entrypoint.sh | grep -v grep)"
 docker stop {{ container_name  }} &> /dev/null && exit 0 || docker stop {{ container_name  }} &> /dev/null && exit 1
