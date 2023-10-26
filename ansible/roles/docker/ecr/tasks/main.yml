@@ -79,13 +79,22 @@
 
     - name: Local Decryption
       block:
-      - name: Install Python dependencies
+      - name: Install Python dependencies (in conda)
         pip:
           executable: "{{ ansible_pip3_executable }}"
           requirements: "{{ role_path }}/files/requirements.txt"
+        when: ('"conda" in ansible_pip3_executable')
+
+      # If we are not installing in a conda environment, we need sudo privileges
+      - name: Install Python dependencies (not in conda)
+        pip:
+          executable: "{{ ansible_pip3_executable }}"
+          requirements: "{{ role_path }}/files/requirements.txt"
+        when: ('"conda" not in ansible_pip3_executable')
+        become: true
 
       - name: Decrypt results
-        command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        command: "{{ ansible_python_interpreter }} {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
         no_log: True
         register: decrypt_results
 
@@ -103,10 +112,19 @@
       - name: Gather requirments script
         command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/requirements.txt -O /tmp/requirements.txt"
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies (in conda)
         pip:
           executable: "{{ ansible_pip3_executable }}"
           requirements: "/tmp/requirements.txt"
+        when: ('"conda" in ansible_pip3_executable')
+
+      # If we are not installing in a conda environment, we need sudo privileges
+      - name: Install Python dependencies (not in conda)
+        pip:
+          executable: "{{ ansible_pip3_executable }}"
+          requirements: "/tmp/requirements.txt"
+        when: ('"conda" not in ansible_pip3_executable')
+        become: true
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
@@ -119,11 +137,21 @@
         
       when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
 
-    - name: Install pexpect
+    - name: Install pexpect (in conda)
       pip:
         executable: "{{ ansible_pip3_executable }}"
         name: [ "pexpect" ]
         state: present
+      when: ('"conda" in ansible_pip3_executable')
+    
+    # If we are not installing in a conda environment, we need sudo privileges
+    - name: Install pexpect (not in conda)
+      pip:
+        executable: "{{ ansible_pip3_executable }}"
+        name: [ "pexpect" ]
+        state: present
+      when: ('"conda" not in ansible_pip3_executable')
+      become: true
 
     - name: Configure AWS CLI
       expect:
