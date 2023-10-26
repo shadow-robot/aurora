@@ -33,7 +33,7 @@
     executable: "{{ ansible_pip3_executable }}"
     name: python-yubico==1.3.3
     state: present
-  when: ('"conda" in ansible_pip3_executable')
+  when: '"conda" in ansible_pip3_executable'
 
 # If we are not installing in a conda environment, we need sudo privileges
 - name: Install common python packages (not in conda)
@@ -41,5 +41,5 @@
     executable: "{{ ansible_pip3_executable }}"
     name: python-yubico==1.3.3
     state: present
-  when: ('"conda" not in ansible_pip3_executable')
+  when: '"conda" not in ansible_pip3_executable'
   become: true

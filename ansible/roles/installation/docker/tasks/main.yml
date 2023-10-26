@@ -32,7 +32,7 @@
     executable: "{{ ansible_pip3_executable }}"
     name: [ "docker >=4.4.1" ]
     state: present
-  when: ('"conda" in ansible_pip3_executable')
+  when: '"conda" in ansible_pip3_executable'
   changed_when: pip_status.rc != 0
   # Hack because of not idempotent behavior of pip module
   # Check this issue for details https://github.com/ansible/ansible/issues/28952
@@ -43,7 +43,7 @@
     executable: "{{ ansible_pip3_executable }}"
     name: [ "docker >=4.4.1" ]
     state: present
-  when: ('"conda" not in ansible_pip3_executable')
+  when: '"conda" not in ansible_pip3_executable'
   become: true
   changed_when: pip_status.rc != 0
   # Hack because of not idempotent behavior of pip module
