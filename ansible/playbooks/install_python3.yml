@@ -57,11 +57,11 @@
       set_fact:
         sr_user_home: "{{ lookup('env','HOME') }}"
 
-    - name: Install python3 non-root
+    - name: Set Python 3 conda
       when:
         - '"root" not in sr_user_home'
-        - is_ansible_control_node | bool
         - is_ansible_control_node is defined
+        - is_ansible_control_node | bool
       block:
         - name: Set python3/pip path
           set_fact:
@@ -75,8 +75,8 @@
           set_fact:
             ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
 
-    - name: Install python3 root
-      when: ("root" in sr_user_home) or (not (is_ansible_control_node | bool)) or (is_ansible_control_node is undefined)
+    - name: Set Python 3 non-conda
+      when: ("root" in sr_user_home) or (is_ansible_control_node is undefined) or (not (is_ansible_control_node | bool))
       block:
         - name: Set Python 3 interpreter
           set_fact:
