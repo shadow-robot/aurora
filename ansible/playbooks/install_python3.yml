@@ -45,7 +45,9 @@
         name: 'python3-pip'
         state: 'present'
         update_cache: yes
-      when: pip_status.rc != 0
+      when:
+        - pip_status.rc != 0
+        - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" not in pip_status.stderr'
       become: yes
 
     # This checks for a condition where pip3 is installed but not working due to an issue with a criptography library
@@ -55,7 +57,7 @@
       ignore_errors: yes
 
     - name: Fix pip3 cryptography issue
-      raw: 'pip3 install pyOpenSSL --ignore-installed'
+      command: pip3 install pyOpenSSL --ignore-installed
       when:
         - pip_status.rc != 0
         - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in pip_status.stderr'
