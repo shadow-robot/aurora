@@ -55,6 +55,9 @@
       command: pip3 --version
       register: pip_status
       ignore_errors: yes
+      # This is to avoid a failure of the idempotency tests
+      changed_when: false
+
 
     # Package python3-openssl comes preinstalled in ubuntu server (together with two packages that depend on it landscape-common and python3-twisted).
     # It depends on the cryptography package, and the problem is that the cryptography package is installed with both pip3 and apt.
