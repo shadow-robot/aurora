@@ -58,21 +58,11 @@
       # This is to avoid a failure of the idempotency tests
       changed_when: false
 
-
     # Package python3-openssl comes preinstalled in ubuntu server (together with two packages that depend on it landscape-common and python3-twisted).
     # It depends on the cryptography package, and the problem is that the cryptography package is installed with both pip3 and apt.
     # But the version installed with pip is found first in the python path. And the pip version of cryptography is incompatible with the openssl version istalled with apt,
     # which oddly enough throws this error just by trying to do anything with pip. So we're removing the conflicting package.
-    # - name: Fix pip3 cryptography issue
-    #   apt:
-    #     name: 'python3-openssl'
-    #     state: 'absent'
-    #     update_cache: yes
-    #   when:
-    #     - pip_status.rc != 0
-    #     - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in pip_status.stderr'
-    #   become: yes
-
+    # And we do it with a raw command because the apt module doesn't work because it tries to use the openssl library from the host.
     - name: Fix pip3 cryptography issue
       raw: 'apt-get -y update && apt-get purge -y python3-openssl'
       register: output
@@ -102,7 +92,7 @@
 
         - name: Set Python 3 interpreter
           set_fact:
-            ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3.8"
+            ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3"
 
         - name: Set Python3 pip executable
           set_fact:
