@@ -60,11 +60,19 @@
     # It depends on the cryptography package, and the problem is that the cryptography package is installed with both pip3 and apt.
     # But the version installed with pip is found first in the python path. And the pip version of cryptography is incompatible with the openssl version istalled with apt,
     # which oddly enough throws this error just by trying to do anything with pip. So we're removing the conflicting package.
+    # - name: Fix pip3 cryptography issue
+    #   apt:
+    #     name: 'python3-openssl'
+    #     state: 'absent'
+    #     update_cache: yes
+    #   when:
+    #     - pip_status.rc != 0
+    #     - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in pip_status.stderr'
+    #   become: yes
+
     - name: Fix pip3 cryptography issue
-      apt:
-        name: 'python3-openssl'
-        state: 'absent'
-        update_cache: yes
+      raw: 'apt-get -y update && apt-get purge -y python3-openssl'
+      register: output
       when:
         - pip_status.rc != 0
         - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in pip_status.stderr'
