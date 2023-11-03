@@ -128,13 +128,36 @@
 
       # If we are not installing in a conda environment, we need sudo privileges
       - name: Install Python dependencies (not in conda)
-        pip:
-          executable: "{{ ansible_pip3_executable }}"
-          requirements: "/tmp/requirements.txt"
-        when:
-          - '"conda" not in ansible_pip3_executable'
-          - groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
-        become: true
+        block:
+          - name: Install Python dependencies (not in conda)
+            pip:
+              executable: "{{ ansible_pip3_executable }}"
+              requirements: "/tmp/requirements.txt"
+            when:
+              - '"conda" not in ansible_pip3_executable'
+              - groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+            become: true
+        rescue:
+          # Package python3-openssl comes preinstalled in ubuntu server (together with two packages that depend on it landscape-common and python3-twisted).
+          # It depends on the cryptography package, and the problem is that the cryptography package is installed with both pip3 and apt.
+          # But the version installed with pip is found first in the python path. And the pip version of cryptography is incompatible with the openssl version installed with apt,
+          # which oddly enough throws this error just by trying to do anything with pip. So we're removing the conflicting package.
+          # And we do it with a raw command because the apt module doesn't work because it tries to use the openssl library from the host.
+          - name: Fix pip3 cryptography issue
+            raw: 'apt-get -y update && apt-get purge -y python3-openssl'
+            register: output
+            when:
+              - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in ansible_failed_result.stderr'
+            become: yes
+
+          - name: Re-try install Python dependencies (not in conda)
+            pip:
+              executable: "{{ ansible_pip3_executable }}"
+              requirements: "/tmp/requirements.txt"
+            when:
+              - '"conda" not in ansible_pip3_executable'
+              - groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+            become: true
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
