@@ -17,7 +17,7 @@ version: 0.2
 env:
   shell: bash
   variables:
-     branch: F_testing_conda_deployment
+     branch: master
      image: aurora-molecule-ec2
      tag: bionic
      dockerfile_folder: docker/molecule/ec2/bionic/

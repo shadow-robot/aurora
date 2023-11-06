@@ -16,7 +16,7 @@ version: 0.2
 env:
   shell: bash
   variables:
-     branch: F_testing_conda_deployment
+     branch: master
      image: aurora-molecule
      tag: focal
      dockerfile_folder: docker/molecule/base/focal/
