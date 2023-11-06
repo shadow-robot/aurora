@@ -15,6 +15,8 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set -e # fail on errors
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 #set -x # echo commands run
 
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
@@ -28,7 +30,22 @@ if [[ $# -lt 2 ]]; then
     exit 1
 fi
 
+# Some molecule tests install to `/home/...` (no user account)
+if [ -z $USER ]; then
+  if [ -z $MY_USERNAME ]; then
+    HOME='/home'
+  fi
+fi
+
 aurora_home=/tmp/aurora
+conda_ws_name="aurora_conda_ws"
+miniconda_install_root="${HOME}/.shadow_miniconda"
+miniconda_install_location="${miniconda_install_root}/miniconda"
+miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
+miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-py311_23.5.2-0-Linux-x86_64.sh"
+miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
+packages_download_root="${miniconda_install_root}/aurora_host_packages"
+
 playbook=$1
 aurora_limit=all
 shift
@@ -107,7 +124,7 @@ echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
-export ANSIBLE_CALLBACK_PLUGINS="/home/$USER/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
+export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
 export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 # check for := (ROS style) variable assignments (just = should be used)
@@ -145,8 +162,8 @@ for extra_var in $extra_vars; do
 done
 IFS=${old_IFS}
 
-github_ssh_public_key_path="/home/$USER/.ssh/id_rsa.pub"
-github_ssh_private_key_path="/home/$USER/.ssh/id_rsa"
+github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
+github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
     echo " -------------------------------------------------------------------------------------"
     echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
@@ -177,8 +194,8 @@ for i in "${inputdata[@]}"; do
     read -r input_data
     if [[ "${i}" = "github_email" ]]; then
         if [[ ! -f "$github_ssh_public_key_path" ]]; then
-            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f /home/$USER/.ssh/id_rsa
-        fi    
+            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f ${HOME}/.ssh/id_rsa
+        fi
         eval "$(ssh-agent -s)"
         ssh-add $github_ssh_private_key_path
         xclip -sel clip < $github_ssh_public_key_path
@@ -242,10 +259,9 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     echo "Waiting for apt-get install file lock..."
     sleep 1
 done
-# Pip is broken at the moment and can't find base packages so a reinstall is required.
-curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && python3 /tmp/get-pip.py --force-reinstall && rm /tmp/get-pip.py
-sudo apt-get install -y python3-pip git libyaml-dev libssl-dev libffi-dev sshpass lsb-release
-pip3 install --user -U pip
+
+# jq is needed for yq, which installs xq, which helps parse aws s3 http requests
+sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
 
@@ -259,18 +275,6 @@ echo ""
 
 pushd $aurora_home
 
-ansible_version_pip3=$(pip3 freeze | grep ansible== | tr -d "ansible==")
-if [[ "${ansible_version_pip3}" != "" && "${ansible_version_pip3}" != *"4.2.0"* ]]; then
-    echo "Uninstalling pre-existing pip3 Ansible version $ansible_version_pip3 which is not supported by aurora, if prompted for sudo password, please enter it"
-    pip3 uninstall -y ansible-base ansible-core ansible
-    sudo pip3 uninstall -y ansible-base ansible-core ansible
-fi
-ansible_version_pip2=$(pip2 freeze | grep ansible== | tr -d "ansible==")
-if [[ "${ansible_version_pip2}" != "" && "${ansible_version_pip2}" != *"4.2.0"* ]]; then
-    echo "Uninstalling pre-existing pip2 Ansible version $ansible_version_pip2 which is not supported by aurora, if prompted for sudo password, please enter it"
-    pip2 uninstall -y ansible-base ansible-core ansible
-    sudo pip2 uninstall -y ansible-base ansible-core ansible
-fi
 
 re="^Codename:[[:space:]]+(.*)"
 while IFS= read -r line; do
@@ -279,11 +283,79 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-if [[ $codename == "bionic" ]]; then
-    pip3 install --user -r ansible/data/ansible/bionic/requirements.txt
-else
-    pip3 install --user -r ansible/data/ansible/requirements.txt
+
+mkdir -p $miniconda_install_root
+attempts=1
+while ! $(echo "${miniconda_checksum} ${miniconda_installer}" | sha256sum --status --check); do
+  if [[ -f "$miniconda_installer" ]]; then
+    rm $miniconda_installer
+  fi
+  echo "Attempt number ${attempts}: "
+  wget -O $miniconda_installer $miniconda_installer_url
+  attempts=$(( attempts + 1 ))
+  if [[ $(echo $attempts) -gt 3 ]]; then
+    echo "Maximim attempts to fetch ${miniconda_installer} failed. Has the checksum changed?"
+    echo "  Previously known good checksum: ${miniconda_checksum}"
+    echo "  Current checksum:               $(sha256sum $miniconda_installer)"
+    exit 0
+  fi
+done
+
+bash $miniconda_installer -u -b -p $miniconda_install_location
+
+if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]; then
+  PATH="${PATH}:${miniconda_install_location}/bin"
 fi
+
+${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
+python -m pip install yq xq
+fetch_new_files() {
+  old_IFS=$IFS
+  IFS=$'\n'
+  aws_bucket_url=$1
+  aws_bucket_dir=$2
+  local_download_dir="${packages_download_root}/${aws_bucket_dir}"
+
+  echo "Fetching ${aws_bucket_dir}..."
+  mkdir -p $local_download_dir
+
+  remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
+
+  echo "remote_packages: ${remote_packages}"
+
+  local_only=$(comm -23 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
+  remote_only=$(comm -13 <(ls $local_download_dir | sort) <(for x in $( echo "${remote_packages}"); do echo $x; done | sort))
+
+  echo "Packages found locally that are not in the bucket: ${local_only}"
+  echo "Packages found in the bucket that we don't have a local copy of: ${remote_only}"
+
+  if [[ $(echo "${local_only}" | wc -c) -gt 1 ]]; then
+    echo "Additional downloaded packages detecting, removing them..."
+    for local_package in $(echo ${local_only}); do
+      echo "  removing: ${local_download_dir}/${local_package}"
+      rm ${local_download_dir}/${local_package}
+    done
+  else
+    echo "No additional local packages found, continuing..."
+  fi
+
+  if [[ $(echo "${remote_only}" | wc -c) -gt 1 ]]; then
+    echo "Remote packages found that we don't have locally, downloading them..."
+    for remote_package in $(echo "${remote_only}"); do
+      echo "  Downloading: ${remote_package}"
+      wget -q --show-progress -O ${local_download_dir}/${remote_package} ${aws_bucket_url}/${aws_bucket_dir}/${remote_package}
+      if [[ $(stat --print="%s" ${local_download_dir}/${remote_package}) -eq 0 ]]; then
+        echo -e "\n${RED}WARNING! The package ${remote_package} from ${aws_bucket_url}/${aws_bucket_dir}/${remote_package} has downloaded a file of zero bytes! This probably means s3 bucket permissions are wrong and is very likely to cause deployment issues on your system. Please contact shadow directly to get this fixed.${NC}\n"
+        rm ${local_download_dir}/${remote_package}
+      fi
+    done
+  fi
+  IFS=${old_IFS}
+}
+
+fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
+fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
+ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
 
 
 ansible_flags="-v "
@@ -344,7 +416,7 @@ fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
-"${ansible_galaxy_executable}" collection install community.docker amazon.aws
+"${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then

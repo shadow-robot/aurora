@@ -13,6 +13,9 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
 - name: Set server hostname variable and validate input variables
   hosts: server
   connection: local
@@ -65,9 +68,6 @@
       ignore_errors: true
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all | difference([inventory_hostname]) }}"
-
-- name: Install Python 3
-  import_playbook: ./install_python3.yml
 
 - name: Check which hosts are available for teleop system Install
   hosts: all

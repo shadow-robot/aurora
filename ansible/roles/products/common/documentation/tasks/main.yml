@@ -15,6 +15,7 @@
 ---
 - name: Ensure botocore and boto3 modules are installed
   pip:
+    executable: "{{ ansible_pip3_executable }}"
     name: [ "boto3", "botocore"]
     extra_args: "--user"
   changed_when: false
