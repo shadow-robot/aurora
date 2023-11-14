@@ -1,0 +1,152 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Ensure botocore and boto3 modules are installed
+  pip:
+    executable: "{{ ansible_pip3_executable }}"
+    name: [ "boto3", "botocore"]
+    extra_args: "--user"
+  changed_when: false
+
+- name: Connect to Shadow AWS API
+  uri:
+    url: https://5vv2z6j3a7.execute-api.eu-west-2.amazonaws.com/prod
+    method: GET
+    return_content: yes
+    headers:
+      x-api-key: "{{ customer_key }}"
+  register: response
+  when: not skip_molecule_task|bool
+
+- name: Set temporary AWS credentials for accessing necessary files
+  set_fact:
+    aws_key: "{{ response.content | regex_search('(?<=ACCESS_KEY_ID=)(.*)(?=\\nSECRET_ACCESS_KEY)', multiline=True) }}"
+    aws_secret: "{{ response.content | regex_search('(?<=SECRET_ACCESS_KEY=)(.*)(?=\\nSESSION_TOKEN)', multiline=True) }}"
+    aws_security_token: "{{ response.content | regex_search('(?<=SESSION_TOKEN=)(.*)(?=\\nEXPIRATION)', multiline=True) }}"
+  when: not skip_molecule_task|bool
+
+- name: Set AWS credentials for accessing necessary files (for Molecule in AWS)
+  set_fact:
+    aws_key: "{{ lookup('env','AWS_ACCESS_KEY') }}"
+    aws_secret: "{{ lookup('env','AWS_SECRET_KEY') }}"
+  when: skip_molecule_task|bool
+
+- name: Choose documentation version (not teleop)
+  block:
+    - name: Choose Dexterous Hand Lite
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand_lite"
+        documentation_file: "dexterous-hand-lite-{{ hand_lite_version }}.pdf"
+        readthedocs_link: "{{ dexterous_hand_lite_readthedocs_link }}"
+        doc_icon_name: Dexterous Hand-Lite Documentation
+      when:
+        - "'arm_' not in product"
+        - "'glove_' not in product"
+        - "product == 'hand_lite' or product == 'hand_extra_lite'"
+        - product is defined
+    
+    - name: Choose Dexterous Hand
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand"
+        documentation_file: "dexterous-hand-{{ hand_e_version }}.pdf"
+        readthedocs_link: "{{ dexterous_hand_readthedocs_link }}"
+        doc_icon_name: Dexterous Hand Documentation
+      when:
+        - "'arm_' not in product"
+        - "'glove_' not in product"
+        - product == 'hand_e'
+        - product is defined
+    
+    - name: Choose Dexterous Hand and Arm
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand_arm"
+        documentation_file: "dexterous-hand-arm-{{ hand_arm_version }}.pdf"
+        readthedocs_link: "{{ arm_hand_readthedocs_link }}"
+        doc_icon_name: Dexterous Hand and Arm Documentation
+      when:
+        - "'arm_' in product"
+        - "'glove_' not in product"
+        - product is defined
+    
+    - name: Choose Dexterous Hand and Glove
+      set_fact:
+        documentation_folder: "documentation/dexterous_hand_glove"
+        documentation_file: "dexterous-hand-glove-{{ hand_glove_version }}.pdf"
+        readthedocs_link: "{{ glove_hand_readthedocs_link }}"
+        doc_icon_name: Dexterous Hand and Glove Documentation
+      when:
+        - "'arm_' not in product"
+        - "'glove_' in product"
+        - product is defined
+  when:
+    - product is defined
+
+- name: Choose documentation version (teleop)
+  block:
+    - name: Choose Teleop Polhemus
+      set_fact:
+        documentation_folder: "documentation/teleop_polhemus"
+        documentation_file: "teleop-polhemus-{{ teleop_polhemus_version }}.pdf"
+        readthedocs_link: "{{ shadow_glove_teleop_readthedocs_link }}"
+        doc_icon_name: Shadow Teleop Documentation
+      when:
+        - glove == "shadow_glove"
+        - product is not defined
+    
+    - name: Choose Teleop Haptx
+      set_fact:
+        documentation_folder: "documentation/teleop_haptx"
+        documentation_file: "teleop-haptx-{{ teleop_haptx_version }}.pdf"
+        readthedocs_link: "{{ haptx_teleop_readthedocs_link }}"
+        doc_icon_name: Shadow Teleop Documentation
+      when:
+        - glove == "haptx"
+  when:
+    - product is not defined
+
+
+- name: Downloading the Documentation from AWS to Desktop
+  amazon.aws.s3_object:
+    aws_access_key: "{{ aws_key }}"
+    aws_secret_key: "{{ aws_secret }}"
+    security_token: "{{ aws_security_token }}"
+    bucket: "{{ bucket_name }}"
+    object: "{{ documentation_folder }}/{{ documentation_file }}"
+    dest: "{{ manual_folder }}/{{ manual_filename }}"
+    mode: get
+  when: not skip_molecule_task|bool
+  changed_when: false
+
+- name: Downloading the Documentation from AWS to Desktop (for Molecule in AWS)
+  amazon.aws.s3_object:
+    aws_access_key: "{{ aws_key }}"
+    aws_secret_key: "{{ aws_secret }}"
+    bucket: "{{ bucket_name }}"
+    object: "{{ documentation_folder }}/{{ documentation_file }}"
+    dest: "{{ manual_folder }}/{{ manual_filename }}"
+    mode: get
+  when: skip_molecule_task|bool
+  changed_when: false
+
+- name: Create the Documentation desktop icon
+  import_tasks: create-icon.yml
+  vars:
+    desktop_icon_png: "documentation_icon.png"
+    launch_script: "shadow_launcher_doc_exec.sh"
+    desktop_icon_name: "{{ doc_icon_name }}"
+    desktop_icon_path: "{{ doc_icon_name }}"
+    launch_terminal: "false"
+    live_website_url_var: "{{ readthedocs_link }}"
+    file_path_var: "{{ manual_folder }}/{{ manual_filename }}"

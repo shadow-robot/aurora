@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Check product is defined (for server_and_nuc_deploy and docker_deploy)
   assert:
@@ -15,6 +29,14 @@
     fail_msg: "In aurora oneliner using playbook {{ playbook }}, you are not allowed to specify a product. Please remove it and re-run aurora"
     quiet: yes
   when: playbook=="teleop_deploy"
+
+- name: Make sure arm not used in docker_deploy
+  assert:
+    that:
+     - "'arm_' not in product"
+    fail_msg: "You cannot use the docker_deploy playbook with an arm. This playbook is not suited for arm-related products."
+    quiet: yes
+  when: playbook=="docker_deploy"
 
 - name: Make sure arm_ip_right is specified if using teleop or server_and_nuc_deploy with arm, non-sim inventory
   assert:

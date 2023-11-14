@@ -1,3 +1,17 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Copy desktop icon
   copy:
@@ -13,9 +27,6 @@
   vars:
     pwm_control_var: "{{ pwm_control_value }}"
     hand_ctrl_var: "{{ hand_ctrl_value }}"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
     arm_ctrl_var: "{{ arm_ctrl_value }}"
     arm_payload_mass: "{{ arm_mass_payload }}"
     ad_hand_side: "{{ hand_side_ad }}"
@@ -29,7 +40,7 @@
     desktop_shortcut_name: "{{ desktop_icon_name }}"
     comment: "{{ desktop_icon_name }}"
     folder: "{{ shadow_hand_launcher_folder }}"
-    shell_script_file_name: "{{ launch_script }}"
+    shell_script_file_name: "'{{ launch_script }} {{ extra_vars }}'"
     icon_file_name: "{{ desktop_icon_png }}"
     start_terminal: "false"
 
@@ -38,4 +49,4 @@
   when:
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'bionic'
-    - skip_molecule_task is not defined
+    - not skip_molecule_task|bool

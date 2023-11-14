@@ -1,3 +1,17 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: remove nvidia-docker1 and nvidia-docker2 before installing nvidia-container-toolkit
   apt:
@@ -14,3 +28,58 @@
   when: nvidia_docker | bool and not skip_nvidia|bool
   become: yes
   changed_when: false
+
+- name: Check what graphic drivers are used
+  block:
+  - name: install nvidia-prime apt
+    apt:
+      name: nvidia-prime
+      state: present
+    become: yes
+
+  - name: Query and set prime-select
+    block:
+    - name: query prime-select
+      command: prime-select query
+      become: yes
+      register: prime_select_results
+
+    - name: switch driver to nvidia
+      command: prime-select nvidia
+      become: yes
+      when: "prime_select_results.stdout != 'nvidia'"
+
+    - name: query prime-select again, check it's been set
+      command: prime-select query
+      become: yes
+      register: prime_select_results
+
+  - name: Check if nvidia-smi is installed
+    stat:
+      path: /usr/bin/nvidia-smi
+    register: nvidia_smi_installed
+
+  - name: Graphics Error Message
+    fail:
+      msg: "Nvidia Graphics card error: If the machine you are running the oneliner on doesn't have a Nvidia graphics card please add `nvidia_docker=false` to the oneliner and rerun."
+    ignore_errors: True
+    when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
+
+  - name: Prime select error message
+    fail:
+      msg: "Your prime-select graphic driver has been switched to Nvidia from {{ prime_select_results.stdout }}."
+    ignore_errors: True
+    when: "prime_select_results.stdout != 'nvidia'"
+
+  - name: No Nvidia driver detected error message 
+    fail:
+      msg: "Your computer is not using a Nvidia driver, please change it in the application Additional Drivers."
+    ignore_errors: True
+    when: not nvidia_smi_installed.stat.exists
+
+  - name: Error message to alert of problems
+    fail:
+      msg: "The error conditions were met. See the debug output above for more details."
+    when: "not nvidia_smi_installed.stat.exists or prime_select_results.stdout != 'nvidia'"
+
+  when: nvidia_docker | bool and not skip_nvidia|bool

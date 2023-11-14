@@ -1,3 +1,17 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Does .aws folder exist
   stat: path={{ user_folder }}/.aws
@@ -65,32 +79,112 @@
 
     - name: Local Decryption
       block:
+      - name: Install Python dependencies (in conda)
+        pip:
+          executable: "{{ ansible_pip3_executable }}"
+          requirements: "{{ role_path }}/files/requirements.txt"
+        when:
+          - '"conda" in ansible_pip3_executable'
+          - inventory_hostname not in groups['control_machine'] | default([])
+
+      # If we are not installing in a conda environment, we need sudo privileges
+      - name: Install Python dependencies (not in conda)
+        pip:
+          executable: "{{ ansible_pip3_executable }}"
+          requirements: "{{ role_path }}/files/requirements.txt"
+        when:
+          - '"conda" not in ansible_pip3_executable'
+          - inventory_hostname not in groups['control_machine'] | default([])
+        become: true
+
       - name: Decrypt results
-        command: "python3 {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
+        command: "{{ ansible_python_interpreter }} {{ role_path }}/files/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
         no_log: True
         register: decrypt_results
+        when: inventory_hostname not in groups['control_machine'] | default([])
 
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results.stdout | to_json | from_json }}
         no_log: True
-      
-      when: inventory_hostname not in groups['control_machine'] | default([])
+        when: inventory_hostname not in groups['control_machine'] | default([])
       
     - name: Decode message on NUC
       block: 
       - name: Gather decrypt script
         command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/decode.py -O /tmp/decode.py"
+        when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+
+      - name: Gather requirments script
+        command: "wget https://raw.githubusercontent.com/shadow-robot/aurora/master/ansible/roles/docker/ecr/files/requirements.txt -O /tmp/requirements.txt"
+        when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+
+      - name: Install Python dependencies (in conda)
+        pip:
+          executable: "{{ ansible_pip3_executable }}"
+          requirements: "/tmp/requirements.txt"
+        when:
+          - '"conda" in ansible_pip3_executable'
+          - groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+
+      # If we are not installing in a conda environment, we need sudo privileges
+      - name: Install Python dependencies (not in conda)
+        block:
+          - name: Install Python dependencies (not in conda)
+            pip:
+              executable: "{{ ansible_pip3_executable }}"
+              requirements: "/tmp/requirements.txt"
+            when:
+              - '"conda" not in ansible_pip3_executable'
+              - groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+            become: true
+        rescue:
+          # Package python3-openssl comes preinstalled in ubuntu server (together with two packages that depend on it landscape-common and python3-twisted).
+          # It depends on the cryptography package, and the problem is that the cryptography package is installed with both pip3 and apt.
+          # But the version installed with pip is found first in the python path. And the pip version of cryptography is incompatible with the openssl version installed with apt,
+          # which oddly enough throws this error just by trying to do anything with pip. So we're removing the conflicting package.
+          # And we do it with a raw command because the apt module doesn't work because it tries to use the openssl library from the host.
+          - name: Fix pip3 cryptography issue
+            raw: 'apt-get -y update && apt-get purge -y python3-openssl'
+            register: output
+            when:
+              - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in ansible_failed_result.stderr'
+            become: yes
+
+          - name: Re-try install Python dependencies (not in conda)
+            pip:
+              executable: "{{ ansible_pip3_executable }}"
+              requirements: "/tmp/requirements.txt"
+            when:
+              - '"conda" not in ansible_pip3_executable'
+              - groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+            become: true
 
       - name: Run decrypt script
         command: "python3 /tmp/decode.py -a {{ request_result.json.body.access_key }} -s {{ request_result.json.body.secret_key }} -c {{ customer_key }}"
         no_log: True
         register: decrypt_results_nuc
+        when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
       
       - name: Convert stdout to json
         set_fact: json_results={{ decrypt_results_nuc.stdout | to_json | from_json }}
         no_log: True
-        
-      when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+        when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+
+    - name: Install pexpect (in conda)
+      pip:
+        executable: "{{ ansible_pip3_executable }}"
+        name: [ "pexpect" ]
+        state: present
+      when: '"conda" in ansible_pip3_executable'
+    
+    # If we are not installing in a conda environment, we need sudo privileges
+    - name: Install pexpect (not in conda)
+      pip:
+        executable: "{{ ansible_pip3_executable }}"
+        name: [ "pexpect" ]
+        state: present
+      when: '"conda" not in ansible_pip3_executable'
+      become: true
 
     - name: Configure AWS CLI
       expect:
@@ -127,12 +221,9 @@
             path: "{{ user_folder }}/.aws_copy"
           when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
         
-        - name: Failure message
-          debug:
-            msg: Playbook ended because of an error when connecting to AWS.
-
-        - name: End Playbook
-          meta: end_play
+        - name: Error connecting to AWS
+          fail:
+            msg: "Playbook ended because of an error when connecting to AWS. Please check your customer key is correct and rerun the oneliner. If the oneliner is correct and you are still getting errors please contact support@shadowrobot.com"
 
 - name: Remove .aws folder
   file:

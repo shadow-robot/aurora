@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Create the shadow_hand_launcher_folder
   file:
@@ -91,6 +105,7 @@
       modify_script_commands: "/tmp/pull_pr_branches_and_catkin_make.sh"
   when: pr_branches is defined and pr_branches | length > 0
 
+# Not sure where this conflict has come from, consider removing from here... 
 - name: Installing private repositories for arm and hand product
   block:
   - name: Ensure botocore and boto3 modules are installed
@@ -214,6 +229,7 @@
     - groups['server'] is defined and inventory_hostname==hostvars[groups['server'][0]]['inventory_hostname']
   ignore_errors: yes
 
+# .. to here
 - name: Pulling latest hand_configurations
   import_tasks: modify-container.yml
   vars:

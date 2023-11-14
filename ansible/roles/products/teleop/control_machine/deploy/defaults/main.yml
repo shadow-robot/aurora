@@ -1,9 +1,23 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 image: "080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus"
 tag: "noetic-night-build"
 reinstall: false
 glove: "shadow_glove"
-container_name: "teleop_{{ glove }}"
+container_name: "shadow_teleop"
 bimanual: false
 ethercat_left_arm: "enx2"
 ethercat_right_arm: "eth1"
@@ -13,7 +27,6 @@ user_folder: "/home/{{ user }}"
 shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
 setup_directory: "/usr/local/bin"
 use_aws: false
-launch_hand: false
 server_hostname: "SERVER"
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
@@ -21,7 +34,6 @@ terminator: false
 use_steamvr: false
 nvidia_docker: false
 ur_interface: "eth0"
-sim_hand: false
 hand_side: "right"
 arm_ip_left: ""
 arm_ip_right: ""

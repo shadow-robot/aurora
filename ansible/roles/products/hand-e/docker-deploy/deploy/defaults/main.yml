@@ -1,0 +1,41 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+container_name: "dexterous_hand"
+image: "public.ecr.aws/shadowrobot/dexterous-hand"
+tag: "noetic-v1.0.21"
+demo_icons: false
+user: "{{ ansible_user_id }}"
+user_folder: "/home/{{ user }}"
+shadow_hand_launcher_folder: "{{ user_folder }}/.shadow_launcher_app_{{ container_name }}/shadow_hand_launcher"
+setup_directory: "/usr/local/bin"
+upgrade_check: false
+reinstall: false
+nvidia_docker: false
+use_aws: false
+hand_side: "right"
+bimanual: false
+right_hand_picture: hand-e.png
+left_hand_picture: hand-e-left.png
+bimanual_hands_picture: hand-e-bimanual.png
+ur_robot_type: "ur10e"
+override_launch_hand: false
+use_steamvr: false
+launch_package_name: "sr_robot_launch"
+launch_file_name: "srhand.launch"
+pr_branches: ""
+record_data: false
+uses_autodetect: False
+hand_side_ad: ""

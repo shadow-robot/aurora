@@ -1,24 +1,36 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
+- name: Install Python 3
+  import_playbook: ./install_python3.yml
+
 - name: Set server hostname variable and validate input variables
   hosts: server
   connection: local
   gather_facts: yes
   pre_tasks:
-    - name: Unset arm_servo if haptx
-      when: "'haptx' in image"
-      set_fact:
-        arm_servo: false
-
     - name: include products/common/validation role
       include_role:
         name: products/common/validation
       vars:
         playbook: "teleop_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
     
     - name: Install licence tools
       include_role:
@@ -28,7 +40,7 @@
     - name: Extract hostname from server
       set_fact:
         ansible_host: "{{ ansible_hostname }}"
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task|bool
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: server
@@ -57,9 +69,6 @@
       when: hostvars[item].ansible_host is defined
       with_items: "{{ groups.all | difference([inventory_hostname]) }}"
 
-- name: Install Python 3
-  import_playbook: ./install_python3.yml
-
 - name: Check which hosts are available for teleop system Install
   hosts: all
   gather_facts: no
@@ -68,6 +77,14 @@
       ping:
   become: yes
 
+- name: Doing Control Machine pre-checks
+  hosts: control_machine
+  pre_tasks:
+    - name: Running nuc-pre-check role
+      include_role:
+        name: installation/nuc-pre-check
+      when: not skip_molecule_task|bool
+
 - name: Install Teleop software on Ubuntu teleop server laptop
   hosts: server
   pre_tasks:
@@ -75,6 +92,20 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
+    
+    - name: Set container name (Shadow Teleop System)
+      set_fact:
+        container_name: "shadow_teleoperation_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "shadow_glove"
+    
+    - name: Set container name (Tactile Telerobot System)
+      set_fact:
+        container_name: "tactile_telerobot_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "haptx"
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -94,16 +125,25 @@
 - name: Install Teleop simulation software on Ubuntu teleop server laptop
   hosts: simulation
   pre_tasks:
-    - name: Unset arm_servo if haptx
-      when: "'haptx' in image"
-      set_fact:
-        arm_servo: false
-
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
 
+    - name: Set container name (Shadow Teleop System)
+      set_fact:
+        container_name: "shadow_teleoperation_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "shadow_glove"
+    
+    - name: Set container name (Tactile Telerobot System)
+      set_fact:
+        container_name: "tactile_telerobot_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "haptx"
+    
     - name: Install licence tools
       include_role:
         name: installation/install_licence_tools
@@ -122,10 +162,24 @@
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
+
+    - name: Set container name (Shadow Teleop System)
+      set_fact:
+        container_name: "shadow_teleoperation_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "shadow_glove"
+    
+    - name: Set container name (Tactile Telerobot System)
+      set_fact:
+        container_name: "tactile_telerobot_system"
+      when:
+        - container_name == "shadow_teleop"
+        - glove == "haptx"
 
     - name: Add IP address of all hosts to all hosts
       lineinfile:
@@ -140,14 +194,3 @@
   roles:
     - { role: products/common/get-system-variables }
     - { role: products/teleop/control_machine/deploy }
-
-- name: Inform user for reboot
-  hosts: 127.0.0.1
-  gather_facts: no
-  tasks:
-    - name: Reboot message
-      debug:
-        msg:
-          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-          - "!!! Please restart the server laptop and re-run this script to finalize the installation. Ignore if you have already done  this !!!"
-          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

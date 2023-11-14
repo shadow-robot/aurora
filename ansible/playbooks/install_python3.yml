@@ -1,26 +1,112 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 
-- name: Install Python 3
+- name: Install Python 3 and pip3
   hosts: all
   become: yes
   gather_facts: no
   pre_tasks:
+    - name: Install Python 3 and pip3
+      when: (is_ansible_control_node is undefined) or (not (is_ansible_control_node | bool))
+      block:
+        - name: Set user home from env var
+          set_fact:
+            sr_user_home: "{{ lookup('env','HOME') }}"
 
-    - name: Check if Python 3 is installed
-      raw: 'python3 --version'
-      register: output
-      ignore_errors: yes
-      changed_when: output.rc != 0
+        - name: Check if Python 3 is installed
+          raw: 'python3 --version'
+          register: output
+          ignore_errors: yes
+          changed_when: output.rc != 0
 
-    - name: Install Python 3 in case if it is not installed
-      raw: 'apt-get -y update && apt-get install -y python3'
-      when: output.rc != 0
+        - name: Install Python 3 in case if it is not installed
+          raw: 'apt-get -y update && apt-get install -y python3'
+          when: output.rc != 0
+
+        - name: Check pip3 installed (will prevent reinstallation in case if pip3 was installed without Apt)
+          command: pip3 --version
+          register: pip_status
+          ignore_errors: yes
+          changed_when: pip_status.rc != 0
+
+        - name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
+          apt:
+            name: 'python3-pip'
+            state: 'present'
+            update_cache: yes
+          when:
+            - pip_status.rc != 0
+            - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" not in pip_status.stderr'
+          become: yes
+
+        # This checks for a condition where pip3 is installed but not working due to an issue with a criptography library
+        - name: Check for pip3 cryptography issue
+          command: pip3 --version
+          register: pip_status
+          ignore_errors: yes
+          # This is to avoid a failure of the idempotency tests
+          changed_when: false
+
+        # Package python3-openssl comes preinstalled in ubuntu server (together with two packages that depend on it landscape-common and python3-twisted).
+        # It depends on the cryptography package, and the problem is that the cryptography package is installed with both pip3 and apt.
+        # But the version installed with pip is found first in the python path. And the pip version of cryptography is incompatible with the openssl version installed with apt,
+        # which oddly enough throws this error just by trying to do anything with pip. So we're removing the conflicting package.
+        # And we do it with a raw command because the apt module doesn't work because it tries to use the openssl library from the host.
+        - name: Fix pip3 cryptography issue
+          raw: 'apt-get -y update && apt-get purge -y python3-openssl'
+          register: output
+          when:
+            - pip_status.rc != 0
+            - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in pip_status.stderr'
+          become: yes
 
 - name: Set Python 3 variable
   hosts: all
   gather_facts: no
   pre_tasks:
 
-    - name: Set Python 3 interpreter
+    - name: Set user home from env var
       set_fact:
-        ansible_python_interpreter: /usr/bin/python3
+        sr_user_home: "{{ lookup('env','HOME') }}"
+
+    - name: Set Python 3 conda
+      when:
+        - '"root" not in sr_user_home'
+        - is_ansible_control_node is defined
+        - is_ansible_control_node | bool
+      block:
+        - name: Set python3/pip path
+          set_fact:
+            sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/aurora_conda_ws/bin"
+
+        - name: Set Python 3 interpreter
+          set_fact:
+            ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3"
+
+        - name: Set Python3 pip executable
+          set_fact:
+            ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
+
+    - name: Set Python 3 non-conda
+      when: ("root" in sr_user_home) or (is_ansible_control_node is undefined) or (not (is_ansible_control_node | bool))
+      block:
+        - name: Set Python 3 interpreter
+          set_fact:
+            ansible_python_interpreter: "/usr/bin/python3"
+
+        - name: Set Python3 pip executable
+          set_fact:
+            ansible_pip3_executable: "/usr/bin/pip3"

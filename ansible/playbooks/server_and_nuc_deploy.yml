@@ -1,3 +1,17 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Set server hostname variable and validate input variables
   hosts: server
@@ -10,10 +24,10 @@
       vars:
         playbook: "server_and_nuc_deploy"
     
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
 
     - name: Install licence tools
       include_role:
@@ -23,17 +37,17 @@
     - name: Extract hostname from server
       set_fact:
         ansible_host: "{{ ansible_hostname }}"
-      when: skip_molecule_task is not defined
+      when: not skip_molecule_task|bool
 
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: server
   connection: local
   gather_facts: yes
   tasks:
-    - name: Install common tools
+    - name: Running playbook setup role
       include_role:
-        name: installation/install_common_tools
-      when: skip_molecule_task is not defined
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
         
     - name: Add lines in /etc/hosts in computer that is running Ansible
       blockinfile:
@@ -67,6 +81,14 @@
     - name: ping all the machines
       ping:
   become: yes
+
+- name: Doing Control Machine pre-checks
+  hosts: control_machine
+  pre_tasks:
+    - name: Running nuc-pre-check role
+      include_role:
+        name: installation/nuc-pre-check
+      when: not skip_molecule_task|bool
 
 - name: Install Hand software on Ubuntu server laptop
   hosts: server
@@ -108,6 +130,11 @@
       when: customer_key is defined and customer_key | length > 0
       set_fact:
         use_aws: true
+    
+    - name: Running playbook setup role
+      include_role:
+        name: installation/playbook_setup
+      when: not skip_molecule_task|bool
 
     - name: Set container name for hand and arm
       when: "'arm_' in product"
@@ -132,14 +159,3 @@
   roles:
     - { role: products/common/get-system-variables }
     - { role: products/hand-e/control_machine/deploy }
-
-- name: Inform user for reboot
-  hosts: 127.0.0.1
-  gather_facts: no
-  tasks:
-    - name: Reboot message
-      debug:
-        msg:
-          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-          - "!!! Please restart the server laptop and re-run this script to finalize the installation. Ignore if you have already done this !!!"
-          - "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

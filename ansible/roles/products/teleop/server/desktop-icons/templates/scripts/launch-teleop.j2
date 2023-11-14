@@ -3,6 +3,15 @@
 
 CONST_TIMEOUT=20
 
+if {{ enable_warning | lower }}; then
+  zenity --warning --title="{{ warning_title }}" --text="{{ warning_text }}" --ok-label="I accept the risks" --extra-button="I decline the risks" --no-wrap --width=400 --height=120
+  response=$?
+  if [ $response -ne 0 ]; then
+      echo "User has declined the risks. Aborting script."
+      exit 1
+  fi
+fi
+
 terminator --geometry "{{ term_1 }}" -T 'Launching server container...' -e "{{ shadow_hand_launcher_folder}}/shadow_server_container.sh"
 
 elapsed_time=0
@@ -42,7 +51,11 @@ if [ "$proceed" == false ]; then
 fi
 
 terminator --geometry "{{ term_3 }}" -T 'NUC {{ arm_side }} hardware control loop' -e "{{ shadow_hand_launcher_folder}}/{{ control_loop_script }}"
-sleep 30 # temporary workaround until arm controllers starting on time is fixed
+if [[ "{{ arm_side }}" == "Bimanual" ]]; then # temporary workaround until arm controllers starting on time is fixed
+  sleep 60
+else 
+  sleep 40
+fi
 terminator --geometry "{{ term_4 }}" -T 'Server {{ arm_side }} GUI' -e "{{ shadow_hand_launcher_folder}}/{{ gui_script }}"
 if [[ "{{ glove }}" == "haptx"  ]]; then
   terminator --geometry "{{ term_5 }}" -T 'Server HaptX {{ arm_side }} Mapping' -e "{{ shadow_hand_launcher_folder}}/{{ haptx_mapping_script }}"

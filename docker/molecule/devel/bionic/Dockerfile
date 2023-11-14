@@ -38,3 +38,4 @@ RUN set -x && \
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 VOLUME /var/lib/docker
 CMD ["/usr/bin/terminator"]
+
