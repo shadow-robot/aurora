@@ -1,49 +1,45 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Installing nvidia-modprobe
   apt:
     name: nvidia-modprobe
     state: present
 
-- name: Install nvidia-docker gpg key
-  apt_key:
-    url: https://nvidia.github.io/nvidia-docker/gpgkey
-    state: present
+- name: Check nvidia-container-toolkit repository key exists
+  stat: 
+    path: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+  register: nvidia_container_toolkit_repo_key_exists
 
-- name: Set ubuntu_version to 18.04 for nvidia-container-toolkit install
-  set_fact:
-    ubuntu_version: "18.04"
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'bionic'
+# Inspired by: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#setting-up-nvidia-container-toolkit
+- name: Get and de-armour gpg key, add repository
+  block:
+    - name: Get armoured gpg key
+      ansible.builtin.get_url:
+        url: https://nvidia.github.io/libnvidia-container/gpgkey
+        dest: /tmp/nvidia-container-toolkit-keyring.asc
 
-- name: Set ubuntu_version to 20.04 for nvidia-container-toolkit install
-  set_fact:
-    ubuntu_version: "20.04"
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'focal'
+    - name: Dearmour gpg key
+      shell: cat /tmp/nvidia-container-toolkit-keyring.asc | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+      become: true        
 
-- name: Set ubuntu_version to 22.04 for nvidia-container-toolkit install
-  set_fact:
-    ubuntu_version: "22.04"
-  when:
-    - ansible_distribution|string == 'Ubuntu'
-    - ansible_distribution_release|string == 'jammy'
-    
-- name: Add nvidia-docker repository
-  apt_repository:
-    repo: deb https://nvidia.github.io/{{ item }}/ubuntu{{ ubuntu_version }}/amd64 /
-    state: present
-  with_items:
-    - nvidia-docker
-
-- name: Add libnvidia-container repository
-  apt_repository:
-    repo: deb https://nvidia.github.io/{{ item }}/stable/ubuntu{{ ubuntu_version }}/amd64 /
-    state: present
-  with_items:
-    - libnvidia-container
-    - nvidia-container-runtime
+    - name: Add nvidia-container-toolkit repository, pointing to the dearmored gpg key (backwards compatable, 18.04 should work with up to at least 22.04)
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/$(ARCH) /"
+        state: present
+  when: nvidia_container_toolkit_repo_key_exists.stat.exists == false
 
 - name: Install nvidia-container-toolkit
   apt:
@@ -55,7 +51,7 @@
 - name: Reload daemon
   systemd:
     daemon_reload: yes
-  when: skip_molecule_task is not defined
+  when: not skip_molecule_task|bool
 
 - name: Restart docker after installing nvidia-container-toolkit
   service:

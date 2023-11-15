@@ -1,7 +1,21 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 dependency:
   name: shell
-  command: bash -c "ansible-galaxy collection install amazon.aws ansible.netcommon:1.5.0 --force"
+  command: bash -c "wget -O /tmp/amazon-aws-6.5.0.tar.gz http://shadowrobot.aurora-host-packages.s3.eu-west-2.amazonaws.com/ansible_collections/amazon-aws-6.5.0.tar.gz && ansible-galaxy collection install /tmp/amazon-aws-6.5.0.tar.gz --force && ANSIBLE_GALAXY_SERVER=https://old-galaxy.ansible.com/ ansible-galaxy collection install ansible.netcommon:1.5.0 --force"
 driver:
   name: ec2
 lint: |

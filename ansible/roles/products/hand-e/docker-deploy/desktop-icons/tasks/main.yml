@@ -1,0 +1,100 @@
+# Copyright 2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Install desktop icon for server container
+  include_role:
+    name: products/common/default-icon
+  vars:
+    template: ../../../common/resources/templates/scripts/start-docker-container.j2
+    desktop_icon_png: "laptop.png"
+    launch_script: "shadow_server_container.sh"
+    desktop_icon_name: "Launch Server Container"
+    desktop_icon_path: "Launch Server Container"
+    launch_terminal: "false"
+    hand_side_ad: ""
+
+- name: Include products/common/record-hand-data role
+  include_role:
+    name: products/common/record-hand-data
+  when: record_data
+
+- name: Include products/common/save-logs-icons role
+  include_role:
+    name: products/common/save-logs-icons
+
+- name: Create Shadow Demos folder
+  file:
+    path: "{{ desktop_path }}/Shadow Demos"
+    mode: '755'
+    state: directory
+
+- name: Include products/common/demo-icons role
+  include_role:
+    name: products/common/demo-icons
+  vars:
+    demo_icon_folder: "{{ desktop_path }}/Shadow Demos"
+  when: demo_icons|bool
+
+- name: Creating upgrade script
+  template:
+    src: ../../../common/resources/templates/scripts/upgrade_image.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ upgrade_script }}"
+    mode: '755'
+  when: upgrade_check|bool
+
+- name: Creating the default setup script
+  template:
+    src: ../../../common/resources/templates/scripts/setup-hand.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ setup_script }}"
+    mode: '755'
+  vars:
+    launch_file_name: "srhand.launch"
+    launch_package_name: "sr_robot_launch"
+    override_launch_hand: False
+    uses_autodetect: False
+
+- name: Copying the default setup script into docker container
+  changed_when: false
+  shell: "docker cp {{ shadow_hand_launcher_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
+  become: yes
+
+- name: Include documentation role
+  include_role:
+    name: products/common/documentation
+  when: customer_key is defined and customer_key | length > 0
+
+- name: Include products/common/local-hand-launch role
+  include_role:
+    name: products/common/local-hand-launch
+  vars:
+    icon_folder: "{{ desktop_path }}"
+    override_launch_hand_var: True
+    simulate_icons: "{{ sim_icon }}"
+
+- name: Include products/common/local-zero-force-mode-launch role
+  include_role:
+    name: products/common/local-zero-force-mode-launch
+  vars:
+    icon_folder: "{{ desktop_path }}"
+  when: not sim_icon|bool
+
+- name: Include products/common/hand_config role
+  include_role:
+    name: products/common/hand_config
+  when: not skip_molecule_task|bool
+
+- name: Include products/common/close-everything-icon role
+  include_role:
+    name: products/common/close-everything-icon

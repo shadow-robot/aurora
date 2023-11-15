@@ -1,0 +1,50 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Copy desktop icon
+  copy:
+    src: ../../../common/resources/files/{{ desktop_icon_png }}
+    dest: "{{ shadow_hand_launcher_folder }}/{{ desktop_icon_png }}"
+    mode: '664'
+
+- name: Create executable launch script
+  template:
+    src: ../../../common/resources/templates/scripts/documentation.j2
+    dest: "{{ shadow_hand_launcher_folder }}/{{ launch_script }}"
+    mode: '755'
+  vars:
+    local_website_name: "{{ desktop_icon_name }}"
+    live_website_url: "{{ live_website_url_var }}"
+    file_path: "{{ file_path_var }}"
+
+- name: Create desktop icon
+  template:
+    src: ../../../common/resources/templates/desktop-icons/standard-icon-no-terminator.j2
+    dest: "{{ desktop_path }}/{{ desktop_icon_path }}.desktop"
+    mode: '755'
+  vars:
+    desktop_shortcut_name: "{{ desktop_icon_name }}"
+    comment: "{{ desktop_icon_name }}"
+    folder: "{{ shadow_hand_launcher_folder }}"
+    shell_script_file_name: "{{ launch_script }}"
+    icon_file_name: "{{ desktop_icon_png }}"
+    start_terminal: "{{ launch_terminal }}"
+
+- name: Make Desktop icon trusted
+  shell: gio set "{{ desktop_path }}/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
+  when:
+    - ansible_distribution|string == 'Ubuntu'
+    - ansible_distribution_release|string == 'bionic'
+    - not skip_molecule_task|bool

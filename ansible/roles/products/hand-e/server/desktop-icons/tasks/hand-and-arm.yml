@@ -1,13 +1,48 @@
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
+- name: Include products/common/scene-files
+  include_role:
+    name: products/common/scene-files
+  when: scene_file or "arm_" in product
+
+- name: Set enable warning vars
+  set_fact:
+    enable_warning_var: true
+    extra_vars_value: " 0"  # Used to enable the bimanual warning for control loop advanced launcher icon
+  when: bimanual|bool and not skip_warning|bool
+
 - name: Set Shadow Arm+Hand icon pictures
   set_fact:
-    right_arm_hand_picture: arm_hand_right.jpeg
-    left_arm_hand_picture: arm_hand_left.jpg
-    bimanual_arm_hand_picture: arm_hand_bimanual.jpg
+    right_arm_hand_picture: arm_hand_right.png
+    left_arm_hand_picture: arm_hand_left.png
+    bimanual_arm_hand_picture: arm_hand_bimanual.png
+    bimanual_warning_title: "Unimanual Launch Warning"
+    bimanual_warning_text: "It is potentially unsafe to run a bimanual robot in unimanual mode; the pose of the unused arm is unknown, which may result in collisions.\nTo safely launch in unimanual mode, please first launch in bimanual mode, and use Rviz MotionPlanning to move the arm and hand you do not intend to use into the 'safe_store' state.\nBy clicking 'I accept the risks', you acknowledge that you understand the risks involved by running the unimanual system without moving the other robot arm and take full responsibility for any consequences that may arise."
+
+- name: Set inital_y when bimanual is true
+  set_fact:
+    initial_y_left_arm: 1.5
+    initial_y_right_arm: 0.0
+    arm_y_separation: 1.5
+  when: 
+    - bimanual|bool
 
 - name: Set arm+hand GUI launch file names for UR10/UR10e
   set_fact:
-    project_name_input: "sr_robot_launch"
+    project_name_var: "sr_robot_launch"
     launch_file_input_arm_hand_right: "sr_right_ur10arm_hand.launch"
     launch_file_input_arm_hand_left: "sr_left_ur10arm_hand.launch"
     launch_file_input_arm_hand_bimanual: "sr_bimanual_ur10arms_hands.launch"
@@ -16,7 +51,7 @@
 
 - name: Set arm+hand GUI launch file names for UR5/UR5e
   set_fact:
-    project_name_input: "sr_robot_launch"
+    project_name_var: "sr_robot_launch"
     launch_file_input_arm_hand_right: "sr_right_ur5arm_hand.launch"
     launch_file_input_arm_hand_left: "sr_left_ur5arm_hand.launch"
     launch_file_input_arm_hand_bimanual: "sr_bimanual_ur5arms_hands.launch"
@@ -25,24 +60,24 @@
 
 - name: Set arm+hand GUI launch file content for sim
   set_fact:
-    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
-    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
-    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_input_arm_hand_right }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 initial_y:={{ initial_y_right_arm }} initial_z:={{ initial_z }}"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_input_arm_hand_left }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 initial_y:={{ initial_y_left_arm }} initial_z:={{ initial_z }}"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=false sim:=true arm_speed_scale:=0.7 arm_1_z:={{ initial_z }} arm_2_z:={{ initial_z }} arm_y_separation:={{ arm_y_separation }}"
 
 - name: Set arm+hand GUI launch file content
   set_fact:
-    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 scene:=true"
-    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7 scene:=true"
+    launch_file_content_arm_hand_right: "{{ launch_file_input_arm_hand_right }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
+    launch_file_content_arm_hand_left: "{{ launch_file_input_arm_hand_left }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
     launch_file_content_arm_hand_bimanual: "{{ launch_file_input_arm_hand_bimanual }} external_control_loop:=true sim:=false arm_speed_scale:=0.7"
 
 - name: Set arm+hand GUI launch file content for custom scene
   set_fact:
-    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} scene_file:='{{ scene_file }}'"
-    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} scene_file:='{{ scene_file }}'"
-    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} scene_file:='{{ scene_file }}'"
-    launch_file_content_arm_hand_right_sim: "{{ launch_file_content_arm_hand_right_sim }} scene_file:='{{ scene_file }}'"
-    launch_file_content_arm_hand_left_sim: "{{ launch_file_content_arm_hand_left_sim }} scene_file:='{{ scene_file }}'"
-    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_content_arm_hand_bimanual_sim }} scene_file:='{{ scene_file }}'"
+    launch_file_content_arm_hand_right: "{{ launch_file_content_arm_hand_right }} initial_y:={{ initial_y_right_arm }} initial_z:={{ initial_z }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
+    launch_file_content_arm_hand_left: "{{ launch_file_content_arm_hand_left }} initial_y:={{ initial_y_right_arm }} initial_z:={{ initial_z }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
+    launch_file_content_arm_hand_bimanual: "{{ launch_file_content_arm_hand_bimanual }} arm_1_z:={{ initial_z }} arm_2_z:={{ initial_z }} arm_y_separation:={{ arm_y_separation }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
+    launch_file_content_arm_hand_right_sim: "{{ launch_file_content_arm_hand_right_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_right }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_right }}.world'"
+    launch_file_content_arm_hand_left_sim: "{{ launch_file_content_arm_hand_left_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_left }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_left }}.world'"
+    launch_file_content_arm_hand_bimanual_sim: "{{ launch_file_content_arm_hand_bimanual_sim }} scene:=true scene_file:='$(find sr_description_common)/scenes/{{ scene_file_bimanual }}.scene' world:='$(find sr_description_common)/worlds/{{ scene_file_bimanual }}.world'"
   when:
     - scene_file|length > 0
 
@@ -59,6 +94,9 @@
     control_loop_script_name: "shadow_nuc_right_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right_arm_hand.sh"
     launch_terminal: "false"
+    enable_warning: "{{ enable_warning_var|bool }}"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when:
     - bimanual|bool or hand_side=="right"
 
@@ -75,6 +113,9 @@
     hand_side_label: "Left Arm and Hand"
     control_loop_script_name: "shadow_nuc_left_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_left_arm_hand.sh"
+    enable_warning: "{{ enable_warning_var|bool }}"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when:
     - bimanual|bool or hand_side=="left"
 
@@ -91,6 +132,9 @@
     hand_side_label: "Bimanual Arm and Hand"
     control_loop_script_name: "shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_bimanual_arm_hand.sh"
+    enable_warning: "false"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when:
     - bimanual|bool
 
@@ -105,6 +149,11 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-r"
+    initial_z_var: "{{ initial_z }}"
+    initial_y_var: "{{ initial_y_right_arm }}"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
+    extra_vars: "{{ extra_vars_value }}"
   when: 
     - bimanual|bool or hand_side=="right"
 
@@ -119,6 +168,11 @@
     hand_ctrl_value: "true"
     arm_ctrl_value: "true"
     hand_side_ad: "-l"
+    initial_z_var: "{{ initial_z }}"
+    initial_y_var: "{{ initial_y_left_arm }}"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
+    extra_vars: "{{ extra_vars_value }}"
   when: 
     - bimanual|bool or hand_side=="left"
 
@@ -131,6 +185,8 @@
     desktop_icon_path: "{{ bimanual_advanced_launcher }}/3 - Launch NUC Container and Bimanual Hand+Arm Hardware Control Loop"
     arm_payload_mass: "{{ arm_mass_payload }}"
     arm_ctrl_value: "true"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: 
     - bimanual|bool
 
@@ -142,12 +198,13 @@
   vars:
     pwm_control_var: "true"
     hand_ctrl_var: "true"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    initial_z_var: "{{ initial_z }}"
+    initial_y_var: "{{ initial_y_right_arm }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
     ad_hand_side: "-r"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: 
     - not bimanual|bool and hand_side=="right"
 
@@ -159,12 +216,13 @@
   vars:
     pwm_control_var: "true"
     hand_ctrl_var: "true"
-    initial_z_var: "{{ initial_z_value }}"
-    arm_x_separation_var: "{{ arm_x_separation_value }}"
-    arm_y_separation_var: "{{ arm_y_separation_value }}"
+    initial_z_var: "{{ initial_z }}"
+    initial_y_var: "{{ initial_y_left_arm }}"
     arm_ctrl_var: "true"
     arm_payload_mass: "{{ arm_mass_payload }}"
     ad_hand_side: "-l"
+    warning_title: "{{ bimanual_warning_title }}"
+    warning_text: "{{ bimanual_warning_text }}"
   when: 
     - not bimanual|bool and hand_side=="left"
 
@@ -173,6 +231,14 @@
     src: templates/scripts/start-docker-container-nuc-bimanual-arm-hand.j2
     dest: "{{ shadow_hand_launcher_folder }}/shadow_nuc_bimanual_arm_hand_hardware_control_loop.sh"
     mode: '755'
+  vars:
+    pwm_control_var: "true"
+    hand_ctrl_var: "true"
+    initial_z_var: "{{ initial_z }}"
+    arm_x_separation_var: "{{ arm_x_separation }}"
+    arm_y_separation_var: "{{ arm_y_separation }}"
+    arm_ctrl_var: "true"
+    arm_payload_mass: "{{ arm_mass_payload }}"
   when: 
     - bimanual|bool
 
@@ -182,8 +248,8 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_right_arm_hand.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-r"
+    project_name_input: "{{ project_name_var }}"
+    launch_file_input: "{{ launch_file_content_arm_hand_right }}"
     desktop_icon_name: "4 - Launch Server Right Hand+Arm GUI"
     desktop_icon_path: "{{ right_advanced_launcher }}/4 - Launch Server Right Hand+Arm GUI"
   when: 
@@ -195,8 +261,8 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_left_arm_hand.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "srhand.launch external_control_loop:=true sim:=false hand_side_ad:=-l"
+    project_name_input: "{{ project_name_var }}"
+    launch_file_input: "{{ launch_file_content_arm_hand_left }}"
     desktop_icon_name: "4 - Launch Server Left Hand+Arm GUI"
     desktop_icon_path: "{{ left_advanced_launcher }}/4 - Launch Server Left Hand+Arm GUI"
   when: 
@@ -208,44 +274,11 @@
   vars:
     desktop_icon_png: "rviz.png"
     launch_script: "shadow_GUI_bimanual_arm_hand.sh"
-    project_name_input: "sr_robot_launch"
-    launch_file_input: "sr_bimanual.launch external_control_loop:=true sim:=false"
+    project_name_input: "{{ project_name_var }}"
+    launch_file_input: "{{ launch_file_content_arm_hand_bimanual }}"
     desktop_icon_name: "4 - Launch Server Bimanual Hand+Arm GUI"
     desktop_icon_path: "{{ bimanual_advanced_launcher }}/4 - Launch Server Bimanual Hand+Arm GUI"
   when: 
-    - bimanual|bool
-
-- name: Create executable launch script for hand+arm (Right) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_right_arm_hand.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_right }}"
-  when:
-    - not bimanual|bool and hand_side=="right"
-
-- name: Create executable launch script for hand+arm (Left) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_left_arm_hand.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_left }}"
-  when:
-    - not bimanual|bool and hand_side=="left"
-
-- name: Create executable launch script for hand+arm (Bimanual) GUI
-  template:
-    src: ../../../common/resources/templates/scripts/roslaunch-script.j2
-    dest: "{{ shadow_hand_launcher_folder }}/shadow_GUI_bimanual_arm_hand.sh"
-    mode: '755'
-  vars:
-    project_name: "{{ project_name_input }}"
-    launch_file: "{{ launch_file_content_arm_hand_bimanual }}"
-  when:
     - bimanual|bool
 
 - name: Simulation icons
@@ -258,7 +291,7 @@
             dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_right_arm_hand_sim.sh"
             mode: '755'
           vars:
-            project_name: "{{ project_name_input }}"
+            project_name: "{{ project_name_var }}"
             launch_file: "{{ launch_file_content_arm_hand_right_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Arm+Hand Simulation
@@ -282,7 +315,7 @@
             dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_left_arm_hand_sim.sh"
             mode: '755'
           vars:
-            project_name: "{{ project_name_input }}"
+            project_name: "{{ project_name_var }}"
             launch_file: "{{ launch_file_content_arm_hand_left_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Left Arm+Hand Simulation
@@ -306,7 +339,7 @@
             dest: "{{ shadow_hand_launcher_folder }}/shadow_launch_bimanual_arm_hand_sim.sh"
             mode: '755'
           vars:
-            project_name: "{{ project_name_input }}"
+            project_name: "{{ project_name_var }}"
             launch_file: "{{ launch_file_content_arm_hand_bimanual_sim }}"
 
         - name: Install desktop icon for launching everything for Shadow Bimanual Arm+Hand Simulation

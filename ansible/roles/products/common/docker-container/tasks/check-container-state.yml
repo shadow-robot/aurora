@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Checking if container exists
   become: yes
@@ -9,18 +23,6 @@
   when: docker_id.stdout | length > 0
   set_fact:
     container_exists: true
-
-- name: Checking if container already running
-  shell: "docker inspect -f '{{ '{{' }}.State.Running }}' {{ container_name }}"
-  register: container_running_output
-  when: container_exists | bool
-  become: yes
-  changed_when: container_running_output.rc != 0
-
-- name: Set container_running to true
-  set_fact:
-    container_running: "{{ container_running_output.stdout | bool }}"
-  when: container_exists | bool
 
 - name: Reinstalling docker container because it doesn't exist
   import_tasks: reinstall.yml

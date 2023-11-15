@@ -1,5 +1,18 @@
----
+# Copyright 2022-2023 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
 
+---
 - name: Install Docker dependencies
   apt:
     name: "{{ packages }}"
@@ -32,6 +45,12 @@
       - docker-ce-cli
       - containerd.io
 
+- name: Add users to docker group
+  user:
+    name: "{{ user }}"
+    groups: 'docker'
+    append: 'yes'
+
 - name: Enable Docker systemd service
   service:
     name: 'docker'
@@ -39,15 +58,13 @@
     enabled: 'yes'
   ignore_errors: yes
 
-- name: Add users to docker group
-  user:
-    name: "{{ user }}"
-    groups: 'docker'
-    append: 'yes'
-
-- name: Docker installation finished
-  debug:
-    msg: "Installation of Docker is finished. Please restart you computer and run the same installation tool again"
+- name: Set permissions for docker.sock
+  file:
+    path: /var/run/docker.sock
+    owner: root
+    group: docker
+    mode: '0660'
+  ignore_errors: yes
 
 - name: Rebooting computer to finish Docker installation
   when: allow_auto_reboot|bool
@@ -61,6 +78,9 @@
     delay: '10'
     timeout: '300'
 
-- name: Finishing Docker installation
-  when: not allow_auto_reboot|bool
-  meta: end_play
+- name: End playbook so user can reboot
+  fail:
+    msg: "Docker has been installed. Please reboot your device and run the same oneliner to complete installation"
+  when: 
+    - not allow_auto_reboot|bool
+    - not skip_molecule_task|bool
