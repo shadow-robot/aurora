@@ -1,4 +1,4 @@
-# Table of Contents
+# Table of Contents 
 - [Introduction](#introduction)
 - [Multiple Aurora Installations on one device](#multiple-aurora-installations-on-one-device)
 - [How to run](#how-to-run)
