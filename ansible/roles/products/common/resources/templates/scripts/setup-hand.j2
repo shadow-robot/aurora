@@ -8,6 +8,9 @@ fi
 
 # move ssh key to ssh folder
 if [ -f /tmp/id_rsa ]; then
+    if [ ! -d /home/user/.ssh ]; then
+        mkdir -p /home/user/.ssh
+    fi
     mv /tmp/id_rsa /home/user/.ssh/id_rsa
 fi
 
