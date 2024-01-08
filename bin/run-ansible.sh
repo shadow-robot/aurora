@@ -283,6 +283,7 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
+codename="focal"
 
 mkdir -p $miniconda_install_root
 attempts=1
