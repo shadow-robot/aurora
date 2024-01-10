@@ -283,7 +283,9 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
-codename="focal"
+if [[ $codename == *"jammy"* ]]; then
+  codename="focal"
+fi
 
 mkdir -p $miniconda_install_root
 attempts=1
