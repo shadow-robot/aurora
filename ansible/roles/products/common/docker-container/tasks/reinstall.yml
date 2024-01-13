@@ -43,7 +43,7 @@
   include_tasks: create-container/with-setup-with-terminator.yml
 
 - name: Creating the container which will execute setup script when started without terminator
-  when: "not nvidia_docker|bool and not terminator and setup_script | length > 0"
+  when: "not nvidia_docker|bool and not terminator|bool and setup_script | length > 0"
   include_tasks: create-container/with-setup-no-terminator.yml
 
 - name: Creating the container which will just start a terminator (no setup script)
