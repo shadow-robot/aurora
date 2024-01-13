@@ -356,7 +356,7 @@ ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pi
 
 # Fix for WSL
 if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
-  python3 -m pip install pip --upgrade
+  # python3 -m pip install pip --upgrade
   pip install pyopenssl --upgrade
   if [[ $(which docker | wc -l) -gt 0 ]]; then
     if service docker status 2>&1 | grep -q "is not running"; then
