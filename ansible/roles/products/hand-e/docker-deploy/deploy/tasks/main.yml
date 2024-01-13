@@ -16,6 +16,10 @@
 - name: Setup script name
   set_fact:
     setup_script: server-setup.sh
+  when: not terminator|bool
+
+- name: Upgrade script name
+  set_fact:
     upgrade_script: "upgrade_image.sh"
 
 - name: Include products/common/clear-icons role
