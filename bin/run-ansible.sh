@@ -310,8 +310,6 @@ fi
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
 python -m pip install yq xq
 fetch_new_files() {
-  old_IFS=$IFS
-  IFS=$'\n'
   aws_bucket_url=$1
   aws_bucket_dir=$2
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
@@ -350,7 +348,6 @@ fetch_new_files() {
       fi
     done
   fi
-  IFS=${old_IFS}
 }
 
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
