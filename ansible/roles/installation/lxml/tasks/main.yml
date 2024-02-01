@@ -27,6 +27,13 @@
 #   when: pip_status.rc != 0
 #   become: yes
 
+- name: Install lxml pip module pre-requisites
+  apt:
+    name: 'libxml2-dev libxslt-dev'
+    state: 'present'
+    update_cache: yes
+  become: yes
+
 - name: Install lxml pip module (in conda)
   pip:
     executable: "{{ ansible_pip3_executable }}"
