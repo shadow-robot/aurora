@@ -29,11 +29,16 @@
 
 - name: Install lxml pip module pre-requisites
   apt:
-    name: 'libxml2-dev libxslt-dev'
+    name: "{{ packages }}"
     state: 'present'
     update_cache: yes
+  vars:
+    packages:
+      - libxml2-dev
+      - libxslt-dev
   become: yes
 
+      
 - name: Install lxml pip module (in conda)
   pip:
     executable: "{{ ansible_pip3_executable }}"
