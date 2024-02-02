@@ -27,23 +27,23 @@
 #   when: pip_status.rc != 0
 #   become: yes
 
-- name: Install lxml pip module pre-requisites
-  apt:
-    name: "{{ packages }}"
-    state: 'present'
-    update_cache: yes
-  vars:
-    packages:
-      - libxml2-dev
-      - libxslt-dev
-  become: yes
+# - name: Install lxml pip module pre-requisites
+#   apt:
+#     name: "{{ packages }}"
+#     state: 'present'
+#     update_cache: yes
+#   vars:
+#     packages:
+#       - libxml2-dev
+#       - libxslt-dev
+#   become: yes
 
-      
 - name: Install lxml pip module (in conda)
   pip:
     executable: "{{ ansible_pip3_executable }}"
     name: lxml
     state: present
+    versionn: 4.8.0
   when: '"conda" in ansible_pip3_executable'
   changed_when: pip_status.rc != 0
   # Hack because of not idempotent behavior of pip module
@@ -55,6 +55,7 @@
     executable: "{{ ansible_pip3_executable }}"
     name: lxml
     state: present
+    versionn: 4.8.0
   when: '"conda" not in ansible_pip3_executable'
   become: true
   changed_when: pip_status.rc != 0
