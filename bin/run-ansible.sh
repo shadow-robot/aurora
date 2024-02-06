@@ -354,7 +354,7 @@ fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
 ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
 
-# Fix for WSL
+# Fix for WSL - THIS IS NOT SUPPORTED AT ALL!!!
 if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
   # python3 -m pip install pip --upgrade
   pip install pyopenssl --upgrade
