@@ -275,18 +275,6 @@ echo ""
 
 pushd $aurora_home
 
-
-re="^Codename:[[:space:]]+(.*)"
-while IFS= read -r line; do
-    if [[ $line =~ $re ]]; then
-        codename="${BASH_REMATCH[1]}"
-    fi
-done < <(lsb_release -a 2>/dev/null)
-
-if [[ $codename == *"jammy"* ]]; then
-  codename="focal"
-fi
-
 mkdir -p $miniconda_install_root
 attempts=1
 while ! $(echo "${miniconda_checksum} ${miniconda_installer}" | sha256sum --status --check); do
@@ -353,8 +341,8 @@ fetch_new_files() {
   fi
 }
 
-fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
-fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
+fetch_new_files "http://shadowrobot.aurora-host-packages-focal.s3.eu-west-2.amazonaws.com" "pip_packages"
+fetch_new_files "http://shadowrobot.aurora-host-packages-focal.s3.eu-west-2.amazonaws.com" "ansible_collections"
 ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
 
 
