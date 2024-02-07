@@ -49,7 +49,7 @@
             update_cache: yes
           when:
             - pip_status.rc != 0
-            - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" not in pip_status.stderr'
+            - not pip_status.stderr | regex_search("module 'lib' has no attribute 'X509_V_FLAG_.*")
           become: yes
 
         # This checks for a condition where pip3 is installed but not working due to an issue with a criptography library
@@ -70,7 +70,7 @@
           register: output
           when:
             - pip_status.rc != 0
-            - '"module ''lib'' has no attribute ''X509_V_FLAG_CB_ISSUER_CHECK''" in pip_status.stderr'
+            - pip_status.stderr | regex_search("module 'lib' has no attribute 'X509_V_FLAG_.*")
           become: yes
 
 - name: Set Python 3 variable
