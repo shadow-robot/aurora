@@ -114,7 +114,7 @@
       become: yes
 
   roles:
-    - { role: installation/install_licence_tools, when: "binary" in image|string}
+    - { role: installation/install_licence_tools, when: '"binary" in image'}
     - { role: products/common/get-system-variables }
     - { role: products/hand-e/server/deploy }
     - { role: products/common/dolphin-icons, when: ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy'}
