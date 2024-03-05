@@ -74,7 +74,7 @@
     - name: Include install_licence_tools role
       include_role:
         name: installation/install_licence_tools
-  when: '"binary" in image'
+      when: '"binary" in image'
 
 - name: Check which hosts are available for server and control machine system Install
   hosts: all
