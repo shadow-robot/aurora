@@ -228,7 +228,3 @@
     dest: "{{ shadow_hand_launcher_folder }}/{{ upgrade_script }}"
     mode: '755'
   when: upgrade_check|bool
-
-- name: Include installation/teamviewer role
-  include_role:
-    name: installation/teamviewer
