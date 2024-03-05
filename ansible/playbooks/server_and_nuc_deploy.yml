@@ -28,11 +28,6 @@
       include_role:
         name: installation/playbook_setup
       when: not skip_molecule_task|bool
-
-    - name: Install licence tools
-      include_role:
-        name: installation/install_licence_tools
-      when: '"binary" in image'
   tasks:
     - name: Extract hostname from server
       set_fact:
@@ -93,6 +88,11 @@
 - name: Install Hand software on Ubuntu server laptop
   hosts: server
   pre_tasks:
+    - name: Install licence tools
+      include_role:
+        name: installation/install_licence_tools
+      when: '"binary" in image'
+
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
       set_fact:
