@@ -147,7 +147,7 @@
             raw: 'apt-get -y update && apt-get purge -y python3-openssl'
             register: output
             when:
-              - ansible_failed_result.module_stderr | regex_search("module 'lib' has no attribute 'X509_V_FLAG_.*")
+              - ansible_failed_result['module_stderr'] | regex_search("module 'lib' has no attribute 'X509_V_FLAG_.*")
             become: yes
 
           - name: Re-try install Python dependencies (not in conda)
