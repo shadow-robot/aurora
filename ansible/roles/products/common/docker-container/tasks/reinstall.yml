@@ -75,7 +75,7 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "create_ssh_folder.sh"
-    modify_script_commands: "sudo mkdir -p /home/user/.ssh"
+    modify_script_commands: "mkdir -p /home/user/.ssh"
   when: "'arm_' in product"
 
 - name: Checking out PRs and branches if pr_branches list has been specified
