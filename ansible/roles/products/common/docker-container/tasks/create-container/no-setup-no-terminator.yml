@@ -31,6 +31,11 @@
   set_fact: pull_var=no
   when: local_image
 
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[inventory_hostname]
+  tags: debug_info
+
 - name: Creating the container with no terminator and no setup
   changed_when: false
   community.docker.docker_container:
