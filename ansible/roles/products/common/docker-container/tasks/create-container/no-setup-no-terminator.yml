@@ -36,6 +36,10 @@
     var: hostvars[inventory_hostname]
   tags: debug_info
 
+- name: Print the gateway for each host when defined
+  ansible.builtin.debug:
+    msg: groups: "{{ groups['server'][0] }}"
+
 - name: Creating the container with no terminator and no setup
   changed_when: false
   community.docker.docker_container:
@@ -55,7 +59,7 @@
       SR_RECORD_HAND_DATA: "{{ record_hand_data }}"
       CONTAINER_NAME: "{{ container_name }}"
       SERVER_USERNAME: "{{ lookup('ansible.builtin.env', 'USER') }}"
-      SERVER_IP: "{{ server_ip }}"
+      SERVER_IP: "{{ groups['server'][0] }}"
     network_mode: "host"
     pid_mode: "host"
     ipc_mode: "host"
