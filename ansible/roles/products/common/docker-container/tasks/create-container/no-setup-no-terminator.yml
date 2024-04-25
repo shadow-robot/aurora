@@ -38,7 +38,7 @@
 
 - name: Print the gateway for each host when defined
   ansible.builtin.debug:
-    msg: groups: "{{ groups['server'][0] }}"
+    msg: groups {{ groups.server[0] }}
 
 - name: Creating the container with no terminator and no setup
   changed_when: false
