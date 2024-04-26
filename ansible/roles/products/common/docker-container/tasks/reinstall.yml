@@ -105,6 +105,19 @@
       modify_script_commands: "/tmp/pull_pr_branches_and_catkin_make.sh"
   when: pr_branches is defined and pr_branches | length > 0
 
+- name: Copying ssh key pair into control machine container (if it exists in server laptop)
+  changed_when: false
+  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
+  become: yes
+  when: ssh_result_private.stat.exists and groups['control-machine'] is defined
+
+- name: Move ssh key to ssh key dir
+  import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  vars:
+    modify_script_name: "move_ssh_key.sh"
+    modify_script_commands: "mv /tmp/id_rsa /home/user/.ssh/id_rsa"
+  when: groups['control-machine'] is defined
+
 # - name: Pulling latest hand_configurations
 #   import_tasks: modify-container.yml
 #   vars:
