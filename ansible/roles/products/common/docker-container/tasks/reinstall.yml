@@ -112,6 +112,11 @@
     shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
     become: yes
 
+  - name: Copying ssh key pair into control machine container (if it exists in server laptop)
+    changed_when: false
+    shell: "docker cp {{ ssh_keys_path }}.pub {{ container_name }}:/tmp/."
+    become: yes
+
   - name: Create ssh directory in nuc container
     import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
     vars:
@@ -123,12 +128,36 @@
     vars:
       modify_script_name: "move_ssh_key.sh"
       modify_script_commands: "sudo mv /tmp/id_rsa /home/user/.ssh/id_rsa"
+
+  - name: Move public ssh key to ssh key dir
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "move_ssh_key.sh"
+      modify_script_commands: "sudo mv /tmp/id_rsa.pub /home/user/.ssh/id_rsa.pub"
   
-  - name: Fix ssh key permissions
+  - name: Fix ssh key ownership
     import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
     vars:
       modify_script_name: "ssh_key_permissions.sh"
       modify_script_commands: "sudo chown user:user /home/user/.ssh/id_rsa"
+
+  - name: Fix public ssh key ownership
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "sudo chown user:user /home/user/.ssh/id_rsa.pub"
+
+  - name: Fix ssh key permissions
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "sudo chmod 600 /home/user/.ssh/id_rsa"
+
+  - name: Fix public ssh key permissions
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "sudo chmod 644 /home/user/.ssh/id_rsa.pub"
 
   when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
 
