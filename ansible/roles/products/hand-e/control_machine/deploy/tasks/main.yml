@@ -164,7 +164,13 @@
     import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
     vars:
       modify_script_name: "ssh_key_permissions.sh"
-      modify_script_commands: "eval $(ssh-agent) && ssh-add {{ ssh_keys_path }}"
+      modify_script_commands: "eval $(ssh-agent)"
+
+  - name: Fix ssh key permissions
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "ssh-add {{ ssh_keys_path }}"
 
   - name: Copy SSH public key from control machine to server (if it exists in control machine laptop)
     fetch:
