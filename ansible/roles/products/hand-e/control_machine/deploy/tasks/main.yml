@@ -128,3 +128,140 @@
   shell: "docker cp {{ user_folder }}/{{ setup_script }} {{ container_name }}:{{ setup_directory }}/{{ setup_script }}"
   become: yes
   when: arm_ip_left!="" or arm_ip_right!=""
+
+- name: Set up ssh key inside nuc container (for rqt hand calibration gui)
+  block:
+  - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+    openssh_keypair:
+      path: "{{ ssh_keys_path }}"
+
+  - name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
+    copy:
+      src: "{{ ssh_keys_path }}.pub"
+      dest: "{{ temp_ssh_keys_path }}.pub"
+    changed_when: false
+    when: not skip_molecule_task|bool
+  
+  - name: Make a copy of SSH private key to a /tmp/ folder for copying to other machines
+    copy:
+      src: "{{ ssh_keys_path }}"
+      dest: "{{ temp_ssh_keys_path }}"
+    changed_when: false
+    when: not skip_molecule_task|bool
+  
+  - name: Copying ssh key pair into docker container
+    changed_when: false
+    shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
+    become: yes
+  
+  - name: Evaluating the SSH agent
+    shell: "eval $(ssh-agent)"
+    changed_when: false
+  
+  - name: Adding the ssh identity
+    shell: "ssh-add {{ ssh_keys_path }}"
+    changed_when: false
+    when: not skip_molecule_task|bool
+
+  - name: Fix ssh key permissions
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "mkdir -p /home/user/.ssh && sudo chown user:user /home/user/.ssh && sudo mv /tmp/id_rsa /home/user/.ssh/ && sudo mv /tmp/id_rsa.pub /home/user/.ssh/"
+  
+  - name: Fix ssh key permissions
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "sudo chmod 600 /home/user/.ssh/id_rsa && sudo chown user:user /home/user/.ssh/id_rsa && sudo chown user:user /home/user/.ssh/id_rsa.pub"
+
+  - name: Fix ssh key permissions
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "eval $(ssh-agent) && ssh-add {{ ssh_keys_path }}"
+
+  - name: Copy SSH public key from control machine to server (if it exists in control machine laptop)
+    copy:
+      src: "{{ temp_ssh_keys_path }}.pub"
+      dest: "{{ ssh_keys_path }}.pub"
+      mode: '644'
+    when: ssh_result.stat.exists
+    changed_when: false
+    become: yes
+  
+  - name: Copy SSH private key from control machine to server (if it exists in control machine laptop)
+    copy:
+      src: "{{ temp_ssh_keys_path }}"
+      dest: "{{ ssh_keys_path }}"
+      mode: '644'
+    when: ssh_result_private.stat.exists
+    changed_when: false
+    become: yes
+  
+  - name: Register SSH public key with current user on the server machine
+    authorized_key:
+      user: "{{ user }}"
+      key: "{{ lookup('file', '{{ temp_ssh_keys_path }}.pub') }}"
+      state: present
+    when: ssh_result.stat.exists
+    changed_when: false
+    become: yes
+    delegate_to: 127.0.0.1
+
+  # when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+
+  # - name: Copying ssh key pair into control machine container (if it exists in server laptop)
+  #   changed_when: false
+  #   shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
+  #   become: yes
+
+  # - name: Copying ssh key pair into control machine container (if it exists in server laptop)
+  #   changed_when: false
+  #   shell: "docker cp {{ ssh_keys_path }}.pub {{ container_name }}:/tmp/."
+  #   become: yes
+
+  # - name: Create ssh directory in nuc container
+  #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  #   vars:
+  #     modify_script_name: "make_ssh_dir.sh"
+  #     modify_script_commands: "mkdir -p /home/user/.ssh"
+  
+  # - name: Move ssh key to ssh key dir
+  #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  #   vars:
+  #     modify_script_name: "move_ssh_key.sh"
+  #     modify_script_commands: "sudo mv /tmp/id_rsa /home/user/.ssh/id_rsa"
+
+  # - name: Move public ssh key to ssh key dir
+  #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  #   vars:
+  #     modify_script_name: "move_ssh_key.sh"
+  #     modify_script_commands: "sudo mv /tmp/id_rsa.pub /home/user/.ssh/id_rsa.pub"
+  
+  # - name: Fix ssh key ownership
+  #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  #   vars:
+  #     modify_script_name: "ssh_key_permissions.sh"
+  #     modify_script_commands: "sudo chown user:user /home/user/.ssh/id_rsa"
+
+  # - name: Fix public ssh key ownership
+  #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  #   vars:
+  #     modify_script_name: "ssh_key_permissions.sh"
+  #     modify_script_commands: "sudo chown user:user /home/user/.ssh/id_rsa.pub"
+
+  # - name: Fix ssh key permissions
+  #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  #   vars:
+  #     modify_script_name: "ssh_key_permissions.sh"
+  #     modify_script_commands: "sudo chmod 600 /home/user/.ssh/id_rsa"
+
+  # - name: Fix public ssh key permissions
+  #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  #   vars:
+  #     modify_script_name: "ssh_key_permissions.sh"
+  #     modify_script_commands: "sudo chmod 644 /home/user/.ssh/id_rsa.pub"
+
+  # when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+
