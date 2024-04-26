@@ -139,6 +139,7 @@
     fetch:
       src: "{{ ssh_keys_path }}.pub"
       dest: "{{ temp_ssh_keys_path }}.pub"
+      flat: true
     changed_when: false
     when: not skip_molecule_task|bool
   
@@ -146,6 +147,7 @@
     fetch:
       src: "{{ ssh_keys_path }}"
       dest: "{{ temp_ssh_keys_path }}"
+      flat: true
     changed_when: false
     when: not skip_molecule_task|bool
   
