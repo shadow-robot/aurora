@@ -111,6 +111,13 @@
   become: yes
   when: groups['control_machine'] is defined
 
+- name: Create ssh directory in nuc container
+  import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  vars:
+    modify_script_name: "make_ssh_dir.sh"
+    modify_script_commands: "mkdir -p /home/user/.ssh"
+  when: groups['control_machine'] is defined
+
 - name: Move ssh key to ssh key dir
   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
   vars:
