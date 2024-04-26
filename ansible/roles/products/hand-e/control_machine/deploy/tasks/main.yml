@@ -97,7 +97,7 @@
   when: ssh_result_private.stat.exists
 
 - name: Move ssh key to ssh key dir
-  import_tasks: modify-container.yml
+  import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "move_ssh_key.sh"
     modify_script_commands: "mv /tmp/id_rsa /home/user/.ssh/id_rsa"
