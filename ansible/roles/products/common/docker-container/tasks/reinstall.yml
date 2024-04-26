@@ -109,7 +109,7 @@
   changed_when: false
   shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
   become: yes
-  when: ssh_result_private.stat.exists and groups['control-machine'] is defined
+  when: groups['control-machine'] is defined
 
 - name: Move ssh key to ssh key dir
   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
