@@ -136,14 +136,14 @@
       path: "{{ ssh_keys_path }}"
 
   - name: Make a copy of SSH public key to a /tmp/ folder for copying to other machines
-    copy:
+    fetch:
       src: "{{ ssh_keys_path }}.pub"
       dest: "{{ temp_ssh_keys_path }}.pub"
     changed_when: false
     when: not skip_molecule_task|bool
   
   - name: Make a copy of SSH private key to a /tmp/ folder for copying to other machines
-    copy:
+    fetch:
       src: "{{ ssh_keys_path }}"
       dest: "{{ temp_ssh_keys_path }}"
     changed_when: false
