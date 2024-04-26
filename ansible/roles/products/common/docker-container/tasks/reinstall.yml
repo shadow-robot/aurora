@@ -105,24 +105,31 @@
       modify_script_commands: "/tmp/pull_pr_branches_and_catkin_make.sh"
   when: pr_branches is defined and pr_branches | length > 0
 
-- name: Copying ssh key pair into control machine container (if it exists in server laptop)
-  changed_when: false
-  shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
-  become: yes
-  when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+- name: Set up ssh key inside nuc container (for rqt hand calibration gui)
+  block:
+  - name: Copying ssh key pair into control machine container (if it exists in server laptop)
+    changed_when: false
+    shell: "docker cp {{ ssh_keys_path }} {{ container_name }}:/tmp/."
+    become: yes
 
-- name: Create ssh directory in nuc container
-  import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
-  vars:
-    modify_script_name: "make_ssh_dir.sh"
-    modify_script_commands: "mkdir -p /home/user/.ssh"
-  when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
+  - name: Create ssh directory in nuc container
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "make_ssh_dir.sh"
+      modify_script_commands: "mkdir -p /home/user/.ssh"
+  
+  - name: Move ssh key to ssh key dir
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "move_ssh_key.sh"
+      modify_script_commands: "sudo mv /tmp/id_rsa /home/user/.ssh/id_rsa"
+  
+  - name: Fix ssh key permissions
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_commands: "sudo chown user:user /home/user/.ssh/id_rsa"
 
-- name: Move ssh key to ssh key dir
-  import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
-  vars:
-    modify_script_name: "move_ssh_key.sh"
-    modify_script_commands: "mv /tmp/id_rsa /home/user/.ssh/id_rsa"
   when: groups['control_machine'] is defined and inventory_hostname in groups['control_machine'] | default([])
 
 # - name: Pulling latest hand_configurations
