@@ -164,11 +164,10 @@
       modify_script_commands: "sudo chmod 600 {{ reverse_ssh_keys_user_path }} && sudo chown user:user {{ reverse_ssh_keys_user_path }}"
 
   - name: Install keychain
-    apt:
-      name: "keychain"
-      state: 'present'
-      update_cache: true
-    become: yes
+    import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+    vars:
+      modify_script_name: "install_keychain.sh"
+      modify_script_commands: "sudo apt update && sudo apt install -y keychain"
 
   - name: Start ssh agent, add new ssh key
     import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
