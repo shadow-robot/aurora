@@ -296,6 +296,4 @@
   changed_when: false
   
 - name: Restart GDM (GNOME Display Manager)
-  systemd:
-    name: gdm
-    state: restarted
+  shell: killall -SIGQUIT gnome-shell
