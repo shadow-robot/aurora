@@ -159,6 +159,16 @@
       modify_script_name: "add_ssh_key.sh"
       modify_script_commands: "eval $(ssh-agent) echo \"SSH_AUTH_SOCK: ${SSH_AUTH_SOCK}\t SSH_AGENT_PID:${SSH_AGENT_PID}\" && ssh-add {{ reverse_ssh_keys_user_path }}"
 
+  - name: Run a simple command (command)
+    community.docker.docker_container_exec:
+      container: "{{ container_name }}"
+      command: /bin/bash -c "eval $(ssh-agent) && ssh-add {{ reverse_ssh_keys_user_path }}"
+    register: result
+
+  - name: Print stderr lines
+    ansible.builtin.debug:
+      var: result.stderr_lines
+
   - name: Ensure the .ssh file doesn't exist on the server (before we copy it over)
     file:
       path: "{{ reverse_ssh_keys_temp_path }}.pub"
