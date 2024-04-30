@@ -177,7 +177,8 @@
     community.docker.docker_container_exec:
       container: "{{ container_name }}"
       user: "user"
-      command: bash -c "eval $(ssh-agent) && ssh-add {{ reverse_ssh_keys_user_path }}"
+      chdir: "/home/user"
+      command: exec ssh-agent bash -c "ssh-add /home/user/.ssh/reverse_ssh_id_rsa"
     register: result
 
   # - name: Run a simple command (command)
