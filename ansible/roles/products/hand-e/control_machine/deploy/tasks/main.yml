@@ -138,7 +138,7 @@
   - name: Copying ssh key pair into nuc docker container
     changed_when: false
     # shell: "docker cp {{ reverse_ssh_keys_temp_path }} {{ container_name }}:/tmp/."
-    shell: "docker cp {{ reverse_ssh_keys_temp_path }} {{ container_name }}:/tmp/{{ reverse_ssh_keys_temp_path }}"
+    shell: "docker cp {{ reverse_ssh_keys_temp_path }} {{ container_name }}:{{ reverse_ssh_keys_temp_path }}"
     become: yes
 
   - name: Make ssh folder in container and copy tmp key to the ssh folder
