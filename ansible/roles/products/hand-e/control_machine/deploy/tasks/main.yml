@@ -156,7 +156,7 @@
   - name: Start ssh agent, add new ssh key
     import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
     vars:
-      modify_script_name: "ssh_key_permissions.sh"
+      modify_script_name: "add_ssh_key.sh"
       modify_script_commands: "eval $(ssh-agent) echo \"SSH_AUTH_SOCK: ${SSH_AUTH_SOCK}\t SSH_AGENT_PID:${SSH_AGENT_PID}\" && ssh-add {{ reverse_ssh_keys_user_path }}"
 
   - name: Ensure the .ssh file doesn't exist on the server (before we copy it over)
