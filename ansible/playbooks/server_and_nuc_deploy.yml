@@ -34,6 +34,10 @@
         ansible_host: "{{ ansible_hostname }}"
       when: not skip_molecule_task|bool
 
+    - name: Extract username from server
+      set_fact:
+        sr_server_username: "{{ lookup('env','HOME') }}"
+
 - name: Add IP address of all hosts to computer that is running Ansible
   hosts: server
   connection: local
