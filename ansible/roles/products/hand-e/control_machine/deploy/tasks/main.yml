@@ -167,6 +167,8 @@
     apt:
       name: "keychain"
       state: 'present'
+      update_cache: true
+    become: yes
 
   - name: Start ssh agent, add new ssh key
     import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
