@@ -223,7 +223,7 @@
         
         - name: Error connecting to AWS
           fail:
-            msg: "Playbook ended because of an error when connecting to AWS. Please check your customer key is correct and rerun the oneliner. If the oneliner is correct and you are still getting errors please contact support@shadowrobot.com"
+            msg: "Playbook ended because of an error when connecting to AWS. Please check your customer key is correct and rerun the oneliner. If the oneliner is correct and you are still getting errors please contact support@shadowrobot.com {{ ansible_failed_result.msg }}"
 
 - name: Remove .aws folder
   file:
