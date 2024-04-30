@@ -177,6 +177,10 @@
   #     command: /bin/bash -c "eval $(ssh-agent) && ssh-add {{ reverse_ssh_keys_user_path }}"
   #   register: result
 
+  - name: Print result
+    ansible.builtin.debug:
+      var: result
+
   - name: Print stderr lines
     ansible.builtin.debug:
       var: result.stderr_lines
