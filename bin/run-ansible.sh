@@ -252,7 +252,7 @@ while (sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1) || (sudo fuser /var/l
     echo "Waiting for apt-get update file lock..."
     sleep 1
 done
-sudo apt-get update
+# sudo apt-get update
 
 # Wait for apt-get install lock file to be released
 while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
@@ -305,19 +305,21 @@ while ! $(echo "${miniconda_checksum} ${miniconda_installer}" | sha256sum --stat
   fi
 done
 
-bash $miniconda_installer -u -b -p $miniconda_install_location
+# bash $miniconda_installer -u -b -p $miniconda_install_location
 
 if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]; then
   PATH="${PATH}:${miniconda_install_location}/bin"
 fi
 
-shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
-if [ -d "$shadow_conda_ws_dir" ]; then
-  rm -rf $shadow_conda_ws_dir
-fi
+# shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
+# if [ -d "$shadow_conda_ws_dir" ]; then
+#   rm -rf $shadow_conda_ws_dir
+# fi
 
-${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-python -m pip install yq xq
+# ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
+source ${miniconda_install_location}/bin/activate ${conda_ws_name}
+
+# python -m pip install yq xq
 fetch_new_files() {
   aws_bucket_url=$1
   aws_bucket_dir=$2
@@ -359,9 +361,9 @@ fetch_new_files() {
   fi
 }
 
-fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
-fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
-ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
+# fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
+# fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
+# ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
 
 # Fix for WSL - THIS IS NOT SUPPORTED AT ALL!!!
 if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
@@ -433,13 +435,13 @@ fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
-"${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
+# "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
 # router = false is default group_var, only install dhcp server on laptop if product is not arm+hand and user has not overridden router=true
     if [[ $extra_vars != *"router=true"* && $extra_vars != *"product=arm_"* ]]; then
-        "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
+        # "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
         echo ""
         echo " ----------------------------------------------------------------------"
         echo " |    DHCP network ready! Proceeding with server and nuc playbook      |"
