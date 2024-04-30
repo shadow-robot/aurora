@@ -131,6 +131,16 @@
 
 - name: Set up ssh key inside nuc container (for rqt hand calibration gui)
   block:
+  - name: Ensure the private file doesn't exist on the nuc (before we generate it)
+    file:
+      path: "{{ reverse_ssh_keys_temp_path }}"
+      state: absent
+
+  - name: Ensure the public ssh file doesn't exist on the nuc (before we generate it)
+    file:
+      path: "{{ reverse_ssh_keys_temp_path }}.pub"
+      state: absent
+
   - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
     openssh_keypair:
       path: "{{ reverse_ssh_keys_temp_path }}"
