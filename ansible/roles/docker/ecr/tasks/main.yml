@@ -76,6 +76,9 @@
           x-api-key: "{{ customer_key }}"
       no_log: True
       register: request_result
+      retries: 3
+      delay: 3
+      until: request_result.json.body is defined
 
     - name: Local Decryption
       block:
