@@ -294,3 +294,8 @@
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
   changed_when: false
+  
+- name: Restart GDM (GNOME Display Manager)
+  systemd:
+    name: gdm
+    state: restarted
