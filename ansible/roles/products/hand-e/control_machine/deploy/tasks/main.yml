@@ -158,23 +158,31 @@
   #   vars:
   #     modify_script_name: "add_ssh_key.sh"
   #     modify_script_commands: "eval $(ssh-agent) echo \"SSH_AUTH_SOCK: ${SSH_AUTH_SOCK}\t SSH_AGENT_PID:${SSH_AGENT_PID}\" && ssh-add {{ reverse_ssh_keys_user_path }}"
-
-  # - name: Run a simple command (command)
-  #   community.docker.docker_container_exec:
-  #     container: "{{ container_name }}"
-  #     command: /bin/bash -c "eval $(ssh-agent) && ssh-add {{ reverse_ssh_keys_user_path }}"
-  #   register: result
+  
+  - name: Start container
+    changed_when: false
+    shell: "docker start {{ container_name }}"
 
   - name: Run a simple command (command)
-    community.docker.docker_container:
-      name: "{{ container_name }}"
-      state: started
+    community.docker.docker_container_exec:
+      container: "{{ container_name }}"
       command: /bin/bash -c "eval $(ssh-agent) && ssh-add {{ reverse_ssh_keys_user_path }}"
     register: result
+
+  # - name: Run a simple command (command)
+  #   community.docker.docker_container:
+  #     name: "{{ container_name }}"
+  #     state: started
+  #     command: /bin/bash -c "eval $(ssh-agent) && ssh-add {{ reverse_ssh_keys_user_path }}"
+  #   register: result
 
   - name: Print stderr lines
     ansible.builtin.debug:
       var: result.stderr_lines
+
+  - name: Stop container
+    changed_when: false
+    shell: "docker stop {{ container_name }}"
 
   - name: Ensure the .ssh file doesn't exist on the server (before we copy it over)
     file:
