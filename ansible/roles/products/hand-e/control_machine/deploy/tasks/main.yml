@@ -195,7 +195,7 @@
 
   - name: Adding to custom script to be executed inside the container
     changed_when: false
-    shell: docker exec --user user dexterous_hand bash -c "echo 'eval \$(./.find-agent.sh)' > /home/user/.bashrc"
+    shell: docker exec --user user dexterous_hand bash -c "echo 'eval \$(./.find-agent.sh)' >> /home/user/.bashrc"
     become: yes
 
   # - name: Adding to custom script to be executed inside the container
