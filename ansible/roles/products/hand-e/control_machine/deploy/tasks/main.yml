@@ -173,29 +173,50 @@
   #   shell: "docker exec -i --user user {{ container_name }} bash -c \"echo 'eval $(ssh-agent)'\" > /home/user/add_ssh_key.sh"
   #   become: yes
 
+  - name: Copy find-agent script to nuc
+    copy:
+      src: scripts/find-agent.sh
+      dest: /tmp/find-agent.sh
+
+  - name: Copying ssh key pair into nuc docker container
+    changed_when: false
+    # shell: "docker cp {{ reverse_ssh_keys_temp_path }} {{ container_name }}:/tmp/."
+    shell: "docker cp /tmp/find-agent.sh {{ container_name }}:/home/user/.find-agent.sh"
+    become: yes
+
   - name: Start container
     changed_when: false
     shell: "docker start {{ container_name }}"
 
-  - name: Adding to custom script to be executed inside the container
+  - name: Making find-agent script executable
     changed_when: false
-    shell: docker exec --user user dexterous_hand bash -c "echo 'eval \$(ssh-agent)' > /home/user/add_ssh_key.sh"
+    shell: docker exec --user user dexterous_hand bash -c "sudo chmod +x /home/user/.find-agent.sh"
     become: yes
 
   - name: Adding to custom script to be executed inside the container
     changed_when: false
-    shell: docker exec --user user dexterous_hand bash -c "echo 'ssh-add {{ reverse_ssh_keys_user_path }}' >> /home/user/add_ssh_key.sh"
+    shell: docker exec --user user dexterous_hand bash -c "echo 'eval \$(./.find-agent.sh)' > /home/user/.bashrc"
     become: yes
+
+  # - name: Adding to custom script to be executed inside the container
+  #   changed_when: false
+  #   shell: docker exec --user user dexterous_hand bash -c "echo 'eval \$(ssh-agent)' > /home/user/add_ssh_key.sh"
+  #   become: yes
+
+  # - name: Adding to custom script to be executed inside the container
+  #   changed_when: false
+  #   shell: docker exec --user user dexterous_hand bash -c "echo 'ssh-add {{ reverse_ssh_keys_user_path }}' >> /home/user/add_ssh_key.sh"
+  #   become: yes
 
   # - name: Making custom script executable
   #   changed_when: false
   #   shell: docker exec --user user dexterous_hand bash -c "sudo chmod +x /home/user/add_ssh_key.sh"
   #   become: yes
 
-  - name: running add ssh key script
-    changed_when: false
-    shell: docker exec --user user dexterous_hand bash -c "cat /home/user/add_ssh_key.sh >> /home/user/.bashrc"
-    become: yes
+  # - name: running add ssh key script
+  #   changed_when: false
+  #   shell: docker exec --user user dexterous_hand bash -c "cat /home/user/add_ssh_key.sh >> /home/user/.bashrc"
+  #   become: yes
 
   - name: Stop container
     changed_when: false
