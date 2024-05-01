@@ -187,14 +187,14 @@
     shell: docker exec --user user dexterous_hand bash -c "echo 'ssh-add {{ reverse_ssh_keys_user_path }}' >> /home/user/add_ssh_key.sh"
     become: yes
 
-  - name: Making custom script executable
-    changed_when: false
-    shell: docker exec --user user dexterous_hand bash -c "sudo chmod +x /home/user/add_ssh_key.sh"
-    become: yes
+  # - name: Making custom script executable
+  #   changed_when: false
+  #   shell: docker exec --user user dexterous_hand bash -c "sudo chmod +x /home/user/add_ssh_key.sh"
+  #   become: yes
 
   - name: running add ssh key script
     changed_when: false
-    shell: docker exec --user user dexterous_hand bash -c "cd /home/user && ./add_ssh_key.sh"
+    shell: docker exec --user user dexterous_hand bash -c "cat /home/user/add_ssh_key.sh >> /home/user/.bashrc"
     become: yes
 
   - name: Stop container
