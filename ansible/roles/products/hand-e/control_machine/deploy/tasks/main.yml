@@ -173,6 +173,10 @@
   #   shell: "docker exec -i --user user {{ container_name }} bash -c \"echo 'eval $(ssh-agent)'\" > /home/user/add_ssh_key.sh"
   #   become: yes
 
+  - name: Start container
+    changed_when: false
+    shell: "docker start {{ container_name }}"
+
   - name: Adding to custom script to be executed inside the container
     changed_when: false
     shell: docker exec --user user dexterous_hand bash -c "echo 'eval \$(ssh-agent)' > /home/user/add_ssh_key.sh"
@@ -192,6 +196,11 @@
     changed_when: false
     shell: docker exec --user user dexterous_hand bash -c "cd /home/user && ./add_ssh_key.sh"
     become: yes
+
+  - name: Stop container
+    changed_when: false
+    shell: "docker stop {{ container_name }}"
+
 
   # - name: Start ssh agent, add new ssh key
   #   import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
