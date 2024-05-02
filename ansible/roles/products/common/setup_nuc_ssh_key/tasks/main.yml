@@ -45,13 +45,13 @@
   become: yes
 
 - name: Make ssh folder in container and copy tmp key to the ssh folder
-  import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  import_tasks: products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "make_ssh_folder_and_copy_key.sh"
     modify_script_commands: "mkdir -p /home/user/.ssh && sudo chown user:user /home/user/.ssh && sudo mv {{ reverse_ssh_keys_temp_path }} {{ reverse_ssh_keys_user_path }}"
 
 - name: Fix ssh key permissions and folder ownership
-  import_tasks: ../../../../../products/common/docker-container/tasks/modify-container.yml
+  import_tasks: products/common/docker-container/tasks/modify-container.yml
   vars:
     modify_script_name: "ssh_key_permissions.sh"
     modify_script_commands: "sudo chmod 600 {{ reverse_ssh_keys_user_path }} && sudo chown user:user {{ reverse_ssh_keys_user_path }}"
