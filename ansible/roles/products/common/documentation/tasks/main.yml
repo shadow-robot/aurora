@@ -28,6 +28,9 @@
     headers:
       x-api-key: "{{ customer_key }}"
   register: response
+  until: response.status == 200
+  retries: 5
+  delay: 3
   when: not skip_molecule_task|bool
   until: response.status == 200
   retries: 5
