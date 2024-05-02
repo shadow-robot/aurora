@@ -79,4 +79,3 @@
   changed_when: false
   become: yes
   delegate_to: 127.0.0.1
-
