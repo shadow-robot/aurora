@@ -1,4 +1,4 @@
-# Copyright 2022-2024 Shadow Robot Company Ltd.
+# Copyright 2022-2023 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -28,8 +28,6 @@ use_aws: false
 server_hostname: "SERVER"
 ssh_keys_path: "{{ user_folder }}/.ssh/id_rsa"
 temp_ssh_keys_path: "/tmp/id_ssh_rsa"
-# reverse_ssh_keys_user_path: "{{ user_folder }}/.ssh/reverse_ssh_id_rsa"
-# reverse_ssh_keys_temp_path: "/tmp/reverse_ssh_id_rsa"
 terminator: false
 use_steamvr: false
 nvidia_docker: false
