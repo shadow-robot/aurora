@@ -224,10 +224,6 @@
             path: "{{ user_folder }}/.aws_copy"
           when: aws_folder.stat.isdir is defined and aws_folder.stat.isdir
 
-        - name: Print the debug msg
-          ansible.builtin.debug:
-            msg: "{{ ansible_failed_result }}"
-
         - name: Error connecting to AWS
           fail:
             msg: "Playbook ended because of an error when connecting to AWS. Please check your customer key is correct and rerun the oneliner. If the oneliner is correct and you are still getting errors please contact support@shadowrobot.com"
