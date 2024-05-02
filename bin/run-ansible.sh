@@ -317,7 +317,6 @@ if [ -d "$shadow_conda_ws_dir" ]; then
 fi
 
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-
 python -m pip install yq xq
 fetch_new_files() {
   aws_bucket_url=$1
@@ -376,7 +375,7 @@ if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
 fi
 
 
-ansible_flags="-vvvvvv "
+ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
