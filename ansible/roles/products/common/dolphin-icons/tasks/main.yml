@@ -288,6 +288,12 @@
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
 
+- name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
+  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
   changed_when: false
+  
+- name: Restart GNOME Display Manager (Desktop refresh)
+  shell: killall -SIGQUIT gnome-shell
