@@ -295,5 +295,5 @@
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
   changed_when: false
   
-- name: Restart GDM (GNOME Display Manager)
+- name: Restart GNOME Display Manager (Desktop refresh)
   shell: killall -SIGQUIT gnome-shell
