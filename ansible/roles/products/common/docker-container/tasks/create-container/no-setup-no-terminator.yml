@@ -1,4 +1,4 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+# Copyright 2022, 2024 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -48,6 +48,9 @@
       arm_ips: "{{ arm_ip_right }}_{{ arm_ip_left }}"
       XDG_RUNTIME_DIR: "/run/user/1000"
       SR_RECORD_HAND_DATA: "{{ record_hand_data }}"
+      CONTAINER_NAME: "{{ container_name }}"
+      SERVER_USERNAME: "{{ lookup('ansible.builtin.env', 'USER') }}"
+      SERVER_IP: "{{ groups['server'][0] }}"
     network_mode: "host"
     pid_mode: "host"
     ipc_mode: "host"
