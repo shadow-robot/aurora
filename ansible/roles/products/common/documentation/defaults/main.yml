@@ -25,7 +25,7 @@ hand_lite_version: "test"
 hand_e_version: "2.2.5"
 hand_arm_version: "2.2.5"
 hand_glove_version: "2.2.1"
-teleop_polhemus_version: "2.1.8"
+teleop_polhemus_version: "2.2.5"
 teleop_haptx_version: "2.2.1"
 # ReadTheDocs links
 dexterous_hand_lite_readthedocs_link: "https://shadow-robot-company-dexterous-hand-lite.readthedocs-hosted.com/en/latest/"

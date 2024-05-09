@@ -61,6 +61,13 @@ name_of_inventory corresponds to fixed IP addresses as shown here:
 * [production_remote](ansible/inventory/teleop/production_remote)
 * [simulation](ansible/inventory/teleop/simulation)
 
+Example for real robots with teleop-polhemus bimanual teleop:
+
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.5/bin/run-ansible.sh) teleop_deploy --branch v2.2.5 --inventory production --read-secure customer_key reinstall=true bimanual=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-polhemus-binary" tag="noetic-v0.1.16" glove="shadow_glove" use_steamvr=true arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
+```
+**_NOTE:_** you may need to change `ethercat_right_arm` depending on the default interface on the NUC (for instance, to `enp1s0`)
+
 Example for real robots with haptx bimanual teleop:
 
 ```bash
