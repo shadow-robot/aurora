@@ -71,13 +71,14 @@ bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.5/bin
 Example for real robots with haptx bimanual teleop:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.7/bin/run-ansible.sh) teleop_deploy --branch v2.1.7 --inventory production --read-secure customer_key reinstall=true bimanual=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.0.23" glove="haptx" use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.5/bin/run-ansible.sh) teleop_deploy --branch v2.2.5 --inventory production --read-secure customer_key reinstall=true bimanual=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.1.11" glove="haptx" use_steamvr=false arm_ip_right="10.8.1.1" arm_ip_left="10.8.2.1" ethercat_right_arm="eno1" ethercat_left_arm="enx000ec6bfe175"
 ```
+**_NOTE:_** you may need to change `ethercat_right_arm` depending on the default interface on the NUC (for instance, to `enp1s0`)
 
 Example for simulated robots without a real vive system or real gloves: 
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.1.7/bin/run-ansible.sh) teleop_deploy --branch v2.1.7 --inventory simulation --read-secure customer_key reinstall=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.0.23" glove="haptx" real_glove=false real_vive=false
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.5/bin/run-ansible.sh) teleop_deploy --branch v2.2.5 --inventory simulation --read-secure customer_key reinstall=true upgrade_check=true image="080653068785.dkr.ecr.eu-west-2.amazonaws.com/shadow-teleop-haptx-binary" tag="noetic-v0.1.11" glove="haptx" real_glove=false real_vive=false
 ```
 
 Options for teleop_deploy playbook are here for the following machines:
