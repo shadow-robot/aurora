@@ -23,13 +23,23 @@
 
 - name: Choosing which API call to make.
   block:
+    - name: Choose Trajectory Studio
+      set_fact:
+        api_url: g7dxkznkbk
+        region: eu-west-2
+      when:
+      - '"polhemus" in image'
+      - '"binary" in image'
+      - '"shinfang" in image'
+
     - name: Choose Polhemus
       set_fact:
         api_url: 5bo8nfkjk0
         region: eu-west-2
       when:
       - '"polhemus" in image'
-      - '"binary" in image'    
+      - '"binary" in image'
+      - '"shinfang" not in image'
     
     - name: Choose Haptx
       set_fact:
