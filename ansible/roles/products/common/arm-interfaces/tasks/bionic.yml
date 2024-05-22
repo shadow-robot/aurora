@@ -15,7 +15,7 @@
 ---
 - name: Set current right arm interface name and mac if the right arm interface hasn't been renamed
   set_fact:
-    current_right_arm_interface: "{{ ethercat_right_arm }}"
+    current_right_arm_interface: "{{ ethercat_right_arm|lower }}"
     ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_right_arm]['macaddress'] }}"
   when:
     - "ethercat_right_arm in ansible_interfaces"
@@ -36,7 +36,7 @@
 
 - name: Set current left arm interface name and mac if the left arm interface hasn't been renamed
   set_fact:
-    current_left_arm_interface: "{{ ethercat_left_arm }}"
+    current_left_arm_interface: "{{ ethercat_left_arm|lower }}"
     ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_left_arm]['macaddress'] }}"
   when:
     - "ethercat_left_arm in ansible_interfaces"

@@ -133,3 +133,7 @@
   include_role:
     name: products/common/hand_config
   when: not skip_molecule_task|bool
+
+- name: Include products/common/setup_nuc_ssh_key role
+  include_role:
+    name: products/common/setup_nuc_ssh_key

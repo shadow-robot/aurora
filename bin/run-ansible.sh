@@ -295,6 +295,10 @@ while IFS= read -r line; do
     fi
 done < <(lsb_release -a 2>/dev/null)
 
+# We use this variable to figure out which pip packages to download. Packages for focal work on jammy, but bionic needs its own packages
+if [[ $codename == *"jammy"* ]]; then
+  codename="focal"
+fi
 
 mkdir -p $miniconda_install_root
 attempts=1
@@ -319,11 +323,14 @@ if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]
   PATH="${PATH}:${miniconda_install_location}/bin"
 fi
 
+shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
+if [ -d "$shadow_conda_ws_dir" ]; then
+  rm -rf $shadow_conda_ws_dir
+fi
+
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
 python -m pip install yq xq
 fetch_new_files() {
-  old_IFS=$IFS
-  IFS=$'\n'
   aws_bucket_url=$1
   aws_bucket_dir=$2
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
@@ -362,12 +369,22 @@ fetch_new_files() {
       fi
     done
   fi
-  IFS=${old_IFS}
 }
 
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
 fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
 ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
+
+# Fix for WSL - THIS IS NOT SUPPORTED AT ALL!!!
+if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
+  # python3 -m pip install pip --upgrade
+  pip install pyopenssl --upgrade
+  if [[ $(which docker | wc -l) -gt 0 ]]; then
+    if service docker status 2>&1 | grep -q "is not running"; then
+      wsl.exe --distribution "${WSL_DISTRO_NAME}" --user root --exec /usr/sbin/service docker start
+    fi
+  fi
+fi
 
 
 ansible_flags="-v "
