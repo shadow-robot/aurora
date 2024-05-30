@@ -273,7 +273,7 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
 done
 
 # jq is needed for yq, which installs xq, which helps parse aws s3 http requests
-sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
+# sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
 sudo chown $USER:$USER $aurora_home || true
 sudo rm -rf ${aurora_home}
 
