@@ -289,7 +289,7 @@
     start_terminal: "false"
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
-  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" yes
 
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
