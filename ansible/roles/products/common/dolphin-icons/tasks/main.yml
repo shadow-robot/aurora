@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Dolphin file manager installation for Icons handling
   apt:
@@ -261,15 +275,25 @@
     dest: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher/shadowlogo.png"
     mode: '664'
 
-- name: Create desktop icon for Dolphin file manager
+- name: Create main {{ container_name | replace('_', ' ') | title }} desktop icon for Dolphin file manager
   template:
     src: ../../../common/resources/templates/desktop-icons/standard-icon-command.j2
-    dest: "{{ desktop_path }}/Shadow Launcher {{ container_name | replace('_', ' ') | title }}.desktop"
+    dest: "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
     mode: '755'
   vars:
-    desktop_shortcut_name: "Shadow Launcher {{ container_name | replace('_', ' ') | title }}"
-    comment: "Shadow Launcher {{ container_name | replace('_', ' ') | title }}"
+    desktop_shortcut_name: "{{ container_name | replace('_', ' ') | title }}"
+    comment: "{{ container_name | replace('_', ' ') | title }}"
     exec_command: "dolphin '{{ shadow_hand_launcher_folder }}/Shadow Icons'"
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
+
+- name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
+  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+
+- name: Make all desktop icons auto_execute
+  shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
+  changed_when: false
+  
+- name: Restart GNOME Display Manager (Desktop refresh)
+  shell: killall -SIGQUIT gnome-shell

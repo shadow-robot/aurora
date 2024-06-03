@@ -1,2 +1,2 @@
 [dhcp]
-10.9.11.1 ansible_connection=local ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+10.9.11.1 ansible_connection=local is_ansible_control_node=true ansible_ssh_common_args='-o StrictHostKeyChecking=no'

@@ -1,23 +1,50 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Check pip3 installed (will prevent reinstallation in case if pip3 was installed without Apt)
-  command: pip3 --version
+  command: "{{ ansible_pip3_executable }} --version"
   register: pip_status
   ignore_errors: yes
   changed_when: pip_status.rc != 0
 
-- name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
-  apt:
-    name: 'python3-pip'
-    state: 'present'
-    update_cache: yes
-  when: pip_status.rc != 0
-  become: yes
+# - name: Make sure python3-pip is present (if run-ansible.sh was not run locally)
+#   apt:
+#     name: 'python3-pip'
+#     state: 'present'
+#     update_cache: yes
+#   when: pip_status.rc != 0
+#   become: yes
 
-- name: Install Docker pip module (and up to date versions of chardet and urllib3)
+- name: Install Docker pip module (and up to date versions of chardet and urllib3) (in conda)
   pip:
+    executable: "{{ ansible_pip3_executable }}"
     name: [ "docker >=4.4.1" ]
     state: present
-  become: yes
+  when: '"conda" in ansible_pip3_executable'
+  changed_when: pip_status.rc != 0
+  # Hack because of not idempotent behavior of pip module
+  # Check this issue for details https://github.com/ansible/ansible/issues/28952
+
+# If we are not installing in a conda environment, we need sudo privileges
+- name: Install Docker pip module (and up to date versions of chardet and urllib3) (not in conda)
+  pip:
+    executable: "{{ ansible_pip3_executable }}"
+    name: [ "docker >=4.4.1" ]
+    state: present
+  when: '"conda" not in ansible_pip3_executable'
+  become: true
   changed_when: pip_status.rc != 0
   # Hack because of not idempotent behavior of pip module
   # Check this issue for details https://github.com/ansible/ansible/issues/28952

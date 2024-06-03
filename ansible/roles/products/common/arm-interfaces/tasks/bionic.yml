@@ -1,7 +1,21 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Set current right arm interface name and mac if the right arm interface hasn't been renamed
   set_fact:
-    current_right_arm_interface: "{{ ethercat_right_arm }}"
+    current_right_arm_interface: "{{ ethercat_right_arm|lower }}"
     ethercat_right_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_right_arm]['macaddress'] }}"
   when:
     - "ethercat_right_arm in ansible_interfaces"
@@ -22,7 +36,7 @@
 
 - name: Set current left arm interface name and mac if the left arm interface hasn't been renamed
   set_fact:
-    current_left_arm_interface: "{{ ethercat_left_arm }}"
+    current_left_arm_interface: "{{ ethercat_left_arm|lower }}"
     ethercat_left_arm_mac: "{{ hostvars[groups['control_machine'][0]]['ansible_'+ethercat_left_arm]['macaddress'] }}"
   when:
     - "ethercat_left_arm in ansible_interfaces"

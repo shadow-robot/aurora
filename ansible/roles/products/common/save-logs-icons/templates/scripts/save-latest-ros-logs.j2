@@ -52,8 +52,8 @@ function copy_logs
     docker exec $container_name bash -c "rosnode kill $record_node" || true
     docker exec $container_name bash -c "rosnode list | grep /bag_rotate | xargs -I{} rosnode kill {}" || true
     sleep 1
-    latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag | tail -1") || true
-    latestbag_tmp=$(docker exec $container_name bash -c "ls -dtr $docker_user_home/*.bag | tail -1") || true
+    latestbag=$(docker exec $container_name bash -c "ls -dtr $docker_ros_logs_folder/*.bag* | tail -1") || true
+    latestbag_tmp=$(docker exec $container_name bash -c "ls -dtr $docker_user_home/*.bag* | tail -1") || true
     docker exec $container_name bash -c "mkdir -p $docker_logs_temp" || true
     docker exec $container_name bash -c "cp $docker_ros_logs_folder/stderr.log $docker_logs_temp" || true
     docker exec $container_name bash -c "rm $docker_ros_logs_folder/std*.log" || true

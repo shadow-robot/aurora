@@ -1,0 +1,81 @@
+# Copyright 2024 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Check if the ssh public key has been generated and copied to temp_ssh_keys_path folder on machine running Ansible (server laptop)
+  stat:
+    path: "{{ temp_ssh_keys_path }}.pub"
+  register: ssh_result
+  delegate_to: 127.0.0.1
+
+- name: Check if the ssh private key has been generated and copied to temp_ssh_keys_path folder on machine running Ansible (server laptop)
+  stat:
+    path: "{{ temp_ssh_keys_path }}"
+  register: ssh_result_private
+  delegate_to: 127.0.0.1
+
+- name: Ensure the private file doesn't exist on the nuc (before we generate it)
+  file:
+    path: "{{ reverse_ssh_keys_temp_path }}"
+    state: absent
+
+- name: Ensure the public ssh file doesn't exist on the nuc (before we generate it)
+  file:
+    path: "{{ reverse_ssh_keys_temp_path }}.pub"
+    state: absent
+
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  openssh_keypair:
+    path: "{{ reverse_ssh_keys_temp_path }}"
+
+- name: Copying ssh key pair into nuc docker container
+  changed_when: false
+  shell: "docker cp {{ reverse_ssh_keys_temp_path }} {{ container_name }}:{{ reverse_ssh_keys_temp_path }}"
+  become: yes
+
+- name: Make ssh folder in container and copy tmp key to the ssh folder
+  import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
+  vars:
+    modify_script_name: "make_ssh_folder_and_copy_key.sh"
+    modify_script_commands: "mkdir -p /home/user/.ssh && sudo chown user:user /home/user/.ssh && sudo mv {{ reverse_ssh_keys_temp_path }} {{ reverse_ssh_keys_user_path }}"
+
+- name: Fix ssh key permissions and folder ownership
+  import_tasks: ../roles/products/common/docker-container/tasks/modify-container.yml
+  vars:
+    modify_script_name: "ssh_key_permissions.sh"
+    modify_script_commands: "sudo chmod 600 {{ reverse_ssh_keys_user_path }} && sudo chown user:user {{ reverse_ssh_keys_user_path }}"
+
+- name: Ensure the .ssh file doesn't exist on the server (before we copy it over)
+  file:
+    path: "{{ reverse_ssh_keys_temp_path }}.pub"
+    state: absent
+  delegate_to: 127.0.0.1
+
+- name: Make a copy of SSH public key from the nuc (src) to the server (dest)
+  fetch:
+    src: "{{ reverse_ssh_keys_temp_path }}.pub"
+    dest: "{{ reverse_ssh_keys_temp_path }}.pub"
+    flat: true
+  when: ssh_result.stat.exists
+  changed_when: false
+
+- name: Register SSH public key with current user on the server machine
+  authorized_key:
+    user: "{{ ssh_result.stat.gr_name }}"
+    key: "{{ lookup('file', '{{ reverse_ssh_keys_temp_path }}.pub') }}"
+    state: present
+  when: ssh_result.stat.exists
+  changed_when: false
+  become: yes
+  delegate_to: 127.0.0.1

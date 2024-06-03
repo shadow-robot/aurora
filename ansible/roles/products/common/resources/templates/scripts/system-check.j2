@@ -1,0 +1,128 @@
+#jinja2: trim_blocks:False
+#!/bin/bash
+
+NUC_USERNAME={{ nuc_username }}
+NUC_ADDRESS={{ nuc_address }}
+LOCAL_IP={{ server_ip }}
+USER={{ user }}
+HOSTNAME=$(hostname)
+CLOSE_NUC_PROCESSES={{ close_nuc_processes | lower }}
+NVIDIA_DOCKER={{ nvidia_docker | lower }}
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+
+function check_storage_available {
+    # Get available storage space on main drive in GB
+    disk_free=$(df -h / | awk 'NR==2{print $4}')
+
+    # Remove "G" from the disk_free value and convert it to a number
+    disk_free=$(echo "$disk_free" | tr -d "G")
+    disk_free=$(bc <<< "$disk_free * 1")
+
+    # Check if available storage space is less than 50GB
+    if [[ $disk_free -lt 50 ]]; then
+        printf "${RED}Error: Available storage space on main drive is less than 50GB.${NC}\n"
+    fi
+}
+
+function check_cpu_and_mem_usage {
+    # Get the current CPU and memory usage
+    CPU=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+    MEM=$(free | awk '/Mem/{printf("%d"), $4/$2*100}')
+    CPU_THRESHOLD=80
+    MEM_THRESHOLD=80
+
+    # Check if usage exceeds the thresholds
+    if (( $(echo "$CPU > $CPU_THRESHOLD" | bc -l) )) || (( $(echo "$MEM > $MEM_THRESHOLD" | bc -l) )); then
+        # If usage is high, print a warning message
+        printf "${RED}Warning: High CPU or memory usage detected!${NC}\n"
+    fi
+    printf "CPU usage: $CPU%%\n"
+    printf "Memory usage: $MEM%%\n\n"
+}
+
+function check_hosts_file {
+    ip_address="$1"
+    hostname="$2"
+    grep -q -E "^$ip_address\s+$hostname\s*$" /etc/hosts
+    if [[ $? != 0 ]]; then
+        printf "\n${RED}Error: The IP address $ip_address and hostname $hostname do not exist in /etc/hosts.${NC}\n"
+        return 1
+    fi
+    return 0
+}
+
+function check_nuc_connection {
+    if ! ping -c 1 $NUC_ADDRESS &> /dev/null; then
+        printf "\n${RED}Error: Cannot ping the NUC at $NUC_ADDRESS. ${NC}\n"
+        return 1
+    fi
+
+    if ! ssh -q -o ConnectTimeout=5 -o BatchMode=yes $NUC_USERNAME@$NUC_ADDRESS "echo 2>&1" >/dev/null; then
+        printf "\n${RED}Error: $NUC_USERNAME@$NUC_ADDRESS is not reachable via SSH.${NC}\n"
+        return 1
+    fi
+
+    check_hosts_file $NUC_ADDRESS nuc-control
+    check_host_result=$?
+    if [ ! "$check_host_result" -eq "0" ]; then
+        return 1
+    fi
+
+    return 0
+}
+
+function check_nvidia_settings {
+    return_val=0
+    if ! command -v nvidia-smi &> /dev/null; then
+        echo "\n${RED}Error: NVIDIA driver not found. Please install it first.${NC}\n"
+        return_val=1
+    fi
+
+    if ! nvidia-smi &> /dev/null; then
+        echo "\n${RED}Error: NVIDIA driver is installed, but not working properly.${NC}\n"
+        return_val=1
+    fi
+    
+    if [[ "$(prime-select query)" != *"nvidia"* ]]; then
+        printf "\n${RED}Error: NVIDIA driver is not set as the current GPU using \`prime-select nvidia\`.${NC}\n"
+        return_val=1
+    fi
+    return $return_val
+}
+
+function run_system_test {
+    user=$1
+    address=$2
+    printf "Running system test on $user:$address\n"
+    check_storage_available
+    check_cpu_and_mem_usage
+}
+
+function run_nuc_test {
+    ssh -X $NUC_USERNAME@$NUC_ADDRESS 'bash -s' <<ENDSSH
+        $(declare -f $(compgen -A function))
+        $(declare -p USER LOCAL_IP NUC_ADDRESS NUC_USERNAME HOSTNAME CLOSE_NUC_PROCESSES RED NC)
+        run_system_test $NUC_USERNAME $NUC_ADDRESS
+        check_hosts_file $LOCAL_IP $HOSTNAME
+ENDSSH
+}
+
+# Run tests
+run_system_test $USER $LOCAL_IP
+
+if $NVIDIA_DOCKER; then
+    check_nvidia_settings
+fi
+
+if $CLOSE_NUC_PROCESSES; then
+    check_nuc_connection
+    nuc_connection=$?
+    if [ "$nuc_connection" -eq "0" ]; then
+        run_nuc_test
+    fi
+fi
+
+printf "\nPress enter key to close window\n"
+read

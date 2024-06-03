@@ -1,3 +1,17 @@
+# Copyright 2022 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ---
 - name: Update package lists
   apt:
@@ -94,17 +108,27 @@
     - ansible_distribution|string == 'Ubuntu'
     - ansible_distribution_release|string == 'jammy'
 
-- name: Ensure botocore and boto3 modules are installed
+# We need to specify versions that are compatible with the amazon.was.s3_object module
+# otherwise the pip module finds the package installed via apt (due to this ROS package dependency
+# https://github.com/shadow-robot/common_resources/blob/noetic-devel/sr_utilities_common/package.xml#L44)
+# and doesn't install these packages via pip, resulting in the following s3_object task failing.
+# This wasn't an issue before we moved to the conda environment, as a more recent version of boto3 was in the requirements.txt for ansible.
+# When we moved to conda, the installation of the requirements.txt was removed from the run_ansible.sh script, triggering this issue.
+# The versions below are the ones required from https://docs.ansible.com/ansible/latest/collections/amazon/aws/s3_object_module.html
+- name: Ensure botocore and boto3 modules are installed and have a recent enough version
   pip:
-    name: [ "boto3", "botocore"]
+    executable: "{{ ansible_pip3_executable }}"
+    name:
+      - boto3>=1.22.0
+      - botocore>=1.25.0
     extra_args: "--user"
 
 - name: Downloading steamvr 1.21
-  amazon.aws.aws_s3:
+  amazon.aws.s3_object:
     aws_access_key: "{{ lookup('env','aws_key') }}"
     aws_secret_key: "{{ lookup('env','aws_secret') }}"
     bucket: shadowrobot.aurora.files
-    object: /server/steamvr/steamNew.tar.gz
+    object: server/steamvr/steamNew.tar.gz
     dest: "{{ user_home_dir }}/steam.tar.gz"
     mode: get
 
