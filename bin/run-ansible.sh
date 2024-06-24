@@ -375,7 +375,7 @@ if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
 fi
 
 
-ansible_flags="-v "
+ansible_flags="-vvvv "
 
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
