@@ -434,7 +434,7 @@ fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
-# "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
+"${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
@@ -448,7 +448,17 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
         echo ""
     fi
 fi
-
+echo "##########################################################"
+echo "1"
+echo $ansible_executable
+echo "2"
+echo $ansible_galaxy_executable
+echo "3"
+which $ansible_executable
+echo "4"
+which $ansible_galaxy_executable
+echo "5"
+exit
 "${ansible_executable}" -v ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
 popd
