@@ -458,7 +458,7 @@ which $ansible_executable
 echo "4"
 which $ansible_galaxy_executable
 echo "5"
-exit
+# exit
 "${ansible_executable}" -v ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
 popd
