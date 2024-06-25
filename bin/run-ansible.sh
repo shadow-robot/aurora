@@ -434,7 +434,8 @@ fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
-"${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
+# "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
+"${ansible_galaxy_executable}" ansible-galaxy collection install community.docker --force
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
