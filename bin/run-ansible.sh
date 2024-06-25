@@ -359,9 +359,9 @@ fetch_new_files() {
   fi
 }
 
-fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
+# fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"
 # fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"
-ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
+# ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/*
 
 # Fix for WSL - THIS IS NOT SUPPORTED AT ALL!!!
 if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
