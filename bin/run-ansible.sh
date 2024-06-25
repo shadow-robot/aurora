@@ -316,7 +316,8 @@ fi
 #   rm -rf $shadow_conda_ws_dir
 # fi
 
-${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
+# ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && 
+source ${miniconda_install_location}/bin/activate ${conda_ws_name}
 python -m pip install yq xq
 fetch_new_files() {
   aws_bucket_url=$1
