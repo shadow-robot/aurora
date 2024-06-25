@@ -311,10 +311,10 @@ if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]
   PATH="${PATH}:${miniconda_install_location}/bin"
 fi
 
-shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
-if [ -d "$shadow_conda_ws_dir" ]; then
-  rm -rf $shadow_conda_ws_dir
-fi
+# shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
+# if [ -d "$shadow_conda_ws_dir" ]; then
+#   rm -rf $shadow_conda_ws_dir
+# fi
 
 ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
 python -m pip install yq xq
