@@ -46,16 +46,6 @@
       - docker_password is defined
       - not aws_login
 
-  - name: Reading path to Python repository with Docker package
-    command: "{{ ansible_python_interpreter }} -c \"import docker as _; print(_.__file__.replace('/docker/__init__.py', ''))\""
-    register: python_packages_path_output
-    changed_when: python_packages_path_output.rc != 0
-
-  # - name: Set path to Docker Python package
-  #   set_fact:
-  #     python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
-  #     ansible_python_interpreter      
-
   - name: Pull Docker image in progress
     block:
       - name: Pull Docker image
@@ -63,8 +53,6 @@
           name: "{{ full_image_name }}"
           source: pull
           force_source: "{{ reinstall }}"
-        # environment:
-          # PYTHONPATH: "{{ python_packages_path }}"
         async: 50000
         poll: 0
         register: docker_pull_job
@@ -87,8 +75,6 @@
           name: "{{ full_image_name }}"
           source: pull
           force_source: "{{ reinstall }}"
-        # environment:
-          # PYTHONPATH: "{{ python_packages_path }}"
         async: 50000
         poll: 0
         register: docker_pull_job2
