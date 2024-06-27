@@ -51,9 +51,10 @@
     register: python_packages_path_output
     changed_when: python_packages_path_output.rc != 0
 
-  - name: Set path to Docker Python package
-    set_fact:
-      python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
+  # - name: Set path to Docker Python package
+  #   set_fact:
+  #     python_packages_path: "{{ python_packages_path_output.stdout_lines | first }}"
+  #     ansible_python_interpreter      
 
   - name: Pull Docker image in progress
     block:
