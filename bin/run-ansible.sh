@@ -311,10 +311,10 @@ if [[ $(echo $PATH  | grep "${miniconda_install_location}/bin" | wc -l) -eq 0 ]]
   PATH="${PATH}:${miniconda_install_location}/bin"
 fi
 
-# shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
-# if [ -d "$shadow_conda_ws_dir" ]; then
-#   rm -rf $shadow_conda_ws_dir
-# fi
+shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
+if [ -d "$shadow_conda_ws_dir" ]; then
+  rm -rf $shadow_conda_ws_dir
+fi
 
 # ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && 
 source ${miniconda_install_location}/bin/activate ${conda_ws_name}
@@ -376,7 +376,7 @@ if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
 fi
 
 
-ansible_flags="-vvvvv "
+ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
@@ -449,17 +449,6 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
         echo ""
     fi
 fi
-echo "##########################################################"
-echo "1"
-echo $ansible_executable
-echo "2"
-echo $ansible_galaxy_executable
-echo "3"
-which $ansible_executable
-echo "4"
-which $ansible_galaxy_executable
-echo "5"
-# exit
 "${ansible_executable}" -v ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
 popd
