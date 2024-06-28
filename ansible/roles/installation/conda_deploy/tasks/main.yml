@@ -18,20 +18,20 @@
   # register: pip_status
   # ignore_errors: yes
   # changed_when: pip_status.rc != 0
-  - name: Set user home from env var
-    set_fact:
-      sr_user_home: "{{ lookup('env','HOME') }}"
+- name: Set user home from env var
+  set_fact:
+    sr_user_home: "{{ lookup('env','HOME') }}"
 
-  - name: Set Python 3 conda paths
-    block:
-      - name: Set python3/pip path
-        set_fact:
-          sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/aurora_conda_ws/bin"
+- name: Set Python 3 conda paths
+  block:
+    - name: Set python3/pip path
+      set_fact:
+        sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/aurora_conda_ws/bin"
 
-      - name: Set Python 3 interpreter
-        set_fact:
-          ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3"
+    - name: Set Python 3 interpreter
+      set_fact:
+        ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3"
 
-      - name: Set Python3 pip executable
-        set_fact:
-          ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
+    - name: Set Python3 pip executable
+      set_fact:
+        ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
