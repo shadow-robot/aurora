@@ -74,6 +74,10 @@ case ${key} in
     read_secure="$2"
     shift 2
     ;;
+    --conda-only)
+    conda_only="true"
+    shift 1
+    ;;
     *)
     break
     ;;
@@ -102,6 +106,9 @@ then
     fi
 fi
 
+if [ -z ${conda_only} ]; then
+    conda_only="false"
+fi
 
 echo "================================================================="
 echo "|                                                               |"
@@ -434,6 +441,15 @@ fi
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
 "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
+
+if [[ "${conda_only}" = "true" ]]; then
+    echo ""
+    echo " ------------------------------------------------"
+    echo " |            Operation completed               |"
+    echo " ------------------------------------------------"
+    echo ""
+    exit 0
+fi
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
