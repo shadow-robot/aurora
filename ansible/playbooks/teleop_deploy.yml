@@ -162,6 +162,11 @@
 - name: Install Teleop software on control machine
   hosts: control_machine
   pre_tasks:
+    - name: Deploy conda on control machine
+      include_role:
+        name: installation/conda
+      when: not skip_molecule_task|bool
+
     - name: Running playbook setup role
       include_role:
         name: installation/playbook_setup

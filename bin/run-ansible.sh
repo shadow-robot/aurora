@@ -75,8 +75,8 @@ case ${key} in
     shift 2
     ;;
     --conda-only)
-    conda_only="true"
-    shift 1
+    conda_only="$2"
+    shift 2
     ;;
     *)
     break
@@ -84,11 +84,25 @@ case ${key} in
 esac
 done
 
+function str_bool {
+  local str="${1:-false}"
+  local pat='^(true|1|yes)$'
+  if [[ "${str,,}" =~ $pat ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+
 if [ -z ${conda_only} ]; then
     conda_only="false"
-else
+fi
+conda_only=$(str_bool ${conda_only})
+if [[ "$conda_only" = "true" ]]; then
     playbook="docker_deploy"
 fi
+
 
 if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
     if [[ -z ${read_secure} ]]; then
