@@ -84,6 +84,12 @@ case ${key} in
 esac
 done
 
+if [ -z ${conda_only} ]; then
+    conda_only="false"
+else
+    playbook="docker_deploy"
+fi
+
 if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
     if [[ -z ${read_secure} ]]; then
         read_secure="sudo_password"
@@ -106,9 +112,6 @@ then
     fi
 fi
 
-if [ -z ${conda_only} ]; then
-    conda_only="false"
-fi
 
 echo "================================================================="
 echo "|                                                               |"
