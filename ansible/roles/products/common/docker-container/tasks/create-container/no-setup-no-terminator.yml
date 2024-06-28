@@ -57,7 +57,7 @@
     privileged: yes
     interactive: yes
     security_opts:
-    - "seccomp:unconfined"
+    - "seccomp: unconfined"
     ulimits:
     - "core: -1"
     volumes: "{{ shared_volumes }}"
