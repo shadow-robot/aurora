@@ -82,6 +82,16 @@
       set_fact:
         sr_user_home: "{{ lookup('env','HOME') }}"
 
+    - name: Debug pytho3 install is_ansible_control_node is defined
+      ansible.builtin.debug:
+        msg: is_ansible_control_node {{ is_ansible_control_node }} HHHHH sr_user_home {{ sr_user_home }}
+      when: is_ansible_control_node is defined
+
+    - name: Debug pytho3 install is_ansible_control_node is not defined
+      ansible.builtin.debug:
+        msg: sr_user_home {{ sr_user_home }}
+      when: is_ansible_control_node is not defined
+
     - name: Set Python 3 conda
       when:
         - '"root" not in sr_user_home'
