@@ -274,7 +274,7 @@ source $aurora_home/bin/conda_utils.sh
 create_conda_ws
 
 fetch_pip_files
-fetch_ansible_collections
+fetch_ansible_files
 
 install_pip_packages
 
