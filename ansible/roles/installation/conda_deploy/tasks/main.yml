@@ -32,13 +32,13 @@
 #   # ignore_errors: yes
 #   # changed_when: pip_status.rc != 0
 
-- name: Get user home
-  command: dirname $(find /home/ -name "*shadow_miniconda*")
-  register: user_home
+# - name: Get user home
+#   command: dirname $(find /home/ -name "*shadow_miniconda*")
+#   register: user_home
 
 - name: Set user home from env var
   set_fact:
-    sr_user_home: "{{ user_home.stdout }}"
+    sr_user_home: "/home/user"
 
 - name: Set Python 3 conda paths
   block:
