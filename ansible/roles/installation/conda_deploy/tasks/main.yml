@@ -13,11 +13,24 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Deploy conda environment
-  command: bash -c "bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/B_debugging_docker_api_http_2/bin/run-ansible.sh) teleop_deploy --conda-only true"
-  # register: pip_status
-  # ignore_errors: yes
-  # changed_when: pip_status.rc != 0
+- name: Fetch conda deploy script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/aurora/B_debugging_docker_api_http_2/bin/conda_utils.sh
+    dest: /tmp/conda_utils.sh
+    mode: '755'
+
+- name: Run conda deploy script
+  command: bash -c "source /tmp/conda_utils.sh && create_conda_ws"
+  args:
+    chdir: /home/user
+  register: conda_deploy_status
+  changed_when: conda_deploy_status.rc != 0
+
+# - name: Deploy conda environment
+#   command: bash -c "bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/B_debugging_docker_api_http_2/bin/run-ansible.sh) teleop_deploy --conda-only true"
+#   # register: pip_status
+#   # ignore_errors: yes
+#   # changed_when: pip_status.rc != 0
 - name: Set user home from env var
   set_fact:
     sr_user_home: "{{ lookup('env','HOME') }}"
