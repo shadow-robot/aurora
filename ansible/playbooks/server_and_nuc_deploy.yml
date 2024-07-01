@@ -126,6 +126,11 @@
 - name: Install Hand software on control machine
   hosts: control_machine
   pre_tasks:
+    - name: Deploy conda on control machine
+      include_role:
+        name: installation/conda_deploy
+      # when: not skip_molecule_task|bool
+
     - name: check if customer_key is provided and not false
       when: customer_key is defined and customer_key | length > 0
       set_fact:
