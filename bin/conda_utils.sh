@@ -1,3 +1,5 @@
+#!/bin/bash
+
 conda_ws_name="aurora_conda_ws"
 miniconda_install_root="${HOME}/.shadow_miniconda"
 miniconda_install_location="${miniconda_install_root}/miniconda"
