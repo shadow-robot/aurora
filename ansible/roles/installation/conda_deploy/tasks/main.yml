@@ -20,7 +20,7 @@
     mode: '755'
 
 - name: Run conda deploy script
-  command: bash -c "source /tmp/conda_utils.sh && create_conda_ws"
+  command: bash -c "source /tmp/conda_utils.sh && create_conda_ws && fetch_pip_files && install_pip_packages"
   args:
     chdir: /home/user
   register: conda_deploy_status
