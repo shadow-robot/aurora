@@ -164,39 +164,88 @@ IFS=${old_IFS}
 
 is_repo_public() {
   local user_slash_repo=$1
-  # TODO: handle rate limit
-  if curl -fsS "https://api.github.com/repos/${user_slash_repo}" >/dev/null; then
+  ERROR=$(curl -fsS "https://api.github.com/repos/${user_slash_repo}" 2>&1 >/dev/null)
+  if [ $? -eq 0 ]; then
     printf '%s\n' "The GitHub repo ${user_slash_repo} exists." >&2
     echo "true"
   else
-    printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
-    echo "false"
+    if [[ "${ERROR}" == *"error: 403"* ]]; then
+      echo "403"
+    else
+      printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
+      echo "false"
+    fi
   fi
+}
+
+function confirm() {
+	# call with a prompt string or use a default
+	read -r -p "${1:-[y/N]} " response
+	case "$response" in
+		[yY][eE][sS]|[yY])
+			echo "y"
+			;;
+		*)
+			echo "n"
+			;;
+	esac
 }
 
 are_all_pr_repos_public(){
     REPO_IS_PRIVATE="true"
-    echo -e "\nTesting if repos specified in pr_branches are all public"
+    printf '\n%s\n' "Testing if repos specified in pr_branches are all public" >&2
     PR_BRANCHES="$@"
     for i in $PR_BRANCHES; do
       # Convert github URL to shadow-robot/repo_name
-      echo "Testing URL: ${i}"
+      echo "Testing URL: ${i}" >&2
       user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
-      echo "user_slash_repo: ${user_slash_repo}"
-      if [[ $(is_repo_public $user_slash_repo) == "false" ]]; then
+      REPO_IS_PUBLIC=$(is_repo_public $user_slash_repo)
+      if [[ $REPO_IS_PUBLIC == "false" ]]; then
         REPO_IS_PRIVATE="false"
+        break
+      elif [[ $REPO_IS_PUBLIC == "403" ]]; then
+        REPO_IS_PRIVATE="403"
+        break
       fi
     done
     echo $REPO_IS_PRIVATE
 }
 
+check_github_next_steps(){
+    PUBLIC_REPO_STATUS=$1
+    NEXT_STEP=0
+    if [[ $PUBLIC_REPO_STATUS == "403" ]]; then
+        printf '%s' "WARNING: Rate limit exceeded for github api requests." >&2
+        printf '%s\n' " It is not currently possible to confirm whether all the URLs specified in PR_BRANCHES belong to public repos" >&2
+        printf '%s\n' "(Rate limits only last for 60 minutes, if you are unsure then please try again later)" >&2
+        if [[ $(confirm "Would you like to create a key and authenticate it? y/N") == "y" ]]; then
+            NEXT_STEP="generate_key"
+        elif [[ $(confirm "Would you like to continue without this check? y/N") == "y" ]] ; then
+            NEXT_STEP="skip_check"
+        else
+            NEXT_STEP="exit"
+        fi
+    elif [[ $PUBLIC_REPO_STATUS == "true" ]]; then
+        NEXT_STEP="all_public"
+    else
+        NEXT_STEP="generate_key"
+    fi
+    echo "$NEXT_STEP"
+}
 
 github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
 github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
     PR_BRANCHES="$(echo $extra_vars | sed -r 's/.*pr_branches=//g' | sed -r 's/;.*//g')"
-    
-    if [[ $(are_all_pr_repos_public $PR_BRANCHES) == "false" ]]; then
+    ARE_ALL_REPOS_PUBLIC=$(are_all_pr_repos_public $PR_BRANCHES)
+    NEXT_STEPS=$(check_github_next_steps ${ARE_ALL_REPOS_PUBLIC})
+    if [[ $NEXT_STEPS == "exit" ]]; then
+        exit 0
+    elif [[ $NEXT_STEPS == "skip_check" ]]; then
+        echo "Skipping ssh auth and github login"
+    elif [[ $NEXT_STEPS == "all_public" ]]; then
+        echo "All pr_branch URLs are public, continuing without ssh authentication"
+    else
         echo " -------------------------------------------------------------------------------------"
         echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
         echo "Using SSH key from $github_ssh_private_key_path"
@@ -259,8 +308,6 @@ if [[ $extra_vars == *"pr_branches="* ]]; then
             fi
             formatted_extra_vars="$formatted_extra_vars $i=$input_data"
         done
-    else
-        echo "All pr_branch URLs are public, continuing without ssh authentication"
     fi
 fi
 
