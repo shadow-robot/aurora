@@ -165,7 +165,6 @@
     - name: Deploy conda on control machine
       include_role:
         name: installation/conda_deploy
-      # when: not skip_molecule_task|bool
 
     - name: Running playbook setup role
       include_role:
