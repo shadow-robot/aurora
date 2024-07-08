@@ -87,6 +87,7 @@
       mode: '755'
     vars:
       pr_branches_value: "{{ pr_branches }}"
+      skip_git_ssh_auth: "{{ skip_git_ssh_auth }}"
 
   - name: Copying the pull pull_pr_branches_and_catkin_make bash script into docker container
     changed_when: false
