@@ -98,6 +98,7 @@
     changed_when: false
     shell: "docker cp /home/{{ user }}/.ssh/id_rsa {{ container_name }}:/home/user/.ssh/id_rsa"
     become: yes
+    when: not skip_git_ssh_auth
 
   - name: Check-out any branches inside docker container and catkin_make
     import_tasks: modify-container.yml
