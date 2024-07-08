@@ -235,6 +235,7 @@ check_github_next_steps(){
 
 github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
 github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
+SKIP_GIT_SSH_AUTH="false"
 if [[ $extra_vars == *"pr_branches="* ]]; then
     PR_BRANCHES="$(echo $extra_vars | sed -r 's/.*pr_branches=//g' | sed -r 's/;.*//g')"
     ARE_ALL_REPOS_PUBLIC=$(are_all_pr_repos_public $PR_BRANCHES)
@@ -243,8 +244,10 @@ if [[ $extra_vars == *"pr_branches="* ]]; then
         exit 0
     elif [[ $NEXT_STEPS == "skip_check" ]]; then
         echo "Skipping ssh auth and github login"
+        formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=true"
     elif [[ $NEXT_STEPS == "all_public" ]]; then
         echo "All pr_branch URLs are public, continuing without ssh authentication"
+        formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=true"
     else
         echo " -------------------------------------------------------------------------------------"
         echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
