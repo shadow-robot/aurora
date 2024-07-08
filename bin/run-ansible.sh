@@ -162,100 +162,106 @@ for extra_var in $extra_vars; do
 done
 IFS=${old_IFS}
 
-doesnt_exist_as_public_github_repo() {
+is_repo_public() {
   local user_slash_repo=$1
 
   if curl -fsS "https://api.github.com/repos/${user_slash_repo}" >/dev/null; then
     printf '%s\n' "The GitHub repo ${user_slash_repo} exists." >&2
-    return 1
+    return 0
   else
     printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
-    return 0
+    return 1
   fi
 }
 
-check_if_any_pr_repos_are_private(){
+are_all_pr_repos_public(){
     local PR_BRANCHES=$1
+    echo -e "\nTesting if repos specified in pr_branches are all public"
     for i in $PR_BRANCHES; do
       # Convert github URL to shadow-robot/repo_name
+      echo "Testing URL: ${i}"
       user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
-      if doesnt_exist_as_public_github_repo $user_slash_repo; then
-        return false
+      if ! is_repo_public $user_slash_repo; then
+        return 1
       fi
     done
-    return true
+    return 0
 }
-echo "###########################################################"
-echo $extra_vars
-exit 0
+
+
 github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
 github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
-    // if ! check_if_any_pr_repos_are_private
-    echo " -------------------------------------------------------------------------------------"
-    echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
-    echo "Using SSH key from $github_ssh_private_key_path"
-    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
-    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
-        echo " ---------------------------------"
-        echo "Github SSH key successfully added!"
-        echo " ---------------------------------"
-    else
-        if [[ -z ${read_input} ]]; then
-            read_input="github_email"
+    PR_BRANCHES="$(echo $extra_vars | sed -r 's/.*pr_branches=//g' | sed -r 's/;.*//g')"
+    if ! are_all_pr_repos_public $PR_BRANCHES; then
+        echo " -------------------------------------------------------------------------------------"
+        echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
+        echo "Using SSH key from $github_ssh_private_key_path"
+        ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+        if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+            echo " ---------------------------------"
+            echo "Github SSH key successfully added!"
+            echo " ---------------------------------"
         else
-            read_input=$read_input",github_email"
+            if [[ -z ${read_input} ]]; then
+                read_input="github_email"
+            else
+                read_input=$read_input",github_email"
+            fi
+            # Wait for apt-get install lock file to be released
+            while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
+                echo "Waiting for apt-get install file lock..."
+                sleep 1
+            done
+            sudo apt-get install -y xclip
         fi
-        # Wait for apt-get install lock file to be released
-        while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
-            echo "Waiting for apt-get install file lock..."
-            sleep 1
+        IFS=',' read -ra inputdata <<< "$read_input"
+        for i in "${inputdata[@]}"; do
+            printf "Data input for $i:"
+            read -r input_data
+            if [[ "${i}" = "github_email" ]]; then
+                if [[ ! -f "$github_ssh_public_key_path" ]]; then
+                    ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f ${HOME}/.ssh/id_rsa
+                fi
+                eval "$(ssh-agent -s)"
+                ssh-add $github_ssh_private_key_path
+                xclip -sel clip < $github_ssh_public_key_path
+                echo " ----------------------------------------------------------------------------------------------------"
+                echo "There is an ssh public key in $github_ssh_public_key_path"
+                echo "xclip is installed and public ssh key is copied into clipboard"
+                echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key)"
+                echo "Select Open Link and follow the steps from number 2 onwards:"
+                echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+                echo " ----------------------------------------------------------------------------------------------------"
+                printf "Confirm if you have added the SSH key to your Github account (y/n):"
+                read -r ssh_key_added
+                if [[ "$ssh_key_added" == "y" ]]; then
+                    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+                    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+                        echo " ---------------------------------"
+                        echo "Github SSH key successfully added!"
+                        echo " ---------------------------------"
+                    else
+                        echo " ----------------------------------------------------------------------------------------------------"
+                        echo "Github SSH authentication failed with message: $ssh_test"
+                        echo " ----------------------------------------------------------------------------------------------------"
+                        exit 1
+                    fi
+                else
+                    echo "You have specified pr_branches but haven't added a Github SSH key"
+                    echo "Unable to proceed. See the link below"
+                    echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
+                    exit 1
+                fi
+            fi
+            formatted_extra_vars="$formatted_extra_vars $i=$input_data"
         done
-        sudo apt-get install -y xclip
+    else
+        echo "All pr_branch URLs are public, continuing without ssh authentication"
     fi
 fi
 
-IFS=',' read -ra inputdata <<< "$read_input"
-for i in "${inputdata[@]}"; do
-    printf "Data input for $i:"
-    read -r input_data
-    if [[ "${i}" = "github_email" ]]; then
-        if [[ ! -f "$github_ssh_public_key_path" ]]; then
-            ssh-keygen -t rsa -b 4096 -q -C "$github_email" -N "" -f ${HOME}/.ssh/id_rsa
-        fi
-        eval "$(ssh-agent -s)"
-        ssh-add $github_ssh_private_key_path
-        xclip -sel clip < $github_ssh_public_key_path
-        echo " ----------------------------------------------------------------------------------------------------"
-        echo "There is an ssh public key in $github_ssh_public_key_path"
-        echo "xclip is installed and public ssh key is copied into clipboard"
-        echo "Right-click the URL below (don't copy the URL since your clipboard has the ssh key)"
-        echo "Select Open Link and follow the steps from number 2 onwards:"
-        echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
-        echo " ----------------------------------------------------------------------------------------------------"
-        printf "Confirm if you have added the SSH key to your Github account (y/n):"
-        read -r ssh_key_added
-        if [[ "$ssh_key_added" == "y" ]]; then
-            ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
-            if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
-                echo " ---------------------------------"
-                echo "Github SSH key successfully added!"
-                echo " ---------------------------------"
-            else
-                echo " ----------------------------------------------------------------------------------------------------"
-                echo "Github SSH authentication failed with message: $ssh_test"
-                echo " ----------------------------------------------------------------------------------------------------"
-                exit 1
-            fi
-        else
-            echo "You have specified pr_branches but haven't added a Github SSH key"
-            echo "Unable to proceed. See the link below"
-            echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
-            exit 1
-        fi
-    fi
-    formatted_extra_vars="$formatted_extra_vars $i=$input_data"
-done
+
 IFS=',' read -ra securedata <<< "$read_secure"
 for i in "${securedata[@]}"; do
     printf "\nSecure data input for $i:"
