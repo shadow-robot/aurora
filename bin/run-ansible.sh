@@ -186,7 +186,7 @@ check_if_any_pr_repos_are_private(){
     return true
 }
 echo "###########################################################"
-echo $pr_branches
+echo $extra_vars
 exit 0
 github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
 github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
