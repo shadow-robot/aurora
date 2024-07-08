@@ -178,7 +178,7 @@ is_repo_public() {
   fi
 }
 
-function confirm() {
+confirm() {
 	# call with a prompt string or use a default
 	read -r -p "${1:-[y/N]} " response
 	case "$response" in
