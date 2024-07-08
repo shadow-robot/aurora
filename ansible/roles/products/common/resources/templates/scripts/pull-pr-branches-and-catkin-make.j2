@@ -1,19 +1,49 @@
 #! /bin/bash
 set -e
 source /home/user/projects/shadow_robot/base/devel/setup.bash
+
+is_repo_public() {
+  local user_slash_repo=$1
+
+  if curl -fsS "https://api.github.com/repos/${user_slash_repo}" >/dev/null; then
+    printf '%s\n' "The GitHub repo ${user_slash_repo} exists." >&2
+    return 0
+  else
+    printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
+    return 1
+  fi
+}
+
+are_all_pr_repos_public(){
+    local PR_BRANCHES=$1
+    echo -e "\nTesting if repos specified in pr_branches are all public"
+    for i in $PR_BRANCHES; do
+      # Convert github URL to shadow-robot/repo_name
+      echo "Testing URL: ${i}"
+      user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
+      if ! is_repo_public $user_slash_repo; then
+        return 1
+      fi
+    done
+    return 0
+}
+
+
 PR_BRANCHES="{{ pr_branches_value }}"
-eval $(ssh-agent)
-ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
-results=""
-if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
-    echo " ---------------------------------"
-    echo "Github SSH key successfully added!"
-    echo " ---------------------------------"
-else
-    echo " -------------------------------------------------------"
-    echo "Github SSH authentication failed with message: $ssh_test"
-    echo " -------------------------------------------------------"
-    exit 1
+if ! are_all_pr_repos_public $PR_BRANCHES; then
+    eval $(ssh-agent)
+    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+    results=""
+    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+        echo " ---------------------------------"
+        echo "Github SSH key successfully added!"
+        echo " ---------------------------------"
+    else
+        echo " -------------------------------------------------------"
+        echo "Github SSH authentication failed with message: $ssh_test"
+        echo " -------------------------------------------------------"
+        exit 1
+    fi
 fi
 for i in $PR_BRANCHES; do
     repo=""
