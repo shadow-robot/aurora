@@ -162,9 +162,36 @@ for extra_var in $extra_vars; do
 done
 IFS=${old_IFS}
 
+doesnt_exist_as_public_github_repo() {
+  local user_slash_repo=$1
+
+  if curl -fsS "https://api.github.com/repos/${user_slash_repo}" >/dev/null; then
+    printf '%s\n' "The GitHub repo ${user_slash_repo} exists." >&2
+    return 1
+  else
+    printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
+    return 0
+  fi
+}
+
+check_if_any_pr_repos_are_private(){
+    local PR_BRANCHES=$1
+    for i in $PR_BRANCHES; do
+      # Convert github URL to shadow-robot/repo_name
+      user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
+      if doesnt_exist_as_public_github_repo $user_slash_repo; then
+        return false
+      fi
+    done
+    return true
+}
+echo "###########################################################"
+echo $pr_branches
+exit 0
 github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
 github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
+    // if ! check_if_any_pr_repos_are_private
     echo " -------------------------------------------------------------------------------------"
     echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
     echo "Using SSH key from $github_ssh_private_key_path"
