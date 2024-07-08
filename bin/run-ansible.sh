@@ -164,28 +164,30 @@ IFS=${old_IFS}
 
 is_repo_public() {
   local user_slash_repo=$1
-
+  # TODO: handle rate limit
   if curl -fsS "https://api.github.com/repos/${user_slash_repo}" >/dev/null; then
     printf '%s\n' "The GitHub repo ${user_slash_repo} exists." >&2
-    return 0
+    echo "true"
   else
     printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
-    return 1
+    echo "false"
   fi
 }
 
 are_all_pr_repos_public(){
-    local PR_BRANCHES=$1
+    REPO_IS_PRIVATE="true"
     echo -e "\nTesting if repos specified in pr_branches are all public"
+    PR_BRANCHES="$@"
     for i in $PR_BRANCHES; do
       # Convert github URL to shadow-robot/repo_name
       echo "Testing URL: ${i}"
       user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
-      if ! is_repo_public $user_slash_repo; then
-        return 1
+      echo "user_slash_repo: ${user_slash_repo}"
+      if [[ $(is_repo_public $user_slash_repo) == "false" ]]; then
+        REPO_IS_PRIVATE="false"
       fi
     done
-    return 0
+    echo $REPO_IS_PRIVATE
 }
 
 
@@ -193,7 +195,8 @@ github_ssh_public_key_path="${HOME}/.ssh/id_rsa.pub"
 github_ssh_private_key_path="${HOME}/.ssh/id_rsa"
 if [[ $extra_vars == *"pr_branches="* ]]; then
     PR_BRANCHES="$(echo $extra_vars | sed -r 's/.*pr_branches=//g' | sed -r 's/;.*//g')"
-    if ! are_all_pr_repos_public $PR_BRANCHES; then
+    
+    if [[ $(are_all_pr_repos_public $PR_BRANCHES) == "false" ]]; then
         echo " -------------------------------------------------------------------------------------"
         echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
         echo "Using SSH key from $github_ssh_private_key_path"
@@ -490,3 +493,4 @@ echo " ------------------------------------------------"
 echo " |            Operation completed               |"
 echo " ------------------------------------------------"
 echo ""
+
