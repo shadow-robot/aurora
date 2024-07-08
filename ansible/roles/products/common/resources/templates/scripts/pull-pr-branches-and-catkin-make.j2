@@ -2,60 +2,28 @@
 set -e
 source /home/user/projects/shadow_robot/base/devel/setup.bash
 
-is_repo_public() {
-  local user_slash_repo=$1
-  # TODO: handle rate limit
-  if curl -fsS "https://api.github.com/repos/${user_slash_repo}" >/dev/null; then
-    printf '%s\n' "The GitHub repo ${user_slash_repo} exists." >&2
-    echo "true"
-  else
-    printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
-    echo "false"
-  fi
-}
-
-are_all_pr_repos_public(){
-    REPO_IS_PRIVATE="true"
-    PR_BRANCHES="$@"
-    echo -e "\nTesting if repos specified in pr_branches are all public"
-    for i in $PR_BRANCHES; do
-      # Convert github URL to shadow-robot/repo_name
-      echo "Testing URL: ${i}"
-      user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
-      echo "user_slash_repo: ${user_slash_repo}"
-      if [[ $(is_repo_public $user_slash_repo) == "false" ]]; then
-        REPO_IS_PRIVATE="false"
-      fi
-    done
-    echo $REPO_IS_PRIVATE
-}
-
-eval $(ssh-agent)
 PR_BRANCHES="{{ pr_branches_value }}"
-
 SKIP_GIT_SSH_AUTH="{{ skip_git_ssh_auth }}"
-echo "###########################################"
-echo "SKIP_GIT_SSH_AUTH: $SKIP_GIT_SSH_AUTH"
-echo "###########################################"
 
 if [[ $SKIP_GIT_SSH_AUTH != "true" ]]; then
-    if [[ $(are_all_pr_repos_public $PR_BRANCHES) == "false" ]]; then
-        eval $(ssh-agent)
-        ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
-        results=""
-        if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
-            echo " ---------------------------------"
-            echo "Github SSH key successfully added!"
-            echo " ---------------------------------"
-        else
-            echo " -------------------------------------------------------"
-            echo "Github SSH authentication failed with message: $ssh_test"
-            echo " -------------------------------------------------------"
-            exit 1
-        fi
+    eval $(ssh-agent)
+    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+    results=""
+    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+        echo " ---------------------------------"
+        echo "Github SSH key successfully added!"
+        echo " ---------------------------------"
+    else
+        echo " -------------------------------------------------------"
+        echo "Github SSH authentication failed with message: $ssh_test"
+        echo " -------------------------------------------------------"
+        exit 1
     fi
+else
+    eval $(ssh-agent)
 fi
-eval $(ssh-agent)
+
+
 for i in $PR_BRANCHES; do
     repo=""
     ros_repo=""

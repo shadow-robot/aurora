@@ -249,6 +249,7 @@ if [[ $extra_vars == *"pr_branches="* ]]; then
         echo "All pr_branch URLs are public, continuing without ssh authentication"
         formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=true"
     else
+        formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=false"
         echo " -------------------------------------------------------------------------------------"
         echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
         echo "Using SSH key from $github_ssh_private_key_path"
