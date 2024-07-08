@@ -196,8 +196,8 @@ are_all_pr_repos_public(){
     printf '\n%s\n' "Testing if repos specified in pr_branches are all public" >&2
     PR_BRANCHES="$@"
     for i in $PR_BRANCHES; do
-      # Convert github URL to shadow-robot/repo_name
       echo "Testing URL: ${i}" >&2
+      # Convert github URL to shadow-robot/repo_name
       user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
       REPO_IS_PUBLIC=$(is_repo_public $user_slash_repo)
       if [[ $REPO_IS_PUBLIC == "false" ]]; then
