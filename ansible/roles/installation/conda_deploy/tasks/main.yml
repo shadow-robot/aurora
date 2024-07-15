@@ -15,7 +15,7 @@
 ---
 - name: Fetch conda deploy script
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/shadow-robot/aurora/B_debugging_docker_api_http_2/bin/conda_utils.sh
+    url: https://raw.githubusercontent.com/shadow-robot/aurora/master/bin/conda_utils.sh
     dest: /tmp/conda_utils.sh
     mode: '755'
 
