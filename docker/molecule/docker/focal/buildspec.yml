@@ -30,7 +30,8 @@ phases:
       docker: 19
   build:
     commands:
-      - echo "CODEBUILD_SOURCE_VERSION: ${CODEBUILD_SOURCE_VERSION}"
+      - echo 'CODEBUILD_SOURCE_VERSION:'
+      - echo ${CODEBUILD_SOURCE_VERSION}
       - |
         if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then
           pr_number=${CODEBUILD_SOURCE_VERSION#pr/}
@@ -40,8 +41,9 @@ phases:
         else
           branch=$CODEBUILD_SOURCE_VERSION
         fi
-      - echo "branch: ${branch}"
-      - if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then echo "pr_number: ${pr_number}"; fi
+      - echo 'branch:'
+      - echo ${branch}
+      - if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then echo 'pr_number:'; echo ${pr_number}; fi
       - cd ..
       - rm -rf aurora
       - git clone https://github.com/shadow-robot/aurora.git
