@@ -1,0 +1,45 @@
+# Copyright 2024 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+---
+- name: Fetch conda deploy script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/shadow-robot/aurora/master/bin/conda_utils.sh
+    dest: /tmp/conda_utils.sh
+    mode: '755'
+
+- name: Run conda deploy script
+  command: bash -c "source /tmp/conda_utils.sh && create_conda_ws && fetch_pip_files && install_pip_packages"
+  args:
+    chdir: /home/user
+  register: conda_deploy_status
+  changed_when: conda_deploy_status.rc != 0
+
+- name: Set user home
+  set_fact:
+    sr_user_home: "/home/user"
+
+- name: Set Python 3 conda paths
+  block:
+    - name: Set python3/pip path
+      set_fact:
+        sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/aurora_conda_ws/bin"
+
+    - name: Set Python 3 interpreter
+      set_fact:
+        ansible_python_interpreter: "{{ sr_python_and_pip_path }}/python3"
+
+    - name: Set Python3 pip executable
+      set_fact:
+        ansible_pip3_executable: "{{ sr_python_and_pip_path }}/pip3"
