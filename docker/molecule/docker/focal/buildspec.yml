@@ -43,7 +43,6 @@ phases:
         else
           branch=$CODEBUILD_SOURCE_VERSION
         fi
-      - echo 'branch:'
       - echo ${branch}
       - if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then echo 'pr_number:'; echo ${pr_number}; fi
       - cd ..
