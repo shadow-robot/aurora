@@ -1,20 +1,29 @@
 #! /bin/bash
 set -e
 source /home/user/projects/shadow_robot/base/devel/setup.bash
+
 PR_BRANCHES="{{ pr_branches_value }}"
-eval $(ssh-agent)
-ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
-results=""
-if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
-    echo " ---------------------------------"
-    echo "Github SSH key successfully added!"
-    echo " ---------------------------------"
+SKIP_GIT_SSH_AUTH="{{ skip_git_ssh_auth }}"
+
+if [[ $SKIP_GIT_SSH_AUTH != "true" ]]; then
+    eval $(ssh-agent)
+    ssh_test=$(ssh -oStrictHostKeyChecking=no -T git@github.com 2>&1 &)
+    results=""
+    if [[ "$ssh_test" == *"You've successfully authenticated"* ]]; then
+        echo " ---------------------------------"
+        echo "Github SSH key successfully added!"
+        echo " ---------------------------------"
+    else
+        echo " -------------------------------------------------------"
+        echo "Github SSH authentication failed with message: $ssh_test"
+        echo " -------------------------------------------------------"
+        exit 1
+    fi
 else
-    echo " -------------------------------------------------------"
-    echo "Github SSH authentication failed with message: $ssh_test"
-    echo " -------------------------------------------------------"
-    exit 1
+    eval $(ssh-agent)
 fi
+
+
 for i in $PR_BRANCHES; do
     repo=""
     ros_repo=""
