@@ -36,7 +36,7 @@ phases:
         if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then
           pr_number=${CODEBUILD_SOURCE_VERSION#pr/}
           branch=$(curl -s "https://api.github.com/repos/shadow-robot/aurora/pulls/$pr_number" | jq -r '.head.ref')
-          echo 'is_pr'
+          echo 'iss_pr'
         elif [[ $CODEBUILD_SOURCE_VERSION =~ ^[0-9a-f]{40}$ ]]; then
           echo 'is_hash'
           branch=$(git ls-remote --symref origin | grep -m1 $CODEBUILD_SOURCE_VERSION | awk -F '/' '{print $NF}')
