@@ -36,7 +36,6 @@ phases:
           api_response=$(curl -s "https://api.github.com/repos/shadow-robot/aurora/pulls/$pr_number")
           if [[ $(echo $api_response | jq -r '.head.ref') == 'null' ]]; then
             echo "$api_response" | jq
-            echo "is null"
           fi
           branch=$(echo $api_response | jq -r '.head.ref')
         elif [[ $CODEBUILD_SOURCE_VERSION =~ ^[0-9a-f]{40}$ ]]; then
