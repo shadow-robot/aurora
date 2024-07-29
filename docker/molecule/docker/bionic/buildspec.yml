@@ -30,7 +30,6 @@ phases:
       docker: 19
   build:
     commands:
-      - echo $CODEBUILD_SOURCE_VERSION
       - git --version
       - |
         if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then
