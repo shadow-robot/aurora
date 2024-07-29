@@ -30,15 +30,21 @@ phases:
       docker: 19
   build:
     commands:
+      - echo $CODEBUILD_SOURCE_VERSION
+      - git --version
       - |
         if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then
           pr_number=${CODEBUILD_SOURCE_VERSION#pr/}
           branch=$(curl -s "https://api.github.com/repos/shadow-robot/aurora/pulls/$pr_number" | jq -r '.head.ref')
+          echo 'is_pr'
         elif [[ $CODEBUILD_SOURCE_VERSION =~ ^[0-9a-f]{40}$ ]]; then
+          echo 'is_hash'
           branch=$(git ls-remote --symref origin | grep -m1 $CODEBUILD_SOURCE_VERSION | awk -F '/' '{print $NF}')
         else
+          echo 'is_else'
           branch=$CODEBUILD_SOURCE_VERSION
         fi
+      - echo $branch
       - cd ..
       - rm -rf aurora
       - git clone https://github.com/shadow-robot/aurora.git
