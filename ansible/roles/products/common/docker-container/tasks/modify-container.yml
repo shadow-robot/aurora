@@ -23,7 +23,14 @@
   become: yes
   changed_when: false
 
-- name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }}
+- name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }} without retries
+  shell: "/tmp/{{ modify_script_name }}"
+  become: yes
+  changed_when: false
+  register: result
+  when: not skip_molecule_task|bool and not use_retries|bool
+
+- name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }} with retries
   shell: "/tmp/{{ modify_script_name }}"
   become: yes
   changed_when: false
@@ -31,5 +38,5 @@
   delay: 3
   register: result
   until: result.stdout == "pull_finished"
-  when: not skip_molecule_task|bool
+  when: not skip_molecule_task|bool and use_retries|bool
   
