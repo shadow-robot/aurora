@@ -421,18 +421,9 @@ else
     echo ""
 fi
 
-ansible_executable=~/.local/bin/ansible-playbook
-if [[ ! -f "${ansible_executable}" ]]; then
-    ansible_executable=ansible-playbook
-fi
-ansible_basic_executable=~/.local/bin/ansible
-if [[ ! -f "${ansible_basic_executable}" ]]; then
-    ansible_basic_executable=ansible
-fi
-ansible_galaxy_executable=~/.local/bin/ansible-galaxy
-if [[ ! -f "${ansible_galaxy_executable}" ]]; then
-    ansible_galaxy_executable=ansible-galaxy
-fi
+ansible_executable=ansible-playbook
+ansible_basic_executable=ansible
+ansible_galaxy_executable=ansible-galaxy
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
