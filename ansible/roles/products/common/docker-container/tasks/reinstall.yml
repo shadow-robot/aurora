@@ -111,4 +111,4 @@
   import_tasks: modify-container.yml
   vars:
     modify_script_name: "pull_sr_hand_config.sh"
-    modify_script_commands: "SR_HAND_CONFIG=$(source /home/user/projects/shadow_robot/base/devel/setup.bash && rospack list | grep sr_hand_config | wc -l); if [[ $SR_HAND_CONFIG -gt 0 ]]; then roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && timeout 30 git pull; else roscd sr_config && git remote set-url origin https://github.com/shadow-robot/sr-config && timeout 30 git pull; fi"
+    modify_script_commands: "SR_HAND_CONFIG=\$(source /home/user/projects/shadow_robot/base/devel/setup.bash && rospack list | grep sr_hand_config | wc -l); if [[ \$SR_HAND_CONFIG -gt 0 ]]; then roscd sr_hand_config && git remote set-url origin https://github.com/shadow-robot/sr_hand_config && timeout 30 git pull; else roscd sr_config && git remote set-url origin https://github.com/shadow-robot/sr-config && timeout 30 git pull; fi"
