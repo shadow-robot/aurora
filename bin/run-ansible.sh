@@ -343,7 +343,7 @@ done
 
 # jq is needed for yq, which installs xq, which helps parse aws s3 http requests
 sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
-sudo chown $USER:$USER $aurora_home || true
+# sudo chown $USER:$USER $aurora_home || true
 # sudo rm -rf ${aurora_home}
 
 # git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git $aurora_home
@@ -354,7 +354,7 @@ echo " | Running Ansible |"
 echo " -------------------"
 echo ""
 
-# pushd $aurora_home
+pushd $aurora_home
 
 
 source $aurora_home/bin/conda_utils.sh
@@ -445,7 +445,7 @@ fi
 
 "${ansible_executable}" -v ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
-# popd
+popd
 
 echo ""
 echo " ------------------------------------------------"
