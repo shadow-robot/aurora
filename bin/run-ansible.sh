@@ -333,7 +333,7 @@ while (sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1) || (sudo fuser /var/l
     echo "Waiting for apt-get update file lock..."
     sleep 1
 done
-sudo apt-get update
+# sudo apt-get update
 
 # Wait for apt-get install lock file to be released
 while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
@@ -344,9 +344,9 @@ done
 # jq is needed for yq, which installs xq, which helps parse aws s3 http requests
 sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
 sudo chown $USER:$USER $aurora_home || true
-sudo rm -rf ${aurora_home}
+# sudo rm -rf ${aurora_home}
 
-git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git $aurora_home
+# git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git $aurora_home
 
 echo ""
 echo " -------------------"
@@ -354,16 +354,16 @@ echo " | Running Ansible |"
 echo " -------------------"
 echo ""
 
-pushd $aurora_home
+# pushd $aurora_home
 
 
 source $aurora_home/bin/conda_utils.sh
 create_conda_ws
 
-fetch_pip_files
-fetch_ansible_files
+# fetch_pip_files
+# fetch_ansible_files
 
-install_pip_packages
+# install_pip_packages
 
 
 # Fix for WSL - THIS IS NOT SUPPORTED AT ALL!!!
@@ -445,7 +445,7 @@ fi
 
 "${ansible_executable}" -v ${ansible_flags} -i "${aurora_inventory}" "ansible/playbooks/${playbook}.yml" --extra-vars "$formatted_extra_vars"
 
-popd
+# popd
 
 echo ""
 echo " ------------------------------------------------"
