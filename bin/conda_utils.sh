@@ -21,6 +21,7 @@ miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
 miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-py311_23.5.2-0-Linux-x86_64.sh"
 miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
 packages_download_root="${miniconda_install_root}/aurora_host_packages"
+shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
 
 # Some molecule tests install to `/home/...` (no user account)
 if [ -z $USER ]; then
@@ -112,7 +113,6 @@ deploy_conda_installer() {
 
 create_conda_ws(){
   deploy_conda_installer
-  shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
   if [ -d "$shadow_conda_ws_dir" ]; then
     rm -rf $shadow_conda_ws_dir
   fi
