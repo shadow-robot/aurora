@@ -113,6 +113,7 @@ deploy_conda_installer() {
 
 create_conda_ws(){
   deploy_conda_installer
+  shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
   if [ -d "$shadow_conda_ws_dir" ]; then
     rm -rf $shadow_conda_ws_dir
   fi
