@@ -44,4 +44,3 @@
 
   until: '"finished_successfully" in result.stdout'
   when: not skip_molecule_task|bool and use_retries|bool
-  
