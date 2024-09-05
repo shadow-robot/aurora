@@ -429,6 +429,8 @@ ansible_galaxy_executable=ansible-galaxy
 "${ansible_basic_executable}" --version
 install_ansible_collections "${ansible_galaxy_executable}"
 
+# Use conda packages/modules first
+export PYTHONPATH="${shadow_conda_ws_dir}/lib/python3.8/site-packages"
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
