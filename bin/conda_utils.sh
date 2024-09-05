@@ -124,7 +124,7 @@ create_conda_ws(){
 fetch_pip_files(){ _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"; }
 fetch_ansible_files() { _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"; }
 
-install_pip_packages() { ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/* ; }
+install_pip_packages() { ANSIBLE_SKIP_CONFLICT_CHECK=1 ${shadow_conda_ws_dir}/bin/pip install ${packages_download_root}/pip_packages/* ; }
 install_ansible_collections() {
   ansible_galaxy_executable=$1
   "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
