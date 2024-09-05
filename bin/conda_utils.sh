@@ -69,7 +69,7 @@ _fetch_new_files() {
   echo "Fetching ${aws_bucket_dir}..."
   mkdir -p $local_download_dir
 
-  remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
+  remote_packages=$(curl -Ls ${aws_bucket_url} | python -m xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
 
   echo "remote_packages: ${remote_packages}"
 
@@ -118,7 +118,7 @@ create_conda_ws(){
     rm -rf $shadow_conda_ws_dir
   fi
   ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-  python -m pip install yq xq
+  ${shadow_conda_ws_dir}/bin/pip install yq xq
 }
 
 fetch_pip_files(){ _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"; }
