@@ -44,8 +44,8 @@
           retval=$?
           if [ $retval -eq 124 ]; then
             echo -e "${ORANGE}WARNING: git pull timed out after five seconds, NOT pulling latest hand calibration${NC}"
-          elif [ $retval -eq 1 ]; then
-            echo -e "${GREEN}git pull did not timeout${NC}"
+          elif [ $retval -eq 0 ]; then
+            echo -e "${GREEN}git pull completed successfully${NC}"
           else
             echo -e "${ORANGE}WARNING: git pull failed with an unexpected error: ${retval}${NC}"
           fi
