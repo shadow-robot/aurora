@@ -421,6 +421,7 @@ else
     echo ""
 fi
 
+# Awful hack to make bionic checks pass (they need to be disabled)
 if [[ $codename == *"bionic"* ]]; then
     ansible_executable=~/.local/bin/ansible-playbook
     if [[ ! -f "${ansible_executable}" ]]; then
@@ -438,13 +439,13 @@ if [[ $codename == *"bionic"* ]]; then
     ansible_executable=ansible-playbook
     ansible_basic_executable=ansible
     ansible_galaxy_executable=ansible-galaxy
+    # Use conda packages/modules first
+    export PYTHONPATH="${shadow_conda_ws_dir}/lib/python3.8/site-packages"
 fi
+
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
 install_ansible_collections "${ansible_galaxy_executable}"
-
-# Use conda packages/modules first
-export PYTHONPATH="${shadow_conda_ws_dir}/lib/python3.8/site-packages"
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
