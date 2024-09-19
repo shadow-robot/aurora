@@ -23,7 +23,7 @@ RUN set -x && \
     apt-get install -y --no-install-recommends ca-certificates wget && \
     \
     echo "Installing dependencies for python3.8, SSL, pip3" && \
-    apt-get install -y build-essential zlib1g-dev libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev && \
+    apt-get install -y build-essential zlib1g-dev libreadline-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev && \
     \
     echo "Installing git, sudo and Python 3 pip and dev" && \
     apt-get install -y \
@@ -31,20 +31,20 @@ RUN set -x && \
          python3-pip \
          git \
          libyaml-dev \
-         python-crypto \
+         python3-cryptography \
          libssl-dev \
          libffi-dev \
          sshpass \
          sudo && \
-    \
-    pip3 install --upgrade pip setuptools==51.1.1 gcovr && \
+    pip3 install --upgrade pip gcovr && \
     echo "Cloning Aurora" && \
     git clone --depth 1 https://github.com/shadow-robot/aurora.git -b $ml_base_aurora_branch /tmp/aurora && \
     \
     pip3 --version && \
     python3 --version && \
     echo "Installing molecule" && \
-    pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
+    echo "cython<3" > /tmp/constraint.txt && \
+    PIP_CONSTRAINT=/tmp/constraint.txt pip3 install -r /tmp/aurora/ansible/data/molecule/requirements.txt && \
     \
     echo "Clean up" && \
     apt-get clean && \
