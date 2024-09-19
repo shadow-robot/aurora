@@ -27,9 +27,6 @@ env:
      - tag
      - dockerfile_folder
 phases:
-  install:
-    runtime-versions:
-      docker: 19
   build:
     commands:
       - cd ..
@@ -37,11 +34,6 @@ phases:
       - git clone https://github.com/shadow-robot/aurora.git
       - cd aurora
       - git checkout $branch
-      - awscli_v1_executable=$(which aws)
-      - rm $awscli_v1_executable
-      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      - unzip awscliv2.zip
-      - ./aws/install
       - cd $dockerfile_folder
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot
       - docker build -t $image .
@@ -49,4 +41,15 @@ phases:
       - docker push public.ecr.aws/shadowrobot/$image:$tag
       - comm -13 <(aws ecr-public describe-image-tags --repository-name $image --region us-east-1 --output text | awk '{print $3}' | tr " " "\n" | sort -u) <(aws ecr-public describe-images --repository-name $image --region us-east-1 --output text | awk '{print $2}' | tr " " "\n" | sort -u) >> ids_to_delete.txt
       - ids_to_delete=$(sed 's/^/imageDigest=/' ids_to_delete.txt)
+      - aws ecr-public describe-image-tags --repository-name $image --region us-east-1 --output text | awk '{print $3}' | tr " " "\n" | sort -u >> t1.txt
+      - aws ecr-public describe-images --repository-name $image --region us-east-1 --output text | awk '{print $2}' | tr " " "\n" | sort -u >> t2.txt
+      - echo 't1'
+      - cat t1.txt
+      - echo 't2'
+      - cat t2.txt
+      - echo 'ids1'
+      - echo $ids_to_delete
+      - echo 'ids2txt'
+      - echo 'img'
+      - echo $image
       - if [[ -s ids_to_delete.txt ]]; then aws ecr-public batch-delete-image --repository-name $image --region us-east-1 --image-ids $ids_to_delete --output text; fi
