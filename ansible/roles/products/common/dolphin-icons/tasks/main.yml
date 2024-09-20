@@ -289,6 +289,9 @@
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
 
+- name: Set execution bit on Desktop folder
+  shell: chmod a+x "{{ desktop_path }}"
+
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
   shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
 
