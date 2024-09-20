@@ -1,0 +1,44 @@
+# Copyright 2024 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
+
+version: 0.2
+
+env:
+  shell: bash
+  variables:
+     branch: master
+     image: aurora-molecule-devel
+     tag: jammy
+     dockerfile_folder: docker/molecule/devel/jammy/
+  exported-variables:
+     - branch
+     - image
+     - tag
+     - dockerfile_folder
+phases:
+  build:
+    commands:
+      - cd ..
+      - rm -rf aurora
+      - git clone https://github.com/shadow-robot/aurora.git
+      - cd aurora
+      - git checkout $branch
+      - cd $dockerfile_folder
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/shadowrobot
+      - docker build -t $image .
+      - docker tag $image:latest public.ecr.aws/shadowrobot/$image:$tag
+      - docker push public.ecr.aws/shadowrobot/$image:$tag
+      - comm -13 <(aws ecr-public describe-image-tags --repository-name $image --region us-east-1 --output text | awk '{print $3}' | tr " " "\n" | sort -u) <(aws ecr-public describe-images --repository-name $image --region us-east-1 --output text | awk '{print $2}' | tr " " "\n" | sort -u) >> ids_to_delete.txt
+      - ids_to_delete=$(sed 's/^/imageDigest=/' ids_to_delete.txt)
+      - if [[ -s ids_to_delete.txt ]]; then aws ecr-public batch-delete-image --repository-name $image --region us-east-1 --image-ids $ids_to_delete --output text; fi
