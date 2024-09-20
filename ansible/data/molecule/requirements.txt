@@ -1,5 +1,5 @@
-ansible==4.2.0
-ansible-core==2.11.11
+ansible==5.2.0
+ansible-core==2.12.8
 ansible-compat==2.0.2
 ansible-lint==5.4.0
 asn1crypto==1.5.1
