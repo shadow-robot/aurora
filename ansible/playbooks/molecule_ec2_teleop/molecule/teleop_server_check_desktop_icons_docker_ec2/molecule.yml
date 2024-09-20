@@ -37,6 +37,7 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: ../../../../roles
+    ANSIBLE_VERBOSITY: 3
   connection_options:
     ansible_python_interpreter: /usr/bin/python3
     sudo_password: ubuntu
