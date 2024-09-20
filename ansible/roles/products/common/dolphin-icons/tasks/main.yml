@@ -293,7 +293,7 @@
   shell: chmod a+x "{{ desktop_path }}"
 
 - name: List gio stuff
-  shell: gio info "{{ desktop_path }}"
+  shell: gio info "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
   register: gio_info
 
 - debug: msg="{{ gio_info.stdout }}"
