@@ -440,7 +440,7 @@ if [[ $codename == *"bionic"* ]]; then
     ansible_basic_executable=ansible
     ansible_galaxy_executable=ansible-galaxy
     # Use conda packages/modules first
-    export PYTHONPATH="${shadow_conda_ws_dir}/lib/python3.8/site-packages"
+    export PYTHONPATH="${shadow_conda_ws_dir}/lib/python${aurora_python_version}/site-packages"
 fi
 
 # install ansible galaxy docker and aws collections
