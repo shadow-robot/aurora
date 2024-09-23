@@ -290,12 +290,8 @@
     start_terminal: "false"
   changed_when: false
 
-- name: Set execution bit on Desktop folder
-  shell: chmod a+x "{{ desktop_path }}"
-
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
   shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
-  when: not skip_molecule_task|bool
 
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
