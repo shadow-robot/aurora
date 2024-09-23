@@ -61,7 +61,6 @@
     hand_side_label: "Right Hand"
     control_loop_script_name: "shadow_nuc_right_hardware_control_loop.sh"
     gui_script_name: "shadow_GUI_right.sh"
-  changed_when: false
   when: 
     - bimanual|bool or hand_side=="right"
     - "'glove_' not in product"
