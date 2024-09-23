@@ -288,15 +288,10 @@
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
+  changed_when: false
 
 - name: Set execution bit on Desktop folder
   shell: chmod a+x "{{ desktop_path }}"
-
-- name: List gio stuff
-  shell: gio info "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
-  register: gio_info
-
-- debug: msg="{{ gio_info.stdout }}"
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
   shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
