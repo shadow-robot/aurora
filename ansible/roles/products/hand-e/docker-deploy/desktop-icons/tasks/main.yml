@@ -24,7 +24,6 @@
     desktop_icon_path: "Launch Server Container"
     launch_terminal: "false"
     hand_side_ad: ""
-  changed_when: false
 
 - name: Include products/common/record-hand-data role
   include_role:
