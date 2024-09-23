@@ -290,8 +290,11 @@
     start_terminal: "false"
   changed_when: false
 
+- name: Set desktop icon path fact
+  ansible.builtin.set_fact: desktop_icon_path="{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
+
 - name: Check trusted status of {{ container_name | replace('_', ' ') | title }} desktop icon
-  shell: gio info "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" | grep metadata::trusted
+  shell: "gio info {{ desktop_icon_path }} | grep metadata::trusted"
   register: gio_result
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
