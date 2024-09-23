@@ -43,6 +43,7 @@
   copy:
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
+    remote_src: yes
     directory_mode: yes
     mode: 0755
   changed_when: false
@@ -288,12 +289,24 @@
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
 
+- name: Set execution bit on Desktop folder
+  shell: chmod a+x "{{ desktop_path }}"
+
+- name: List gio stuff
+  shell: gio info "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
+  register: gio_info
+
+- debug: msg="{{ gio_info.stdout }}"
+
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
-  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  when: not skip_molecule_task|bool
 
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
   changed_when: false
+  when: not skip_molecule_task|bool
   
 - name: Restart GNOME Display Manager (Desktop refresh)
   shell: killall -SIGQUIT gnome-shell
+  when: not skip_molecule_task|bool

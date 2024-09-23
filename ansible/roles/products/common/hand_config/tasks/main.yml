@@ -24,11 +24,6 @@
     dest: /tmp/update_hand_config.sh
     content: |
         #!/usr/bin/env bash
-        # Check if there is internet connection
-        if ! wget -q --spider https://www.google.com/; then
-          echo "There is no internet connection. Nothing will be pulled."
-          exit 1
-        fi
 
         # Used to update hand config.
         cd ~/projects/shadow_robot/base_deps/src/sr_hand_config
@@ -40,14 +35,30 @@
           file_changed=false
         fi
 
+        git_pull_with_timeout() {
+          # Colours for echo
+          ORANGE='\033[0;33m'
+          GREEN='\033[0;32m'
+          NC='\033[0m' # No Color
+          timeout 5s git pull
+          retval=$?
+          if [ $retval -eq 124 ]; then
+            echo -e "${ORANGE}WARNING: git pull timed out after five seconds, NOT pulling latest hand calibration${NC}"
+          elif [ $retval -eq 0 ]; then
+            echo -e "${GREEN}git pull completed successfully${NC}"
+          else
+            echo -e "${ORANGE}WARNING: git pull failed with an unexpected error: ${retval}${NC}"
+          fi
+        }
+
         git remote set-url origin https://github.com/shadow-robot/sr_hand_config
         if [[ $git_branch == "master" && $file_changed == false ]]; then
           echo "Pulling the latest sr_hand_config changes."
-          timeout 5s git pull
+          git_pull_with_timeout
         elif [[ $git_branch != "master" && $file_changed == false ]]; then
           echo "Pulling the latest sr_hand_config changes to master branch then switching back to branch $git_branch"
           git checkout master --quiet 1> /dev/null
-          timeout 5s git pull
+          git_pull_with_timeout
           git checkout $git_branch --quiet 1> /dev/null
         else
           echo "You have un-commited changes in sr_hand_config, not pulling any changes automatically."

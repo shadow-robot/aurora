@@ -33,6 +33,7 @@ provisioner:
     ANSIBLE_ROLES_PATH: ../../../../roles
     AWS_ACCESS_KEY: ${AWS_ACCESS_KEY:-default}
     AWS_SECRET_KEY: ${AWS_SECRET_KEY:-default}
+    ANSIBLE_VERBOSITY: 3
   inventory:
     links:
       group_vars: ../../../../inventory/local/group_vars
