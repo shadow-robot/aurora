@@ -42,6 +42,7 @@
     shell_script_file_name: "'{{ launch_script }}{{ extra_vars }}'"
     icon_file_name: "{{ desktop_icon_png }}"
     start_terminal: "{{ launch_terminal }}"
+  changed_when: false
 
 - name: Make Desktop icon trusted
   shell: gio set "{{ desktop_path }}/{{ desktop_icon_path }}.desktop" "metadata::trusted" yes
