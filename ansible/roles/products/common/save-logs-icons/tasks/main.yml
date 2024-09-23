@@ -49,6 +49,7 @@
     shell_script_file_name: save-latest-ros-logs.sh
     icon_file_name: log-icon.png
     start_terminal: "false"
+  changed_when: false
 
 - name: Make ROS Logs Saver desktop icon trusted
   shell: gio set "{{ desktop_path }}/Shadow ROS Logs Saver.desktop" "metadata::trusted" yes
@@ -71,6 +72,7 @@
     shell_script_file_name: save-latest-ros-logs.sh
     icon_file_name: log-icon.png
     start_terminal: "false"
+  changed_when: false
 
 - name: Make ROS Logs Saver and Uploader desktop icon trusted
   shell: gio set "{{ desktop_path }}/Shadow ROS Logs Saver and Uploader.desktop" "metadata::trusted" yes
