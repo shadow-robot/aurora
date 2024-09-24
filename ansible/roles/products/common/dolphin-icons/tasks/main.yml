@@ -293,11 +293,8 @@
 - name: Set desktop icon path fact
   ansible.builtin.set_fact: desktop_icon_path="{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
 
-- name: Escape spaces in icon path
-  ansible.builtin.set_fact: desktop_icon_path="{{ desktop_icon_path | replace(' ', '\ ') }}"
-
 - name: Check trusted status of {{ container_name | replace('_', ' ') | title }} desktop icon
-  shell: "gio info {{ desktop_icon_path }} | grep metadata::trusted"
+  shell: "gio info '{{ desktop_icon_path }}' | grep metadata::trusted"
   register: gio_result
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
