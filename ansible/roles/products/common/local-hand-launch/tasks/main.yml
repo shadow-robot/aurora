@@ -112,6 +112,7 @@
       shell_script_file_name: shadow_local_right_launcher_exec.sh
       icon_file_name: "{{ right_hand_picture }}"
       start_terminal: "false"
+    changed_when: false
 
   - name: Make Shadow Local Right Hand Launch desktop icon Trusted
     shell: gio set "{{ icon_folder }}/Launch Local Shadow Right Hand.desktop" "metadata::trusted" yes

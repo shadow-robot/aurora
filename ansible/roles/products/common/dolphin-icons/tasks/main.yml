@@ -288,19 +288,19 @@
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
+  changed_when: false
 
-- name: Set execution bit on Desktop folder
-  shell: chmod a+x "{{ desktop_path }}"
+- name: Set desktop icon path fact
+  ansible.builtin.set_fact: desktop_icon_path="{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
 
-- name: List gio stuff
-  shell: gio info "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
-  register: gio_info
-
-- debug: msg="{{ gio_info.stdout }}"
+- name: Check trusted status of {{ container_name | replace('_', ' ') | title }} desktop icon
+  shell: "gio info '{{ desktop_icon_path }}' | grep metadata::trusted || true"
+  register: gio_result
+  changed_when: false
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
   shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
-  when: not skip_molecule_task|bool
+  when: "'true' in gio_result.stdout"
 
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
