@@ -296,6 +296,7 @@
 - name: Check trusted status of {{ container_name | replace('_', ' ') | title }} desktop icon
   shell: "gio info '{{ desktop_icon_path }}' | grep metadata::trusted || true"
   register: gio_result
+  changed_when: false
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
   shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
