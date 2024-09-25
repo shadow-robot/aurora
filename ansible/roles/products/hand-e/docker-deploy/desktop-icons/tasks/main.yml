@@ -39,6 +39,7 @@
     path: "{{ desktop_path }}/Shadow Demos"
     mode: '755'
     state: directory
+  changed_when: false
 
 - name: Include products/common/demo-icons role
   include_role:
