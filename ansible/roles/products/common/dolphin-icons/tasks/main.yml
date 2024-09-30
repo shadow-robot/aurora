@@ -43,6 +43,7 @@
   copy:
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
+    remote_src: yes
     directory_mode: yes
     mode: 0755
   changed_when: false
@@ -287,13 +288,25 @@
     icon_file_name: "shadowlogo.png"
     folder: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher"
     start_terminal: "false"
+  changed_when: false
+
+- name: Set desktop icon path fact
+  ansible.builtin.set_fact: desktop_icon_path="{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop"
+
+- name: Check trusted status of {{ container_name | replace('_', ' ') | title }} desktop icon
+  shell: "gio info '{{ desktop_icon_path }}' | grep metadata::trusted || true"
+  register: gio_result
+  changed_when: false
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
-  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  when: "'true' in gio_result.stdout"
 
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
   changed_when: false
+  when: not skip_molecule_task|bool
   
 - name: Restart GNOME Display Manager (Desktop refresh)
   shell: killall -SIGQUIT gnome-shell
+  when: not skip_molecule_task|bool
