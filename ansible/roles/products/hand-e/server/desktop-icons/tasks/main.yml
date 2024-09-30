@@ -124,18 +124,21 @@
     path: "{{ desktop_path }}/Shadow Demos"
     mode: '755'
     state: directory
+  changed_when: false
 
 - name: Create Shadow Advanced Launchers folder
   file:
     path: "{{ desktop_path }}/Shadow Advanced Launchers"
     mode: '755'
     state: directory
+  changed_when: false
 
 - name: Create Shadow Simulation folder
   file:
     path: "{{ desktop_path }}/Simulation"
     mode: '755'
     state: directory
+  changed_when: false
   when: sim_icon|bool
 
 - name: Create Local Launch folder
@@ -143,6 +146,7 @@
     path: "{{ desktop_path }}/Local Launch"
     mode: '755'
     state: directory
+  changed_when: false
 
 - name: Set Advanced Launcher Name
   set_fact:
@@ -163,6 +167,7 @@
     path: "{{ desktop_path }}/{{ right_advanced_launcher }}"
     mode: '755'
     state: directory
+  changed_when: false
   when: bimanual|bool
 
 - name: Create Shadow Advanced Launchers/Left Side folder
@@ -170,6 +175,7 @@
     path: "{{ desktop_path }}/{{ left_advanced_launcher }}"
     mode: '755'
     state: directory
+  changed_when: false
   when: bimanual|bool
 
 - name: Create Shadow Advanced Launchers/Bimanual folder
@@ -177,6 +183,7 @@
     path: "{{ desktop_path }}/{{ bimanual_advanced_launcher }}"
     mode: '755'
     state: directory
+  changed_when: false
   when: bimanual|bool
 
 - name: Install desktop icon for server container
