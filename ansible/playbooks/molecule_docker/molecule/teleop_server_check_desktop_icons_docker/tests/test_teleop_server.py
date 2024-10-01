@@ -88,16 +88,22 @@ def test_icons_in_docker(host):
     for icon in icons:
         icon_file = f"{desktop_path}{icon}.desktop"
         icon_attempts[icon_file] = host.file(icon_file).exists
-        # assert host.file(icon_file).exists
     for script in scripts:
         script_file = f"{script_path}{script}.sh"
         script_attempts[script_file] = host.file(script_file).exists
-        # assert host.file(script_file).exists
-    print("icon asserts:")
-    for key, value in icon_attempts.items():
-        print(f"{key}: {value}")
-    print("script asserts:")
-    for key, value in script_attempts.items():
-        print(f"{key}: {value}")
+    for icon_name, exists in icon_attempts.items():
+        if exists:
+            print(f"Icon {icon_name} exists, check passed")
+        else:
+            print(f"Icon {icon_name} does not exist, check will fail")
+    for script_name, exists in script_attempts.items():
+        if exists:
+            print(f"Script {script_name} exists, check passed")
+        else:
+            print(f"Script {script_name} does not exist, check will fail")
     save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
+    for icon_name, exists in icon_attempts.items():
+        assert exists
+    for script_name, exists in script_attempts.items():
+        assert exists

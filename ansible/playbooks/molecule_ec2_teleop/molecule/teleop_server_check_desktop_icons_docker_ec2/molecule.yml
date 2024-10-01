@@ -52,6 +52,8 @@ provisioner:
 verifier:
   name: testinfra
   directory: ../../../molecule_docker/molecule/teleop_server_check_desktop_icons_docker/tests/
+  options:
+    s: true
 scenario:
   create_sequence:
     - dependency
