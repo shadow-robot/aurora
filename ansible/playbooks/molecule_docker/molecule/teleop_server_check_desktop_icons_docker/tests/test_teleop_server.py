@@ -34,9 +34,11 @@ def test_docker_installed(host):
 
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
-    desktop_path = f'/home/{hostuser}/Desktop/'
+    desktop_path = f'/home/{hostuser}/.shadow_launcher_app_shadow_teleoperation_system/Shadow Icons'
     script_path = f'/home/{hostuser}/.shadow_launcher_app_shadow_teleoperation_system/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
+    icon_attempts = {}
+    script_attempts = {}
     icons = (
         'Launch Shadow Right Teleop',
         'Shadow NUC RQT',
@@ -83,10 +85,19 @@ def test_icons_in_docker(host):
         'shadow_zero_force_mode_right',
         'close_everything'
         )
-    # for icon in icons:
-    #     assert host.file(f"{desktop_path}{icon}.desktop").exists
-
-    # for script in scripts:
-    #     assert host.file(f"{script_path}{script}.sh").exists
-    # save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
-    # assert host.file(save_logs_file).exists
+    for icon in icons:
+        icon_file = f"{desktop_path}{icon}.desktop"
+        icon_attempts[icon_file] = host.file(icon_file).exists
+        # assert host.file(icon_file).exists
+    for script in scripts:
+        script_file = f"{script_path}{script}.sh"
+        script_attempts[script_file] = host.file(script_file).exists
+        # assert host.file(script_file).exists
+    print("icon asserts:")
+    for key, value in icon_attempts.items():
+        print(f"{key}: {value}")
+    print("script asserts:")
+    for key, value in script_attempts.items():
+        print(f"{key}: {value}")
+    save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
+    assert host.file(save_logs_file).exists
