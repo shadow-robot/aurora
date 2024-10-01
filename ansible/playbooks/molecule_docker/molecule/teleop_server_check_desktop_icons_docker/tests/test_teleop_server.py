@@ -86,10 +86,10 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        icon_file = f"{desktop_path}{icon}.desktop"
+        icon_file = f"{desktop_path}{icon}.desktop".replace(' ', '\ ')
         icon_attempts[icon_file] = host.file(icon_file).exists
     for script in scripts:
-        script_file = f"{script_path}{script}.sh"
+        script_file = f"{script_path}{script}.sh".replace(' ', '\ ')
         script_attempts[script_file] = host.file(script_file).exists
     for icon_name, exists in icon_attempts.items():
         if exists:
