@@ -21,7 +21,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
-    desktop_path = f'/home/{hostuser}/.shadow_launcher_app_tactile_telerobot_system/Shadow Icons'
+    desktop_path = f'/home/{hostuser}/.shadow_launcher_app_tactile_telerobot_system/Shadow Icons/'
     script_path = f'/home/{hostuser}/.shadow_launcher_app_tactile_telerobot_system/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
