@@ -17,8 +17,8 @@
   import_playbook: ../../../teleop_deploy.yml
   vars:
     reinstall: true
-    image: public.ecr.aws/shadowrobot/dexterous-hand
-    tag: noetic-v1.0.21
+    image: public.ecr.aws/shadowrobot/ubuntu
+    tag: focal
     nvidia_docker: false
     skip_molecule_task: true
     allow_auto_reboot: true
