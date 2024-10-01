@@ -1,4 +1,25 @@
-# Copyright 2022 Shadow Robot Company Ltd.
+    for icon in icons:
+        icon_file = f"{desktop_path}{icon}.desktop".replace(' ', '\ ')
+        icon_attempts[icon_file] = host.file(icon_file).exists
+    for script in scripts:
+        script_file = f"{script_path}{script}.sh".replace(' ', '\ ')
+        script_attempts[script_file] = host.file(script_file).exists
+    for icon_name, exists in icon_attempts.items():
+        if exists:
+            print(f"Icon {icon_name} exists, check passed")
+        else:
+            print(f"Icon {icon_name} does not exist, check will fail")
+    for script_name, exists in script_attempts.items():
+        if exists:
+            print(f"Script {script_name} exists, check passed")
+        else:
+            print(f"Script {script_name} does not exist, check will fail")
+    save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
+    assert host.file(save_logs_file).exists
+    for icon_name, exists in icon_attempts.items():
+        assert exists
+    for script_name, exists in script_attempts.items():
+        assert exists# Copyright 2022 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -102,9 +123,24 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        assert host.file(f"{desktop_path}{icon}.desktop").exists
-
+        icon_file = f"{desktop_path}{icon}.desktop".replace(' ', '\ ')
+        icon_attempts[icon_file] = host.file(icon_file).exists
     for script in scripts:
-        assert host.file(f"{script_path}{script}.sh").exists
+        script_file = f"{script_path}{script}.sh".replace(' ', '\ ')
+        script_attempts[script_file] = host.file(script_file).exists
+    for icon_name, exists in icon_attempts.items():
+        if exists:
+            print(f"Icon {icon_name} exists, check passed")
+        else:
+            print(f"Icon {icon_name} does not exist, check will fail")
+    for script_name, exists in script_attempts.items():
+        if exists:
+            print(f"Script {script_name} exists, check passed")
+        else:
+            print(f"Script {script_name} does not exist, check will fail")
     save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
+    for icon_name, exists in icon_attempts.items():
+        assert exists
+    for script_name, exists in script_attempts.items():
+        assert exists
