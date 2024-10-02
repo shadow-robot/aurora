@@ -21,9 +21,11 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
-    desktop_path = f'/home/{hostuser}/Desktop/'
+    desktop_path = f'/home/{hostuser}/.shadow_launcher_app_tactile_telerobot_system/Shadow Icons/'
     script_path = f'/home/{hostuser}/.shadow_launcher_app_tactile_telerobot_system/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
+    icon_attempts = {}
+    script_attempts = {}
     icons = (
         'Launch Shadow Right Teleop Simulation',
         'Launch Shadow Left Teleop Simulation',
@@ -77,9 +79,24 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        assert host.file(f"{desktop_path}{icon}.desktop").exists
-
+        icon_file = f"{desktop_path}{icon}.desktop".replace(' ', '\ ')
+        icon_attempts[icon_file] = host.file(icon_file).exists
     for script in scripts:
-        assert host.file(f"{script_path}{script}.sh").exists
+        script_file = f"{script_path}{script}.sh".replace(' ', '\ ')
+        script_attempts[script_file] = host.file(script_file).exists
+    for icon_name, exists in icon_attempts.items():
+        if exists:
+            print(f"Icon {icon_name} exists, check passed")
+        else:
+            print(f"Icon {icon_name} does not exist, check will fail")
+    for script_name, exists in script_attempts.items():
+        if exists:
+            print(f"Script {script_name} exists, check passed")
+        else:
+            print(f"Script {script_name} does not exist, check will fail")
     save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
+    for icon_name, exists in icon_attempts.items():
+        assert exists
+    for script_name, exists in script_attempts.items():
+        assert exists

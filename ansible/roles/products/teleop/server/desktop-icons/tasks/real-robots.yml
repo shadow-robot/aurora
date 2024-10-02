@@ -160,6 +160,7 @@
     path: "{{ desktop_path }}/Local Launch"
     mode: '755'
     state: directory
+  changed_when: false
 
 - name: Install desktop icon for NUC right hand and arm hardware control loop
   import_tasks: nuc-control-loop-icon.yml
