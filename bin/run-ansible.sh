@@ -421,23 +421,31 @@ else
     echo ""
 fi
 
-ansible_executable=~/.local/bin/ansible-playbook
-if [[ ! -f "${ansible_executable}" ]]; then
+# Awful hack to make bionic checks pass (they need to be disabled)
+if [[ $codename == *"bionic"* ]]; then
+    ansible_executable=~/.local/bin/ansible-playbook
+    if [[ ! -f "${ansible_executable}" ]]; then
+        ansible_executable=ansible-playbook
+    fi
+    ansible_basic_executable=~/.local/bin/ansible
+    if [[ ! -f "${ansible_basic_executable}" ]]; then
+        ansible_basic_executable=ansible
+    fi
+    ansible_galaxy_executable=~/.local/bin/ansible-galaxy
+    if [[ ! -f "${ansible_galaxy_executable}" ]]; then
+        ansible_galaxy_executable=ansible-galaxy
+    fi
+ else
     ansible_executable=ansible-playbook
-fi
-ansible_basic_executable=~/.local/bin/ansible
-if [[ ! -f "${ansible_basic_executable}" ]]; then
     ansible_basic_executable=ansible
-fi
-ansible_galaxy_executable=~/.local/bin/ansible-galaxy
-if [[ ! -f "${ansible_galaxy_executable}" ]]; then
     ansible_galaxy_executable=ansible-galaxy
+    # Use conda packages/modules first
+    export PYTHONPATH="${shadow_conda_ws_dir}/lib/python${aurora_python_version}/site-packages"
 fi
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
 install_ansible_collections "${ansible_galaxy_executable}"
-
 
 #configure DHCP before running the actual playbook
 if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then

@@ -21,6 +21,8 @@ miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
 miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-py311_23.5.2-0-Linux-x86_64.sh"
 miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
 packages_download_root="${miniconda_install_root}/aurora_host_packages"
+shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
+aurora_python_version="3.8"
 
 # Some molecule tests install to `/home/...` (no user account)
 if [ -z $USER ]; then
@@ -68,7 +70,7 @@ _fetch_new_files() {
   echo "Fetching ${aws_bucket_dir}..."
   mkdir -p $local_download_dir
 
-  remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
+  remote_packages=$(curl -Ls ${aws_bucket_url} | python -m xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
 
   echo "remote_packages: ${remote_packages}"
 
@@ -116,14 +118,14 @@ create_conda_ws(){
   if [ -d "$shadow_conda_ws_dir" ]; then
     rm -rf $shadow_conda_ws_dir
   fi
-  ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-  python -m pip install yq xq
+  ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=${aurora_python_version} && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
+  ${shadow_conda_ws_dir}/bin/pip install yq xq
 }
 
 fetch_pip_files(){ _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"; }
 fetch_ansible_files() { _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"; }
 
-install_pip_packages() { ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/* ; }
+install_pip_packages() { ANSIBLE_SKIP_CONFLICT_CHECK=1 ${shadow_conda_ws_dir}/bin/pip install ${packages_download_root}/pip_packages/* ; }
 install_ansible_collections() {
   ansible_galaxy_executable=$1
   "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
