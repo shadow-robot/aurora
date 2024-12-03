@@ -231,6 +231,7 @@ class GitCloneTest(BaseUrlTest):
         if os.path.exists('/tmp/sr_test_git_clone_python'):
                 subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'])
         for name, url in self._name_url_dict.items():
+            print(f"Running git clone test on {url}")
             self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python'),
                                                  self.success_function,
                                                  self._after_test_funct,
@@ -279,7 +280,7 @@ class GitCloneTest(BaseUrlTest):
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
             print(f"  Successful attempts: {result_dict['successes']}")
-            print(f"  Failed attempts: {result_dict['failures']}\n")
+            print(f"  Failed attempts: {result_dict['failures']}")
             print(f"  Remote size: {result_dict['remote_size']}")
             if result_dict['remote_size_estimated']:
                 print("  Remote size is estimated")
