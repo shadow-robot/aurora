@@ -19,7 +19,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 #set -x # echo commands run
 
-pip install speedtest-cli
+pip install speedtest-cli distro
 REMOTE_PYTHON_FILE="https://raw.githubusercontent.com/shadow-robot/aurora/refs/heads/F%23SWC-16_customer_deployment_checks/bin/sr_deployment_test.py"
 LOCAL_PYTHON_FILE="/tmp/sr_deployment_test.py"
 # wget $REMOTE_PYTHON_FILE -O $LOCAL_PYTHON_FILE
