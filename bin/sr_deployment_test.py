@@ -292,7 +292,7 @@ class SpeedTest:
     
     @staticmethod
     def _run_tests():
-        test = speedtest.Speedtest()
+        test = speedtest.Speedtest(secure=True)
         servernames = []
         test.get_servers(servernames)
         data = test.get_config()
