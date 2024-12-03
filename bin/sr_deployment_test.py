@@ -347,6 +347,7 @@ class DeploymentTest:
         self._print_results()
 
     def _print_results(self):
+        print('\n\nResults:\n')  # newlines
         if 'ping' in self.tests_to_run:
             self._ping_tests.print_results(self.results['ping'])
         if 'wget' in self.tests_to_run:
