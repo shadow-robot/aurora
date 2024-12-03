@@ -24,6 +24,8 @@ import re
 from multiprocessing.pool import ThreadPool
 from multiprocessing.context import TimeoutError
 import speedtest
+import platform
+import distro
 
 # class PoolTimeout:
 #     def __init__(self):
@@ -324,8 +326,32 @@ class SpeedTest:
         print(f"  Service provider: {results['service']}")
         print(f"  IP address: {results['ip']}\n")
 
-    def get_results(self):
-        return self.results
+
+class GetSystemInfo:
+    
+    def _run_tests(self):
+        results = {
+            'system': platform.system(),
+            'release': platform.release(),
+            'version': platform.version(),
+            'machine': platform.machine(),
+            'processor': platform.processor(),
+            'architecture': platform.architecture(),
+            'distro': "N/A (can't detect linux)"}
+        if results['system'] == 'Linux':
+            results['distro'] = ' '.join(distro.linux_distribution())
+        return results
+
+    @staticmethod
+    def print_results(results):
+        print("System information:")
+        print(f"  Linux distribution: {results['distro']}")
+        print(f"  System: {results['system']}")
+        print(f"  Release: {results['release']}")
+        print(f"  Version: {results['version']}")
+        print(f"  Machine: {results['machine']}")
+        print(f"  Processor: {results['processor']}")
+        print(f"  Architecture: {results['architecture']}\n")
 
 
 class DeploymentTest:
@@ -341,6 +367,7 @@ class DeploymentTest:
         self._wget_tests = WgetTest(self.WGET_TEST_URLS)
         self._speed_test = SpeedTest()
         self._git_clone_test = GitCloneTest(self.GIT_CLONE_TEST_URLS)
+        self._system_info = GetSystemInfo()
 
         self.results = {}
         self._run_all_tests()
@@ -348,6 +375,7 @@ class DeploymentTest:
 
     def _print_results(self):
         print('\n\nResults:\n')  # newlines
+        self._system_info.print_results(self.results['system_info'])
         if 'ping' in self.tests_to_run:
             self._ping_tests.print_results(self.results['ping'])
         if 'wget' in self.tests_to_run:
@@ -358,6 +386,7 @@ class DeploymentTest:
             self._git_clone_test.print_results(self.results['git_clone'])
         
     def _run_all_tests(self):
+        self.results['system_info'] = self._system_info._run_tests()
         if 'ping' in self.tests_to_run:
             self.results['ping'] = self._ping_tests._run_tests()
         if 'wget' in self.tests_to_run:
@@ -368,7 +397,8 @@ class DeploymentTest:
             self.results['git_clone'] = self._git_clone_test._run_tests()
 
 
+
 x = DeploymentTest()
-a=1
+# a=1
 
 
