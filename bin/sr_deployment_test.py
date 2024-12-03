@@ -120,7 +120,7 @@ class WgetTest(BaseUrlTest):
 
     def print_results(self, results):
         for name in self._name_url_dict.keys():
-            print(f"Results for {name}:")
+            print(f"Wget test results for {name}:")
             result_dict = results[name]
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
@@ -130,7 +130,7 @@ class WgetTest(BaseUrlTest):
 
 class PingTest(BaseUrlTest):
     def __init__(self, name_url_dict):
-        self._num_retries = 2
+        self._num_retries = 3
         super().__init__(name_url_dict)
 
     @staticmethod
@@ -184,7 +184,7 @@ class PingTest(BaseUrlTest):
     def print_results(self, results):
         for name in self._name_url_dict.keys():
             result_dict = results[name]
-            print(f"Results for {name}:")
+            print(f"Ping test results for {name}:")
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Min time: {result_dict['min_time_ms']} ms")
             print(f"  Max time: {result_dict['max_time_ms']} ms")
@@ -275,7 +275,7 @@ class GitCloneTest(BaseUrlTest):
 
     def print_results(self, results):
         for name in self._name_url_dict.keys():
-            print(f"Git clone results for {name}:")
+            print(f"Git clone test results for {name}:")
             result_dict = results[name]
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
