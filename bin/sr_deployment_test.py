@@ -198,7 +198,7 @@ class BaseUrlTest:
 
 class WgetTest(BaseUrlTest):
     def __init__(self, name_url_dict):
-        self._timeout = 15
+        self._timeout = 20
         self._temp_file_name = '/tmp/sr_test_wget_python'
         self._num_retries = 3
         super().__init__(name_url_dict)
@@ -575,11 +575,11 @@ class GetSystemInfo:
     def print_results(results, extended_info=True):
         print("System information:")
         if results['os_version_supported'] == 'yes':
-            out_color = bcolors.OKGREEN
+            distro_color = bcolors.OKGREEN
         elif results['os_version_supported'] == 'warning':
-            out_color = bcolors.WARNING
+            distro_color = bcolors.WARNING
         else:
-            out_color = bcolors.FAIL
+            distro_color = bcolors.FAIL
         if results['acceptable_processor'] == 'yes':
             proc_color = bcolors.OKGREEN
         else:
@@ -588,19 +588,17 @@ class GetSystemInfo:
             uptime_color = bcolors.OKGREEN
         else:
             uptime_color = bcolors.WARNING
-        print(f"{out_color}", end='')
-        print(f"  Linux distribution: {results['distro']}")
+        
+        print(f"{distro_color}  Linux distribution: {results['distro']}{bcolors.ENDC}")
         print(f"  Release: {results['release']}")
         print(f"{proc_color}  Processor: {results['processor']}{bcolors.ENDC}")
         uptime_days = round((results['uptime'] / (60 * 60 * 24)), 2)
         print(f"{uptime_color}  Uptime: {results['uptime']} seconds ({uptime_days} days){bcolors.ENDC}")
         if extended_info:
-            print(f"{out_color}", end='')
             print(f"  System: {results['system']}")
             print(f"  Version: {results['version']}")
             print(f"  Machine: {results['machine']}")
             print(f"  Architecture: {results['architecture']}")
-            print(f"{bcolors.ENDC}", end='')
         print('')
 
 
