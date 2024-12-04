@@ -260,14 +260,18 @@ class WgetTest(BaseUrlTest):
             print(f"  Failed attempts: {result_dict['failures']}")
             print(bcolors.ENDC, end='')
             if extended_info:
-                print(f"{out_color}", end='')
-                if out_color == bcolors.FAIL:
+                if result_dict['all_succeeded']:
+                    out_color = bcolors.OKGREEN
+                elif result_dict['successes'] > 0:
                     out_color = bcolors.WARNING
-                print(f"{out_color}", end='')
-                print(f"  Successful attempts: {result_dict['successes']}\n")
+                else:
+                    out_color = bcolors.FAIL
+                print(f"{out_color}  Successful attempts: {result_dict['successes']}{bcolors.ENDC}\n")
                 for k, v in result_dict['results'].items():
-                    print(f"Wget test attempt {k+1} output: \n{v.stdout.decode('utf-8')}\n")
-                print(f"{bcolors.ENDC}", end='')
+                    out_color = bcolors.WARNING
+                    if v.returncode == 0:
+                        out_color = bcolors.OKGREEN
+                    print(f"{out_color}Wget test attempt {k+1} output: \n{v.stdout.decode('utf-8')}{bcolors.ENDC}\n")
             print('')
 
 
@@ -361,6 +365,7 @@ class GitCloneTest(BaseUrlTest):
         super().__init__(name_url_dict)
         self._name_url_dict = name_url_dict
         remote_size = self._get_remote_repo_size()
+        self._timeout = 30
         self._remote_size_real = True
         if remote_size == 'Error':
             remote_size = '88M'
@@ -393,12 +398,14 @@ class GitCloneTest(BaseUrlTest):
         if os.path.exists('/tmp/sr_test_git_clone_python'):
                 subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'])
         for name, url in self._name_url_dict.items():
-            message_str = f"Running git clone test on {url}"
+            message_str = f"Running git clone test on {url} with a timeout of {self._timeout}s"
             self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python'),
                                                  self.success_function,
                                                  message_str,
                                                  self._after_test_funct,
-                                                 num_retries=2)
+                                                 num_retries=2,
+                                                 timeout=self._timeout,
+                                                 thread_interp_prog=True)
         return self.results
 
     @staticmethod
@@ -514,8 +521,16 @@ class GetSystemInfo:
     ACCEPTABLE_OS_VERSION = '20.04'
     WANRING_OS_VERSION = '22.04'
     ACCEPTABLE_CPU_STRING = 'Intel'
+    ACCEPTABLE_UPTIME_HOURS = 24
+    ACCEPTABLE_UPTIME_SECONDS = ACCEPTABLE_UPTIME_HOURS * 60 * 60
     def __init__(self):
         self.results = {}
+
+    @staticmethod
+    def get_uptime():
+        with open('/proc/uptime', 'r') as f:
+            uptime_seconds = float(f.readline().split()[0])
+        return uptime_seconds
 
     @staticmethod
     def get_processor_name():
@@ -538,6 +553,7 @@ class GetSystemInfo:
             'system': platform.system(),
             'release': platform.release(),
             'version': platform.version(),
+            'uptime': self.get_uptime(),
             'machine': platform.machine(),
             'processor': self.get_processor_name(),
             'architecture': platform.architecture(),
@@ -568,10 +584,16 @@ class GetSystemInfo:
             proc_color = bcolors.OKGREEN
         else:
             proc_color = bcolors.WARNING
+        if results['uptime'] < GetSystemInfo.ACCEPTABLE_UPTIME_SECONDS:
+            uptime_color = bcolors.OKGREEN
+        else:
+            uptime_color = bcolors.WARNING
         print(f"{out_color}", end='')
         print(f"  Linux distribution: {results['distro']}")
         print(f"  Release: {results['release']}")
         print(f"{proc_color}  Processor: {results['processor']}{bcolors.ENDC}")
+        uptime_days = round((results['uptime'] / (60 * 60 * 24)), 2)
+        print(f"{uptime_color}  Uptime: {results['uptime']} seconds ({uptime_days} days){bcolors.ENDC}")
         if extended_info:
             print(f"{out_color}", end='')
             print(f"  System: {results['system']}")
@@ -595,6 +617,8 @@ class DeploymentTest:
             'git_clone': GitCloneTest(self.GIT_CLONE_TEST_URLS)}
         
         # tests_to_run = ['system_info', 'speed_test']# 'ping']#, 'ping', 'wget']
+        # tests_to_run = ['wget']
+        # tests_to_run = ['git_clone', 'system_info']
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
