@@ -198,7 +198,7 @@ class BaseUrlTest:
 
 class WgetTest(BaseUrlTest):
     def __init__(self, name_url_dict):
-        self._timeout = 20
+        self._timeout = 30
         self._temp_file_name = '/tmp/sr_test_wget_python'
         self._num_retries = 3
         super().__init__(name_url_dict)
