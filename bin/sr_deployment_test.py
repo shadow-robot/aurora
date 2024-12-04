@@ -26,21 +26,107 @@ from multiprocessing.context import TimeoutError
 import speedtest
 import platform
 import distro
+import time
+
+
+class subprocessTimeout:
+    def __init__(self):
+        pass
+
+    def run(self, timeout, command):
+        x = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        try:
+            y = x.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired as e:
+            x.kill()
+            y = x.communicate()
+            return_code = -5
+        else:
+            return_code = x.returncode
+        return subprocess.CompletedProcess(args=command, returncode=return_code, stdout=y[0])
+            
 
 # class PoolTimeout:
 #     def __init__(self):
 #         pass
 
 #     def run(self, timeout, funct, args):
-#         pool = ThreadPool(processes=1)
+#         def mute():
+#             sys.stdout = open(os.devnull, 'w')
+#             sys.stderr = open(os.devnull, 'w')
+
+#         pool = ThreadPool(processes=1, initializer=mute)
 #         async_result = pool.apply_async(funct, args)
 #         try:
 #             return_val = async_result.get(timeout)  # get the return value from your function.
 #         except TimeoutError as e:
 #             print(f"Function timed out after {timeout} seconds")
-#             return_val = 'timeout'
-#         return return_val
+#             return_val = -5
+#         return_struct = subprocess.CompletedProcess(args=args[0], returncode=return_val)
+#         return return_struct
 
+# class PoolTimeout:
+#     def __init__(self):
+#         pass
+
+#     def run(self, timeout, funct, args):
+#         def mute():
+#             sys.stdout = open(os.devnull, 'w')
+#             sys.stderr = open(os.devnull, 'w')
+
+#         pool = ThreadPool(processes=1, initializer=mute)
+#         async_result = pool.apply_async(funct, args)
+#         try:
+#             return_val = async_result.get(timeout)  # get the return value from your function.
+#         except TimeoutError as e:
+#             print(f"Function timed out after {timeout} seconds")
+#             return_val = -5
+#         return_struct = subprocess.CompletedProcess(args=args[0], returncode=return_val)
+#         return return_struct
+
+
+class ProgressBar:
+    def __init__(self):
+        self._last_start = 0
+        self._progress_x = 0
+
+    def start_progress(self, title):
+        sys.stdout.write(title + ": [" + "-"*40 + "]" + chr(8)*41)
+        sys.stdout.flush()
+        self._last_start = 0
+
+    def progress(self, x, sleep_time=0.01):
+        for i in range(self._last_start, x):
+            self._update_progress(i)
+            time.sleep(sleep_time)
+        self._last_start = x
+
+    def _update_progress(self, x):
+        x = int(x * 40 // 100)
+        sys.stdout.write("#" * (x - self._last_start))
+        sys.stdout.flush()
+        self._last_start = x
+
+    def end_progress(self):
+        sys.stdout.write("#" * (40 - self._last_start) + "]\n")
+        sys.stdout.flush()
+
+    def thread_interpolate_progress(self, x, duration):
+        diff = x - self._last_start
+        time_per_step = duration / diff
+        def thread_target():
+            self.progress(x, time_per_step)
+        
+        thread = threading.Thread(target=thread_target)
+        return thread
+
+    def delete_last_n_lines(self, n):
+        "Deletes the last line in the STDOUT"
+        for _ in range(n):
+            # cursor up one line
+            sys.stdout.write('\x1b[1A')
+            # delete last line
+            sys.stdout.write('\x1b[2K')
 
 
 class BaseUrlTest:
@@ -48,17 +134,32 @@ class BaseUrlTest:
         self._name_url_dict = name_url_dict
         self.results = {}
 
-    def _loop_test(self, funct, args, success_function, after_test_funct=None, num_retries=5, timeout=5):
+    def _loop_test(self, funct, args, success_function, message_str, after_test_funct=None, num_retries=5, timeout=5, thread_interp_prog=False):
         results = {}
+        durs = []
         successes = 0
+        print(message_str)
+        p = ProgressBar()
+        p.start_progress(f"Running {num_retries} tests")
         for i in range(num_retries):
-            print(f"Attempt {i+1}..")
+            now = time.monotonic()
+            if thread_interp_prog:
+                thread = p.thread_interpolate_progress(int((i+1) * 100 / num_retries), timeout)
+                thread.start()
             results[i] = funct(*args)
             if success_function(results[i]):
                 successes += 1
             if after_test_funct:
                 after_test_funct()
+            if not thread_interp_prog:
+                p.progress(int((i+1) * 100 / num_retries))
+            else:
+                thread.join()
             time.sleep(1)
+            durs.append(time.monotonic() - now)
+        p.end_progress()
+        p.delete_last_n_lines(2)
+        print(message_str.replace("Running", "Finished"))
         failures = num_retries - successes
         return self._generate_result(num_retries, successes, failures, results)
 
@@ -75,12 +176,13 @@ class BaseUrlTest:
 
 class WgetTest(BaseUrlTest):
     def __init__(self, name_url_dict):
-        self._timeout = 5
+        self._timeout = 10
         self._temp_file_name = '/tmp/sr_test_wget_python'
         self._num_retries = 3
         super().__init__(name_url_dict)
 
     def _run_tests(self):
+        total_urls = len(self._name_url_dict)
         for name, url in self._name_url_dict.items():
             args = (url, self._temp_file_name, self._timeout)
             
@@ -89,23 +191,24 @@ class WgetTest(BaseUrlTest):
                     os.remove(self._temp_file_name)
 
             _after_test_funct()
-            print(f"Running {self._num_retries} wget test(s) on {url} with a timeout of {self._timeout}s each test")
-            self.results[name] = self._loop_test(self._wget, args, self.success_function, _after_test_funct, num_retries=self._num_retries)
+            this_url_index = list(self._name_url_dict.keys()).index(name) + 1
+            message_str = f"Running {self._num_retries} wget test(s) on {url} with a timeout of {self._timeout}s each test ({this_url_index}/{total_urls})"
+            self.results[name] = self._loop_test(self._wget, args, self.success_function, message_str, _after_test_funct, timeout=self._timeout, num_retries=self._num_retries, thread_interp_prog=True)
         return self.results
 
     @staticmethod
     def success_function(result):
-        temp_file_path = result.args[3]
+        temp_file_path = result.args[2]
+        if not os.path.exists(temp_file_path):
+            return False
         if os.path.getsize(temp_file_path) > 0:
             return True
-        return
+        return False
 
     @staticmethod
     def _wget(url, output_path, timeout=None):
         command = ['wget', '-O', f'{output_path}', url]
-        if timeout:
-            command.insert(1, '--timeout=' + str(timeout))
-        return subprocess.run(command, capture_output=True)        
+        return subprocessTimeout().run(timeout, command)
 
     @staticmethod
     def _generate_result(attempts, successes, failures, results):
@@ -128,11 +231,14 @@ class WgetTest(BaseUrlTest):
             print(f"  Total attempts: {result_dict['attempts']}")
             print(f"  Successful attempts: {result_dict['successes']}")
             print(f"  Failed attempts: {result_dict['failures']}\n")
+            for k, v in result_dict['results'].items():
+                print(f"Wget test attempt {k+1} output: \n{v.stdout.decode('utf-8')}\n")
 
 
 class PingTest(BaseUrlTest):
     def __init__(self, name_url_dict):
         self._num_retries = 3
+        self._timeout = 5
         super().__init__(name_url_dict)
 
     @staticmethod
@@ -142,10 +248,12 @@ class PingTest(BaseUrlTest):
         return False
 
     def _run_tests(self):
+        total_urls = len(self._name_url_dict)
         for name, url in self._name_url_dict.items():
-            args = (url,)
-            print(f"Running {self._num_retries} ping test(s) on {url}")
-            self.results[name] = self._loop_test(self._ping, args, self.success_function, num_retries=self._num_retries)
+            args = (url,self._timeout)
+            this_url_index = list(self._name_url_dict.keys()).index(name) + 1
+            message_str = f"Running {self._num_retries} ping test(s) on {url} ({this_url_index}/{total_urls})"
+            self.results[name] = self._loop_test(self._ping, args, self.success_function, message_str, timeout=self._timeout, num_retries=self._num_retries, thread_interp_prog=True)
         return self.results
 
     @staticmethod
@@ -154,8 +262,9 @@ class PingTest(BaseUrlTest):
         return re.findall(r'time=\d+\.\d+ ms', result.stdout.decode('utf-8'))
 
     @staticmethod
-    def _ping(url, num_pings=4):
-        return subprocess.run(['ping', '-c', str(num_pings), url], capture_output=True)
+    def _ping(url, timeout, num_pings=4):
+        command = ['ping', '-c', str(num_pings), url]
+        return subprocessTimeout().run(timeout, command)
 
     def _generate_result(self, repeats, successes, failures, results):
         all_succeeded = False
@@ -209,6 +318,7 @@ class GitCloneTest(BaseUrlTest):
         self._remote_size = remote_size.strip('\n')
 
     def _get_remote_repo_size(self):
+        return '79M'
         command = '''
                     curl \
                     -H "Accept: application/vnd.github.v3+json" \
@@ -233,9 +343,10 @@ class GitCloneTest(BaseUrlTest):
         if os.path.exists('/tmp/sr_test_git_clone_python'):
                 subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'])
         for name, url in self._name_url_dict.items():
-            print(f"Running git clone test on {url}")
+            message_str = f"Running git clone test on {url}"
             self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python'),
                                                  self.success_function,
+                                                 message_str,
                                                  self._after_test_funct,
                                                  num_retries=2)
         return self.results
@@ -359,10 +470,18 @@ class DeploymentTest:
     WGET_TEST_URLS = {'libnvidia_container_gpg_key': 'https://nvidia.github.io/libnvidia-container/gpgkey'}
     GIT_CLONE_TEST_URLS = {'sr_interface': 'http://github.com/shadow-robot/sr_interface'}
     def __init__(self, tests_to_run=None):
+        self._test_classes_dict = {
+            'system_info': GetSystemInfo(),
+            'ping': PingTest(self.PING_TEST_URLS),
+            'wget': WgetTest(self.WGET_TEST_URLS),
+            'speed_test': SpeedTest(),
+            'git_clone': GitCloneTest(self.GIT_CLONE_TEST_URLS)}
+        
+        tests_to_run = ['system_info', 'ping', 'wget']
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
-            self.tests_to_run = ['ping', 'wget', 'speed_test', 'git_clone']
+            self.tests_to_run = self._test_classes_dict.keys()
         self._ping_tests = PingTest(self.PING_TEST_URLS)
         self._wget_tests = WgetTest(self.WGET_TEST_URLS)
         self._speed_test = SpeedTest()
@@ -371,7 +490,7 @@ class DeploymentTest:
 
         self.results = {}
         self._run_all_tests()
-        self._print_results()
+        # self._print_results()
 
     def _print_results(self):
         print('\n\nResults:\n')  # newlines
@@ -386,19 +505,55 @@ class DeploymentTest:
             self._git_clone_test.print_results(self.results['git_clone'])
         
     def _run_all_tests(self):
-        self.results['system_info'] = self._system_info._run_tests()
-        if 'ping' in self.tests_to_run:
-            self.results['ping'] = self._ping_tests._run_tests()
-        if 'wget' in self.tests_to_run:
-            self.results['wget'] = self._wget_tests._run_tests()
-        if 'speed_test' in self.tests_to_run:
-            self.results['speed_test'] = self._speed_test._run_tests()
-        if 'git_clone' in self.tests_to_run:
-            self.results['git_clone'] = self._git_clone_test._run_tests()
+        for test_name, test_class in self._test_classes_dict.items():
+            if test_name in self.tests_to_run:
+                self.results[test_name] = test_class._run_tests()
+                test_class.print_results(self.results[test_name])
 
 
+# p = ProgressBar()
+# p.start_progress("Running tests")
+# time.sleep(0.5)
+# p.progress(30)
+# time.sleep(0.5)
+# p.progress(60)
+# time.sleep(0.5)
+# p.progress(100)
 
 x = DeploymentTest()
 # a=1
 
+# p = ProgressBar()
+# p.start_progress("Running tests")
+# p.progress(30)
 
+# x = 60
+# time_per_step = 0.15
+# def thread_target():
+#     p.progress(x, time_per_step)
+
+# # p.progress(80)
+# thread = threading.Thread(target=thread_target)
+# thread.start()
+
+# time.sleep(2)
+# thread.join()
+# p.end_progress()
+# a=1
+# # print ("\033[A                             \033[A")
+# # print ("\033[A                             \033[A")
+# # print ("\033[A                             \033[A")
+# # print ("\033[A                             \033[A")
+# # print ("\033[A                             \033[A")
+# # for i in range(5):
+# #     print("\r", end="")
+# #     print("")
+
+
+
+# # nvidia tests
+# # driver version
+# # spit into file
+# # recent oneliners?
+# # uptime
+# # host python packages
