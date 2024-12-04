@@ -198,7 +198,7 @@ class BaseUrlTest:
 
 class WgetTest(BaseUrlTest):
     def __init__(self, name_url_dict):
-        self._timeout = 30
+        self._timeout = 45
         self._temp_file_name = '/tmp/sr_test_wget_python'
         self._num_retries = 3
         super().__init__(name_url_dict)
@@ -320,8 +320,8 @@ class PingTest(BaseUrlTest):
                 numerical_times[k][i] = float(time_string.split('=')[1].split(' ')[0])
         min_time = min([time for time_list in numerical_times.values() for time in time_list.values()])
         max_time = max([time for time_list in numerical_times.values() for time in time_list.values()])
-        avg_time = sum([time for time_list in numerical_times.values() for time in time_list.values()]) / (repeats * len(numerical_times))
-        jitter = max_time - min_time
+        avg_time = round(sum([time for time_list in numerical_times.values() for time in time_list.values()]) / (repeats * len(numerical_times)), 2)
+        jitter = round((max_time - min_time), 2)
         return {
             'all_succeeded': all_succeeded,
             'min_time_ms': min_time,
