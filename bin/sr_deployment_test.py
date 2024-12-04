@@ -477,7 +477,7 @@ class DeploymentTest:
             'speed_test': SpeedTest(),
             'git_clone': GitCloneTest(self.GIT_CLONE_TEST_URLS)}
         
-        tests_to_run = ['system_info', 'ping', 'wget']
+        # tests_to_run = ['system_info', 'ping', 'wget']
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
