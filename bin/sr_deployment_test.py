@@ -27,6 +27,19 @@ import speedtest
 import platform
 import distro
 import time
+import inspect
+
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 
 class subprocessTimeout:
@@ -95,10 +108,16 @@ class ProgressBar:
         sys.stdout.flush()
         self._last_start = 0
 
-    def progress(self, x, sleep_time=0.01):
+    def progress(self, x, sleep_time=0.01, event=None):
         for i in range(self._last_start, x):
             self._update_progress(i)
             time.sleep(sleep_time)
+            if event:
+                if event.is_set():
+                    for j in range(i, x):
+                        self._update_progress(j)
+                        time.sleep(0.01)
+                    break
         self._last_start = x
 
     def _update_progress(self, x):
@@ -114,11 +133,12 @@ class ProgressBar:
     def thread_interpolate_progress(self, x, duration):
         diff = x - self._last_start
         time_per_step = duration / diff
+        event = threading.Event()
         def thread_target():
-            self.progress(x, time_per_step)
+            self.progress(x, time_per_step, event)
         
         thread = threading.Thread(target=thread_target)
-        return thread
+        return thread, event
 
     def delete_last_n_lines(self, n):
         "Deletes the last line in the STDOUT"
@@ -143,8 +163,9 @@ class BaseUrlTest:
         p.start_progress(f"Running {num_retries} tests")
         for i in range(num_retries):
             now = time.monotonic()
+            progress_bar_goal = int((i+1) * 100 / num_retries)
             if thread_interp_prog:
-                thread = p.thread_interpolate_progress(int((i+1) * 100 / num_retries), timeout)
+                thread, event = p.thread_interpolate_progress(progress_bar_goal, timeout)
                 thread.start()
             results[i] = funct(*args)
             if success_function(results[i]):
@@ -152,8 +173,9 @@ class BaseUrlTest:
             if after_test_funct:
                 after_test_funct()
             if not thread_interp_prog:
-                p.progress(int((i+1) * 100 / num_retries))
+                p.progress(progress_bar_goal)
             else:
+                event.set()
                 thread.join()
             time.sleep(1)
             durs.append(time.monotonic() - now)
@@ -176,7 +198,7 @@ class BaseUrlTest:
 
 class WgetTest(BaseUrlTest):
     def __init__(self, name_url_dict):
-        self._timeout = 10
+        self._timeout = 15
         self._temp_file_name = '/tmp/sr_test_wget_python'
         self._num_retries = 3
         super().__init__(name_url_dict)
@@ -223,22 +245,36 @@ class WgetTest(BaseUrlTest):
             'results': results
         }
 
-    def print_results(self, results):
+    def print_results(self, results, extended_info=True):
         for name in self._name_url_dict.keys():
-            print(f"Wget test results for {name}:")
             result_dict = results[name]
+            if result_dict['all_succeeded']:
+                out_color = bcolors.OKGREEN
+            else:
+                out_color = bcolors.FAIL
+            print(f"Wget test results for {name}:")
+            
+            print(out_color, end='')
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
-            print(f"  Successful attempts: {result_dict['successes']}")
-            print(f"  Failed attempts: {result_dict['failures']}\n")
-            for k, v in result_dict['results'].items():
-                print(f"Wget test attempt {k+1} output: \n{v.stdout.decode('utf-8')}\n")
+            print(f"  Failed attempts: {result_dict['failures']}")
+            print(bcolors.ENDC, end='')
+            if extended_info:
+                print(f"{out_color}", end='')
+                if out_color == bcolors.FAIL:
+                    out_color = bcolors.WARNING
+                print(f"{out_color}", end='')
+                print(f"  Successful attempts: {result_dict['successes']}\n")
+                for k, v in result_dict['results'].items():
+                    print(f"Wget test attempt {k+1} output: \n{v.stdout.decode('utf-8')}\n")
+                print(f"{bcolors.ENDC}", end='')
+            print('')
 
 
 class PingTest(BaseUrlTest):
     def __init__(self, name_url_dict):
         self._num_retries = 3
-        self._timeout = 5
+        self._timeout = 10
         super().__init__(name_url_dict)
 
     @staticmethod
@@ -252,7 +288,7 @@ class PingTest(BaseUrlTest):
         for name, url in self._name_url_dict.items():
             args = (url,self._timeout)
             this_url_index = list(self._name_url_dict.keys()).index(name) + 1
-            message_str = f"Running {self._num_retries} ping test(s) on {url} ({this_url_index}/{total_urls})"
+            message_str = f"Running {self._num_retries} ping test(s) on {url} with a timeout of {self._timeout}s each ({this_url_index}/{total_urls})"
             self.results[name] = self._loop_test(self._ping, args, self.success_function, message_str, timeout=self._timeout, num_retries=self._num_retries, thread_interp_prog=True)
         return self.results
 
@@ -292,18 +328,32 @@ class PingTest(BaseUrlTest):
             'successes': successes,
             'failures': failures}
 
-    def print_results(self, results):
+    def print_results(self, results, extended_info=True):
         for name in self._name_url_dict.keys():
             result_dict = results[name]
             print(f"Ping test results for {name}:")
+            if result_dict['all_succeeded']:
+                out_color = bcolors.OKGREEN
+            else:
+                out_color = bcolors.FAIL
+            print(f"{out_color}", end='')
             print(f"  All succeeded: {result_dict['all_succeeded']}")
-            print(f"  Min time: {result_dict['min_time_ms']} ms")
-            print(f"  Max time: {result_dict['max_time_ms']} ms")
-            print(f"  Avg time: {result_dict['avg_time_ms']} ms")
-            print(f"  Jitter: {result_dict['jitter_ms']} ms")
             print(f"  Total attempts: {result_dict['attempts']}")
-            print(f"  Successful attempts: {result_dict['successes']}")
-            print(f"  Failed attempts: {result_dict['failures']}\n")
+            print(f"  Failed attempts: {result_dict['failures']}")
+            print(f"{bcolors.ENDC}", end='')
+            if extended_info:
+                if out_color == bcolors.FAIL:
+                    out_color = bcolors.WARNING
+                print(f"{out_color}", end='')
+                print(f"  Successful attempts: {result_dict['successes']}")
+                print(f"  Failed attempts: {result_dict['failures']}")
+                print(f"  Min time: {result_dict['min_time_ms']} ms")
+                print(f"  Max time: {result_dict['max_time_ms']} ms")
+                print(f"  Avg time: {result_dict['avg_time_ms']} ms")
+                print(f"  Jitter: {result_dict['jitter_ms']} ms")
+                print(f"{bcolors.ENDC}", end='')
+            print('')
+
 
 
 class GitCloneTest(BaseUrlTest):
@@ -386,20 +436,29 @@ class GitCloneTest(BaseUrlTest):
             'local_sizes': [result.size for result in results.values()]
         }
 
-    def print_results(self, results):
+    def print_results(self, results, extended_info=True):
         for name in self._name_url_dict.keys():
             print(f"Git clone test results for {name}:")
             result_dict = results[name]
+            if result_dict['all_succeeded']:
+                out_color = bcolors.OKGREEN
+            else:
+                out_color = bcolors.FAIL
+            print(f"{out_color}", end='')
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
-            print(f"  Successful attempts: {result_dict['successes']}")
             print(f"  Failed attempts: {result_dict['failures']}")
-            print(f"  Remote size: {result_dict['remote_size']}")
-            if result_dict['remote_size_estimated']:
-                print("  Remote size is estimated")
-            else:
-                print("  Remote size is real")
-            print(f"  Local sizes: {result_dict['local_sizes']}\n")
+            print(f"{bcolors.ENDC}", end='')
+            if extended_info:
+                print(f"{out_color}", end='')
+                print(f"  Remote size: {result_dict['remote_size']}")
+                if result_dict['remote_size_estimated']:
+                    print("  Remote size is estimated")
+                else:
+                    print("  Remote size is real")
+                print(f"  Local sizes: {result_dict['local_sizes']}\n")
+                print(f"{bcolors.ENDC}", end='')
+
 
 class SpeedTest:
     
@@ -429,17 +488,21 @@ class SpeedTest:
             'ip': ip_data
         }
 
-    def print_results(self, results):
+    def print_results(self, results, extended_info=True):
         print("Results for general internet speed test:")
         print(f"  Ping: {results['ping']} ms")
         print(f"  Upload: {results['upload']} Mbps")
         print(f"  Download: {results['download']} Mbps")
-        print(f"  Service provider: {results['service']}")
-        print(f"  IP address: {results['ip']}\n")
+        if extended_info:
+            print(f"  Service provider: {results['service']}")
+            print(f"  IP address: {results['ip']}")
+        print('')
 
 
 class GetSystemInfo:
-    
+    def __init__(self):
+        self.results = {}
+
     def _run_tests(self):
         results = {
             'system': platform.system(),
@@ -477,7 +540,7 @@ class DeploymentTest:
             'speed_test': SpeedTest(),
             'git_clone': GitCloneTest(self.GIT_CLONE_TEST_URLS)}
         
-        # tests_to_run = ['system_info', 'ping', 'wget']
+        # tests_to_run = ['system_info', 'ping']#, 'ping', 'wget']
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
@@ -509,6 +572,22 @@ class DeploymentTest:
             if test_name in self.tests_to_run:
                 self.results[test_name] = test_class._run_tests()
                 test_class.print_results(self.results[test_name])
+        print('\n\nResults summary:\n')  # newlines
+        for test_name, test_class in self._test_classes_dict.items():
+            if test_name in self.tests_to_run:
+                # if 'all_succeeded' in self.results[test_name]:
+                #     if test_class.results['all_succeeded']:
+                #         out_color = bcolors.OKGREEN
+                #     else:
+                #         out_color = bcolors.FAIL
+                #     print(f"{out_color}", end='')
+                if 'extended_info' in str(inspect.signature(test_class.print_results)):
+                    test_class.print_results(self.results[test_name], extended_info=False)
+                else:
+                    test_class.print_results(self.results[test_name])
+                print(f"{bcolors.ENDC}", end='')
+
+                
 
 
 # p = ProgressBar()
