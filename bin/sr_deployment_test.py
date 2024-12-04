@@ -461,9 +461,12 @@ class GitCloneTest(BaseUrlTest):
 
 
 class SpeedTest:
+    def __init__(self):
+        self._acceptable_download_speed = 20  #Mbps
+        self._acceptable_upload_speed = 10  #Mbps
+        self._acceptable_ping = 50  #ms
     
-    @staticmethod
-    def _run_tests():
+    def _run_tests(self):
         test = speedtest.Speedtest(secure=True)
         servernames = []
         test.get_servers(servernames)
@@ -478,21 +481,29 @@ class SpeedTest:
         downloading = round(test.download() / (1024 * 1024), 2)
 
         ping = test.results.ping
-        service_data
-        ip_data
-        return {
+        results = {
             'ping': ping,
             'upload': uploading,
             'download': downloading,
             'service': service_data,
             'ip': ip_data
         }
+        return results
 
     def print_results(self, results, extended_info=True):
         print("Results for general internet speed test:")
-        print(f"  Ping: {results['ping']} ms")
-        print(f"  Upload: {results['upload']} Mbps")
-        print(f"  Download: {results['download']} Mbps")
+        up_color = bcolors.WARNING
+        down_color = bcolors.OKGREEN
+        ping_color = bcolors.WARNING
+        if results['upload'] > self._acceptable_upload_speed:
+            up_color = bcolors.OKGREEN
+        if results['download'] > self._acceptable_download_speed:
+            down_color = bcolors.OKGREEN
+        if results['ping'] < self._acceptable_ping:
+            ping_color = bcolors.OKGREEN
+        print(f"{ping_color}  Ping: {results['ping']} ms{bcolors.ENDC}")
+        print(f"{up_color}  Upload: {results['upload']} Mbps{bcolors.ENDC}")
+        print(f"{down_color}  Download: {results['download']} Mbps{bcolors.ENDC}")
         if extended_info:
             print(f"  Service provider: {results['service']}")
             print(f"  IP address: {results['ip']}")
@@ -500,8 +511,27 @@ class SpeedTest:
 
 
 class GetSystemInfo:
+    ACCEPTABLE_OS_VERSION = '20.04'
+    WANRING_OS_VERSION = '22.04'
+    ACCEPTABLE_CPU_STRING = 'Intel'
     def __init__(self):
         self.results = {}
+
+    @staticmethod
+    def get_processor_name():
+        if platform.system() == "Windows":
+            return platform.processor()
+        elif platform.system() == "Darwin":
+            os.environ['PATH'] = os.environ['PATH'] + os.pathsep + '/usr/sbin'
+            command ="sysctl -n machdep.cpu.brand_string"
+            return subprocess.check_output(command).strip()
+        elif platform.system() == "Linux":
+            command = "cat /proc/cpuinfo"
+            all_info = subprocess.check_output(command, shell=True).decode().strip()
+            for line in all_info.split("\n"):
+                if "model name" in line:
+                    return re.sub( ".*model name.*:", "", line,1)
+        return ""
 
     def _run_tests(self):
         results = {
@@ -509,23 +539,47 @@ class GetSystemInfo:
             'release': platform.release(),
             'version': platform.version(),
             'machine': platform.machine(),
-            'processor': platform.processor(),
+            'processor': self.get_processor_name(),
             'architecture': platform.architecture(),
             'distro': "N/A (can't detect linux)"}
+        results['os_version_supported'] = 'no'
         if results['system'] == 'Linux':
             results['distro'] = ' '.join(distro.linux_distribution())
+            if f'Ubuntu {self.ACCEPTABLE_OS_VERSION}' in results['distro']:
+                results['os_version_supported'] = 'yes'
+            elif f'Ubuntu {self.WANRING_OS_VERSION}' in results['distro']:
+                results['os_version_supported'] = 'warning'
+        if self.ACCEPTABLE_CPU_STRING.lower() in results['processor'].lower():
+            results['acceptable_processor'] = 'yes'
+        else:
+            results['acceptable_processor'] = 'no'
         return results
 
     @staticmethod
-    def print_results(results):
+    def print_results(results, extended_info=True):
         print("System information:")
+        if results['os_version_supported'] == 'yes':
+            out_color = bcolors.OKGREEN
+        elif results['os_version_supported'] == 'warning':
+            out_color = bcolors.WARNING
+        else:
+            out_color = bcolors.FAIL
+        if results['acceptable_processor'] == 'yes':
+            proc_color = bcolors.OKGREEN
+        else:
+            proc_color = bcolors.WARNING
+        print(f"{out_color}", end='')
         print(f"  Linux distribution: {results['distro']}")
-        print(f"  System: {results['system']}")
         print(f"  Release: {results['release']}")
-        print(f"  Version: {results['version']}")
-        print(f"  Machine: {results['machine']}")
-        print(f"  Processor: {results['processor']}")
-        print(f"  Architecture: {results['architecture']}\n")
+        print(f"{proc_color}  Processor: {results['processor']}{bcolors.ENDC}")
+        if extended_info:
+            print(f"{out_color}", end='')
+            print(f"  System: {results['system']}")
+            print(f"  Version: {results['version']}")
+            print(f"  Machine: {results['machine']}")
+            print(f"  Architecture: {results['architecture']}")
+            print(f"{bcolors.ENDC}", end='')
+        print('')
 
 
 class DeploymentTest:
@@ -540,7 +594,7 @@ class DeploymentTest:
             'speed_test': SpeedTest(),
             'git_clone': GitCloneTest(self.GIT_CLONE_TEST_URLS)}
         
-        # tests_to_run = ['system_info', 'ping']#, 'ping', 'wget']
+        # tests_to_run = ['system_info', 'speed_test']# 'ping']#, 'ping', 'wget']
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
