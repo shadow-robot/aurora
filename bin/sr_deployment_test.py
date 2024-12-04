@@ -270,7 +270,7 @@ class WgetTest(BaseUrlTest):
                 for k, v in result_dict['results'].items():
                     out_color = bcolors.WARNING
                     if v.returncode == 0:
-                        out_color = bcolors.OKGREEN
+                        continue
                     print(f"{out_color}Wget test attempt {k+1} output: \n{v.stdout.decode('utf-8')}{bcolors.ENDC}\n")
             print('')
 
