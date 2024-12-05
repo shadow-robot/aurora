@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
 
-'''
-
-    can ping google.com
-
-    can ping download.docker.com
-
-    any other apt sources (apt linux, nvidia etc..)
-
-    Anything else we can think of 
-
-    can clone from github
-
-    has appropriate nvida environment
-'''
 
 import os
 import subprocess
@@ -21,13 +7,12 @@ import sys
 import threading
 import time
 import re
-from multiprocessing.pool import ThreadPool
-from multiprocessing.context import TimeoutError
 import speedtest
 import platform
 import distro
 import time
 import inspect
+import shutil
 
 
 class bcolors:
@@ -57,45 +42,6 @@ class subprocessTimeout:
         else:
             return_code = x.returncode
         return subprocess.CompletedProcess(args=command, returncode=return_code, stdout=y[0])
-            
-
-# class PoolTimeout:
-#     def __init__(self):
-#         pass
-
-#     def run(self, timeout, funct, args):
-#         def mute():
-#             sys.stdout = open(os.devnull, 'w')
-#             sys.stderr = open(os.devnull, 'w')
-
-#         pool = ThreadPool(processes=1, initializer=mute)
-#         async_result = pool.apply_async(funct, args)
-#         try:
-#             return_val = async_result.get(timeout)  # get the return value from your function.
-#         except TimeoutError as e:
-#             print(f"Function timed out after {timeout} seconds")
-#             return_val = -5
-#         return_struct = subprocess.CompletedProcess(args=args[0], returncode=return_val)
-#         return return_struct
-
-# class PoolTimeout:
-#     def __init__(self):
-#         pass
-
-#     def run(self, timeout, funct, args):
-#         def mute():
-#             sys.stdout = open(os.devnull, 'w')
-#             sys.stderr = open(os.devnull, 'w')
-
-#         pool = ThreadPool(processes=1, initializer=mute)
-#         async_result = pool.apply_async(funct, args)
-#         try:
-#             return_val = async_result.get(timeout)  # get the return value from your function.
-#         except TimeoutError as e:
-#             print(f"Function timed out after {timeout} seconds")
-#             return_val = -5
-#         return_struct = subprocess.CompletedProcess(args=args[0], returncode=return_val)
-#         return return_struct
 
 
 class ProgressBar:
@@ -136,7 +82,7 @@ class ProgressBar:
         event = threading.Event()
         def thread_target():
             self.progress(x, time_per_step, event)
-        
+
         thread = threading.Thread(target=thread_target)
         return thread, event
 
@@ -154,7 +100,8 @@ class BaseUrlTest:
         self._name_url_dict = name_url_dict
         self.results = {}
 
-    def _loop_test(self, funct, args, success_function, message_str, after_test_funct=None, num_retries=5, timeout=5, thread_interp_prog=False):
+    def _loop_test(self, funct, args, success_function, message_str,
+                   after_test_funct=None, num_retries=5, timeout=5, thread_interp_prog=False):
         results = {}
         durs = []
         successes = 0
@@ -186,10 +133,10 @@ class BaseUrlTest:
         return self._generate_result(num_retries, successes, failures, results)
 
     @staticmethod
-    def _generate_result(self):
+    def _generate_result(self, num_retries, successes, failures, results):
         raise NotImplementedError
 
-    def _run_tests(self):
+    def run_tests(self):
         pass
 
     def _generate_result(self):
@@ -203,19 +150,27 @@ class WgetTest(BaseUrlTest):
         self._num_retries = 3
         super().__init__(name_url_dict)
 
-    def _run_tests(self):
+    def run_tests(self):
         total_urls = len(self._name_url_dict)
         for name, url in self._name_url_dict.items():
             args = (url, self._temp_file_name, self._timeout)
-            
+
             def _after_test_funct():
                 if os.path.exists(self._temp_file_name):
                     os.remove(self._temp_file_name)
 
             _after_test_funct()
             this_url_index = list(self._name_url_dict.keys()).index(name) + 1
-            message_str = f"Running {self._num_retries} wget test(s) on {url} with a timeout of {self._timeout}s each test ({this_url_index}/{total_urls})"
-            self.results[name] = self._loop_test(self._wget, args, self.success_function, message_str, _after_test_funct, timeout=self._timeout, num_retries=self._num_retries, thread_interp_prog=True)
+            message_str = f"Running {self._num_retries} wget test(s) on {url} with a timeout " \
+                          f"of {self._timeout}s each test ({this_url_index}/{total_urls})"
+            self.results[name] = self._loop_test(self._wget,
+                                                 args,
+                                                 self.success_function,
+                                                 message_str,
+                                                 _after_test_funct,
+                                                 timeout=self._timeout,
+                                                 num_retries=self._num_retries,
+                                                 thread_interp_prog=True)
         return self.results
 
     @staticmethod
@@ -248,24 +203,24 @@ class WgetTest(BaseUrlTest):
     def print_results(self, results, extended_info=True):
         for name in self._name_url_dict.keys():
             result_dict = results[name]
+            out_color = bcolors.FAIL
             if result_dict['all_succeeded']:
                 out_color = bcolors.OKGREEN
-            else:
-                out_color = bcolors.FAIL
+
             print(f"Wget test results for {name}:")
-            
+
             print(out_color, end='')
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
             print(f"  Failed attempts: {result_dict['failures']}")
             print(bcolors.ENDC, end='')
             if extended_info:
+                out_color = bcolors.FAIL
                 if result_dict['all_succeeded']:
                     out_color = bcolors.OKGREEN
                 elif result_dict['successes'] > 0:
                     out_color = bcolors.WARNING
-                else:
-                    out_color = bcolors.FAIL
+
                 print(f"{out_color}  Successful attempts: {result_dict['successes']}{bcolors.ENDC}\n")
                 for k, v in result_dict['results'].items():
                     out_color = bcolors.WARNING
@@ -283,17 +238,22 @@ class PingTest(BaseUrlTest):
 
     @staticmethod
     def success_function(result):
-        if result.returncode == 0:
-            return True
-        return False
+        return result.returncode == 0
 
-    def _run_tests(self):
+    def run_tests(self):
         total_urls = len(self._name_url_dict)
         for name, url in self._name_url_dict.items():
             args = (url,self._timeout)
             this_url_index = list(self._name_url_dict.keys()).index(name) + 1
-            message_str = f"Running {self._num_retries} ping test(s) on {url} with a timeout of {self._timeout}s each ({this_url_index}/{total_urls})"
-            self.results[name] = self._loop_test(self._ping, args, self.success_function, message_str, timeout=self._timeout, num_retries=self._num_retries, thread_interp_prog=True)
+            message_str = f"Running {self._num_retries} ping test(s) on {url} with a timeout " \
+                          f"of {self._timeout}s each ({this_url_index}/{total_urls})"
+            self.results[name] = self._loop_test(self._ping,
+                                                 args,
+                                                 self.success_function,
+                                                 message_str,
+                                                 timeout=self._timeout,
+                                                 num_retries=self._num_retries,
+                                                 thread_interp_prog=True)
         return self.results
 
     @staticmethod
@@ -320,7 +280,8 @@ class PingTest(BaseUrlTest):
                 numerical_times[k][i] = float(time_string.split('=')[1].split(' ')[0])
         min_time = min([time for time_list in numerical_times.values() for time in time_list.values()])
         max_time = max([time for time_list in numerical_times.values() for time in time_list.values()])
-        avg_time = round(sum([time for time_list in numerical_times.values() for time in time_list.values()]) / (repeats * len(numerical_times)), 2)
+        avg_time = round(sum([time for time_list in numerical_times.values() for time in time_list.values()]) / 
+                         (repeats * len(numerical_times)), 2)
         jitter = round((max_time - min_time), 2)
         return {
             'all_succeeded': all_succeeded,
@@ -336,10 +297,10 @@ class PingTest(BaseUrlTest):
         for name in self._name_url_dict.keys():
             result_dict = results[name]
             print(f"Ping test results for {name}:")
+            out_color = bcolors.FAIL
             if result_dict['all_succeeded']:
                 out_color = bcolors.OKGREEN
-            else:
-                out_color = bcolors.FAIL
+
             print(f"{out_color}", end='')
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
@@ -359,21 +320,15 @@ class PingTest(BaseUrlTest):
             print('')
 
 
-
 class GitCloneTest(BaseUrlTest):
     def __init__(self, name_url_dict):
         super().__init__(name_url_dict)
         self._name_url_dict = name_url_dict
-        remote_size = self._get_remote_repo_size()
+        # remote_size = self._get_remote_repo_size()
         self._timeout = 30
-        self._remote_size_real = True
-        if remote_size == 'Error':
-            remote_size = '88M'
-            self._remote_size_real = False
-        self._remote_size = remote_size.strip('\n')
+        self._remote_size = '88M'
 
     def _get_remote_repo_size(self):
-        return '79M'
         command = '''
                     curl \
                     -H "Accept: application/vnd.github.v3+json" \
@@ -382,7 +337,9 @@ class GitCloneTest(BaseUrlTest):
                     numfmt --to=iec --from-unit=1024
 
                     '''
-        response = subprocess.run(command.replace('torvalds', 'shadow-robot').replace('linux', 'sr_interface').replace('\n', ''),
+        response = subprocess.run(command.replace('torvalds', 'shadow-robot').replace('linux',
+                                                                                      'sr_interface').replace('\n',
+                                                                                                              ''),
                                   capture_output=True,
                                   shell=True)
         if response.returncode == 0:
@@ -394,7 +351,7 @@ class GitCloneTest(BaseUrlTest):
         if os.path.exists('/tmp/sr_test_git_clone_python'):
             subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'])
 
-    def _run_tests(self):
+    def run_tests(self):
         if os.path.exists('/tmp/sr_test_git_clone_python'):
                 subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'])
         for name, url in self._name_url_dict.items():
@@ -427,7 +384,7 @@ class GitCloneTest(BaseUrlTest):
         return False
 
     def _generate_result(self, attempts, successes, failures, results):
-        
+
         all_succeeded = False
         if successes == attempts:
             all_succeeded = True
@@ -438,8 +395,8 @@ class GitCloneTest(BaseUrlTest):
             'failures': failures,
             'results': results,
             'remote_size': self._remote_size,
-            'remote_size_real': self._remote_size_real,
-            'remote_size_estimated': not self._remote_size_real,
+            #'remote_size_real': self._remote_size_real,
+            'remote_size_estimated': True,
             'local_sizes': [result.size for result in results.values()]
         }
 
@@ -447,10 +404,10 @@ class GitCloneTest(BaseUrlTest):
         for name in self._name_url_dict.keys():
             print(f"Git clone test results for {name}:")
             result_dict = results[name]
+            out_color = bcolors.FAIL
             if result_dict['all_succeeded']:
                 out_color = bcolors.OKGREEN
-            else:
-                out_color = bcolors.FAIL
+
             print(f"{out_color}", end='')
             print(f"  All succeeded: {result_dict['all_succeeded']}")
             print(f"  Total attempts: {result_dict['attempts']}")
@@ -472,8 +429,9 @@ class SpeedTest:
         self._acceptable_download_speed = 20  #Mbps
         self._acceptable_upload_speed = 10  #Mbps
         self._acceptable_ping = 50  #ms
-    
-    def _run_tests(self):
+
+    @staticmethod
+    def run_tests():
         test = speedtest.Speedtest(secure=True)
         servernames = []
         test.get_servers(servernames)
@@ -498,16 +456,19 @@ class SpeedTest:
         return results
 
     def print_results(self, results, extended_info=True):
-        print("Results for general internet speed test:")
         up_color = bcolors.WARNING
-        down_color = bcolors.OKGREEN
-        ping_color = bcolors.WARNING
         if results['upload'] > self._acceptable_upload_speed:
             up_color = bcolors.OKGREEN
+
+        down_color = bcolors.WARNING
         if results['download'] > self._acceptable_download_speed:
             down_color = bcolors.OKGREEN
+
+        ping_color = bcolors.WARNING
         if results['ping'] < self._acceptable_ping:
             ping_color = bcolors.OKGREEN
+
+        print("Results for general internet speed test:")
         print(f"{ping_color}  Ping: {results['ping']} ms{bcolors.ENDC}")
         print(f"{up_color}  Upload: {results['upload']} Mbps{bcolors.ENDC}")
         print(f"{down_color}  Download: {results['download']} Mbps{bcolors.ENDC}")
@@ -522,25 +483,26 @@ class GetSystemInfo:
     WANRING_OS_VERSION = '22.04'
     ACCEPTABLE_CPU_STRING = 'Intel'
     ACCEPTABLE_UPTIME_HOURS = 24
+    ACCEPTABLE_FREE_DISK_SPACE_GB = 25
     ACCEPTABLE_UPTIME_SECONDS = ACCEPTABLE_UPTIME_HOURS * 60 * 60
     def __init__(self):
         self.results = {}
 
     @staticmethod
     def get_uptime():
-        with open('/proc/uptime', 'r') as f:
-            uptime_seconds = float(f.readline().split()[0])
+        with open('/proc/uptime', 'r') as proc:
+            uptime_seconds = float(proc.readline().split()[0])
         return uptime_seconds
 
     @staticmethod
     def get_processor_name():
         if platform.system() == "Windows":
             return platform.processor()
-        elif platform.system() == "Darwin":
+        if platform.system() == "Darwin":
             os.environ['PATH'] = os.environ['PATH'] + os.pathsep + '/usr/sbin'
             command ="sysctl -n machdep.cpu.brand_string"
             return subprocess.check_output(command).strip()
-        elif platform.system() == "Linux":
+        if platform.system() == "Linux":
             command = "cat /proc/cpuinfo"
             all_info = subprocess.check_output(command, shell=True).decode().strip()
             for line in all_info.split("\n"):
@@ -548,7 +510,11 @@ class GetSystemInfo:
                     return re.sub( ".*model name.*:", "", line,1)
         return ""
 
-    def _run_tests(self):
+    @staticmethod
+    def _bytes_to_gb(ibytes):
+        return round(ibytes / (1024 ** 3), 2)
+
+    def run_tests(self):
         results = {
             'system': platform.system(),
             'release': platform.release(),
@@ -562,7 +528,7 @@ class GetSystemInfo:
         results['os_version_supported'] = 'no'
         if results['system'] == 'Linux':
             results['distro'] = ' '.join(distro.linux_distribution())
-            if results['wsl'] == False:
+            if results['wsl'] is False:
                 if f'Ubuntu {self.ACCEPTABLE_OS_VERSION}' in results['distro']:
                     results['os_version_supported'] = 'yes'
                 elif f'Ubuntu {self.WANRING_OS_VERSION}' in results['distro']:
@@ -573,6 +539,10 @@ class GetSystemInfo:
             results['acceptable_processor'] = 'yes'
         else:
             results['acceptable_processor'] = 'no'
+        results['disk_space_stats'] = shutil.disk_usage('/')
+        results['total_disk_space_gb'] = self._bytes_to_gb(results['disk_space_stats'].total)
+        results['free_disk_space_gb'] = self._bytes_to_gb(results['disk_space_stats'].free)
+        results['used_disk_space_gb'] = self._bytes_to_gb(results['disk_space_stats'].used)
         return results
 
     @staticmethod
@@ -581,8 +551,14 @@ class GetSystemInfo:
 
     @staticmethod
     def _check_for_wsl():
-        microsoft_in_proc_version = subprocess.run(['grep', '-iq', 'microsoft', '/proc/version'], shell=False).returncode == 0
-        wsl_in_proc_version = subprocess.run(['grep', '-iq', 'wsl', '/proc/version'], shell=False).returncode == 0
+        microsoft_in_proc_version = subprocess.run(['grep',
+                                                    '-iq',
+                                                    'microsoft',
+                                                    '/proc/version'], shell=False).returncode == 0
+        wsl_in_proc_version = subprocess.run(['grep',
+                                              '-iq',
+                                              'wsl',
+                                              '/proc/version'], shell=False).returncode == 0
         return microsoft_in_proc_version and wsl_in_proc_version
 
     @staticmethod
@@ -594,27 +570,41 @@ class GetSystemInfo:
             distro_color = bcolors.OKGREEN
         elif results['os_version_supported'] == 'warning':
             distro_color = bcolors.WARNING
-        
-        proc_color = bcolors.WARNING            
+
+        proc_color = bcolors.WARNING
         if results['acceptable_processor'] == 'yes':
             proc_color = bcolors.OKGREEN
-            
+
         uptime_color = bcolors.WARNING
         if results['uptime'] < GetSystemInfo.ACCEPTABLE_UPTIME_SECONDS:
             uptime_color = bcolors.OKGREEN
-            
+
         if GetSystemInfo._check_if_in_container():
-            print(f"{bcolors.FAIL}  Found /.dockerenv file. Running in a container. Please don't do that{bcolors.ENDC}")
+            print(f"{bcolors.FAIL}  Found /.dockerenv file. Running in a container. Please don't do that"
+                  f"{bcolors.ENDC}")
 
         if results['wsl']:
-            print(f"{bcolors.FAIL}  Running in Windows Subsystem for Linux (WSL). This is not supported{bcolors.ENDC}")
-            
+            print(f"{bcolors.FAIL}  Running in Windows Subsystem for Linux (WSL). This is not supported"
+                  f"{bcolors.ENDC}")
+
         print(f"{distro_color}  Linux distribution: {results['distro']}{bcolors.ENDC}")
         print(f"  Release: {results['release']}")
         print(f"{proc_color}  Processor: {results['processor']}{bcolors.ENDC}")
         uptime_days = round((results['uptime'] / (60 * 60 * 24)), 2)
         print(f"{uptime_color}  Uptime: {results['uptime']} seconds ({uptime_days} days){bcolors.ENDC}")
+        if uptime_days > GetSystemInfo.ACCEPTABLE_UPTIME_HOURS / 24:
+            print(f"{bcolors.WARNING}  Uptime is above {GetSystemInfo.ACCEPTABLE_UPTIME_HOURS} hours. "
+                  f"Please consider rebooting{bcolors.ENDC}")
+        disk_space_color = bcolors.OKGREEN
+        if results['free_disk_space_gb'] < GetSystemInfo.ACCEPTABLE_FREE_DISK_SPACE_GB:
+            disk_space_color = bcolors.WARNING
+            print(f"{bcolors.FAIL}  Free disk space is below {GetSystemInfo.ACCEPTABLE_FREE_DISK_SPACE_GB} GB. "
+                  f"Please free up space{bcolors.ENDC}")
+        print(f"{disk_space_color}  Free disk space: {results['free_disk_space_gb']} GB")
+
         if extended_info:
+            print(f"{disk_space_color}  Total disk space: {results['total_disk_space_gb']} GB")
+            print(f"  Used disk space: {results['used_disk_space_gb']} GB{bcolors.ENDC}")
             print(f"  System: {results['system']}")
             print(f"  Version: {results['version']}")
             print(f"  Machine: {results['machine']}")
@@ -680,29 +670,35 @@ class GetNvidiaInfo:
 
                 if detected_version.count('.') > 2:
                     detected_version = self._strip_patch_version(detected_version)
-            
+
             if driver_version in detected_version:
                 return True
         return False
 
-    def _run_tests(self):
+    def run_tests(self):
         results = {}
         results['nvidia_gpu_detected'] = self._detect_gpu()
         results['nvidia_smi_found'] = self._detect_nvidia_smi()
         results['nvidia_smi_working'] = self._get_info_if_available(['nvidia-smi'])
-        results['gpu_name'] = self._get_info_if_available(['nvidia-smi', '--query-gpu=gpu_name', '--format=csv,noheader'])
-        results['driver_version'] = self._get_info_if_available(['nvidia-smi', '--query-gpu=driver_version', '--format=csv,noheader'])
+        results['gpu_name'] = self._get_info_if_available(['nvidia-smi',
+                                                           '--query-gpu=gpu_name',
+                                                           '--format=csv,noheader'])
+        results['driver_version'] = self._get_info_if_available(['nvidia-smi',
+                                                                 '--query-gpu=driver_version',
+                                                                 '--format=csv,noheader'])
         return results
 
     def print_results(self, results, extended_info=True):
-        if results['nvidia_gpu_detected'] == False:
+        if results['nvidia_gpu_detected'] is False:
             print("No Nvidia GPU detected.")
             return
-        if results['nvidia_smi_found'] == False:
-            print(f"{bcolors.WARNING}Nvidia GPU detected but nvidia-smi not found. Have you installed the nvidia driver?{bcolors.ENDC}")
+        if results['nvidia_smi_found'] is False:
+            print(f"{bcolors.WARNING}Nvidia GPU detected but nvidia-smi not found. Have you installed the nvidia "
+                  f"driver?{bcolors.ENDC}")
             return
-        if results['nvidia_smi_working'] == False:
-            print(f"{bcolors.FAIL}Nvidia GPU detected but nvidia-smi not working. Is your driver installed correctly?{bcolors.ENDC}")
+        if results['nvidia_smi_working'] is False:
+            print(f"{bcolors.FAIL}Nvidia GPU detected but nvidia-smi not working. Is your driver installed correctly?"
+                  f"{bcolors.ENDC}")
             return
         print("Nvidia GPU information:")
         print(f"  GPU name: {results['gpu_name']}")
@@ -711,14 +707,14 @@ class GetNvidiaInfo:
             out_color = bcolors.OKGREEN
         print(f"{out_color}  Driver version: {results['driver_version']}{bcolors.ENDC}")
         if extended_info:
-            print(f"\n  Nvidia-smi output: \n")
+            print("  Nvidia-smi output: \n")
             for line in results['nvidia_smi_working'].split('\n'):
                 print(f"    {line}")
         print('')
 
 
 class DeploymentTest:
-    PING_TEST_URLS = {'google': 'google.com', 'docker': 'download.docker.com'} #, 'nvidia': 'nvidia.github.io'}
+    PING_TEST_URLS = {'google': 'google.com', 'docker': 'download.docker.com'}
     WGET_TEST_URLS = {'libnvidia_container_gpg_key': 'https://nvidia.github.io/libnvidia-container/gpgkey'}
     GIT_CLONE_TEST_URLS = {'sr_interface': 'http://github.com/shadow-robot/sr_interface'}
     def __init__(self, tests_to_run=None):
@@ -729,11 +725,6 @@ class DeploymentTest:
             'wget': WgetTest(self.WGET_TEST_URLS),
             'speed_test': SpeedTest(),
             'git_clone': GitCloneTest(self.GIT_CLONE_TEST_URLS)}
-        
-        # tests_to_run = ['system_info', 'speed_test']# 'ping']#, 'ping', 'wget']
-        # tests_to_run = ['wget']
-        # tests_to_run = ['git_clone', 'system_info']
-        # tests_to_run = ['nvidia_info', 'system_info']
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
@@ -746,86 +737,27 @@ class DeploymentTest:
 
         self.results = {}
         self._run_all_tests()
-        # self._print_results()
 
-    def _print_results(self):
-        print('\n\nResults:\n')  # newlines
-        self._system_info.print_results(self.results['system_info'])
-        if 'ping' in self.tests_to_run:
-            self._ping_tests.print_results(self.results['ping'])
-        if 'wget' in self.tests_to_run:
-            self._wget_tests.print_results(self.results['wget'])
-        if 'speed_test' in self.tests_to_run:
-            self._speed_test.print_results(self.results['speed_test'])
-        if 'git_clone' in self.tests_to_run:
-            self._git_clone_test.print_results(self.results['git_clone'])
-        
     def _run_all_tests(self):
         for test_name, test_class in self._test_classes_dict.items():
             if test_name in self.tests_to_run:
-                self.results[test_name] = test_class._run_tests()
+                self.results[test_name] = test_class.run_tests()
                 test_class.print_results(self.results[test_name])
         print('\n\nResults summary:\n')  # newlines
         for test_name, test_class in self._test_classes_dict.items():
             if test_name in self.tests_to_run:
-                # if 'all_succeeded' in self.results[test_name]:
-                #     if test_class.results['all_succeeded']:
-                #         out_color = bcolors.OKGREEN
-                #     else:
-                #         out_color = bcolors.FAIL
-                #     print(f"{out_color}", end='')
                 if 'extended_info' in str(inspect.signature(test_class.print_results)):
                     test_class.print_results(self.results[test_name], extended_info=False)
                 else:
                     test_class.print_results(self.results[test_name])
                 print(f"{bcolors.ENDC}", end='')
 
-                
 
 
-# p = ProgressBar()
-# p.start_progress("Running tests")
-# time.sleep(0.5)
-# p.progress(30)
-# time.sleep(0.5)
-# p.progress(60)
-# time.sleep(0.5)
-# p.progress(100)
 
 x = DeploymentTest()
-# a=1
 
-# p = ProgressBar()
-# p.start_progress("Running tests")
-# p.progress(30)
-
-# x = 60
-# time_per_step = 0.15
-# def thread_target():
-#     p.progress(x, time_per_step)
-
-# # p.progress(80)
-# thread = threading.Thread(target=thread_target)
-# thread.start()
-
-# time.sleep(2)
-# thread.join()
-# p.end_progress()
-# a=1
-# # print ("\033[A                             \033[A")
-# # print ("\033[A                             \033[A")
-# # print ("\033[A                             \033[A")
-# # print ("\033[A                             \033[A")
-# # print ("\033[A                             \033[A")
-# # for i in range(5):
-# #     print("\r", end="")
-# #     print("")
-
-
-
-# # nvidia tests
-# # driver version
 # # spit into file
 # # recent oneliners?
-# # uptime
 # # host python packages
+# # any other apt sources (apt linux, nvidia etc..)
