@@ -557,14 +557,18 @@ class GetSystemInfo:
             'machine': platform.machine(),
             'processor': self.get_processor_name(),
             'architecture': platform.architecture(),
+            'wsl': self._check_for_wsl(),
             'distro': "N/A (can't detect linux)"}
         results['os_version_supported'] = 'no'
         if results['system'] == 'Linux':
             results['distro'] = ' '.join(distro.linux_distribution())
-            if f'Ubuntu {self.ACCEPTABLE_OS_VERSION}' in results['distro']:
-                results['os_version_supported'] = 'yes'
-            elif f'Ubuntu {self.WANRING_OS_VERSION}' in results['distro']:
-                results['os_version_supported'] = 'warning'
+            if results['wsl'] == False:
+                if f'Ubuntu {self.ACCEPTABLE_OS_VERSION}' in results['distro']:
+                    results['os_version_supported'] = 'yes'
+                elif f'Ubuntu {self.WANRING_OS_VERSION}' in results['distro']:
+                    results['os_version_supported'] = 'warning'
+            else:
+                results['os_version_supported'] = 'wsl'
         if self.ACCEPTABLE_CPU_STRING.lower() in results['processor'].lower():
             results['acceptable_processor'] = 'yes'
         else:
@@ -572,23 +576,39 @@ class GetSystemInfo:
         return results
 
     @staticmethod
+    def _check_if_in_container():
+        return os.path.exists('/.dockerenv')
+
+    @staticmethod
+    def _check_for_wsl():
+        microsoft_in_proc_version = subprocess.run(['grep', '-iq', 'microsoft', '/proc/version'], shell=False).returncode == 0
+        wsl_in_proc_version = subprocess.run(['grep', '-iq', 'wsl', '/proc/version'], shell=False).returncode == 0
+        return microsoft_in_proc_version and wsl_in_proc_version
+
+    @staticmethod
     def print_results(results, extended_info=True):
         print("System information:")
+
+        distro_color = bcolors.FAIL
         if results['os_version_supported'] == 'yes':
             distro_color = bcolors.OKGREEN
         elif results['os_version_supported'] == 'warning':
             distro_color = bcolors.WARNING
-        else:
-            distro_color = bcolors.FAIL
+        
+        proc_color = bcolors.WARNING            
         if results['acceptable_processor'] == 'yes':
             proc_color = bcolors.OKGREEN
-        else:
-            proc_color = bcolors.WARNING
+            
+        uptime_color = bcolors.WARNING
         if results['uptime'] < GetSystemInfo.ACCEPTABLE_UPTIME_SECONDS:
             uptime_color = bcolors.OKGREEN
-        else:
-            uptime_color = bcolors.WARNING
-        
+            
+        if GetSystemInfo._check_if_in_container():
+            print(f"{bcolors.FAIL}  Found /.dockerenv file. Running in a container. Please don't do that{bcolors.ENDC}")
+
+        if results['wsl']:
+            print(f"{bcolors.FAIL}  Running in Windows Subsystem for Linux (WSL). This is not supported{bcolors.ENDC}")
+            
         print(f"{distro_color}  Linux distribution: {results['distro']}{bcolors.ENDC}")
         print(f"  Release: {results['release']}")
         print(f"{proc_color}  Processor: {results['processor']}{bcolors.ENDC}")
@@ -602,6 +622,101 @@ class GetSystemInfo:
         print('')
 
 
+class GetNvidiaInfo:
+    def __init__(self):
+        self._acceptable_driver_versions = ['535.183.x']
+
+    @staticmethod
+    def _detect_gpu():
+        command = ['lspci', '|', 'grep', 'VGA', '|', 'grep', '-i', 'nvidia', '|', 'wc', '-l']
+        command = ['lspci']
+        output, return_code = GetNvidiaInfo._get_utf8_output(command, shell=True)
+        if return_code != 0:
+            print(f"{bcolors.FAIL}Could not use lspci to detect Nvidia GPU. Are you in a container?{bcolors.ENDC}")
+            return False
+        for line in output.split('\n'):
+            if 'NVIDIA' in line.upper() and 'VGA' in line.upper():
+                return True
+        return False
+
+    @staticmethod
+    def _detect_nvidia_smi():
+        command = ['which', 'nvidia-smi']
+        output, return_code = GetNvidiaInfo._get_utf8_output(command, shell=False)
+        if return_code != 0:
+            return False
+        if 'nvidia' in output:
+            return True
+        return False
+
+    @staticmethod
+    def _get_utf8_output(command, shell=False):
+        proc = subprocess.run(command, shell=shell, capture_output=True)
+        return proc.stdout.decode('utf-8'), proc.returncode
+
+    @staticmethod
+    def _get_info_if_available(command):
+        output, return_code = GetNvidiaInfo._get_utf8_output(command)
+        if return_code == 0:
+            return output.strip('\n')
+        return False
+
+    @staticmethod
+    def _check_nvidia_smi():
+        command = ['nvidia-smi']
+        proc = subprocess.run(command, capture_output=True)
+        if proc.returncode == 0:
+            return True
+        return False
+
+    @staticmethod
+    def _strip_patch_version(version):
+        return '.'.join(version.split('.')[:2])
+
+    def _compare_driver_versions(self, detected_version):
+        for driver_version in self._acceptable_driver_versions:
+            if 'x' in driver_version:
+                driver_version = driver_version.replace('x', '').strip('.')
+
+                if detected_version.count('.') > 2:
+                    detected_version = self._strip_patch_version(detected_version)
+            
+            if driver_version in detected_version:
+                return True
+        return False
+
+    def _run_tests(self):
+        results = {}
+        results['nvidia_gpu_detected'] = self._detect_gpu()
+        results['nvidia_smi_found'] = self._detect_nvidia_smi()
+        results['nvidia_smi_working'] = self._get_info_if_available(['nvidia-smi'])
+        results['gpu_name'] = self._get_info_if_available(['nvidia-smi', '--query-gpu=gpu_name', '--format=csv,noheader'])
+        results['driver_version'] = self._get_info_if_available(['nvidia-smi', '--query-gpu=driver_version', '--format=csv,noheader'])
+        return results
+
+    def print_results(self, results, extended_info=True):
+        if results['nvidia_gpu_detected'] == False:
+            print("No Nvidia GPU detected.")
+            return
+        if results['nvidia_smi_found'] == False:
+            print(f"{bcolors.WARNING}Nvidia GPU detected but nvidia-smi not found. Have you installed the nvidia driver?{bcolors.ENDC}")
+            return
+        if results['nvidia_smi_working'] == False:
+            print(f"{bcolors.FAIL}Nvidia GPU detected but nvidia-smi not working. Is your driver installed correctly?{bcolors.ENDC}")
+            return
+        print("Nvidia GPU information:")
+        print(f"  GPU name: {results['gpu_name']}")
+        out_color = bcolors.WARNING
+        if self._compare_driver_versions(results['driver_version']):
+            out_color = bcolors.OKGREEN
+        print(f"{out_color}  Driver version: {results['driver_version']}{bcolors.ENDC}")
+        if extended_info:
+            print(f"\n  Nvidia-smi output: \n")
+            for line in results['nvidia_smi_working'].split('\n'):
+                print(f"    {line}")
+        print('')
+
+
 class DeploymentTest:
     PING_TEST_URLS = {'google': 'google.com', 'docker': 'download.docker.com'} #, 'nvidia': 'nvidia.github.io'}
     WGET_TEST_URLS = {'libnvidia_container_gpg_key': 'https://nvidia.github.io/libnvidia-container/gpgkey'}
@@ -609,6 +724,7 @@ class DeploymentTest:
     def __init__(self, tests_to_run=None):
         self._test_classes_dict = {
             'system_info': GetSystemInfo(),
+            'nvidia_info': GetNvidiaInfo(),
             'ping': PingTest(self.PING_TEST_URLS),
             'wget': WgetTest(self.WGET_TEST_URLS),
             'speed_test': SpeedTest(),
@@ -617,6 +733,7 @@ class DeploymentTest:
         # tests_to_run = ['system_info', 'speed_test']# 'ping']#, 'ping', 'wget']
         # tests_to_run = ['wget']
         # tests_to_run = ['git_clone', 'system_info']
+        # tests_to_run = ['nvidia_info', 'system_info']
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
