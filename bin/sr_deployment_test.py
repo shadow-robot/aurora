@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 
+# Copyright 2024 Shadow Robot Company Ltd.
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import subprocess
@@ -7,15 +20,14 @@ import sys
 import threading
 import time
 import re
-import speedtest
-import platform
-import distro
-import time
 import inspect
 import shutil
+import platform
+import speedtest
+import distro
 
 
-class bcolors:
+class bcolors:  # pylint: disable=C0103
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -27,21 +39,22 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-class subprocessTimeout:
+class SubprocessTimeout:
     def __init__(self):
         pass
 
-    def run(self, timeout, command):
-        x = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        try:
-            y = x.communicate(timeout=timeout)
-        except subprocess.TimeoutExpired as e:
-            x.kill()
-            y = x.communicate()
-            return_code = -5
-        else:
-            return_code = x.returncode
-        return subprocess.CompletedProcess(args=command, returncode=return_code, stdout=y[0])
+    @staticmethod
+    def run(timeout, command):
+        with subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) as proc:
+            try:
+                result = proc.communicate(timeout=timeout)
+            except subprocess.TimeoutExpired as _:
+                proc.kill()
+                result = proc.communicate()
+                return_code = -5
+            else:
+                return_code = proc.returncode
+        return subprocess.CompletedProcess(args=command, returncode=return_code, stdout=result[0])
 
 
 class ProgressBar:
@@ -86,7 +99,8 @@ class ProgressBar:
         thread = threading.Thread(target=thread_target)
         return thread, event
 
-    def delete_last_n_lines(self, n):
+    @staticmethod
+    def delete_last_n_lines(n):  # pylint: disable=C0103
         "Deletes the last line in the STDOUT"
         for _ in range(n):
             # cursor up one line
@@ -105,14 +119,15 @@ class BaseUrlTest:
         results = {}
         durs = []
         successes = 0
+        attempts = num_retries
         print(message_str)
-        p = ProgressBar()
-        p.start_progress(f"Running {num_retries} tests")
-        for i in range(num_retries):
+        progress_bar = ProgressBar()
+        progress_bar.start_progress(f"Running {attempts} tests")
+        for i in range(attempts):
             now = time.monotonic()
-            progress_bar_goal = int((i+1) * 100 / num_retries)
+            progress_bar_goal = int((i+1) * 100 / attempts)
             if thread_interp_prog:
-                thread, event = p.thread_interpolate_progress(progress_bar_goal, timeout)
+                thread, event = progress_bar.thread_interpolate_progress(progress_bar_goal, timeout)
                 thread.start()
             results[i] = funct(*args)
             if success_function(results[i]):
@@ -120,26 +135,23 @@ class BaseUrlTest:
             if after_test_funct:
                 after_test_funct()
             if not thread_interp_prog:
-                p.progress(progress_bar_goal)
+                progress_bar.progress(progress_bar_goal)
             else:
                 event.set()
                 thread.join()
             time.sleep(1)
             durs.append(time.monotonic() - now)
-        p.end_progress()
-        p.delete_last_n_lines(2)
+        progress_bar.end_progress()
+        progress_bar.delete_last_n_lines(2)
         print(message_str.replace("Running", "Finished"))
-        failures = num_retries - successes
-        return self._generate_result(num_retries, successes, failures, results)
+        failures = attempts - successes
+        return self._generate_result(attempts, successes, failures, results)
 
-    @staticmethod
-    def _generate_result(self, num_retries, successes, failures, results):
+
+    def _generate_result(self, attempts, successes, failures, results):
         raise NotImplementedError
 
     def run_tests(self):
-        pass
-
-    def _generate_result(self):
         pass
 
 
@@ -185,7 +197,7 @@ class WgetTest(BaseUrlTest):
     @staticmethod
     def _wget(url, output_path, timeout=None):
         command = ['wget', '-O', f'{output_path}', url]
-        return subprocessTimeout().run(timeout, command)
+        return SubprocessTimeout().run(timeout, command)
 
     @staticmethod
     def _generate_result(attempts, successes, failures, results):
@@ -222,11 +234,12 @@ class WgetTest(BaseUrlTest):
                     out_color = bcolors.WARNING
 
                 print(f"{out_color}  Successful attempts: {result_dict['successes']}{bcolors.ENDC}\n")
-                for k, v in result_dict['results'].items():
+                for attempt, wget_result in result_dict['results'].items():
                     out_color = bcolors.WARNING
-                    if v.returncode == 0:
+                    if wget_result.returncode == 0:
                         continue
-                    print(f"{out_color}Wget test attempt {k+1} output: \n{v.stdout.decode('utf-8')}{bcolors.ENDC}\n")
+                    print(f"{out_color}Wget test attempt {attempt+1} output: \n{wget_result.stdout.decode('utf-8')}" +
+                          f"{bcolors.ENDC}\n")
             print('')
 
 
@@ -264,24 +277,24 @@ class PingTest(BaseUrlTest):
     @staticmethod
     def _ping(url, timeout, num_pings=4):
         command = ['ping', '-c', str(num_pings), url]
-        return subprocessTimeout().run(timeout, command)
+        return SubprocessTimeout().run(timeout, command)
 
-    def _generate_result(self, repeats, successes, failures, results):
+    def _generate_result(self, attempts, successes, failures, results):
         all_succeeded = False
         string_results = {}
         numerical_times = {}
-        if successes == repeats:
+        if successes == attempts:
             all_succeeded = True
-        for k, v in results.items():
-            string_results[k] = self._ping_regex(v)
-        for k, v in string_results.items():
-            numerical_times[k] = {}
-            for i, time_string in enumerate(v):
-                numerical_times[k][i] = float(time_string.split('=')[1].split(' ')[0])
+        for attempt, ping_result in results.items():
+            string_results[attempt] = PingTest._ping_regex(ping_result)
+        for attempt, ping_result_string_list in string_results.items():
+            numerical_times[attempt] = {}
+            for i, time_string in enumerate(ping_result_string_list):
+                numerical_times[attempt][i] = float(time_string.split('=')[1].split(' ')[0])
         min_time = min([time for time_list in numerical_times.values() for time in time_list.values()])
         max_time = max([time for time_list in numerical_times.values() for time in time_list.values()])
-        avg_time = round(sum([time for time_list in numerical_times.values() for time in time_list.values()]) / 
-                         (repeats * len(numerical_times)), 2)
+        avg_time = round(sum([time for time_list in numerical_times.values() for time in time_list.values()]) /
+                         (attempts * len(numerical_times)), 2)
         jitter = round((max_time - min_time), 2)
         return {
             'all_succeeded': all_succeeded,
@@ -289,7 +302,7 @@ class PingTest(BaseUrlTest):
             'max_time_ms': max_time,
             'avg_time_ms': avg_time,
             'jitter_ms': jitter,
-            'attempts': repeats,
+            'attempts': attempts,
             'successes': successes,
             'failures': failures}
 
@@ -328,7 +341,8 @@ class GitCloneTest(BaseUrlTest):
         self._timeout = 30
         self._remote_size = '88M'
 
-    def _get_remote_repo_size(self):
+    @staticmethod
+    def _get_remote_repo_size():
         command = '''
                     curl \
                     -H "Accept: application/vnd.github.v3+json" \
@@ -337,11 +351,13 @@ class GitCloneTest(BaseUrlTest):
                     numfmt --to=iec --from-unit=1024
 
                     '''
-        response = subprocess.run(command.replace('torvalds', 'shadow-robot').replace('linux',
-                                                                                      'sr_interface').replace('\n',
-                                                                                                              ''),
+        command = command.replace('torvalds', 'shadow-robot')
+        command = command.replace('linux', 'sr_interface')
+        command = command.replace('\n', '')
+        response = subprocess.run(command,
                                   capture_output=True,
-                                  shell=True)
+                                  shell=True,
+                                  check=True)
         if response.returncode == 0:
             return response.stdout.decode('utf-8')
         return 'Error'
@@ -349,11 +365,11 @@ class GitCloneTest(BaseUrlTest):
     @staticmethod
     def _after_test_funct():
         if os.path.exists('/tmp/sr_test_git_clone_python'):
-            subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'])
+            subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'], check=True)
 
     def run_tests(self):
         if os.path.exists('/tmp/sr_test_git_clone_python'):
-                subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'])
+            subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'], check=True)
         for name, url in self._name_url_dict.items():
             message_str = f"Running git clone test on {url} with a timeout of {self._timeout}s"
             self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python'),
@@ -369,8 +385,8 @@ class GitCloneTest(BaseUrlTest):
     def git_clone(url, local_path):
         clone_command = ['git', 'clone', url, local_path]
         size_command = ['du', '-sh', local_path]
-        result = subprocess.run(clone_command, capture_output=True)
-        size = subprocess.run(size_command, capture_output=True).stdout.decode('utf-8').split('\t')[0]
+        result = subprocess.run(clone_command, capture_output=True, check=True)
+        size = subprocess.run(size_command, capture_output=True, check=True).stdout.decode('utf-8').split('\t')[0]
         result.size = size
         return result
 
@@ -490,7 +506,7 @@ class GetSystemInfo:
 
     @staticmethod
     def get_uptime():
-        with open('/proc/uptime', 'r') as proc:
+        with open('/proc/uptime', 'r', encoding='utf-8') as proc:
             uptime_seconds = float(proc.readline().split()[0])
         return uptime_seconds
 
@@ -554,11 +570,15 @@ class GetSystemInfo:
         microsoft_in_proc_version = subprocess.run(['grep',
                                                     '-iq',
                                                     'microsoft',
-                                                    '/proc/version'], shell=False).returncode == 0
+                                                    '/proc/version'],
+                                                    shell=False,
+                                                    check=False).returncode == 0
         wsl_in_proc_version = subprocess.run(['grep',
                                               '-iq',
                                               'wsl',
-                                              '/proc/version'], shell=False).returncode == 0
+                                              '/proc/version'],
+                                              shell=False,
+                                              check=False).returncode == 0
         return microsoft_in_proc_version and wsl_in_proc_version
 
     @staticmethod
@@ -641,7 +661,7 @@ class GetNvidiaInfo:
 
     @staticmethod
     def _get_utf8_output(command, shell=False):
-        proc = subprocess.run(command, shell=shell, capture_output=True)
+        proc = subprocess.run(command, shell=shell, capture_output=True, check=False)
         return proc.stdout.decode('utf-8'), proc.returncode
 
     @staticmethod
@@ -654,7 +674,7 @@ class GetNvidiaInfo:
     @staticmethod
     def _check_nvidia_smi():
         command = ['nvidia-smi']
-        proc = subprocess.run(command, capture_output=True)
+        proc = subprocess.run(command, capture_output=True, check=False)
         if proc.returncode == 0:
             return True
         return False
@@ -755,7 +775,7 @@ class DeploymentTest:
 
 
 
-x = DeploymentTest()
+deployment_test = DeploymentTest()
 
 # # spit into file
 # # recent oneliners?
