@@ -738,7 +738,7 @@ class DeploymentTest:
     WGET_TEST_URLS = {'libnvidia_container_gpg_key': 'https://nvidia.github.io/libnvidia-container/gpgkey'}
     GIT_CLONE_TEST_URLS = {'sr_interface': 'http://github.com/shadow-robot/sr_interface'}
     def __init__(self, tests_to_run=None):
-        self._test_classes_dict = {
+        self._test_instances_dict = {
             'system_info': GetSystemInfo(),
             'nvidia_info': GetNvidiaInfo(),
             'ping': PingTest(self.PING_TEST_URLS),
@@ -748,23 +748,18 @@ class DeploymentTest:
         if tests_to_run:
             self.tests_to_run = tests_to_run
         else:
-            self.tests_to_run = self._test_classes_dict.keys()
-        self._ping_tests = PingTest(self.PING_TEST_URLS)
-        self._wget_tests = WgetTest(self.WGET_TEST_URLS)
-        self._speed_test = SpeedTest()
-        self._git_clone_test = GitCloneTest(self.GIT_CLONE_TEST_URLS)
-        self._system_info = GetSystemInfo()
+            self.tests_to_run = self._test_instances_dict.keys()
 
         self.results = {}
         self._run_all_tests()
 
     def _run_all_tests(self):
-        for test_name, test_class in self._test_classes_dict.items():
+        for test_name, test_class in self._test_instances_dict.items():
             if test_name in self.tests_to_run:
                 self.results[test_name] = test_class.run_tests()
                 test_class.print_results(self.results[test_name])
         print('\n\nResults summary:\n')  # newlines
-        for test_name, test_class in self._test_classes_dict.items():
+        for test_name, test_class in self._test_instances_dict.items():
             if test_name in self.tests_to_run:
                 if 'extended_info' in str(inspect.signature(test_class.print_results)):
                     test_class.print_results(self.results[test_name], extended_info=False)
