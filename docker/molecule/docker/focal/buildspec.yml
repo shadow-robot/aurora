@@ -18,8 +18,6 @@ env:
   shell: bash
   parameter-store:
       GITHUB_AUTH_TOKEN: GITHUB_AUTH_TOKEN
-      GITHUB_AUTH_TOKEN_TEST_1: GITHUB_AUTH_TOKEN_TEST_1
-      GITHUB_AUTH_TOKEN_TEST_2: GITHUB_AUTH_TOKEN_TEST_2
   variables:
      image: aurora-molecule-docker
      tag: focal
@@ -35,12 +33,9 @@ phases:
   build:
     commands:
       - |
-        echo "####################################### test 1 here: $GITHUB_AUTH_TOKEN_TEST_1"
-        echo "####################################### test 2 here: $GITHUB_AUTH_TOKEN_TEST_2"
         if [[ $CODEBUILD_SOURCE_VERSION == "pr/"* ]]; then
           pr_number=${CODEBUILD_SOURCE_VERSION#pr/}
           api_response=$(curl -s --request GET --url "https://api.github.com/repos/shadow-robot/aurora/pulls/$pr_number" --header "Authorization:Bearer $GITHUB_AUTH_TOKEN")
-          echo $api_response
           if [[ $(echo $api_response | jq -r '.head.ref') == 'null' ]]; then
             echo "$api_response" | jq
           fi
