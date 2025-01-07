@@ -17,7 +17,6 @@
 set -e # fail on errors
 RED='\033[0;31m'
 NC='\033[0m' # No Color
-#set -x # echo commands run
 
 
 echo

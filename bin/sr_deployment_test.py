@@ -48,7 +48,7 @@ class SubprocessTimeout:
         with subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) as proc:
             try:
                 result = proc.communicate(timeout=timeout)
-            except subprocess.TimeoutExpired as _:
+            except subprocess.TimeoutExpired:
                 proc.kill()
                 result = proc.communicate()
                 return_code = -5
@@ -153,32 +153,30 @@ class BaseUrlTest:
 
 
 class WgetTest(BaseUrlTest):
-    def __init__(self, name_url_dict):
-        self._timeout = 45
-        self._temp_file_name = '/tmp/sr_test_wget_python'
-        self._num_retries = 3
-        super().__init__(name_url_dict)
+    TIMEOUT = 45
+    TEMP_FILE_NAME = '/tmp/sr_test_wget_python'
+    NUM_RETRIES = 3
 
     def run_tests(self):
         total_urls = len(self._name_url_dict)
         for name, url in self._name_url_dict.items():
-            args = (url, self._temp_file_name, self._timeout)
+            args = (url, self.TEMP_FILE_NAME, self.TIMEOUT)
 
             def _after_test_funct():
-                if os.path.exists(self._temp_file_name):
-                    os.remove(self._temp_file_name)
+                if os.path.exists(self.TEMP_FILE_NAME):
+                    os.remove(self.TEMP_FILE_NAME)
 
             _after_test_funct()
             this_url_index = list(self._name_url_dict.keys()).index(name) + 1
-            message_str = f"Running {self._num_retries} wget test(s) on {url} with a timeout " \
-                          f"of {self._timeout}s each test ({this_url_index}/{total_urls})"
+            message_str = f"Running {self.NUM_RETRIES} wget test(s) on {url} with a timeout " \
+                          f"of {self.TIMEOUT}s each test ({this_url_index}/{total_urls})"
             self.results[name] = self._loop_test(self._wget,
                                                  args,
                                                  self.success_function,
                                                  message_str,
                                                  _after_test_funct,
-                                                 timeout=self._timeout,
-                                                 num_retries=self._num_retries,
+                                                 timeout=self.TIMEOUT,
+                                                 num_retries=self.NUM_RETRIES,
                                                  thread_interp_prog=True)
         return self.results
 
@@ -766,8 +764,23 @@ class DeploymentTest:
 
 
 
+# class A:
+#   x = 5
+
+
+# class B:
+#   x = 7
+
+
+# class C:
+#   def __init__(self):
+#     self.a = A()
+#     self.b = B()
+
+
 
 deployment_test = DeploymentTest()
+# c = C()
 
 # # spit into file
 # # recent oneliners?
