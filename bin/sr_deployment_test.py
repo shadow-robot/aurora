@@ -345,17 +345,18 @@ class PingTest(BaseUrlTest):
 class GitCloneTest(BaseUrlTest):
     TIMEOUT = 30
     NUM_RETRIES = 2
+    LOCAL_GIT_PATH = '/tmp/sr_test_git_clone_python'
 
     @staticmethod
     def _after_test_funct():
-        if os.path.exists('/tmp/sr_test_git_clone_python'):
-            subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'], check=True)
+        if os.path.exists(GitCloneTest.LOCAL_GIT_PATH):
+            subprocess.run(['rm', '-rf', GitCloneTest.LOCAL_GIT_PATH], check=True)
 
     def run_tests(self):
         self._after_test_funct()
         for name, url in self._name_url_dict.items():
             message_str = f"Running git clone test on {url} with a timeout of {self.TIMEOUT}s"
-            self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python', self.TIMEOUT),
+            self.results[name] = self._loop_test(self.git_clone, (url, self.LOCAL_GIT_PATH, self.TIMEOUT),
                                                  self.success_function,
                                                  message_str,
                                                  self._after_test_funct,
