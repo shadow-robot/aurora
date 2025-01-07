@@ -44,17 +44,33 @@ class SubprocessTimeout:
         pass
 
     @staticmethod
+    def check_for_hung_processes_spawned_by_child(proc):
+        """
+            proc.kill(); proc.communicate() can hang if the child process itself creates new
+            children which aren't responding, so let's check for that in a second try layer
+        """
+        try:
+            result = proc.communicate(timeout=3)
+        except subprocess.TimeoutExpired:
+            return_code = "timed out (sub-sub process not responding)"
+            stdout = "timed out (sub-sub process not responding)"
+        else:
+            return_code = "timed out"
+            stdout = result[0]
+        return return_code, stdout
+
+    @staticmethod
     def run(timeout, command):
         with subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) as proc:
             try:
                 result = proc.communicate(timeout=timeout)
             except subprocess.TimeoutExpired:
                 proc.kill()
-                result = proc.communicate()
-                return_code = -5
+                return_code, stdout = SubprocessTimeout.check_for_hung_processes_spawned_by_child(proc)
             else:
                 return_code = proc.returncode
-        return subprocess.CompletedProcess(args=command, returncode=return_code, stdout=result[0])
+                stdout = result[0]
+        return subprocess.CompletedProcess(args=command, returncode=return_code, stdout=stdout)
 
 
 class ProgressBar:
@@ -153,7 +169,7 @@ class BaseUrlTest:
 
 
 class WgetTest(BaseUrlTest):
-    TIMEOUT = 45
+    TIMEOUT = 7
     TEMP_FILE_NAME = '/tmp/sr_test_wget_python'
     NUM_RETRIES = 3
 
@@ -239,10 +255,8 @@ class WgetTest(BaseUrlTest):
 
 
 class PingTest(BaseUrlTest):
-    def __init__(self, name_url_dict):
-        self._num_retries = 3
-        self._timeout = 10
-        super().__init__(name_url_dict)
+    NUM_RETRIES = 3
+    TIMEOUT = 10
 
     @staticmethod
     def success_function(result):
@@ -251,16 +265,16 @@ class PingTest(BaseUrlTest):
     def run_tests(self):
         total_urls = len(self._name_url_dict)
         for name, url in self._name_url_dict.items():
-            args = (url,self._timeout)
+            args = (url,self.TIMEOUT)
             this_url_index = list(self._name_url_dict.keys()).index(name) + 1
-            message_str = f"Running {self._num_retries} ping test(s) on {url} with a timeout " \
-                          f"of {self._timeout}s each ({this_url_index}/{total_urls})"
+            message_str = f"Running {self.NUM_RETRIES} ping test(s) on {url} with a timeout " \
+                          f"of {self.TIMEOUT}s each ({this_url_index}/{total_urls})"
             self.results[name] = self._loop_test(self._ping,
                                                  args,
                                                  self.success_function,
                                                  message_str,
-                                                 timeout=self._timeout,
-                                                 num_retries=self._num_retries,
+                                                 timeout=self.TIMEOUT,
+                                                 num_retries=self.NUM_RETRIES,
                                                  thread_interp_prog=True)
         return self.results
 
@@ -329,34 +343,8 @@ class PingTest(BaseUrlTest):
 
 
 class GitCloneTest(BaseUrlTest):
-    def __init__(self, name_url_dict):
-        super().__init__(name_url_dict)
-        self._name_url_dict = name_url_dict
-        self._num_retries = 2
-        # remote_size = self._get_remote_repo_size()
-        self._timeout = 30
-        self._remote_size = '88M'
-
-    @staticmethod
-    def _get_remote_repo_size():
-        command = '''
-                    curl \
-                    -H "Accept: application/vnd.github.v3+json" \
-                    -s https://api.github.com/repos/org_name/repo_name | \
-                    jq '.size' | \
-                    numfmt --to=iec --from-unit=1024
-
-                    '''
-        command = command.replace('org_name', 'shadow-robot')
-        command = command.replace('repo_name', 'sr_interface')
-        command = command.replace('\n', '')
-        response = subprocess.run(command,
-                                  capture_output=True,
-                                  shell=True,
-                                  check=True)
-        if response.returncode == 0:
-            return response.stdout.decode('utf-8')
-        return 'Error'
+    TIMEOUT = 30
+    NUM_RETRIES = 2
 
     @staticmethod
     def _after_test_funct():
@@ -366,33 +354,37 @@ class GitCloneTest(BaseUrlTest):
     def run_tests(self):
         self._after_test_funct()
         for name, url in self._name_url_dict.items():
-            message_str = f"Running git clone test on {url} with a timeout of {self._timeout}s"
-            self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python'),
+            message_str = f"Running git clone test on {url} with a timeout of {self.TIMEOUT}s"
+            self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python', self.TIMEOUT),
                                                  self.success_function,
                                                  message_str,
                                                  self._after_test_funct,
-                                                 num_retries=self._num_retries,
-                                                 timeout=self._timeout,
+                                                 num_retries=self.NUM_RETRIES,
+                                                 timeout=self.TIMEOUT,
                                                  thread_interp_prog=True)
         return self.results
 
     @staticmethod
-    def git_clone(url, local_path):
+    def git_clone(url, local_path, timeout):
         clone_command = ['git', 'clone', url, local_path]
-        size_command = ['du', '-sh', local_path]
-        result = subprocess.run(clone_command, capture_output=True, check=True)
-        size = subprocess.run(size_command, capture_output=True, check=True).stdout.decode('utf-8').split('\t')[0]
-        result.size = size
+        status_command = ['git', '-C', local_path, 'status', '--porcelain']
+        result = SubprocessTimeout().run(timeout, clone_command)
+        clone_status = subprocess.run(status_command, capture_output=True, check=False)
+        result.clone_status = clone_status
         return result
 
-    def success_function(self, result):
-        remote_size = self._remote_size
-        cloned_size_int = int(result.size.strip('M'))
-        remote_size_int = int(remote_size.strip('\n').strip('M'))
-        # if almost equal
-        if abs(cloned_size_int - remote_size_int) < 10:
-            return True
-        return False
+    @staticmethod
+    def success_function(result):
+        # Check return code from git clone
+        if result.returncode != 0:
+            return False
+        # Check return code from git status --porcelain
+        if result.clone_status.returncode != 0:
+            return False
+        # Check for any output from git status --porcelain (indicates difference between local and remote)
+        if result.clone_status.stdout.decode('utf-8') != '':
+            return False
+        return True
 
     def _generate_result(self, attempts, successes, failures, results):
 
@@ -405,10 +397,8 @@ class GitCloneTest(BaseUrlTest):
             'successes': successes,
             'failures': failures,
             'results': results,
-            'remote_size': self._remote_size,
-            #'remote_size_real': self._remote_size_real,
-            'remote_size_estimated': True,
-            'local_sizes': [result.size for result in results.values()]
+            'clone_return_codes': [result.returncode for result in results.values()],
+            'clone_status_return_codes': [result.clone_status.returncode for result in results.values()]
         }
 
     def print_results(self, results, extended_info=True):
@@ -425,21 +415,18 @@ class GitCloneTest(BaseUrlTest):
             print(f"  Failed attempts: {result_dict['failures']}")
             print(f"{bcolors.ENDC}", end='')
             if extended_info:
+                if out_color == bcolors.FAIL:
+                    out_color = bcolors.WARNING
                 print(f"{out_color}", end='')
-                print(f"  Remote size: {result_dict['remote_size']}")
-                if result_dict['remote_size_estimated']:
-                    print("  Remote size is estimated")
-                else:
-                    print("  Remote size is real")
-                print(f"  Local sizes: {result_dict['local_sizes']}\n")
-                print(f"{bcolors.ENDC}", end='')
+                print(f"  Git clone return codes: {result_dict['clone_return_codes']}")
+                print(f"  Git status return codes: {result_dict['clone_status_return_codes']}")
+                print(f"{bcolors.ENDC}")
 
 
 class SpeedTest:
-    def __init__(self):
-        self._acceptable_download_speed = 20  #Mbps
-        self._acceptable_upload_speed = 10  #Mbps
-        self._acceptable_ping = 50  #ms
+    ACCEPTABLE_UPLOAD_SPEED = 10  # Mbps
+    ACCEPTABLE_DOWNLOAD_SPEED = 20  # Mbps
+    ACCEPTABLE_PING = 50  # ms
 
     @staticmethod
     def run_tests():
@@ -468,15 +455,15 @@ class SpeedTest:
 
     def print_results(self, results, extended_info=True):
         up_color = bcolors.WARNING
-        if results['upload'] > self._acceptable_upload_speed:
+        if results['upload'] > self.ACCEPTABLE_UPLOAD_SPEED:
             up_color = bcolors.OKGREEN
 
         down_color = bcolors.WARNING
-        if results['download'] > self._acceptable_download_speed:
+        if results['download'] > self.ACCEPTABLE_DOWNLOAD_SPEED:
             down_color = bcolors.OKGREEN
 
         ping_color = bcolors.WARNING
-        if results['ping'] < self._acceptable_ping:
+        if results['ping'] < self.ACCEPTABLE_PING:
             ping_color = bcolors.OKGREEN
 
         print("Results for general internet speed test:")
@@ -496,6 +483,7 @@ class GetSystemInfo:
     ACCEPTABLE_UPTIME_HOURS = 24
     ACCEPTABLE_FREE_DISK_SPACE_GB = 25
     ACCEPTABLE_UPTIME_SECONDS = ACCEPTABLE_UPTIME_HOURS * 60 * 60
+
     def __init__(self):
         self.results = {}
 
@@ -628,8 +616,7 @@ class GetSystemInfo:
 
 
 class GetNvidiaInfo:
-    def __init__(self):
-        self._acceptable_driver_versions = ['535.183.x']
+    ACCEPTABLE_DRIVER_VERSIONS = ['535.183.x']
 
     @staticmethod
     def _detect_gpu():
@@ -679,7 +666,7 @@ class GetNvidiaInfo:
         return '.'.join(version.split('.')[:2])
 
     def _compare_driver_versions(self, detected_version):
-        for driver_version in self._acceptable_driver_versions:
+        for driver_version in self.ACCEPTABLE_DRIVER_VERSIONS:
             if 'x' in driver_version:
                 driver_version = driver_version.replace('x', '').strip('.')
 
@@ -763,24 +750,9 @@ class DeploymentTest:
                 print(f"{bcolors.ENDC}", end='')
 
 
+if __name__ == "__main__":
+    deployment_test = DeploymentTest()
 
-# class A:
-#   x = 5
-
-
-# class B:
-#   x = 7
-
-
-# class C:
-#   def __init__(self):
-#     self.a = A()
-#     self.b = B()
-
-
-
-deployment_test = DeploymentTest()
-# c = C()
 
 # # spit into file
 # # recent oneliners?
