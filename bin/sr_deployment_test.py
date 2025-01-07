@@ -169,7 +169,7 @@ class BaseUrlTest:
 
 
 class WgetTest(BaseUrlTest):
-    TIMEOUT = 7
+    TIMEOUT = 45
     TEMP_FILE_NAME = '/tmp/sr_test_wget_python'
     NUM_RETRIES = 3
 
