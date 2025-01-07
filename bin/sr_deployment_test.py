@@ -101,7 +101,7 @@ class ProgressBar:
 
     @staticmethod
     def delete_last_n_lines(n):  # pylint: disable=C0103
-        "Deletes the last line in the STDOUT"
+        "Deletes the last n lines printed to the terminal"
         for _ in range(n):
             # cursor up one line
             sys.stdout.write('\x1b[1A')
@@ -117,14 +117,12 @@ class BaseUrlTest:
     def _loop_test(self, funct, args, success_function, message_str,
                    after_test_funct=None, num_retries=5, timeout=5, thread_interp_prog=False):
         results = {}
-        durs = []
         successes = 0
         attempts = num_retries
         print(message_str)
         progress_bar = ProgressBar()
         progress_bar.start_progress(f"Running {attempts} tests")
         for i in range(attempts):
-            now = time.monotonic()
             progress_bar_goal = int((i+1) * 100 / attempts)
             if thread_interp_prog:
                 thread, event = progress_bar.thread_interpolate_progress(progress_bar_goal, timeout)
@@ -140,7 +138,6 @@ class BaseUrlTest:
                 event.set()
                 thread.join()
             time.sleep(1)
-            durs.append(time.monotonic() - now)
         progress_bar.end_progress()
         progress_bar.delete_last_n_lines(2)
         print(message_str.replace("Running", "Finished"))
@@ -152,7 +149,7 @@ class BaseUrlTest:
         raise NotImplementedError
 
     def run_tests(self):
-        pass
+        raise NotImplementedError
 
 
 class WgetTest(BaseUrlTest):
@@ -337,6 +334,7 @@ class GitCloneTest(BaseUrlTest):
     def __init__(self, name_url_dict):
         super().__init__(name_url_dict)
         self._name_url_dict = name_url_dict
+        self._num_retries = 2
         # remote_size = self._get_remote_repo_size()
         self._timeout = 30
         self._remote_size = '88M'
@@ -346,13 +344,13 @@ class GitCloneTest(BaseUrlTest):
         command = '''
                     curl \
                     -H "Accept: application/vnd.github.v3+json" \
-                    -s https://api.github.com/repos/torvalds/linux | \
+                    -s https://api.github.com/repos/org_name/repo_name | \
                     jq '.size' | \
                     numfmt --to=iec --from-unit=1024
 
                     '''
-        command = command.replace('torvalds', 'shadow-robot')
-        command = command.replace('linux', 'sr_interface')
+        command = command.replace('org_name', 'shadow-robot')
+        command = command.replace('repo_name', 'sr_interface')
         command = command.replace('\n', '')
         response = subprocess.run(command,
                                   capture_output=True,
@@ -368,15 +366,14 @@ class GitCloneTest(BaseUrlTest):
             subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'], check=True)
 
     def run_tests(self):
-        if os.path.exists('/tmp/sr_test_git_clone_python'):
-            subprocess.run(['rm', '-rf', '/tmp/sr_test_git_clone_python'], check=True)
+        self._after_test_funct()
         for name, url in self._name_url_dict.items():
             message_str = f"Running git clone test on {url} with a timeout of {self._timeout}s"
             self.results[name] = self._loop_test(self.git_clone, (url, '/tmp/sr_test_git_clone_python'),
                                                  self.success_function,
                                                  message_str,
                                                  self._after_test_funct,
-                                                 num_retries=2,
+                                                 num_retries=self._num_retries,
                                                  timeout=self._timeout,
                                                  thread_interp_prog=True)
         return self.results
