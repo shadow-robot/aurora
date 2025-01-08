@@ -621,7 +621,6 @@ class GetNvidiaInfo:
 
     @staticmethod
     def _detect_gpu():
-        command = ['lspci', '|', 'grep', 'VGA', '|', 'grep', '-i', 'nvidia', '|', 'wc', '-l']
         command = ['lspci']
         output, return_code = GetNvidiaInfo._get_utf8_output(command, shell=True)
         if return_code != 0:
