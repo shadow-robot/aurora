@@ -51,13 +51,10 @@ docker start aurora_dev
 docker exec -u root aurora_dev /bin/chmod -v a+s /usr/bin/docker
 
 docker exec -u root aurora_dev chmod 777 /var/run/docker.sock
-
-docker exec -it -u user aurora_dev bash
-
-cd /home/user
 ```
 4. Once the container has launched, clone aurora to home directory:
 ```
+cd ~/
 git clone https://github.com/shadow-robot/aurora.git
 ```
 5. Go into the aurora folder:
