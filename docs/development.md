@@ -44,6 +44,8 @@ Instructions on how to use this:
 
 ```
 docker run -it --name aurora_dev -e DISPLAY -e QT_X11_NO_MITSHM=1 -e LOCAL_USER_ID=$(id -u) -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix:rw public.ecr.aws/shadowrobot/aurora-molecule-devel:focal
+
+docker exec -u root aurora_dev /bin/chmod -v a+s /usr/bin/docker
 ```
 4. Once the container has launched, clone aurora to home directory:
 ```
