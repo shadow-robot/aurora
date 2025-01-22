@@ -44,6 +44,7 @@
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
     directory_mode: yes
+    remote_src: true
     mode: 0755
   changed_when: false
   when: demo_path.stat.exists and demo_path.stat.isdir
@@ -296,4 +297,4 @@
   changed_when: false
   
 - name: Restart GNOME Display Manager (Desktop refresh)
-  shell: killall -SIGQUIT gnome-shell
+  shell: killall -SIGQUIT gnome-shell || /bin/true
