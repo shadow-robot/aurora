@@ -208,7 +208,7 @@ tom@tomhome:~/Desktop$ echo $?
 ```
 
 and on the remote ec2 instance:
-```bash
+```
 ubuntu@ip-10-120-1-33:~/Desktop$ gio set Launch\ Shadow\ Right\ Teleop.desktop "metadata::trusted" yes
 gio: Setting attribute metadata::trusted not supported
 ubuntu@ip-10-120-1-33:~/Desktop$ echo $?
