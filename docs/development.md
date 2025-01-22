@@ -335,6 +335,10 @@ If `ANSIBLE_KEEP_REMOTE_FILES=1` was set on the run that generated that error, a
 ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o Port=22 -o 'IdentityFile="/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ubuntu"' -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -o ForwardX11=no -o LogLevel=ERROR -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o 'ControlPath="/home/user/.ansible/cp/%h-%p-%r"' -tt 35.179.173.245 '/bin/sh -c '"'"'/usr/bin/python3 /home/ubuntu/.ansible/tmp/ansible-tmp-1737565534.8406236-7021-70129049106883/AnsiballZ_s3_object.py && sleep 0'"'"''
 ```
 
+Running the above command showed that `botocore.exceptions.NoCredentialsError: Unable to locate credentials`. This made it clear that the `TASK [products/common/documentation : Downloading the Documentation from AWS to Desktop (for Molecule in AWS)] ***` task was failing due to an authentication issue on the remote machine. SSHing to the remote machine and pasting the three `export AWS_ACCESS_KEY_ID=...` lines at the TOP of the .bashrc and running the above command again showed a success, and the testing/debugging could continue.
+
+
+
 ## Automatic tests ##
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder. AWS buildspec specification is [here](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
