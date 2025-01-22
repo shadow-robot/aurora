@@ -273,7 +273,7 @@ The IP can either be found by scrolling back up to the `TASK [Wait for SSH] ****
 OR, by examining current connections in a new terminal (terminal 2) in the aurora_dev container:
 
 ```bash
-sudo apt install -y iproute2
+sudo apt update && sudo apt install -y iproute2
 ss | grep ssh
 ```
 (will return something like `tcp   ESTAB 0      0                 172.17.0.2:34430     52.56.228.199:ssh` if there is currently a connection between your machine and the ec2 instance)
