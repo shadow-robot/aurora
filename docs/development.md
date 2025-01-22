@@ -295,6 +295,45 @@ ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule converge -s teleop
 > [!CAUTION]
 > By running these stages individually (or, by interrupting the full `... molecule test` command), it is possible (easy) to never reach the `destroy` part of the check sequence. Doing this will leave an ec2 instance running forever, costing us money. It is STRONGLY ADVISED to log in to aws ec2 and see if any ec2 instances have been left alive. They will have a key name of `molecule_key_aurora...*`. Make sure no PR checks are running against aurora first, you don't want to delete an instance that is in use by someone else.
 
+#### Further debugging
+In your local aurora_dev container, ansible will be serializing/zipping commands, wrapping the zipped payload in python, and sending them to the remote machine (the ec2 instance) for execution. Sometimes it can be helpful to re-run just the last failed command (instead of re-running the whole check/task/playbook). By default, ansible will delete these remote payloads after execution, but you can ask it to keep them by setting the ANSIBLE_KEEP_REMOTE_FILES variable:
+
+```bash
+ANSIBLE_KEEP_REMOTE_FILES=1 ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule converge -s teleop_server_check_desktop_icons_docker_ec2
+```
+
+We can see what ansible is running if we look at the terminal printout for task executions. With ANSIBLE_KEEP_REMOTE_FILES=1, we can run these parts again.
+Example part of molecule printout:
+
+```
+TASK [products/common/documentation : Downloading the Documentation from AWS to Desktop (for Molecule in AWS)] ***
+task path: /home/user/aurora/ansible/roles/products/common/documentation/tasks/main.yml:135
+...
+...
+
+<35.179.173.245> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o Port=22 -o 'IdentityFile="/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ubuntu"' -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -o ForwardX11=no -o LogLevel=ERROR -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o 'ControlPath="/home/user/.ansible/cp/%h-%p-%r"' -tt 35.179.173.245 '/bin/sh -c '"'"'/usr/bin/python3 /home/ubuntu/.ansible/tmp/ansible-tmp-1737565534.8406236-7021-70129049106883/AnsiballZ_s3_object.py && sleep 0'"'"''
+...
+...
+The full traceback is:
+fatal: [teleop_server_check_desktop_icons_docker_ec2_]: FAILED! => {
+    "changed": false,
+    "module_stderr": "Shared connection to 35.179.173.245 closed.\r\n",
+    "module_stdout": "Traceback (most recent call last):\r\n  File \"/tmp/ansible_amazon.aws.s3_object_payload_fb5mmjvj/ansible_amazon.aws.s3_object_payload.zip/ansible_collections/amazon/aws/plugins/modules/s3_object.py\", line 517, in bucket_check\r\n  File \"/tmp/ansible_amazon.aws.s3_object_payload_fb5mmjvj/ansible_amazon.aws.s3_object_payload.zip/ansible_collections/amazon/aws/plugins/module_utils/retries.py\", line 105, in deciding_wrapper\r\n  File \"/tmp/ansible_amazon.aws.s3_object_payload_fb5mmjvj/ansible_amazon.aws.s3_object_payload.zip/ansible_collections/amazon/aws/plugins/module_utils/cloud.py\", line 119, in _retry_wrapper\r\n  File ...
+...
+...
+    "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error",
+    "rc": 1
+}
+
+PLAY RECAP *********************************************************************
+teleop_server_check_desktop_icons_docker_ec2_ : ok=80   changed=0    unreachable=0    failed=1    skipped=104  rescued=0    ignored=0
+```
+
+If `ANSIBLE_KEEP_REMOTE_FILES=1` was set on the run that generated that error, and if we want to re-try just that part, we can run the ansible command again (because the payload `/home/ubuntu/.ansible/tmp/ansible-tmp-1737565534.8406236-7021-70129049106883/AnsiballZ_s3_object.py`) still exists on the remote machine. To do this, from the aurora_dev container on your local machine, run (the equilvalent command to):
+
+```bash
+ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o Port=22 -o 'IdentityFile="/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ubuntu"' -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -o ForwardX11=no -o LogLevel=ERROR -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o 'ControlPath="/home/user/.ansible/cp/%h-%p-%r"' -tt 35.179.173.245 '/bin/sh -c '"'"'/usr/bin/python3 /home/ubuntu/.ansible/tmp/ansible-tmp-1737565534.8406236-7021-70129049106883/AnsiballZ_s3_object.py && sleep 0'"'"''
+```
 
 ## Automatic tests ##
 
