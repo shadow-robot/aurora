@@ -224,7 +224,7 @@ So, sometimes it can be helpful to connect to one of these instances to see what
 
 In this section we will use the `aurora_teleop` test (`teleop_server_check_desktop_icons_docker_ec2`) as an example.
 
-Start by creating your development container (as described in the [Testing with molecule_docker](#testing-with-molecule_docker) section) and authenticating it (as described at the start of the [credentials](#credentials) section).
+Start by creating your development container (as described in the [Development Docker](#development-docker) section) and authenticating it (as described at the start of the [credentials](#credentials) section).
 
 If we have a look [here](https://github.com/shadow-robot/aurora/blob/bdff8c474cc063877a26fdff5b4347b1a171add6/ansible/playbooks/molecule_ec2_teleop/molecule/teleop_server_check_desktop_icons_docker_ec2/molecule.yml#L60C1-L67C14), we can see the stages that a PR check would go through.
 
