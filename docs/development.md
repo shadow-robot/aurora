@@ -221,14 +221,25 @@ So, sometimes it can be helpful to connect to one of these instances to see what
 
 In this section we will use the `aurora_teleop` test (`teleop_server_check_desktop_icons_docker_ec2`) as an example.
 
-Start by creating your development container (as described in the [Development Docker](#development-docker) section) and authenticating it (as described at the start of the [credentials](#credentials) section) to set the region. We also need the AWS_SESSION_TOKEN, so in addition to the above authentication, you will also need to paste your..
+Start by creating your development container (as described in the [Development Docker](#development-docker) section).
+
+#### Authenticating
+
+We need to set the aws region to `eu-west-2`. Run the following:
+```bash
+aws configure
+```
+Ignore all prompts other than `Default region name`. For that, enter `eu-west-2`.
+
+Now grab your...
 ```
 export AWS_ACCESS_KEY_ID=...
 export AWS_SECRET_ACCESS_KEY=...
 export AWS_SESSION_TOKEN=...
 ```
-... lines into the terminal.
+... lines and paste them into the terminal.
 
+#### Connecting and debugging 
 If we have a look [here](https://github.com/shadow-robot/aurora/blob/bdff8c474cc063877a26fdff5b4347b1a171add6/ansible/playbooks/molecule_ec2_teleop/molecule/teleop_server_check_desktop_icons_docker_ec2/molecule.yml#L60C1-L67C14), we can see the stages that a PR check would go through.
 
 Let's run these steps individually so that we have time to introspect the instance. Running the full `molecule test` will eventually call `destroy`, which will tear down the ec2 instance you are currently debugging. Remember to manually call `...molecule destroy -s teleop_server_check_desktop_icons_docker_ec2` when you're done!
@@ -238,7 +249,6 @@ Open your aurora_dev container, split the terminal window, and in the first term
 cd /home/user/aurora/ansible/playbooks/molecule_ec2_teleop
 ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule create -s teleop_server_check_desktop_icons_docker_ec2
 ```
-
 This will create an ec2 instance, connect to it, and start running aurora. For us to connect to this instance, we will need it's IP address and key.
 
 The key will be generated and written to the following path:
