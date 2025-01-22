@@ -91,22 +91,22 @@ cd /home/user/aurora/ansible/playbooks/molecule_docker
 2. Start with testing only your test case, without extra debug statements:
 
 ```
-molecule test -s name_of_your_test_case
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule test -s name_of_your_test_case
 ```
 
 3. Fix any errors. If you want more debug information, execute the following:
 ```
-molecule --debug test -s name_of_your_test_case
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule --debug test -s name_of_your_test_case
 ```
 The --debug flag produces a lot of information. Remember to scroll up to see any possible lint or other errors that might have occurred.
 
 4. Now test all test cases to check for effects on other aurora components and knock-on-effects:
 ```
-molecule test --all
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule test --all
 ```
 5. Fix any errors. If you want more debug information, execute the following:
 ```
-molecule --debug test all
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule --debug test all
 ```
 
 6. Often it is useful to run Molecule in stages (create, converge, verify, login (if necessary), and finally destroy) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
