@@ -23,7 +23,7 @@
     nvidia_docker: false
     skip_molecule_task: true
     allow_auto_reboot: true
-    customer_key: LpDYrac5U51OLyphu0X6U4fA3tPFzmSv6i8Uo49r
+    customer_key: invalidkey
     glove: shadow_glove
     hand_side: right
     arm_ip_right: "10.8.1.1"
