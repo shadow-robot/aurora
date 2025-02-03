@@ -21,7 +21,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
-    desktop_path = f'/home/{hostuser}/Desktop/'
+    desktop_path = f'/home/{hostuser}/.shadow_launcher_app_tactile_telerobot_system/Shadow Icons/'
     script_path = f'/home/{hostuser}/.shadow_launcher_app_tactile_telerobot_system/shadow_hand_launcher/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
@@ -77,9 +77,23 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        assert host.file(f"{desktop_path}{icon}.desktop").exists
+        icon_location = f"{desktop_path}{icon}.desktop"
+        icon_exists = host.file(icon_location).exists
+        print(f"Testing icon exists: {icon_location}", end='')
+        if icon_exists:
+            print(" -- Passed!")
+        else:
+            print(" -- Failed :(")
+        assert icon_exists
 
     for script in scripts:
-        assert host.file(f"{script_path}{script}.sh").exists
+        script_location = f"{script_path}{script}.sh"
+        script_exists = host.file(script_location).exists
+        print(f"Testing script exists: {script_location}", end='')
+        if script_exists:
+            print(" -- Passed!")
+        else:
+            print(" -- Failed :(")
+        assert script_exists
     save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists

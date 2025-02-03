@@ -51,6 +51,8 @@ provisioner:
     converge: ../../../molecule_docker/molecule/teleop_server_desktop_icons_simulation_haptx_docker/converge.yml
 verifier:
   name: testinfra
+  options:
+    s: true
   directory: ../../../molecule_docker/molecule/teleop_server_desktop_icons_simulation_haptx_docker/tests/
 scenario:
   create_sequence:

@@ -34,9 +34,8 @@ def test_docker_installed(host):
 
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
-    desktop_path = f'/home/{hostuser}/Desktop/'
     script_path = f'/home/{hostuser}/.shadow_launcher_app_shadow_teleoperation_system/shadow_hand_launcher/'
-    desktop_icon_path = f'/home/{hostuser}/.shadow_launcher_app_shadow_teleoperation_system/Shadow Icons/'
+    desktop_path = f'/home/{hostuser}/.shadow_launcher_app_shadow_teleoperation_system/Shadow Icons/'
     save_logs_script_path = f'/home/{hostuser}/.shadow_save_log_app/save_latest_ros_logs/'
     icons = (
         'Launch Shadow Right Teleop',
@@ -85,7 +84,7 @@ def test_icons_in_docker(host):
         'close_everything'
         )
     for icon in icons:
-        icon_location = f"{desktop_icon_path}{icon}.desktop"
+        icon_location = f"{desktop_path}{icon}.desktop"
         icon_exists = host.file(icon_location).exists
         print(f"Testing icon exists: {icon_location}", end='')
         if icon_exists:
