@@ -43,8 +43,8 @@
   copy:
     src: "{{ shadow_demos_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Demos"
+    remote_src: yes
     directory_mode: yes
-    remote_src: true
     mode: 0755
   changed_when: false
   when: demo_path.stat.exists and demo_path.stat.isdir
@@ -74,7 +74,6 @@
     src: "{{ shadow_simulation_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
     directory_mode: yes
-    remote_src: true
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -106,7 +105,6 @@
     src: "{{ shadow_advanched_launchers_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers"
     directory_mode: yes
-    remote_src: true
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -160,7 +158,6 @@
     src: "{{ right_launcher }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Right Side"
     directory_mode: yes
-    remote_src: true
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -172,7 +169,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Left Side"
     directory_mode: yes
     mode: 0755 
-    remote_src: true
   changed_when: false
   failed_when: false
   when: bimanual|bool and left_path.stat.exists and left_path.stat.isdir
@@ -182,7 +178,6 @@
     src: "{{ bimanual_launcher }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual"
     directory_mode: yes
-    remote_src: true
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -231,7 +226,6 @@
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
     directory_mode: yes
     mode: 0755 
-    remote_src: true
   changed_when: false
   failed_when: false
   when: local_path.stat.exists and local_path.stat.isdir
@@ -257,7 +251,6 @@
     src: "{{ item.path }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
     mode: 0755 
-    remote_src: true
   changed_when: false
   with_items: "{{ file_list.files }}"
   failed_when: false
@@ -306,12 +299,14 @@
   changed_when: false
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
-  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
   when: "'true' in gio_result.stdout"
 
 - name: Make all desktop icons auto_execute
   shell: kwriteconfig5 --file kiorc --group 'Executable scripts' --key 'behaviourOnLaunch' 'execute'
   changed_when: false
+  when: not skip_molecule_task|bool
   
 - name: Restart GNOME Display Manager (Desktop refresh)
-  shell: killall -SIGQUIT gnome-shell || /bin/true
+  shell: killall -SIGQUIT gnome-shell
+  when: not skip_molecule_task|bool

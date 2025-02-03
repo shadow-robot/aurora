@@ -153,3 +153,4 @@
     launch_terminal: "false"
     live_website_url_var: "{{ readthedocs_link }}"
     file_path_var: "{{ manual_folder }}/{{ manual_filename }}"
+  changed_when: false
