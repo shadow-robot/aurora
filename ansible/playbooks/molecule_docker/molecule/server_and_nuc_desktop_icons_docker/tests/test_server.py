@@ -46,8 +46,8 @@ def test_icons_in_docker(host):
         'Bimanual/3 - Launch NUC Container and Bimanual Hands Hardware Control Loop',
         'Left Side/3 - Zero Force Mode - Left Hand',
         'Right Side/3 - Zero Force Mode - Right Hand',
-        'Local Launch/Local Zero Force Mode - Left Hand',
-        'Local Launch/Local Zero Force Mode - Right Hand',
+        'Shadow Advanced Launchers/Local Launch/Local Zero Force Mode - Left Hand',
+        'Shadow Advanced Launchers/Local Launch/Local Zero Force Mode - Right Hand',
         'Left Side/4 - Launch Server Left Hand GUI',
         'Right Side/4 - Launch Server Right Hand GUI',
         'Bimanual/4 - Launch Server Bimanual GUI',
@@ -61,9 +61,9 @@ def test_icons_in_docker(host):
         'Shadow Demos/Close Bimanual Hands',
         'Shadow Demos/Open Bimanual Hands',
         'Shadow Demos/Demo Bimanual Hands',
-        'Local Launch/Launch Local Shadow Right Hand',
-        'Local Launch/Launch Local Shadow Left Hand',
-        'Local Launch/Launch Local Shadow Bimanual Hands',
+        'Shadow Advanced Launchers/Local Launch/Launch Local Shadow Right Hand',
+        'Shadow Advanced Launchers/Local Launch/Launch Local Shadow Left Hand',
+        'Shadow Advanced Launchers/Local Launch/Launch Local Shadow Bimanual Hands',
         'Shadow ROS Logs Saver and Uploader',
         'Shadow Close Everything'
         )
