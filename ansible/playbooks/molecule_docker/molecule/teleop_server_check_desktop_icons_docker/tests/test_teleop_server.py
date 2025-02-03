@@ -83,8 +83,11 @@ def test_icons_in_docker(host):
         'shadow_zero_force_mode_right',
         'close_everything'
         )
+    icon_pass_fail = {}
     for icon in icons:
-        assert host.file(f"{desktop_path}{icon}.desktop").exists
+        icon_pass_fail[icon] = host.file(f"{desktop_path}{icon}.desktop").exists
+        print(f"Testing icon: {icon}")
+        assert icon_pass_fail[icon]
 
     for script in scripts:
         assert host.file(f"{script_path}{script}.sh").exists
