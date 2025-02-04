@@ -306,7 +306,7 @@
   changed_when: false
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
-  shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
   when: "'true' in gio_result.stdout"
 
 - name: Make all desktop icons auto_execute
