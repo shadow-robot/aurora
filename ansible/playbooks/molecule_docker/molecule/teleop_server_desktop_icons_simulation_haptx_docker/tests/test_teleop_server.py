@@ -128,7 +128,6 @@ def test_icons_in_docker(host):
         'shadow_sim_bimanual',
         'shadow_sim_left',
         'shadow_sim_right',
-        'shadowlogo.png',
         'teleop-server-setup',
 
         )

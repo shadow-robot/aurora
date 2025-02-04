@@ -108,7 +108,12 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/Local Launch/Launch Local Shadow Left Hand',
         'Shadow Advanced Launchers/Local Launch/Launch Local Shadow Bimanual Hands',
         'Shadow ROS Logs Saver and Uploader',
-        'Shadow Close Everything'
+        'Shadow Close Everything',
+        'Dexterous Hand Documentation',
+        'Dexterous Hand',
+        'Simulation/Launch Shadow Right Hand Simulation',
+        'Simulation/Launch Shadow Left Hand Simulation',
+        'Simulation/Launch Shadow Bimanual Hands Simulation'
         )
     scripts = (
         'shadow_launch_everything_right',

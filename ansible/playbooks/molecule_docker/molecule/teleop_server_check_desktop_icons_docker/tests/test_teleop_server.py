@@ -74,6 +74,7 @@ def check_things_exist(host, extension, path_to_test, things, type_of_thing='ico
             print(f"  {thing_not_tested_for}")
     assert len(things_not_tested_for) == 0
 
+
 def test_icons_in_docker(host):
     hostuser = str(host.user().name)
     script_path = f'/home/{hostuser}/.shadow_launcher_app_shadow_teleoperation_system/shadow_hand_launcher/'
@@ -91,6 +92,11 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/3 - Demohand D Launch NUC Left Side Teleop Hardware Control Loop',
         'Shadow Advanced Launchers/4 - Launch Right Teleop GUI',
         'Shadow Advanced Launchers/Launch NUC Container',
+        'Shadow Advanced Launchers/Launch Server Container',
+        'Shadow Advanced Launchers/Right Teleop Simulation',
+        'Shadow Advanced Launchers/Launch Shadow Right Glove Calibration',
+        'Shadow Demos/Demo Right Hand',
+        'Shadow Teleoperation System'
         'Shadow Demos/Close Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow ROS Logs Saver and Uploader',
