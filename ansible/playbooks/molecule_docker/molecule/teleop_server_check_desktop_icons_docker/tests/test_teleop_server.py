@@ -136,5 +136,5 @@ def test_icons_in_docker(host):
 
     save_logs_file = f"{save_logs_script_path}save-latest-ros-logs.sh"
     assert host.file(save_logs_file).exists
-    dolphin_icon = f"/home/{hostuser}/Desktop/Tactile Telerobot System.desktop"
+    dolphin_icon = f"/home/{hostuser}/Desktop/Shadow Teleoperation System.desktop"
     assert host.file(dolphin_icon).exists
