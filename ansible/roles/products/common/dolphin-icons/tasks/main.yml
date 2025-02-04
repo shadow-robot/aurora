@@ -281,7 +281,6 @@
   copy:
     src: ../../../common/resources/files/shadowlogo.png
     dest: "{{ shadow_hand_launcher_folder }}/shadow_hand_launcher/shadowlogo.png"
-    remote_src: yes
     mode: '664'
 
 - name: Create main {{ container_name | replace('_', ' ') | title }} desktop icon for Dolphin file manager
