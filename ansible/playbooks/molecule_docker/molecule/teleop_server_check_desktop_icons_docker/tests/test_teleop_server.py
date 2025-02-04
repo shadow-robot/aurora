@@ -96,7 +96,7 @@ def test_icons_in_docker(host):
         'Shadow Advanced Launchers/Right Teleop Simulation',
         'Shadow Advanced Launchers/Launch Shadow Right Glove Calibration',
         'Shadow Demos/Demo Right Hand',
-        'Shadow Teleoperation System'
+        'Shadow Teleoperation System',
         'Shadow Demos/Close Right Hand',
         'Shadow Demos/Open Right Hand',
         'Shadow ROS Logs Saver and Uploader',
