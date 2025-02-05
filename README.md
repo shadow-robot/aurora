@@ -1,5 +1,6 @@
 # Table of Contents
 - [Introduction](#introduction)
+- [Deployment Test](#deployment-test)
 - [Multiple Aurora Installations on one device](#multiple-aurora-installations-on-one-device)
 - [How to run](#how-to-run)
   * [teleop_deploy](#teleop_deploy)
@@ -28,6 +29,16 @@ For example, it's possible to use Aurora to install Docker, download the specifi
 Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/user_guide/index.html) (Aurora is currently using Ansible 4.2.0)
 
 Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.6.1)
+
+# Deployment Test #
+
+There is now a tool for checking if your system is likely to successfully run our deployment software. To use this, run the following in a terminal:
+
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/master/bin/deployment-test.sh)
+```
+
+If something goes wrong with your deployment, this can be a great starting point to see if there are any obvious problems. Before contacting shadow support for help with deployment, please run this tool first and add the output to your email requesting help.
 
 # Multiple Aurora Installations on one device #
 
