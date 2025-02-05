@@ -15,7 +15,6 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 conda_ws_name="aurora_conda_ws"
-aurora_python_version="3.8"
 miniconda_install_root="${HOME}/.shadow_miniconda"
 miniconda_install_location="${miniconda_install_root}/miniconda"
 miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
@@ -65,10 +64,10 @@ _fetch_new_files() {
   aws_bucket_url=$1
   aws_bucket_dir=$2
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
-  # PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
+
   echo "Fetching ${aws_bucket_dir}..."
   mkdir -p $local_download_dir
-  # alias xq="/home/tom/.shadow_miniconda/miniconda/bin/xq"
+
   remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
 
   echo "remote_packages: ${remote_packages}"
