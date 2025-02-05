@@ -65,20 +65,10 @@ _fetch_new_files() {
   aws_bucket_url=$1
   aws_bucket_dir=$2
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
-  export PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
+  PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
   echo "Fetching ${aws_bucket_dir}..."
   mkdir -p $local_download_dir
-  alias xq="/home/tom/.shadow_miniconda/miniconda/bin/xq"
-  x1=$(curl -Ls ${aws_bucket_url})
-  x2=$(echo $x1 | xq)
-  x3=$(echo $x2 | grep $aws_bucket_dir)
-  x4=$(echo $x3 | grep 'Key')
-  x5=$(echo $x4 | sed -r "s/.*${aws_bucket_dir}\///g" )
-  echo "x1: $x1"
-  echo "x2: $x2"
-  echo "x3: $x3"
-  echo "x4: $x4"
-  echo "x5: $x5"
+  # alias xq="/home/tom/.shadow_miniconda/miniconda/bin/xq"
   remote_packages=$(curl -Ls ${aws_bucket_url} | xq | grep $aws_bucket_dir | grep 'Key' | sed -r "s/.*${aws_bucket_dir}\///g" | sed -r 's/",//g' | sed -r 's;</Key>;;g')
 
   echo "remote_packages: ${remote_packages}"
@@ -127,10 +117,7 @@ create_conda_ws(){
   if [ -d "$shadow_conda_ws_dir" ]; then
     rm -rf $shadow_conda_ws_dir
   fi
-
   ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-  # conda env config vars set PYTHONNOUSERSITE=1
-  # conda activate ${conda_ws_name}
   ${miniconda_install_location}/bin/pip3 install yq xq
 }
 
