@@ -249,7 +249,7 @@ Open your aurora_dev container, split the terminal window, and in the first term
 cd /home/user/aurora/ansible/playbooks/molecule_ec2_teleop
 ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule create -s teleop_server_check_desktop_icons_docker_ec2
 ```
-This will create an ec2 instance, connect to it, and start running aurora. For us to connect to this instance, we will need it's IP address and key.
+This will create an ec2 instance, connect to it, and start running aurora. For us to connect to this instance, we will need its IP address and key.
 
 The key will be generated and written to the following path:
 `/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key`.
