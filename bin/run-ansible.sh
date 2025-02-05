@@ -359,7 +359,7 @@ pushd $aurora_home
 
 export PYTHONNOUSERSITE=1
 source $aurora_home/bin/conda_utils.sh
-PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
+export PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
 create_conda_ws
 # PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
 # PYTHONPATH="${shadow_conda_ws_dir}/lib/python${aurora_python_version}/site-packages:${miniconda_install_location}/bin"

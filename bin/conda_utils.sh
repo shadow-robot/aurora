@@ -65,7 +65,7 @@ _fetch_new_files() {
   aws_bucket_url=$1
   aws_bucket_dir=$2
   local_download_dir="${packages_download_root}/${aws_bucket_dir}"
-  PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
+  # PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
   echo "Fetching ${aws_bucket_dir}..."
   mkdir -p $local_download_dir
   # alias xq="/home/tom/.shadow_miniconda/miniconda/bin/xq"
