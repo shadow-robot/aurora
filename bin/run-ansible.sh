@@ -41,6 +41,7 @@ aurora_home=/tmp/aurora
 
 playbook=$1
 aurora_limit=all
+test_machine=false
 shift
 
 while [[ $# -gt 1 ]]
@@ -67,6 +68,10 @@ case ${key} in
     read_secure="$2"
     shift 2
     ;;
+    --test-machine)
+    test_machine="$2"
+    shift 2
+    ;;
     *)
     break
     ;;
@@ -74,7 +79,7 @@ esac
 done
 
 
-if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
+if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]] && [[ "${test_machine}" = "false" ]]; then
     if [[ -z ${read_secure} ]]; then
         read_secure="sudo_password"
     else
@@ -116,6 +121,7 @@ echo "playbook     = ${playbook}"
 echo "branch       = ${aurora_tools_branch}"
 echo "inventory    = ${aurora_inventory}"
 echo "limit        = ${aurora_limit}"
+echo "Testing setup= ${test_machine}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
@@ -328,6 +334,11 @@ echo " |   Installing needed packages  |"
 echo " ---------------------------------"
 echo ""
 
+if [[ "${test_machine}" = "true" ]]; then
+    echo $test_password | sudo -S echo "Running on testing machine. Retrieving passwords from ENV..."
+    formatted_extra_vars="$formatted_extra_vars sudo_password=$test_password docker_username=$docker_username docker_password=$docker_password ansible_sudo_pass=$test_password"
+fi
+
 # Wait for apt-get update lock file to be released
 while (sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1) || (sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1) do
     echo "Waiting for apt-get update file lock..."
@@ -392,7 +403,11 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     else
         aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
     fi
-    ansible_flags="${ansible_flags} --ask-vault-pass"
+    if [[ "${test_machine}" = "true" ]]; then
+        ansible_flags="${ansible_flags} --vault-password-file /home/$USER/vault.sh"
+    else
+        ansible_flags="${ansible_flags} --ask-vault-pass"
+    fi
     echo ""
     echo " ---------------------------------------------------"
     echo " |                 VAULT password:                 |"
@@ -400,7 +415,11 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     echo " ---------------------------------------------------"
     echo ""
 elif [[ "${playbook}" = "teleop_deploy" ]]; then
-    ansible_flags="${ansible_flags} --ask-vault-pass"
+    if [[ "${test_machine}" = "true" ]]; then
+        ansible_flags="${ansible_flags} --vault-password-file /home/$USER/vault.sh"
+    else
+        ansible_flags="${ansible_flags} --ask-vault-pass"
+    fi
     if [[ "${aurora_inventory}" = "" ]]; then
         aurora_inventory="ansible/inventory/teleop/production"
     else
@@ -415,7 +434,9 @@ elif [[ "${playbook}" = "teleop_deploy" ]]; then
     echo ""
 else
     aurora_inventory="ansible/inventory/${aurora_inventory}"
-    ansible_flags="${ansible_flags} --ask-become-pass"
+    if [[ "${test_machine}" != "true" ]]; then
+        ansible_flags="${ansible_flags} --ask-become-pass"
+    fi
     echo ""
     echo " --------------------------------------------"
     echo " |             BECOME password:             |"
