@@ -39,7 +39,7 @@ def find_files_by_extension_recursively(extension, host, current_dir=None, found
             find_files_by_extension_recursively(extension, host, entry_path, found_files)
         else:
             print(f"Debug: {entry_path} is neither a file nor a directory")
-    return list(set([x.replace('//', '/') for x in found_files]))
+    return list(set(x.replace('//', '/') for x in found_files))
 
 def check_things_exist(host, extension, path_to_test, things, type_of_thing='icon'):
     tested_thing_locations = []
