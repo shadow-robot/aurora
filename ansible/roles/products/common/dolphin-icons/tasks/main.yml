@@ -74,6 +74,7 @@
     src: "{{ shadow_simulation_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Simulation"
     directory_mode: yes
+    remote_src: yes
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -105,6 +106,7 @@
     src: "{{ shadow_advanched_launchers_folder }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers"
     directory_mode: yes
+    remote_src: yes
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -158,6 +160,7 @@
     src: "{{ right_launcher }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Right Side"
     directory_mode: yes
+    remote_src: yes
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -168,6 +171,7 @@
     src: "{{ left_launcher }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Left Side"
     directory_mode: yes
+    remote_src: yes
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -178,6 +182,7 @@
     src: "{{ bimanual_launcher }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Bimanual"
     directory_mode: yes
+    remote_src: yes
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -225,6 +230,7 @@
     src: "{{ local_launcher }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons/Shadow Advanced Launchers/Local Launch"
     directory_mode: yes
+    remote_src: yes
     mode: 0755 
   changed_when: false
   failed_when: false
@@ -250,6 +256,7 @@
   copy:
     src: "{{ item.path }}"
     dest: "{{ shadow_hand_launcher_folder }}/Shadow Icons"
+    remote_src: yes
     mode: 0755 
   changed_when: false
   with_items: "{{ file_list.files }}"
@@ -299,7 +306,7 @@
   changed_when: false
 
 - name: Make main {{ container_name | replace('_', ' ') | title }} desktop icon Trusted
-  shell: dbus-launch gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
+  shell: gio set "{{ desktop_path }}/{{ container_name | replace('_', ' ') | title }}.desktop" "metadata::trusted" true
   when: "'true' in gio_result.stdout"
 
 - name: Make all desktop icons auto_execute

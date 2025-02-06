@@ -50,6 +50,8 @@ provisioner:
     converge: ../../../molecule_docker/molecule/default/converge.yml
 verifier:
   name: testinfra
+  options:
+    s: true
   directory: ../../../molecule_docker/molecule/default/tests/
 scenario:
   create_sequence:
