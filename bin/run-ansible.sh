@@ -369,14 +369,17 @@ fetch_ansible_files
 install_pip_packages
 
 
-# Fix for WSL - THIS IS NOT SUPPORTED AT ALL!!!
+# Fix for WSL - THIS IS NOT SUPPORTED AT ALL - Do not read this, don't look at it, don't try to run it, we don't support it
 if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
-  # python3 -m pip install pip --upgrade
   pip install pyopenssl --upgrade
+  WSL_START_DOCKER_COMMAND='wsl.exe --distribution "${WSL_DISTRO_NAME}" --user root --exec /usr/sbin/service docker start'
   if [[ $(which docker | wc -l) -gt 0 ]]; then
     if service docker status 2>&1 | grep -q "is not running"; then
-      wsl.exe --distribution "${WSL_DISTRO_NAME}" --user root --exec /usr/sbin/service docker start
+      ${WSL_START_DOCKER_COMMAND}
     fi
+  fi
+  if [[ $(cat ~/.bashrc  | grep "${WSL_START_DOCKER_COMMAND}" | wc -l) -eq 0 ]]; then
+    echo $WSL_START_DOCKER_COMMAND >> ~/.bashrc
   fi
 fi
 
