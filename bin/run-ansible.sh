@@ -357,7 +357,10 @@ echo ""
 pushd $aurora_home
 
 
+export PYTHONNOUSERSITE=1
 source $aurora_home/bin/conda_utils.sh
+export PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
+
 create_conda_ws
 
 fetch_pip_files
@@ -421,18 +424,19 @@ else
     echo ""
 fi
 
-ansible_executable=~/.local/bin/ansible-playbook
+ansible_executable="${miniconda_install_location}/bin/ansible-playbook"
 if [[ ! -f "${ansible_executable}" ]]; then
     ansible_executable=ansible-playbook
 fi
-ansible_basic_executable=~/.local/bin/ansible
+ansible_basic_executable="${miniconda_install_location}/bin/ansible"
 if [[ ! -f "${ansible_basic_executable}" ]]; then
     ansible_basic_executable=ansible
 fi
-ansible_galaxy_executable=~/.local/bin/ansible-galaxy
+ansible_galaxy_executable="${miniconda_install_location}/bin/ansible-galaxy"
 if [[ ! -f "${ansible_galaxy_executable}" ]]; then
     ansible_galaxy_executable=ansible-galaxy
 fi
+
 
 # install ansible galaxy docker and aws collections
 "${ansible_basic_executable}" --version
