@@ -9,6 +9,7 @@
   * [Private docker images](#private-docker-images)
   * [Testing with molecule_ec2](#testing-with-molecule_ec2)
   * [Credentials](#credentials)
+  * [Connecting to and debugging a molecule_ec2 test](#connecting-to-and-debugging-a-molecule_ec2-test)
   * [Automatic tests](#automatic-tests)
   * [Testing on real hardware](#testing-on-real-hardware)
 - [Templating](#templating)
@@ -43,10 +44,17 @@ Instructions on how to use this:
 3. Run the following command in terminal to create a container for aurora development:
 
 ```
-docker run -it --name aurora_dev -e DISPLAY -e QT_X11_NO_MITSHM=1 -e LOCAL_USER_ID=$(id -u) -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix:rw public.ecr.aws/shadowrobot/aurora-molecule-devel:focal
+docker create -it --name aurora_dev -e DISPLAY -e QT_X11_NO_MITSHM=1 -e LOCAL_USER_ID=$(id -u) -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/.X11-unix:/tmp/.X11-unix:rw public.ecr.aws/shadowrobot/aurora-molecule-devel:focal
+
+docker start aurora_dev
+
+docker exec -u root aurora_dev /bin/chmod -v a+s /usr/bin/docker
+
+docker exec -u root aurora_dev chmod 777 /var/run/docker.sock
 ```
 4. Once the container has launched, clone aurora to home directory:
 ```
+cd ~/
 git clone https://github.com/shadow-robot/aurora.git
 ```
 5. Go into the aurora folder:
@@ -87,22 +95,22 @@ cd /home/user/aurora/ansible/playbooks/molecule_docker
 2. Start with testing only your test case, without extra debug statements:
 
 ```
-molecule test -s name_of_your_test_case
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule test -s name_of_your_test_case
 ```
 
 3. Fix any errors. If you want more debug information, execute the following:
 ```
-molecule --debug test -s name_of_your_test_case
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule --debug test -s name_of_your_test_case
 ```
 The --debug flag produces a lot of information. Remember to scroll up to see any possible lint or other errors that might have occurred.
 
 4. Now test all test cases to check for effects on other aurora components and knock-on-effects:
 ```
-molecule test --all
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule test --all
 ```
 5. Fix any errors. If you want more debug information, execute the following:
 ```
-molecule --debug test all
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule --debug test all
 ```
 
 6. Often it is useful to run Molecule in stages (create, converge, verify, login (if necessary), and finally destroy) for better debugging (so you can inspect every stage yourself). See [this](https://molecule.readthedocs.io/en/stable/usage.html) page, and do, for example:
@@ -183,6 +191,154 @@ molecule verify -s name_of_your_test_case
 molecule login -s name_of_your_test_case
 molecule destroy -s name_of_your_test_case
 ```
+
+## Connecting to and debugging a molecule_ec2 test ##
+
+### Overview
+
+Some of our molecule tests will spawn ec2 instances. In PR checks, these are `aurora_server_and_nuc`, `aurora_simulation`, `aurora_local_inventories` and `aurora_teleop`. In the aurora repo these can be found under `ansible/playbooks/molecule_ec2_*`. 
+
+Unfortunately, there are some differences between these instances and our local machines. For example:
+
+For me, locally:
+```
+tom@tomhome:~/Desktop$ gio set Launch\ Shadow\ Right\ Teleop.desktop  "metadata::trusted" yes
+tom@tomhome:~/Desktop$ echo $?
+0
+```
+
+and on the remote ec2 instance:
+```
+ubuntu@ip-10-120-1-33:~/Desktop$ gio set Launch\ Shadow\ Right\ Teleop.desktop "metadata::trusted" yes
+gio: Setting attribute metadata::trusted not supported
+ubuntu@ip-10-120-1-33:~/Desktop$ echo $?
+1
+```
+
+So, sometimes it can be helpful to connect to one of these instances to see what's going wrong with a test or PR check.
+
+### Connecting and debugging
+
+In this section we will use the `aurora_teleop` test (`teleop_server_check_desktop_icons_docker_ec2`) as an example.
+
+Start by creating your development container (as described in the [Development Docker](#development-docker) section).
+
+#### Authenticating
+
+We need to set the aws region to `eu-west-2`. Run the following:
+```bash
+aws configure
+```
+Ignore all prompts other than `Default region name`. For that, enter `eu-west-2`.
+
+Now grab your...
+```
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_SESSION_TOKEN=...
+```
+... lines and paste them into the terminal.
+
+#### Connecting and debugging 
+If we have a look [here](https://github.com/shadow-robot/aurora/blob/bdff8c474cc063877a26fdff5b4347b1a171add6/ansible/playbooks/molecule_ec2_teleop/molecule/teleop_server_check_desktop_icons_docker_ec2/molecule.yml#L60C1-L67C14), we can see the stages that a PR check would go through.
+
+Let's run these steps individually so that we have time to introspect the instance. Running the full `molecule test` will eventually call `destroy`, which will tear down the ec2 instance you are currently debugging. Remember to manually call `...molecule destroy -s teleop_server_check_desktop_icons_docker_ec2` when you're done!
+
+Open your aurora_dev container, split the terminal window, and in the first terminal run:
+```bash
+cd /home/user/aurora/ansible/playbooks/molecule_ec2_teleop
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule create -s teleop_server_check_desktop_icons_docker_ec2
+```
+This will create an ec2 instance, connect to it, and start running aurora. For us to connect to this instance, we will need its IP address and key.
+
+The key will be generated and written to the following path:
+`/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key`.
+
+The IP can either be found by scrolling back up to the `TASK [Wait for SSH] ************************************************************` section of the console printout, where you can find:
+
+```
+    "item": {
+        "address": "52.56.228.199",
+        "identity_file": "/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key",
+        "instance": "teleop_server_check_desktop_icons_docker_ec2_",
+        "instance_ids": [
+            "i-0c2e66409c355f288"
+        ],
+        "port": 22,
+        "region": "eu-west-2",
+        "user": "ubuntu"
+    },
+```
+
+OR, by examining current connections in a new terminal (terminal 2) in the aurora_dev container:
+
+```bash
+sudo apt update && sudo apt install -y iproute2
+ss | grep ssh
+```
+(will return something like `tcp   ESTAB 0      0                 172.17.0.2:34430     52.56.228.199:ssh` if there is currently a connection between your machine and the ec2 instance)
+
+In terminal 2, we can now connect to the ec2 instance:
+```bash
+ssh -i /home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key ubuntu@52.56.228.199
+```
+
+In terminal 1, we can continue to run the steps in the [check](https://github.com/shadow-robot/aurora/blob/bdff8c474cc063877a26fdff5b4347b1a171add6/ansible/playbooks/molecule_ec2_teleop/molecule/teleop_server_check_desktop_icons_docker_ec2/molecule.yml#L60C1-L67C14) section in sequence. Eventually, when the test fails, being able to connect to the ec2 instance where the test is running can make it much easier to find out what's gone wrong and fix it.
+
+e.g - to run the next step in the `check` sequence:
+
+```bash
+cd /home/user/aurora/ansible/playbooks/molecule_ec2_teleop
+ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule converge -s teleop_server_check_desktop_icons_docker_ec2
+```
+
+> [!CAUTION]
+> By running these stages individually (or, by interrupting the full `... molecule test` command), it is possible (easy) to never reach the `destroy` part of the check sequence. Doing this will leave an ec2 instance running forever, costing us money. It is STRONGLY ADVISED to log in to aws ec2 and see if any ec2 instances have been left alive. They will have a key name of `molecule_key_aurora...*`. Make sure no PR checks are running against aurora first, you don't want to delete an instance that is in use by someone else.
+
+#### Further debugging
+In your local aurora_dev container, ansible will be serializing/zipping commands, wrapping the zipped payload in python, and sending them to the remote machine (the ec2 instance) for execution. Sometimes it can be helpful to re-run just the last failed command (instead of re-running the whole check/task/playbook). By default, ansible will delete these remote payloads after execution, but you can ask it to keep them by setting the ANSIBLE_KEEP_REMOTE_FILES variable:
+
+```bash
+ANSIBLE_KEEP_REMOTE_FILES=1 ANSIBLE_ROLES_PATH="/home/user/aurora/ansible/roles" molecule converge -s teleop_server_check_desktop_icons_docker_ec2
+```
+
+We can see what ansible is running if we look at the terminal printout for task executions. With ANSIBLE_KEEP_REMOTE_FILES=1, we can run these parts again.
+Example part of molecule printout:
+
+```
+TASK [products/common/documentation : Downloading the Documentation from AWS to Desktop (for Molecule in AWS)] ***
+task path: /home/user/aurora/ansible/roles/products/common/documentation/tasks/main.yml:135
+...
+...
+
+<35.179.173.245> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o Port=22 -o 'IdentityFile="/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ubuntu"' -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -o ForwardX11=no -o LogLevel=ERROR -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o 'ControlPath="/home/user/.ansible/cp/%h-%p-%r"' -tt 35.179.173.245 '/bin/sh -c '"'"'/usr/bin/python3 /home/ubuntu/.ansible/tmp/ansible-tmp-1737565534.8406236-7021-70129049106883/AnsiballZ_s3_object.py && sleep 0'"'"''
+...
+...
+The full traceback is:
+fatal: [teleop_server_check_desktop_icons_docker_ec2_]: FAILED! => {
+    "changed": false,
+    "module_stderr": "Shared connection to 35.179.173.245 closed.\r\n",
+    "module_stdout": "Traceback (most recent call last):\r\n  File \"/tmp/ansible_amazon.aws.s3_object_payload_fb5mmjvj/ansible_amazon.aws.s3_object_payload.zip/ansible_collections/amazon/aws/plugins/modules/s3_object.py\", line 517, in bucket_check\r\n  File \"/tmp/ansible_amazon.aws.s3_object_payload_fb5mmjvj/ansible_amazon.aws.s3_object_payload.zip/ansible_collections/amazon/aws/plugins/module_utils/retries.py\", line 105, in deciding_wrapper\r\n  File \"/tmp/ansible_amazon.aws.s3_object_payload_fb5mmjvj/ansible_amazon.aws.s3_object_payload.zip/ansible_collections/amazon/aws/plugins/module_utils/cloud.py\", line 119, in _retry_wrapper\r\n  File ...
+...
+...
+    "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error",
+    "rc": 1
+}
+
+PLAY RECAP *********************************************************************
+teleop_server_check_desktop_icons_docker_ec2_ : ok=80   changed=0    unreachable=0    failed=1    skipped=104  rescued=0    ignored=0
+```
+
+If `ANSIBLE_KEEP_REMOTE_FILES=1` was set on the run that generated that error, and if we want to re-try just that part, we can run the ansible command again (because the payload `/home/ubuntu/.ansible/tmp/ansible-tmp-1737565534.8406236-7021-70129049106883/AnsiballZ_s3_object.py`) still exists on the remote machine. To do this, from the aurora_dev container on your local machine, run (the equilvalent command to):
+
+```bash
+ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o Port=22 -o 'IdentityFile="/home/user/.cache/molecule/molecule_ec2_teleop/teleop_server_check_desktop_icons_docker_ec2/ssh_key"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ubuntu"' -o ConnectTimeout=10 -o UserKnownHostsFile=/dev/null -o ControlMaster=auto -o ControlPersist=60s -o ForwardX11=no -o LogLevel=ERROR -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o 'ControlPath="/home/user/.ansible/cp/%h-%p-%r"' -tt 35.179.173.245 '/bin/sh -c '"'"'/usr/bin/python3 /home/ubuntu/.ansible/tmp/ansible-tmp-1737565534.8406236-7021-70129049106883/AnsiballZ_s3_object.py && sleep 0'"'"''
+```
+
+Running the above command showed that `botocore.exceptions.NoCredentialsError: Unable to locate credentials`. This made it clear that the `TASK [products/common/documentation : Downloading the Documentation from AWS to Desktop (for Molecule in AWS)] ***` task was failing due to an authentication issue on the remote machine. SSHing to the remote machine and pasting the three `export AWS_ACCESS_KEY_ID=...` lines at the TOP of the .bashrc and running the above command again showed a success, and the testing/debugging could continue.
+
+
+
 ## Automatic tests ##
 
 The buildspec.yml file in the root of the project defines what AWS CodeBuild should run when a PR is created or updated or when a daily build runs. It is configured to run all tests in /ansible/playbooks/molecule_ec2 folder. AWS buildspec specification is [here](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html)
