@@ -373,7 +373,6 @@ if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
   if [[ $(which docker | wc -l) -gt 0 ]]; then
     if service docker status 2>&1 | grep -q "is not running"; then
       ${WSL_START_DOCKER_COMMAND}
-      # wsl.exe --distribution "${WSL_DISTRO_NAME}" --user root --exec /usr/sbin/service docker start
     fi
   fi
   if [[ $(cat ~/.bashrc  | grep "${WSL_START_DOCKER_COMMAND}" | wc -l) -eq 0 ]]; then
