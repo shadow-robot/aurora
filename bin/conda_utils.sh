@@ -18,8 +18,8 @@ conda_ws_name="aurora_conda_ws"
 miniconda_install_root="${HOME}/.shadow_miniconda"
 miniconda_install_location="${miniconda_install_root}/miniconda"
 miniconda_installer="${miniconda_install_root}/miniconda_installer.sh"
-miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-py311_23.5.2-0-Linux-x86_64.sh"
-miniconda_checksum="634d76df5e489c44ade4085552b97bebc786d49245ed1a830022b0b406de5817"
+miniconda_installer_url="https://repo.anaconda.com/miniconda/Miniconda3-py38_23.11.0-1-Linux-x86_64.sh"
+miniconda_checksum="ad3cb53ddfbadd190172b864337572206733ae75515fcfb17157cc8f2cb907a5"
 packages_download_root="${miniconda_install_root}/aurora_host_packages"
 
 # Some molecule tests install to `/home/...` (no user account)
@@ -117,13 +117,13 @@ create_conda_ws(){
     rm -rf $shadow_conda_ws_dir
   fi
   ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-  python -m pip install yq xq
+  ${miniconda_install_location}/bin/pip3 install yq xq
 }
 
 fetch_pip_files(){ _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"; }
 fetch_ansible_files() { _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"; }
 
-install_pip_packages() { ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ${packages_download_root}/pip_packages/* ; }
+install_pip_packages() { ANSIBLE_SKIP_CONFLICT_CHECK=1 ${miniconda_install_location}/bin/pip3 install ${packages_download_root}/pip_packages/* ; }
 install_ansible_collections() {
   ansible_galaxy_executable=$1
   "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
