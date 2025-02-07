@@ -131,6 +131,7 @@ def test_icons_in_docker(host):
         'shadow_zero_force_mode_right',
         'close_everything'
         )
+
     check_things_exist(host=host, extension='desktop', path_to_test=desktop_path, things=icons, type_of_thing='icon')
     check_things_exist(host=host, extension='sh', path_to_test=script_path, things=scripts, type_of_thing='script')
 
