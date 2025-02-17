@@ -57,13 +57,13 @@ docker exec -u root aurora_dev chmod 777 /var/run/docker.sock
 cd ~/
 git clone https://github.com/shadow-robot/aurora.git
 ```
-5. Go into the aurora folder:
+5. From the host, run our vs-code dev container setup and select the container you created (`aurora_dev`)
 ```
-cd aurora
+bash <(curl -s https://raw.githubusercontent.com/shadow-robot/sr-build-tools/lint/ansible/roles/dev_machine/files/vs_code_setup.sh)
 ```
-6. Open Visual Studio Code which is already installed inside the Docker container:
+6. Open Visual Studio Code on the host, attach to the `aurora_dev` container, and start developing:
 ```
-code .
+code
 ```
 
 # Testing #
