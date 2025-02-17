@@ -23,23 +23,25 @@
   become: yes
   changed_when: false
 
-- name: Set use_retries to false if unspecified
-  ansible.builtin.set_fact:
-    use_retries: "{{ use_retries | default('false') }}"
+- block:
 
-- name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }} without retries
-  shell: "/tmp/{{ modify_script_name }}"
-  become: yes
-  changed_when: false
-  register: result
-  when: not skip_molecule_task|bool and not use_retries|bool
+  - name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }} without retries
+    shell: "/tmp/{{ modify_script_name }}"
+    become: yes
+    changed_when: false
+    register: result
+    when: not skip_molecule_task|bool and not use_retries_in_script|bool
 
-- name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }} with retries
-  shell: "/tmp/{{ modify_script_name }}"
-  become: yes
-  changed_when: false
-  retries: 10
-  delay: 3
-  register: result
-  until: '"finished_successfully" in result.stdout'
-  when: not skip_molecule_task|bool and use_retries|bool
+  - name: Please wait and don't close the empty terminator window while aurora is executing the modify container script with these commands {{ modify_script_commands }} with retries
+    shell: "/tmp/{{ modify_script_name }}"
+    become: yes
+    changed_when: false
+    retries: 10
+    delay: 3
+    register: result
+    until: '"finished_successfully" in result.stdout'
+    when: not skip_molecule_task|bool and use_retries_in_script|bool
+
+  vars:
+    use_retries_in_script: "{{ use_retries | default('false') }}"
+
