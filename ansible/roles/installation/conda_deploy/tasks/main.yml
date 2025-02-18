@@ -34,7 +34,7 @@
   block:
     - name: Set python3/pip path
       set_fact:
-        sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/envs/aurora_conda_ws/bin"
+        sr_python_and_pip_path: "{{ sr_user_home }}/.shadow_miniconda/miniconda/bin"
 
     - name: Set Python 3 interpreter
       set_fact:
