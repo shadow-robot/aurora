@@ -34,7 +34,7 @@ Molecule user guide is available [here](https://molecule.readthedocs.io/en/lates
 
 Aurora has to install some packages on your host to get ansible working. This used to be the cause of a lot of issues where a user (or OS) had requested different/incompatible versions of these packages.
 
-We now deploy a conda environment and install our needed packages in it to try and isolate this from the users host system. Frozen pip packages and ansible collections are stored in S3. The conda installer is fetched, a conda environment is created, and the s3 packages are fetched and installed into this environment. We then use the ansible installation in this environment to run the rest of aurora, and tell ansible to use the python and pip programs from our isolated conda space. This machinery can be found [here](https://github.com/shadow-robot/aurora/blob/master/bin/conda_utils.sh).
+We now deploy a conda environment and install our needed packages in it to try and isolate this from the users host system. Frozen pip packages and ansible collections are stored in S3. The conda installer is fetched, a conda environment is created, and the S3 packages are fetched and installed into this environment. We then use the ansible installation in this environment to run the rest of aurora, and tell ansible to use the python and pip programs from our isolated conda space. This machinery can be found [here](https://github.com/shadow-robot/aurora/blob/master/bin/conda_utils.sh).
 
 If something goes wrong with a deployment (especially on a machine that has a previous old deployment), there is no harm in deleting the conda deployment and trying again: 
 
