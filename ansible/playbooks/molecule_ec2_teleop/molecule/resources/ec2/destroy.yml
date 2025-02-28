@@ -18,6 +18,9 @@
   connection: local
   gather_facts: false
   no_log: "{{ not (lookup('env', 'MOLECULE_DEBUG') | bool or molecule_yml.provisioner.log|default(false) | bool) }}"
+  vars:
+    keypair_name: "molecule_key_{{ lookup('env', 'CODEBUILD_BUILD_ID') | default ('no_codebuild_ID_so_probably_from_development_or_testing', true) }}"
+    keypair_path: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}/ssh_key"
   tasks:
     - block:
         - name: Populate instance config
@@ -29,6 +32,23 @@
           set_fact:
             instance_conf: {}
             skip_instances: true
+
+    - name: First non-empty region will be main region
+      set_fact:
+        ec2_region: "{{ molecule_yml.platforms|selectattr('region','defined')|map(attribute='region')|list|first }}"
+
+
+    # - name: Test for presence of local keypair
+    #   stat:
+    #     path: "{{ keypair_path }}"
+    #   register: keypair_local
+
+    - name: Delete remote keypair
+      amazon.aws.ec2_key:
+        name: "{{ keypair_name }}"
+        state: absent
+        region: "{{ ec2_region }}"
+#      when: not keypair_local.stat.exists|bool
 
     - name: Destroy molecule instance(s)
       amazon.aws.ec2_instance:
