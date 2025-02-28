@@ -30,6 +30,19 @@ Ansible user guide is available [here](https://docs.ansible.com/ansible/latest/u
 
 Molecule user guide is available [here](https://molecule.readthedocs.io/en/latest/) (Aurora is currently using Molecule 3.6.1)
 
+## Conda ##
+
+Aurora has to install some packages on your host to get ansible working. This used to be the cause of a lot of issues where a user (or OS) had requested different/incompatible versions of these packages.
+
+We now deploy a conda environment and install our needed packages in it to try and isolate this from the users host system. Frozen pip packages and ansible collections are stored in S3. The conda installer is fetched, a conda environment is created, and the S3 packages are fetched and installed into this environment. We then use the ansible installation in this environment to run the rest of aurora, and tell ansible to use the python and pip programs from our isolated conda space. This machinery can be found [here](https://github.com/shadow-robot/aurora/blob/master/bin/conda_utils.sh).
+
+If something goes wrong with a deployment (especially on a machine that has a previous old deployment), there is no harm in deleting the conda deployment and trying again: 
+
+```
+rm -r ~/.shadow_miniconda/
+```
+
+
 # Deployment Test #
 
 There is now a tool for checking if your system is likely to successfully run our deployment software. To use this, run the following in a terminal:
@@ -343,3 +356,4 @@ It contains the following roles:
 For example, since docker-container contains the Ansible scripts for creating a Docker container, and it is a very common task shared by many products, it makes sense to have it in common so it can be referred to by other products.
 
 Whenever you create a role, if it will likely be used by other products (e.g. it's not very specific to your product), please put it under common roles, or if it's for installing some commonly used program, put it under installation.
+
