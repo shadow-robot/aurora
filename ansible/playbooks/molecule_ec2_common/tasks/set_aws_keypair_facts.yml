@@ -1,0 +1,6 @@
+---
+- name: Set aws keypair facts
+  set_fact:
+    keypair_name: "molecule_key_{{ lookup('env', 'CODEBUILD_BUILD_ID') | default ('no_codebuild_ID_so_probably_from_development_or_testing', true) }}"
+    keypair_path: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}/ssh_key"
+    ec2_region: "{{ molecule_yml.platforms|selectattr('region','defined')|map(attribute='region')|list|first }}"
