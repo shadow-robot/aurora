@@ -38,13 +38,10 @@
         from_port: 0
         to_port: 0
         cidr_ip: '0.0.0.0/0'
-    keypair_name: "molecule_key_{{ lookup('env', 'CODEBUILD_BUILD_ID') | default ('no_codebuild_ID_so_probably_from_development_or_testing', true) }}"
-    keypair_path: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}/ssh_key"
 
   tasks:
-    - name: First non-empty region will be main region
-      set_fact:
-        ec2_region: "{{ molecule_yml.platforms|selectattr('region','defined')|map(attribute='region')|list|first }}"
+    - name: Set AWS Facts (region, keypair name and keypair path
+      import_tasks: ../../../../molecule_e2c_common/tasks/set_aws_keypair_facts.yml
 
     - name: Create security group default VPC
       amazon.aws.ec2_group:
