@@ -16,6 +16,7 @@
   * [Products](#products)
   * [Common](#common)
 
+
 # Other useful pages
 - [Aurora Development Page](/docs/development.md)
 - [Molecule Docker Page](/docs/molecule_dockers.md)
@@ -73,7 +74,6 @@ To begin with, the teleop_deploy playbook checks the installation status of dock
 
 You will first need to ensure that you have entered your customer_key into the one liner (used to pull the docker images), then a sudo_password (i.e. the password of the user with sudo permissions) for the laptop you are using to run this playbook, and also for the Vault password, which is provided by Shadow.
 
-Open a terminal with Ctrl+Alt+T and run:
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/{release_tag}}/bin/run-ansible.sh) teleop_deploy --branch {release_tag} --inventory name_of_inventory --read-secure customer_key option1=value1 option2=value2 option3=value3
