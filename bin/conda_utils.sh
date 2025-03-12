@@ -37,7 +37,7 @@ while IFS= read -r line; do
 done < <(lsb_release -a 2>/dev/null)
 
 # We use this variable to figure out which pip packages to download. Packages for focal work on jammy, but bionic needs its own packages
-if [[ $codename == *"jammy"* ]]; then
+if [[ $codename == *"jammy"* ||  $codename == *"noble"  *  ]]; then
   codename="focal"
 fi
 
