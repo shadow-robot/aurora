@@ -12,6 +12,14 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
----
-teamviewer_package_url: "https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
-teamviewer_package_dest: "/tmp/teamviewer_amd64.deb"
+
+- name: Download shadow-support package
+  get_url:
+    url: "{{ shadow-support_package_url }}"
+    dest: "{{ shadow-support_package_dest }}"
+
+- name: Install shadow-support package
+  become: true
+  apt:
+    deb: "{{ shadow-support_package_dest }}"
+    state: present
