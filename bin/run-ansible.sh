@@ -66,12 +66,12 @@ print_startup_message() {
     print_yellow "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. sudo_password,docker_password,git_password)"
     print_yellow "  * --debug             Run aurora in debug mode printing every command run (very loud)"
     print_yellow ""
-    print_yellow "example: ${script_name} docker_deploy --branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
+    print_yellow "example: ${SCRIPT_NAME} docker_deploy --branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
     print_yellow ""
-    print_yellow "playbook     = ${playbook}"
+    print_yellow "playbook     = ${PLAYBOOK}"
     print_yellow "branch       = ${aurora_tools_branch}"
     print_yellow "inventory    = ${aurora_inventory}"
-    print_yellow "limit        = ${aurora_limit}"
+    print_yellow "limit        = ${AURORA_LIMIT}"
     print_yellow "read-input   = ${read_input}"
     print_yellow "read-secure  = ${read_secure}"
     print_yellow ""
@@ -423,7 +423,7 @@ run_ansible() {
         else
             aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
         fi
-        VERBOSITY="${VERBOSITY} --ask-vault-pass"
+        ADDITIONAL_FLAGS="--ask-vault-pass"
     
         print_yellow ""
         print_yellow " ---------------------------------------------------"
@@ -433,7 +433,7 @@ run_ansible() {
         print_yellow ""
     
     elif [[ "${PLAYBOOK}" = "teleop_deploy" ]]; then
-        VERBOSITY="${VERBOSITY} --ask-vault-pass"
+        ADDITIONAL_FLAGS="--ask-vault-pass"
         if [[ "${aurora_inventory}" = "" ]]; then
             aurora_inventory="ansible/inventory/teleop/production"
         else
@@ -448,7 +448,7 @@ run_ansible() {
         print_yellow ""
     else
         aurora_inventory="ansible/inventory/${aurora_inventory}"
-        VERBOSITY="${VERBOSITY} --ask-become-pass"
+        ADDITIONAL_FLAGS="--ask-become-pass"
         print_yellow ""
         print_yellow " --------------------------------------------"
         print_yellow " |             BECOME password:             |"
@@ -465,7 +465,6 @@ run_ansible() {
     if [[ ! -f "${ansible_basic_executable}" ]]; then
         ansible_basic_executable=ansible
     fi
-
 
     ansible_galaxy_executable="${miniconda_install_location}/bin/ansible-galaxy"
     if [[ ! -f "${ansible_galaxy_executable}" ]]; then
@@ -487,7 +486,7 @@ run_ansible() {
     fi
 
     # Run the ansible-playbook command with the correct flags
-    "${ansible_executable}" -${VERBOSITY} -i "${aurora_inventory}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$formatted_extra_vars"
+    "${ansible_executable}" $VERBOSITY -i "${aurora_inventory}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$formatted_extra_vars" $ADDITIONAL_FLAGS
 
     popd
 
@@ -503,7 +502,6 @@ main() {
     set_variables "$@"
     check_variable_syntax "$@"
     format_extra_vars "$@"
-    print_startup_message
     handle_pr_branches
     handle_secure_data
     install_packages
