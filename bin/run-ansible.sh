@@ -75,6 +75,7 @@ print_startup_message() {
     print_yellow "read-input   = ${READ_INPUT}"
     print_yellow "read-secure  = ${READ_SECURE}"
     print_yellow ""
+ 
 }
 
 # Print the correct usage of the script
@@ -485,7 +486,7 @@ run_ansible() {
     fi
 
     # Run the ansible-playbook command with the correct flags
-    "${ANSIBLE_EXECUTABLE}" -v -i "${AURORA_INVENTORY}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$FORMATTED_EXTRA_VARS" $ADDITIONAL_FLAGS
+    "${ANSIBLE_EXECUTABLE}" -v -i "${AURORA_INVENTORY}" " ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$FORMATTED_EXTRA_VARS"
 
     popd
 
