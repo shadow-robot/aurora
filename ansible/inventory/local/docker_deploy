@@ -1,2 +1,2 @@
 [docker_deploy]
-127.0.0.1 ansible_connection=local is_ansible_control_node=true
+localhost ansible_connection=localhost is_ansible_control_node=true
