@@ -40,7 +40,7 @@ print_yellow() {
 }
 
 # Set the verbosity level ansible supports up to "vvvvvvvvv" each adding verbosity
-VERBOSITY="v"
+VERBOSITY="-v"
 
 # Check for debug flag
 for arg in "$@"; do
