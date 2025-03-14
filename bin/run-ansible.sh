@@ -69,18 +69,18 @@ print_startup_message() {
     print_yellow "example: ${SCRIPT_NAME} docker_deploy --branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
     print_yellow ""
     print_yellow "playbook     = ${PLAYBOOK}"
-    print_yellow "branch       = ${aurora_tools_branch}"
-    print_yellow "inventory    = ${aurora_inventory}"
+    print_yellow "branch       = ${AURORA_TOOLS_BRANCH}"
+    print_yellow "inventory    = ${AURORA_INVENTORY}"
     print_yellow "limit        = ${AURORA_LIMIT}"
-    print_yellow "read-input   = ${read_input}"
-    print_yellow "read-secure  = ${read_secure}"
+    print_yellow "read-input   = ${READ_INPUT}"
+    print_yellow "read-secure  = ${READ_SECURE}"
     print_yellow ""
 }
 
 # Print the correct usage of the script
 command_usage() {
-    command_usage_message="Command usage: ${SCRIPT_NAME} <playbook name> [--branch <name>] [--inventory <name>] [--limit <rules>] [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
-    print_red "${command_usage_message}"
+    COMMAND_USAGE_MESSAGE="Command usage: ${SCRIPT_NAME} <playbook name> [--branch <name>] [--inventory <name>] [--limit <rules>] [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
+    print_red "${COMMAND_USAGE_MESSAGE}"
 }
 
 # Check for the min number of input parameters
@@ -103,16 +103,16 @@ set_variables() {
     PLAYBOOK=$1
     shift
 
-    while [[ $# -gt 1 ]]
+    while [[ $# -gt 0 ]]
     do
         key="$1"
         case ${key} in
             --branch)
-                aurora_tools_branch="$2"
+                AURORA_TOOLS_BRANCH="$2"
                 shift 2
                 ;;
             --inventory)
-                aurora_inventory="$2"
+                AURORA_INVENTORY="$2"
                 shift 2
                 ;;
             --limit)
@@ -120,89 +120,89 @@ set_variables() {
                 shift 2
                 ;;
             --read-input)
-                read_input="$2"
+                READ_INPUT="$2"
                 shift 2
                 ;;
             --read-secure)
-                read_secure="$2"
+                READ_SECURE="$2"
                 shift 2
                 ;;
             *)
-                break
+                shift
                 ;;
         esac
     done
 
-    if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" || "${PLAYBOOK}" = "teleop_deploy" ]]; then
-        if [[ -z ${read_secure} ]]; then
-            read_secure="sudo_password"
-        else
-            read_secure=$read_secure",sudo_password"
-        fi
-    fi
-
-    if [[ -z ${aurora_tools_branch} ]]; then
-        aurora_tools_branch=master
-    fi
-
-    if [[ -z ${aurora_inventory} ]]; then
         if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" || "${PLAYBOOK}" = "teleop_deploy" ]]; then
-            aurora_inventory=""
-        else
-            aurora_inventory="local/${PLAYBOOK}"
+            if [[ -z ${READ_SECURE} ]]; then
+                READ_SECURE="sudo_password"
+            else
+                READ_SECURE=$READ_SECURE",sudo_password"
+            fi
         fi
-    fi
+    
+        if [[ -z ${AURORA_TOOLS_BRANCH} ]]; then
+            AURORA_TOOLS_BRANCH=master
+        fi
+    
+        if [[ -z ${AURORA_INVENTORY} ]]; then
+            if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" || "${PLAYBOOK}" = "teleop_deploy" ]]; then
+                AURORA_INVENTORY=""
+            else
+                AURORA_INVENTORY="local/${PLAYBOOK}"
+            fi
+        fi
 }
 
 # Check for := (ROS style) variable assignments (just = should be used)
 check_variable_syntax() {
-    extra_vars=$*
-    if [[ $extra_vars == *":="* ]]; then
+    EXTRA_VARS=$*
+    if [[ $EXTRA_VARS == *":="* ]]; then
         echo ""
         echo "All aurora variable assignments should be done with just = not :="
         echo ""
-        echo "You entered: $extra_vars"
+        echo "You entered: $EXTRA_VARS"
         echo ""
         echo "Please fix the syntax and try again"
         echo ""
-        echo "${command_usage_message}"
+        echo "${COMMAND_USAGE_MESSAGE}"
         exit 1
     fi
 }
 
-# Create a copy of extra_vars with values containing spaces surrounded by single quotes
-format_extra_vars() {
-    old_IFS=$IFS
+# Create a copy of EXTRA_VARS with values containing spaces surrounded by single quotes
+format_EXTRA_VARS() {
+    OLD_IFS=$IFS
     IFS=";"
-    extra_vars=$*
-    formatted_extra_vars=""
-    for extra_var in $extra_vars; do
+    EXTRA_VARS=$*
+    FORMATTED_EXTRA_VARS=""
+    for extra_var in $EXTRA_VARS; do
         variable="${extra_var%=*}"
         value="${extra_var#*=}"
         if [[ "$value" == *' '* ]]; then
             value="'$value'"
         fi
-        if [[ $formatted_extra_vars == "" ]]; then
-            formatted_extra_vars="$variable=$value"
+        if [[ $FORMATTED_EXTRA_VARS == "" ]]; then
+            FORMATTED_EXTRA_VARS="$variable=$value"
         else
-            formatted_extra_vars="$formatted_extra_vars $variable=$value"
+            FORMATTED_EXTRA_VARS="$FORMATTED_EXTRA_VARS $variable=$value"
         fi
     done
-    IFS=${old_IFS}
+    IFS=${OLD_IFS}
 }
 
 
 is_repo_public() {
-    local user_slash_repo=$1
-    ERROR=$(curl -fsS "https://api.github.com/repos/${user_slash_repo}" 2>/dev/null)
+    local USER_SLASH_REPO=$1
+    ERROR=$(curl -fsS "https://api.github.com/repos/${USER_SLASH_REPO}" 2>/dev/null)
     if [ $? -eq 0 ]; then
-        printf '%s\n' "The GitHub repo ${user_slash_repo} exists." >&2
+        printf '%s\n' "The GitHub repo ${USER_SLASH_REPO} exists." >&2
         echo "true"
     else
         if [[ "${ERROR}" == *"error: 403"* ]]; then
             print_red "403"
         else
-            printf '%s\n' "Error: no GitHub repo ${user_slash_repo} found." >&2
+            printf '%s\n' "Error: no GitHub repo ${USER_SLASH_REPO} found." >&2
             echo "false"
         fi
     fi
@@ -214,8 +214,8 @@ are_all_pr_repos_public() {
     PR_BRANCHES="$*"
     for i in $PR_BRANCHES; do
         echo "Testing URL: ${i}" >&2
-        user_slash_repo=$(echo "$i" | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
-        REPO_IS_PUBLIC=$(is_repo_public "$user_slash_repo")
+        USER_SLASH_REPO=$(echo "$i" | sed -r 's/.*github\.com\///g' | sed -r s'/\/tree.*//g' | sed -r 's/\/pull.*//g')
+        REPO_IS_PUBLIC=$(is_repo_public "$USER_SLASH_REPO")
         if [[ $REPO_IS_PUBLIC == "false" ]]; then
             REPO_IS_PRIVATE="false"
             break
@@ -265,20 +265,20 @@ confirm() {
 }
 
 handle_pr_branches() {
-    if [[ $extra_vars == *"pr_branches="* ]]; then
-        PR_BRANCHES="$(echo "$extra_vars" | sed -r 's/.*pr_branches=//g' | sed -r 's/;.*//g')"
+    if [[ $EXTRA_VARS == *"pr_branches="* ]]; then
+        PR_BRANCHES="$(echo "$EXTRA_VARS" | sed -r 's/.*pr_branches=//g' | sed -r 's/;.*//g')"
         ARE_ALL_REPOS_PUBLIC=$(are_all_pr_repos_public "$PR_BRANCHES")
         NEXT_STEPS=$(check_github_next_steps "${ARE_ALL_REPOS_PUBLIC}")
         if [[ $NEXT_STEPS == "exit" ]]; then
             exit 0
         elif [[ $NEXT_STEPS == "skip_check" ]]; then
             print_yellow "Skipping ssh auth and github login"
-            formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=true"
+            FORMATTED_EXTRA_VARS="$FORMATTED_EXTRA_VARS skip_git_ssh_auth=true"
         elif [[ $NEXT_STEPS == "all_public" ]]; then
             print_yellow "All pr_branch URLs are public, continuing without ssh authentication"
-            formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=true"
+            FORMATTED_EXTRA_VARS="$FORMATTED_EXTRA_VARS skip_git_ssh_auth=true"
         else
-            formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=false"
+            FORMATTED_EXTRA_VARS="$FORMATTED_EXTRA_VARS skip_git_ssh_auth=false"
             print_yellow " -------------------------------------------------------------------------------------"
             print_yellow "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
             print_yellow "Using SSH key from $github_ssh_private_key_path"
@@ -288,10 +288,10 @@ handle_pr_branches() {
                 print_green "Github SSH key successfully added!"
                 print_green " ---------------------------------"
             else
-                if [[ -z ${read_input} ]]; then
-                    read_input="github_email"
+                if [[ -z ${READ_INPUT} ]]; then
+                    READ_INPUT="github_email"
                 else
-                    read_input=$read_input",github_email"
+                    READ_INPUT=$READ_INPUT",github_email"
                 fi
                 while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
                     print_yellow "Waiting for apt-get install file lock..."
@@ -300,7 +300,7 @@ handle_pr_branches() {
                 sudo apt-get install -y xclip
                 print_green "xclip installed"
             fi
-            IFS=',' read -ra inputdata <<< "$read_input"
+            IFS=',' read -ra inputdata <<< "$READ_INPUT"
             for i in "${inputdata[@]}"; do
                 print_yellow "Data input for" 
                 printf "$i"
@@ -340,14 +340,14 @@ handle_pr_branches() {
                         exit 1
                     fi
                 fi
-                formatted_extra_vars="$formatted_extra_vars $i=$input_data"
+                FORMATTED_EXTRA_VARS="$FORMATTED_EXTRA_VARS $i=$input_data"
             done
         fi
     fi
 }
 
 handle_secure_data() {
-    IFS=',' read -ra securedata <<< "$read_secure"
+    IFS=',' read -ra securedata <<< "$READ_SECURE"
     for i in "${securedata[@]}"; do
         printf "\nSecure data input for $i:"
         read -rs secure_data
@@ -356,7 +356,7 @@ handle_secure_data() {
             printf "\nSecure data input for $i:"
             read -rs secure_data
         done
-        formatted_extra_vars="$formatted_extra_vars $i=$secure_data"
+        FORMATTED_EXTRA_VARS="$FORMATTED_EXTRA_VARS $i=$secure_data"
     done
 }
 
@@ -375,7 +375,8 @@ install_packages() {
     sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
     print_green "Packages installed : git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass"
     sudo chown "$USER":"$USER" "$AURORA_HOME" || true
-    git clone --depth 1 -b "${aurora_tools_branch}" https://github.com/shadow-robot/aurora.git "$AURORA_HOME"
+    sudo rm -rf "$AURORA_HOME"
+    git clone --depth 1 -b "${AURORA_TOOLS_BRANCH}" https://github.com/shadow-robot/aurora.git "$AURORA_HOME"
     print_green "Aurora tools cloned"
 }
 
@@ -390,7 +391,7 @@ run_ansible() {
 
     export PYTHONNOUSERSITE=1
     source $AURORA_HOME/bin/conda_utils.sh
-    export PYTHONPATH="${miniconda_install_location}/lib/python3.8/site-packages:${miniconda_install_location}/bin"
+    export PYTHONPATH="${MINICONDA_INSTALL_LOCATION}/lib/python3.8/site-packages:${MINICONDA_INSTALL_LOCATION}/bin"
 
     create_conda_ws
     fetch_pip_files
@@ -416,10 +417,10 @@ run_ansible() {
     fi
 
     if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
-        if [[ "${aurora_inventory}" = "" ]]; then
-            aurora_inventory="ansible/inventory/server_and_nuc/production"
+        if [[ "${AURORA_INVENTORY}" = "" ]]; then
+            AURORA_INVENTORY="ansible/inventory/server_and_nuc/production"
         else
-            aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
+            AURORA_INVENTORY="ansible/inventory/server_and_nuc/${AURORA_INVENTORY}"
         fi
         ADDITIONAL_FLAGS="--ask-vault-pass"
     
@@ -432,10 +433,10 @@ run_ansible() {
     
     elif [[ "${PLAYBOOK}" = "teleop_deploy" ]]; then
         ADDITIONAL_FLAGS="--ask-vault-pass"
-        if [[ "${aurora_inventory}" = "" ]]; then
-            aurora_inventory="ansible/inventory/teleop/production"
+        if [[ "${AURORA_INVENTORY}" = "" ]]; then
+            AURORA_INVENTORY="ansible/inventory/teleop/production"
         else
-            aurora_inventory="ansible/inventory/teleop/${aurora_inventory}"
+            AURORA_INVENTORY="ansible/inventory/teleop/${AURORA_INVENTORY}"
         fi
 
         print_yellow ""
@@ -445,7 +446,7 @@ run_ansible() {
         print_yellow " ---------------------------------------------------"
         print_yellow ""
     else
-        aurora_inventory="ansible/inventory/${aurora_inventory}"
+        AURORA_INVENTORY="ansible/inventory/${AURORA_INVENTORY}"
         ADDITIONAL_FLAGS="--ask-become-pass"
         print_yellow ""
         print_yellow " --------------------------------------------"
@@ -455,26 +456,26 @@ run_ansible() {
         print_yellow ""
     fi
 
-    ansible_executable="${miniconda_install_location}/bin/ansible-playbook"
-    if [[ ! -f "${ansible_executable}" ]]; then
-        ansible_executable=ansible-playbook
+    ANSIBLE_EXECUTABLE="${MINICONDA_INSTALL_LOCATION}/bin/ansible-playbook"
+    if [[ ! -f "${ANSIBLE_EXECUTABLE}" ]]; then
+        ANSIBLE_EXECUTABLE=ansible-playbook
     fi
-    ansible_basic_executable="${miniconda_install_location}/bin/ansible"
-    if [[ ! -f "${ansible_basic_executable}" ]]; then
-        ansible_basic_executable=ansible
-    fi
-
-    ansible_galaxy_executable="${miniconda_install_location}/bin/ansible-galaxy"
-    if [[ ! -f "${ansible_galaxy_executable}" ]]; then
-        ansible_galaxy_executable=ansible-galaxy
+    ANSIBLE_BASIC_EXECUTABLE="${MINICONDA_INSTALL_LOCATION}/bin/ansible"
+    if [[ ! -f "${ANSIBLE_BASIC_EXECUTABLE}" ]]; then
+        ANSIBLE_BASIC_EXECUTABLE=ansible
     fi
 
-    "${ansible_basic_executable}" --version
-    install_ansible_collections "${ansible_galaxy_executable}"
+    ANSIBLE_GALAXY_EXECUTABLE="${MINICONDA_INSTALL_LOCATION}/bin/ansible-galaxy"
+    if [[ ! -f "${ANSIBLE_GALAXY_EXECUTABLE}" ]]; then
+        ANSIBLE_GALAXY_EXECUTABLE=ansible-galaxy
+    fi
+
+    "${ANSIBLE_BASIC_EXECUTABLE}" --version
+    install_ansible_collections "${ANSIBLE_GALAXY_EXECUTABLE}"
 
     if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
-        if [[ $extra_vars != *"router=true"* && $extra_vars != *"product=arm_"* ]]; then
-            "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
+        if [[ $EXTRA_VARS != *"router=true"* && $EXTRA_VARS != *"product=arm_"* ]]; then
+            "${ANSIBLE_EXECUTABLE}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$FORMATTED_EXTRA_VARS"
             print_green ""
             print_green " ----------------------------------------------------------------------"
             print_green " |    DHCP network ready! Proceeding with server and nuc playbook      |"
@@ -484,7 +485,7 @@ run_ansible() {
     fi
 
     # Run the ansible-playbook command with the correct flags
-    "${ansible_executable}" -v -i "${aurora_inventory}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$formatted_extra_vars" $ADDITIONAL_FLAGS
+    "${ANSIBLE_EXECUTABLE}" -v -i "${AURORA_INVENTORY}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$FORMATTED_EXTRA_VARS" $ADDITIONAL_FLAGS
 
     popd
 
@@ -499,7 +500,7 @@ main() {
     check_invalid_input "$@"
     set_variables "$@"
     check_variable_syntax "$@"
-    format_extra_vars "$@"
+    format_EXTRA_VARS "$@"
     handle_pr_branches
     handle_secure_data
     install_packages
