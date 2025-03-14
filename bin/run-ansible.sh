@@ -416,7 +416,7 @@ run_ansible() {
     if [[ "${AURORA_LIMIT}" != "all" ]]; then
         VERBOSITY="-${VERBOSITY} --limit ${AURORA_LIMIT}"
     fi
-    
+
     if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
         if [[ "${aurora_inventory}" = "" ]]; then
             aurora_inventory="ansible/inventory/server_and_nuc/production"
@@ -464,6 +464,26 @@ run_ansible() {
     ansible_basic_executable="${miniconda_install_location}/bin/ansible"
     if [[ ! -f "${ansible_basic_executable}" ]]; then
         ansible_basic_executable=ansible
+    fi
+    fi
+
+    ansible_galaxy_executable="${miniconda_install_location}/bin/ansible-galaxy"
+    if [[ ! -f "${ansible_galaxy_executable}" ]]; then
+        ansible_galaxy_executable=ansible-galaxy
+    fi
+
+    "${ansible_basic_executable}" --version
+    install_ansible_collections "${ansible_galaxy_executable}"
+
+    if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
+        if [[ $extra_vars != *"router=true"* && $extra_vars != *"product=arm_"* ]]; then
+            "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
+            print_green ""
+            print_green " ----------------------------------------------------------------------"
+            print_green " |    DHCP network ready! Proceeding with server and nuc playbook      |"
+            print_green " ----------------------------------------------------------------------"
+            print_green ""
+        fi
     fi
 
     # Run the ansible-playbook command with the correct flags
