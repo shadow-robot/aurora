@@ -37,6 +37,9 @@
     dest: "/tmp/"
     remote_src: yes
 
+
+# Install AWS CLI v2 this spams the log with a lot of output so is surpressed with no_log
 - name: Install AWS CLI v2
   shell: "/tmp/aws/install -u"
+  no_log: True
   become: yes
