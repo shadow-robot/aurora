@@ -19,7 +19,6 @@ set -e # fail on errors
 AURORA_HOME=/tmp/aurora
 SCRIPT_NAME="bash <(curl -Ls bit.ly/run-aurora)"
 AURORA_LIMIT=all
-PLAYBOOK=""
 
 # Define color escape codes
 RED='\e[0;31m'
@@ -75,8 +74,13 @@ print_startup_message() {
     print_yellow "read-input   = ${READ_INPUT}"
     print_yellow "read-secure  = ${READ_SECURE}"
     print_yellow ""
- 
+
+export ANSIBLE_ROLES_PATH="${aurora_home}/$AURORA_HOME/ansible/roles"
+export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.$AURORA_HOME/ansible/plugins/callback:/usr/share/$AURORA_HOME/ansible/plugins/callback:${aurora_home}/$AURORA_HOME/ansible/playbooks/callback_plugins"
+export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
+
 }
+
 
 # Print the correct usage of the script
 command_usage() {
@@ -362,42 +366,38 @@ handle_secure_data() {
 }
 
 install_packages() {
-    print_yellow ""
-    print_yellow " ---------------------------------"
-    print_yellow " |   Installing needed packages  |"
-    print_yellow " ---------------------------------"
-    print_yellow ""
+
+    print_yellow "Installing needed packages... "
 
     while (sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1) || (sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1); do
         print_yellow "Waiting for apt-get update file lock..."
         sleep 1
     done
-    sudo apt-get update
-    sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
-    print_green "Packages installed : git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass"
+
+    sudo apt-get update >/dev/null
+    sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass >/dev/null
+    print_green "Packages Installed"
+    print_yellow "Cloning Aurora Repo... "
     sudo chown "$USER":"$USER" "$AURORA_HOME" || true
     sudo rm -rf "$AURORA_HOME"
-    git clone --depth 1 -b "${AURORA_TOOLS_BRANCH}" https://github.com/shadow-robot/aurora.git "$AURORA_HOME"
-    print_green "Aurora tools cloned"
+    git clone --depth 1 -b "${AURORA_TOOLS_BRANCH}" https://github.com/shadow-robot/aurora.git "$AURORA_HOME" 
+    print_green " Aurora Cloned"
+
 }
 
 run_ansible() {
-    print_yellow ""
-    print_yellow " -------------------"
-    print_yellow " | Running Ansible |"
-    print_yellow " -------------------"
-    print_yellow ""
 
     pushd "$AURORA_HOME"
 
     export PYTHONNOUSERSITE=1
     source $AURORA_HOME/bin/conda_utils.sh
     export PYTHONPATH="${MINICONDA_INSTALL_LOCATION}/lib/python3.8/site-packages:${MINICONDA_INSTALL_LOCATION}/bin"
-
-    create_conda_ws
-    fetch_pip_files
-    fetch_ansible_files
-    install_pip_packages
+    print_yellow "Setting up conda..."
+    create_conda_ws > /dev/null
+    fetch_pip_files > /dev/null
+    fetch_ansible_files > /dev/null
+    install_pip_packages > /dev/null
+    print_green "Finished setting up conda"
 
     # WSL specific this is not supported. This is a workaround to start docker service in WSL
     if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
@@ -419,42 +419,36 @@ run_ansible() {
 
     if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
         if [[ "${AURORA_INVENTORY}" = "" ]]; then
-            AURORA_INVENTORY="ansible/inventory/server_and_nuc/production"
+            AURORA_INVENTORY="$AURORA_HOME/ansible/inventory/server_and_nuc/production"
         else
-            AURORA_INVENTORY="ansible/inventory/server_and_nuc/${AURORA_INVENTORY}"
+            AURORA_INVENTORY="$AURORA_HOME/ansible/inventory/server_and_nuc/${AURORA_INVENTORY}"
         fi
         ADDITIONAL_FLAGS="--ask-vault-pass"
     
-        print_yellow ""
-        print_yellow " ---------------------------------------------------"
-        print_yellow " |                 VAULT password:                 |"
-        print_yellow " | Enter the VAULT password provided by Shadow     |"
-        print_yellow " ---------------------------------------------------"
-        print_yellow ""
+
+        print_yellow "VAULT password:"
+        print_yellow "Enter the VAULT password provided by Shadow"
+
     
     elif [[ "${PLAYBOOK}" = "teleop_deploy" ]]; then
         ADDITIONAL_FLAGS="--ask-vault-pass"
         if [[ "${AURORA_INVENTORY}" = "" ]]; then
-            AURORA_INVENTORY="ansible/inventory/teleop/production"
+            AURORA_INVENTORY="$AURORA_HOME/ansible/inventory/teleop/production"
         else
-            AURORA_INVENTORY="ansible/inventory/teleop/${AURORA_INVENTORY}"
+            AURORA_INVENTORY="$AURORA_HOME/ansible/inventory/teleop/${AURORA_INVENTORY}"
         fi
 
-        print_yellow ""
-        print_yellow " ---------------------------------------------------"
-        print_yellow " |                 VAULT password:                 |"
-        print_yellow " | Enter the VAULT password provided by Shadow     |"
-        print_yellow " ---------------------------------------------------"
-        print_yellow ""
+
+        print_yellow "VAULT password:"
+        print_yellow "Enter the VAULT password provided by Shadow"
+
     else
-        AURORA_INVENTORY="ansible/inventory/${AURORA_INVENTORY}"
+        AURORA_INVENTORY="$AURORA_HOME/ansible/inventory/${AURORA_INVENTORY}"
         ADDITIONAL_FLAGS="--ask-become-pass"
-        print_yellow ""
-        print_yellow " --------------------------------------------"
-        print_yellow " |             BECOME password:             |"
-        print_yellow " | Enter the sudo password of this computer |"
-        print_yellow " --------------------------------------------"
-        print_yellow ""
+
+        print_yellow "BECOME password:"
+        print_yellow "Enter the sudo password of this computer"
+
     fi
 
     ANSIBLE_EXECUTABLE="${MINICONDA_INSTALL_LOCATION}/bin/ansible-playbook"
@@ -476,7 +470,7 @@ run_ansible() {
 
     if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
         if [[ $EXTRA_VARS != *"router=true"* && $EXTRA_VARS != *"product=arm_"* ]]; then
-            "${ANSIBLE_EXECUTABLE}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$FORMATTED_EXTRA_VARS"
+            "${ANSIBLE_EXECUTABLE}" -v -i "$AURORA_HOME/ansible/inventory/local/dhcp" "$AURORA_HOME/ansible/playbooks/dhcp.yml" --extra-vars "$FORMATTED_EXTRA_VARS"
             print_green ""
             print_green " ----------------------------------------------------------------------"
             print_green " |    DHCP network ready! Proceeding with server and nuc playbook      |"
@@ -485,19 +479,28 @@ run_ansible() {
         fi
     fi
 
+    # Check if the playbook file exists
+    PLAYBOOK_PATH="$AURORA_HOME/ansible/playbooks/${PLAYBOOK}.yml"
+    if [[ ! -f "${PLAYBOOK_PATH}" ]]; then
+        print_red "ERROR! The playbook: ${PLAYBOOK_PATH} could not be found"
+        exit 1
+    else
+        print_green "Playbook found: ${PLAYBOOK_PATH}"
+    fi
+
+    print_yellow "Running Ansible playbook: ${PLAYBOOK}..."
+
     # Run the ansible-playbook command with the correct flags
-    "${ANSIBLE_EXECUTABLE}" -v -i "${AURORA_INVENTORY}" " ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$FORMATTED_EXTRA_VARS"
+    "${ANSIBLE_EXECUTABLE}" -v -i "${AURORA_INVENTORY}" "${PLAYBOOK_PATH}" --extra-vars "$FORMATTED_EXTRA_VARS"
 
     popd
 
-    echo ""
-    echo " ------------------------------------------------"
-    echo " |            Operation completed               |"
-    echo " ------------------------------------------------"
-    echo ""
+    print_green "Finished running Ansible playbook: ${PLAYBOOK}"
+    print_green "Installation complete, exiting..."
 }
 
 main() {
+    print_startup_message
     check_invalid_input "$@"
     set_variables "$@"
     check_variable_syntax "$@"

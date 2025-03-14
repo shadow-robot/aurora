@@ -1,2 +1,2 @@
 [install_software]
-install_software ansible_host=127.0.0.1 ansible_connection=local
+install_software ansible_host=local ansible_connection=local

@@ -21,11 +21,11 @@
   hosts: docker_deploy
   pre_tasks:
 
-    - name: include products/common/validation role
-      include_role:
-        name: products/common/validation
-      vars:
-        playbook: "docker_deploy"
+#    - name: include products/common/validation role
+#      include_role:
+#        name: products/common/validation
+#      vars:
+#        playbook: "docker_deploy"
     
     - name: Running playbook setup role
       include_role:
@@ -38,6 +38,5 @@
         use_aws: true
 
   roles:
-    - { role: products/common/get-system-variables }
     - { role: products/hand-e/docker-deploy/deploy }
     - { role: products/common/dolphin-icons, when: (ansible_distribution_release|string == 'focal' or ansible_distribution_release|string == 'jammy') and not no_icons|bool}
