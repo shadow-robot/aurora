@@ -414,15 +414,16 @@ run_ansible() {
     fi
 
     if [[ "${AURORA_LIMIT}" != "all" ]]; then
-        VERBOSITY="-${VERBOSITY} --limit ${AURORA_LIMIT} "
+        VERBOSITY="-${VERBOSITY} --limit ${AURORA_LIMIT}"
     fi
+    
     if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
         if [[ "${aurora_inventory}" = "" ]]; then
             aurora_inventory="ansible/inventory/server_and_nuc/production"
         else
             aurora_inventory="ansible/inventory/server_and_nuc/${aurora_inventory}"
         fi
-        VERBOSITY="-${VERBOSITY} --ask-vault-pass"
+        VERBOSITY="${VERBOSITY} --ask-vault-pass"
     
         print_yellow ""
         print_yellow " ---------------------------------------------------"
@@ -447,7 +448,7 @@ run_ansible() {
         print_yellow ""
     else
         aurora_inventory="ansible/inventory/${aurora_inventory}"
-        VERBOSITY="-${VERBOSITY} --ask-become-pass"
+        VERBOSITY="${VERBOSITY} --ask-become-pass"
         print_yellow ""
         print_yellow " --------------------------------------------"
         print_yellow " |             BECOME password:             |"
@@ -464,34 +465,17 @@ run_ansible() {
     if [[ ! -f "${ansible_basic_executable}" ]]; then
         ansible_basic_executable=ansible
     fi
-    ansible_galaxy_executable="${miniconda_install_location}/bin/ansible-galaxy"
-    if [[ ! -f "${ansible_galaxy_executable}" ]]; then
-        ansible_galaxy_executable=ansible-galaxy
-    fi
 
-    "${ansible_basic_executable}" --version
-    install_ansible_collections "${ansible_galaxy_executable}"
-
-    if [[ "${PLAYBOOK}" = "server_and_nuc_deploy" ]]; then
-        if [[ $extra_vars != *"router=true"* && $extra_vars != *"product=arm_"* ]]; then
-            "${ansible_executable}" -v -i "ansible/inventory/local/dhcp" "ansible/playbooks/dhcp.yml" --extra-vars "$formatted_extra_vars"
-            print_green ""
-            print_green " ----------------------------------------------------------------------"
-            print_green " |    DHCP network ready! Proceeding with server and nuc playbook      |"
-            print_green " ----------------------------------------------------------------------"
-            print_green ""
-        fi
-    fi
-
-    "${ansible_executable}" -v "${VERBOSITY}" -i "${aurora_inventory}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$formatted_extra_vars"
+    # Run the ansible-playbook command with the correct flags
+    "${ansible_executable}" -${VERBOSITY} -i "${aurora_inventory}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$formatted_extra_vars"
 
     popd
 
-    print_green ""
-    print_green " ------------------------------------------------"
-    print_green " |            Aurora Deployment completed        |"
-    print_green " ------------------------------------------------"
-    print_green ""
+    echo ""
+    echo " ------------------------------------------------"
+    echo " |            Operation completed               |"
+    echo " ------------------------------------------------"
+    echo ""
 }
 
 main() {
