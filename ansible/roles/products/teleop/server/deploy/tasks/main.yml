@@ -229,6 +229,6 @@
     mode: '755'
   when: upgrade_check|bool
 
-- name: Include installation/teamviewer role
+- name: Include installation/shadow-support role
   include_role:
-    name: installation/teamviewer
+    name: installation/shadow-support
