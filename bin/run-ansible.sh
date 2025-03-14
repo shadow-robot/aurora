@@ -465,7 +465,7 @@ run_ansible() {
     if [[ ! -f "${ansible_basic_executable}" ]]; then
         ansible_basic_executable=ansible
     fi
-    fi
+
 
     ansible_galaxy_executable="${miniconda_install_location}/bin/ansible-galaxy"
     if [[ ! -f "${ansible_galaxy_executable}" ]]; then
