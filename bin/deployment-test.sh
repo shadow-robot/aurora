@@ -15,26 +15,41 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set -e # fail on errors
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+# Define color escape codes
+RED='\e[0;31m'
+RESET='\e[0m'
+YELLOW='\e[1;33m'
+GREEN='\e[0;32m'
+
+print_red() {
+    echo -e "${RED}$1${RESET}"
+}
+
+print_green() {
+    echo -e "${GREEN}$1${RESET}"
+}
+
+print_yellow() {
+    echo -e "${YELLOW}$1${RESET}"
+}
 
 
-echo
-echo "================================================================="
-echo "|                                                               |"
-echo "|                   Shadow Deployment Test                      |"
-echo "|                                                               |"
-echo "================================================================="
+print_yellow
+print_yellow "================================================================="
+print_yellow "|                                                               |"
+print_yellow "|                   Shadow Deployment Test                      |"
+print_yellow "|                                                               |"
+print_yellow "================================================================="
 
 python3_path=$(which python3 || true)
 if [[ $(echo $python3_path | wc -c) -gt 1 ]]; then
-  echo "python3 found"
+  print_green "python3 found"
 else
-  echo "python3 not found"
+  print_red "python3 not found"
 fi
 
 if grep -q "microsoft" /proc/version  && grep -iq "wsl" /proc/version; then
-  echo "Likely running on WSL"
+  print_red "Likely running on WSL"
 fi
 
 pip install speedtest-cli distro
