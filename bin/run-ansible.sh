@@ -375,8 +375,6 @@ install_packages() {
     sudo apt-get install -y git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass
     print_green "Packages installed : git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass"
     sudo chown "$USER":"$USER" "$AURORA_HOME" || true
-    sudo rm -rf "$AURORA_HOME"
-
     git clone --depth 1 -b "${aurora_tools_branch}" https://github.com/shadow-robot/aurora.git "$AURORA_HOME"
     print_green "Aurora tools cloned"
 }
@@ -486,7 +484,7 @@ run_ansible() {
     fi
 
     # Run the ansible-playbook command with the correct flags
-    "${ansible_executable}" $VERBOSITY -i "${aurora_inventory}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$formatted_extra_vars" $ADDITIONAL_FLAGS
+    "${ansible_executable}" -v -i "${aurora_inventory}" "ansible/playbooks/${PLAYBOOK}.yml" --extra-vars "$formatted_extra_vars" $ADDITIONAL_FLAGS
 
     popd
 
