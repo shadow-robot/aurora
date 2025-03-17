@@ -120,8 +120,8 @@ create_conda_ws(){
   ${miniconda_install_location}/bin/pip3 install yq xq
 }
 
-fetch_pip_files(){ _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"; }
-fetch_ansible_files() { _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "ansible_collections"; }
+fetch_pip_files(){ _fetch_new_files "http://shadowrobot.aurora-host-packages-noble.s3.eu-west-2.amazonaws.com" "pip_packages"; }
+fetch_ansible_files() { _fetch_new_files "http://shadowrobot.aurora-host-packages-noble.s3.eu-west-2.amazonaws.com" "ansible_collections"; }
 
 install_pip_packages() { ANSIBLE_SKIP_CONFLICT_CHECK=1 ${miniconda_install_location}/bin/pip3 install ${packages_download_root}/pip_packages/* ; }
 install_ansible_collections() {
