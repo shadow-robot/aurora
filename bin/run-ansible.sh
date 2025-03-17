@@ -50,38 +50,6 @@ for arg in "$@"; do
     fi
 done
 
-print_startup_message() {
-    print_yellow "================================================================="
-    print_yellow "|                                                               |"
-    print_yellow "|                 Shadow Ansible Deployment Tool                |"
-    print_yellow "|                                                               |"
-    print_yellow "================================================================="
-    print_yellow ""
-    print_yellow "possible options: "
-    print_yellow "  * --branch            Branch or tag of aurora to use. Master by default. Can be a release tag, e.g. v1.0.0"
-    print_yellow "  * --inventory         Inventory of servers to use (local by default)"
-    print_yellow "  * --limit             Run a playbook against one or more members of that group (all by default)"
-    print_yellow "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,github_login)"
-    print_yellow "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. sudo_password,docker_password,git_password)"
-    print_yellow "  * --debug             Run aurora in debug mode printing every command run (very loud)"
-    print_yellow ""
-    print_yellow "example: ${SCRIPT_NAME} docker_deploy --branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
-    print_yellow ""
-    print_yellow "playbook     = ${PLAYBOOK}"
-    print_yellow "branch       = ${AURORA_TOOLS_BRANCH}"
-    print_yellow "inventory    = ${AURORA_INVENTORY}"
-    print_yellow "limit        = ${AURORA_LIMIT}"
-    print_yellow "read-input   = ${READ_INPUT}"
-    print_yellow "read-secure  = ${READ_SECURE}"
-    print_yellow ""
-
-export ANSIBLE_ROLES_PATH="${aurora_home}/$AURORA_HOME/ansible/roles"
-export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.$AURORA_HOME/ansible/plugins/callback:/usr/share/$AURORA_HOME/ansible/plugins/callback:${aurora_home}/$AURORA_HOME/ansible/playbooks/callback_plugins"
-export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
-
-}
-
-
 # Print the correct usage of the script
 command_usage() {
     COMMAND_USAGE_MESSAGE="Command usage: ${SCRIPT_NAME} <playbook name> [--branch <name>] [--inventory <name>] [--limit <rules>] [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
@@ -194,6 +162,37 @@ format_EXTRA_VARS() {
         fi
     done
     IFS=${OLD_IFS}
+}
+
+print_startup_message() {
+    print_yellow "================================================================="
+    print_yellow "|                                                               |"
+    print_yellow "|                 Shadow Ansible Deployment Tool                |"
+    print_yellow "|                                                               |"
+    print_yellow "================================================================="
+    print_yellow ""
+    print_yellow "possible options: "
+    print_yellow "  * --branch            Branch or tag of aurora to use. Master by default. Can be a release tag, e.g. v1.0.0"
+    print_yellow "  * --inventory         Inventory of servers to use (local by default)"
+    print_yellow "  * --limit             Run a playbook against one or more members of that group (all by default)"
+    print_yellow "  * --read-input        Prompt for input(s) required by some playbooks (e.g. docker_username,github_login)"
+    print_yellow "  * --read-secure       Prompt for password(s) required by some playbooks (e.g. sudo_password,docker_password,git_password)"
+    print_yellow "  * --debug             Run aurora in debug mode printing every command run (very loud)"
+    print_yellow ""
+    print_yellow "example: ${SCRIPT_NAME} docker_deploy --branch F#SRC-2603_add_ansible_bootstrap --inventory local product=hand_e"
+    print_yellow ""
+    print_yellow "playbook     = ${PLAYBOOK}"
+    print_yellow "branch       = ${AURORA_TOOLS_BRANCH}"
+    print_yellow "inventory    = ${AURORA_INVENTORY}"
+    print_yellow "limit        = ${AURORA_LIMIT}"
+    print_yellow "read-input   = ${READ_INPUT}"
+    print_yellow "read-secure  = ${READ_SECURE}"
+    print_yellow ""
+
+export ANSIBLE_ROLES_PATH="${aurora_home}/$AURORA_HOME/ansible/roles"
+export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.$AURORA_HOME/ansible/plugins/callback:/usr/share/$AURORA_HOME/ansible/plugins/callback:${aurora_home}/$AURORA_HOME/ansible/playbooks/callback_plugins"
+export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
+
 }
 
 
@@ -491,7 +490,7 @@ run_ansible() {
     print_yellow "Running Ansible playbook: ${PLAYBOOK}..."
 
     # Run the ansible-playbook command with the correct flags
-    "${ANSIBLE_EXECUTABLE}" -v -i "${AURORA_INVENTORY}" "${PLAYBOOK_PATH}" --extra-vars "$FORMATTED_EXTRA_VARS"
+    "${ANSIBLE_EXECUTABLE}" -vvvvv -i "${AURORA_INVENTORY}" "${PLAYBOOK_PATH}" --extra-vars "$FORMATTED_EXTRA_VARS"
 
     popd
 
@@ -500,11 +499,12 @@ run_ansible() {
 }
 
 main() {
-    print_startup_message
+   
     check_invalid_input "$@"
     set_variables "$@"
     check_variable_syntax "$@"
     format_EXTRA_VARS "$@"
+    print_startup_message
     handle_pr_branches
     handle_secure_data
     install_packages
