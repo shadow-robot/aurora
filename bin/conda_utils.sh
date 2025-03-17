@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
-
+set -x
 conda_ws_name="aurora_conda_ws"
 miniconda_install_root="${HOME}/.shadow_miniconda"
 miniconda_install_location="${miniconda_install_root}/miniconda"
