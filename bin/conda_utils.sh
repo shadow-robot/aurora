@@ -37,8 +37,9 @@ while IFS= read -r line; do
 done < <(lsb_release -a 2>/dev/null)
 
 # We use this variable to figure out which pip packages to download. Packages for focal work on jammy, but bionic needs its own packages
-if ! [[ $codename == *"bionic"* && $codename == *"noble"*]]; then
-  codename="focal" 
+if [[ $codename == *jammy*; then
+codename="focal"
+  
 fi
 
 _fetch_conda_installer() {
