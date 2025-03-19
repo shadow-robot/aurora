@@ -31,35 +31,68 @@ class CallbackModule_custom_retry_runner(CallbackModule_default):
     CALLBACK_NAME = 'custom_retry_runner'
 
     def __init__(self):
-
         self._play = None
         self._last_task_banner = None
-        super(CallbackModule, self).__init__()
+        super(CallbackModule_default, self).__init__()
 
     def v2_runner_on_start(self, host, task):
         pass
 
+    def v2_runner_on_failed(self, result, ignore_errors=False):
+        if ignore_errors:
+            return
+        try:
+            task_name = result.task_name or result._task
+            msg = f"FAILED: {task_name}"
+            if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) \
+                                    and '_ansible_verbose_override' not in result._result:
+                msg += "Result was: %s" % self._dump_results(result._result)
+            self._display.display(msg, color=C.COLOR_ERROR)
+            
+            # Try to show task path if available
+            try:
+                if hasattr(result._task, '_role') and result._task._role:
+                    task_path = result._task._role._role_path
+                elif hasattr(result._task, '_ds') and result._task._ds:
+                    task_path = result._task._ds._data_source
+                else:
+                    task_path = None
+                
+                if task_path:
+                    self._display.display(f"Task path: {task_path}", color=C.COLOR_ERROR)
+            except Exception:
+                # Silently ignore any errors in showing task path
+                pass
+                
+        except Exception as e:
+            # Handle any exceptions that might occur during failure reporting
+            self._display.display(f"Error reporting failure: {str(e)}", color=C.COLOR_ERROR)
+
     def v2_runner_retry(self, result):
-        task_name = result.task_name or result._task
-        if "pull" in result.task_name.lower() and "docker" in result.task_name.lower():
-            msg = "Docker image pulling in progress... Message count: "+str(result._result['attempts'])
-            if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) \
-                                    and '_ansible_verbose_override' not in result._result:
-                msg += "Result was: %s" % self._dump_results(result._result)
-            self._display.display(msg, color=C.COLOR_DEBUG)
-        elif "arp" in result.task_name.lower() and "mac" in result.task_name.lower():
-            msg = "Waiting for the MAC address of a connected adapter to appear in arp..."
-            msg += f"Message count: {result._result['attempts']}"
-            if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) \
-                                    and '_ansible_verbose_override' not in result._result:
-                msg += "Result was: %s" % self._dump_results(result._result)
-            self._display.display(msg, color=C.COLOR_DEBUG)
-        else:
-            retries = result._result['retries'] - result._result['attempts']
-            msg = f"FAILED - RETRYING: {task_name} ({retries} retries left)."
-            if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) \
-                                    and '_ansible_verbose_override' not in result._result:
-                msg += "Result was: %s" % self._dump_results(result._result)
-            self._display.display(msg, color=C.COLOR_DEBUG)
+        try:
+            task_name = result.task_name or result._task
+            if "pull" in task_name.lower() and "docker" in task_name.lower():
+                msg = "Docker image pulling in progress... Message count: "+str(result._result['attempts'])
+                if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) \
+                                        and '_ansible_verbose_override' not in result._result:
+                    msg += "Result was: %s" % self._dump_results(result._result)
+                self._display.display(msg, color=C.COLOR_DEBUG)
+            elif "arp" in task_name.lower() and "mac" in task_name.lower():
+                msg = "Waiting for the MAC address of a connected adapter to appear in arp..."
+                msg += f"Message count: {result._result['attempts']}"
+                if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) \
+                                        and '_ansible_verbose_override' not in result._result:
+                    msg += "Result was: %s" % self._dump_results(result._result)
+                self._display.display(msg, color=C.COLOR_DEBUG)
+            else:
+                retries = result._result['retries'] - result._result['attempts']
+                msg = f"FAILED - RETRYING: {task_name} ({retries} retries left)."
+                if (self._display.verbosity > 2 or '_ansible_verbose_always' in result._result) \
+                                        and '_ansible_verbose_override' not in result._result:
+                    msg += "Result was: %s" % self._dump_results(result._result)
+                self._display.display(msg, color=C.COLOR_DEBUG)
+        except Exception as e:
+            # Handle any exceptions that might occur during retry reporting
+            self._display.display(f"Error reporting retry: {str(e)}", color=C.COLOR_ERROR)
 
 CallbackModule = CallbackModule_custom_retry_runner

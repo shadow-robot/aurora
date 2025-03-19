@@ -38,8 +38,7 @@ We now deploy a conda environment and install our needed packages in it to try a
 
 If something goes wrong with a deployment (especially on a machine that has a previous old deployment), there is no harm in deleting the conda deployment and trying again: 
 
-```
-rm -r ~/.shadow_miniconda/
+```rm -r ~/.shadow_miniconda/
 ```
 
 
@@ -60,6 +59,49 @@ We can now easily have multiple Aurora setups on one device, you simply need to 
 By having the name of the container attached to where we store the icons and scripts we can have more control over which icons get removed and reinstalled when rerunning Aurora, as we can just remove the folders that contain the containers name. This will leave the previous run's icons and scripts intact.
 
 # How to run #
+
+## Command Line Options ##
+
+The Aurora installer supports several command line options:
+
+* `--no-gui`: Disable the graphical user interface and run in terminal-only mode
+* `--debug`: Enable debug mode for more detailed logging and output
+* `--branch <branch_name>`: Specify which branch of Aurora to use
+* `--inventory <inventory_name>`: Specify which inventory to use
+* `--limit <rules>`: Limit which hosts the playbook runs against
+* `--read-input <vars>`: Prompt for input variables
+* `--read-secure <vars>`: Prompt for secure variables (like passwords)
+
+### Log Files ###
+
+All installation logs are stored in `/tmp/aurora_install_logs/` with filenames in the format `install_YYYYMMDD_HHMMSS.log`. These logs contain detailed information about the installation process, including:
+- Package installation steps
+- Ansible playbook execution
+- Error messages and warnings
+- Debug information (when debug mode is enabled)
+
+### GUI Mode ###
+
+By default, Aurora runs in GUI mode using whiptail for a user-friendly interface. The GUI provides:
+- Progress bars for installation steps
+- Dialog boxes for warnings and errors
+- Password input prompts
+- Installation status updates
+
+You can disable the GUI by adding the `--no-gui` flag to run in terminal-only mode.
+
+### Debug Mode ###
+
+Debug mode can be enabled by adding the `--debug` flag. This will:
+- Show detailed debug messages in the terminal
+- Log additional information to the log files
+- Display more verbose output during installation
+- Help troubleshoot installation issues
+
+Example with debug mode:
+```bash
+bash <(curl -Ls https://raw.githubusercontent.com/shadow-robot/aurora/v2.2.5/bin/run-ansible.sh) teleop_deploy --debug --branch v2.2.5 --inventory production --read-secure customer_key
+```
 
 ## teleop_deploy ##
 

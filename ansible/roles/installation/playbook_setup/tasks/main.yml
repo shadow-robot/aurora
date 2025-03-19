@@ -12,17 +12,58 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
-- name: Install common tools
-  apt:
-    name: "{{ packages }}"
-    state: present
-    force_apt_get: yes
+- name: Check if Python 3 is installed
+  raw: 'python3 --version'
+  register: output
+  ignore_errors: yes
+  changed_when: output.rc != 0
+
+- name: Install Python 3 and python3-apt if not installed
+  raw: 'apt-get -y update && apt-get install -y python3 python3-apt'
+  when: output.rc != 0
   become: yes
-  vars:
-    packages:
-      - htop
-      - nano
-      - net-tools
+
+- name: Check Python version
+  command: python3 -c "import sys; print('.'.join(map(str, sys.version_info[:2])))"
+  register: python_version
+  changed_when: false
+
+- name: Install Python 3.11 for apt module compatibility
+  raw: 'apt-get -y update && apt-get install -y python3.11 python3.11-apt'
+  when: python_version.stdout is version('3.12', '>=')
+  become: yes
+
+- name: Set Python 3.11 as the default for apt module
+  raw: 'update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1'
+  when: python_version.stdout is version('3.12', '>=')
+  become: yes
+
+- name: Check for pip3 cryptography issue
+  command: pip3 --version
+  register: pip_status
+  ignore_errors: yes
+  changed_when: false
+
+- name: Fix pip3 cryptography issue if present
+  raw: 'apt-get -y update && apt-get purge -y python3-openssl'
+  register: output
+  when:
+    - pip_status.rc != 0
+    - pip_status.stderr | regex_search("module 'lib' has no attribute 'X509_V_FLAG_.*")
+  become: yes
+
+- name: Install additional dependencies for Ubuntu 24.04
+  raw: 'apt-get -y update && apt-get install -y python3-distutils python3-apt'
+  when: ansible_distribution_release|string == 'noble'
+  become: yes
+
+- name: Install common tools using raw commands
+  shell: |
+    apt-get update || true
+    apt-get install -y htop nano net-tools
+  become: yes
+  register: install_result
+  changed_when: install_result.rc == 0
 
 - name: Set default customer_key
   set_fact:

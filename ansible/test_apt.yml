@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Install common tools
+      shell: |
+        apt-get update || true
+        apt-get install -y htop nano net-tools
+      register: install_result
+      changed_when: install_result.rc == 0 

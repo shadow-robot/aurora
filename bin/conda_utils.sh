@@ -41,6 +41,15 @@ if ! [[ $codename == *"bionic"* ]]; then
   codename="focal" 
 fi
 
+# Function to log messages
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+    # Only print debug messages if debug mode is enabled
+    if [[ "${DEBUG_MODE:-false}" == "true" ]]; then
+        echo "[DEBUG] $1" >&2
+    fi
+}
+
 _fetch_conda_installer() {
     mkdir -p $miniconda_install_root
     attempts=1
@@ -110,14 +119,93 @@ deploy_conda_installer() {
   fi
 }
 
-create_conda_ws(){
-  deploy_conda_installer
-  shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
-  if [ -d "$shadow_conda_ws_dir" ]; then
-    rm -rf $shadow_conda_ws_dir
+# Function to create conda workspace
+create_conda_ws() {
+    log_message "Starting conda workspace creation"
+    deploy_conda_installer
+    shadow_conda_ws_dir="${miniconda_install_location}/envs/${conda_ws_name}"
+    log_message "Conda workspace directory: $shadow_conda_ws_dir"
+    
+    # Remove existing conda workspace if it exists
+    log_message "Removing existing conda workspace"
+    rm -rf "$shadow_conda_ws_dir"
+    
+    # Create new conda environment
+    log_message "Creating new conda environment"
+    "${miniconda_install_location}/bin/conda" create -y -n "${conda_ws_name}" python=3.8
+    
+    # Activate conda environment
+    log_message "Activating conda environment"
+    source "${miniconda_install_location}/etc/profile.d/conda.sh"
+    if ! conda activate "${conda_ws_name}"; then
+        log_message "Failed to activate conda environment"
+        return 1
+    fi
+    
+    # Install base packages
+    log_message "Installing base packages"
+    "${shadow_conda_ws_dir}/bin/pip" install -r "${aurora_install_dir}/ansible/requirements.txt"
+    
+    # Install ansible
+    log_message "Installing ansible"
+    "${shadow_conda_ws_dir}/bin/pip" install ansible==2.9.27
+    
+    # Log environment details
+    log_message "Current PATH: $PATH"
+    log_message "Current CONDA_PREFIX: $CONDA_PREFIX"
+    log_message "Conda environment contents:"
+    "${shadow_conda_ws_dir}/bin/pip" list
+    
+    # Set up conda environment
+    log_message "Setting up conda environment"
+    "${shadow_conda_ws_dir}/bin/pip" install -r "${aurora_install_dir}/ansible/requirements.txt"
+    
+    # Verify environment
+    if [[ ! -f "${shadow_conda_ws_dir}/bin/ansible-playbook" ]]; then
+        log_message "ansible-playbook not found in conda environment"
+        return 1
+    fi
+    
+    log_message "Conda environment activated successfully"
+    log_message "CONDA_PREFIX: $CONDA_PREFIX"
+    log_message "PATH: $PATH"
+    log_message "ansible-playbook location: $(which ansible-playbook)"
+    
+    return 0
+}
+
+# Function to ensure conda environment is properly activated
+setup_and_activate_conda() {
+  echo "[DEBUG] Setting up conda environment"
+  
+  # First ensure conda is initialized
+  source "${miniconda_install_location}/etc/profile.d/conda.sh"
+  
+  # Deactivate any active environment
+  conda deactivate 2>/dev/null || true
+  
+  # Activate our environment
+  conda activate ${conda_ws_name}
+  
+  if [ -z "$CONDA_PREFIX" ] || [ "$CONDA_PREFIX" != "${miniconda_install_location}/envs/${conda_ws_name}" ]; then
+    echo "[ERROR] Failed to activate conda environment"
+    return 1
   fi
-  ${miniconda_install_location}/bin/conda create -y -n ${conda_ws_name} python=3.8 && source ${miniconda_install_location}/bin/activate ${conda_ws_name}
-  ${miniconda_install_location}/bin/pip3 install yq xq
+  
+  # Ensure conda env bin is first in PATH
+  export PATH="${miniconda_install_location}/envs/${conda_ws_name}/bin:$PATH"
+  
+  # Verify ansible is available in our environment
+  if ! command -v ansible-playbook >/dev/null 2>&1; then
+    echo "[ERROR] ansible-playbook not found in conda environment"
+    return 1
+  fi
+  
+  echo "[DEBUG] Conda environment activated successfully"
+  echo "[DEBUG] CONDA_PREFIX: $CONDA_PREFIX"
+  echo "[DEBUG] PATH: $PATH"
+  echo "[DEBUG] ansible-playbook location: $(which ansible-playbook)"
+  return 0
 }
 
 fetch_pip_files(){ _fetch_new_files "http://shadowrobot.aurora-host-packages-${codename}.s3.eu-west-2.amazonaws.com" "pip_packages"; }
