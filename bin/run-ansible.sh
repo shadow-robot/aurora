@@ -496,7 +496,7 @@ if [[ "$USE_GUI" == "true" ]]; then
 
         # Install required packages
         progress=20
-        for package in git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass; do
+        for package in git jq xq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass; do
             if ! run_command "apt-get install -y $package" "Installing $package..." "$progress" true; then
                 show_error "Failed to install $package"
             fi
