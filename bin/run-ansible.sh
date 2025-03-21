@@ -490,7 +490,10 @@ run_ansible() {
     print_yellow "Running Ansible playbook: ${PLAYBOOK}..."
 
     # Run the ansible-playbook command with the correct flags
-    "${ANSIBLE_EXECUTABLE}" -vvvvv -i "${AURORA_INVENTORY}" "${PLAYBOOK_PATH}" --extra-vars "$FORMATTED_EXTRA_VARS"
+     -vvvvv -i  "${PLAYBOOK_PATH}" --extra-vars 
+   "${ANSIBLE_EXECUTABLE}" -v ${ADDITIONAL_FLAGS} -i "${AURORA_INVENTORY}" "ansible/playbooks/${playbook}.yml" --extra-vars "$FORMATTED_EXTRA_VARS"
+
+    
 
     popd
 
