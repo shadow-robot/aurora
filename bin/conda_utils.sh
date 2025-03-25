@@ -151,6 +151,11 @@ create_conda_ws() {
     log_message "Installing ansible"
     "${shadow_conda_ws_dir}/bin/pip" install ansible==2.9.27
     
+    # Install required packages in conda environment
+    ${miniconda_install_location}/bin/conda create -n ${conda_ws_name} python=3.8 -y
+    ${miniconda_install_location}/bin/conda activate ${conda_ws_name}
+    ${miniconda_install_location}/bin/pip install yq xq
+    
     # Log environment details
     log_message "Current PATH: $PATH"
     log_message "Current CONDA_PREFIX: $CONDA_PREFIX"
