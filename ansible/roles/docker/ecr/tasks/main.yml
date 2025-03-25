@@ -84,7 +84,6 @@
         headers:
           Content-Type: application/json
           x-api-key: "{{ customer_key }}"
-      no_log: True
       register: request_result
       retries: 3
       delay: 3
