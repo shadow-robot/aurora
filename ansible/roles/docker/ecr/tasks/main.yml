@@ -68,7 +68,7 @@
     - name: Choose Public
       set_fact:
         api_url: nxmol7pvn3
-        region: us-east-1
+        region: eu-west-2
       when:
       - '"public.ecr" in image'
 
