@@ -151,11 +151,6 @@ create_conda_ws() {
     log_message "Installing ansible"
     "${shadow_conda_ws_dir}/bin/pip" install ansible==2.9.27
     
-    # Install required packages in conda environment
-    ${miniconda_install_location}/bin/conda create -n ${conda_ws_name} python=3.8 -y
-    ${miniconda_install_location}/bin/conda activate ${conda_ws_name}
-    ${miniconda_install_location}/bin/pip install yq xq
-    
     # Log environment details
     log_message "Current PATH: $PATH"
     log_message "Current CONDA_PREFIX: $CONDA_PREFIX"
@@ -176,6 +171,7 @@ create_conda_ws() {
     log_message "CONDA_PREFIX: $CONDA_PREFIX"
     log_message "PATH: $PATH"
     log_message "ansible-playbook location: $(which ansible-playbook)"
+    ${miniconda_install_location}/bin/pip3 install yq xq
     
     return 0
 }
@@ -211,6 +207,7 @@ setup_and_activate_conda() {
   echo "[DEBUG] CONDA_PREFIX: $CONDA_PREFIX"
   echo "[DEBUG] PATH: $PATH"
   echo "[DEBUG] ansible-playbook location: $(which ansible-playbook)"
+  ${miniconda_install_location}/bin/pip3 install yq xq
   return 0
 }
 

@@ -17,7 +17,7 @@
 set -e # fail on errors
 
 # GUI mode flag (default to true)
-USE_GUI=true
+USE_GUI=false
 DEBUG_MODE=false
 
 # Colors for terminal output
@@ -38,8 +38,10 @@ cleanup() {
     echo -e "\n${RED}Installation cancelled by user${NC}"
     # Kill any background processes
     jobs -p | xargs -r kill
+    # Kill whiptail if it's running
+    pkill -f whiptail
     # Clean up temporary files
-    rm -f /tmp/vault_pass /tmp/sudo_pass
+    rm -f /tmp/vault_pass /tmp/sudo_pass /tmp/run_playbook.sh
     exit 1
 }
 
@@ -116,11 +118,8 @@ show_error() {
     if [[ "$show_log" == "true" && -f "$LOG_FILE" ]]; then
         echo -e "\n${YELLOW}Last few lines of log:${NC}"
         echo "----------------------------------------"
-        # Process log lines to make them more readable
         tail -n 10 "$LOG_FILE" | grep -v "password for" | while IFS= read -r line; do
-            # Remove timestamps from log lines
             line=$(echo "$line" | sed -E 's/\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\] //')
-            # Add proper indentation
             echo "  #     $line"
         done
         echo "----------------------------------------"
@@ -327,25 +326,191 @@ show_welcome() {
     fi
 }
 
+# Function to create the Ansible wrapper script
+create_ansible_wrapper() {
+    cat > /tmp/run_playbook.sh << EOF
+#!/bin/bash
+set -e
+
+# Source conda utils with full path
+source "$(pwd)/bin/conda_utils.sh" || {
+    echo "[ERROR] Failed to source conda_utils.sh"
+    exit 1
+}
+
+# Initialize conda
+source "${miniconda_install_location}/etc/profile.d/conda.sh" || {
+    echo "[ERROR] Failed to source conda.sh"
+    exit 1
+}
+
+# Deactivate any active environment
+conda deactivate 2>/dev/null || true
+
+# Activate our environment
+conda activate ${conda_ws_name} || {
+    echo "[ERROR] Failed to activate conda environment"
+    exit 1
+}
+
+# Verify we're in the right environment
+if [ "\$CONDA_PREFIX" != "${miniconda_install_location}/envs/${conda_ws_name}" ]; then
+    echo "[ERROR] Wrong conda environment: \$CONDA_PREFIX"
+    exit 1
+fi
+
+# Set up ansible executables with fallbacks
+ansible_playbook_path="${miniconda_install_location}/bin/ansible-playbook"
+if [[ ! -f "\$ansible_playbook_path" ]]; then
+    echo "[WARNING] ansible-playbook not found in conda environment, falling back to system version"
+    ansible_playbook_path=ansible-playbook
+fi
+
+# Process inventory path
+inventory_path="\$1"
+shift  # Remove the inventory argument
+
+# Ensure inventory path is absolute
+if [[ ! "\$inventory_path" =~ ^/ ]]; then
+    inventory_path="\$(pwd)/\$inventory_path"
+fi
+
+# Process verbosity flag
+verbosity=""
+if [[ "\$1" == "-v" ]]; then
+    verbosity="-v"
+    shift
+fi
+
+# Get playbook path
+playbook_path="\$1"
+shift  # Remove the playbook path
+
+# Process extra variables
+extra_vars=""
+while [[ \$# -gt 0 ]]; do
+    if [[ "\$1" == "--extra-vars" ]]; then
+        shift  # Skip the --extra-vars flag
+        extra_vars="\$1"
+        shift
+    else
+        # Format each variable as a proper ansible extra var
+        if [[ -n "\$extra_vars" ]]; then
+            extra_vars="\$extra_vars "
+        fi
+        extra_vars="\$extra_vars\$1"
+        shift
+    fi
+done
+
+# Only show debug output if debug mode is enabled
+if [[ "${DEBUG_MODE}" == "true" ]]; then
+    echo "[DEBUG] Using ansible-playbook: \$ansible_playbook_path"
+    echo "[DEBUG] Inventory path: \$inventory_path"
+    echo "[DEBUG] Playbook path: \$playbook_path"
+    echo "[DEBUG] Verbosity: \$verbosity"
+    echo "[DEBUG] Extra vars: \$extra_vars"
+    echo "[DEBUG] CONDA_PREFIX: \$CONDA_PREFIX"
+    echo "[DEBUG] PATH: \$PATH"
+fi
+
+# Execute ansible-playbook with proper arguments
+exec "\$ansible_playbook_path" \$verbosity -i "\$inventory_path" "\$playbook_path" -e "\$extra_vars"
+EOF
+    chmod +x /tmp/run_playbook.sh
+}
+
+# Function to perform the installation
+perform_installation() {
+    local progress=0
+    
+    # Update package lists (ignore non-critical errors)
+    if ! run_command "apt-get update" "Updating package lists..." "10" true true; then
+        log_message "Warning: apt-get update completed with non-critical errors"
+    fi
+
+    # Install required packages
+    progress=20
+    for package in git jq lsb-release libyaml-dev libssl-dev libffi-dev sshpass; do
+        if ! run_command "apt-get install -y $package" "Installing $package..." "$progress" true; then
+            show_error "Failed to install $package"
+        fi
+        progress=$((progress + 5))
+    done
+
+    # Setup workspace
+    if ! run_command "chown $USER:$USER /tmp/aurora || true; rm -rf /tmp/aurora" "Setting up workspace..." "60" true; then
+        show_error "Failed to set up workspace"
+    fi
+
+    # Clone repository (no sudo needed)
+    if ! run_command "git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git /tmp/aurora" "Cloning Aurora repository..." "70"; then
+        show_error "Failed to clone repository"
+    fi
+
+    # Setup Python environment
+    cd /tmp/aurora
+    export PYTHONNOUSERSITE=1
+    
+    # Source conda utils first
+    source bin/conda_utils.sh
+    
+    # Create conda environment and install packages
+    if ! run_command "bash -c 'source bin/conda_utils.sh && create_conda_ws'" "Creating conda environment..." "75" false false true; then
+        show_error "Failed to create conda environment"
+    fi
+    
+    # Initialize and activate conda environment
+    source "${miniconda_install_location}/etc/profile.d/conda.sh"
+    eval "$(${miniconda_install_location}/bin/conda shell.bash hook)"
+    if ! conda activate aurora_conda_ws; then
+        show_error "Failed to activate conda environment. Try running 'conda info --envs' to see available environments."
+    fi
+    
+    # Fetch and install packages
+    if ! run_command "bash -c 'source bin/conda_utils.sh && source ${miniconda_install_location}/etc/profile.d/conda.sh && conda activate aurora_conda_ws && fetch_pip_files && fetch_ansible_files && install_pip_packages'" "Installing Python packages..." "80" false false true; then
+        show_error "Failed to install Python packages"
+    fi
+
+    # Configure Ansible
+    export ANSIBLE_ROLES_PATH="/tmp/aurora/ansible/roles"
+    export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:/tmp/aurora/ansible/playbooks/callback_plugins"
+    export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
+
+    # Create and execute the Ansible wrapper script
+    create_ansible_wrapper
+    
+    if ! run_command "/tmp/run_playbook.sh ${aurora_inventory} -v ansible/playbooks/${playbook}.yml --extra-vars \"$formatted_extra_vars\"" "Running Ansible playbook..." "90" false false true 3600; then
+        show_error "Ansible playbook execution failed" true
+    fi
+    
+    # Cleanup
+    rm -f /tmp/run_playbook.sh /tmp/vault_pass
+    conda deactivate
+    unset SUDO_PASSWORD VAULT_PASSWORD ANSIBLE_BECOME_PASS
+    update_progress "100" "Installation complete!"
+}
+
+# Main script execution
 script_name="bash <(curl -Ls bit.ly/run-aurora)"
 
 command_usage_message="Command usage: ${script_name} <playbook name> [--branch <n>] [--inventory <n>]"
-command_usage_message="${command_usage_message} [--limit <rules>] [--no-gui]"
+command_usage_message="${command_usage_message} [--limit <rules>] [--gui]"
 command_usage_message="${command_usage_message} [<parameter>=<value>] [<parameter>=<value>] ... [<parameter>=<value>]"
 
-# First, check for --no-gui and --debug flags anywhere in the arguments
+# First, check for --gui and --debug flags anywhere in the arguments
 for arg in "$@"; do
-    if [[ "$arg" == "--no-gui" ]]; then
-        USE_GUI=false
+    if [[ "$arg" == "--gui" ]]; then
+        USE_GUI=true
     elif [[ "$arg" == "--debug" ]]; then
         DEBUG_MODE=true
     fi
 done
 
-# Remove --no-gui and --debug from arguments if present
+# Remove --gui and --debug from arguments if present
 args=()
 for arg in "$@"; do
-    if [[ "$arg" != "--no-gui" && "$arg" != "--debug" ]]; then
+    if [[ "$arg" != "--gui" && "$arg" != "--debug" ]]; then
         args+=("$arg")
     fi
 done
@@ -440,25 +605,6 @@ else
     aurora_inventory=${aurora_inventory:-"ansible/inventory/local/${playbook}"}
 fi
 
-# Show configuration summary
-show_config() {
-    local config_message="\
-The following configuration will be used:
-
-Playbook:     ${playbook}
-Branch:       ${aurora_tools_branch}
-Inventory:    ${aurora_inventory}
-Limit:        ${aurora_limit}"
-
-    if [[ "$USE_GUI" == "true" ]]; then
-        whiptail --title "Configuration Summary" --msgbox "${config_message}\n\nPress OK to begin installation" 15 60
-    else
-        term_echo "$BLUE" "$config_message"
-        echo ""
-        term_prompt "Press Enter to begin installation..."
-    fi
-}
-
 # Get all required passwords upfront
 get_passwords() {
     # Get sudo password
@@ -486,418 +632,31 @@ get_passwords() {
 # Get all passwords before starting the installation
 get_passwords
 
-# Main installation process
+# Function to run whiptail with proper signal handling
+run_whiptail() {
+    local title="$1"
+    local gauge="$2"
+    local height="$3"
+    local width="$4"
+    local initial="$5"
+    
+    # Run whiptail in background and capture its PID
+    whiptail --title "$title" --gauge "$gauge" "$height" "$width" "$initial" &
+    local whiptail_pid=$!
+    
+    # Set up trap to kill whiptail on script exit
+    trap "kill $whiptail_pid 2>/dev/null; cleanup" SIGINT SIGTERM
+    
+    # Wait for whiptail to finish
+    wait $whiptail_pid
+}
+
+# Run the installation
 if [[ "$USE_GUI" == "true" ]]; then
-    {
-        # Update package lists (ignore non-critical errors)
-        if ! run_command "apt-get update" "Updating package lists..." "10" true true; then
-            log_message "Warning: apt-get update completed with non-critical errors"
-        fi
-
-        # Install required packages
-        progress=20
-        for package in git jq xq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass; do
-            if ! run_command "apt-get install -y $package" "Installing $package..." "$progress" true; then
-                show_error "Failed to install $package"
-            fi
-            progress=$((progress + 5))
-        done
-
-        # Setup workspace
-        if ! run_command "chown $USER:$USER /tmp/aurora || true; rm -rf /tmp/aurora" "Setting up workspace..." "60" true; then
-            show_error "Failed to set up workspace"
-        fi
-
-        # Clone repository (no sudo needed)
-        if ! run_command "git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git /tmp/aurora" "Cloning Aurora repository..." "70"; then
-            show_error "Failed to clone repository"
-        fi
-
-        # Setup Python environment
-        cd /tmp/aurora
-        export PYTHONNOUSERSITE=1
-        
-        # Source conda utils first
-        source bin/conda_utils.sh
-        
-        # Create conda environment and install packages
-        if ! run_command "bash -c 'source bin/conda_utils.sh && create_conda_ws'" "Creating conda environment..." "75" false false true; then
-            show_error "Failed to create conda environment"
-        fi
-        
-        # Initialize and activate conda environment
-        source "${miniconda_install_location}/etc/profile.d/conda.sh"
-        eval "$(${miniconda_install_location}/bin/conda shell.bash hook)"
-        if ! conda activate aurora_conda_ws; then
-            show_error "Failed to activate conda environment. Try running 'conda info --envs' to see available environments."
-        fi
-        
-        # Fetch and install packages
-        if ! run_command "bash -c 'source bin/conda_utils.sh && source ${miniconda_install_location}/etc/profile.d/conda.sh && conda activate aurora_conda_ws && fetch_pip_files && fetch_ansible_files && install_pip_packages'" "Installing Python packages..." "80" false false true; then
-            show_error "Failed to install Python packages"
-        fi
-
-        # Configure Ansible
-        export ANSIBLE_ROLES_PATH="/tmp/aurora/ansible/roles"
-        export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:/tmp/aurora/ansible/playbooks/callback_plugins"
-        export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
-
-        ansible_flags="-v"
-        [[ "${aurora_limit}" != "all" ]] && ansible_flags="${ansible_flags} --limit ${aurora_limit}"
-
-        # Configure authentication flags
-        if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
-            # Store vault password temporarily
-            echo "$VAULT_PASSWORD" > /tmp/vault_pass
-            ansible_flags="${ansible_flags} --vault-password-file /tmp/vault_pass"
-        fi
-
-        # Run Ansible playbook with real-time output (60 minute timeout)
-        log_message "Running Ansible playbook"
-        
-        # Create a wrapper script to ensure proper environment setup
-        cat > /tmp/run_playbook.sh << EOF
-#!/bin/bash
-set -e
-
-# Source conda utils with full path
-source "$(pwd)/bin/conda_utils.sh" || {
-    echo "[ERROR] Failed to source conda_utils.sh"
-    exit 1
-}
-
-# Initialize conda
-source "${miniconda_install_location}/etc/profile.d/conda.sh" || {
-    echo "[ERROR] Failed to source conda.sh"
-    exit 1
-}
-
-# Deactivate any active environment
-conda deactivate 2>/dev/null || true
-
-# Activate our environment
-conda activate ${conda_ws_name} || {
-    echo "[ERROR] Failed to activate conda environment"
-    exit 1
-}
-
-# Verify we're in the right environment
-if [ "\$CONDA_PREFIX" != "${miniconda_install_location}/envs/${conda_ws_name}" ]; then
-    echo "[ERROR] Wrong conda environment: \$CONDA_PREFIX"
-    exit 1
-fi
-
-# Set up ansible executables with fallbacks
-ansible_playbook_path="${miniconda_install_location}/bin/ansible-playbook"
-if [[ ! -f "\$ansible_playbook_path" ]]; then
-    echo "[WARNING] ansible-playbook not found in conda environment, falling back to system version"
-    ansible_playbook_path=ansible-playbook
-fi
-
-# Process inventory path
-inventory_path="\$1"
-shift  # Remove the inventory argument
-
-# Ensure inventory path is absolute
-if [[ ! "\$inventory_path" =~ ^/ ]]; then
-    inventory_path="\$(pwd)/\$inventory_path"
-fi
-
-# Process verbosity flag
-verbosity=""
-if [[ "\$1" == "-v" ]]; then
-    verbosity="-v"
-    shift
-fi
-
-# Get playbook path
-playbook_path="\$1"
-shift  # Remove the playbook path
-
-# Process extra variables
-extra_vars=""
-while [[ \$# -gt 0 ]]; do
-    if [[ "\$1" == "--extra-vars" ]]; then
-        shift  # Skip the --extra-vars flag
-        extra_vars="\$1"
-        shift
-    else
-        # Format each variable as a proper ansible extra var
-        if [[ -n "\$extra_vars" ]]; then
-            extra_vars="\$extra_vars "
-        fi
-        extra_vars="\$extra_vars\$1"
-        shift
-    fi
-done
-
-# Only show debug output if debug mode is enabled
-if [[ "${DEBUG_MODE}" == "true" ]]; then
-    echo "[DEBUG] Using ansible-playbook: \$ansible_playbook_path"
-    echo "[DEBUG] Inventory path: \$inventory_path"
-    echo "[DEBUG] Playbook path: \$playbook_path"
-    echo "[DEBUG] Verbosity: \$verbosity"
-    echo "[DEBUG] Extra vars: \$extra_vars"
-    echo "[DEBUG] CONDA_PREFIX: \$CONDA_PREFIX"
-    echo "[DEBUG] PATH: \$PATH"
-fi
-
-# Execute ansible-playbook with proper arguments
-exec "\$ansible_playbook_path" \$verbosity -i "\$inventory_path" "\$playbook_path" -e "\$extra_vars"
-EOF
-        chmod +x /tmp/run_playbook.sh
-        
-        if ! run_command "/tmp/run_playbook.sh ${aurora_inventory} -v ansible/playbooks/${playbook}.yml --extra-vars \"$formatted_extra_vars\"" "Running Ansible playbook..." "90" false false true 3600; then
-            show_error "Ansible playbook execution failed" true
-        fi
-        
-        # Clean up wrapper script
-        rm -f /tmp/run_playbook.sh
-
-        # Cleanup sensitive files
-        rm -f /tmp/vault_pass
-        
-        # Deactivate conda environment
-        conda deactivate
-
-        # Cleanup sensitive data
-        unset SUDO_PASSWORD VAULT_PASSWORD ANSIBLE_BECOME_PASS
-        update_progress "100" "Installation complete!"
-    } | whiptail --title "Installation Progress" --gauge "Starting installation..." $GAUGE_HEIGHT $WHIP_COLS 0
+    perform_installation | run_whiptail "Installation Progress" "Starting installation..." $GAUGE_HEIGHT $WHIP_COLS 0
 else
-    # Run installation steps directly
-    log_message "Starting installation in non-GUI mode"
-    
-    # Update package lists (ignore non-critical errors)
-    if ! run_command "apt-get update" "Updating package lists..." "10" true true; then
-        log_message "Warning: apt-get update completed with non-critical errors"
-    fi
-    
-    # Install required packages
-    progress=20
-    for package in git jq curl lsb-release libyaml-dev libssl-dev libffi-dev sshpass; do
-        if ! run_command "apt-get install -y $package" "Installing $package..." "$progress" true; then
-            show_error "Failed to install $package"
-        fi
-        progress=$((progress + 5))
-    done
-
-    # Setup workspace
-    log_message "Setting up workspace"
-    if ! run_command "chown $USER:$USER /tmp/aurora || true; rm -rf /tmp/aurora" "Setting up workspace..." "60" true; then
-        show_error "Failed to set up workspace"
-    fi
-
-    # Clone repository (no sudo needed)
-    log_message "Cloning Aurora repository"
-    if ! run_command "git clone --depth 1 -b ${aurora_tools_branch} https://github.com/shadow-robot/aurora.git /tmp/aurora" "Cloning Aurora repository..." "70"; then
-        show_error "Failed to clone repository"
-    fi
-
-    # Setup Python environment
-    cd /tmp/aurora
-    export PYTHONNOUSERSITE=1
-    
-    # Source conda utils first
-    log_message "Sourcing conda utils"
-    source bin/conda_utils.sh
-    
-    # Create conda environment and install packages
-    log_message "Creating conda environment"
-    if ! run_command "source bin/conda_utils.sh && create_conda_ws" "Creating conda environment..." "75" false false true; then
-        show_error "Failed to create conda environment"
-    fi
-    
-    # Initialize and activate conda environment
-    log_message "Initializing conda"
-    source "${miniconda_install_location}/etc/profile.d/conda.sh"
-    log_message "Running conda hook"
-    eval "$(${miniconda_install_location}/bin/conda shell.bash hook)"
-    log_message "Activating conda environment"
-    if ! conda activate aurora_conda_ws; then
-        show_error "Failed to activate conda environment. Try running 'conda info --envs' to see available environments."
-    fi
-    log_message "Conda environment activated: $CONDA_PREFIX"
-    
-    # Fetch and install packages
-    log_message "Installing Python packages"
-    if ! run_command "bash -c 'source bin/conda_utils.sh && source ${miniconda_install_location}/etc/profile.d/conda.sh && conda activate aurora_conda_ws && fetch_pip_files && fetch_ansible_files && install_pip_packages'" "Installing Python packages..." "80" false false true; then
-        show_error "Failed to install Python packages"
-    fi
-
-    # Configure Ansible
-    log_message "Configuring Ansible"
-    export ANSIBLE_ROLES_PATH="/tmp/aurora/ansible/roles"
-    export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:/tmp/aurora/ansible/playbooks/callback_plugins"
-    export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
-
-    ansible_flags="-v"
-    [[ "${aurora_limit}" != "all" ]] && ansible_flags="${ansible_flags} --limit ${aurora_limit}"
-
-    # Configure authentication flags
-    if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
-        # Store vault password temporarily
-        echo "$VAULT_PASSWORD" > /tmp/vault_pass
-        ansible_flags="${ansible_flags} --vault-password-file /tmp/vault_pass"
-    fi
-
-    # Run Ansible playbook with real-time output (60 minute timeout)
-    log_message "Running Ansible playbook"
-    
-    # Create a wrapper script to ensure proper environment setup
-    cat > /tmp/run_playbook.sh << EOF
-#!/bin/bash
-set -e
-
-# Source conda utils with full path
-source "$(pwd)/bin/conda_utils.sh" || {
-    echo "[ERROR] Failed to source conda_utils.sh"
-    exit 1
-}
-
-# Initialize conda
-source "${miniconda_install_location}/etc/profile.d/conda.sh" || {
-    echo "[ERROR] Failed to source conda.sh"
-    exit 1
-}
-
-# Deactivate any active environment
-conda deactivate 2>/dev/null || true
-
-# Activate our environment
-conda activate ${conda_ws_name} || {
-    echo "[ERROR] Failed to activate conda environment"
-    exit 1
-}
-
-# Verify we're in the right environment
-if [ "\$CONDA_PREFIX" != "${miniconda_install_location}/envs/${conda_ws_name}" ]; then
-    echo "[ERROR] Wrong conda environment: \$CONDA_PREFIX"
-    exit 1
+    perform_installation
 fi
 
-# Set up ansible executables with fallbacks
-ansible_playbook_path="${miniconda_install_location}/bin/ansible-playbook"
-if [[ ! -f "\$ansible_playbook_path" ]]; then
-    echo "[WARNING] ansible-playbook not found in conda environment, falling back to system version"
-    ansible_playbook_path=ansible-playbook
-fi
-
-# Process inventory path
-inventory_path="\$1"
-shift  # Remove the inventory argument
-
-# Ensure inventory path is absolute
-if [[ ! "\$inventory_path" =~ ^/ ]]; then
-    inventory_path="\$(pwd)/\$inventory_path"
-fi
-
-# Process verbosity flag
-verbosity=""
-if [[ "\$1" == "-v" ]]; then
-    verbosity="-v"
-    shift
-fi
-
-# Get playbook path
-playbook_path="\$1"
-shift  # Remove the playbook path
-
-# Process extra variables
-extra_vars=""
-while [[ \$# -gt 0 ]]; do
-    if [[ "\$1" == "--extra-vars" ]]; then
-        shift  # Skip the --extra-vars flag
-        extra_vars="\$1"
-        shift
-    else
-        # Format each variable as a proper ansible extra var
-        if [[ -n "\$extra_vars" ]]; then
-            extra_vars="\$extra_vars "
-        fi
-        extra_vars="\$extra_vars\$1"
-        shift
-    fi
-done
-
-# Only show debug output if debug mode is enabled
-if [[ "${DEBUG_MODE}" == "true" ]]; then
-    echo "[DEBUG] Using ansible-playbook: \$ansible_playbook_path"
-    echo "[DEBUG] Inventory path: \$inventory_path"
-    echo "[DEBUG] Playbook path: \$playbook_path"
-    echo "[DEBUG] Verbosity: \$verbosity"
-    echo "[DEBUG] Extra vars: \$extra_vars"
-    echo "[DEBUG] CONDA_PREFIX: \$CONDA_PREFIX"
-    echo "[DEBUG] PATH: \$PATH"
-fi
-
-# Execute ansible-playbook with proper arguments
-exec "\$ansible_playbook_path" \$verbosity -i "\$inventory_path" "\$playbook_path" -e "\$extra_vars"
-EOF
-    chmod +x /tmp/run_playbook.sh
-    
-    if ! run_command "/tmp/run_playbook.sh ${aurora_inventory} -v ansible/playbooks/${playbook}.yml --extra-vars \"$formatted_extra_vars\"" "Running Ansible playbook..." "90" false false true 3600; then
-        show_error "Ansible playbook execution failed" true
-    fi
-    
-    # Clean up wrapper script
-    rm -f /tmp/run_playbook.sh
-
-    # Cleanup sensitive files
-    rm -f /tmp/vault_pass
-    
-    # Deactivate conda environment
-    conda deactivate
-
-    # Cleanup sensitive data
-    unset SUDO_PASSWORD VAULT_PASSWORD ANSIBLE_BECOME_PASS
-    update_progress "100" "Installation complete!"
-fi
-
-# Show completion status with more detail
-show_completion() {
-    local success="$1"
-    local message
-    
-    if [[ "$success" == "true" ]]; then
-        echo -e "\n${GREEN}╔════ SUCCESS ════╗${NC}"
-        echo -e "${GREEN}║${NC} Installation completed successfully!"
-        echo -e "${GREEN}╚════════════════╝${NC}"
-        
-        message="\
-Installation completed successfully!
-
-Your Shadow Robot software has been installed and configured.
-You can now proceed with using the system.
-
-Installation logs are available at: $LOG_FILE
-
-For support, email: support@shadowrobot.com"
-        
-        if [[ "$USE_GUI" == "true" ]]; then
-            whiptail --title "Installation Complete" --msgbox "$message" $MSG_HEIGHT $WHIP_COLS
-        else
-            echo -e "\n$message"
-        fi
-        
-        echo -e "\nLogs available at: ${BOLD}$LOG_FILE${NC}"
-    else
-        echo -e "\n${RED}╔════ FAILED ════╗${NC}"
-        echo -e "${RED}║${NC} Installation encountered errors"
-        echo -e "${RED}╚═══════════════╝${NC}"
-        
-        echo -e "\n${YELLOW}Last few lines of log:${NC}"
-        echo "----------------------------------------"
-        tail -n 10 "$LOG_FILE" | grep -v "password for" | while read -r line; do
-            echo "  $line"
-        done
-        echo "----------------------------------------"
-        
-        if [[ "$USE_GUI" == "true" ]]; then
-            whiptail --title "Installation Failed" --msgbox "Installation failed.\n\nPlease check the logs at: $LOG_FILE" $MSG_HEIGHT $WHIP_COLS
-        fi
-        
-        echo -e "\nFull logs available at: ${BOLD}$LOG_FILE${NC}"
-        exit 1
-    fi
-}
+# Show completion status
+show_completion "true"
