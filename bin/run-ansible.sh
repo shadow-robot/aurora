@@ -47,11 +47,10 @@ cleanup() {
 show_error() {
     local message="$1"
     local show_log="${2:-true}"
-
     # Log the error message itself first
     log_message "ERROR: $message"
 
-    echo -e "\n${RED}╔════ ERROR ════${NC}"
+    echo -e "\n${RED}╔════ERROR════${NC}"
     echo -e "${RED}║${NC} $message"
     echo -e "${RED}╚═══════════════${NC}"
 
@@ -148,7 +147,7 @@ log_message "Final parameters: Playbook: ${playbook}, Branch: ${aurora_tools_bra
 
 echo "================================================================="
 echo "|                                                               |"
-echo "|                 Shadow Ansible bootstraper                    |"
+echo "|                 Shadow Software Installer                     |"
 echo "|                                                               |"
 echo "================================================================="
 echo ""
