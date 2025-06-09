@@ -305,7 +305,7 @@ if [[ $formatted_extra_vars == *"pr_branches="* ]]; then
         log_message "Proceeding with SSH key generation/check for GitHub."
         formatted_extra_vars="$formatted_extra_vars skip_git_ssh_auth=false"
         echo " -------------------------------------------------------------------------------------"
-        log_message "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
+        log_message "Testing SSH connection to Github with ssh -o StrictHostKeyChecking=no -T git@github.com"
         echo "Testing SSH connection to Github with ssh -oStrictHostKeyChecking=no -T git@github.com"
         echo "Using SSH key from $github_ssh_private_key_path"
         ssh_test_output=$(ssh -o BatchMode=yes -o StrictHostKeyChecking=no -T git@github.com 2>&1)
