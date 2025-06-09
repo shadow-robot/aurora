@@ -15,7 +15,7 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set -e # fail on errors
-#set -o pipefail # fail on errors within pipelines
+set -o pipefail # fail on errors within pipelines
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -138,7 +138,7 @@ fi
 if [[ -z ${aurora_inventory} ]];
 then
     if [[ "${playbook}" = "server_and_nuc_deploy" || "${playbook}" = "teleop_deploy" ]]; then
-        aurora_inventory="" 
+        aurora_inventory=""
     else
         aurora_inventory="local/${playbook}"
     fi
@@ -232,7 +232,7 @@ confirm() {
 }
 
 are_all_pr_repos_public(){
-    REPO_IS_PRIVATE="true" # Assume all are public initially
+    REPO_IS_PUBLIC="true" # Assume all are public initially
     log_message "Testing if repos specified in pr_branches are all public."
     PR_BRANCHES_TO_CHECK="$@" # Use different var name to avoid conflict
     for i in $PR_BRANCHES_TO_CHECK; do
@@ -240,11 +240,11 @@ are_all_pr_repos_public(){
         user_slash_repo=$(echo $i | sed -r 's/.*github\.com\///g' | sed -r 's/\/tree.*//g' | sed -r 's/\/pull.*//g')
         REPO_IS_PUBLIC_STATUS=$(is_repo_public "$user_slash_repo")
         if [[ $REPO_IS_PUBLIC_STATUS == "false" ]]; then
-            REPO_IS_PRIVATE="false" # Found a non-public or non-existent repo
+            REPO_IS_PUBLIC="false" # Found a non-public or non-existent repo
             log_message "Repo ${user_slash_repo} is not public or not found."
             break
         elif [[ $REPO_IS_PUBLIC_STATUS == "403" ]]; then
-            REPO_IS_PRIVATE="403" # Rate limit hit
+            REPO_IS_PUBLIC="403" # Rate limit hit
             log_message "Rate limit hit while checking repo ${user_slash_repo}."
             break
         fi
@@ -523,7 +523,7 @@ if grep -q "microsoft" /proc/version && grep -iq "wsl" /proc/version; then
 fi
 
 
-ansible_flags="-v " 
+ansible_flags="-v "
 
 if [[ "${aurora_limit}" != "all" ]]; then
     ansible_flags="${ansible_flags} --limit ${aurora_limit} "
@@ -538,7 +538,7 @@ if [[ "${playbook}" = "server_and_nuc_deploy" ]]; then
     ansible_flags="${ansible_flags} --ask-vault-pass"
     echo ""
     echo " ---------------------------------------------------"
-    echo " |                VAULT password:                   |"
+    echo " |                VAULT password:                  |"
     echo " | Enter the VAULT password provided by Shadow     |"
     echo " ---------------------------------------------------"
     echo ""
@@ -551,7 +551,7 @@ elif [[ "${playbook}" = "teleop_deploy" ]]; then
     fi
     echo ""
     echo " ---------------------------------------------------"
-    echo " |                VAULT password:                   |"
+    echo " |                VAULT password:                  |"
     echo " | Enter the VAULT password provided by Shadow     |"
     echo " ---------------------------------------------------"
     echo ""
@@ -560,7 +560,7 @@ else
     ansible_flags="${ansible_flags} --ask-become-pass"
     echo ""
     echo " --------------------------------------------"
-    echo " |              BECOME password:             |"
+    echo " |              BECOME password:            |"
     echo " | Enter the sudo password of this computer |"
     echo " --------------------------------------------"
     echo ""
