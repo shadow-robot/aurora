@@ -15,7 +15,7 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 set -e # fail on errors
-set -o pipefail # fail on errors within pipelines
+#set -o pipefail # fail on errors within pipelines
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
