@@ -169,7 +169,7 @@ echo "read_secure  = ${read_secure}"
 
 export ANSIBLE_ROLES_PATH="${aurora_home}/ansible/roles"
 export ANSIBLE_CALLBACK_PLUGINS="${HOME}/.ansible/plugins/callback:/usr/share/ansible/plugins/callback:${aurora_home}/ansible/playbooks/callback_plugins"
-export ANSIBLE_COLLECTIONS_PATHS="${aurora_home}/ansible/collections:${HOME}/.ansible/collections:/usr/share/ansible/collections"
+#export ANSIBLE_COLLECTIONS_PATHS="${aurora_home}/ansible/collections:${HOME}/.ansible/collections:/usr/share/ansible/collections"
 export ANSIBLE_STDOUT_CALLBACK="custom_retry_runner"
 
 extra_vars=$* # All remaining arguments are extra_vars
@@ -587,34 +587,34 @@ log_message "Using ansible-playbook: $ansible_executable"
 log_message "Using ansible: $ansible_basic_executable"
 log_message "Using ansible-galaxy: $ansible_galaxy_executable"
 
-install_ansible_collections() {
-    local galaxy_exec="$1"
-    local collections_dir
-    collections_dir="${ANSIBLE_COLLECTIONS_PATHS%%:*}" # Get the first path
-    mkdir -p "$collections_dir" || show_error "Failed to create collections directory: $collections_dir"
+#install_ansible_collections() {
+    #local galaxy_exec="$1"
+    #local collections_dir
+    #collections_dir="${ANSIBLE_COLLECTIONS_PATHS%%:*}" # Get the first path
+    #mkdir -p "$collections_dir" || show_error "Failed to create collections directory: $collections_dir"
 
-    log_message "Installing Ansible collection community.general into ${collections_dir}..."
-    if ! "$galaxy_exec" collection install community.general -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
-        show_error "Failed to install Ansible collection community.general. Check $LOG_FILE."
-    fi
-    log_message "Installing Ansible collection community.docker into ${collections_dir}..."
-    if ! "$galaxy_exec" collection install community.docker -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
-        show_error "Failed to install Ansible collection community.docker. Check $LOG_FILE."
-    fi
-    log_message "Installing Ansible collection amazon.aws (newer) or community.aws (older) into ${collections_dir}..."
+    #log_message "Installing Ansible collection community.general into ${collections_dir}..."
+    #if ! "$galaxy_exec" collection install community.general -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
+    #    show_error "Failed to install Ansible collection community.general. Check $LOG_FILE."
+    #fi
+    #log_message "Installing Ansible collection community.docker into ${collections_dir}..."
+    #if ! "$galaxy_exec" collection install community.docker -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
+    #    show_error "Failed to install Ansible collection community.docker. Check $LOG_FILE."
+    #fi
+    #log_message "Installing Ansible collection amazon.aws (newer) or community.aws (older) into ${collections_dir}..."
     # Try amazon.aws first, then community.aws for compatibility
-    if ! "$galaxy_exec" collection install amazon.aws -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
-        log_message "Failed to install amazon.aws, trying community.aws..."
-        if ! "$galaxy_exec" collection install community.aws -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
-            show_error "Failed to install Ansible collection amazon.aws or community.aws. Check $LOG_FILE."
-        fi
-    fi
-    log_message "Installing Ansible collection ansible.posix into ${collections_dir}..."
-    if ! "$galaxy_exec" collection install ansible.posix -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
-        show_error "Failed to install Ansible collection ansible.posix. Check $LOG_FILE."
-    fi
-    log_message "Ansible collections installation attempt finished."
-}
+    #if ! "$galaxy_exec" collection install amazon.aws -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
+    #    log_message "Failed to install amazon.aws, trying community.aws..."
+    #    if ! "$galaxy_exec" collection install community.aws -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
+    #        show_error "Failed to install Ansible collection amazon.aws or community.aws. Check $LOG_FILE."
+    #    fi
+    #fi
+    #log_message "Installing Ansible collection ansible.posix into ${collections_dir}..."
+    #if ! "$galaxy_exec" collection install ansible.posix -p "$collections_dir" >> "$LOG_FILE" 2>&1; then
+    #    show_error "Failed to install Ansible collection ansible.posix. Check $LOG_FILE."
+    #fi
+    #log_message "Ansible collections installation attempt finished."
+#}
 
 log_message "Checking Ansible version..."
 if ! "${ansible_basic_executable}" --version >> "$LOG_FILE" 2>&1; then
