@@ -60,10 +60,6 @@
     name: docker/aws
   when: use_aws|bool
 
-- name: Include installation/teamviewer role
-  include_role:
-    name: installation/teamviewer
-
 - name: Include docker-deploy/desktop-icons role
   include_role:
     name: products/hand-e/docker-deploy/desktop-icons
