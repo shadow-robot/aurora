@@ -73,8 +73,6 @@
   - name: Make Close Right Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Right Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
@@ -113,8 +111,6 @@
   - name: Make Close Left Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Left Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
@@ -153,8 +149,117 @@
   - name: Make Close bimanual Hands desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Close Bimanual Hands.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
+      - not skip_molecule_task|bool
+
+  when: bimanual|bool
+
+- name: Install right hand store hand icon if bimanual is true or if hand_side="right"
+  block:
+  - name: Copy Store Right Hand desktop icon
+    copy:
+      src: ../../../common/resources/files/close-hand-icon-right.png
+      dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-right.png"
+      mode: '664'
+
+  - name: Create Store Right Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/store_right_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: store.py --side right
+
+  - name: Create Store Right Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Store Right Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Store Right Hand
+      comment: "This icon runs a script to put the Hand into a position where it can be stored for transportation. Hand needs to be running."
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: store_right_hand.sh
+      icon_file_name: close-hand-icon-right.png
+      start_terminal: "false"
+
+  - name: Make Store Right Hand desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Store Right Hand.desktop" "metadata::trusted" yes
+    when:
+      - not skip_molecule_task|bool
+
+  when: bimanual|bool or hand_side=="right"
+
+- name: Install left hand store hand icon if bimanual is true or if hand_side="left"
+  block:
+  - name: Copy Store Left Hand desktop icon
+    copy:
+      src: ../../../common/resources/files/close-hand-icon-left.png
+      dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-left.png"
+      mode: '664'
+
+  - name: Create Store Left Hand executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/store_left_hand.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: store.py --side left
+
+  - name: Create Store Left Hand desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Store Left Hand.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Store Left Hand
+      comment: "This icon runs a script to put the Hand into a position where it can be stored for transportation. Hand needs to be running."
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: store_left_hand.sh
+      icon_file_name: close-hand-icon-left.png
+      start_terminal: "false"
+
+  - name: Make Store Left Hand desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Store Left Hand.desktop" "metadata::trusted" yes
+    when:
+      - not skip_molecule_task|bool
+
+  when: bimanual|bool or hand_side=="left"
+
+- name: Install bimanual hands store hand icon if bimanual is true
+  block:
+  - name: Copy Store Bimanual Hands desktop icon
+    copy:
+      src: ../../../common/resources/files/close-hand-icon-bimanual.png
+      dest: "{{ shadow_hand_launcher_folder }}/close-hand-icon-bimanual.png"
+      mode: '664'
+
+  - name: Create store bimanual Hands executable launch script
+    template:
+      src: ../resources/templates/scripts/rosrun-script.j2
+      dest: "{{ shadow_hand_launcher_folder }}/store_bimanual_hands.sh"
+      mode: '755'
+    vars:
+      project_name: sr_demos
+      script_name: store.py --side both
+
+  - name: Create Store Bimanual Hands desktop icon
+    template:
+      src: ../resources/templates/desktop-icons/standard-icon.j2
+      dest: "{{ demo_icon_folder }}/Store Bimanual Hands.desktop"
+      mode: '755'
+    vars:
+      desktop_shortcut_name: Store Bimanual Hands
+      comment: "This icon runs a script to put the Hand into a position where it can be stored for transportation. Hand needs to be running."
+      folder: "{{ shadow_hand_launcher_folder }}"
+      shell_script_file_name: store_bimanual_hands.sh
+      icon_file_name: close-hand-icon-bimanual.png
+      start_terminal: "false"
+
+  - name: Make Store bimanual Hands desktop icon Trusted
+    shell: gio set "{{ demo_icon_folder }}/Store Bimanual Hands.desktop" "metadata::trusted" yes
+    when:
       - not skip_molecule_task|bool
 
   when: bimanual|bool
@@ -193,8 +298,6 @@
   - name: Make Open Right Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}/Open Right Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="right"
@@ -233,8 +336,6 @@
   - name: Make Open Left Hand desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Open Left Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool or hand_side=="left"
@@ -273,8 +374,6 @@
   - name: Make Open Bimanual Hands desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Open Bimanual Hands.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when: bimanual|bool == true
@@ -314,8 +413,6 @@
   - name: Make Standard Right Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Right Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
   
   when:
@@ -356,8 +453,6 @@
   - name: Make Standard Left Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Left Hand.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when:
@@ -398,8 +493,6 @@
   - name: Make Standard Bimanual Demo desktop icon Trusted
     shell: gio set "{{ demo_icon_folder }}//Demo Bimanual Hands.desktop" "metadata::trusted" yes
     when:
-      - ansible_distribution|string == 'Ubuntu'
-      - ansible_distribution_release|string == 'bionic'
       - not skip_molecule_task|bool
 
   when:
