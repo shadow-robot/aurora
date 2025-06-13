@@ -46,4 +46,4 @@
     - {role: installation/mongodb, when: "'mongodb' in software_list"}
     - {role: installation/warehouse_ros, when: "'warehouse_ros' in software_list"}
     - {role: installation/production_tools, when: "'production_tools' in software_list"}
-    - {role: installation/teamviewer, when: "'teamviewer' in software_list"}
+    - {role: installation/shadow-support, when: "'shadow-support' in software_list"}

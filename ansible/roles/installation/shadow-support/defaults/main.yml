@@ -13,20 +13,5 @@
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
-- name: Install libminizip1 package (Dependency for TeamViewer)
-  become: true
-  apt:
-    name: libminizip1
-    state: present
-
-- name: Download TeamViewer package
-  get_url:
-    url: "{{ teamviewer_package_url }}"
-    dest: "{{ teamviewer_package_dest }}"
-
-- name: Install TeamViewer package
-  become: true
-  apt:
-    deb: "{{ teamviewer_package_dest }}"
-    state: present
-
+shadow-support_package_url: "https://s3.eu-west-2.amazonaws.com/com.shadowrobot.eu-west-2.public/Shadow-Support-Binary/shadow-support-x86_64_external.deb"
+shadow-support_package_dest: "/tmp/shadow-support.deb"
