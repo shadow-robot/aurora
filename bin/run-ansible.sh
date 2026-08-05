@@ -504,6 +504,7 @@ if ! install_pip_packages >> "$LOG_FILE" 2>&1; then
     show_error "Failed to install pip packages using install_pip_packages. Check $LOG_FILE."
 fi
 log_message "Pip packages installed."
+log_message "$(pip list)"
 
 
 # Fix for WSL
