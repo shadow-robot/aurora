@@ -34,7 +34,10 @@ command_usage_message="${command_usage_message} [<parameter>=<value>] [<paramete
 
 
 log_message() {
-    echo "$(date +'%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
+    local message="$1"
+
+    echo "$message"
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $message" >> "$LOG_FILE"
 }
 
 
