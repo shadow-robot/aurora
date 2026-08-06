@@ -128,3 +128,5 @@ install_ansible_collections() {
   ansible_galaxy_executable=$1
   "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
 }
+
+list_pip_packages() { ${miniconda_install_location}/bin/pip3 list ; }
