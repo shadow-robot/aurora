@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2022-2024 Shadow Robot Company Ltd.
+# Copyright 2022-2024, 2026 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -34,7 +34,13 @@ command_usage_message="${command_usage_message} [<parameter>=<value>] [<paramete
 
 
 log_message() {
-    echo "$(date +'%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
+    local message="$1"
+
+    if [ "$quiet_logs" = false ] ; then
+        echo "$message"
+    fi
+
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $message" >> "$LOG_FILE"
 }
 
 
@@ -70,7 +76,7 @@ show_error() {
 log_message "Script started. Name: ${script_name}"
 log_message "Command line arguments: $@"
 
-if [[ $# -lt 2 ]]; then 
+if [[ $# -lt 2 ]]; then
     show_error "Insufficient arguments provided.\n${command_usage_message}" "false"
 fi
 
@@ -86,10 +92,11 @@ aurora_home=/tmp/aurora
 
 playbook=$1
 aurora_limit=all
+quiet_logs=false
 shift
 
 log_message "Parsing command line options..."
-while [[ $# -gt 0 ]]; do # 
+while [[ $# -gt 0 ]]; do #
     key="$1"
     case ${key} in
         --branch)
@@ -111,6 +118,10 @@ while [[ $# -gt 0 ]]; do #
         --read-secure)
         read_secure="$2"
         shift 2
+        ;;
+        --quiet_logs)
+        quiet_logs=true
+        shift
         ;;
         *) # This will now capture extra_vars
         break
@@ -183,8 +194,8 @@ old_IFS=$IFS
 IFS=";"
 formatted_extra_vars=""
 for extra_var_pair in $extra_vars; do # $extra_vars should be space separated "key=value" "key2=value with space"
-    variable="${extra_var_pair%%=*}" 
-    value="${extra_var_pair#*=}"    
+    variable="${extra_var_pair%%=*}"
+    value="${extra_var_pair#*=}"
     if [[ "$value" == *' '* && ! ("$value" == \'*\' || "$value" == \"*\") ]]; then # Avoid double quoting
         value="'$value'"
     fi
@@ -334,8 +345,8 @@ if [[ $formatted_extra_vars == *"pr_branches="* ]]; then
             fi
             log_message "xclip installed."
         fi
-    fi 
-fi 
+    fi
+fi
 
 if [[ -n "$read_input" ]]; then
     log_message "Processing --read-input: ${read_input}"
@@ -369,7 +380,7 @@ if [[ -n "$read_input" ]]; then
             echo "Select Open Link and follow the steps from number 2 onwards:"
             echo "https://docs.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account"
             echo " ----------------------------------------------------------------------------------------------------"
-            
+
             ssh_key_added_confirm=""
             while [[ "$ssh_key_added_confirm" != "y" ]]; do
                 printf "Confirm if you have added the SSH key to your Github account (y/n):"
@@ -501,6 +512,7 @@ if ! install_pip_packages >> "$LOG_FILE" 2>&1; then
     show_error "Failed to install pip packages using install_pip_packages. Check $LOG_FILE."
 fi
 log_message "Pip packages installed."
+log_message "$(list_pip_packages)"
 
 
 # Fix for WSL

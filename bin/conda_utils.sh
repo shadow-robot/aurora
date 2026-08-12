@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2024 Shadow Robot Company Ltd.
+# Copyright 2024, 2026 Shadow Robot Company Ltd.
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -38,7 +38,7 @@ done < <(lsb_release -a 2>/dev/null)
 
 # We use this variable to figure out which pip packages to download. Packages for focal work on jammy, but bionic needs its own packages
 if ! [[ $codename == *"bionic"* ]]; then
-  codename="focal" 
+  codename="focal"
 fi
 
 _fetch_conda_installer() {
@@ -128,3 +128,5 @@ install_ansible_collections() {
   ansible_galaxy_executable=$1
   "${ansible_galaxy_executable}" collection install $(realpath ${packages_download_root}/ansible_collections/*)
 }
+
+list_pip_packages() { ${miniconda_install_location}/bin/pip3 list ; }
